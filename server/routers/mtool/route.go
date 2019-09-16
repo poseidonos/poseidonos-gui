@@ -21,7 +21,7 @@ func Route(router *gin.Engine) {
 	}
 
 	apiIBoFOSV1 := api.Group("/ibofos/v1")
-
+	apiIBoFOSV1.Use(middleware.CheckiBoFRun())
 	// Test API
 	{
 		apiIBoFOSV1.POST("/test/report", iBoFOSV1.ReportTest)
