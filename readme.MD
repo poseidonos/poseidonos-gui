@@ -1,0 +1,654 @@
+# Dynamic Agent
+*  This app provides RESTFul APIs to contorl iBoF System (iBoFOS, BMC ...)
+
+***
+
+## Known Issue
+* None.
+
+***
+
+## Dev Enviroment
+* Language : GoLang 1.13
+* Test : Ubuntu 18.04 LTS
+* iBoFOS Branch : feature/AWIBOF-571-3Q-MTool-integration (05/sep)
+ 
+***
+
+## Pre Requirement
+#### iBoFOS
+* The iBoFOS shuold be in run status.
+
+```shell script
+sudo ${iBoFOS_dir}/bin/nohup ./ibofos primary &
+sudo ${iBoFOS_dir}/lib/spdk-19.01.1/scripts/rpc.py construct_malloc_bdev -b uram0 1024 4096
+```
+
+#### M-Tool
+* D-Agent uses the same user info as M-Tool. Therefore, the M-Tool (or mongodb) should be installed. 
+
+#### Config File
+* config.json file should be in the same location as the executable file.
+If there is no config file, d-agent will use default values.
+You can set the value manually.
+* server_port : port for this app
+```json
+{
+  "dagentPort": "3000",
+  "iBoFOSHost": "localhost",
+  "iBoFOSPort": "18716"
+}
+```
+
+#### Patient & Coffee
+* This app is still in progress, so it can be died without any notice.
+
+***
+
+## Build & Run
+#### Directory
+``` 
+/workspace/m9k/dagent
+```
+
+#### Build
+* It can be run on any path.
+* It does not need any dependency pkg after compiling.
+```shell script
+$ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git
+$ cd ibofdagent
+$ go mod vendor
+$ go build -mod vendor
+```
+#### Run
+* The exec binaray is also uploaded, so you can run without build
+```shell script
+$ ./ibofdagent # General Run
+# Or
+$ ./run_dagent.sh # Background Run 
+```
+
+***
+
+## How to Test
+1. Install Postman
+2. File -> Import -> Import File -> "postman/D-Agent.postman_collection.json"
+3. Set the envirments (host, vendor)  
+: Host value should be URL    
+: Vendor value should be "mtool" or "nbp"    
+4. Call FORCEKILLIBOFOS  
+: To kill current iBoFOS  
+5. Call RUNIBOFOS  
+: it exec "run_ibofos.sh"
+6. Test
+
+***
+
+## API
+* I will change swagger style (TBD)  
+* Most scheme of json is the similar to iBoF External API
+* The id/pass for basic auth is the same as M-Tool's (It use the same DB)
+* Currently D-Agent provides only basic auth.
+#### Common Request Headers
+```
+X-Request-Id : {uuid}
+ts : {unix timestamp}
+Content-Type : application/json
+Authorization : {basic auth value}
+```
+
+Sample
+```
+X-Request-Id : 44f1280b-982e-4d2e-ab14-fe9eb2022045
+ts : 1566287153702
+Content-Type : application/json
+Authorization : Basic YWRtaW46YWRtaW4=
+```
+
+#### Common Request Body (CUD)
+* All API has common request scheme without GET method.
+
+```json
+{
+  "param":{
+    // Ref. each command
+  }
+}
+```
+
+#### Common Response Headers
+Sample
+```
+X-Request-Id : 44f1280b-982e-4d2e-ab14-fe9eb2022045
+Content-Type : application/json; charset=utf-8
+Content-Length : 97
+```
+
+#### Common Response Body (CRUD)
+* All API has common response scheme.
+
+```json
+{
+   "result":{
+    "status":{
+      "code":0,
+      "description":"Volume Create Success"
+    },
+    "data":{
+      // Ref. each command
+    } 
+  }
+}
+
+```
+
+### API Path  
+* http://{localhost}/{vendor}/api/{type}/{version}/{command}/{command}...  
+
+Sample
+```  
+http://12.36.56.173:3000/nbp/api/dagent/v1/ping
+http://12.36.56.173:3000/mtool/api/ibofos/v1/system/sysstate
+http://12.36.56.173:3000/mtool/api/ibofos/v1/volume/create
+http://12.36.56.173:3000/mtool/api/bmc/v1/psu
+```
+
+### TEST API
+##### [REPORTTEST]
+(POST) /ibofos/v1/test/report    
+~~(GET) /ibofos/v1/test/reporttest~~
+
+* It makes a report file for self test.
+* Report file directory : /etc/ibofos/report/  
+Report file name : report.log / report.1.log / report.2.log ... report.4.log  
+(5 files, rotationally write, 100MB per file)
+* Code Definition : See below Error Code section
+
+Format
+```
+[{timestamp}][{code}}][{level}] [{value}]
+```
+
+Sample in report.log
+```
+[1567675252][2804][info] [85]
+[1567675253][2804][info] [86]
+[1567675254][2804][info] [87]
+[1567675266][2804][info] [99]
+[1567675267][2804][info] [100]
+```
+
+Response Sample  
+* It take at least 100sec, so if you use the proxy, you might not get the right response.
+In case, extend the timeout of proxy
+```json
+
+```
+
+### API
+#### For D-Agent
+* The biz logic is excuted in D-Agent
+
+##### [PING]
+(GET) /dagent/v1/ping  
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Pong"
+        },
+        "data": null
+    }
+}
+```
+
+##### [RUN IBOF]
+* It just run command "run_ibof.sh" and does not gurantee to run.  
+(POST) /dagent/v1/ibofos  
+~~(GET) /dagent/v1/runibof~~  
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        },
+        "data": null
+    }
+}
+```
+
+##### [FORCE KILL IBOF]
+* It runs "kill -9 $(pgrep ibofos)"   
+(DELETE) /dagent/v1/ibofos  
+~~(GET) /dagent/v1/forcekillibof~~  
+Response Sample
+
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        },
+        "data": null
+    }
+}
+```
+
+#### For iBoFOS
+* The biz logic is excuted in D-Agent and iBoFOS
+
+##### [SYS STATE]
+(GET) /ibofos/v1/system/sysstate  
+Response Sample
+```json
+{
+    "rid": "b469cefa-cf93-41ab-bc3c-a18c9828c6b2",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "alive"
+        },
+        "data": null
+    }
+}
+```
+
+##### [EXIT SYSTEM]
+(GET) /ibofos/v1/system/exit  
+* Currently this api does now work due to iboFOS Bug  
+Response Sample
+```json
+{
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "something"
+        },
+        "data": null
+    }
+}
+```
+
+##### [SCAN DEVICE]
+(GET) /ibofos/v1/device/scan  
+Response Sample
+```json
+{
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Scan Device Done"
+        },
+        "data": null
+    }
+}
+```
+
+##### [LIST DEVICE]
+(GET) /ibofos/v1/device  
+~~(GET) /ibofos/v1/device/list~~  
+Response Sample
+* "mn" : Model Number
+* "sn" : Serial Number
+* "size" : Currently It is page size, it will be fixed as "byte"
+```json
+{
+    "rid": "3922e5eb-3061-433c-a543-5fdeb3b32d25",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-0",
+                    "size": 67108864,
+                    "sn": "VMWare NVME-0002",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-1",
+                    "size": 67108864,
+                    "sn": "VMWare NVME-0003",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-2",
+                    "size": 67108864,
+                    "sn": "VMWare NVME-0000",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-3",
+                    "size": 67108864,
+                    "sn": "VMWare NVME-0001",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "",
+                    "name": "uram0",
+                    "size": 262144,
+                    "sn": "",
+                    "type": "NVRAM"
+                }
+            ]
+        }
+    }
+}
+```
+
+##### [ATTACH DEVICE]
+(POST) /ibofos/v1/device/attach  
+// Not Imple in iBoFOS, It will provide by 20, sep  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    }
+}
+```
+Response Sample
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "success"
+        }
+    }
+}
+```
+
+##### [DETACH DEVICE]
+(DELETE) /ibofos/v1/device/detach  
+// Not Imple in iBoFOS, It will provide by 20, sep  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    },
+}
+```
+
+Response Sample
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "success"
+        }
+    }
+}
+```
+
+##### [CREATE ARRAY]
+(POST) /ibofos/v1/array
+// Not Imple in iBoFOS, It will provide by 20, sep  
+
+##### [DELETE ARRAY]
+(DELETE) /ibofos/v1/array
+// Not Imple in iBoFOS, It will provide by 20, sep
+
+##### [STATUS ARRAY]
+(GET) /ibofos/v1/array
+// Not Imple in iBoFOS, It will provide by 20, sep
+
+##### [UNMOUNT ARRAY]
+(DELETE) /ibofos/v1/array/mount
+// Not Imple in iBoFOS, It will provide by 20, sep
+
+##### [MOUNT ARRAY]
+(POST) /ibofos/v1/array/mount  
+Request Body Sample
+```json
+{
+   "param": {
+       "fttype": 1,
+       "buffer": [
+           {
+               "deviceName": "uram0"
+           }
+       ],
+       "data": [
+           {
+               "deviceName": "intel-unvmens-0"
+           },
+           {
+               "deviceName": "intel-unvmens-1"
+           },
+           {
+               "deviceName": "intel-unvmens-2"
+           }
+       ],
+       "spare": [
+           {
+               "deviceName": "intel-unvmens-3"
+           }
+       ]
+   }
+}
+```
+Response Sample
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+   "result": {
+       "status": {
+           "code": 0,
+           "description": "DONE"
+       },
+       "data": null
+   }
+}
+
+```
+##### [CREATE VOLUME]
+(POST) /ibofos/v1/volume  
+~~(POST) /ibofos/v1/volume/create~~  
+Request Body Sample
+* "maxbw" : 0 means unlimited (or do not add "limit" attribute) / Unit : MB
+* "maxiops" : 0 means unlimited (or do not add "limit" attribute) / Unit : K (1000)
+
+```json
+{
+    "param": {
+        "name": "vol01",
+        "size": 4194304,
+        "maxbw": 0,
+        "maxiops": 0
+    }
+}
+```
+
+```json
+{
+    "param": {
+        "name": "vol01",
+        "size": 4194304
+    }
+}
+```
+
+Response Sample
+```json
+{
+    "rid": "1d4d31ba-462a-4b18-b699-8e71fd6f20e7",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": null
+    }
+}
+```
+```json
+{
+    "rid": "061f6617-e75f-459d-8f79-758a92411ebe",
+    "result": {
+        "status": {
+            "code": 2022,
+            "description": "FAILED"
+        },
+        "data": null
+    }
+}
+```
+
+##### [LIST VOLUME]
+(GET) /ibofos/v1/volume  
+~~(GET) /ibofos/v1/volume/list~~     
+Response Sample
+```json
+{
+    "rid": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "id": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "name": "vol01",
+                    "remain": 4194304,
+                    "status": "Mounted",
+                    "total": 4194304
+                }
+            ]
+        }
+    }
+}
+```
+
+##### [DELETE VOLUME]
+(DELETE) /ibofos/v1/volume  
+~~(DELETE) /ibofos/v1/volume/delete~~  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    }
+}
+```
+Response Sample
+```json
+{
+    "rid": "1da5dad2-3604-4979-be74-2b32f1ce38f3",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": null
+    }
+}
+```
+
+##### [MOUNT VOLUME]
+(POST) /ibofos/v1/volume/mount    
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    }
+}
+```
+Response Sample
+```json
+{
+    "rid": "10cdb292-8942-4cb0-8202-032c9e7db98a",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": null
+    }
+}
+```
+```json
+{
+    "rid": "c46c4401-b083-41f1-8951-f147a2339304",
+    "result": {
+        "status": {
+            "code": 2040,
+            "description": "FAILED"
+        },
+        "data": null
+    }
+}
+```
+
+##### [UNMOUNT VOLUME]
+(DELETE) /ibofos/v1/volume/mount  
+~~(POST) /ibofos/v1/volume/unmount~~  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    }
+}
+```
+Response Sample
+```json
+{
+    "rid": "b31576cb-f092-4f6f-96be-4dc1ca7c98e4",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": null
+    }
+}
+```
+```json
+{
+    "rid": "fda8a39e-a92c-4f3b-90ea-a2d773370a03",
+    "result": {
+        "status": {
+            "code": 2041,
+            "description": "FAILED"
+        },
+        "data": null
+    }
+}
+```
+
+#### Error Code
+* Latest : http://12.30.97.244:8090/wiki/pages/viewpage.action?pageId=159199976  
+* PDF code available upon request {d.moon/hs0112.moon/sk921.park}@samsung.com
+
+#### BMC (TBD)
+* D-Agent will relay the redfish request/response from BMC
+* /bmc/v1/{redfishSpec}
+
+***
+

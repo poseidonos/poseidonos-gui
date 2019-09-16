@@ -1,0 +1,1203 @@
+{
+  "info": {
+    "_postman_id": "0ae85c73-8639-479d-a47e-9303e96cd363",
+    "name": "D-Agent",
+    "description": "New collection (imported from DHC)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "DAGENT",
+      "item": [
+        {
+          "name": "PING (X-Request-Id empty)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "1fe22fe1-54fb-4da7-a2bd-1b33097e9b2b",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "dagent",
+                "v1",
+                "ping"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PING",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "dagent",
+                "v1",
+                "ping"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FORCEKILLIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "dagent",
+                "v1",
+                "ibofos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RUNIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "dagent",
+                "v1",
+                "ibofos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "iBoFOS",
+      "item": [
+        {
+          "name": "SYSSTATE (ts empty)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "6112216b-a15f-4a65-b788-baf3057e204e",
+                "exec": [
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/sysstate",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "sysstate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SYSSTATE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "e84caaec-01ab-44d4-a3de-88a96b3d27b1",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/sysstate",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "sysstate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "EXITSYSTEM",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exit",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "exit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SCANDEVICE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "device",
+                "scan"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LISTDEVICE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "device"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MOUNTARRAY",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "array",
+                "mount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CREATEVOLUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MOUNTVOULUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume",
+                "mount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LISTVOLUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UNMOUNTVOLUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume",
+                "mount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETEVOLUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "REPORTTEST",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/test/report",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "test",
+                "report"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ATTACHDEVICE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "device",
+                "attach"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DETACHDEVICE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "device",
+                "detach"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+            "exec": [
+              "pm.environment.set(\"timestamp\", new Date());",
+              "pm.environment.set(\"xrid\", uuidv4());",
+              "",
+              "function uuidv4() {",
+              "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "    return v.toString(16);",
+              "  });",
+              "}",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Request-Id",
+            "value": "{{xrid}}"
+          },
+          {
+            "key": "ts",
+            "value": "{{timestamp}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Basic YWRtaW46YWRtaW4="
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/detachdevice",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "{{vendor}}",
+            "api",
+            "ibofos",
+            "v1",
+            "detachdevice"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
