@@ -33,8 +33,10 @@ func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
 
 	if err != nil {
 		log.Printf("Response Unmarshal Error : %v", err)
-		response.Result.Status.Code = -96
+		response.Result.Status.Code = 10099
 		response.Result.Status.Description = error.Error(err)
+		ctx.JSON(http.StatusBadRequest, &response)
+	} else if response.Result.Status.Code !=0 {
 		ctx.JSON(http.StatusBadRequest, &response)
 	} else {
 		ctx.JSON(http.StatusOK, &response)
