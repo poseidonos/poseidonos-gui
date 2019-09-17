@@ -35,7 +35,7 @@ func checkReturnFail(ctx *gin.Context) {
 	if r := recover(); r != nil {
 		err := r.(error)
 		description := err.Error()
-		api.ReturnFail(ctx, description, 11000)
+		api.MakeFailResponseWithDescription(ctx, description, 11000)
 	}
 }
 

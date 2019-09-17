@@ -1,22 +1,22 @@
 package api
 
 type Request struct {
-	Command string      `json:"command"`
-	Rid     string      `json:"rid"`
-	Param   interface{} `json:"param"`
+	Command string      `yaml:"command"`
+	Rid     string      `yaml:"rid"`
+	Param   interface{} `yaml:"param"`
 }
 
 type Response struct {
-	Rid    string `json:"rid"`
-	Result Result `json:"result"`
+	Rid    string `yaml:"rid"`
+	Result Result `yaml:"result"`
 }
 
 type Result struct {
-	Status Status      `json:"status"`
-	Data   interface{} `json:"data"`
+	Status Status      `yaml:"status"`
+	Data   interface{} `yaml:"data"`
 }
 
 type Status struct {
-	Code        int    `json:"code"`
-	Description string `json:"description"`
+	Code        int    `yaml:"code"`
+	Description string `yaml:"description"`
 }

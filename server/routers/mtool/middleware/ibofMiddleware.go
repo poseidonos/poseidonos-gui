@@ -10,8 +10,7 @@ import (
 func CheckiBoFRun() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if util.IsIBoFRun() == false {
-			description := "iBoF does not run, Please run iBoFOS first"
-			api.ReturnFail(ctx, description, 12030)
+			api.MakeFailResponse(ctx, 12030)
 			return
 		}
 		ctx.Next()

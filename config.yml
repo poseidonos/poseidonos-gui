@@ -1,0 +1,7 @@
+servers:
+  dagent:
+    ip: 127.0.0.2
+    port: 3002
+  ibof:
+    ip: 127.0.0.1
+    port: 18716

@@ -2,33 +2,43 @@ package v1
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/handler"
 	"ibofdagent/server/routers/mtool/api"
 	"log"
 	"net/http"
-	"sync"
+	"sync/atomic"
 )
 
-var mutex = new(sync.Mutex)
+const (
+	stateUnlocked uint32 = iota
+	stateLocked
+)
+
+var (
+	locker    = stateUnlocked
+	errLocked = errors.New("Locked out buddy")
+)
 
 func sendWithAsync(ctx *gin.Context, iBoFRequest api.Request) {
-	mutex.Lock()
 	// ToDO: Impl async logic
-	mutex.Unlock()
 }
 
 func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
-	mutex.Lock()
+	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
+		api.MakeFailResponse(ctx, 12000)
+		return
+	}
+	defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
-	response := api.Response{}
-
 	handler.SendIBof(marshaled)
 
 	temp := handler.GetIBoFResponse()
-	log.Printf("Response : %s", string(temp))
+	log.Printf("Response From iBoF : %s", string(temp))
 
+	response := api.Response{}
 	err := json.Unmarshal(temp, &response)
 
 	if err != nil {
@@ -44,11 +54,7 @@ func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
 
 	if iBoFRequest.Rid != response.Rid {
 		log.Printf("Concurency Error")
-		// if it use mutex it might not happen. (Not tested)
-		// If happen, re-add disk to iBoFReceiveChan
-		// change to sync not channel
 	}
-	mutex.Unlock()
 }
 
 func makeRequest(ctx *gin.Context, command string) api.Request {

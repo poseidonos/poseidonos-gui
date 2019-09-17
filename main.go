@@ -23,7 +23,7 @@ func startServer() {
 	routersInit := routers.InitRouter()
 
 	server := &http.Server{
-		Addr:           ":" + setting.ServerConf.DagentPort,
+		Addr:           ":" + setting.Config.Server.Dagent.Port,
 		Handler:        routersInit,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
