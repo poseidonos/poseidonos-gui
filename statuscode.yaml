@@ -1,4 +1,4 @@
-# D-agent
+# D-agent (1xxxx ~ 19999)
 10240: "Header Error : X-request-Id is invalid"
 10250: "Header Error : ts missing"
 10310: "Body Error : Json Error"
@@ -6,3 +6,6 @@
 12000: "iBoF is busy, Try later"
 12310: "iBoF Unmarshal Error"
 12030: "iBoF does not run, Please run iBoFOS first"
+
+# iBoFOS (1xxx ~ 9999)
+# TBD
