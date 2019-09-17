@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	setting.LoadSeverConfig()
+	setting.LoadConfig()
 	gin.SetMode(gin.DebugMode)
 }
 

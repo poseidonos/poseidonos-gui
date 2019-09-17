@@ -31,17 +31,17 @@ func returnSuccess(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &response)
 }
 
+func ForceKillIbof(ctx *gin.Context) {
+	defer checkReturnFail(ctx)
+
+	util.ExecCmd("kill -9 $(pgrep ibofos)")
+	returnSuccess(ctx)
+}
+
 func checkReturnFail(ctx *gin.Context) {
 	if r := recover(); r != nil {
 		err := r.(error)
 		description := err.Error()
 		api.MakeFailResponseWithDescription(ctx, description, 11000)
 	}
-}
-
-func ForceKillIbof(ctx *gin.Context) {
-	defer checkReturnFail(ctx)
-
-	util.ExecCmd("kill -9 $(pgrep ibofos)")
-	returnSuccess(ctx)
 }

@@ -7,9 +7,10 @@ import (
 )
 
 var Config ConfigScheme
+var StatusCode map[int]string
 
 type ConfigScheme struct {
-	Server Server `yaml:"server"`
+	Server           Server `yaml:"server"`
 	IBoFOSSocketAddr string
 	DAgentSocketAddr string
 }
@@ -30,14 +31,35 @@ func init() {
 	Config.Server.IBoF.Port = "18716"
 }
 
-func LoadSeverConfig() {
-	filename := "config.yml"
+func LoadConfig() {
+	loadSeverConfig()
+	loadStatusCode()
+}
+
+func loadSeverConfig() {
+	filename := "config.yaml"
 	file, err := ioutil.ReadFile(filename)
 
 	if err != nil {
-		log.Printf("%v\nD-Agent will use default value\n", err)
+		log.Printf("LoadSeverConfig : %v\nD-Agent will use default value\n", err)
 	} else {
 		err = yaml.Unmarshal(file, &Config)
+		if err != nil {
+			log.Fatalf("YAML Error : %v", err)
+		} else {
+			log.Printf("Open Success : %s", filename)
+		}
+	}
+}
+
+func loadStatusCode() {
+	filename := "statuscode.yaml"
+	file, err := ioutil.ReadFile(filename)
+
+	if err != nil {
+		log.Printf("LoadStatusCode : %v\n", err)
+	} else {
+		err = yaml.Unmarshal(file, &StatusCode)
 		if err != nil {
 			log.Fatalf("YAML Error : %v", err)
 		} else {
