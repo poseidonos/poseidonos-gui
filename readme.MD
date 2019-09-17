@@ -28,16 +28,18 @@ sudo ${iBoFOS_dir}/lib/spdk-19.01.1/scripts/rpc.py construct_malloc_bdev -b uram
 * D-Agent uses the same user info as M-Tool. Therefore, the M-Tool (or mongodb) should be installed. 
 
 #### Config File
-* config.yml file should be in the same location as the executable file.
+* config.yaml file should be in the same location as the executable file.
 If there is no config file, d-agent will use default values.
 You can set the value manually.
 * server_port : port for this app
 ```yaml
-{
-  "dagentPort": "3000",
-  "iBoFOSHost": "localhost",
-  "iBoFOSPort": "18716"
-}
+server:
+  dagent:
+    ip: 127.0.0.1
+    port: 3000
+  ibof:
+    ip: 127.0.0.1
+    port: 18716
 ```
 
 #### Patient & Coffee
