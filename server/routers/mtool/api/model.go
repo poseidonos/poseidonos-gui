@@ -3,7 +3,7 @@ package api
 type Request struct {
 	Command string      `json:"command"`
 	Rid     string      `json:"rid"`
-	Param   interface{} `json:"param"`
+	Param   interface{} `json:"param,omitempty"`
 }
 
 type Response struct {
@@ -13,7 +13,7 @@ type Response struct {
 
 type Result struct {
 	Status Status      `json:"status"`
-	Data   interface{} `json:"data"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 type Status struct {
