@@ -27,9 +27,9 @@ func getMongoDBClient() *mongo.Client {
 }
 
 type UserScheme struct {
-	Id string `bson:"_id"`
+	Id       string `bson:"_id"`
 	Password string `bson:"password"`
-	Active     bool   `bson:"active"`
+	Active   bool   `bson:"active"`
 }
 
 func ReadAllUserIdPassword() map[string]string {
