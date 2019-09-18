@@ -13,11 +13,11 @@ func CheckMtoolHeader() gin.HandlerFunc {
 
 		//ToDo: description -> Enum or (Panic and Recovery)
 		if util.IsValidUUID(xrid) == false {
-			api.MakeFailResponse(ctx, 10240)
+			api.MakeBadRequest(ctx, 10240)
 		}
 
 		if ts == "" {
-			api.MakeFailResponse(ctx, 10250)
+			api.MakeBadRequest(ctx, 10250)
 		}
 
 		ctx.Header("Content-Type", "application/json; charset=utf-8")

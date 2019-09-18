@@ -16,7 +16,7 @@ func CheckBody() gin.HandlerFunc {
 			err := ctx.ShouldBindBodyWith(&body, binding.JSON)
 			if err != nil && err != io.EOF {
 				log.Printf("Request Body Error : %v", err)
-				api.MakeFailResponse(ctx,  10310)
+				api.MakeBadRequest(ctx,  10310)
 				return
 			}
 		}

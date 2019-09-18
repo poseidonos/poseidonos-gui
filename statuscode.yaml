@@ -1,4 +1,5 @@
 # D-agent (1xxxx ~ 19999)
+10110: "Auth Error : API does not activate"
 10240: "Header Error : X-request-Id is invalid"
 10250: "Header Error : ts missing"
 10310: "Body Error : Json Error"

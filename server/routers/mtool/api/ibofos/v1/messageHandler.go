@@ -27,7 +27,7 @@ func sendWithAsync(ctx *gin.Context, iBoFRequest api.Request) {
 
 func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		api.MakeFailResponse(ctx, 12000)
+		api.MakeBadRequest(ctx, 12000)
 		return
 	}
 	defer atomic.StoreUint32(&locker, stateUnlocked)

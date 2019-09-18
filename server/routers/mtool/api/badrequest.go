@@ -7,12 +7,17 @@ import (
 	"net/http"
 )
 
-func MakeFailResponse(ctx *gin.Context, code int) {
+func MakeUnauthorized(ctx *gin.Context, code int) {
 	description := getDescription(code)
-	MakeFailResponseWithDescription(ctx, description, code)
+	MakeFailResponse(ctx, http.StatusUnauthorized, description, code)
 }
 
-func MakeFailResponseWithDescription(ctx *gin.Context, description string, code int) {
+func MakeBadRequest(ctx *gin.Context, code int) {
+	description := getDescription(code)
+	MakeFailResponse(ctx, http.StatusBadRequest, description, code)
+}
+
+func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code int) {
 	result := Result{}
 	result.Status.Code = code
 	result.Status.Description = description
@@ -22,10 +27,9 @@ func MakeFailResponseWithDescription(ctx *gin.Context, description string, code 
 	}
 
 	log.Printf("MakeFailResponse : %+v", result)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, &response)
+	ctx.AbortWithStatusJSON(httpStatus, &response)
 }
 
 func getDescription(code int) string {
 	return setting.StatusCode[code]
 }
-
