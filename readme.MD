@@ -412,23 +412,19 @@ Response Sample
 // (TBD)
 
 ##### [STATE ARRAY]
-Request Body Sample
-```json
-{
-    "param": {
-        "name": "vol01"
-    },
-}
-```
+(GET) /ibofos/v1/array
 
 Response Sample
 ```json
 {
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
     "result": {
         "status": {
             "code": 0,
-            "description": "success"
+            "description": "DONE"
+        },
+        "data": {
+            "state": "Unmounted"
         }
     }
 }
