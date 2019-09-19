@@ -55,6 +55,7 @@ func Route(router *gin.Engine) {
 	{
 		apiIBoFOSV1.POST("/volume", iBoFOSV1.CreateVolume)
 		apiIBoFOSV1.GET("/volume", iBoFOSV1.ListVolume)
+		apiIBoFOSV1.PUT("/volume", iBoFOSV1.UpdateVolume)
 		apiIBoFOSV1.DELETE("/volume", iBoFOSV1.DeleteVolume)
 		apiIBoFOSV1.POST("/volume/mount", iBoFOSV1.MountVolume)
 		apiIBoFOSV1.DELETE("/volume/mount", iBoFOSV1.UnmountVolume)

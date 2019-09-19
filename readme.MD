@@ -405,19 +405,19 @@ Response Sample
 
 ##### [CREATE ARRAY]
 (POST) /ibofos/v1/array
-// Not Imple in iBoFOS, It will provide by 20, sep  
+// (TBD)  
 
 ##### [DELETE ARRAY]
 (DELETE) /ibofos/v1/array
-// Not Imple in iBoFOS, It will provide by 20, sep
+// (TBD)
 
 ##### [STATUS ARRAY]
-(GET) /ibofos/v1/array
+// (TBD)
 // Not Imple in iBoFOS, It will provide by 20, sep
 
 ##### [UNMOUNT ARRAY]
 (DELETE) /ibofos/v1/array/mount
-// Not Imple in iBoFOS, It will provide by 20, sep
+// (TBD)
 
 ##### [MOUNT ARRAY]
 (POST) /ibofos/v1/array/mount  
@@ -541,6 +541,32 @@ Response Sample
                     "total": 4194304
                 }
             ]
+        }
+    }
+}
+```
+
+##### [UPDATE VOLUME]
+(PUT) /ibofos/v1/volume  
+  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01",
+        "maxiops": 0,
+        "maxbw": 6000
+    }
+}
+```
+Response Sample
+```json
+{
+    "rid": "1da5dad2-3604-4979-be74-2b32f1ce38f3",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
         }
     }
 }

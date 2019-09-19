@@ -9,6 +9,10 @@ func CreateVolume(ctx *gin.Context) {
 	postVolume(ctx, "CREATEVOLUME")
 }
 
+func UpdateVolume(ctx *gin.Context) {
+	putVolume(ctx, "UPDATEVOLUME")
+}
+
 func MountVolume(ctx *gin.Context) {
 	postVolume(ctx, "MOUNTVOLUME")
 }
@@ -27,6 +31,12 @@ func getVolume(ctx *gin.Context, command string) {
 }
 
 func postVolume(ctx *gin.Context, command string) {
+	iBoFRequest := makeRequest(ctx, command)
+	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendWithSync(ctx, iBoFRequest)
+}
+
+func putVolume(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendWithSync(ctx, iBoFRequest)
