@@ -20,8 +20,8 @@ func DeleteArray(ctx *gin.Context) {
 
 }
 
-func StatusArray(ctx *gin.Context) {
-	getArray(ctx, "STATUSARRAY")
+func StateArray(ctx *gin.Context) {
+	getArray(ctx, "ARRAYSTATE")
 
 }
 

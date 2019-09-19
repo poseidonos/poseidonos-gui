@@ -45,7 +45,7 @@ func Route(router *gin.Engine) {
 	// Array
 	{
 		apiIBoFOSV1.POST("/array", iBoFOSV1.CreateArray)
-		apiIBoFOSV1.GET("/array", iBoFOSV1.StatusArray)
+		apiIBoFOSV1.GET("/array", iBoFOSV1.StateArray)
 		apiIBoFOSV1.DELETE("/array", iBoFOSV1.DeleteArray)
 		apiIBoFOSV1.POST("/array/mount", iBoFOSV1.MountArray)
 		apiIBoFOSV1.DELETE("/array/mount", iBoFOSV1.UnmountArray)

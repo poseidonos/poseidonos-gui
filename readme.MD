@@ -411,9 +411,29 @@ Response Sample
 (DELETE) /ibofos/v1/array
 // (TBD)
 
-##### [STATUS ARRAY]
-// (TBD)
-// Not Imple in iBoFOS, It will provide by 20, sep
+##### [STATE ARRAY]
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01"
+    },
+}
+```
+
+Response Sample
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "success"
+        }
+    }
+}
+```
+
 
 ##### [UNMOUNT ARRAY]
 (DELETE) /ibofos/v1/array/mount
