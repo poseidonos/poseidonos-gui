@@ -11,7 +11,8 @@
 ## Dev Enviroment
 * Language : GoLang 1.13
 * Test : Ubuntu 18.04 LTS
-* iBoFOS Branch : feature/AWIBOF-571-3Q-MTool-integration (05/sep)
+* D-Agent Branch : devel
+* iBoFOS Branch : devel
  
 ***
 
