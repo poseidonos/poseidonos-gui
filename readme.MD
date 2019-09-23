@@ -18,12 +18,8 @@
 
 ## Pre Requirement
 #### iBoFOS
-* The iBoFOS shuold be in run status.
+* The iBoFOS shuold be installed
 
-```shell script
-sudo ${iBoFOS_dir}/bin/nohup ./ibofos primary &
-sudo ${iBoFOS_dir}/lib/spdk-19.01.1/scripts/rpc.py construct_malloc_bdev -b uram0 1024 4096
-```
 
 #### M-Tool
 * D-Agent uses the same user info as M-Tool. Therefore, the M-Tool (or mongodb) should be installed. 
@@ -51,7 +47,7 @@ server:
 ## Build & Run
 #### Directory
 ``` 
-/workspace/m9k/dagent
+/root/workspace/m9k/dagent
 ```
 
 #### Build
@@ -66,9 +62,9 @@ $ go build -mod vendor
 #### Run
 * The exec binaray is also uploaded, so you can run without build
 ```shell script
-$ ./ibofdagent # General Run
+$ sudo ./ibofdagent # General Run
 # Or
-$ ./run_dagent.sh # Background Run 
+$ sudo ./run_dagent.sh # Background Run 
 ```
 
 ***
