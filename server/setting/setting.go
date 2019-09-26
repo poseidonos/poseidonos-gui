@@ -1,37 +1,67 @@
 package setting
 
 import (
-	"encoding/json"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 )
 
-var ServerConf = ConfigScheme{
-	DagentPort:       "3000",
-	IBoFOSPort:       "18716",
-	IBoFOSHost:       "localhost",
-	DAgentSocketAddr: "Disconnect",
-	IBoFOSSocketAddr: "Disconnect",
-}
+var Config ConfigScheme
+var StatusCode map[int]string
 
 type ConfigScheme struct {
-	DagentPort       string `json:"dagentPort"`
-	IBoFOSHost       string `json:"iBoFOSHost"`
-	IBoFOSPort       string `json:"iBoFOSPort"`
-	DAgentSocketAddr string `json:"dAgentSocketAddr"`
-	IBoFOSSocketAddr string `json:"iBoFOSSocketAddr"`
+	Server           Server `yaml:"server"`
+	IBoFOSSocketAddr string
+	DAgentSocketAddr string
 }
 
-func LoadSeverConfig() {
-	filename := "serverConf.json"
+type Server struct {
+	Dagent HostConf `yaml:"dagent"`
+	IBoF   HostConf `yaml:"iBoF"`
+}
+type HostConf struct {
+	IP   string `yaml:"ip"`
+	Port string `yaml:"port"`
+}
+
+func init() {
+	Config.Server.Dagent.IP = "127.0.0.1"
+	Config.Server.Dagent.Port = "3000"
+	Config.Server.IBoF.IP = "127.0.0.1"
+	Config.Server.IBoF.Port = "18716"
+}
+
+func LoadConfig() {
+	loadSeverConfig()
+	loadStatusCode()
+}
+
+func loadSeverConfig() {
+	filename := "config.yaml"
 	file, err := ioutil.ReadFile(filename)
 
 	if err != nil {
-		log.Printf("%v\nD-Agent will use default value\n", err)
+		log.Printf("LoadSeverConfig : %v\nD-Agent will use default value\n", err)
 	} else {
-		err = json.Unmarshal(file, &ServerConf)
+		err = yaml.Unmarshal(file, &Config)
 		if err != nil {
-			log.Fatalf("Json Error : %v", err)
+			log.Fatalf("YAML Error : %v", err)
+		} else {
+			log.Printf("Open Success : %s", filename)
+		}
+	}
+}
+
+func loadStatusCode() {
+	filename := "statuscode.yaml"
+	file, err := ioutil.ReadFile(filename)
+
+	if err != nil {
+		log.Printf("LoadStatusCode : %v\n", err)
+	} else {
+		err = yaml.Unmarshal(file, &StatusCode)
+		if err != nil {
+			log.Fatalf("YAML Error : %v", err)
 		} else {
 			log.Printf("Open Success : %s", filename)
 		}

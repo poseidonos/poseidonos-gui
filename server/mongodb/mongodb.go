@@ -26,13 +26,10 @@ func getMongoDBClient() *mongo.Client {
 	return client
 }
 
-type userCollection struct {
-	Id string `bson:"_id"`
-	//Email      string `bson:"email"`
+type UserScheme struct {
+	Id       string `bson:"_id"`
 	Password string `bson:"password"`
-	//Role       string `bson:"role"`
-	//Active     bool   `bson:"active"`
-	//Privileges string `bson:"privileges"`
+	Active   bool   `bson:"active"`
 }
 
 func ReadAllUserIdPassword() map[string]string {
@@ -47,7 +44,7 @@ func ReadAllUserIdPassword() map[string]string {
 		} else {
 			for cur.Next(ctx) {
 				defer cur.Close(ctx)
-				var user userCollection
+				var user UserScheme
 				err = cur.Decode(&user)
 
 				if err != nil {
@@ -65,8 +62,8 @@ func ReadAllUserIdPassword() map[string]string {
 	return users
 }
 
-func ReadUserCollectionById(id string) userCollection {
-	var user userCollection
+func ReadUserCollectionById(id string) UserScheme {
+	var user UserScheme
 
 	logic := func(ctx context.Context, collection *mongo.Collection) error {
 		filter := bson.D{{"_id", id}}

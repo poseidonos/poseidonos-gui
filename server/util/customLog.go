@@ -16,14 +16,14 @@ func PrintCurrentServerStatus() {
 		"\n      ######################################" +
 		"\n      #####----------------------------#####" +
 		"\n      #####      Config.json Info      #####" +
-		"\n      #####  D-Agent Port : " + setting.ServerConf.DagentPort + "       #####" +
-		"\n      #####  iBoFOS Host : " + setting.ServerConf.IBoFOSHost + "   #####" +
-		"\n      #####  iBoFOS Port : " + setting.ServerConf.IBoFOSPort + "       #####" +
+		"\n      #####  D-Agent Port : " + setting.Config.Server.Dagent.Port + "       #####" +
+		"\n      #####  iBoFOS Host : " + setting.Config.Server.IBoF.IP + "   #####" +
+		"\n      #####  iBoFOS Port : " + setting.Config.Server.IBoF.Port + "       #####" +
 		"\n      #####----------------------------#####" +
 		"\n      #####                            #####" +
 		"\n      ####    Socket Connect Status     ####" +
-		"\n    ##### D-Agent Addr : " + setting.ServerConf.DAgentSocketAddr + " #####" +
-		"\n  ####### iBoFOS Addr : " + setting.ServerConf.IBoFOSSocketAddr + "  #######" +
+		"\n    ##### D-Agent Addr : " + setting.Config.DAgentSocketAddr + " #####" +
+		"\n  ####### iBoFOS Addr : " + setting.Config.IBoFOSSocketAddr + "  #######" +
 		"\n###########                            ###########" +
 		"\n##################################################" +
 		"\n        ##################################         " +

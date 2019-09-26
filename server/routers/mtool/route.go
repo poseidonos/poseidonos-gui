@@ -10,6 +10,7 @@ import (
 func Route(router *gin.Engine) {
 	api := router.Group("/mtool/api")
 	api.Use(middleware.CheckBasicAuth())
+	api.Use(middleware.CheckAPIAtivate())
 	api.Use(middleware.CheckMtoolHeader())
 	api.Use(middleware.CheckBody())
 
@@ -21,7 +22,7 @@ func Route(router *gin.Engine) {
 	}
 
 	apiIBoFOSV1 := api.Group("/ibofos/v1")
-
+	apiIBoFOSV1.Use(middleware.CheckiBoFRun())
 	// Test API
 	{
 		apiIBoFOSV1.POST("/test/report", iBoFOSV1.ReportTest)
@@ -44,7 +45,7 @@ func Route(router *gin.Engine) {
 	// Array
 	{
 		apiIBoFOSV1.POST("/array", iBoFOSV1.CreateArray)
-		apiIBoFOSV1.GET("/array", iBoFOSV1.StatusArray)
+		apiIBoFOSV1.GET("/array", iBoFOSV1.StateArray)
 		apiIBoFOSV1.DELETE("/array", iBoFOSV1.DeleteArray)
 		apiIBoFOSV1.POST("/array/mount", iBoFOSV1.MountArray)
 		apiIBoFOSV1.DELETE("/array/mount", iBoFOSV1.UnmountArray)
@@ -54,6 +55,7 @@ func Route(router *gin.Engine) {
 	{
 		apiIBoFOSV1.POST("/volume", iBoFOSV1.CreateVolume)
 		apiIBoFOSV1.GET("/volume", iBoFOSV1.ListVolume)
+		apiIBoFOSV1.PUT("/volume", iBoFOSV1.UpdateVolume)
 		apiIBoFOSV1.DELETE("/volume", iBoFOSV1.DeleteVolume)
 		apiIBoFOSV1.POST("/volume/mount", iBoFOSV1.MountVolume)
 		apiIBoFOSV1.DELETE("/volume/mount", iBoFOSV1.UnmountVolume)

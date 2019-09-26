@@ -11,33 +11,32 @@
 ## Dev Enviroment
 * Language : GoLang 1.13
 * Test : Ubuntu 18.04 LTS
-* iBoFOS Branch : feature/AWIBOF-571-3Q-MTool-integration (05/sep)
+* D-Agent Branch : devel
+* iBoFOS Branch : devel
  
 ***
 
 ## Pre Requirement
 #### iBoFOS
-* The iBoFOS shuold be in run status.
+* The iBoFOS shuold be installed
 
-```shell script
-sudo ${iBoFOS_dir}/bin/nohup ./ibofos primary &
-sudo ${iBoFOS_dir}/lib/spdk-19.01.1/scripts/rpc.py construct_malloc_bdev -b uram0 1024 4096
-```
 
 #### M-Tool
 * D-Agent uses the same user info as M-Tool. Therefore, the M-Tool (or mongodb) should be installed. 
 
 #### Config File
-* config.json file should be in the same location as the executable file.
+* config.yaml file should be in the same location as the executable file.
 If there is no config file, d-agent will use default values.
 You can set the value manually.
 * server_port : port for this app
-```json
-{
-  "dagentPort": "3000",
-  "iBoFOSHost": "localhost",
-  "iBoFOSPort": "18716"
-}
+```yaml
+server:
+  dagent:
+    ip: 127.0.0.1
+    port: 3000
+  ibof:
+    ip: 127.0.0.1
+    port: 18716
 ```
 
 #### Patient & Coffee
@@ -48,7 +47,7 @@ You can set the value manually.
 ## Build & Run
 #### Directory
 ``` 
-/workspace/m9k/dagent
+/root/workspace/m9k/dagent
 ```
 
 #### Build
@@ -63,9 +62,9 @@ $ go build -mod vendor
 #### Run
 * The exec binaray is also uploaded, so you can run without build
 ```shell script
-$ ./ibofdagent # General Run
+$ sudo ./ibofdagent # General Run
 # Or
-$ ./run_dagent.sh # Background Run 
+$ sudo ./run_dagent.sh # Background Run 
 ```
 
 ***
@@ -403,19 +402,35 @@ Response Sample
 
 ##### [CREATE ARRAY]
 (POST) /ibofos/v1/array
-// Not Imple in iBoFOS, It will provide by 20, sep  
+// (TBD)  
 
 ##### [DELETE ARRAY]
 (DELETE) /ibofos/v1/array
-// Not Imple in iBoFOS, It will provide by 20, sep
+// (TBD)
 
-##### [STATUS ARRAY]
+##### [STATE ARRAY]
 (GET) /ibofos/v1/array
-// Not Imple in iBoFOS, It will provide by 20, sep
+
+Response Sample
+```json
+{
+    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "state": "Unmounted"
+        }
+    }
+}
+```
+
 
 ##### [UNMOUNT ARRAY]
 (DELETE) /ibofos/v1/array/mount
-// Not Imple in iBoFOS, It will provide by 20, sep
+// (TBD)
 
 ##### [MOUNT ARRAY]
 (POST) /ibofos/v1/array/mount  
@@ -556,6 +571,32 @@ Response Sample
                     "total": 4194304
                 }
             ]
+        }
+    }
+}
+```
+
+##### [UPDATE VOLUME]
+(PUT) /ibofos/v1/volume  
+  
+Request Body Sample
+```json
+{
+    "param": {
+        "name": "vol01",
+        "maxiops": 0,
+        "maxbw": 6000
+    }
+}
+```
+Response Sample
+```json
+{
+    "rid": "1da5dad2-3604-4979-be74-2b32f1ce38f3",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
         }
     }
 }

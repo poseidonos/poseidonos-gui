@@ -33,15 +33,15 @@ func ConnectToIBoFOS() error {
 	var err error = nil
 	for {
 		if conn == nil {
-			uri := setting.ServerConf.IBoFOSHost + ":" + setting.ServerConf.IBoFOSPort
+			uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
 			conn, err = net.Dial("tcp", uri)
 			if err != nil {
 				log.Println("ConnectToIBoFOS : ", err)
-				setting.ServerConf.DAgentSocketAddr = "Disconnect"
-				setting.ServerConf.IBoFOSSocketAddr = "Disconnect"
+				setting.Config.DAgentSocketAddr = "Disconnect"
+				setting.Config.IBoFOSSocketAddr = "Disconnect"
 			} else {
-				setting.ServerConf.DAgentSocketAddr = conn.LocalAddr().String()
-				setting.ServerConf.IBoFOSSocketAddr = conn.RemoteAddr().String()
+				setting.Config.DAgentSocketAddr = conn.LocalAddr().String()
+				setting.Config.IBoFOSSocketAddr = conn.RemoteAddr().String()
 			}
 			util.PrintCurrentServerStatus()
 		}

@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/routers/mtool/api"
 	"ibofdagent/server/util"
-	"net/http"
 )
 
 func CheckMtoolHeader() gin.HandlerFunc {
@@ -13,25 +12,12 @@ func CheckMtoolHeader() gin.HandlerFunc {
 		ts := ctx.GetHeader("ts")
 
 		//ToDo: description -> Enum or (Panic and Recovery)
-		description := ""
 		if util.IsValidUUID(xrid) == false {
-			description += "X-request-Id is invalid in header "
+			api.MakeBadRequest(ctx, 10240)
 		}
 
 		if ts == "" {
-			description += "ts is missing in header"
-		}
-
-		if description != "" {
-			result := api.Result{}
-			result.Status.Code = -97
-			result.Status.Description = description
-
-			response := api.Response{
-				Result: result,
-			}
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, &response)
-			return
+			api.MakeBadRequest(ctx, 10250)
 		}
 
 		ctx.Header("Content-Type", "application/json; charset=utf-8")
