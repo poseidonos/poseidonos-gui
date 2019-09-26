@@ -4,13 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"ibofdagent/server/routers/mtool/api"
+	"ibofdagent/server/routers/mtool/model"
 	"io"
 	"log"
 )
 
 func CheckBody() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		body := api.Request{}
+		body := model.Request{}
 
 		if "GET" != ctx.Request.Method {
 			err := ctx.ShouldBindBodyWith(&body, binding.JSON)

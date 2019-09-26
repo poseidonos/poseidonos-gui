@@ -1,13 +1,16 @@
 package setting
 
 import (
+	"encoding/json"
 	"gopkg.in/yaml.v2"
+	"ibofdagent/server/routers/mtool/model"
 	"io/ioutil"
 	"log"
 )
 
 var Config ConfigScheme
-var StatusCode map[int]string
+var StatusMap map[int]string
+var StatusList model.StatusList
 
 type ConfigScheme struct {
 	Server           Server `yaml:"server"`
@@ -45,7 +48,7 @@ func loadSeverConfig() {
 	} else {
 		err = yaml.Unmarshal(file, &Config)
 		if err != nil {
-			log.Fatalf("YAML Error : %v", err)
+			log.Fatalf("loadSeverConfig Error : %v", err)
 		} else {
 			log.Printf("Open Success : %s", filename)
 		}
@@ -53,17 +56,20 @@ func loadSeverConfig() {
 }
 
 func loadStatusCode() {
-	filename := "statuscode.yaml"
+	filename := "statuscode.json"
 	file, err := ioutil.ReadFile(filename)
-
 	if err != nil {
-		log.Printf("LoadStatusCode : %v\n", err)
+		log.Printf("LoadStatusList : %v\n", err)
 	} else {
-		err = yaml.Unmarshal(file, &StatusCode)
+		err = json.Unmarshal(file, &StatusList)
 		if err != nil {
-			log.Fatalf("YAML Error : %v", err)
+			log.Fatalf("loadStatusCode Error : %v", err)
 		} else {
 			log.Printf("Open Success : %s", filename)
 		}
+	}
+	StatusMap = make(map[int]string)
+	for _, status := range StatusList.StatusList {
+		StatusMap[status.Code] = status.Description
 	}
 }

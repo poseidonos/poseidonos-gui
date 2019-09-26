@@ -3,6 +3,7 @@ package mtool
 import (
 	"github.com/gin-gonic/gin"
 	dagentV1 "ibofdagent/server/routers/mtool/api/dagent/v1"
+	"ibofdagent/server/routers/mtool/api/dagent/v1/general"
 	iBoFOSV1 "ibofdagent/server/routers/mtool/api/ibofos/v1"
 	"ibofdagent/server/routers/mtool/middleware"
 )
@@ -16,7 +17,8 @@ func Route(router *gin.Engine) {
 
 	apiDagentV1 := api.Group("/dagent/v1")
 	{
-		apiDagentV1.GET("/ping", dagentV1.Ping)
+		apiDagentV1.GET("/ping", general.Ping)
+		apiDagentV1.GET("/statuscode", general.StatusCode)
 		apiDagentV1.POST("/ibofos", dagentV1.RunIBoF)
 		apiDagentV1.DELETE("/ibofos", dagentV1.ForceKillIbof)
 	}
@@ -44,6 +46,7 @@ func Route(router *gin.Engine) {
 
 	// Array
 	{
+		apiIBoFOSV1.GET("/array/device", iBoFOSV1.ListArrayDevice)
 		apiIBoFOSV1.POST("/array", iBoFOSV1.CreateArray)
 		apiIBoFOSV1.GET("/array", iBoFOSV1.StateArray)
 		apiIBoFOSV1.DELETE("/array", iBoFOSV1.DeleteArray)

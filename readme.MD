@@ -155,7 +155,7 @@ http://12.36.56.173:3000/mtool/api/bmc/v1/psu
 ### TEST API
 ##### [REPORTTEST]
 (POST) /ibofos/v1/test/report    
-~~(GET) /ibofos/v1/test/reporttest~~
+
 
 * It makes a report file for self test.
 * Report file directory : /etc/ibofos/report/  
@@ -204,10 +204,40 @@ Response Sample
 }
 ```
 
+##### [PING]
+(GET) /dagent/v1/statuscode  
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "level": "",
+            "description": "success"
+        },
+        "data": {
+            "statuslist": [
+                {
+                    "code": 1000,
+                    "level": "INFO",
+                    "description": "cli server initialized"
+                },
+                {
+                    "code": 1001,
+                    "level": "INFO",
+                    "description": "new client"
+                }
+            ]
+        }
+    }
+}
+```
+
 ##### [RUN IBOF]
 * It just run command "run_ibof.sh" and does not gurantee to run.  
 (POST) /dagent/v1/ibofos  
-~~(GET) /dagent/v1/runibof~~  
+  
 Response Sample
 ```json
 {
@@ -225,7 +255,7 @@ Response Sample
 ##### [FORCE KILL IBOF]
 * It runs "kill -9 $(pgrep ibofos)"   
 (DELETE) /dagent/v1/ibofos  
-~~(GET) /dagent/v1/forcekillibof~~  
+  
 Response Sample
 
 ```json
@@ -295,7 +325,7 @@ Response Sample
 
 ##### [LIST DEVICE]
 (GET) /ibofos/v1/device  
-~~(GET) /ibofos/v1/device/list~~  
+  
 Response Sample
 * "mn" : Model Number
 * "sn" : Serial Number
@@ -411,6 +441,8 @@ Response Sample
 ##### [STATE ARRAY]
 (GET) /ibofos/v1/array
 
+* "capacity" : The logical storage size / Unit : Byte
+
 Response Sample
 ```json
 {
@@ -421,16 +453,13 @@ Response Sample
             "description": "DONE"
         },
         "data": {
-            "state": "Unmounted"
+            "state": "Unmounted",
+            "capacity": 40964096, 
+            "used": 10240
         }
     }
 }
 ```
-
-
-##### [UNMOUNT ARRAY]
-(DELETE) /ibofos/v1/array/mount
-// (TBD)
 
 ##### [MOUNT ARRAY]
 (POST) /ibofos/v1/array/mount  
@@ -477,6 +506,10 @@ Response Sample
 }
 ```
 
+##### [UNMOUNT ARRAY]
+(DELETE) /ibofos/v1/array/mount
+// (TBD)
+
 ##### [LIST ARRAY DEVICE]
 (GET) /ibofos/v1/array/device
 * This API will br merged to other one after 3q PoC
@@ -494,9 +527,10 @@ Response Sample
 }
 ```
 
+
 ##### [CREATE VOLUME]
 (POST) /ibofos/v1/volume  
-~~(POST) /ibofos/v1/volume/create~~  
+ 
 Request Body Sample
 * "maxbw" : 0 means unlimited (or do not add "limit" attribute) / Unit : MB
 * "maxiops" : 0 means unlimited (or do not add "limit" attribute) / Unit : K (1000)
@@ -549,7 +583,7 @@ Response Sample
 
 ##### [LIST VOLUME]
 (GET) /ibofos/v1/volume  
-~~(GET) /ibofos/v1/volume/list~~     
+     
 Response Sample
 ```json
 {
@@ -604,7 +638,7 @@ Response Sample
 
 ##### [DELETE VOLUME]
 (DELETE) /ibofos/v1/volume  
-~~(DELETE) /ibofos/v1/volume/delete~~  
+  
 Request Body Sample
 ```json
 {
@@ -665,7 +699,7 @@ Response Sample
 
 ##### [UNMOUNT VOLUME]
 (DELETE) /ibofos/v1/volume/mount  
-~~(POST) /ibofos/v1/volume/unmount~~  
+  
 Request Body Sample
 ```json
 {

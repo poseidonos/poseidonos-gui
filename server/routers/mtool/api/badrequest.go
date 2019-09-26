@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"ibofdagent/server/routers/mtool/model"
 	"ibofdagent/server/setting"
 	"log"
 	"net/http"
@@ -18,11 +19,11 @@ func MakeBadRequest(ctx *gin.Context, code int) {
 }
 
 func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code int) {
-	result := Result{}
+	result := model.Result{}
 	result.Status.Code = code
 	result.Status.Description = description
 
-	response := Response{
+	response := model.Response{
 		Result: result,
 	}
 
@@ -31,5 +32,5 @@ func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code
 }
 
 func getDescription(code int) string {
-	return setting.StatusCode[code]
+	return setting.StatusMap[code]
 }

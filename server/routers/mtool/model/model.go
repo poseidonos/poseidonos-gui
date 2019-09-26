@@ -1,4 +1,4 @@
-package api
+package model
 
 type Request struct {
 	Command string      `json:"command"`
@@ -19,4 +19,8 @@ type Result struct {
 type Status struct {
 	Code        int    `json:"code"`
 	Description string `json:"description"`
+}
+
+type StatusList struct {
+	StatusList []     Status `json:"StatusList"`
 }

@@ -5,6 +5,11 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+func ListArrayDevice(ctx *gin.Context) {
+	getArray(ctx, "LISTARRAYDEVICE")
+
+}
+
 func CreateArray(ctx *gin.Context) {
 	postArray(ctx, "CREATEARRAY")
 

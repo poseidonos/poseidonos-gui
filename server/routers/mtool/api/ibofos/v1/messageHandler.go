@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/handler"
 	"ibofdagent/server/routers/mtool/api"
+	"ibofdagent/server/routers/mtool/model"
 	"log"
 	"net/http"
 	"sync/atomic"
@@ -21,11 +22,11 @@ var (
 	errLocked = errors.New("Locked out buddy")
 )
 
-func sendWithAsync(ctx *gin.Context, iBoFRequest api.Request) {
+func sendWithAsync(ctx *gin.Context, iBoFRequest model.Request) {
 	// ToDO: Impl async logic
 }
 
-func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
+func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		api.MakeBadRequest(ctx, 12000)
 		return
@@ -38,7 +39,7 @@ func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
 	temp := handler.GetIBoFResponse()
 	log.Printf("Response From iBoF : %s", string(temp))
 
-	response := api.Response{}
+	response := model.Response{}
 	err := json.Unmarshal(temp, &response)
 
 	if err != nil {
@@ -57,9 +58,9 @@ func sendWithSync(ctx *gin.Context, iBoFRequest api.Request) {
 	}
 }
 
-func makeRequest(ctx *gin.Context, command string) api.Request {
+func makeRequest(ctx *gin.Context, command string) model.Request {
 	xrId := ctx.GetHeader("X-request-Id")
-	request := api.Request{
+	request := model.Request{
 		Command: command,
 		Rid:     xrId,
 	}

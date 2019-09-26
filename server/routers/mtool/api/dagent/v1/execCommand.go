@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/routers/mtool/api"
+	"ibofdagent/server/routers/mtool/model"
 	"ibofdagent/server/util"
 	"net/http"
 )
@@ -25,7 +26,7 @@ func RunIBoF(ctx *gin.Context) {
 }
 
 func returnSuccess(ctx *gin.Context) {
-	response := api.Response{}
+	response := model.Response{}
 	response.Result.Status.Code = 0
 	response.Result.Status.Description = "Success"
 	ctx.JSON(http.StatusOK, &response)
