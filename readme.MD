@@ -460,8 +460,25 @@ Response Sample
        "data": null
    }
 }
-
 ```
+
+##### [LIST ARRAY DEVICE]
+(GET) /ibofos/v1/array/device
+* This API will br merged to other one after 3q PoC
+* Available Type : BUFFER, DATA, SPARE
+```json
+{
+    "rid": "b447f812-ab74-4b19-8563-0d2a7613d010",
+    "result": {
+        "status": {
+            "code": 0,
+            "level": "",
+            "description": "NO ARRAY DEVICE EXIST"
+        }
+    }
+}
+```
+
 ##### [CREATE VOLUME]
 (POST) /ibofos/v1/volume  
 ~~(POST) /ibofos/v1/volume/create~~  
