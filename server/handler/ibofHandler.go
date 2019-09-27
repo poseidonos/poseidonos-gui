@@ -46,7 +46,7 @@ func ConnectToIBoFOS() error {
 			util.PrintCurrentServerStatus()
 		}
 
-		time.Sleep(time.Second)
+		time.Sleep(time.Second * 3)
 	}
 	return err
 }

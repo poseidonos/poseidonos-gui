@@ -2,36 +2,36 @@ package v1
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/handler"
-	"ibofdagent/server/routers/mtool/api"
 	"ibofdagent/server/routers/mtool/model"
 	"log"
 	"net/http"
-	"sync/atomic"
+	"sync"
 )
 
-const (
-	stateUnlocked uint32 = iota
-	stateLocked
-)
-
-var (
-	locker    = stateUnlocked
-	errLocked = errors.New("Locked out buddy")
-)
+//const (
+//
+//	stateUnlocked uint32 = iota
+//	stateLocked
+//)
+//
+//var (
+//	locker    = stateUnlocked
+//	errLocked = errors.New("Locked out buddy")
+//)
 
 func sendWithAsync(ctx *gin.Context, iBoFRequest model.Request) {
 	// ToDO: Impl async logic
 }
-
+var mutex = new(sync.Mutex)
 func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
-	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		api.MakeBadRequest(ctx, 12000)
-		return
-	}
-	defer atomic.StoreUint32(&locker, stateUnlocked)
+	mutex.Lock()
+	//if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
+	//	api.MakeBadRequest(ctx, 12000)
+	//	return
+	//}
+	//defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	handler.SendIBof(marshaled)
@@ -56,6 +56,7 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 	if iBoFRequest.Rid != response.Rid {
 		log.Printf("Concurency Error")
 	}
+	mutex.Unlock()
 }
 
 func makeRequest(ctx *gin.Context, command string) model.Request {
