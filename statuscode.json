@@ -6,12 +6,11 @@
       "description": "Success"
     },
     {
-      "code": 600,
+      "code": 1200,
       "level": "TRACE",
-      "description": "Rebuild begin"
-    },
-    {
-      "code": 666,
+      "description": "iBoFOS System Recovery Something"
+    },   {
+      "code": 1234,
       "level": "TRACE",
       "description": "iBoFOS System Recovery Inprogress"
     },

@@ -204,7 +204,7 @@ Response Sample
 }
 ```
 
-##### [PING]
+##### [STATUSCODE]
 (GET) /dagent/v1/statuscode  
 Response Sample
 ```json
