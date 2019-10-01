@@ -10,8 +10,8 @@ import (
 
 func Route(router *gin.Engine) {
 	api := router.Group("/mtool/api")
-	api.Use(middleware.CheckBasicAuth())
-	api.Use(middleware.CheckAPIAtivate())
+	//api.Use(middleware.CheckBasicAuth())
+	//api.Use(middleware.CheckAPIAtivate())
 	api.Use(middleware.CheckMtoolHeader())
 	api.Use(middleware.CheckBody())
 
