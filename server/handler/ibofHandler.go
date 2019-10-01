@@ -3,7 +3,9 @@ package handler
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"errors"
+	"ibofdagent/server/routers/mtool/model"
 	"ibofdagent/server/setting"
 	"ibofdagent/server/util"
 	"io"
@@ -75,7 +77,17 @@ func receiveFromIBoFSocket() error {
 }
 
 func GetIBoFResponse() []byte {
-	return <-iBoFReceiveChan
+	select {
+	case ret := <-iBoFReceiveChan:
+		return ret
+	case <-time.After(time.Second * 29):
+		log.Println("GetIBoFResponse : Timeout")
+		response := model.Response{}
+		response.Result.Status.Code = 19000
+		ret, _ := json.Marshal(response)
+		return ret
+
+	}
 }
 
 func SendIBof(marshaled []byte) {

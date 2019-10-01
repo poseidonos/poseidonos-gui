@@ -25,8 +25,8 @@ func startServer() {
 	server := &http.Server{
 		Addr:           ":" + setting.Config.Server.Dagent.Port,
 		Handler:        routersInit,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    30 * time.Second,
+		WriteTimeout:   30 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 

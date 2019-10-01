@@ -100,6 +100,11 @@
       "level": "ERROR",
       "description": "iBoF Unmarshal Error",
       "solution": "Put valid value"
+    },
+    {
+      "code": 19000,
+      "level": "ERROR",
+      "description": "iBof Response Timeout"
     }
   ]
 }
