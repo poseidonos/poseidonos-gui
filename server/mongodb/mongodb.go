@@ -11,6 +11,8 @@ import (
 const DB_NAME = "ibof"
 
 func getMongoDBClient() *mongo.Client {
+	log.Printf("getMongoDBClient start")
+
 	ctx := context.Background()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
 
