@@ -5,6 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"log"
 )
 
@@ -14,13 +15,13 @@ func getMongoDBClient() *mongo.Client {
 	log.Printf("getMongoDBClient start")
 
 	ctx := context.Background()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://localhost:27017"))
 
 	if err != nil {
 		log.Fatalf("MongoDB Connection Error : %f", err)
 	}
 
-	err = client.Ping(ctx, nil)
+	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Fatalf("MongoDB Connection Ping : %f", err)
 	}

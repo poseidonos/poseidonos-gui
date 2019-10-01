@@ -51,6 +51,11 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
 
+		if iBoFRequest.Rid != response.Rid {
+			log.Printf("Previous request's respnse, Wait again")
+			continue
+		}
+
 		if err != nil {
 			log.Printf("Response Unmarshal Error : %v", err)
 			api.MakeFailResponse(ctx, 400, error.Error(err), 12310)
@@ -63,9 +68,6 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 			return
 		}
 
-		if iBoFRequest.Rid != response.Rid {
-			log.Printf("Previous request's respnse, Wait again")
-		}
 	}
 }
 
