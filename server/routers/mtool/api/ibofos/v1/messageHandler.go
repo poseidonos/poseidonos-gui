@@ -51,7 +51,7 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
 
-		if iBoFRequest.Rid != response.Rid {
+		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous request's respnse, Wait again")
 			continue
 		}
