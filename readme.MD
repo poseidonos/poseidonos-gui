@@ -84,6 +84,7 @@ $ sudo ./run_dagent.sh # Background Run
 ***
 
 ## API
+
 * I will change swagger style (TBD)  
 * Most scheme of json is the similar to iBoF External API
 * The id/pass for basic auth is the same as M-Tool's (It use the same DB)
@@ -126,6 +127,7 @@ Content-Length : 97
 #### Common Response Body (CRUD)
 * All API has common response scheme.
 
+Response Sample
 ```json
 {
    "result":{
@@ -138,7 +140,39 @@ Content-Length : 97
     } 
   }
 }
+```
 
+#### Timeout
+* D-Agent default both read and write timeout is 30sec
+* D-Agent waits 29sec from iBoFOS  
+
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 19000,
+            "description": "iBof Response Timeout"
+        }
+    }
+}
+```
+
+#### Busy Status
+* If iBof is busy, D-Agent return busy response
+
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12000,
+            "description": "iBoF is busy"
+        }
+    }
+}
 ```
 
 ### API Path  
@@ -155,7 +189,6 @@ http://12.36.56.173:3000/mtool/api/bmc/v1/psu
 ### TEST API
 ##### [REPORTTEST]
 (POST) /ibofos/v1/test/report    
-
 
 * It makes a report file for self test.
 * Report file directory : /etc/ibofos/report/  
