@@ -15,13 +15,12 @@ func ListDevice(ctx *gin.Context) {
 }
 
 func AttachDevice(ctx *gin.Context) {
-	//postDevice(ctx, "AttachDevice")
+	//postDevice(ctx, "ATTACHDEVICE")
 	api.MakeBadRequest(ctx, 40000)
 }
 
 func DetachDevice(ctx *gin.Context) {
-	//postDevice(ctx, "DetachDevice")
-	api.MakeBadRequest(ctx, 40000)
+	postDevice(ctx, "DETACHDEVICE")
 }
 
 func getDevice(ctx *gin.Context, command string) {
