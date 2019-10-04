@@ -652,7 +652,7 @@
               }
             ],
             "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device/",
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
               "protocol": "http",
               "host": [
                 "{{host}}"
@@ -663,8 +663,7 @@
                 "ibofos",
                 "v1",
                 "array",
-                "device",
-                ""
+                "device"
               ]
             }
           },
@@ -1380,7 +1379,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+              "raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
             },
             "url": {
               "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach",

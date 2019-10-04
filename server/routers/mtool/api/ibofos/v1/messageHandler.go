@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
@@ -27,19 +26,13 @@ func sendWithAsync(ctx *gin.Context, iBoFRequest model.Request) {
 	// ToDO: Impl async logic
 }
 
-func unlock() {
-	atomic.StoreUint32(&locker, stateUnlocked)
-}
-
-var cancel context.CancelFunc
-
-//var mutex = new(sync.Mutex)
 func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
+		log.Printf("sendWithSync : %+v", iBoFRequest)
 		api.MakeBadRequest(ctx, 12000)
 		return
 	}
-	defer unlock()
+	defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	handler.SendIBof(marshaled)

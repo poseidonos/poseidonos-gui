@@ -24,8 +24,8 @@ var bmcSendChan chan string
 var bmcReceiveChan chan string
 
 func init() {
-	iBoFReceiveChan = make(chan []byte, 100)
-	iBoFSendChan = make(chan []byte, 100)
+	iBoFReceiveChan = make(chan []byte, 1)
+	iBoFSendChan = make(chan []byte, 1)
 	connbuf = bufio.NewReader(conn)
 
 	go handleSend()

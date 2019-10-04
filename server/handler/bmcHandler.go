@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	bmcSendChan = make(chan string, 100)
+	bmcSendChan = make(chan string, 1)
 }
 
 func ConnectToBMC() error {
@@ -18,7 +18,7 @@ func GetBMCResponse() string {
 
 func SendBMC(bmcMsg string) {
 	bmcSendChan <- bmcMsg
-	log.Printf("SendIBof : Message -> iBoFSendChan\n%s", bmcMsg)
+	log.Printf("SendBMC : Message -> bmcSendChan\n%s", bmcMsg)
 }
 
 func writeToBMCSomething(bmcMsg string) {
