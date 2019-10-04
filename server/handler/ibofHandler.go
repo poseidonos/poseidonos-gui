@@ -83,6 +83,7 @@ func GetIBoFResponse() []byte {
 	case <-time.After(time.Second * 29):
 		log.Println("GetIBoFResponse : Timeout")
 		response := model.Response{}
+		response.Rid = "timeout"
 		response.Result.Status.Code = 19000
 		ret, _ := json.Marshal(response)
 		return ret

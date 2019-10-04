@@ -9,7 +9,8 @@
       "code": 1200,
       "level": "TRACE",
       "description": "iBoFOS System Recovery Something"
-    },   {
+    },
+    {
       "code": 1234,
       "level": "TRACE",
       "description": "iBoFOS System Recovery Inprogress"
@@ -105,6 +106,11 @@
       "code": 19000,
       "level": "ERROR",
       "description": "iBof Response Timeout"
+    },
+    {
+      "code": 40000,
+      "level": "ERROR",
+      "description": "This API does not implemente yet"
     }
   ]
 }

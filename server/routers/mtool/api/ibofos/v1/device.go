@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"ibofdagent/server/routers/mtool/api"
 )
 
 func ScanDevice(ctx *gin.Context) {
@@ -14,11 +15,13 @@ func ListDevice(ctx *gin.Context) {
 }
 
 func AttachDevice(ctx *gin.Context) {
-	postDevice(ctx, "SCANDEVICE")
+	//postDevice(ctx, "AttachDevice")
+	api.MakeBadRequest(ctx, 40000)
 }
 
 func DetachDevice(ctx *gin.Context) {
-	postDevice(ctx, "SCANDEVICE")
+	//postDevice(ctx, "DetachDevice")
+	api.MakeBadRequest(ctx, 40000)
 }
 
 func getDevice(ctx *gin.Context, command string) {
