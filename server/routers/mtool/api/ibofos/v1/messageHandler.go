@@ -35,7 +35,13 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
-	handler.SendIBof(marshaled)
+	err := handler.SendIBof(marshaled)
+
+	if err != nil {
+		log.Printf("sendWithSync : %v", err)
+		api.MakeFailResponse(ctx, 400, error.Error(err), 19002)
+		return
+	}
 
 	for {
 		temp := handler.GetIBoFResponse()

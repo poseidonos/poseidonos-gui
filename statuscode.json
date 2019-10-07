@@ -108,6 +108,11 @@
       "description": "iBof Response Timeout"
     },
     {
+      "code": 19002,
+      "level": "ERROR",
+      "description": "iBof Socket Connection Error"
+    },
+    {
       "code": 40000,
       "level": "ERROR",
       "description": "This API does not implemente yet"

@@ -91,50 +91,53 @@ func GetIBoFResponse() []byte {
 	}
 }
 
-func SendIBof(marshaled []byte) {
-	iBoFSendChan <- marshaled
+func SendIBof(marshaled []byte) error {
+	//iBoFSendChan <- marshaled
 	log.Printf("SendIBof : Message -> iBoFSendChan\n%s", marshaled)
+	return writeToIBoFSocket(marshaled)
 }
 
 func handleSend() {
-	for {
-		log.Println("handleSend : Waiting message from send channel")
-
-		select {
-		case marshaled := <-iBoFSendChan:
-			log.Printf("handleSend : Message <- iBoFSendChan, Left iBoFSendChan Jobs : %d", len(iBoFSendChan))
-			writeToIBoFSocket(marshaled)
-
-		case bmcMsg := <-bmcSendChan:
-			log.Println("handleSend : Message <- bmcSendChan, Left bmcSendChan Jobs  %d", len(bmcSendChan))
-			writeToBMCSomething(bmcMsg)
-		}
-	}
+	//for {
+	//	log.Println("handleSend : Waiting message from send channel")
+	//
+	//	select {
+	//	case marshaled := <-iBoFSendChan:
+	//		log.Printf("handleSend : Message <- iBoFSendChan, Left iBoFSendChan Jobs : %d", len(iBoFSendChan))
+	//		writeToIBoFSocket(marshaled)
+	//
+	//	case bmcMsg := <-bmcSendChan:
+	//		log.Println("handleSend : Message <- bmcSendChan, Left bmcSendChan Jobs  %d", len(bmcSendChan))
+	//		writeToBMCSomething(bmcMsg)
+	//	}
+	//}
 }
 
 func writeToIBoFSocket(marshaled []byte) error {
-	for {
-		if conn == nil {
-			log.Println("writeToIBoFSocket : Conn is nil")
+	//for {
+	if conn == nil {
+		log.Println("writeToIBoFSocket : Conn is nil")
+		return errors.New("writeToIBoFSocket : Conn is nil")
+	} else {
+		_, err := conn.Write(marshaled)
+		if err != nil {
+			log.Println("writeToIBoFSocket : Fail with write message to socket - ", err)
+			conn.Close()
+			conn = nil
 		} else {
-			_, err := conn.Write(marshaled)
+			// Must Sync call
+			log.Println("writeToIBoFSocket : Success write message to socket")
+			err = receiveFromIBoFSocket()
 			if err != nil {
-				log.Println("writeToIBoFSocket : Fail with write message to socket - ", err)
 				conn.Close()
 				conn = nil
 			} else {
-				// Must Sync call
-				log.Println("writeToIBoFSocket : Success write message to socket")
-				err = receiveFromIBoFSocket()
-				if err != nil {
-					conn.Close()
-					conn = nil
-				} else {
-					log.Printf("writeToIBoFSocket : Write/Receive Success %s\n", marshaled)
-					return err
-				}
+				log.Printf("writeToIBoFSocket : Write/Receive Success %s\n", marshaled)
+				//return err
 			}
 		}
-		time.Sleep(time.Second)
+		return err
 	}
+	//time.Sleep(time.Second)
+	//}
 }
