@@ -11,7 +11,7 @@ import (
 
 func RunFio(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
-	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py")
+	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py &")
 	returnSuccess(ctx)
 
 }
