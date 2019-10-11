@@ -14,5 +14,5 @@ func ExitSystem(ctx *gin.Context) {
 
 func getSystem(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }

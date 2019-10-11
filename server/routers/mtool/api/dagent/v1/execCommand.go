@@ -9,21 +9,28 @@ import (
 	"net/http"
 )
 
+func RunFio(ctx *gin.Context) {
+	defer checkReturnFail(ctx)
+	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py")
+	returnSuccess(ctx)
+
+}
+
 func RunIBoF(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 
-	fileName := "./run_ibofos.sh"
-	util.GrantExecPermission(fileName)
 	if util.IsIBoFRun() == true {
 		panic(fmt.Errorf("exec Run: The iBoFOS already run"))
 	}
-	util.ExecCmd(fileName)
+
+	util.RunScript(ctx, "./run_ibofos.sh")
 
 	if util.IsIBoFRun() == false {
 		panic(fmt.Errorf("exec Run: Fail to run iBoFOS"))
 	}
 	returnSuccess(ctx)
 }
+
 
 func returnSuccess(ctx *gin.Context) {
 	response := model.Response{}

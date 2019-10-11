@@ -13,7 +13,7 @@ func CheckBasicAuth() gin.HandlerFunc {
 	return gin.BasicAuth(user)
 }
 
-func CheckAPIAtivate() gin.HandlerFunc {
+func CheckAPIActivate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		username, _, _ := ctx.Request.BasicAuth()
 		user := mongodb.ReadUserCollectionById(username)

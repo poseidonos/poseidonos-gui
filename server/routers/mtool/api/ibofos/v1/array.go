@@ -37,16 +37,16 @@ func MountArray(ctx *gin.Context) {
 func postArray(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func getArray(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func deleteArray(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }

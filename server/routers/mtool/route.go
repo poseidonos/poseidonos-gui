@@ -3,7 +3,6 @@ package mtool
 import (
 	"github.com/gin-gonic/gin"
 	dagentV1 "ibofdagent/server/routers/mtool/api/dagent/v1"
-	"ibofdagent/server/routers/mtool/api/dagent/v1/general"
 	iBoFOSV1 "ibofdagent/server/routers/mtool/api/ibofos/v1"
 	"ibofdagent/server/routers/mtool/middleware"
 )
@@ -11,21 +10,29 @@ import (
 func Route(router *gin.Engine) {
 	api := router.Group("/mtool/api")
 	//api.Use(middleware.CheckBasicAuth())
-	//api.Use(middleware.CheckAPIAtivate())
+	//api.Use(middleware.CheckAPIActivate())
 	api.Use(middleware.CheckMtoolHeader())
 	api.Use(middleware.CheckBody())
 
+	// D-Agent
 	apiDagentV1 := api.Group("/dagent/v1")
 	{
-		apiDagentV1.GET("/ping", general.Ping)
-		apiDagentV1.GET("/statuscode", general.StatusCode)
+		apiDagentV1.GET("/ping", dagentV1.Ping)
+		apiDagentV1.GET("/statuscode", dagentV1.StatusCode)
 		apiDagentV1.POST("/ibofos", dagentV1.RunIBoF)
 		apiDagentV1.DELETE("/ibofos", dagentV1.ForceKillIbof)
 	}
 
+	// For Test
+	{
+		apiDagentV1.GET("/test/fio", dagentV1.RunFio)
+	}
+
+	// iBoFOS
 	apiIBoFOSV1 := api.Group("/ibofos/v1")
 	apiIBoFOSV1.Use(middleware.CheckiBoFRun())
-	// Test API
+
+	// For Test
 	{
 		apiIBoFOSV1.POST("/test/report", iBoFOSV1.ReportTest)
 	}

@@ -25,11 +25,11 @@ func DetachDevice(ctx *gin.Context) {
 
 func getDevice(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func postDevice(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }

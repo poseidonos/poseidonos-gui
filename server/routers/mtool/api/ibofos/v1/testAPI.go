@@ -8,5 +8,5 @@ func ReportTest(ctx *gin.Context) {
 
 func getReportTest(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }

@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"os/exec"
 )
@@ -19,7 +20,7 @@ func IsIBoFRun() bool {
 	}
 }
 
-func GrantExecPermission(fileName string) {
+func GrantPermission(fileName string) {
 	execCmd := exec.Command("sudo", "chmod", "+x", fileName)
 	err := execCmd.Run()
 	if err != nil {
@@ -33,4 +34,9 @@ func ExecCmd(cmd string) {
 	if err != nil {
 		panic(fmt.Errorf("exec Run: %v", err))
 	}
+}
+
+func RunScript(ctx *gin.Context, filePath string) {
+	GrantPermission(filePath)
+	ExecCmd(filePath)
 }

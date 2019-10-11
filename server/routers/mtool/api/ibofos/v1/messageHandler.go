@@ -22,25 +22,20 @@ var (
 	errLocked = errors.New("Locked out buddy")
 )
 
-func sendWithAsync(ctx *gin.Context, iBoFRequest model.Request) {
-	// ToDO: Impl async logic
-}
-
-func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
+func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Printf("sendWithSync : %+v", iBoFRequest)
+		log.Printf("sendIBoF : %+v", iBoFRequest)
 		api.MakeBadRequest(ctx, 12000)
 		return
 	}
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
-	log.Printf("sendWithSync : %+v", iBoFRequest)
+	log.Printf("sendIBoF : %+v", iBoFRequest)
 	marshaled, _ := json.Marshal(iBoFRequest)
-	//err := handler.SendIBof(marshaled)
 	err := handler.WriteToIBoFSocket(marshaled)
 
 	if err != nil {
-		log.Printf("sendWithSync : %v", err)
+		log.Printf("sendIBoF : %v", err)
 		api.MakeFailResponse(ctx, 400, error.Error(err), 19002)
 		return
 	}
@@ -68,7 +63,6 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 			ctx.JSON(http.StatusOK, &response)
 			return
 		}
-
 	}
 }
 

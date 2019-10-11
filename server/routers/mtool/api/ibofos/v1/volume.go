@@ -27,25 +27,25 @@ func DeleteVolume(ctx *gin.Context) {
 
 func getVolume(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func postVolume(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func putVolume(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func deleteVolume(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendWithSync(ctx, iBoFRequest)
+	sendIBoF(ctx, iBoFRequest)
 }
 
 func ListVolume(ctx *gin.Context) {
