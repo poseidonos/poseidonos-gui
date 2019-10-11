@@ -34,8 +34,10 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 	}
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
+	log.Printf("sendWithSync : %+v", iBoFRequest)
 	marshaled, _ := json.Marshal(iBoFRequest)
-	err := handler.SendIBof(marshaled)
+	//err := handler.SendIBof(marshaled)
+	err := handler.WriteToIBoFSocket(marshaled)
 
 	if err != nil {
 		log.Printf("sendWithSync : %v", err)
@@ -51,7 +53,7 @@ func sendWithSync(ctx *gin.Context, iBoFRequest model.Request) {
 		err := json.Unmarshal(temp, &response)
 
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-			log.Printf("Previous request's respnse, Wait again")
+			log.Printf("Previous request's response, Wait again")
 			continue
 		}
 

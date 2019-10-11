@@ -24,11 +24,11 @@ var bmcSendChan chan string
 var bmcReceiveChan chan string
 
 func init() {
-	iBoFReceiveChan = make(chan []byte, 1)
+	iBoFReceiveChan = make(chan []byte, 100)
 	iBoFSendChan = make(chan []byte, 1)
 	connbuf = bufio.NewReader(conn)
-
-	go handleSend()
+	go receiveFromIBoFSocket()
+	//go handleSend()
 }
 
 func ConnectToIBoFOS() error {
@@ -48,32 +48,33 @@ func ConnectToIBoFOS() error {
 			util.PrintCurrentServerStatus()
 		}
 
-		time.Sleep(time.Second * 3)
+		time.Sleep(time.Second * 1)
 	}
 	return err
 }
 
-func receiveFromIBoFSocket() error {
-	log.Println("receiveFromIBoFSocket Start")
-	var err error
-
-	if conn == nil {
-		err = errors.New("receiveFromIBoFSocket : Conn is nil")
-		log.Println(err)
-	} else {
-		buf := make([]byte, 4096)
-		_, err := conn.Read(buf)
-		if err != nil && err != io.EOF {
-			log.Println("receiveFromIBoFSocket : Message Receive Fail :", err)
+func receiveFromIBoFSocket() {
+	for {
+		log.Println("receiveFromIBoFSocket Start")
+		if conn == nil {
+			log.Println("receiveFromIBoFSocket : Conn is nil")
+			time.Sleep(time.Second)
 		} else {
-			log.Println("receiveFromIBoFSocket : Message Receive Success")
-			buf = bytes.Trim(buf, "\x00")
-			iBoFReceiveChan <- buf
-			log.Println("receiveFromIBoFSocket : Message -> iBoFReceiveChan")
+			buf := make([]byte, 4096)
+			_, err := conn.Read(buf)
+			if err != nil || err == io.EOF {
+				//if err != nil && err != io.EOF {
+				log.Println("receiveFromIBoFSocket : Message Receive Fail :", err)
+				conn.Close()
+				conn = nil
+			} else {
+				log.Println("receiveFromIBoFSocket : Message Receive Success")
+				buf = bytes.Trim(buf, "\x00")
+				iBoFReceiveChan <- buf
+				log.Println("receiveFromIBoFSocket : Message -> iBoFReceiveChan")
+			}
 		}
 	}
-
-	return err
 }
 
 func GetIBoFResponse() []byte {
@@ -87,57 +88,61 @@ func GetIBoFResponse() []byte {
 		response.Result.Status.Code = 19000
 		ret, _ := json.Marshal(response)
 		return ret
-
 	}
 }
 
-func SendIBof(marshaled []byte) error {
-	//iBoFSendChan <- marshaled
-	log.Printf("SendIBof : Message -> iBoFSendChan\n%s", marshaled)
-	return writeToIBoFSocket(marshaled)
-}
+//func SendIBof(marshaled []byte) error {
+//	//iBoFSendChan <- marshaled
+//	log.Printf("SendIBof : Message -> iBoFSendChan\n%s", marshaled)
+//	return WriteToIBoFSocket(marshaled)
+//}
 
-func handleSend() {
-	//for {
-	//	log.Println("handleSend : Waiting message from send channel")
-	//
-	//	select {
-	//	case marshaled := <-iBoFSendChan:
-	//		log.Printf("handleSend : Message <- iBoFSendChan, Left iBoFSendChan Jobs : %d", len(iBoFSendChan))
-	//		writeToIBoFSocket(marshaled)
-	//
-	//	case bmcMsg := <-bmcSendChan:
-	//		log.Println("handleSend : Message <- bmcSendChan, Left bmcSendChan Jobs  %d", len(bmcSendChan))
-	//		writeToBMCSomething(bmcMsg)
-	//	}
-	//}
-}
+//func handleSend() {
+//for {
+//	log.Println("handleSend : Waiting message from send channel")
+//
+//	select {
+//	case marshaled := <-iBoFSendChan:
+//		log.Printf("handleSend : Message <- iBoFSendChan, Left iBoFSendChan Jobs : %d", len(iBoFSendChan))
+//		WriteToIBoFSocket(marshaled)
+//
+//	case bmcMsg := <-bmcSendChan:
+//		log.Println("handleSend : Message <- bmcSendChan, Left bmcSendChan Jobs  %d", len(bmcSendChan))
+//		writeToBMCSomething(bmcMsg)
+//	}
+//}
+//}
 
-func writeToIBoFSocket(marshaled []byte) error {
+func WriteToIBoFSocket(marshaled []byte) error {
+	var err error = nil
 	//for {
 	if conn == nil {
-		log.Println("writeToIBoFSocket : Conn is nil")
-		return errors.New("writeToIBoFSocket : Conn is nil")
+		log.Println("WriteToIBoFSocket : Conn is nil")
+		err = errors.New("WriteToIBoFSocket : Conn is nil")
 	} else {
-		_, err := conn.Write(marshaled)
+		_, err = conn.Write(marshaled)
 		if err != nil {
-			log.Println("writeToIBoFSocket : Fail with write message to socket - ", err)
+			log.Println("WriteToIBoFSocket : Fail with write message to socket - ", err)
 			conn.Close()
 			conn = nil
 		} else {
-			// Must Sync call
-			log.Println("writeToIBoFSocket : Success write message to socket")
-			err = receiveFromIBoFSocket()
-			if err != nil {
-				conn.Close()
-				conn = nil
-			} else {
-				log.Printf("writeToIBoFSocket : Write/Receive Success %s\n", marshaled)
-				//return err
-			}
+			//receiveFromIBoFSocket()
 		}
-		return err
+		//else {
+		//	// Must Sync call
+		//	log.Println("WriteToIBoFSocket : Success write message to socket")
+		//	err = receiveFromIBoFSocket()
+		//	if err != nil {
+		//		log.Printf("WriteToIBoFSocket : receiveFromIBoFSocket Fail %s\n", marshaled)
+		//		conn.Close()
+		//		conn = nil
+		//	} else {
+		//		log.Printf("WriteToIBoFSocket : receiveFromIBoFSocket Success %s\n", marshaled)
+		//		//return err
+		//	}
+		//}
 	}
+	return err
 	//time.Sleep(time.Second)
 	//}
 }

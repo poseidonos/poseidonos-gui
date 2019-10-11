@@ -11,7 +11,7 @@ func IsIBoFRun() bool {
 	out, _ := execCmd.Output()
 
 	strOut := string(out)
-	log.Printf("The iBoFOS Pid is %s\n", strOut)
+	log.Printf("The iBoFOS Pid is %s", strOut)
 	if strOut == "" {
 		return false
 	} else {
