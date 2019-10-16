@@ -20,7 +20,7 @@ func IsIBoFRun() bool {
 	}
 }
 
-func GrantPermission(fileName string) {
+func grantPermission(fileName string) {
 	execCmd := exec.Command("sudo", "chmod", "+x", fileName)
 	err := execCmd.Run()
 	if err != nil {
@@ -28,7 +28,7 @@ func GrantPermission(fileName string) {
 	}
 }
 
-func ExecCmd(cmd string) {
+func ExecCmd(cmd string, background bool) {
 	execCmd := exec.Command("sudo", "bash", "-c", cmd)
 	err := execCmd.Run()
 	if err != nil {
@@ -36,7 +36,7 @@ func ExecCmd(cmd string) {
 	}
 }
 
-func RunScript(ctx *gin.Context, filePath string) {
-	GrantPermission(filePath)
-	ExecCmd(filePath)
+func RunScript(ctx *gin.Context, filePath string, background bool) {
+	grantPermission(filePath)
+	ExecCmd(filePath, background)
 }

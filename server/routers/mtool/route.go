@@ -11,8 +11,9 @@ func Route(router *gin.Engine) {
 	api := router.Group("/mtool/api")
 	//api.Use(middleware.CheckBasicAuth())
 	//api.Use(middleware.CheckAPIActivate())
-	api.Use(middleware.CheckMtoolHeader())
+	api.Use(middleware.CheckHeader())
 	api.Use(middleware.CheckBody())
+	api.Use(middleware.ReponseHeader())
 
 	// D-Agent
 	apiDagentV1 := api.Group("/dagent/v1")

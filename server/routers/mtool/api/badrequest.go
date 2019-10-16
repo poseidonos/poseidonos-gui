@@ -9,12 +9,12 @@ import (
 )
 
 func MakeUnauthorized(ctx *gin.Context, code int) {
-	description := getDescription(code)
+	description := Description(code)
 	MakeFailResponse(ctx, http.StatusUnauthorized, description, code)
 }
 
 func MakeBadRequest(ctx *gin.Context, code int) {
-	description := getDescription(code)
+	description := Description(code)
 	MakeFailResponse(ctx, http.StatusBadRequest, description, code)
 }
 
@@ -31,6 +31,8 @@ func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code
 	ctx.AbortWithStatusJSON(httpStatus, &response)
 }
 
-func getDescription(code int) string {
+// https://golang.org/doc/effective_go.html#Getters
+// it's neither idiomatic nor necessary to put Get into the getter's name.
+func Description(code int) string {
 	return setting.StatusMap[code]
 }

@@ -10,6 +10,67 @@
       "name": "DAGENT",
       "item": [
         {
+          "name": "TEST - FIO",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/test/fio",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "dagent",
+                "v1",
+                "test",
+                "fio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "PING (X-Request-Id empty)",
           "event": [
             {
@@ -302,6 +363,71 @@
     {
       "name": "iBoFOS",
       "item": [
+        {
+          "name": "TEST - REPORTTEST",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  "pm.environment.set(\"timestamp\", new Date());",
+                  "pm.environment.set(\"xrid\", uuidv4());",
+                  "",
+                  "function uuidv4() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/test/report",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "test",
+                "report"
+              ]
+            }
+          },
+          "response": []
+        },
         {
           "name": "SYSSTATE (ts empty)",
           "event": [
@@ -1199,71 +1325,6 @@
                 "ibofos",
                 "v1",
                 "volume"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "REPORTTEST",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/test/report",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "test",
-                "report"
               ]
             }
           },

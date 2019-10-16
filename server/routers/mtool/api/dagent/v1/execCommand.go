@@ -11,7 +11,7 @@ import (
 
 func RunFio(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
-	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py &")
+	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py", true)
 	returnSuccess(ctx)
 
 }
@@ -23,14 +23,13 @@ func RunIBoF(ctx *gin.Context) {
 		panic(fmt.Errorf("exec Run: The iBoFOS already run"))
 	}
 
-	util.RunScript(ctx, "./run_ibofos.sh")
+	util.RunScript(ctx, "./run_ibofos.sh", false)
 
 	if util.IsIBoFRun() == false {
 		panic(fmt.Errorf("exec Run: Fail to run iBoFOS"))
 	}
 	returnSuccess(ctx)
 }
-
 
 func returnSuccess(ctx *gin.Context) {
 	response := model.Response{}
@@ -42,7 +41,7 @@ func returnSuccess(ctx *gin.Context) {
 func ForceKillIbof(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 
-	util.ExecCmd("kill -9 $(pgrep ibofos)")
+	util.ExecCmd("kill -9 $(pgrep ibofos)", false)
 	returnSuccess(ctx)
 }
 
