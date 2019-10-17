@@ -41,7 +41,7 @@ func returnSuccess(ctx *gin.Context) {
 func ForceKillIbof(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 
-	util.ExecCmd("kill -9 $(pgrep ibofos)", false)
+	util.ExecCmd("pkill -9 ibofos", false)
 	returnSuccess(ctx)
 }
 
