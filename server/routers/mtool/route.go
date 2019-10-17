@@ -8,7 +8,7 @@ import (
 )
 
 func Route(router *gin.Engine) {
-	uri := router.Group("/mtool/uri")
+	uri := router.Group("/mtool/api")
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())
 	uri.Use(middleware.CheckHeader())

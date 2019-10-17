@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+var redfishhost = "https:10.1.1.28"
+
 func Redirect(ctx *gin.Context) {
-	ctx.Redirect(http.StatusFound, "https://10.1.1.28/")
+	ctx.Redirect(http.StatusTemporaryRedirect, redfishhost)
 }
