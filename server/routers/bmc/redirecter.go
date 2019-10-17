@@ -1,25 +1,26 @@
 package bmc
 
 import (
+	"crypto/tls"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httputil"
 )
 
-var target = "10.1.1.28"
-
 func Redirect(ctx *gin.Context) {
-	//ctx.Redirect(http.StatusTemporaryRedirect, target+ctx.Request.RequestURI)
-	//log.Printf("Redirect : %s", target+ctx.Request.RequestURI)
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	var id = "root"
+	var pass = "0penBmc"
+	var target = id + ":" + pass + "@10.1.1.28"
 
 	director := func(req *http.Request) {
-		r := ctx.Request
-		//req = r
+		//r := ctx.Request
 		req.URL.Scheme = "https"
 		req.URL.Host = target
-		req.Header["my-header"] = []string{r.Header.Get("my-header")}
+		// ???
+		//req.Header["my-header"] = []string{r.Header.Get("my-header")}
 		// Golang camelcases headers
-		delete(req.Header, "My-Header")
+		//delete(req.Header, "My-Header")
 	}
 	proxy := &httputil.ReverseProxy{Director: director}
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)

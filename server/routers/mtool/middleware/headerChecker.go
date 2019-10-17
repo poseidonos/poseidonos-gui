@@ -18,8 +18,5 @@ func CheckHeader(ctx *gin.Context) {
 		api.MakeBadRequest(ctx, 10250)
 	}
 
-	ctx.Header("Content-Type", "application/json; charset=utf-8")
-	ctx.Header("X-request-Id", xrid)
-
 	ctx.Next()
 }

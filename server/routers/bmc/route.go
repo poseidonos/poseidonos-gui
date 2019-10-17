@@ -5,8 +5,8 @@ import (
 )
 
 func Route(router *gin.Engine) {
-	// Redfish
-	router.Group("/redfish", Redirect)
-	router.GET("/redfish1", Redirect)
+	redfish := router.Group("/redfish")
 
+	// Redfish reroute
+	redfish.Any("/*anything", Redirect)
 }
