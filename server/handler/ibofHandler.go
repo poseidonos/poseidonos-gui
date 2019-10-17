@@ -23,7 +23,7 @@ func init() {
 	go receiveFromIBoFSocket()
 }
 
-func ConnectToIBoFOS()  {
+func ConnectToIBoFOS() {
 	var err error = nil
 	for {
 		if conn == nil {
