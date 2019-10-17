@@ -22,5 +22,5 @@ func Redirect(ctx *gin.Context) {
 		delete(req.Header, "My-Header")
 	}
 	proxy := &httputil.ReverseProxy{Director: director}
-	proxy.ServeHTTP(c.Writer, ctx.Request)
+	proxy.ServeHTTP(ctx.Writer, ctx.Request)
 }
