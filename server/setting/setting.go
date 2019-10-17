@@ -21,6 +21,7 @@ type ConfigScheme struct {
 type Server struct {
 	Dagent HostConf `yaml:"dagent"`
 	IBoF   HostConf `yaml:"iBoF"`
+	BMC   HostConf `yaml:"BMC"`
 }
 type HostConf struct {
 	IP   string `yaml:"ip"`
@@ -32,6 +33,8 @@ func init() {
 	Config.Server.Dagent.Port = "3000"
 	Config.Server.IBoF.IP = "127.0.0.1"
 	Config.Server.IBoF.Port = "18716"
+	Config.Server.BMC.IP = "10.1.1.28"
+	Config.Server.BMC.Port = "443"
 }
 
 func LoadConfig() {

@@ -37,6 +37,9 @@ server:
   ibof:
     ip: 127.0.0.1
     port: 18716
+  bmc:
+    ip: 10.1.1.28
+    port: 443
 ```
 
 #### Patient & Coffee
@@ -777,8 +780,6 @@ Response Sample
 ## Redfish
 #### API
 (ANY) /redfish/{redfishSpec}  
-* Currently, D-Agent will relay the Redfish of OpenBMC in KTNF server via DSK proxy.  
-Therefore, D-Agent should be run on DSK server to use Redfish API 
 
 #### Request Headers
 * Redfish also uses basic auth. Not D-Agent's user info, But BMC user info 
