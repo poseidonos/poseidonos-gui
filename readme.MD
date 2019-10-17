@@ -89,6 +89,7 @@ $ sudo ./run_dagent.sh # Background Run
 * Most scheme of json is the similar to iBoF External API
 * The id/pass for basic auth is the same as M-Tool's (It use the same DB)
 * Currently D-Agent provides only basic auth.
+
 #### Common Request Headers
 ```
 X-Request-Id : {uuid}
@@ -771,9 +772,24 @@ Response Sample
 * Latest : http://12.30.97.244:8090/wiki/pages/viewpage.action?pageId=159199976  
 * PDF code available upon request {d.moon/hs0112.moon/sk921.park}@samsung.com
 
-#### BMC (TBD)
-* D-Agent will relay the redfish request/response from BMC
-* /bmc/v1/{redfishSpec}
+***
+
+## Redfish
+#### API
+(ANY) /redfish/{redfishSpec}  
+* Currently, D-Agent will relay the Redfish of OpenBMC in KTNF server via DSK proxy.  
+Therefore, D-Agent should be run on DSK server to use Redfish API 
+
+#### Request Headers
+* Redfish also uses basic auth. Not D-Agent's user info, But BMC user info 
+```
+Authorization : {basic auth value}
+```
+
+Sample
+```
+Authorization : Basic cm9vdDowcGVuQm1j
+```
 
 ***
 

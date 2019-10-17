@@ -1461,6 +1461,50 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Redfish",
+      "item": [
+        {
+          "name": "Cahsssis",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Basic cm9vdDowcGVuQm1j",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://{{host}}/redfish/v1/Chassis",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "redfish",
+                "v1",
+                "Chassis"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
     }
   ]
 }
