@@ -9,18 +9,16 @@ import (
 	"log"
 )
 
-func CheckBody() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		body := model.Request{}
+func CheckBody(ctx *gin.Context) {
+	body := model.Request{}
 
-		if "GET" != ctx.Request.Method {
-			err := ctx.ShouldBindBodyWith(&body, binding.JSON)
-			if err != nil && err != io.EOF {
-				log.Printf("Request Body Error : %v", err)
-				api.MakeBadRequest(ctx, 10310)
-				return
-			}
+	if "GET" != ctx.Request.Method {
+		err := ctx.ShouldBindBodyWith(&body, binding.JSON)
+		if err != nil && err != io.EOF {
+			log.Printf("Request Body Error : %v", err)
+			api.MakeBadRequest(ctx, 10310)
+			return
 		}
-		ctx.Next()
 	}
+	ctx.Next()
 }

@@ -13,21 +13,17 @@ func CheckBasicAuth() gin.HandlerFunc {
 	return gin.BasicAuth(user)
 }
 
-func CheckAPIActivate() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		username, _, _ := ctx.Request.BasicAuth()
-		user := mongodb.ReadUserCollectionById(username)
-		if user.Active == false {
-			api.MakeUnauthorized(ctx, 10110)
-			return
-		}
-		ctx.Next()
+func CheckAPIActivate(ctx *gin.Context) {
+	username, _, _ := ctx.Request.BasicAuth()
+	user := mongodb.ReadUserCollectionById(username)
+	if user.Active == false {
+		api.MakeUnauthorized(ctx, 10110)
+		return
 	}
+	ctx.Next()
 }
 
-func JWTAuth() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		// ToDo: Implement
-		ctx.Next()
-	}
+func JWTAuth(ctx *gin.Context) {
+	// ToDo: Implement
+	ctx.Next()
 }
