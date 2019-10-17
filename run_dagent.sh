@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo pkill -9 dagent
+sudo pkill -9 ibofdagent
 logfile="/etc/ibofos/log/dagent.log"
 
 sudo nohup ./ibofdagent &>> ${logfile} &
