@@ -8,67 +8,67 @@ import (
 )
 
 func Route(router *gin.Engine) {
-	api := router.Group("/mtool/api")
-	//api.Use(middleware.CheckBasicAuth())
-	//api.Use(middleware.CheckAPIActivate())
-	api.Use(middleware.CheckHeader())
-	api.Use(middleware.CheckBody())
-	api.Use(middleware.ReponseHeader())
+	uri := router.Group("/mtool/uri")
+	//uri.Use(middleware.CheckBasicAuth())
+	//uri.Use(middleware.CheckAPIActivate())
+	uri.Use(middleware.CheckHeader())
+	uri.Use(middleware.CheckBody())
+	uri.Use(middleware.ReponseHeader())
 
 	// D-Agent
-	apiDagentV1 := api.Group("/dagent/v1")
+	dagent := uri.Group("/dagent/v1")
 	{
-		apiDagentV1.GET("/ping", dagentV1.Ping)
-		apiDagentV1.GET("/statuscode", dagentV1.StatusCode)
-		apiDagentV1.POST("/ibofos", dagentV1.RunIBoF)
-		apiDagentV1.DELETE("/ibofos", dagentV1.ForceKillIbof)
+		dagent.GET("/ping", dagentV1.Ping)
+		dagent.GET("/statuscode", dagentV1.StatusCode)
+		dagent.POST("/ibofos", dagentV1.RunIBoF)
+		dagent.DELETE("/ibofos", dagentV1.ForceKillIbof)
 	}
 
 	// For Test
 	{
-		apiDagentV1.GET("/test/fio", dagentV1.RunFio)
+		dagent.GET("/test/fio", dagentV1.RunFio)
 	}
 
 	// iBoFOS
-	apiIBoFOSV1 := api.Group("/ibofos/v1")
-	apiIBoFOSV1.Use(middleware.CheckiBoFRun())
+	iBoFOS := uri.Group("/ibofos/v1")
+	iBoFOS.Use(middleware.CheckiBoFRun())
 
 	// For Test
 	{
-		apiIBoFOSV1.POST("/test/report", iBoFOSV1.ReportTest)
+		iBoFOS.POST("/test/report", iBoFOSV1.ReportTest)
 	}
 
 	// System
 	{
-		apiIBoFOSV1.GET("/system/sysstate", iBoFOSV1.Sysstate)
-		apiIBoFOSV1.GET("/system/exit", iBoFOSV1.ExitSystem)
+		iBoFOS.GET("/system/sysstate", iBoFOSV1.Sysstate)
+		iBoFOS.GET("/system/exit", iBoFOSV1.ExitSystem)
 	}
 
 	// Device
-	{ ///
-		apiIBoFOSV1.GET("/device", iBoFOSV1.ListDevice)
-		apiIBoFOSV1.GET("/device/scan", iBoFOSV1.ScanDevice)
-		apiIBoFOSV1.POST("/device/attach", iBoFOSV1.AttachDevice)
-		apiIBoFOSV1.DELETE("/device/detach", iBoFOSV1.DetachDevice)
+	{
+		iBoFOS.GET("/device", iBoFOSV1.ListDevice)
+		iBoFOS.GET("/device/scan", iBoFOSV1.ScanDevice)
+		iBoFOS.POST("/device/attach", iBoFOSV1.AttachDevice)
+		iBoFOS.DELETE("/device/detach", iBoFOSV1.DetachDevice)
 	}
 
 	// Array
 	{
-		apiIBoFOSV1.GET("/array/device", iBoFOSV1.ListArrayDevice)
-		apiIBoFOSV1.POST("/array", iBoFOSV1.CreateArray)
-		apiIBoFOSV1.GET("/array", iBoFOSV1.StateArray)
-		apiIBoFOSV1.DELETE("/array", iBoFOSV1.DeleteArray)
-		apiIBoFOSV1.POST("/array/mount", iBoFOSV1.MountArray)
-		apiIBoFOSV1.DELETE("/array/mount", iBoFOSV1.UnmountArray)
+		iBoFOS.GET("/array/device", iBoFOSV1.ListArrayDevice)
+		iBoFOS.POST("/array", iBoFOSV1.CreateArray)
+		iBoFOS.GET("/array", iBoFOSV1.StateArray)
+		iBoFOS.DELETE("/array", iBoFOSV1.DeleteArray)
+		iBoFOS.POST("/array/mount", iBoFOSV1.MountArray)
+		iBoFOS.DELETE("/array/mount", iBoFOSV1.UnmountArray)
 	}
 
 	// Volume
 	{
-		apiIBoFOSV1.POST("/volume", iBoFOSV1.CreateVolume)
-		apiIBoFOSV1.GET("/volume", iBoFOSV1.ListVolume)
-		apiIBoFOSV1.PUT("/volume", iBoFOSV1.UpdateVolume)
-		apiIBoFOSV1.DELETE("/volume", iBoFOSV1.DeleteVolume)
-		apiIBoFOSV1.POST("/volume/mount", iBoFOSV1.MountVolume)
-		apiIBoFOSV1.DELETE("/volume/mount", iBoFOSV1.UnmountVolume)
+		iBoFOS.POST("/volume", iBoFOSV1.CreateVolume)
+		iBoFOS.GET("/volume", iBoFOSV1.ListVolume)
+		iBoFOS.PUT("/volume", iBoFOSV1.UpdateVolume)
+		iBoFOS.DELETE("/volume", iBoFOSV1.DeleteVolume)
+		iBoFOS.POST("/volume/mount", iBoFOSV1.MountVolume)
+		iBoFOS.DELETE("/volume/mount", iBoFOSV1.UnmountVolume)
 	}
 }
