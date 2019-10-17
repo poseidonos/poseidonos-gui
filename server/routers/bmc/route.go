@@ -7,4 +7,6 @@ import (
 func Route(router *gin.Engine) {
 	// Redfish
 	router.Group("/redfish", Redirect)
+	router.GET("/redfish", Redirect)
+
 }
