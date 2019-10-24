@@ -10,7 +10,7 @@ func CreateVolume(ctx *gin.Context) {
 }
 
 func UpdateVolume(ctx *gin.Context) {
-	putVolume(ctx, "UPDATEVOLUME")
+	putVolume(ctx, "UPDATEVOLUMEQOS")
 }
 
 func MountVolume(ctx *gin.Context) {
