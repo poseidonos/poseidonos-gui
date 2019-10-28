@@ -20,7 +20,7 @@ var bmcReceiveChan chan string
 
 func init() {
 	iBoFReceiveChan = make(chan []byte, 1000)
-	go receiveFromIBoFSocket()
+	go readFromIBoFSocket()
 }
 
 func ConnectToIBoFOS() {
@@ -43,24 +43,24 @@ func ConnectToIBoFOS() {
 	}
 }
 
-func receiveFromIBoFSocket() {
+func readFromIBoFSocket() {
 	for {
-		log.Println("receiveFromIBoFSocket Start")
+		log.Println("readFromIBoFSocket Start")
 		if conn == nil {
-			log.Println("receiveFromIBoFSocket : Conn is nil")
+			log.Println("readFromIBoFSocket : Conn is nil")
 			time.Sleep(time.Second)
 		} else {
 			buf := make([]byte, 4096)
 			_, err := conn.Read(buf)
 			if err != nil || err == io.EOF {
-				log.Println("receiveFromIBoFSocket : Message Receive Fail :", err)
+				log.Println("readFromIBoFSocket : Message Receive Fail :", err)
 				conn.Close()
 				conn = nil
 			} else {
-				log.Println("receiveFromIBoFSocket : Message Receive Success")
+				log.Println("readFromIBoFSocket : Message Receive Success")
 				buf = bytes.Trim(buf, "\x00")
 				iBoFReceiveChan <- buf
-				log.Println("receiveFromIBoFSocket : Message -> iBoFReceiveChan")
+				log.Println("readFromIBoFSocket : Message -> iBoFReceiveChan")
 			}
 		}
 	}
