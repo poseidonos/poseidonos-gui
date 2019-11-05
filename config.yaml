@@ -4,7 +4,7 @@ server:
     port: 3000
   ibof:
     ip: 127.0.0.1
-    port: 18717
+    port: 18716
   bmc:
     ip: 192.168.0.3
     port: 443
