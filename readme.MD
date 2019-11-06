@@ -1,4 +1,11 @@
+---
+
+---
+
+[TOC]
+
 # Dynamic Agent
+
 *  This app provides RESTFul APIs to contorl iBoF System (iBoFOS, BMC ...)
 
 ***
@@ -13,12 +20,12 @@
 * Test : Ubuntu 18.04 LTS
 * D-Agent Branch : devel
 * iBoFOS Branch : devel
- 
+
 ***
 
 ## Pre Requirement
 #### iBoFOS
-* The iBoFOS shuold be installed
+* The iBoFOS should be installed
 
 
 #### M-Tool
@@ -27,8 +34,6 @@
 #### Config File
 * config.yaml file should be in the same location as the executable file.
 If there is no config file, d-agent will use default values.
-You can set the value manually.
-* server_port : port for this app
 ```yaml
 server:
   dagent:
@@ -38,7 +43,7 @@ server:
     ip: 127.0.0.1
     port: 18716
   bmc:
-    ip: 10.1.1.28
+    ip: 192.168.0.2
     port: 443
 ```
 
@@ -75,14 +80,14 @@ $ sudo ./run_dagent.sh # Background Run
 ## How to Test
 1. Install Postman
 2. File -> Import -> Import File -> "postman/D-Agent.postman_collection.json"
-3. Set the envirments (host, vendor)  
-: Host value should be URL    
-: Vendor value should be "mtool" or "nbp"    
-4. Call FORCEKILLIBOFOS  
-: To kill current iBoFOS  
-5. Call RUNIBOFOS  
-: it exec "run_ibofos.sh"
-6. Test
+3. Set the envirments (host, vendor)
+: Host value should be URL
+4. : Vendor value should be "mtool" or "nbp"    
+5. Call FORCEKILLIBOFOS
+    : To kill current iBoFOS  
+6. Call RUNIBOFOS 
+    : it exec "run_ibofos.sh"
+7. Test
 
 ***
 
@@ -184,10 +189,11 @@ Response Sample
 
 Sample
 ```  
-http://12.36.56.173:3000/nbp/api/dagent/v1/ping
+http://12.36.56.173:3000/mtool/api/dagent/v1/ping
 http://12.36.56.173:3000/mtool/api/ibofos/v1/system/sysstate
 http://12.36.56.173:3000/mtool/api/ibofos/v1/volume/create
 http://12.36.56.173:3000/mtool/api/bmc/v1/psu
+http://12.36.56.173:3000/nbp/api/dagent/v1/ping
 ```
 
 ### TEST API
@@ -195,6 +201,7 @@ http://12.36.56.173:3000/mtool/api/bmc/v1/psu
 (POST) /ibofos/v1/test/report    
 
 * It makes a report file for self test.
+* It is made for only test, so it can be deprecated without any notice.
 * Report file directory : /etc/ibofos/report/  
 Report file name : report.log / report.1.log / report.2.log ... report.4.log  
 (5 files, rotationally write, 100MB per file)
@@ -215,15 +222,10 @@ Sample in report.log
 ```
 
 Response Sample  
-* It take at least 100sec, so if you use the proxy, you might not get the right response.
-In case, extend the timeout of proxy
-```json
-
-```
-
-### API
+* It takes about 100 sec, so D-Agent will make timeout.
+### AP
 #### For D-Agent
-* The biz logic is excuted in D-Agent
+* The biz logic is executed in D-Agent
 
 ##### [PING]
 (GET) /dagent/v1/ping  
@@ -275,6 +277,7 @@ Response Sample
 * It just run command "run_ibof.sh" and does not gurantee to run.  
 (POST) /dagent/v1/ibofos  
   
+
 Response Sample
 ```json
 {
@@ -290,9 +293,9 @@ Response Sample
 ```
 
 ##### [FORCE KILL IBOF]
-* It runs "kill -9 $(pgrep ibofos)"   
+* It runs "pkill -9 ibofos"   
 (DELETE) /dagent/v1/ibofos  
-  
+
 Response Sample
 
 ```json
@@ -309,7 +312,7 @@ Response Sample
 ```
 
 #### For iBoFOS
-* The biz logic is excuted in D-Agent and iBoFOS
+* The biz logic is executed in D-Agent and iBoFOS
 
 ##### [SYS STATE]
 (GET) /ibofos/v1/system/sysstate  
@@ -362,7 +365,7 @@ Response Sample
 
 ##### [LIST DEVICE]
 (GET) /ibofos/v1/device  
-  
+
 Response Sample
 * "mn" : Model Number
 * "sn" : Serial Number
@@ -419,9 +422,10 @@ Response Sample
 ```
 
 ##### [ATTACH DEVICE]
-(POST) /ibofos/v1/device/attach  
-// Not Imple in iBoFOS, It will provide by 20, sep  
+(POST) /ibofos/v1/device/attach
+// Not Imple in iBoFOS, It will provide by 20, sep
 Request Body Sample
+
 ```json
 {
     "param": {
@@ -443,9 +447,10 @@ Response Sample
 ```
 
 ##### [DETACH DEVICE]
-(DELETE) /ibofos/v1/device/detach  
-// Not Imple in iBoFOS, It will provide by 20, sep  
+(DELETE) /ibofos/v1/device/detach
+// Not Imple in iBoFOS, It will provide by 20, sep
 Request Body Sample
+
 ```json
 {
     "param": {
@@ -567,7 +572,7 @@ Response Sample
 
 ##### [CREATE VOLUME]
 (POST) /ibofos/v1/volume  
- 
+
 Request Body Sample
 * "maxbw" : 0 means unlimited (or do not add "limit" attribute) / Unit : MB
 * "maxiops" : 0 means unlimited (or do not add "limit" attribute) / Unit : K (1000)
@@ -649,7 +654,7 @@ Response Sample
 
 ##### [UPDATE VOLUME]
 (PUT) /ibofos/v1/volume  
-  
+
 Request Body Sample
 ```json
 {
@@ -675,7 +680,7 @@ Response Sample
 
 ##### [DELETE VOLUME]
 (DELETE) /ibofos/v1/volume  
-  
+
 Request Body Sample
 ```json
 {
@@ -736,7 +741,7 @@ Response Sample
 
 ##### [UNMOUNT VOLUME]
 (DELETE) /ibofos/v1/volume/mount  
-  
+
 Request Body Sample
 ```json
 {
@@ -772,7 +777,8 @@ Response Sample
 ```
 
 #### Error Code
-* Latest : http://12.30.97.244:8090/wiki/pages/viewpage.action?pageId=159199976  
+* See statuscode.json in root folder
+* Latest : http://12.30.97.244:8090/wiki/pages/viewpage.action?pageId=159199976 
 * PDF code available upon request {d.moon/hs0112.moon/sk921.park}@samsung.com
 
 ***
