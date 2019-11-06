@@ -8,5 +8,5 @@ func Route(router *gin.Engine) {
 	redfish := router.Group("/redfish")
 
 	// Redfish reroute
-	redfish.Any("/*anything", Redirect)
+	redfish.Any("/*anything", RedirectRedfish)
 }

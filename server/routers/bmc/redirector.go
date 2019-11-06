@@ -8,7 +8,7 @@ import (
 	"net/http/httputil"
 )
 
-func Redirect(ctx *gin.Context) {
+func RedirectRedfish(ctx *gin.Context) {
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 	director := func(req *http.Request) {
