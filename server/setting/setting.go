@@ -33,7 +33,7 @@ func init() {
 	Config.Server.Dagent.Port = "3000"
 	Config.Server.IBoF.IP = "127.0.0.1"
 	Config.Server.IBoF.Port = "18716"
-	Config.Server.BMC.IP = "192.168.0.3"
+	Config.Server.BMC.IP = "192.168.0.2"
 	Config.Server.BMC.Port = "443"
 }
 
