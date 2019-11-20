@@ -10,6 +10,10 @@ func ListArrayDevice(ctx *gin.Context) {
 
 }
 
+func LoadArray(ctx *gin.Context) {
+	getArray(ctx, "LOADARRAY")
+}
+
 func CreateArray(ctx *gin.Context) {
 	postArray(ctx, "CREATEARRAY")
 
@@ -17,7 +21,6 @@ func CreateArray(ctx *gin.Context) {
 
 func DeleteArray(ctx *gin.Context) {
 	deleteArray(ctx, "DELETEARRAY")
-
 }
 
 func postArray(ctx *gin.Context, command string) {
