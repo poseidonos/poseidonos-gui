@@ -1,9 +1,3 @@
----
-
----
-
-[TOC]
-
 # Dynamic Agent
 
 *  This app provides RESTFul APIs to contorl iBoF System (iBoFOS, BMC ...)
@@ -237,8 +231,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "Pong"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -286,8 +279,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "Success"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -305,8 +297,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "Success"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -324,8 +315,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "alive"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -341,8 +331,40 @@ Response Sample
         "status": {
             "code": 0,
             "description": "something"
-        },
-        "data": null
+        }
+    }
+}
+```
+
+##### [MOUNTIBOFOS]
+~~(POST) /ibofos/v1/array/mount~~  
+(POST) /ibofos/v1/system/mount  
+
+Response Sample
+```json
+{
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
+    }
+}
+```
+
+##### [UNMOUNTIBOFOS]
+(DELETE) /ibofos/v1/array/mount  
+
+Response Sample
+```json
+{
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
     }
 }
 ```
@@ -357,8 +379,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "Scan Device Done"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -474,37 +495,6 @@ Response Sample
 
 ##### [CREATE ARRAY]
 (POST) /ibofos/v1/array
-// (TBD)  
-
-##### [DELETE ARRAY]
-(DELETE) /ibofos/v1/array
-// (TBD)
-
-##### [STATE ARRAY]
-(GET) /ibofos/v1/array
-
-* "capacity" : The logical storage size / Unit : Byte
-
-Response Sample
-```json
-{
-    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "state": "Unmounted",
-            "capacity": 40964096, 
-            "used": 10240
-        }
-    }
-}
-```
-
-##### [MOUNT ARRAY]
-(POST) /ibofos/v1/array/mount  
 Request Body Sample
 ```json
 {
@@ -542,15 +532,37 @@ Response Sample
        "status": {
            "code": 0,
            "description": "DONE"
-       },
-       "data": null
+       }
    }
 }
 ```
 
-##### [UNMOUNT ARRAY]
-(DELETE) /ibofos/v1/array/mount
+##### [DELETE ARRAY]
+(DELETE) /ibofos/v1/array
 // (TBD)
+
+##### [STATE ARRAY]
+(GET) /ibofos/v1/array
+
+* "capacity" : The logical storage size / Unit : Byte
+
+Response Sample
+```json
+{
+    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "state": "Unmounted",
+            "capacity": 40964096, 
+            "used": 10240
+        }
+    }
+}
+```
 
 ##### [LIST ARRAY DEVICE]
 (GET) /ibofos/v1/array/device
@@ -605,8 +617,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "DONE"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -617,8 +628,7 @@ Response Sample
         "status": {
             "code": 2022,
             "description": "FAILED"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -697,8 +707,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "DONE"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -721,8 +730,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "DONE"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -733,8 +741,7 @@ Response Sample
         "status": {
             "code": 2040,
             "description": "FAILED"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -758,8 +765,7 @@ Response Sample
         "status": {
             "code": 0,
             "description": "DONE"
-        },
-        "data": null
+        }
     }
 }
 ```
@@ -770,8 +776,7 @@ Response Sample
         "status": {
             "code": 2041,
             "description": "FAILED"
-        },
-        "data": null
+        }
     }
 }
 ```

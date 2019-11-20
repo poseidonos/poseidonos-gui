@@ -15,11 +15,6 @@ func CreateArray(ctx *gin.Context) {
 
 }
 
-func UnmountArray(ctx *gin.Context) {
-	getArray(ctx, "UNMOUNTARRAY")
-
-}
-
 func DeleteArray(ctx *gin.Context) {
 	deleteArray(ctx, "DELETEARRAY")
 
@@ -28,10 +23,6 @@ func DeleteArray(ctx *gin.Context) {
 func StateArray(ctx *gin.Context) {
 	getArray(ctx, "ARRAYSTATE")
 
-}
-
-func MountArray(ctx *gin.Context) {
-	postArray(ctx, "MOUNTARRAY")
 }
 
 func postArray(ctx *gin.Context, command string) {

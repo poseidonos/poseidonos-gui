@@ -42,6 +42,8 @@ func Route(router *gin.Engine) {
 	{
 		iBoFOS.GET("/system/sysstate", iBoFOSV1.Sysstate)
 		iBoFOS.GET("/system/exit", iBoFOSV1.ExitSystem)
+		iBoFOS.POST("/system/mount", iBoFOSV1.MountiBoFOS)
+		iBoFOS.DELETE("/system/mount", iBoFOSV1.UnmountiBoFOS)
 	}
 
 	// Device
@@ -58,8 +60,8 @@ func Route(router *gin.Engine) {
 		iBoFOS.POST("/array", iBoFOSV1.CreateArray)
 		iBoFOS.GET("/array", iBoFOSV1.StateArray)
 		iBoFOS.DELETE("/array", iBoFOSV1.DeleteArray)
-		iBoFOS.POST("/array/mount", iBoFOSV1.MountArray)
-		iBoFOS.DELETE("/array/mount", iBoFOSV1.UnmountArray)
+		// Depricated
+		iBoFOS.POST("/array/mount", iBoFOSV1.MountiBoFOS)
 	}
 
 	// Volume
