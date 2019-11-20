@@ -223,6 +223,7 @@ Response Sample
 
 ##### [PING]
 (GET) /dagent/v1/ping  
+
 Response Sample
 ```json
 {
@@ -238,6 +239,7 @@ Response Sample
 
 ##### [STATUSCODE]
 (GET) /dagent/v1/statuscode  
+
 Response Sample
 ```json
 {
@@ -270,7 +272,6 @@ Response Sample
 * It just run command "run_ibof.sh" and does not gurantee to run.  
 (POST) /dagent/v1/ibofos  
   
-
 Response Sample
 ```json
 {
@@ -289,7 +290,6 @@ Response Sample
 (DELETE) /dagent/v1/ibofos  
 
 Response Sample
-
 ```json
 {
     "rid": "",
@@ -305,8 +305,10 @@ Response Sample
 #### For iBoFOS
 * The biz logic is executed in D-Agent and iBoFOS
 
-##### [SYS STATE]
-(GET) /ibofos/v1/system/sysstate  
+~~SYS STATE~~
+##### [HEARTBEAT]
+~~(GET) /ibofos/v1/system/sysstate~~  
+(GET) /ibofos/v1/system/heartbeat  
 Response Sample
 ```json
 {
@@ -320,9 +322,9 @@ Response Sample
 }
 ```
 
-##### [EXIT SYSTEM]
-(GET) /ibofos/v1/system/exit  
-* Currently this api does now work due to iboFOS Bug  
+##### [EXIT iBOFOS]
+(GET) /ibofos/v1/system/exitibofos  
+  
 Response Sample
 ```json
 {
@@ -331,6 +333,30 @@ Response Sample
         "status": {
             "code": 0,
             "description": "something"
+        }
+    }
+}
+```
+
+##### [GETIBOFOSINFO]
+~~(GET) /ibofos/v1/array~~
+(GET) /ibofos/v1/ibofosinfo
+
+* "capacity" : The logical storage size / Unit : Byte
+
+Response Sample
+```json
+{
+    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "state": "Unmounted",
+            "capacity": 40964096, 
+            "used": 10240
         }
     }
 }
@@ -371,6 +397,7 @@ Response Sample
 
 ##### [SCAN DEVICE]
 (GET) /ibofos/v1/device/scan  
+
 Response Sample
 ```json
 {
@@ -444,39 +471,17 @@ Response Sample
 
 ##### [ATTACH DEVICE]
 (POST) /ibofos/v1/device/attach
-// Not Imple in iBoFOS, It will provide by 20, sep
-Request Body Sample
-
-```json
-{
-    "param": {
-        "name": "vol01"
-    }
-}
-```
-Response Sample
-```json
-{
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "success"
-        }
-    }
-}
-```
+// TBD
 
 ##### [DETACH DEVICE]
 (DELETE) /ibofos/v1/device/detach
-// Not Imple in iBoFOS, It will provide by 20, sep
-Request Body Sample
 
+Request Body Sample
 ```json
 {
     "param": {
         "name": "vol01"
-    },
+    }
 }
 ```
 
@@ -490,11 +495,28 @@ Response Sample
             "description": "success"
         }
     }
+}
+```
+
+##### [LOAD ARRAY]
+(GET) /ibofos/v1/array  
+
+Response Sample
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+   "result": {
+       "status": {
+           "code": 0,
+           "description": "DONE"
+       }
+   }
 }
 ```
 
 ##### [CREATE ARRAY]
-(POST) /ibofos/v1/array
+(POST) /ibofos/v1/array  
+
 Request Body Sample
 ```json
 {
@@ -524,6 +546,7 @@ Request Body Sample
    }
 }
 ```
+
 Response Sample
 ```json
 {
@@ -539,28 +562,17 @@ Response Sample
 
 ##### [DELETE ARRAY]
 (DELETE) /ibofos/v1/array
-// (TBD)
-
-##### [STATE ARRAY]
-(GET) /ibofos/v1/array
-
-* "capacity" : The logical storage size / Unit : Byte
 
 Response Sample
 ```json
 {
-    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "state": "Unmounted",
-            "capacity": 40964096, 
-            "used": 10240
-        }
-    }
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+   "result": {
+       "status": {
+           "code": 0,
+           "description": "DONE"
+       }
+   }
 }
 ```
 
@@ -568,6 +580,8 @@ Response Sample
 (GET) /ibofos/v1/array/device
 * This API will br merged to other one after 3q PoC
 * Available Type : BUFFER, DATA, SPARE
+
+Response Sample
 ```json
 {
     "rid": "b447f812-ab74-4b19-8563-0d2a7613d010",
@@ -599,7 +613,6 @@ Request Body Sample
     }
 }
 ```
-
 ```json
 {
     "param": {
@@ -675,6 +688,7 @@ Request Body Sample
     }
 }
 ```
+
 Response Sample
 ```json
 {
@@ -699,6 +713,7 @@ Request Body Sample
     }
 }
 ```
+
 Response Sample
 ```json
 {
@@ -713,7 +728,8 @@ Response Sample
 ```
 
 ##### [MOUNT VOLUME]
-(POST) /ibofos/v1/volume/mount    
+(POST) /ibofos/v1/volume/mount 
+   
 Request Body Sample
 ```json
 {
@@ -722,6 +738,7 @@ Request Body Sample
     }
 }
 ```
+
 Response Sample
 ```json
 {
