@@ -13,7 +13,6 @@ func ExitSystem(ctx *gin.Context) {
 	getSystem(ctx, "EXITSYSTEM")
 }
 
-
 func IBoFOSInfo(ctx *gin.Context) {
 	getSystem(ctx, "GETIBOFOSINFO")
 }

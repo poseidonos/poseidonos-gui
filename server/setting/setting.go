@@ -21,7 +21,7 @@ type ConfigScheme struct {
 type Server struct {
 	Dagent HostConf `yaml:"dagent"`
 	IBoF   HostConf `yaml:"ibof"`
-	BMC   HostConf `yaml:"bmc"`
+	BMC    HostConf `yaml:"bmc"`
 }
 type HostConf struct {
 	IP   string `yaml:"ip"`
