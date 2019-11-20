@@ -17,15 +17,6 @@
               "script": {
                 "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -78,7 +69,6 @@
               "script": {
                 "id": "1fe22fe1-54fb-4da7-a2bd-1b33097e9b2b",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
                   ""
                 ],
                 "type": "text/javascript"
@@ -126,15 +116,6 @@
               "script": {
                 "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -186,15 +167,6 @@
               "script": {
                 "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -246,15 +218,6 @@
               "script": {
                 "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -306,15 +269,6 @@
               "script": {
                 "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -364,22 +318,13 @@
       "name": "iBoFOS",
       "item": [
         {
-          "name": "TEST - REPORTTEST",
+          "name": "(Temp) TEST - REPORTTEST",
           "event": [
             {
               "listen": "prerequest",
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -429,21 +374,13 @@
           "response": []
         },
         {
-          "name": "SYSSTATE (ts empty)",
+          "name": "HEARTBEAT (ts empty)",
           "event": [
             {
               "listen": "prerequest",
               "script": {
                 "id": "6112216b-a15f-4a65-b788-baf3057e204e",
                 "exec": [
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -467,7 +404,7 @@
               }
             ],
             "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/sysstate",
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
               "protocol": "http",
               "host": [
                 "{{host}}"
@@ -478,29 +415,20 @@
                 "ibofos",
                 "v1",
                 "system",
-                "sysstate"
+                "heartbeat"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "SYSSTATE",
+          "name": "HEARTBEAT",
           "event": [
             {
               "listen": "prerequest",
               "script": {
                 "id": "e84caaec-01ab-44d4-a3de-88a96b3d27b1",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -528,7 +456,7 @@
               }
             ],
             "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/sysstate",
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
               "protocol": "http",
               "host": [
                 "{{host}}"
@@ -539,7 +467,7 @@
                 "ibofos",
                 "v1",
                 "system",
-                "sysstate"
+                "heartbeat"
               ]
             }
           },
@@ -553,15 +481,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -621,15 +540,6 @@
               "script": {
                 "id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -682,15 +592,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -742,15 +643,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -796,22 +688,13 @@
           "response": []
         },
         {
-          "name": "MOUNT ARRAY",
+          "name": "CREATE ARRAY",
           "event": [
             {
               "listen": "prerequest",
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -843,7 +726,7 @@
               "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
             },
             "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/mount",
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
               "protocol": "http",
               "host": [
                 "{{host}}"
@@ -853,8 +736,7 @@
                 "api",
                 "ibofos",
                 "v1",
-                "array",
-                "mount"
+                "array"
               ]
             }
           },
@@ -868,15 +750,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -942,15 +815,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1006,15 +870,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1077,15 +932,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1142,15 +988,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1209,15 +1046,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1274,15 +1102,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1338,15 +1157,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1403,15 +1213,6 @@
               "script": {
                 "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
                 "exec": [
-                  "pm.environment.set(\"timestamp\", new Date());",
-                  "pm.environment.set(\"xrid\", uuidv4());",
-                  "",
-                  "function uuidv4() {",
-                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-                  "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-                  "    return v.toString(16);",
-                  "  });",
-                  "}",
                   ""
                 ],
                 "type": "text/javascript"
@@ -1455,6 +1256,118 @@
                 "v1",
                 "device",
                 "detach"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MOUNTIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "mount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UNMOUNTIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic YWRtaW46YWRtaW4="
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "mount"
               ]
             }
           },
@@ -1506,5 +1419,37 @@
       ],
       "protocolProfileBehavior": {}
     }
-  ]
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "1e270c13-51a4-4805-adb7-2cbad76884ac",
+        "type": "text/javascript",
+        "exec": [
+          "pm.environment.set(\"timestamp\", new Date());",
+          "pm.environment.set(\"xrid\", uuidv4());",
+          "",
+          "function uuidv4() {",
+          "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+          "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+          "    return v.toString(16);",
+          "  });",
+          "}",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "6aab4676-ed48-4db9-91d8-6eac89434dd6",
+        "type": "text/javascript",
+        "exec": [
+          "tests[\"response code is 200\"] = responseCode.code === 200;"
+        ]
+      }
+    }
+  ],
+  "protocolProfileBehavior": {}
 }

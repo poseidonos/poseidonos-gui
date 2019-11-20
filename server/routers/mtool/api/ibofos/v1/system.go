@@ -6,7 +6,7 @@ import (
 )
 
 func Heartbeat(ctx *gin.Context) {
-	getSystem(ctx, "SYSSTATE")
+	getSystem(ctx, "HEARTBEAT")
 }
 
 func ExitSystem(ctx *gin.Context) {
