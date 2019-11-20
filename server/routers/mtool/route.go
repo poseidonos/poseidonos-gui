@@ -41,7 +41,7 @@ func Route(router *gin.Engine) {
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", iBoFOSV1.Heartbeat)
-		iBoFOS.DELETE("/system/exit", iBoFOSV1.ExitiBoFOS)
+		iBoFOS.DELETE("/system/exitibofos", iBoFOSV1.ExitiBoFOS)
 		iBoFOS.GET("/system", iBoFOSV1.IBoFOSInfo)
 		iBoFOS.POST("/system/mount", iBoFOSV1.MountiBoFOS)
 		iBoFOS.DELETE("/system/mount", iBoFOSV1.UnmountiBoFOS)
