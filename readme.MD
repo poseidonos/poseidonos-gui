@@ -499,6 +499,10 @@ Response Sample
 ```
 
 ##### [LOAD ARRAY]
+* It loads the array info from MBR.
+After run ibofos and before creating array, this method should be called.
+If success, you mout not create array.
+
 (GET) /ibofos/v1/array  
 
 Response Sample
