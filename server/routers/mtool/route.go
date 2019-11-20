@@ -40,11 +40,13 @@ func Route(router *gin.Engine) {
 
 	// System
 	{
-		iBoFOS.GET("/system/sysstate", iBoFOSV1.Heartbeat)
+		iBoFOS.GET("/system/heartbeat", iBoFOSV1.Heartbeat)
 		iBoFOS.GET("/system/exit", iBoFOSV1.ExitSystem)
 		iBoFOS.GET("/system", iBoFOSV1.IBoFOSInfo)
 		iBoFOS.POST("/system/mount", iBoFOSV1.MountiBoFOS)
 		iBoFOS.DELETE("/system/mount", iBoFOSV1.UnmountiBoFOS)
+		// Depricated
+		iBoFOS.GET("/system/sysstate", iBoFOSV1.Heartbeat)
 	}
 
 	// Device
