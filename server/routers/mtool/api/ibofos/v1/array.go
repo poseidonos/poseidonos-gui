@@ -20,11 +20,6 @@ func DeleteArray(ctx *gin.Context) {
 
 }
 
-func StateArray(ctx *gin.Context) {
-	getArray(ctx, "ARRAYSTATE")
-
-}
-
 func postArray(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)

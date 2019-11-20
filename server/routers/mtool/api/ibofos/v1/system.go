@@ -5,12 +5,17 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-func Sysstate(ctx *gin.Context) {
+func Heartbeat(ctx *gin.Context) {
 	getSystem(ctx, "SYSSTATE")
 }
 
 func ExitSystem(ctx *gin.Context) {
 	getSystem(ctx, "EXITSYSTEM")
+}
+
+
+func IBoFOSInfo(ctx *gin.Context) {
+	getSystem(ctx, "GETIBOFOSINFO")
 }
 
 func MountiBoFOS(ctx *gin.Context) {
