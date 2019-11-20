@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "0ae85c73-8639-479d-a47e-9303e96cd363",
+    "_postman_id": "7b91f25b-bb19-4b22-8da1-9aa510044d0b",
     "name": "D-Agent",
     "description": "New collection (imported from DHC)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -40,7 +40,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -88,7 +88,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -139,7 +139,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -190,7 +190,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -241,7 +241,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -292,7 +292,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -312,7 +312,8 @@
           },
           "response": []
         }
-      ]
+      ],
+      "protocolProfileBehavior": {}
     },
     {
       "name": "iBoFOS",
@@ -348,7 +349,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -400,7 +401,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -452,7 +453,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -507,7 +508,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -563,7 +564,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -615,7 +616,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -666,7 +667,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "url": {
@@ -718,7 +719,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -778,7 +779,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -838,7 +839,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -895,7 +896,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -955,7 +956,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1014,7 +1015,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1069,7 +1070,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1125,7 +1126,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1180,7 +1181,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1236,7 +1237,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1292,7 +1293,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1348,7 +1349,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Basic YWRtaW46YWRtaW4="
+                "value": "{{basic_auth}}"
               }
             ],
             "body": {
@@ -1373,7 +1374,8 @@
           },
           "response": []
         }
-      ]
+      ],
+      "protocolProfileBehavior": {}
     },
     {
       "name": "Redfish",
