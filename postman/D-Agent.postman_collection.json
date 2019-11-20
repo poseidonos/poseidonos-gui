@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "7b91f25b-bb19-4b22-8da1-9aa510044d0b",
+    "_postman_id": "55fca14c-f146-456b-a1a4-591e0ab491ff",
     "name": "D-Agent",
     "description": "New collection (imported from DHC)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -475,7 +475,7 @@
           "response": []
         },
         {
-          "name": "EXITSYSTEM",
+          "name": "EXITIBOFOS",
           "event": [
             {
               "listen": "prerequest",
@@ -516,7 +516,7 @@
               "raw": ""
             },
             "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exit",
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos",
               "protocol": "http",
               "host": [
                 "{{host}}"
@@ -527,7 +527,177 @@
                 "ibofos",
                 "v1",
                 "system",
-                "exit"
+                "exitibofos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "iBOFOSINFO",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MOUNTIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "mount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UNMOUNTIBOFOS",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "system",
+                "mount"
               ]
             }
           },
@@ -704,6 +874,119 @@
           ],
           "request": {
             "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "array"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LOAD ARRAY",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "array"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE ARRAY",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
             "header": [
               {
                 "key": "X-Request-Id",
@@ -926,62 +1209,6 @@
           "response": []
         },
         {
-          "name": "MOUNT VOULUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "LIST VOLUME",
           "event": [
             {
@@ -1034,6 +1261,62 @@
                 "ibofos",
                 "v1",
                 "volume"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MOUNT VOULUME",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-Id",
+                "value": "{{xrid}}"
+              },
+              {
+                "key": "ts",
+                "value": "{{timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{basic_auth}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+            },
+            "url": {
+              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{vendor}}",
+                "api",
+                "ibofos",
+                "v1",
+                "volume",
+                "mount"
               ]
             }
           },
@@ -1257,118 +1540,6 @@
                 "v1",
                 "device",
                 "detach"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "MOUNTIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UNMOUNTIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "mount"
               ]
             }
           },
