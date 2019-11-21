@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"ibofdagent/server/handler"
 	"ibofdagent/server/routers"
 	"ibofdagent/server/setting"
@@ -18,6 +19,10 @@ func init() {
 }
 
 func main() {
+	log.WithFields(log.Fields{
+		"animal": "walrus",
+	}).Info("A walrus appears")
+
 	go handler.ConnectToIBoFOS()
 	startServer()
 }
