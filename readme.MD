@@ -60,6 +60,8 @@ $ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git
 $ cd ibofdagent
 $ go mod vendor
 $ go build -mod vendor
+#or
+$ ./localbuild # It will also generate api documentation
 ```
 #### Run
 * The exec binaray is also uploaded, so you can run without build
@@ -71,7 +73,8 @@ $ sudo ./run_dagent.sh # Background Run
 
 ***
 
-## How to Test
+## API Spec
+#### Postman
 1. Install Postman
 2. File -> Import -> Import File -> "postman/D-Agent.postman_collection.json"
 3. Set the envirments (host, vendor)
@@ -82,6 +85,11 @@ $ sudo ./run_dagent.sh # Background Run
 6. Call RUNIBOFOS 
     : it exec "run_ibofos.sh"
 7. Test
+
+#### HTML & Markdown
+There are two type documentation in doc folder
+* api.html : open with chrome
+* api.md : open with markdown editor
 
 ***
 
