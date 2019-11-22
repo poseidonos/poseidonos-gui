@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "ac248f18-135d-4974-8c6b-01c96999eb4a",
 		"name": "D-Agent",
-		"description": "##### REST API Collection and Documents of D-Agent (Dynamic Agent)",
+		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -65,7 +65,7 @@
 					"response": []
 				}
 			],
-			"description": "* Most scheme of json is the similar to iBoF External API\n* The id/pass for basic auth is the same as M-Tool's (It use the same DB)\n* Currently D-Agent provides only basic auth.\n\n#### Request Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| ts | {{timestamp}} | 1566287153702 |\n| Content-Type | application/json | application/json |\n| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |\n\n\n#### Request Body (CUD)\n* All API has common request scheme except GET method.\n\n```json\n{\n  \"param\":{\n    // Ref. each command\n  }\n}\n```\n\n#### Response Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| Content-Type | application/json | application/json |\n| Content-Length | {length}} | 97 |\n\n#### Response Body (CRUD)\n* All API has common response scheme.\n\nResponse Sample\n```json\n{\n   \"result\":{\n    \"status\":{\n      \"code\":0,\n      \"description\":\"Volume Create Success\"\n    },\n    \"data\":{\n      // Ref. each command\n    } \n  }\n}\n```\n\n#### Timeout\n* D-Agent default both read and write timeout is 30sec\n* D-Agent waits 29sec from iBoFOS  \n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 19000,\n            \"description\": \"iBof Response Timeout\"\n        }\n    }\n}\n```\n\n#### Busy Status\n* If iBof is busy, D-Agent return busy response\n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12000,\n            \"description\": \"iBoF is busy\"\n        }\n    }\n}\n```",
+			"description": "Most scheme of json is the similar to iBoF External API  \nThe id/pass for basic auth is the same as M-Tool's (It use the same DB)  \nCurrently D-Agent provides only basic auth.  \n\n***\n\n#### Request Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| ts | {{timestamp}} | 1566287153702 |\n| Content-Type | application/json | application/json |\n| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |\n\n***\n\n#### Request Body (CUD)\n* All API has common request scheme except GET method.\n\n```json\n{\n  \"param\":{\n    // Ref. each command\n  }\n}\n```\n\n***\n\n#### Response Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| Content-Type | application/json | application/json |\n| Content-Length | {length}} | 97 |\n\n***\n\n#### Response Body (CRUD)\n* All API has common response scheme.\n\nResponse Sample\n```json\n{\n   \"result\":{\n    \"status\":{\n      \"code\":0,\n      \"description\":\"Volume Create Success\"\n    },\n    \"data\":{\n      // Ref. each command\n    } \n  }\n}\n```\n\n***\n\n#### Timeout\n* D-Agent default both read and write timeout is 30sec\n* D-Agent waits 29sec from iBoFOS  \n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 19000,\n            \"description\": \"iBof Response Timeout\"\n        }\n    }\n}\n```\n\n***\n\n#### Busy Status\n* If iBof is busy, D-Agent return busy response\n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12000,\n            \"description\": \"iBoF is busy\"\n        }\n    }\n}\n```",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -92,57 +92,6 @@
 		{
 			"name": "D-Agent",
 			"item": [
-				{
-					"name": "PING (X-Request-Id empty)",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "1fe22fe1-54fb-4da7-a2bd-1b33097e9b2b",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "ts",
-								"value": "{{timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{vendor}}",
-								"api",
-								"dagent",
-								"v1",
-								"ping"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "PING",
 					"event": [
@@ -194,7 +143,8 @@
 								"v1",
 								"ping"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Pong\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -249,7 +199,8 @@
 								"v1",
 								"statuscode"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"level\": \"\",\n            \"description\": \"success\"\n        },\n        \"data\": {\n            \"statuslist\": [\n                {\n                    \"code\": 1000,\n                    \"level\": \"INFO\",\n                    \"description\": \"cli server initialized\"\n                },\n                {\n                    \"code\": 1001,\n                    \"level\": \"INFO\",\n                    \"description\": \"new client\"\n                }\n            ]\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -304,7 +255,8 @@
 								"v1",
 								"ibofos"
 							]
-						}
+						},
+						"description": "* It just runs \"pkill -9 ibofos\"\n\nResponse Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -359,7 +311,8 @@
 								"v1",
 								"ibofos"
 							]
-						}
+						},
+						"description": "* It just run command \"run_ibof.sh\" and does not gurantee to run.\n\nResponse Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				}
@@ -391,58 +344,6 @@
 		{
 			"name": "iBoFOS",
 			"item": [
-				{
-					"name": "HEARTBEAT (ts empty)",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "6112216b-a15f-4a65-b788-baf3057e204e",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{xrid}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{vendor}}",
-								"api",
-								"ibofos",
-								"v1",
-								"system",
-								"heartbeat"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "HEARTBEAT",
 					"event": [
@@ -495,7 +396,8 @@
 								"system",
 								"heartbeat"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"b469cefa-cf93-41ab-bc3c-a18c9828c6b2\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -513,11 +415,8 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "X-Request-Id",
@@ -554,7 +453,8 @@
 								"system",
 								"exitibofos"
 							]
-						}
+						},
+						"description": "Response Sample\n\n```json\nTBD\n```"
 					},
 					"response": []
 				},
@@ -612,7 +512,8 @@
 								"v1",
 								"system"
 							]
-						}
+						},
+						"description": "Response Sample\n\n* `capacity` : The logical storage size / Unit : Byte\n\n```json\n{\n    \"rid\": \"8a6773aa-3eb8-4c26-b4b7-be5cec6fb415\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"state\": \"Unmounted\",\n            \"capacity\": 40964096, \n            \"used\": 10240\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -668,7 +569,8 @@
 								"system",
 								"mount"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -724,7 +626,8 @@
 								"system",
 								"mount"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -780,7 +683,8 @@
 								"device",
 								"scan"
 							]
-						}
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -835,7 +739,8 @@
 								"v1",
 								"device"
 							]
-						}
+						},
+						"description": "Response Sample\n\n* `mn` : Model Number\n* `sn` : Serial Number\n* `size` : Currently It is page size, it will be fixed as \"byte\"\n\n```json\n{\n    \"rid\": \"3922e5eb-3061-433c-a543-5fdeb3b32d25\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-0\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0002\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-1\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0003\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-2\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0000\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-3\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0001\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"\",\n                    \"name\": \"uram0\",\n                    \"size\": 262144,\n                    \"sn\": \"\",\n                    \"type\": \"NVRAM\"\n                }\n            ]\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -853,6 +758,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -891,7 +799,8 @@
 								"array",
 								"device"
 							]
-						}
+						},
+						"description": "Response Sample\n\n* Available Type : BUFFER, DATA, SPARE\n\n```json\n{\n    \"rid\": \"b447f812-ab74-4b19-8563-0d2a7613d010\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"level\": \"\",\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				},
@@ -946,7 +855,8 @@
 								"v1",
 								"array"
 							]
-						}
+						},
+						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
 					"response": []
 				},
@@ -1004,7 +914,8 @@
 								"v1",
 								"array"
 							]
-						}
+						},
+						"description": "It loads the array info from MBR.  \nThis method should be called after run ibofos and before creating array.  \nIf success, you do not neet to create array.\n\nResponse Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
 					"response": []
 				},
@@ -1059,7 +970,8 @@
 								"v1",
 								"array"
 							]
-						}
+						},
+						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
 					"response": []
 				},
@@ -1512,7 +1424,8 @@
 								"device",
 								"attach"
 							]
-						}
+						},
+						"description": "Response Sample\n\n```json\nTBD\n```"
 					},
 					"response": []
 				},
@@ -1568,7 +1481,8 @@
 								"device",
 								"detach"
 							]
-						}
+						},
+						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
 					},
 					"response": []
 				}
@@ -1643,7 +1557,7 @@
 					"response": []
 				}
 			],
-			"description": "The biz-logic execute in both D-Agent and BMC module",
+			"description": "The biz-logic execute in both D-Agent and BMC module\n* Redfish also uses basic auth. Not D-Agent's user info, But BMC user info ",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1778,7 +1692,8 @@
 								"test",
 								"report"
 							]
-						}
+						},
+						"description": "* It makes a report file for self test.\n* It is made for only test, so it can be deprecated without any notice.\n* Report file directory : /etc/ibofos/report/  \nReport file name : report.log / report.1.log / report.2.log ... report.4.log  \n(5 files, rotationally write, 100MB per file)\n* Code Definition : See below Error Code section\n\nFormat\n```\n[{timestamp}][{code}}][{level}] [{value}]\n```\n\nSample in report.log\n```\n[1567675252][2804][info] [85]\n[1567675253][2804][info] [86]\n[1567675254][2804][info] [87]\n[1567675266][2804][info] [99]\n[1567675267][2804][info] [100]\n```\n\nResponse Sample\n* It takes about 100 sec, so D-Agent will make timeout."
 					},
 					"response": []
 				}
