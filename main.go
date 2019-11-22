@@ -19,10 +19,6 @@ func init() {
 }
 
 func main() {
-	log.WithFields(log.Fields{
-		"animal": "walrus",
-	}).Info("A walrus appears")
-
 	go handler.ConnectToIBoFOS()
 	startServer()
 }
