@@ -1,18 +1,28 @@
 
 # D-Agent
 
-New collection (imported from DHC)
+##### REST API Collection and Documents of D-Agent (Dynamic Agent)
+
+a
+a
+a
+a
+s
+
 
 ## Indices
 
-* [DAGENT](#dagent)
+* [Common](#common)
 
   * [TEST - FIO](#1-test---fio)
-  * [PING (X-Request-Id empty)](#2-ping-(x-request-id-empty))
-  * [PING](#3-ping)
-  * [STATUS CODE](#4-status-code)
-  * [FORCEKILLIBOFOS](#5-forcekillibofos)
-  * [RUNIBOFOS](#6-runibofos)
+
+* [D-Agent](#d-agent)
+
+  * [PING (X-Request-Id empty)](#1-ping-(x-request-id-empty))
+  * [PING](#2-ping)
+  * [STATUS CODE](#3-status-code)
+  * [FORCEKILLIBOFOS](#4-forcekillibofos)
+  * [RUNIBOFOS](#5-runibofos)
 
 * [iBoFOS](#ibofos)
 
@@ -47,7 +57,108 @@ New collection (imported from DHC)
 --------
 
 
-## DAGENT
+## Common
+* Most scheme of json is the similar to iBoF External API
+* The id/pass for basic auth is the same as M-Tool's (It use the same DB)
+* Currently D-Agent provides only basic auth.
+
+#### Common Request Headers
+```
+X-Request-Id : {uuid}  
+ts : {unix timestamp}
+Content-Type : application/json
+Authorization : {basic auth value}
+```
+
+Sample
+```
+X-Request-Id : 44f1280b-982e-4d2e-ab14-fe9eb2022045
+ts : 1566287153702
+Content-Type : application/json
+Authorization : Basic YWRtaW46YWRtaW4=
+```
+
+#### Common Request Body (CUD)
+* All API has common request scheme without GET method.
+
+```json
+{
+  "param":{
+    // Ref. each command
+  }
+}
+```
+
+#### Common Response Headers
+Sample
+```
+X-Request-Id : 44f1280b-982e-4d2e-ab14-fe9eb2022045
+Content-Type : application/json; charset=utf-8
+Content-Length : 97
+```
+
+#### Common Response Body (CRUD)
+* All API has common response scheme.
+
+Response Sample
+```json
+{
+   "result":{
+    "status":{
+      "code":0,
+      "description":"Volume Create Success"
+    },
+    "data":{
+      // Ref. each command
+    } 
+  }
+}
+```
+
+#### Timeout
+* D-Agent default both read and write timeout is 30sec
+* D-Agent waits 29sec from iBoFOS  
+
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 19000,
+            "description": "iBof Response Timeout"
+        }
+    }
+}
+```
+
+#### Busy Status
+* If iBof is busy, D-Agent return busy response
+
+Response Sample
+```json
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12000,
+            "description": "iBoF is busy"
+        }
+    }
+}
+```
+
+### API Path  
+* http://{localhost}/{vendor}/api/{type}/{version}/{command}/{command}...  
+
+Sample
+```  
+http://12.36.56.173:3000/mtool/api/dagent/v1/ping
+http://12.36.56.173:3000/mtool/api/ibofos/v1/system/sysstate
+http://12.36.56.173:3000/mtool/api/ibofos/v1/volume/create
+http://12.36.56.173:3000/mtool/api/bmc/v1/psu
+http://12.36.56.173:3000/nbp/api/dagent/v1/ping
+```
 
 
 
@@ -75,7 +186,12 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/test/fio
 
 
 
-### 2. PING (X-Request-Id empty)
+## D-Agent
+##### The biz-logic execute in D-Agent own module
+
+
+
+### 1. PING (X-Request-Id empty)
 
 
 
@@ -98,7 +214,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ping
 
 
 
-### 3. PING
+### 2. PING
 
 
 
@@ -122,7 +238,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ping
 
 
 
-### 4. STATUS CODE
+### 3. STATUS CODE
 
 
 
@@ -146,7 +262,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/statuscode
 
 
 
-### 5. FORCEKILLIBOFOS
+### 4. FORCEKILLIBOFOS
 
 
 
@@ -154,7 +270,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/statuscode
 
 ```bash
 Method: DELETE
-Type: 
+Type: RAW
 URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 ```
 
@@ -170,7 +286,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 
 
 
-### 6. RUNIBOFOS
+### 5. RUNIBOFOS
 
 
 
@@ -178,7 +294,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 
 ```bash
 Method: POST
-Type: 
+Type: RAW
 URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 ```
 
@@ -195,6 +311,7 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 
 
 ## iBoFOS
+##### The biz-logic execute in both D-Agent and iBoFOS module
 
 
 
@@ -945,6 +1062,7 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach
 
 
 ## Redfish
+##### The biz-logic execute in both D-Agent and BMC module
 
 
 
@@ -971,4 +1089,4 @@ URL: http://{{host}}/redfish/v1/Chassis
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-11-22 10:13:06 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-11-22 15:44:28 by [docgen](https://github.com/thedevsaddam/docgen)

@@ -1,1628 +1,1842 @@
 {
-  "info": {
-    "_postman_id": "55fca14c-f146-456b-a1a4-591e0ab491ff",
-    "name": "D-Agent",
-    "description": "New collection (imported from DHC)",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "DAGENT",
-      "item": [
-        {
-          "name": "TEST - FIO",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/test/fio",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "test",
-                "fio"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "PING (X-Request-Id empty)",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "1fe22fe1-54fb-4da7-a2bd-1b33097e9b2b",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "ping"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "PING",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "ping"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "STATUS CODE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/statuscode",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "statuscode"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FORCEKILLIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "ibofos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "RUNIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "dagent",
-                "v1",
-                "ibofos"
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
-      "protocolProfileBehavior": {}
-    },
-    {
-      "name": "iBoFOS",
-      "item": [
-        {
-          "name": "(Temp) TEST - REPORTTEST",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/test/report",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "test",
-                "report"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "HEARTBEAT (ts empty)",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "6112216b-a15f-4a65-b788-baf3057e204e",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "heartbeat"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "HEARTBEAT",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "e84caaec-01ab-44d4-a3de-88a96b3d27b1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "heartbeat"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "EXITIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "exitibofos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "iBOFOSINFO",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "MOUNTIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UNMOUNTIBOFOS",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "system",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "SCAN DEVICE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "device",
-                "scan"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "LIST DEVICE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "device"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "LIST ARRAY DEVICE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "array",
-                "device"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "CREATE ARRAY",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "array"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "LOAD ARRAY",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "array"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE ARRAY",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "array"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "STATE ARRAY",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "name": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "array"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "CREATE VOLUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE VOLUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "LIST VOLUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "MOUNT VOULUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UNMOUNT VOLUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume",
-                "mount"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE VOLUME",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "volume"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "ATTACH DEVICE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "device",
-                "attach"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DETACH DEVICE",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-Request-Id",
-                "value": "{{xrid}}"
-              },
-              {
-                "key": "ts",
-                "value": "{{timestamp}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "{{basic_auth}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
-            },
-            "url": {
-              "raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "{{vendor}}",
-                "api",
-                "ibofos",
-                "v1",
-                "device",
-                "detach"
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
-      "protocolProfileBehavior": {}
-    },
-    {
-      "name": "Redfish",
-      "item": [
-        {
-          "name": "Cahsssis",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Basic cm9vdDowcGVuQm1j",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://{{host}}/redfish/v1/Chassis",
-              "protocol": "http",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "redfish",
-                "v1",
-                "Chassis"
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
-      "protocolProfileBehavior": {}
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "id": "1e270c13-51a4-4805-adb7-2cbad76884ac",
-        "type": "text/javascript",
-        "exec": [
-          "pm.environment.set(\"timestamp\", new Date());",
-          "pm.environment.set(\"xrid\", uuidv4());",
-          "",
-          "function uuidv4() {",
-          "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-          "    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-          "    return v.toString(16);",
-          "  });",
-          "}",
-          ""
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "id": "6aab4676-ed48-4db9-91d8-6eac89434dd6",
-        "type": "text/javascript",
-        "exec": [
-          "tests[\"response code is 200\"] = responseCode.code === 200;"
-        ]
-      }
-    }
-  ],
-  "protocolProfileBehavior": {}
+	"info": {
+		"_postman_id": "ac248f18-135d-4974-8c6b-01c96999eb4a",
+		"name": "D-Agent",
+		"description": "##### REST API Collection and Documents of D-Agent (Dynamic Agent)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Common",
+			"item": [
+				{
+					"name": "Sample",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/sample",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"sample"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "* Most scheme of json is the similar to iBoF External API\n* The id/pass for basic auth is the same as M-Tool's (It use the same DB)\n* Currently D-Agent provides only basic auth.\n\n#### Request Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| ts | {{timestamp}} | 1566287153702 |\n| Content-Type | application/json | application/json |\n| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |\n\n\n#### Request Body (CUD)\n* All API has common request scheme except GET method.\n\n```json\n{\n  \"param\":{\n    // Ref. each command\n  }\n}\n```\n\n#### Response Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| Content-Type | application/json | application/json |\n| Content-Length | {length}} | 97 |\n\n#### Response Body (CRUD)\n* All API has common response scheme.\n\nResponse Sample\n```json\n{\n   \"result\":{\n    \"status\":{\n      \"code\":0,\n      \"description\":\"Volume Create Success\"\n    },\n    \"data\":{\n      // Ref. each command\n    } \n  }\n}\n```\n\n#### Timeout\n* D-Agent default both read and write timeout is 30sec\n* D-Agent waits 29sec from iBoFOS  \n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 19000,\n            \"description\": \"iBof Response Timeout\"\n        }\n    }\n}\n```\n\n#### Busy Status\n* If iBof is busy, D-Agent return busy response\n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12000,\n            \"description\": \"iBoF is busy\"\n        }\n    }\n}\n```",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "86e3a8a8-7b5c-4396-bd09-67d77ffaf581",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "46819c3c-bc48-4b4d-af0e-0f1ecb8ed3e8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "D-Agent",
+			"item": [
+				{
+					"name": "PING (X-Request-Id empty)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1fe22fe1-54fb-4da7-a2bd-1b33097e9b2b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PING",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "STATUS CODE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/statuscode",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"statuscode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FORCEKILLIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"ibofos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RUNIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"ibofos"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The biz-logic execute in D-Agent own module",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "30d29468-31e5-4dc1-84b1-e570b4a14cc4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dec4fd60-0dfe-4a2b-88ef-7124629b0ae9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "iBoFOS",
+			"item": [
+				{
+					"name": "HEARTBEAT (ts empty)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6112216b-a15f-4a65-b788-baf3057e204e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"heartbeat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "HEARTBEAT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e84caaec-01ab-44d4-a3de-88a96b3d27b1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"heartbeat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EXITIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"exitibofos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "iBOFOSINFO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MOUNTIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"mount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UNMOUNTIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"mount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SCAN DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"scan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST ARRAY DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE ARRAY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOAD ARRAY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ARRAY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "STATE ARRAY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE VOLUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE VOLUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST VOLUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MOUNT VOULUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume",
+								"mount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UNMOUNT VOLUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume",
+								"mount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE VOLUME",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ATTACH DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"attach"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DETACH DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"detach"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The biz-logic execute in both D-Agent and iBoFOS module",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "38c3e606-9d0a-49b4-b87f-419c813a95ca",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "25603530-b574-429d-82b7-ac71442a09cd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Redfish",
+			"item": [
+				{
+					"name": "Cahsssis",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic cm9vdDowcGVuQm1j",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/redfish/v1/Chassis",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"redfish",
+								"v1",
+								"Chassis"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The biz-logic execute in both D-Agent and BMC module",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f7ed47e8-a698-4e13-83b2-68ec4fa54671",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c028d773-e24d-48d3-8215-f445b39ac619",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Debug & Depricated",
+			"item": [
+				{
+					"name": "TEST - FIO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/test/fio",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"dagent",
+								"v1",
+								"test",
+								"fio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TEST - REPORTTEST",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{xrid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/test/report",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{vendor}}",
+								"api",
+								"ibofos",
+								"v1",
+								"test",
+								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Only for debug, test and depricated API  \nThese APIs will be able to remove without any notice",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "32cd6c47-5aaa-40d8-9a5e-3a6364ad97c2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f3fb5ca-a126-40f5-91db-ffe97162eb6c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1e270c13-51a4-4805-adb7-2cbad76884ac",
+				"type": "text/javascript",
+				"exec": [
+					"pm.environment.set(\"timestamp\", new Date());",
+					"pm.environment.set(\"xrid\", uuidv4());",
+					"",
+					"function uuidv4() {",
+					"  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+					"    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
+					"    return v.toString(16);",
+					"  });",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6aab4676-ed48-4db9-91d8-6eac89434dd6",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"response code is 200\"] = responseCode.code === 200;"
+				]
+			}
+		}
+	]
 }
