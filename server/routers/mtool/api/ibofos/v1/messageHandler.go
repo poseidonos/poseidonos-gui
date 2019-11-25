@@ -7,7 +7,7 @@ import (
 	"ibofdagent/server/handler"
 	"ibofdagent/server/routers/mtool/api"
 	"ibofdagent/server/routers/mtool/model"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"sync/atomic"
 )

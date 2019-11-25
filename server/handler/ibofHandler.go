@@ -8,7 +8,7 @@ import (
 	"ibofdagent/server/setting"
 	"ibofdagent/server/util"
 	"io"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net"
 	"time"
 )

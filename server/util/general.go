@@ -3,7 +3,7 @@ package util
 import (
 	"encoding/json"
 	"github.com/google/uuid"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 func PrettyJson(jsonByte interface{}) []byte {

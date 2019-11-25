@@ -2,7 +2,7 @@ package util
 
 import (
 	"ibofdagent/server/setting"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 func PrintCurrentServerStatus() {

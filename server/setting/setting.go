@@ -5,7 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"ibofdagent/server/routers/mtool/model"
 	"io/ioutil"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 var Config ConfigScheme

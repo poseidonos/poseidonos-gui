@@ -3,7 +3,7 @@ package util
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"os/exec"
 )
 
