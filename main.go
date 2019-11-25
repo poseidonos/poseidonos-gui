@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 	"ibofdagent/server/handler"
 	"ibofdagent/server/routers"
 	"ibofdagent/server/setting"

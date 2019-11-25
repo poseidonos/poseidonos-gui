@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"ibofdagent/server/routers/mtool/model"
 	"ibofdagent/server/setting"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 

@@ -6,7 +6,7 @@ import (
 	"ibofdagent/server/routers/mtool/api"
 	"ibofdagent/server/routers/mtool/model"
 	"io"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 func CheckBody(ctx *gin.Context) {
