@@ -128,3 +128,24 @@ Authorization : Basic cm9vdDowcGVuQm1j
 
 ***
 
+## Newman
+#### Installation
+* Newman is a node.js pkg and distributed by npm so you need to install node.js and npm.
+```
+$apt-get install node.js
+$apt-get install npm
+```
+
+* Install a newman using npm.
+
+```
+$npm install newman
+```
+
+
+#### How to use
+
+* You can see a run script in
+```
+Authorization : {basic auth value}
+```
