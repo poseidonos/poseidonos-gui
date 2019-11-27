@@ -5,10 +5,15 @@ import (
 	dagentV1 "ibofdagent/server/routers/mtool/api/dagent/v1"
 	iBoFOSV1 "ibofdagent/server/routers/mtool/api/ibofos/v1"
 	"ibofdagent/server/routers/mtool/middleware"
+	"net/http"
 )
 
 func Route(router *gin.Engine) {
 	uri := router.Group("/mtool/api")
+
+	// Doc Static
+	uri.StaticFS("/dagent/v1/doc", http.Dir("./doc"))
+
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())
 	uri.Use(middleware.CheckHeader)
