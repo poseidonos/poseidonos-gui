@@ -129,23 +129,35 @@ Authorization : Basic cm9vdDowcGVuQm1j
 ***
 
 ## Newman
+
 #### Installation
-* Newman is a node.js pkg and distributed by npm so you need to install node.js and npm.
+
+- Newman is a node.js pkg and distributed by npm so you need to install node.js and npm.
+
 ```
 $apt-get install node.js
 $apt-get install npm
 ```
 
-* Install a newman using npm.
+- Install a newman using npm.
 
 ```
 $npm install newman
 ```
 
-
 #### How to use
 
-* You can see a run script in
+- You can find a run_test.sh in below directory.
+
+ |-- postman
+        |-- run_test.sh
+
+- It contains a simple command like below.
+
 ```
-Authorization : {basic auth value}
+$newman run test/sample_test.json -e Test.postman_environment.json -r junit --reporter-junit-export ./result.xml
 ```
+
+- You have to prepare collection and environment file which are exported from Postman.
+- put a collection file after "run" and add an environment file using option "-e".
+- You can report the test result with JUnit format and it can be using option "-r junit" and make a specific xml formatted file like "--reporter-junit-export result.xml".
