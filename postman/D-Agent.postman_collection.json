@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ac248f18-135d-4974-8c6b-01c96999eb4a",
+		"_postman_id": "9d88e883-3aeb-4ef8-b06b-da4ddea53be5",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -28,11 +28,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -43,10 +43,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/sample",
 							"protocol": "http",
@@ -65,7 +61,7 @@
 					"response": []
 				}
 			],
-			"description": "Most scheme of json is the similar to iBoF External API  \nThe id/pass for basic auth is the same as M-Tool's (It use the same DB)  \nCurrently D-Agent provides only basic auth.  \n\n***\n\n#### Request Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| ts | {{timestamp}} | 1566287153702 |\n| Content-Type | application/json | application/json |\n| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |\n\n***\n\n#### Request Body (CUD)\n* All API has common request scheme except GET method.\n\n```json\n{\n  \"param\":{\n    // Ref. each command\n  }\n}\n```\n\n***\n\n#### Response Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| Content-Type | application/json | application/json |\n| Content-Length | {length}} | 97 |\n\n***\n\n#### Response Body (CRUD)\n* All API has common response scheme.\n\nResponse Sample\n```json\n{\n   \"result\":{\n    \"status\":{\n      \"code\":0,\n      \"description\":\"Volume Create Success\"\n    },\n    \"data\":{\n      // Ref. each command\n    } \n  }\n}\n```\n\n***\n\n#### Timeout\n* D-Agent default both read and write timeout is 30sec\n* D-Agent waits 29sec from iBoFOS  \n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 19000,\n            \"description\": \"iBof Response Timeout\"\n        }\n    }\n}\n```\n\n***\n\n#### Busy Status\n* If iBof is busy, D-Agent return busy response\n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12000,\n            \"description\": \"iBoF is busy\"\n        }\n    }\n}\n```",
+			"description": "Most scheme of json is the similar to iBoF External API  \nThe id/pass for basic auth is the same as M-Tool's (It use the same DB)  \nCurrently D-Agent provides only basic auth.  \n\n***\n\n#### Request Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| ts | {{$timestamp}} | 1566287153702 |\n| Content-Type | application/json | application/json |\n| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |\n\n***\n\n#### Request Body (CUD)\n* All API has common request scheme except GET method.\n\n```json\n{\n  \"param\":{\n    // Ref. each command\n  }\n}\n```\n\n***\n\n#### Response Headers\n\n| Key | Value | Sample |\n| --- | ------|-------------|\n| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |\n| Content-Type | application/json | application/json |\n| Content-Length | {length}} | 97 |\n\n***\n\n#### Response Body (CRUD)\n* All API has common response scheme.\n\nResponse Sample\n```json\n{\n   \"result\":{\n    \"status\":{\n      \"code\":0,\n      \"description\":\"Volume Create Success\"\n    },\n    \"data\":{\n      // Ref. each command\n    } \n  }\n}\n```\n\n***\n\n#### Timeout\n* D-Agent default both read and write timeout is 30sec\n* D-Agent waits 29sec from iBoFOS  \n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 19000,\n            \"description\": \"iBof Response Timeout\"\n        }\n    }\n}\n```\n\n***\n\n#### Busy Status\n* If iBof is busy, D-Agent return busy response\n\nResponse\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12000,\n            \"description\": \"iBoF is busy\"\n        }\n    }\n}\n```",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -87,7 +83,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "D-Agent",
@@ -111,11 +108,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -126,10 +123,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
 							"protocol": "http",
@@ -143,10 +136,87 @@
 								"v1",
 								"ping"
 							]
-						},
-						"description": "Response Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Pong\"\n        }\n    }\n}\n```"
+						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ping"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "1194f5ab-cf94-41da-87db-2f9bf6762179"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 25 Nov 2019 07:00:08 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "62"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from gateway.sys.local"
+								},
+								{
+									"key": "X-Cache-Lookup",
+									"value": "MISS from gateway.sys.local:3128"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 gateway.sys.local (squid/3.5.20)"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Pong\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "STATUS CODE",
@@ -167,11 +237,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -182,10 +252,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/statuscode",
 							"protocol": "http",
@@ -199,10 +265,73 @@
 								"v1",
 								"statuscode"
 							]
-						},
-						"description": "Response Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"level\": \"\",\n            \"description\": \"success\"\n        },\n        \"data\": {\n            \"statuslist\": [\n                {\n                    \"code\": 1000,\n                    \"level\": \"INFO\",\n                    \"description\": \"cli server initialized\"\n                },\n                {\n                    \"code\": 1001,\n                    \"level\": \"INFO\",\n                    \"description\": \"new client\"\n                }\n            ]\n        }\n    }\n}\n```"
+						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16"
+									},
+									{
+										"key": "ts",
+										"value": "1566287153702"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46YWRtaW4="
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/statuscode",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"statuscode"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"result\": {\r\n        \"status\": {\r\n            \"code\": 0,\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": {\r\n            \"StatusList\": [\r\n                {\r\n                    \"code\": 0,\r\n                    \"description\": \"Success\"\r\n                },\r\n                {\r\n                    \"code\": 1200,\r\n                    \"description\": \"iBoFOS System Recovery Something\"\r\n                },\r\n                {\r\n                    \"code\": 1234,\r\n                    \"description\": \"iBoFOS System Recovery Inprogress\"\r\n                },\r\n                {\r\n                    \"code\": 2800,\r\n                    \"description\": \"Rebuild begin\"\r\n                },\r\n                {\r\n                    \"code\": 2801,\r\n                    \"description\": \"Rebuild done\"\r\n                },\r\n                {\r\n                    \"code\": 2082,\r\n                    \"description\": \"Rebuildjob added\"\r\n                },\r\n                {\r\n                    \"code\": 2083,\r\n                    \"description\": \"About job slicing point\"\r\n                },\r\n                {\r\n                    \"code\": 2804,\r\n                    \"description\": \"Rebuild progress report\"\r\n                },\r\n                {\r\n                    \"code\": 2805,\r\n                    \"description\": \"Rebuildjob begin\"\r\n                },\r\n                {\r\n                    \"code\": 2806,\r\n                    \"description\": \"Rebuildjob done\"\r\n                },\r\n                {\r\n                    \"code\": 2807,\r\n                    \"description\": \"Rebuilding debug log\"\r\n                },\r\n                {\r\n                    \"code\": 10110,\r\n                    \"description\": \"Auth Error : API does not activate\"\r\n                },\r\n                {\r\n                    \"code\": 10240,\r\n                    \"description\": \"Header Error : X-request-Id is invalid\"\r\n                },\r\n                {\r\n                    \"code\": 10250,\r\n                    \"description\": \"Header Error : ts missing\"\r\n                },\r\n                {\r\n                    \"code\": 10310,\r\n                    \"description\": \"Body Error : Json Error\"\r\n                },\r\n                {\r\n                    \"code\": 11000,\r\n                    \"description\": \"Exec command error\"\r\n                },\r\n                {\r\n                    \"code\": 12000,\r\n                    \"description\": \"iBoF is busy\"\r\n                },\r\n                {\r\n                    \"code\": 12030,\r\n                    \"description\": \"iBoF does not run\"\r\n                },\r\n                {\r\n                    \"code\": 12310,\r\n                    \"description\": \"iBoF Unmarshal Error\"\r\n                },\r\n                {\r\n                    \"code\": 19000,\r\n                    \"description\": \"iBof Response Timeout\"\r\n                },\r\n                {\r\n                    \"code\": 19002,\r\n                    \"description\": \"iBof Socket Connection Error\"\r\n                },\r\n                {\r\n                    \"code\": 40000,\r\n                    \"description\": \"This API does not implemente yet\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}"
+						}
+					]
 				},
 				{
 					"name": "FORCEKILLIBOFOS",
@@ -223,11 +352,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -256,9 +385,172 @@
 								"ibofos"
 							]
 						},
-						"description": "* It just runs \"pkill -9 ibofos\"\n\nResponse Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}\n```"
+						"description": "It just runs \"pkill -9 ibofos\"\n"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "39a275da-3995-4eea-b17b-8a1a52cc9aa8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 25 Nov 2019 04:21:21 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from gateway.sys.local"
+								},
+								{
+									"key": "X-Cache-Lookup",
+									"value": "MISS from gateway.sys.local:3128"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 gateway.sys.local (squid/3.5.20)"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 11000,\n            \"description\": \"exec Run: exit status 1\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "613f7d82-da24-4b82-934f-102e052ee3bb"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 25 Nov 2019 04:24:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from gateway.sys.local"
+								},
+								{
+									"key": "X-Cache-Lookup",
+									"value": "MISS from gateway.sys.local:3128"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 gateway.sys.local (squid/3.5.20)"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "RUNIBOFOS",
@@ -279,11 +571,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -312,9 +604,158 @@
 								"ibofos"
 							]
 						},
-						"description": "* It just run command \"run_ibof.sh\" and does not gurantee to run.\n\nResponse Sample\n```json\n{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}\n```"
+						"description": "It just run command \"run_ibof.sh\" and does not gurantee to run."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16"
+									},
+									{
+										"key": "ts",
+										"value": "1566287153702"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46YWRtaW4="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type\t",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length\t",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "46b82e21-58f7-43ad-ad4e-3d5867e530ee"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 25 Nov 2019 04:22:01 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "94"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from gateway.sys.local"
+								},
+								{
+									"key": "X-Cache-Lookup",
+									"value": "MISS from gateway.sys.local:3128"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 gateway.sys.local (squid/3.5.20)"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 11000,\n            \"description\": \"exec Run: The iBoFOS already run\"\n        }\n    }\n}"
+						}
+					]
 				}
 			],
 			"description": "The biz-logic execute in D-Agent own module",
@@ -339,7 +780,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "iBoFOS",
@@ -350,7 +792,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e84caaec-01ab-44d4-a3de-88a96b3d27b1",
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
 								"exec": [
 									""
 								],
@@ -363,11 +805,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -378,10 +820,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
 							"protocol": "http",
@@ -396,10 +834,151 @@
 								"system",
 								"heartbeat"
 							]
-						},
-						"description": "Response Sample\n```json\n{\n    \"rid\": \"b469cefa-cf93-41ab-bc3c-a18c9828c6b2\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    }\n}\n```"
+						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16"
+									},
+									{
+										"key": "ts",
+										"value": "1566287153702"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46YWRtaW4="
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ping"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"b469cefa-cf93-41ab-bc3c-a18c9828c6b2\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"system",
+										"heartbeat"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "dfa15f2d-7460-42c1-8fc2-2647397f23fb"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 25 Nov 2019 04:24:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "79"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from gateway.sys.local"
+								},
+								{
+									"key": "X-Cache-Lookup",
+									"value": "MISS from gateway.sys.local:3128"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 gateway.sys.local (squid/3.5.20)"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 12030,\n            \"description\": \"iBoF does not run\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "EXITIBOFOS",
@@ -407,7 +986,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
 								"exec": [
 									""
 								],
@@ -416,15 +995,15 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -435,10 +1014,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos",
 							"protocol": "http",
@@ -453,10 +1028,73 @@
 								"system",
 								"exitibofos"
 							]
-						},
-						"description": "Response Sample\n\n```json\nTBD\n```"
+						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16"
+									},
+									{
+										"key": "ts",
+										"value": "1566287153702"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic YWRtaW46YWRtaW4="
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ping",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ping"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"b469cefa-cf93-41ab-bc3c-a18c9828c6b2\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "iBOFOSINFO",
@@ -480,11 +1118,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -536,11 +1174,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -572,7 +1210,76 @@
 						},
 						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"system",
+										"mount"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "UNMOUNTIBOFOS",
@@ -593,11 +1300,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -629,7 +1336,76 @@
 						},
 						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"system",
+										"mount"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "SCAN DEVICE",
@@ -650,11 +1426,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -665,10 +1441,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan",
 							"protocol": "http",
@@ -686,7 +1458,72 @@
 						},
 						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"device",
+										"scan"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "LIST DEVICE",
@@ -707,11 +1544,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -722,10 +1559,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device",
 							"protocol": "http",
@@ -742,7 +1575,71 @@
 						},
 						"description": "Response Sample\n\n* `mn` : Model Number\n* `sn` : Serial Number\n* `size` : Currently It is page size, it will be fixed as \"byte\"\n\n```json\n{\n    \"rid\": \"3922e5eb-3061-433c-a543-5fdeb3b32d25\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-0\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0002\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-1\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0003\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-2\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0000\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"VMware Virtual NVMe Disk\",\n                    \"name\": \"intel-unvmens-3\",\n                    \"size\": 67108864,\n                    \"sn\": \"VMWare NVME-0001\",\n                    \"type\": \"SSD\"\n                },\n                {\n                    \"mn\": \"\",\n                    \"name\": \"uram0\",\n                    \"size\": 262144,\n                    \"sn\": \"\",\n                    \"type\": \"NVRAM\"\n                }\n            ]\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"device"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "LIST ARRAY DEVICE",
@@ -766,11 +1663,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -802,7 +1699,76 @@
 						},
 						"description": "Response Sample\n\n* Available Type : BUFFER, DATA, SPARE\n\n```json\n{\n    \"rid\": \"b447f812-ab74-4b19-8563-0d2a7613d010\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"level\": \"\",\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "CREATE ARRAY",
@@ -823,11 +1789,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -858,7 +1824,75 @@
 						},
 						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "LOAD ARRAY",
@@ -882,11 +1916,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -917,7 +1951,75 @@
 						},
 						"description": "It loads the array info from MBR.  \nThis method should be called after run ibofos and before creating array.  \nIf success, you do not neet to create array.\n\nResponse Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "DELETE ARRAY",
@@ -938,11 +2040,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -973,7 +2075,75 @@
 						},
 						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "STATE ARRAY",
@@ -997,11 +2167,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1033,7 +2203,77 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "CREATE VOLUME",
@@ -1054,11 +2294,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1088,7 +2328,75 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "UPDATE VOLUME",
@@ -1109,11 +2417,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1145,7 +2453,77 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "LIST VOLUME",
@@ -1169,11 +2547,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1203,7 +2581,75 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "MOUNT VOULUME",
@@ -1224,11 +2670,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1280,11 +2726,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1336,11 +2782,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1370,7 +2816,75 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "ATTACH DEVICE",
@@ -1391,11 +2905,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1427,7 +2941,76 @@
 						},
 						"description": "Response Sample\n\n```json\nTBD\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"device",
+										"attach"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "DETACH DEVICE",
@@ -1448,11 +3031,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1484,7 +3067,76 @@
 						},
 						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"device",
+										"detach"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Request-Id",
+									"value": "78bdf271-fc16-49ce-bd57-00f0c42cec16",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			],
 			"description": "The biz-logic execute in both D-Agent and iBoFOS module",
@@ -1509,7 +3161,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Redfish",
@@ -1537,10 +3190,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/redfish/v1/Chassis",
 							"protocol": "http",
@@ -1579,7 +3228,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Debug & Depricated",
@@ -1603,11 +3253,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1618,10 +3268,6 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/test/fio",
 							"protocol": "http",
@@ -1659,11 +3305,11 @@
 						"header": [
 							{
 								"key": "X-Request-Id",
-								"value": "{{xrid}}"
+								"value": "{{$guid}}"
 							},
 							{
 								"key": "ts",
-								"value": "{{timestamp}}"
+								"value": "{{$timestamp}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1720,7 +3366,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -1730,15 +3377,6 @@
 				"id": "1e270c13-51a4-4805-adb7-2cbad76884ac",
 				"type": "text/javascript",
 				"exec": [
-					"pm.environment.set(\"timestamp\", new Date());",
-					"pm.environment.set(\"xrid\", uuidv4());",
-					"",
-					"function uuidv4() {",
-					"  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
-					"    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);",
-					"    return v.toString(16);",
-					"  });",
-					"}",
 					""
 				]
 			}
@@ -1753,5 +3391,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
