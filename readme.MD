@@ -86,10 +86,14 @@ $ sudo ./run_dagent.sh # Background Run
     : it exec "run_ibofos.sh"
 7. Test
 
-#### HTML & Markdown
-There are two type documentation in doc folder
-* api.html : open with chrome
-* api.md : open with markdown editor
+#### HTML & Markdown Doc
+There are two type documentations; api.html and api.MD
+
+* Endpoint  
+```
+/mtool/api/dagent/v1/doc/api.html
+/mtool/api/dagent/v1/doc/api.md
+```
 
 ***
 
