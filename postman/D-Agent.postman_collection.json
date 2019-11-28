@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9d88e883-3aeb-4ef8-b06b-da4ddea53be5",
+		"_postman_id": "489fa803-f135-44bf-b375-9d843acf361a",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13,9 +13,22 @@
 					"name": "Busy Status",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "9e144fbe-bf71-45da-8336-59665e066e8d",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "9d6fa4a8-15b0-4d1e-b6ce-7e359949eac0",
 								"exec": [
 									""
 								],
@@ -93,9 +106,22 @@
 					"name": "PING",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "bbdf4891-e571-4507-8de8-c6a856f9e2b4",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "6e4b2a7c-8cb2-4211-ab52-516a02bd34d3",
 								"exec": [
 									""
 								],
@@ -210,9 +236,22 @@
 					"name": "STATUS CODE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "6ceff807-c131-4e0b-a3e8-8e49bbfe0d82",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "6511ec8c-a3e0-4946-b36b-c11cbeda6b8c",
 								"exec": [
 									""
 								],
@@ -327,9 +366,22 @@
 					"name": "FORCEKILLIBOFOS",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "ecf0023d-acd2-47f0-9b4d-aa336c69efce",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "c3e53ea4-d41c-45c0-98b5-03362aa05882",
 								"exec": [
 									""
 								],
@@ -378,75 +430,6 @@
 						"description": "It just runs \"pkill -9 ibofos\"\n"
 					},
 					"response": [
-						{
-							"name": "Error",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"{{vendor}}",
-										"api",
-										"dagent",
-										"v1",
-										"ibofos"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "6fc1553a-1631-4ef8-aa4e-0036b94d825e"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 27 Nov 2019 02:15:37 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "85"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 11000,\n            \"description\": \"exec Run: exit status 1\"\n        }\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -515,6 +498,75 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "6fc1553a-1631-4ef8-aa4e-0036b94d825e"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 02:15:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 11000,\n            \"description\": \"exec Run: exit status 1\"\n        }\n    }\n}"
 						}
 					]
 				},
@@ -522,9 +574,22 @@
 					"name": "RUNIBOFOS",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "51f7a072-2d19-403b-a765-675f7a67f078",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "caa446a0-7f4e-45cb-a39a-5cd5f6dc3f80",
 								"exec": [
 									""
 								],
@@ -746,9 +811,22 @@
 					"name": "HEARTBEAT",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "f0ca7703-6d70-4e49-9fa5-4fca0de97a78",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "f3b88f95-f389-49ce-875f-7e00d4865953",
 								"exec": [
 									""
 								],
@@ -931,9 +1009,22 @@
 					"name": "EXITIBOFOS",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "ef18641b-fec8-49dc-a94d-4bb5ede5a168",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "9a0fc276-1b4e-4306-a6d3-22b55d75aa86",
 								"exec": [
 									""
 								],
@@ -1047,9 +1138,22 @@
 					"name": "iBOFOSINFO",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "6047cb9b-d6a8-46d5-80a1-34b33f4d3a18",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "ef93d03c-d143-4910-bb8f-765b881b070a",
 								"exec": [
 									""
 								],
@@ -1123,10 +1227,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/system",
 									"protocol": "http",
@@ -1176,9 +1276,22 @@
 					"name": "MOUNTIBOFOS",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "bd9af5b7-56ac-4e7c-a628-fb78f61e1f26",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "3839f315-6110-4f04-8654-9402a034ce96",
 								"exec": [
 									""
 								],
@@ -1304,9 +1417,22 @@
 					"name": "UNMOUNTIBOFOS",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "891ba4bf-9e89-4d4a-9b13-872539f2fb17",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "98b30d43-742b-466c-8bb5-f5277c2a2799",
 								"exec": [
 									""
 								],
@@ -1361,9 +1487,22 @@
 					"name": "SCAN DEVICE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "733eb5fc-a1f7-4695-8539-0beff0ba1779",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
+								"id": "33abf371-92e4-48e9-9f86-61f63f7a77dd",
 								"exec": [
 									""
 								],
@@ -1481,9 +1620,22 @@
 					"name": "LIST DEVICE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "8b207ab7-cba1-4b62-8e18-d0cb51708d36",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "65c5f3ce-d590-4909-85db-70e0a9438a78",
 								"exec": [
 									""
 								],
@@ -1599,9 +1751,22 @@
 					"name": "LIST ARRAY DEVICE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "1585a1ef-4840-48b7-af5a-1a6133f68e42",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "3b84fe95-709d-45e9-8d7e-2907eed3dadd",
 								"exec": [
 									""
 								],
@@ -1676,80 +1841,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"{{vendor}}",
-										"api",
-										"ibofos",
-										"v1",
-										"array",
-										"device"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "53580d54-4375-4aaf-9619-0c3ac05c8f60"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 27 Nov 2019 04:35:00 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "115"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"53580d54-4375-4aaf-9619-0c3ac05c8f60\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}"
-						},
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
 									"protocol": "http",
@@ -1793,6 +1884,72 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"8ac075a6-b741-40a2-bb43-719d7e917810\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"intel-unvmens-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "53580d54-4375-4aaf-9619-0c3ac05c8f60"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 04:35:00 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "115"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"53580d54-4375-4aaf-9619-0c3ac05c8f60\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}"
 						}
 					]
 				},
@@ -1800,9 +1957,22 @@
 					"name": "CREATE ARRAY",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "694e36ec-d29c-41e3-8e9b-f5cdf3331576",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "4dde58fc-b28e-4f02-85c2-778e0b041877",
 								"exec": [
 									""
 								],
@@ -1926,9 +2096,22 @@
 					"name": "LOAD ARRAY",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "59fd6246-16fb-45bf-84df-0b677a7933c4",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "383e2292-b9c9-4ace-a018-4e926e10bdfe",
 								"exec": [
 									""
 								],
@@ -1985,9 +2168,22 @@
 					"name": "DELETE ARRAY",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "3dd0de41-b4f2-40ba-9999-f0be59e0a73f",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "ad3f540b-d7bf-40eb-857f-1274c949d150",
 								"exec": [
 									""
 								],
@@ -2041,9 +2237,22 @@
 					"name": "STATE ARRAY",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "bb3cf5a4-4a52-43fa-916a-c139c69e4744",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "10719f08-2dc5-48e8-9a9d-c4de3223c62e",
 								"exec": [
 									""
 								],
@@ -2101,9 +2310,22 @@
 					"name": "CREATE VOLUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "89426914-e13e-4161-acf5-559c7adb2738",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "9fba54de-dce3-43cd-ab96-b8613c05f152",
 								"exec": [
 									""
 								],
@@ -2151,75 +2373,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"{{vendor}}",
-										"api",
-										"ibofos",
-										"v1",
-										"volume"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "567e609b-854a-4672-8637-7ef9ce8c277a"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 27 Nov 2019 04:37:34 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "98"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"567e609b-854a-4672-8637-7ef9ce8c277a\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
-						},
 						{
 							"name": "Error",
 							"originalRequest": {
@@ -2288,6 +2441,75 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 2022,\n            \"description\": \"\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "567e609b-854a-4672-8637-7ef9ce8c277a"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 04:37:34 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "98"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"567e609b-854a-4672-8637-7ef9ce8c277a\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
 						}
 					]
 				},
@@ -2295,9 +2517,22 @@
 					"name": "UPDATE VOLUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "33dd8d4d-e246-4b56-aabc-66c8ea1fd4c3",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "c2e72d09-64b3-4a4a-8a8b-58aa934e7992",
 								"exec": [
 									""
 								],
@@ -2424,9 +2659,22 @@
 					"name": "LIST VOLUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "9c58afa5-2fae-4dc6-b685-636f98ed1a45",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "e7befd0e-b627-46ae-bb36-23af20e0cb32",
 								"exec": [
 									""
 								],
@@ -2478,75 +2726,6 @@
 					},
 					"response": [
 						{
-							"name": "Success - Mounted",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"{{vendor}}",
-										"api",
-										"ibofos",
-										"v1",
-										"volume"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "b65bf976-2666-4b63-b755-cb08ae9cc18e"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 27 Nov 2019 04:39:15 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "220"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"b65bf976-2666-4b63-b755-cb08ae9cc18e\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 6000,\n                    \"maxiops\": 0,\n                    \"name\": \"vol01\",\n                    \"remain\": 4194304,\n                    \"status\": \"Mounted\",\n                    \"total\": 4194304\n                }\n            ]\n        }\n    }\n}"
-						},
-						{
 							"name": "Success - Unmounted",
 							"originalRequest": {
 								"method": "GET",
@@ -2568,10 +2747,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
 									"protocol": "http",
@@ -2614,6 +2789,71 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"5b1c50ea-fcd0-4d51-b226-430315fc8c50\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 6000,\n                    \"maxiops\": 0,\n                    \"name\": \"vol01\",\n                    \"remain\": 4194304,\n                    \"status\": \"Unmouted\",\n                    \"total\": 4194304\n                }\n            ]\n        }\n    }\n}"
+						},
+						{
+							"name": "Success - Mounted",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/{{vendor}}/api/ibofos/v1/volume",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{vendor}}",
+										"api",
+										"ibofos",
+										"v1",
+										"volume"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "b65bf976-2666-4b63-b755-cb08ae9cc18e"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 04:39:15 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "220"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"b65bf976-2666-4b63-b755-cb08ae9cc18e\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 6000,\n                    \"maxiops\": 0,\n                    \"name\": \"vol01\",\n                    \"remain\": 4194304,\n                    \"status\": \"Mounted\",\n                    \"total\": 4194304\n                }\n            ]\n        }\n    }\n}"
 						}
 					]
 				},
@@ -2621,9 +2861,22 @@
 					"name": "MOUNT VOULUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "b47c000a-3478-4094-985a-37ac506d143b",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "8b04aa1f-cd01-4454-8b15-e81e98a5aaaa",
 								"exec": [
 									""
 								],
@@ -2748,9 +3001,22 @@
 					"name": "UNMOUNT VOLUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "c3721e5d-331f-4392-a55f-688a19c2c746",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "3290af11-1bba-4eac-887e-e7b7c9087192",
 								"exec": [
 									""
 								],
@@ -2804,9 +3070,22 @@
 					"name": "DELETE VOLUME",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "39a0f492-997a-4b26-8a0b-959ce29d2b73",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "60b85097-d5f1-4128-84a0-16d0624117e4",
 								"exec": [
 									""
 								],
@@ -2859,9 +3138,22 @@
 					"name": "ATTACH DEVICE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "7d0b0569-d2f0-4d20-a6fb-7309e8b3c39e",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "e77bd033-8c74-4c40-a771-ab8e681bc66d",
 								"exec": [
 									""
 								],
@@ -2916,9 +3208,22 @@
 					"name": "DETACH DEVICE",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "7a6e408e-9d3f-410d-b8de-3dd6d7c0e7cc",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "dc433889-d14b-48d6-908e-d5bd7b457dd9",
 								"exec": [
 									""
 								],
@@ -3002,9 +3307,22 @@
 					"name": "Cahsssis",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "49699fb5-d296-4d64-b253-7d8e01662798",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "d5b8a95e-7f13-431e-82fb-eebd7a0ff003",
 								"exec": [
 									""
 								],
@@ -3069,9 +3387,22 @@
 					"name": "TEST - FIO",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "004f88ea-8c81-4c12-89ca-96892e940865",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+								"id": "06f1fe9d-330b-49b0-9177-de12649fadb7",
 								"exec": [
 									""
 								],
@@ -3121,9 +3452,22 @@
 					"name": "TEST - REPORTTEST",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"id": "cf514c82-e9f4-454e-abd1-7c57b1fad202",
+								"exec": [
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    console.log(responseBody);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"id": "c7befc93-b02f-41d0-8f4d-43929a454f26",
 								"exec": [
 									""
 								],
