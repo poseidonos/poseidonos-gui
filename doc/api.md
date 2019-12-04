@@ -7,7 +7,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [Common](#common)
 
-  * [Sample](#1-sample)
+  * [Common](#1-common)
 
 * [D-Agent](#d-agent)
 
@@ -63,8 +63,8 @@ Currently D-Agent provides only basic auth.
 
 | Key | Value | Sample |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
-| ts | {{timestamp}} | 1566287153702 |
+| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
+| ts | {{$timestamp}} | 1566287153702 |
 | Content-Type | application/json | application/json |
 | Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |
 
@@ -87,7 +87,7 @@ Currently D-Agent provides only basic auth.
 
 | Key | Value | Sample |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
+| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
 | Content-Type | application/json | application/json |
 | Content-Length | {length}} | 97 |
 
@@ -117,26 +117,57 @@ Response Sample
 * D-Agent default both read and write timeout is 30sec
 * D-Agent waits 29sec from iBoFOS  
 
-Response
-```json
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 19000,
-            "description": "iBof Response Timeout"
-        }
-    }
-}
-```
-
 ***
 
 #### Busy Status
 * If iBof is busy, D-Agent return busy response
 
-Response
-```json
+
+
+### 1. Common
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Error - iBoF is busy | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 1a9368ad-5205-48cc-9569-60f9fc124af5 |
+| Date | Wed, 27 Nov 2019 05:02:21 GMT |
+| Content-Length | 74 |
+| Connection | keep-alive |
+
+
+
+```js
 {
     "rid": "",
     "result": {
@@ -150,27 +181,33 @@ Response
 
 
 
-### 1. Sample
+Status: Error - IBoF does not run | Code: 400
 
 
 
-***Endpoint:***
+***Response Headers:***
 
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/sample
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 74228c0f-c5c2-4c1b-99b8-697278a095ae |
+| Date | Wed, 27 Nov 2019 04:59:48 GMT |
+| Content-Length | 79 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12030,
+            "description": "iBoF does not run"
+        }
+    }
+}
 ```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
 
 
 
@@ -182,8 +219,47 @@ The biz-logic execute in D-Agent own module
 ### 1. PING
 
 
-Response Sample
-```json
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/{{vendor}}/api/dagent/v1/ping
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 6016494b-922b-40ff-bf7d-815ff3f567af |
+| Date | Wed, 27 Nov 2019 02:11:30 GMT |
+| Content-Length | 62 |
+| Connection | keep-alive |
+
+
+
+```js
 {
     "rid": "",
     "result": {
@@ -196,63 +272,16 @@ Response Sample
 ```
 
 
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/ping
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
 
 ### 2. STATUS CODE
 
 
-Response Sample
-```json
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 0,
-            "level": "",
-            "description": "success"
-        },
-        "data": {
-            "statuslist": [
-                {
-                    "code": 1000,
-                    "level": "INFO",
-                    "description": "cli server initialized"
-                },
-                {
-                    "code": 1001,
-                    "level": "INFO",
-                    "description": "new client"
-                }
-            ]
-        }
-    }
-}
-```
-
 
 ***Endpoint:***
 
 ```bash
 Method: GET
-Type: RAW
+Type: 
 URL: http://{{host}}/{{vendor}}/api/dagent/v1/statuscode
 ```
 
@@ -261,30 +290,143 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/statuscode
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
 
 
-### 3. FORCEKILLIBOFOS
+***Responses:***
 
 
-* It just runs "pkill -9 ibofos"
+Status: Success | Code: 200
 
-Response Sample
-```json
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | e778873b-ef6a-4368-9453-3a3759ae89ed |
+| Date | Wed, 27 Nov 2019 02:15:02 GMT |
+| Content-Length | 1257 |
+| Connection | keep-alive |
+
+
+
+```js
 {
     "rid": "",
     "result": {
         "status": {
             "code": 0,
             "description": "Success"
+        },
+        "data": {
+            "StatusList": [
+                {
+                    "code": 0,
+                    "description": "Success"
+                },
+                {
+                    "code": 1200,
+                    "description": "iBoFOS System Recovery Something"
+                },
+                {
+                    "code": 1234,
+                    "description": "iBoFOS System Recovery Inprogress"
+                },
+                {
+                    "code": 2800,
+                    "description": "Rebuild begin"
+                },
+                {
+                    "code": 2801,
+                    "description": "Rebuild done"
+                },
+                {
+                    "code": 2082,
+                    "description": "Rebuildjob added"
+                },
+                {
+                    "code": 2083,
+                    "description": "About job slicing point"
+                },
+                {
+                    "code": 2804,
+                    "description": "Rebuild progress report"
+                },
+                {
+                    "code": 2805,
+                    "description": "Rebuildjob begin"
+                },
+                {
+                    "code": 2806,
+                    "description": "Rebuildjob done"
+                },
+                {
+                    "code": 2807,
+                    "description": "Rebuilding debug log"
+                },
+                {
+                    "code": 10110,
+                    "description": "Auth Error : API does not activate"
+                },
+                {
+                    "code": 10240,
+                    "description": "Header Error : X-request-Id is invalid"
+                },
+                {
+                    "code": 10250,
+                    "description": "Header Error : ts missing"
+                },
+                {
+                    "code": 10310,
+                    "description": "Body Error : Json Error"
+                },
+                {
+                    "code": 11000,
+                    "description": "Exec command error"
+                },
+                {
+                    "code": 12000,
+                    "description": "iBoF is busy"
+                },
+                {
+                    "code": 12030,
+                    "description": "iBoF does not run"
+                },
+                {
+                    "code": 12310,
+                    "description": "iBoF Unmarshal Error"
+                },
+                {
+                    "code": 19000,
+                    "description": "iBof Response Timeout"
+                },
+                {
+                    "code": 19002,
+                    "description": "iBof Socket Connection Error"
+                },
+                {
+                    "code": 40000,
+                    "description": "This API does not implemente yet"
+                }
+            ]
         }
     }
 }
 ```
+
+
+
+### 3. FORCEKILLIBOFOS
+
+
+It just runs "pkill -9 ibofos"
+
 
 
 ***Endpoint:***
@@ -300,20 +442,63 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
 
 
-### 4. RUNIBOFOS
+***Responses:***
 
 
-* It just run command "run_ibof.sh" and does not gurantee to run.
+Status: Error | Code: 400
 
-Response Sample
-```json
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 6fc1553a-1631-4ef8-aa4e-0036b94d825e |
+| Date | Wed, 27 Nov 2019 02:15:37 GMT |
+| Content-Length | 85 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 11000,
+            "description": "exec Run: exit status 1"
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 02d34f67-ce83-464a-99ab-641e7f85634e |
+| Date | Wed, 27 Nov 2019 02:15:21 GMT |
+| Content-Length | 65 |
+| Connection | keep-alive |
+
+
+
+```js
 {
     "rid": "",
     "result": {
@@ -324,6 +509,13 @@ Response Sample
     }
 }
 ```
+
+
+
+### 4. RUNIBOFOS
+
+
+It just run command "run_ibof.sh" and does not gurantee to run.
 
 
 ***Endpoint:***
@@ -339,10 +531,73 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 5b20dc94-d1d5-43ad-8636-3fbba9154fe8 |
+| Date | Wed, 27 Nov 2019 02:16:35 GMT |
+| Content-Length | 94 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 11000,
+            "description": "exec Run: The iBoFOS already run"
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 601b49e5-7cf6-4b79-8aa4-7c1ea374b7ce |
+| Date | Wed, 27 Nov 2019 02:16:07 GMT |
+| Content-Length | 65 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        }
+    }
+}
+```
 
 
 
@@ -354,10 +609,79 @@ The biz-logic execute in both D-Agent and iBoFOS module
 ### 1. HEARTBEAT
 
 
-Response Sample
-```json
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 46694ab0-b2bf-4325-9dc4-0021cc324478 |
+| Date | Wed, 27 Nov 2019 04:32:22 GMT |
+| Content-Length | 79 |
+| Connection | keep-alive |
+
+
+
+```js
 {
-    "rid": "b469cefa-cf93-41ab-bc3c-a18c9828c6b2",
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12030,
+            "description": "iBoF does not run"
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 527630b1-31d5-42db-94d7-a057676faffd |
+| Date | Wed, 27 Nov 2019 04:31:50 GMT |
+| Content-Length | 99 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "527630b1-31d5-42db-94d7-a057676faffd",
     "result": {
         "status": {
             "code": 0,
@@ -368,41 +692,16 @@ Response Sample
 ```
 
 
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
 
 ### 2. EXITIBOFOS
 
 
-Response Sample
-
-```json
-TBD
-```
-
 
 ***Endpoint:***
 
 ```bash
-Method: DELETE
-Type: RAW
+Method: GET
+Type: 
 URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos
 ```
 
@@ -411,10 +710,41 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| X-Request-Id | 78bdf271-fc16-49ce-bd57-00f0c42cec16 |
+| Content-Type | application/json |
+| Content-Length | 99 |
+
+
+
+```js
+{
+    "rid": "b469cefa-cf93-41ab-bc3c-a18c9828c6b2",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "alive"
+        }
+    }
+}
+```
 
 
 
@@ -456,10 +786,46 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | df90d797-a2a7-46ef-8713-dd7f0d5f9529 |
+| Date | Wed, 27 Nov 2019 04:33:00 GMT |
+| Content-Length | 127 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "df90d797-a2a7-46ef-8713-dd7f0d5f9529",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "state": "Unmounted"
+        }
+    }
+}
+```
 
 
 
@@ -493,8 +859,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -533,6 +899,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount
 
 
 
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | deb9617b-5697-45a9-a81d-4a9c7bfd6f87 |
+| Date | Wed, 27 Nov 2019 04:35:54 GMT |
+| Content-Length | 95 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "deb9617b-5697-45a9-a81d-4a9c7bfd6f87",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "0"
+        }
+    }
+}
+```
+
+
+
 ### 5. UNMOUNTIBOFOS
 
 
@@ -563,8 +962,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -624,7 +1023,7 @@ Response Sample
 
 ```bash
 Method: GET
-Type: RAW
+Type: 
 URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan
 ```
 
@@ -633,10 +1032,43 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 953d26c8-2efe-4f86-8601-5294ce52fd89 |
+| Date | Wed, 27 Nov 2019 04:34:26 GMT |
+| Content-Length | 110 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "953d26c8-2efe-4f86-8601-5294ce52fd89",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Scan Device Done"
+        }
+    }
+}
+```
 
 
 
@@ -705,7 +1137,7 @@ Response Sample
 
 ```bash
 Method: GET
-Type: RAW
+Type: 
 URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device
 ```
 
@@ -714,10 +1146,82 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 9c30a21f-07b8-4011-a901-d28f66deb8af |
+| Date | Wed, 27 Nov 2019 04:34:44 GMT |
+| Content-Length | 643 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "9c30a21f-07b8-4011-a901-d28f66deb8af",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-0",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0002",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-1",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0003",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-2",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0000",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "intel-unvmens-3",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0001",
+                    "type": "SSD"
+                },
+                {
+                    "mn": "uram0",
+                    "name": "uram0",
+                    "size": 1048576,
+                    "sn": "uram0",
+                    "type": "NVRAM"
+                }
+            ]
+        }
+    }
+}
+```
 
 
 
@@ -755,10 +1259,97 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array/device
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 53580d54-4375-4aaf-9619-0c3ac05c8f60 |
+| Date | Wed, 27 Nov 2019 04:35:00 GMT |
+| Content-Length | 115 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "53580d54-4375-4aaf-9619-0c3ac05c8f60",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "NO ARRAY DEVICE EXIST"
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 8ac075a6-b741-40a2-bb43-719d7e917810 |
+| Date | Wed, 27 Nov 2019 04:35:33 GMT |
+| Content-Length | 320 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "8ac075a6-b741-40a2-bb43-719d7e917810",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "name": "uram0",
+                    "type": "BUFFER"
+                },
+                {
+                    "name": "intel-unvmens-0",
+                    "type": "DATA"
+                },
+                {
+                    "name": "intel-unvmens-1",
+                    "type": "DATA"
+                },
+                {
+                    "name": "intel-unvmens-2",
+                    "type": "DATA"
+                },
+                {
+                    "name": "intel-unvmens-3",
+                    "type": "SPARE"
+                }
+            ]
+        }
+    }
+}
+```
 
 
 
@@ -793,8 +1384,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -827,6 +1418,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
                 "deviceName": "intel-unvmens-3"
             }
         ]
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | dba7fbc3-a46d-4c07-ba9c-271581fdec9c |
+| Date | Wed, 27 Nov 2019 04:35:20 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "dba7fbc3-a46d-4c07-ba9c-271581fdec9c",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Done"
+        }
     }
 }
 ```
@@ -868,8 +1492,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -906,8 +1530,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -946,6 +1570,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 
 
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 99defa34-b99b-438d-a0d4-95f1c6f3997c |
+| Date | Thu, 28 Nov 2019 01:07:25 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "99defa34-b99b-438d-a0d4-95f1c6f3997c",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Done"
+        }
+    }
+}
+```
+
+
+
 ### 12. STATE ARRAY
 
 
@@ -963,8 +1620,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -987,8 +1644,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1001,6 +1658,69 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
     "param": {
         "name": "vol01",
         "size": 4194304
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 567e609b-854a-4672-8637-7ef9ce8c277a |
+| Date | Wed, 27 Nov 2019 04:37:34 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "567e609b-854a-4672-8637-7ef9ce8c277a",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
+    }
+}
+```
+
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 11238da7-6018-477a-aae1-74567cbc8e4d |
+| Date | Wed, 27 Nov 2019 04:37:58 GMT |
+| Content-Length | 61 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 2022,
+            "description": ""
+        }
     }
 }
 ```
@@ -1024,8 +1744,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1039,6 +1759,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
         "name": "vol01",
         "maxiops": 0,
         "maxbw": 6000
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c6ef5b8a-981a-407a-9366-1416b0afc61d |
+| Date | Wed, 27 Nov 2019 04:38:22 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c6ef5b8a-981a-407a-9366-1416b0afc61d",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
     }
 }
 ```
@@ -1062,10 +1815,99 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success - Mounted | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | b65bf976-2666-4b63-b755-cb08ae9cc18e |
+| Date | Wed, 27 Nov 2019 04:39:15 GMT |
+| Content-Length | 220 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "b65bf976-2666-4b63-b755-cb08ae9cc18e",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "id": 0,
+                    "maxbw": 6000,
+                    "maxiops": 0,
+                    "name": "vol01",
+                    "remain": 4194304,
+                    "status": "Mounted",
+                    "total": 4194304
+                }
+            ]
+        }
+    }
+}
+```
+
+
+
+Status: Success - Unmounted | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 5b1c50ea-fcd0-4d51-b226-430315fc8c50 |
+| Date | Wed, 27 Nov 2019 04:38:35 GMT |
+| Content-Length | 221 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "5b1c50ea-fcd0-4d51-b226-430315fc8c50",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "id": 0,
+                    "maxbw": 6000,
+                    "maxiops": 0,
+                    "name": "vol01",
+                    "remain": 4194304,
+                    "status": "Unmouted",
+                    "total": 4194304
+                }
+            ]
+        }
+    }
+}
+```
 
 
 
@@ -1086,8 +1928,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1099,6 +1941,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
 {
     "param": {
         "name": "vol01"
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 24356bf1-92d3-48d1-82da-c2ea9c856927 |
+| Date | Wed, 27 Nov 2019 04:39:04 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "24356bf1-92d3-48d1-82da-c2ea9c856927",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
     }
 }
 ```
@@ -1122,8 +1997,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1135,6 +2010,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
 {
     "param": {
         "name": "vol01"
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 493abe73-2aa7-4efb-969a-1b970f43e834 |
+| Date | Thu, 28 Nov 2019 01:10:28 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "493abe73-2aa7-4efb-969a-1b970f43e834",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
     }
 }
 ```
@@ -1158,8 +2066,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1171,6 +2079,69 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
 {
     "param": {
         "name": "vol01"
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c1055589-a25c-4c22-b08e-2aadfe53ed24 |
+| Date | Thu, 28 Nov 2019 01:09:39 GMT |
+| Content-Length | 61 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 2010,
+            "description": ""
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | cefe68ce-51a4-4388-a8a1-32bb4ef2fe11 |
+| Date | Thu, 28 Nov 2019 01:09:25 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
     }
 }
 ```
@@ -1200,8 +2171,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1250,8 +2221,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1283,7 +2254,7 @@ The biz-logic execute in both D-Agent and BMC module
 
 ```bash
 Method: GET
-Type: RAW
+Type: 
 URL: http://{{host}}/redfish/v1/Chassis
 ```
 
@@ -1310,7 +2281,7 @@ These APIs will be able to remove without any notice
 
 ```bash
 Method: GET
-Type: RAW
+Type: 
 URL: http://{{host}}/{{vendor}}/api/dagent/v1/test/fio
 ```
 
@@ -1319,8 +2290,8 @@ URL: http://{{host}}/{{vendor}}/api/dagent/v1/test/fio
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1367,8 +2338,8 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/test/report
 
 | Key | Value | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{xrid}} |  |
-| ts | {{timestamp}} |  |
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
 
@@ -1376,4 +2347,4 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/test/report
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-11-22 19:30:33 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-04 16:53:28 by [docgen](https://github.com/thedevsaddam/docgen)
