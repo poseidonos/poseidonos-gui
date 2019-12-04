@@ -21,12 +21,12 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [HEARTBEAT](#1-heartbeat)
   * [EXITIBOFOS](#2-exitibofos)
   * [iBOFOSINFO](#3-ibofosinfo)
-  * [MOUNTIBOFOS](#4-mountibofos)
-  * [UNMOUNTIBOFOS](#5-unmountibofos)
-  * [SCAN DEVICE](#6-scan-device)
-  * [LIST DEVICE](#7-list-device)
-  * [LIST ARRAY DEVICE](#8-list-array-device)
-  * [CREATE ARRAY](#9-create-array)
+  * [SCAN DEVICE](#4-scan-device)
+  * [LIST DEVICE](#5-list-device)
+  * [CREATE ARRAY](#6-create-array)
+  * [LIST ARRAY DEVICE](#7-list-array-device)
+  * [MOUNTIBOFOS](#8-mountibofos)
+  * [UNMOUNTIBOFOS](#9-unmountibofos)
   * [LOAD ARRAY](#10-load-array)
   * [DELETE ARRAY](#11-delete-array)
   * [STATE ARRAY](#12-state-array)
@@ -133,7 +133,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat
+URL: http://{{host}}/mtool/api/ibofos/v1/system/heartbeat
 ```
 
 
@@ -225,7 +225,7 @@ The biz-logic execute in D-Agent own module
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/ping
+URL: http://{{host}}/mtool/api/dagent/v1/ping
 ```
 
 
@@ -282,7 +282,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/statuscode
+URL: http://{{host}}/mtool/api/dagent/v1/statuscode
 ```
 
 
@@ -434,7 +434,7 @@ It just runs "pkill -9 ibofos"
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
+URL: http://{{host}}/mtool/api/dagent/v1/ibofos
 ```
 
 
@@ -523,7 +523,7 @@ It just run command "run_ibof.sh" and does not gurantee to run.
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/ibofos
+URL: http://{{host}}/mtool/api/dagent/v1/ibofos
 ```
 
 
@@ -615,7 +615,7 @@ The biz-logic execute in both D-Agent and iBoFOS module
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/heartbeat
+URL: http://{{host}}/mtool/api/ibofos/v1/system/heartbeat
 ```
 
 
@@ -702,7 +702,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos
+URL: http://{{host}}/mtool/api/ibofos/v1/system/exitibofos
 ```
 
 
@@ -714,37 +714,6 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/exitibofos
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| X-Request-Id | 78bdf271-fc16-49ce-bd57-00f0c42cec16 |
-| Content-Type | application/json |
-| Content-Length | 99 |
-
-
-
-```js
-{
-    "rid": "b469cefa-cf93-41ab-bc3c-a18c9828c6b2",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "alive"
-        }
-    }
-}
-```
 
 
 
@@ -778,7 +747,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system
+URL: http://{{host}}/mtool/api/ibofos/v1/system
 ```
 
 
@@ -829,180 +798,7 @@ Status: Success | Code: 200
 
 
 
-### 4. MOUNTIBOFOS
-
-
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "fttype": 1,
-        "buffer": [
-            {
-                "deviceName": "uram0"
-            }
-        ],
-        "data": [
-            {
-                "deviceName": "intel-unvmens-0"
-            },
-            {
-                "deviceName": "intel-unvmens-1"
-            },
-            {
-                "deviceName": "intel-unvmens-2"
-            }
-        ],
-        "spare": [
-            {
-                "deviceName": "intel-unvmens-3"
-            }
-        ]
-    }
-}
-```
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | deb9617b-5697-45a9-a81d-4a9c7bfd6f87 |
-| Date | Wed, 27 Nov 2019 04:35:54 GMT |
-| Content-Length | 95 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "deb9617b-5697-45a9-a81d-4a9c7bfd6f87",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "0"
-        }
-    }
-}
-```
-
-
-
-### 5. UNMOUNTIBOFOS
-
-
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
-
-
-***Endpoint:***
-
-```bash
-Method: DELETE
-Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/system/mount
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "fttype": 1,
-        "buffer": [
-            {
-                "deviceName": "uram0"
-            }
-        ],
-        "data": [
-            {
-                "deviceName": "intel-unvmens-0"
-            },
-            {
-                "deviceName": "intel-unvmens-1"
-            },
-            {
-                "deviceName": "intel-unvmens-2"
-            }
-        ],
-        "spare": [
-            {
-                "deviceName": "intel-unvmens-3"
-            }
-        ]
-    }
-}
-```
-
-
-
-### 6. SCAN DEVICE
+### 4. SCAN DEVICE
 
 
 Response Sample
@@ -1024,7 +820,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/scan
+URL: http://{{host}}/mtool/api/ibofos/v1/device/scan
 ```
 
 
@@ -1072,7 +868,7 @@ Status: Success | Code: 200
 
 
 
-### 7. LIST DEVICE
+### 5. LIST DEVICE
 
 
 Response Sample
@@ -1138,7 +934,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device
+URL: http://{{host}}/mtool/api/ibofos/v1/device
 ```
 
 
@@ -1225,7 +1021,111 @@ Status: Success | Code: 200
 
 
 
-### 8. LIST ARRAY DEVICE
+### 6. CREATE ARRAY
+
+
+Response Sample
+
+```json
+{
+   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
+   "result": {
+       "status": {
+           "code": 0,
+           "description": "DONE"
+       }
+   }
+}
+```
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/mtool/api/ibofos/v1/array
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "fttype": 1,
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "intel-unvmens-0"
+            },
+            {
+                "deviceName": "intel-unvmens-1"
+            },
+            {
+                "deviceName": "intel-unvmens-2"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "intel-unvmens-3"
+            }
+        ]
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | dba7fbc3-a46d-4c07-ba9c-271581fdec9c |
+| Date | Wed, 27 Nov 2019 04:35:20 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "dba7fbc3-a46d-4c07-ba9c-271581fdec9c",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Done"
+        }
+    }
+}
+```
+
+
+
+### 7. LIST ARRAY DEVICE
 
 
 Response Sample
@@ -1251,7 +1151,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array/device
+URL: http://{{host}}/mtool/api/ibofos/v1/array/device
 ```
 
 
@@ -1353,20 +1253,19 @@ Status: Success | Code: 200
 
 
 
-### 9. CREATE ARRAY
+### 8. MOUNTIBOFOS
 
 
 Response Sample
-
 ```json
 {
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-   "result": {
-       "status": {
-           "code": 0,
-           "description": "DONE"
-       }
-   }
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
+    }
 }
 ```
 
@@ -1376,7 +1275,7 @@ Response Sample
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
+URL: http://{{host}}/mtool/api/ibofos/v1/system/mount
 ```
 
 
@@ -1436,21 +1335,91 @@ Status: Success | Code: 200
 | Key | Value |
 | --- | ------|
 | Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | dba7fbc3-a46d-4c07-ba9c-271581fdec9c |
-| Date | Wed, 27 Nov 2019 04:35:20 GMT |
-| Content-Length | 98 |
+| X-Request-Id | deb9617b-5697-45a9-a81d-4a9c7bfd6f87 |
+| Date | Wed, 27 Nov 2019 04:35:54 GMT |
+| Content-Length | 95 |
 | Connection | keep-alive |
 
 
 
 ```js
 {
-    "rid": "dba7fbc3-a46d-4c07-ba9c-271581fdec9c",
+    "rid": "deb9617b-5697-45a9-a81d-4a9c7bfd6f87",
     "result": {
         "status": {
             "code": 0,
-            "description": "Done"
+            "description": "0"
         }
+    }
+}
+```
+
+
+
+### 9. UNMOUNTIBOFOS
+
+
+Response Sample
+```json
+{
+    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
+    }
+}
+```
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: RAW
+URL: http://{{host}}/mtool/api/ibofos/v1/system/mount
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "fttype": 1,
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "intel-unvmens-0"
+            },
+            {
+                "deviceName": "intel-unvmens-1"
+            },
+            {
+                "deviceName": "intel-unvmens-2"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "intel-unvmens-3"
+            }
+        ]
     }
 }
 ```
@@ -1484,7 +1453,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
+URL: http://{{host}}/mtool/api/ibofos/v1/array
 ```
 
 
@@ -1522,7 +1491,7 @@ Response Sample
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
+URL: http://{{host}}/mtool/api/ibofos/v1/array
 ```
 
 
@@ -1612,7 +1581,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
+URL: http://{{host}}/mtool/api/ibofos/v1/array
 ```
 
 
@@ -1627,6 +1596,39 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 
 
 
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 7834a0d2-2f4f-4a98-b5c4-3d09ac76f933 |
+| Date | Mon, 02 Dec 2019 11:10:48 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "7834a0d2-2f4f-4a98-b5c4-3d09ac76f933",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Done"
+        }
+    }
+}
+```
+
+
+
 ### 13. CREATE VOLUME
 
 
@@ -1636,7 +1638,7 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/array
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
+URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ```
 
 
@@ -1736,7 +1738,7 @@ Status: Error | Code: 400
 ```bash
 Method: PUT
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
+URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ```
 
 
@@ -1807,7 +1809,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
+URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ```
 
 
@@ -1920,7 +1922,7 @@ Status: Success - Unmounted | Code: 200
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
+URL: http://{{host}}/mtool/api/ibofos/v1/volume/mount
 ```
 
 
@@ -1989,7 +1991,7 @@ Status: Success | Code: 200
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume/mount
+URL: http://{{host}}/mtool/api/ibofos/v1/volume/mount
 ```
 
 
@@ -2058,7 +2060,7 @@ Status: Success | Code: 200
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/volume
+URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ```
 
 
@@ -2163,7 +2165,7 @@ TBD
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/attach
+URL: http://{{host}}/mtool/api/ibofos/v1/device/attach
 ```
 
 
@@ -2213,7 +2215,7 @@ Response Sample
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/device/detach
+URL: http://{{host}}/mtool/api/ibofos/v1/device/detach
 ```
 
 
@@ -2282,7 +2284,7 @@ These APIs will be able to remove without any notice
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/{{vendor}}/api/dagent/v1/test/fio
+URL: http://{{host}}/mtool/api/dagent/v1/test/fio
 ```
 
 
@@ -2330,7 +2332,7 @@ Response Sample
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/{{vendor}}/api/ibofos/v1/test/report
+URL: http://{{host}}/mtool/api/ibofos/v1/test/report
 ```
 
 
@@ -2347,4 +2349,4 @@ URL: http://{{host}}/{{vendor}}/api/ibofos/v1/test/report
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-04 16:53:28 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-04 17:01:04 by [docgen](https://github.com/thedevsaddam/docgen)
