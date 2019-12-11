@@ -57,7 +57,6 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 			return
 		} else if response.Result.Status.Code != 0 {
 			api.MakeBadRequest(ctx, response.Result.Status.Code)
-
 			return
 		} else {
 			api.MakeSuccess(ctx)

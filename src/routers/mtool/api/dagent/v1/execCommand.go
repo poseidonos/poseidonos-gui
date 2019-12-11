@@ -24,7 +24,7 @@ func RunIBoF(ctx *gin.Context) {
 
 	util.RunScript(ctx, "./run_ibofos.sh", false)
 
-	if util.IsIBoFRun() == false {arr
+	if util.IsIBoFRun() == false {
 		panic(fmt.Errorf("exec Run: Fail to run iBoFOS"))
 	}
 
