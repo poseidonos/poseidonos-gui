@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"ibofdagent/src/handler"
 	"ibofdagent/src/routers/mtool/api"
 	"ibofdagent/src/routers/mtool/model"
-	log "github.com/sirupsen/logrus"
-	"net/http"
 	"sync/atomic"
 )
 
@@ -61,7 +60,8 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 
 			return
 		} else {
-			ctx.JSON(http.StatusOK, &response)
+			api.MakeSuccess(ctx)
+			//ctx.JSON(http.StatusOK, &response)
 			return
 		}
 	}
