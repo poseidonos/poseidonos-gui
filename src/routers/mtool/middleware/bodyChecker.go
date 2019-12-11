@@ -3,8 +3,8 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"ibofdagent/server/routers/mtool/api"
-	"ibofdagent/server/routers/mtool/model"
+	"ibofdagent/src/routers/mtool/api"
+	"ibofdagent/src/routers/mtool/model"
 	"io"
 	log "github.com/sirupsen/logrus"
 )

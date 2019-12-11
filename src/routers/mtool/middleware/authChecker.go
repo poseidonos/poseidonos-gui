@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/mongodb"
-	"ibofdagent/server/routers/mtool/api"
+	"ibofdagent/src/mongodb"
+	"ibofdagent/src/routers/mtool/api"
 	//"github.com/dgrijalva/jwt-go"
 )
 

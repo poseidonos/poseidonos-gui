@@ -2,8 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/routers/mtool/model"
-	"ibofdagent/server/setting"
+	"ibofdagent/src/routers/mtool/model"
+	"ibofdagent/src/setting"
 	"net/http"
 )
 

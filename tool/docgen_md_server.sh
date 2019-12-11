@@ -1,2 +1,2 @@
 #!/bin/bash
-./docgen server -f ../postman/D-Agent.postman_collection.json -p 9000 -m
+./docgen src -f ../postman/D-Agent.postman_collection.json -p 9000 -m

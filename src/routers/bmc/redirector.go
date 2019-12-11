@@ -3,7 +3,7 @@ package bmc
 import (
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/setting"
+	"ibofdagent/src/setting"
 	"net/http"
 	"net/http/httputil"
 )

@@ -1,7 +1,7 @@
 package util
 
 import (
-	"ibofdagent/server/setting"
+	"ibofdagent/src/setting"
 	log "github.com/sirupsen/logrus"
 )
 

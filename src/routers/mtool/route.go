@@ -2,9 +2,9 @@ package mtool
 
 import (
 	"github.com/gin-gonic/gin"
-	dagentV1 "ibofdagent/server/routers/mtool/api/dagent/v1"
-	iBoFOSV1 "ibofdagent/server/routers/mtool/api/ibofos/v1"
-	"ibofdagent/server/routers/mtool/middleware"
+	dagentV1 "ibofdagent/src/routers/mtool/api/dagent/v1"
+	iBoFOSV1 "ibofdagent/src/routers/mtool/api/ibofos/v1"
+	"ibofdagent/src/routers/mtool/middleware"
 	"net/http"
 )
 

@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"ibofdagent/server/routers/mtool/api"
+	"ibofdagent/src/routers/mtool/api"
 )
 
 func ScanDevice(ctx *gin.Context) {

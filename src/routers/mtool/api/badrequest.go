@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/routers/mtool/model"
-	"ibofdagent/server/setting"
+	"ibofdagent/src/routers/mtool/model"
+	"ibofdagent/src/setting"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 )

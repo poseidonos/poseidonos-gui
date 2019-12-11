@@ -3,9 +3,9 @@ package v1
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/routers/mtool/api"
-	"ibofdagent/server/routers/mtool/model"
-	"ibofdagent/server/util"
+	"ibofdagent/src/routers/mtool/api"
+	"ibofdagent/src/routers/mtool/model"
+	"ibofdagent/src/util"
 	"net/http"
 )
 

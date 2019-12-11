@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/handler"
-	"ibofdagent/server/routers"
-	"ibofdagent/server/setting"
+	"ibofdagent/src/handler"
+	"ibofdagent/src/routers"
+	"ibofdagent/src/setting"
 	"net/http"
 	"time"
 )

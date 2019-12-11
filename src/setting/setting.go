@@ -3,7 +3,7 @@ package setting
 import (
 	"encoding/json"
 	"gopkg.in/yaml.v2"
-	"ibofdagent/server/routers/mtool/model"
+	"ibofdagent/src/routers/mtool/model"
 	"io/ioutil"
 	log "github.com/sirupsen/logrus"
 )
@@ -13,7 +13,7 @@ var StatusMap map[int]string
 var StatusList model.StatusList
 
 type ConfigScheme struct {
-	Server           Server `yaml:"server"`
+	Server           Server `yaml:"src"`
 	IBoFOSSocketAddr string
 	DAgentSocketAddr string
 }

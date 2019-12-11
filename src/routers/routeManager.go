@@ -2,9 +2,9 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"ibofdagent/server/routers/bmc"
-	"ibofdagent/server/routers/mtool"
-	"ibofdagent/server/routers/nbp"
+	"ibofdagent/src/routers/bmc"
+	"ibofdagent/src/routers/mtool"
+	"ibofdagent/src/routers/nbp"
 )
 
 // Init Router Info
