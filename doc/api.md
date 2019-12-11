@@ -151,36 +151,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/system/heartbeat
 ***Responses:***
 
 
-Status: Error - iBoF is busy | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 1a9368ad-5205-48cc-9569-60f9fc124af5 |
-| Date | Wed, 27 Nov 2019 05:02:21 GMT |
-| Content-Length | 74 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 12000,
-            "description": "iBoF is busy"
-        }
-    }
-}
-```
-
-
-
 Status: Error - IBoF does not run | Code: 400
 
 
@@ -204,6 +174,36 @@ Status: Error - IBoF does not run | Code: 400
         "status": {
             "code": 12030,
             "description": "iBoF does not run"
+        }
+    }
+}
+```
+
+
+
+Status: Error - iBoF is busy | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 1a9368ad-5205-48cc-9569-60f9fc124af5 |
+| Date | Wed, 27 Nov 2019 05:02:21 GMT |
+| Content-Length | 74 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12000,
+            "description": "iBoF is busy"
         }
     }
 }
@@ -1669,36 +1669,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ***Responses:***
 
 
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 567e609b-854a-4672-8637-7ef9ce8c277a |
-| Date | Wed, 27 Nov 2019 04:37:34 GMT |
-| Content-Length | 98 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "567e609b-854a-4672-8637-7ef9ce8c277a",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
-
-
-
 Status: Error | Code: 400
 
 
@@ -1722,6 +1692,36 @@ Status: Error | Code: 400
         "status": {
             "code": 2022,
             "description": ""
+        }
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 567e609b-854a-4672-8637-7ef9ce8c277a |
+| Date | Wed, 27 Nov 2019 04:37:34 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "567e609b-854a-4672-8637-7ef9ce8c277a",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
         }
     }
 }
@@ -2090,36 +2090,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ***Responses:***
 
 
-Status: Error | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c1055589-a25c-4c22-b08e-2aadfe53ed24 |
-| Date | Thu, 28 Nov 2019 01:09:39 GMT |
-| Content-Length | 61 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 2010,
-            "description": ""
-        }
-    }
-}
-```
-
-
-
 Status: Success | Code: 200
 
 
@@ -2143,6 +2113,36 @@ Status: Success | Code: 200
         "status": {
             "code": 0,
             "description": "DONE"
+        }
+    }
+}
+```
+
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c1055589-a25c-4c22-b08e-2aadfe53ed24 |
+| Date | Thu, 28 Nov 2019 01:09:39 GMT |
+| Content-Length | 61 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 2010,
+            "description": ""
         }
     }
 }
@@ -2349,4 +2349,4 @@ URL: http://{{host}}/mtool/api/ibofos/v1/test/report
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-04 17:01:04 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-11 13:28:50 by [docgen](https://github.com/thedevsaddam/docgen)

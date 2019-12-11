@@ -1608,3 +1608,26 @@ save_volume_meta:
 {"command":"GETIBOFOSINFO","rid":"70906bde-1c82-4c5e-8529-185478ffeb13"}
 nvme_uevent.c: 189:spdk_get_uevent: *ERROR*: Socket read error(105): No buffer space available
 nvme_uevent.c: 189:spdk_get_uevent: *ERROR*: Socket read error(105): No buffer space available
+Starting SPDK v19.01.1 / DPDK 19.02.0 initialization...
+[ DPDK EAL parameters: ibof_nvmf --no-shconf -c 0x7 -n 4 --base-virtaddr=0x200000000000 --file-prefix=spdk_pid22376 ]
+EAL: Detected 12 lcore(s)
+EAL: Detected 1 NUMA nodes
+EAL: No free hugepages reported in hugepages-1048576kB
+EAL: Probing VFIO support...
+app.c: 625:spdk_app_start: *NOTICE*: Total cores available: 3
+reactor.c: 298:_spdk_reactor_run: *NOTICE*: Reactor started on core 0
+reactor.c: 298:_spdk_reactor_run: *NOTICE*: Reactor started on core 1
+reactor.c: 298:_spdk_reactor_run: *NOTICE*: Reactor started on core 2
+ibofos started
+rdma.c:1680:spdk_nvmf_rdma_create: *INFO*: *** RDMA Transport Init ***
+  Transport opts:  max_ioq_depth=128, max_io_size=131072,
+  max_qpairs_per_ctrlr=4, io_unit_size=131072,
+  in_capsule_data_size=4096, max_aq_depth=128
+  num_shared_buffers=4096
+rdma.c:1725:spdk_nvmf_rdma_create: *ERROR*: rdma_create_event_channel() failed, No such file or directory
+transport.c: 108:spdk_nvmf_transport_create: *ERROR*: Unable to create new transport of type RDMA
+nvmf_rpc.c:1553:nvmf_rpc_create_transport: *ERROR*: Transport type 'RDMA' create failed
+nvmf.c: 495:spdk_nvmf_tgt_listen: *ERROR*: Unable to listen on transport RDMA. The transport must be created first.
+bdev_malloc.c: 478:create_malloc_disk: *INFO*: Current PID: 22376, buffer v address: 0x200014400000, size: 4294967296
+bdev_malloc.c: 502:create_malloc_disk: *INFO*: Successfully written to "/tmp/uram_hugepage" about information of "uram0"
+vbdev_lvol.c:1276:_vbdev_lvs_examine_cb: *INFO*: Lvol store not found on uram0

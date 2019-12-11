@@ -22,20 +22,20 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)</title><style media
 </code></pre><hr><h4>Timeout</h4><ul><li>D-Agent default both read and write timeout is 30sec<li>D-Agent waits 29sec from iBoFOS<br></ul><hr><h4>Busy Status</h4><ul><li>If iBof is busy, D-Agent return busy response</ul><div class=request-item><div class=panel-group id=accordion-Common><div class="panel panel-info" id=jump-Common-Common><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Common href=#collapse-Common-Common><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>Common</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/heartbeat</h4></a></div><div id=collapse-Common-Common class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error - iBoF is busy&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1a9368ad-5205-48cc-9569-60f9fc124af5<tr><td>Date<td>Wed, 27 Nov 2019 05:02:21 GMT<tr><td>Content-Length<td>74<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
-"rid": "",
-"result": {
-"status": {
-"code": 12000,
-"description": "iBoF is busy"
-}
-}
-}</span><div class=clearfix></div><h6>Error - IBoF does not run&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>74228c0f-c5c2-4c1b-99b8-697278a095ae<tr><td>Date<td>Wed, 27 Nov 2019 04:59:48 GMT<tr><td>Content-Length<td>79<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/mtool/api/ibofos/v1/system/heartbeat</h4></a></div><div id=collapse-Common-Common class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error - IBoF does not run&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>74228c0f-c5c2-4c1b-99b8-697278a095ae<tr><td>Date<td>Wed, 27 Nov 2019 04:59:48 GMT<tr><td>Content-Length<td>79<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "result": {
 "status": {
 "code": 12030,
 "description": "iBoF does not run"
+}
+}
+}</span><div class=clearfix></div><h6>Error - iBoF is busy&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1a9368ad-5205-48cc-9569-60f9fc124af5<tr><td>Date<td>Wed, 27 Nov 2019 05:02:21 GMT<tr><td>Content-Length<td>74<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+"rid": "",
+"result": {
+"status": {
+"code": 12000,
+"description": "iBoF is busy"
 }
 }
 }</span><div class=clearfix></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class=panel-heading><h3 class=panel-title id=DAgent>D-Agent
@@ -627,20 +627,20 @@ http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS
 "name": "vol01",
 "size": 4194304
 }
-}</span><div class=clearfix></div><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>567e609b-854a-4672-8637-7ef9ce8c277a<tr><td>Date<td>Wed, 27 Nov 2019 04:37:34 GMT<tr><td>Content-Length<td>98<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
-"rid": "567e609b-854a-4672-8637-7ef9ce8c277a",
-"result": {
-"status": {
-"code": 0,
-"description": "DONE"
-}
-}
-}</span><div class=clearfix></div><h6>Error&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>11238da7-6018-477a-aae1-74567cbc8e4d<tr><td>Date<td>Wed, 27 Nov 2019 04:37:58 GMT<tr><td>Content-Length<td>61<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+}</span><div class=clearfix></div><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>11238da7-6018-477a-aae1-74567cbc8e4d<tr><td>Date<td>Wed, 27 Nov 2019 04:37:58 GMT<tr><td>Content-Length<td>61<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "result": {
 "status": {
 "code": 2022,
 "description": ""
+}
+}
+}</span><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>567e609b-854a-4672-8637-7ef9ce8c277a<tr><td>Date<td>Wed, 27 Nov 2019 04:37:34 GMT<tr><td>Content-Length<td>98<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+"rid": "567e609b-854a-4672-8637-7ef9ce8c277a",
+"result": {
+"status": {
+"code": 0,
+"description": "DONE"
 }
 }
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-warning" id=jump-iBoFOS-UPDATEVOLUME><div class=panel-heading><small class="pull-right text-muted">raw</small>
@@ -747,20 +747,20 @@ http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS
 "param": {
 "name": "vol01"
 }
-}</span><div class=clearfix></div><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>c1055589-a25c-4c22-b08e-2aadfe53ed24<tr><td>Date<td>Thu, 28 Nov 2019 01:09:39 GMT<tr><td>Content-Length<td>61<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
-"rid": "",
-"result": {
-"status": {
-"code": 2010,
-"description": ""
-}
-}
-}</span><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>cefe68ce-51a4-4388-a8a1-32bb4ef2fe11<tr><td>Date<td>Thu, 28 Nov 2019 01:09:25 GMT<tr><td>Content-Length<td>98<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+}</span><div class=clearfix></div><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>cefe68ce-51a4-4388-a8a1-32bb4ef2fe11<tr><td>Date<td>Thu, 28 Nov 2019 01:09:25 GMT<tr><td>Content-Length<td>98<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11",
 "result": {
 "status": {
 "code": 0,
 "description": "DONE"
+}
+}
+}</span><div class=clearfix></div><h6>Error&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>c1055589-a25c-4c22-b08e-2aadfe53ed24<tr><td>Date<td>Thu, 28 Nov 2019 01:09:39 GMT<tr><td>Content-Length<td>61<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+"rid": "",
+"result": {
+"status": {
+"code": 2010,
+"description": ""
 }
 }
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-success" id=jump-iBoFOS-ATTACHDEVICE><div class=panel-heading><small class="pull-right text-muted">raw</small>
@@ -816,4 +816,4 @@ if(IsJsonString(html)){var obj=JSON.parse(html);var formattedJson=JSON.stringify
 function IsJsonString(str){try{JSON.parse(str);}catch(e){return false;}
 return true;}
 String.prototype.replaceAll=function(replaceThis,withThis){var re=new RegExp(RegExp.quote(replaceThis),"g");return this.replace(re,withThis);};RegExp.quote=function(str){return str.replace(/([.?*+^$[\]\\(){}-])/g,"\\$1");};function syntaxHighlight(json){json=json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){var cls='number';if(/^"/.test(match)){if(/:$/.test(match)){cls='key';}else{cls='string';}}else if(/true|false/.test(match)){cls='boolean';}else if(/null/.test(match)){cls='null';}
-return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span>Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2019-12-04 17:01:04 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
+return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span>Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2019-12-11 13:28:50 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
