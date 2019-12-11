@@ -9,16 +9,16 @@ import (
 )
 
 func MakeUnauthorized(ctx *gin.Context, code int) {
-	description := Description(code)
-	MakeFailResponse(ctx, http.StatusUnauthorized, description, code)
+	description := description(code)
+	MakeResponse(ctx, http.StatusUnauthorized, description, code)
 }
 
 func MakeBadRequest(ctx *gin.Context, code int) {
-	description := Description(code)
-	MakeFailResponse(ctx, http.StatusBadRequest, description, code)
+	description := description(code)
+	MakeResponse(ctx, http.StatusBadRequest, description, code)
 }
 
-func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code int) {
+func MakeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
 	result := model.Result{}
 	result.Status.Code = code
 	result.Status.Description = description
@@ -27,12 +27,17 @@ func MakeFailResponse(ctx *gin.Context, httpStatus int, description string, code
 		Result: result,
 	}
 
-	log.Printf("MakeFailResponse : %+v", result)
+	log.Printf("MakeResponse : %+v", result)
 	ctx.AbortWithStatusJSON(httpStatus, &response)
+}
+
+func MakeSuccess(ctx *gin.Context) {
+	description := description(0)
+	MakeResponse(ctx, http.StatusOK, description, 0)
 }
 
 // https://golang.org/doc/effective_go.html#Getters
 // it's neither idiomatic nor necessary to put Get into the getter's name.
-func Description(code int) string {
+func description(code int) string {
 	return setting.StatusMap[code]
 }

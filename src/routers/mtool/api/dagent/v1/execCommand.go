@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"ibofdagent/src/routers/mtool/api"
-	"ibofdagent/src/routers/mtool/model"
 	"ibofdagent/src/util"
 	"net/http"
 )
@@ -12,8 +11,8 @@ import (
 func RunFio(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py", true)
-	returnSuccess(ctx)
 
+	api.MakeSuccess(ctx)
 }
 
 func RunIBoF(ctx *gin.Context) {
@@ -28,27 +27,21 @@ func RunIBoF(ctx *gin.Context) {
 	if util.IsIBoFRun() == false {
 		panic(fmt.Errorf("exec Run: Fail to run iBoFOS"))
 	}
-	returnSuccess(ctx)
-}
 
-func returnSuccess(ctx *gin.Context) {
-	response := model.Response{}
-	response.Result.Status.Code = 0
-	response.Result.Status.Description = "Success"
-	ctx.JSON(http.StatusOK, &response)
+	api.MakeSuccess(ctx)
 }
 
 func ForceKillIbof(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 
 	util.ExecCmd("pkill -9 ibofos", false)
-	returnSuccess(ctx)
+	api.MakeSuccess(ctx)
 }
 
 func checkReturnFail(ctx *gin.Context) {
 	if r := recover(); r != nil {
 		err := r.(error)
 		description := err.Error()
-		api.MakeFailResponse(ctx, http.StatusBadRequest, description, 11000)
+		api.MakeResponse(ctx, http.StatusBadRequest, description, 11000)
 	}
 }

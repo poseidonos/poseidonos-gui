@@ -36,7 +36,7 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 
 	if err != nil {
 		log.Printf("sendIBoF : %v", err)
-		api.MakeFailResponse(ctx, 400, error.Error(err), 19002)
+		api.MakeResponse(ctx, 400, error.Error(err), 19002)
 		return
 	}
 
@@ -54,7 +54,7 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 
 		if err != nil {
 			log.Printf("Response Unmarshal Error : %v", err)
-			api.MakeFailResponse(ctx, 400, error.Error(err), 12310)
+			api.MakeResponse(ctx, 400, error.Error(err), 12310)
 			return
 		} else if response.Result.Status.Code != 0 {
 			api.MakeBadRequest(ctx, response.Result.Status.Code)
