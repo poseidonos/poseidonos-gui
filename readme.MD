@@ -11,9 +11,9 @@
 
 ## Dev Enviroment
 * Language : GoLang 1.13
-* Test : Ubuntu 19.10 LTS
+* Test : Ubuntu 19.10
 * D-Agent Branch : devel (Latest)
-* iBoFOS Branch : devel (11/19 - d56cc7aec4d80fd54b40b42588a74dc369063993)
+* iBoFOS Branch : devel (12/12 - 9d061e4c2b1db07f57c7bda71c651e4aaa2b024d)
 
 ***
 
@@ -67,7 +67,7 @@ $ ./localbuild # It will also generate api documentation
 ```shell script
 $ sudo ./ibofdagent # General Run
 # Or
-$ sudo ./run_dagent.sh # Background Run 
+$ sudo ./bin/run_dagent.sh # Background Run 
 ```
 
 ***
@@ -75,15 +75,13 @@ $ sudo ./run_dagent.sh # Background Run
 ## API
 #### Postman
 1. Install Postman
-2. File -> Import -> Import File -> "postman/D-Agent.postman_collection.json"
-3. Set the envirments (host, vendor)
-: Host value should be URL
-4. : Vendor value should be "mtool" or "nbp"    
-5. Call FORCEKILLIBOFOS
+2. Import Collection in postman folder
+3. Import envirments in postman folder
+4. Call FORCEKILLIBOFOS
     : To kill current iBoFOS  
-6. Call RUNIBOFOS 
+5. Call RUNIBOFOS 
     : it exec "run_ibofos.sh"
-7. Test
+6. Test
 
 #### API Spec HTML & Markdown
 There are two type documentations; api.html and api.MD
