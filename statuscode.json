@@ -36,6 +36,25 @@
       "description": "About job slicing point"
     },
     {
+      "code": 2500,
+      "level": "ERROR",
+      "description": "Array is alreday mounted"
+    },
+    {
+      "code": 2501,
+      "level": "ERROR",
+      "description": "Array is already umounted"
+    }, {
+      "code": 2052,
+      "level": "ERROR",
+      "description": "Array already exists"
+    },
+    {
+      "code": 2053,
+      "level": "ERROR",
+      "description": "Array does not exists"
+    },
+    {
       "code": 2804,
       "level": "TRACE",
       "description": "Rebuild progress report"

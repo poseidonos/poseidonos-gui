@@ -59,7 +59,7 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 			api.MakeBadRequest(ctx, response.Result.Status.Code)
 			return
 		} else {
-			api.MakeSuccess(ctx)
+			api.MakeSuccessWithRes(ctx, response)
 			//ctx.JSON(http.StatusOK, &response)
 			return
 		}

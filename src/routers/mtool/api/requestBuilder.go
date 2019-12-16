@@ -2,42 +2,45 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"ibofdagent/src/routers/mtool/model"
 	"ibofdagent/src/setting"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func MakeUnauthorized(ctx *gin.Context, code int) {
-	description := description(code)
-	MakeResponse(ctx, http.StatusUnauthorized, description, code)
+	MakeResponse(ctx, http.StatusUnauthorized, "", code)
 }
 
 func MakeBadRequest(ctx *gin.Context, code int) {
-	description := description(code)
-	MakeResponse(ctx, http.StatusBadRequest, description, code)
+	MakeResponse(ctx, http.StatusBadRequest, "", code)
 }
 
 func MakeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
-	result := model.Result{}
-	result.Status.Code = code
-	result.Status.Description = description
+	response := model.Response{}
+	MakeResponseWithRes(ctx, httpStatus, description, code, response)
+}
 
-	response := model.Response{
-		Result: result,
+func MakeResponseWithRes(ctx *gin.Context, httpStatus int, description string, code int, response model.Response) {
+	response.Result.Status.Code = code
+	if description == "" {
+		response.Result.Status.Description = StatusDescription(code)
 	}
-
-	log.Printf("MakeResponse : %+v", result)
+	log.Printf("MakeResponse : %+v", response)
 	ctx.AbortWithStatusJSON(httpStatus, &response)
 }
 
 func MakeSuccess(ctx *gin.Context) {
-	description := description(0)
-	MakeResponse(ctx, http.StatusOK, description, 0)
+	response := model.Response{}
+	MakeSuccessWithRes(ctx, response)
+}
+
+func MakeSuccessWithRes(ctx *gin.Context, response model.Response) {
+	MakeResponseWithRes(ctx, http.StatusOK, "", 0, response)
 }
 
 // https://golang.org/doc/effective_go.html#Getters
 // it's neither idiomatic nor necessary to put Get into the getter's name.
-func description(code int) string {
+func StatusDescription(code int) string {
 	return setting.StatusMap[code]
 }
