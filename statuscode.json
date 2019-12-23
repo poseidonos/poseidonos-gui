@@ -16,6 +16,11 @@
       "description": "iBoFOS System Recovery In Progress"
     },
     {
+      "code": 2060,
+      "level": "Error",
+      "description": "Fail to create volume meta"
+    },
+    {
       "code": 2800,
       "level": "INFO",
       "description": "Rebuild begin"
