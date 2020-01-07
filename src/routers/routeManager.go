@@ -16,5 +16,6 @@ func InitRouter() *gin.Engine {
 	bmc.Route(router)
 	mtool.Route(router)
 	nbp.Route(router)
+
 	return router
 }

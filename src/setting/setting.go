@@ -13,7 +13,7 @@ var StatusMap map[int]string
 var StatusList model.StatusList
 
 type ConfigScheme struct {
-	Server           Server `yaml:"src"`
+	Server           Server `yaml:"server"`
 	IBoFOSSocketAddr string
 	DAgentSocketAddr string
 }
