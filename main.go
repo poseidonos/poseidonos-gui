@@ -2,10 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	"ibofdagent/src/handler"
-	"ibofdagent/src/routers"
-	"ibofdagent/src/setting"
+	"A-module/handler"
+	"A-module/routers"
+	"A-module/setting"
 	"net/http"
 	"time"
 )
@@ -20,7 +19,6 @@ func init() {
 
 func main() {
 	go handler.ConnectToIBoFOS()
-	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
 	startServer()
 }
 
