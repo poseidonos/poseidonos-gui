@@ -42,3 +42,43 @@ func postSystem(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
+
+//for CLi without gin-tonic
+
+func HeartbeatCLI() {
+	getSystemCLI("HEARTBEAT")
+}
+
+func ExitiBoFOSCLI() {
+	deleteSystemCLI("EXITIBOFOS")
+}
+
+func IBoFOSInfoCLI() {
+	getSystemCLI("GETIBOFOSINFO")
+}
+
+func MountiBoFOSCLI() {
+	postSystemCLI("MOUNTIBOFOS")
+}
+
+func UnmountiBoFOSCLI() {
+	postSystemCLI("UNMOUNTIBOFOS")
+
+}
+
+func deleteSystemCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendIBoFCLI(iBoFRequest)
+}
+
+func getSystemCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	sendIBoFCLI(iBoFRequest)
+}
+
+func postSystemCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendIBoFCLI(iBoFRequest)
+}

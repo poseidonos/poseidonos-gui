@@ -39,3 +39,38 @@ func deleteArray(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
+
+func ListArrayDeviceiCLI() {
+	getArrayCLI("LISTARRAYDEVICE")
+
+}
+
+func LoadArrayCLI() {
+	getArrayCLI("LOADARRAY")
+}
+
+func CreateArrayCLI() {
+	postArrayCLI("CREATEARRAY")
+
+}
+
+func DeleteArrayCLI() {
+	deleteArrayCLI("DELETEARRAY")
+}
+
+func postArrayCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendIBoFCLI(iBoFRequest)
+}
+
+func getArrayCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	sendIBoFCLI(iBoFRequest)
+}
+
+func deleteArrayCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendIBoFCLI(iBoFRequest)
+}

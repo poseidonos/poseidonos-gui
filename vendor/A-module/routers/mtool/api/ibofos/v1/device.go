@@ -33,3 +33,31 @@ func postDevice(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
+
+func ScanDeviceCLI() {
+	getDeviceCLI("SCANDEVICE")
+}
+
+func ListDeviceCLI() {
+	getDeviceCLI("LISTDEVICE")
+}
+
+func AttachDeviceCLI() {
+	//postDevice(ctx, "ATTACHDEVICE")
+	//api.MakeBadRequest(ctx, 40000)
+}
+
+func DetachDeviceCLI() {
+	postDeviceCLI("DETACHDEVICE")
+}
+
+func getDeviceCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	sendIBoFCLI(iBoFRequest)
+}
+
+func postDeviceCLI(command string) {
+	iBoFRequest := makeRequestCLI(command)
+	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	sendIBoFCLI(iBoFRequest)
+}
