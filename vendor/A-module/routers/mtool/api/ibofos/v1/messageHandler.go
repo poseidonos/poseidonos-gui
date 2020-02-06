@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
@@ -87,6 +88,7 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	for {
 		temp := handler.GetIBoFResponse()
 		log.Printf("Response From iBoFCLI : %s", string(temp))
+		fmt.Printf("Response From iBoFCLI : %s\n", string(temp))
 
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)

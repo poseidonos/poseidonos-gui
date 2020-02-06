@@ -9,7 +9,7 @@ import (
 func init() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	logrus.SetOutput(os.Stdout)
-	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetLevel(logrus.WarnLevel)
 	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
 
 //set Warn as a default log level.

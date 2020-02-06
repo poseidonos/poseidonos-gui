@@ -72,7 +72,7 @@ func DeleteVolumeCLI() {
 	deleteVolumeCLI("DELETEVOLUME")
 }
 
-func ListVolumeCLI(ctx *gin.Context) {
+func ListVolumeCLI() {
 	getVolumeCLI("LISTVOLUME")
 }
 
