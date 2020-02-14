@@ -40,7 +40,7 @@ func deleteArray(ctx *gin.Context, command string) {
 	sendIBoF(ctx, iBoFRequest)
 }
 
-func ListArrayDeviceiCLI() {
+func ListArrayDeviceCLI() {
 	getArrayCLI("LISTARRAYDEVICE")
 
 }
