@@ -76,6 +76,11 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
+
+	fmt.Println("Request to Poseidon OS")
+	fmt.Println("    Command     : ", iBoFRequest.Command)
+	fmt.Println("    Param       : ", iBoFRequest.Param,"\n")
+
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err := handler.WriteToIBoFSocket(marshaled)
 
@@ -88,10 +93,13 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	for {
 		temp := handler.GetIBoFResponse()
 		log.Printf("Response From iBoFCLI : %s", string(temp))
-		fmt.Printf("Response From iBoFCLI : %s\n", string(temp))
 
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
+		
+		fmt.Println("Response from Poseidon OS")
+		fmt.Println("    Code        : ", response.Result.Status.Code)
+		fmt.Println("    Description : ", response.Result.Status.Description)
 
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")

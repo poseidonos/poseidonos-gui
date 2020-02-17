@@ -48,13 +48,21 @@ var commandCmd = &cobra.Command{
   Short: "Command to Poseidon OS",
   Long:  `Command to Poseidon OS and get a reply fommated by JSON.
 
-available msg list :
+Available msg list :
 
-[category] : [msg]
+[Category] : [msg]
 array      : listarray, loadarray, createarray, deletearray
 device     : scandevice, listdevice, attachdevice, detachdevice
 system     : heartbeat,exitibofos, info, mountibof, unmountibof
 volume     : create, update, mountvolume, unmountvolume, delete, list
+
+
+You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
+Default value is as below.
+
+IP   : 127.0.0.1
+Port : 18716
+
 
 	  `,
   Args: func(cmd *cobra.Command, args []string) error {
@@ -82,13 +90,11 @@ func init() {
 	rootCmd.AddCommand(commandCmd)
 	commandCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	commandCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "set a debug mode")
-	commandCmd.PersistentFlags().StringVarP(&IP, "ip", "i", "", "set ip")
-	commandCmd.PersistentFlags().StringVarP(&Port, "port", "p", "", "set port")
+	commandCmd.PersistentFlags().StringVarP(&IP, "ip", "i", "", "set ip adddress like \"-i 127.0.0.1\"")
+	commandCmd.PersistentFlags().StringVarP(&Port, "port", "p", "", "set port number like \"-p 18716\"")
 }
 
 func Send(command string) {
-
-	fmt.Println("msg you want to send : ", command)
 
 	if Verbose == true {
 		log.SetVerboseMode()
