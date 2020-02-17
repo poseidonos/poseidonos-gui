@@ -13,6 +13,10 @@ import (
 
 var Verbose bool
 var Debug bool
+
+var IP bool
+var Port bool
+
 var commands = map[string]func() {
 //array
 	"listarray" : iBoFOSV1.ListArrayDeviceCLI,
@@ -51,6 +55,7 @@ array      : listarray, loadarray, createarray, deletearray
 device     : scandevice, listdevice, attachdevice, detachdevice
 system     : heartbeat,exitibofos, info, mountibof, unmountibof
 volume     : create, update, mountvolume, unmountvolume, delete, list
+
 	  `,
   Args: func(cmd *cobra.Command, args []string) error {
 
@@ -77,7 +82,9 @@ func init() {
 	rootCmd.AddCommand(commandCmd)
 	commandCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	commandCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "set a debug mode")
-	commandCmd.SetArgs([]string{"sub", "arg1", "arg2"})
+	commandCmd.PersistentFlags().BoolVarP(&IP, "ip", "i", false, "set ip")
+	commandCmd.PersistentFlags().BoolVarP(&Port, "port", "p", false, "set port")
+	//commandCmd.SetArgs([]string{"sub", "arg1", "arg2"})
 	//commandCmd.SetHelpTemplate("moon hyun suk")
 }
 
