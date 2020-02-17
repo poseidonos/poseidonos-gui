@@ -14,8 +14,8 @@ import (
 var Verbose bool
 var Debug bool
 
-var IP bool
-var Port bool
+var IP string
+var Port string
 
 var commands = map[string]func() {
 //array
@@ -82,10 +82,8 @@ func init() {
 	rootCmd.AddCommand(commandCmd)
 	commandCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	commandCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "set a debug mode")
-	commandCmd.PersistentFlags().BoolVarP(&IP, "ip", "i", false, "set ip")
-	commandCmd.PersistentFlags().BoolVarP(&Port, "port", "p", false, "set port")
-	//commandCmd.SetArgs([]string{"sub", "arg1", "arg2"})
-	//commandCmd.SetHelpTemplate("moon hyun suk")
+	commandCmd.PersistentFlags().StringVarP(&IP, "ip", "i", "", "set ip")
+	commandCmd.PersistentFlags().StringVarP(&Port, "port", "p", "", "set port")
 }
 
 func Send(command string) {
@@ -99,10 +97,24 @@ func Send(command string) {
 	}
 
 	setting.LoadConfig()
+	
+	if len(IP) != 0 {
+		setting.Config.Server.IBoF.IP = IP
+	}
+	
+	if len(Port) != 0 {
+		setting.Config.Server.IBoF.Port = Port
+	}
+	
+	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
 
 	go handler.ConnectToIBoFOS()
 
-	time.Sleep(time.Second*1)
-
-	commands[command]()
+	time.Sleep(time.Second*2)
+	
+	if len(setting.Config.IBoFOSSocketAddr) > 0 {
+		commands[command]()
+	} else {
+		fmt.Println("Cannot connect to Poseidon OS !!!")
+	}
 }

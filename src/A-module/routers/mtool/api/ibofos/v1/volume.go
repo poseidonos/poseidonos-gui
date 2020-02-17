@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"encoding/json"
 )
 
 func CreateVolume(ctx *gin.Context) {
@@ -83,7 +84,13 @@ func getVolumeCLI(command string) {
 
 func postVolumeCLI(command string) {
 	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	
+	doc := `{"name": "vol01","size": 4194304}`
+
+	var data map[string]interface{}
+	json.Unmarshal([]byte(doc), &data)
+
+	iBoFRequest.Param = data
 	sendIBoFCLI(iBoFRequest)
 }
 

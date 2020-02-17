@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"encoding/json"
 )
 
 func ListArrayDevice(ctx *gin.Context) {
@@ -16,7 +17,6 @@ func LoadArray(ctx *gin.Context) {
 
 func CreateArray(ctx *gin.Context) {
 	postArray(ctx, "CREATEARRAY")
-
 }
 
 func DeleteArray(ctx *gin.Context) {
@@ -51,7 +51,6 @@ func LoadArrayCLI() {
 
 func CreateArrayCLI() {
 	postArrayCLI("CREATEARRAY")
-
 }
 
 func DeleteArrayCLI() {
@@ -60,7 +59,13 @@ func DeleteArrayCLI() {
 
 func postArrayCLI(command string) {
 	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+
+	doc := `{"buffer":[{"deviceName":"uram0"}],"data":[{"deviceName":"intel-unvmens-0"},{"deviceName":"intel-unvmens-1"},{"deviceName":"intel-unvmens-2"}],"fttype":1,"spare":[{"deviceName":"intel-unvmens-3"}]}`
+
+	var data map[string]interface{}
+	json.Unmarshal([]byte(doc), &data)
+
+	iBoFRequest.Param = data
 	sendIBoFCLI(iBoFRequest)
 }
 

@@ -2,7 +2,6 @@ package log
 
 import (
 	"os"
-	//"fmt"
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,11 +10,10 @@ func init() {
 	logrus.SetOutput(os.Stdout)
 	logrus.SetLevel(logrus.WarnLevel)
 	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
+}
 
 //set Warn as a default log level.
 //log level grows like below.
-
-}
 
 func SetDebugMode() {
 	logrus.SetLevel(logrus.DebugLevel)
