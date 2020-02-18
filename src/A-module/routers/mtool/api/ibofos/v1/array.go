@@ -76,6 +76,11 @@ func getArrayCLI(command string) {
 
 func deleteArrayCLI(command string) {
 	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	doc := `{"buffer":[{"deviceName":"uram0"}],"data":[{"deviceName":"intel-unvmens-0"},{"deviceName":"intel-unvmens-1"},{"deviceName":"intel-unvmens-2"}],"fttype":1,"spare":[{"deviceName":"intel-unvmens-3"}]}`
+
+	var data map[string]interface{}
+	json.Unmarshal([]byte(doc), &data)
+
+	iBoFRequest.Param = data
 	sendIBoFCLI(iBoFRequest)
 }
