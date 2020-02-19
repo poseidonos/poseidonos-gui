@@ -5,6 +5,7 @@ import (
 	"A-module/handler"
 	"A-module/routers"
 	"A-module/setting"
+	"A-module/log"
 	"net/http"
 	"time"
 )
@@ -15,6 +16,7 @@ import (
 func init() {
 	setting.LoadConfig()
 	gin.SetMode(gin.DebugMode)
+	log.SetDebugMode()
 }
 
 func main() {
