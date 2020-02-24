@@ -8,6 +8,7 @@ import (
 		"A-module/errors"
 		"A-module/handler"
 		"A-module/setting"
+		"A-module/routers/mtool/model"
 		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	   )
 
@@ -17,24 +18,36 @@ var Debug bool
 var IP string
 var Port string
 
-var commands = map[string]func() {
-//array
-	"listarray" : iBoFOSV1.ListArrayDeviceCLI,
-	"loadarray" : iBoFOSV1.LoadArrayCLI,
+var Buffer []string
+var Data []string
+var Spare []string
+var Name string
+
+var Size int
+
+var ArrayCommand = map[string]func(model.ArrayParam) {
+	"listarray"   : iBoFOSV1.ListArrayDeviceCLI,
+	"loadarray"   : iBoFOSV1.LoadArrayCLI,
 	"createarray" : iBoFOSV1.CreateArrayCLI,
 	"deletearray" : iBoFOSV1.DeleteArrayCLI,
-//device
+}
+
+var DeviceCommand = map[string]func(model.DeviceParam) {
 	"scandevice" : iBoFOSV1.ScanDeviceCLI,
 	"listdevice" : iBoFOSV1.ListDeviceCLI,
 	"attachdevice" : iBoFOSV1.AttachDeviceCLI,
 	"detachdevice" : iBoFOSV1.DetachDeviceCLI,
-//system
+}
+
+var SystemCommand = map[string]func() {
 	"heartbeat" : iBoFOSV1.HeartbeatCLI,
 	"exitibofos" :iBoFOSV1.ExitiBoFOSCLI,
 	"info" :iBoFOSV1.IBoFOSInfoCLI,
 	"mountibof" :iBoFOSV1.MountiBoFOSCLI,
 	"unmountibof" :iBoFOSV1.UnmountiBoFOSCLI,
-//volume
+}
+
+var VolumeCommand = map[string]func(model.VolumeParam) {
 	"create" : iBoFOSV1.CreateVolumeCLI,
 	"update" : iBoFOSV1.UpdateVolumeCLI,
 	"mountvolume" : iBoFOSV1.MountVolumeCLI,
@@ -71,10 +84,16 @@ Port : 18716
       return errors.New("need an one msg !!!")
     }
 
-	val, exists := commands[args[0]]
-	_ =  val
+	val1, arrayExists := ArrayCommand[args[0]]
+	val2, deviceExists := DeviceCommand[args[0]]
+	val3, systemExists := SystemCommand[args[0]]
+	val4, volumeExists := VolumeCommand[args[0]]
+	_ =  val1
+	_ =  val2
+	_ =  val3
+	_ =  val4
 
-	if !exists {
+	if !arrayExists && !deviceExists && !systemExists && !volumeExists {
 		return errors.New("not available msg !!!")
 	}
 
@@ -87,11 +106,20 @@ Port : 18716
 }
 
 func init() {
+
 	rootCmd.AddCommand(commandCmd)
 	commandCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
-	commandCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "set a debug mode")
-	commandCmd.PersistentFlags().StringVarP(&IP, "ip", "i", "", "set ip adddress like \"-i 127.0.0.1\"")
-	commandCmd.PersistentFlags().StringVarP(&Port, "port", "p", "", "set port number like \"-p 18716\"")
+	commandCmd.PersistentFlags().BoolVar(&Debug, "debug", false, "set a debug mode")
+	
+	commandCmd.PersistentFlags().StringVar(&IP, "ip", "", "set ip adddress like \"-i 127.0.0.1\"")
+	commandCmd.PersistentFlags().StringVar(&Port, "port", "", "set port number like \"-p 18716\"")
+
+	commandCmd.PersistentFlags().StringSliceVarP(&Buffer, "buffer", "b", []string{}, "set name \"-b uram0\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "d", []string{}, "set name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "p", []string{}, "set name \"-p unvme-ns-3\"")
+	commandCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "set name \"-n vol01\"")
+	commandCmd.PersistentFlags().IntVarP(&Size, "size", "s", 0, "set size \"-s 4194304\"")
+
 }
 
 func Send(command string) {
@@ -103,23 +131,73 @@ func Send(command string) {
 	}
 
 	setting.LoadConfig()
-	
+
 	if len(IP) != 0 {
 		setting.Config.Server.IBoF.IP = IP
 	}
-	
+
 	if len(Port) != 0 {
 		setting.Config.Server.IBoF.Port = Port
 	}
-	
+
 	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
 
 	go handler.ConnectToIBoFOS()
 
-	time.Sleep(time.Second*2)
-	
+	time.Sleep(time.Second*1)
+
 	if len(setting.Config.IBoFOSSocketAddr) > 0 {
-		commands[command]()
+
+		val1, arrayExists := ArrayCommand[command]
+		val2, deviceExists := DeviceCommand[command]
+		val3, systemExists := SystemCommand[command]
+		val4, volumeExists := VolumeCommand[command]
+		_ =  val1
+		_ =  val2
+		_ =  val3
+		_ =  val4
+
+		if arrayExists {
+
+			param := model.ArrayParam {}
+			param.FtType = 1
+
+			for _, v := range Buffer {
+				device := model.Device{}
+				device.DeviceName = v
+				param.Buffer = append(param.Buffer, device)
+			}
+			for _, v := range Data {
+				device := model.Device{}
+				device.DeviceName = v
+				param.Data = append(param.Data, device)
+			}
+			for _, v := range Spare {
+				device := model.Device{}
+				device.DeviceName = v
+				param.Spare = append(param.Spare, device)
+			}
+			ArrayCommand[command](param)
+		} else if deviceExists {
+
+			param := model.DeviceParam {}
+			param.Name = Name
+			DeviceCommand[command](param)
+
+		} else if systemExists {
+
+			SystemCommand[command]()
+
+		} else if volumeExists {
+
+			param := model.VolumeParam {}
+			param.Name = Name
+			param.Size = Size
+			VolumeCommand[command](param)
+
+		} else {
+			//commands[command]()
+		}
 	} else {
 		fmt.Println("Cannot connect to Poseidon OS !!!")
 	}

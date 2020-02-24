@@ -24,3 +24,23 @@ type Status struct {
 type StatusList struct {
 	StatusList []     Status `json:"StatusList"`
 }
+
+type Device struct {
+	DeviceName string `json:"deviceName"`
+}
+
+type ArrayParam  struct {
+	FtType  int	        `json:"fttype"`
+	Buffer []  Device   `json:"buffer,omitempty"`
+	Data []  Device     `json:"data,omitempty"`
+	Spare []  Device    `json:"spare,omitempty"`
+}
+
+type DeviceParam  struct {
+	Name string	`json:"name"`
+}
+
+type VolumeParam struct {
+	Name string	`json:"name"`
+	Size int	`json:"size"`
+}

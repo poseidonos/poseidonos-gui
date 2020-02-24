@@ -75,11 +75,13 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	}
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
+	b, _ := json.MarshalIndent(iBoFRequest.Param, "", "    ")
+
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 
 	fmt.Println("Request to Poseidon OS")
 	fmt.Println("    Command     : ", iBoFRequest.Command)
-	fmt.Println("    Param       : ", iBoFRequest.Param,"\n")
+	fmt.Println("    Param       : \n", string(b))
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err := handler.WriteToIBoFSocket(marshaled)

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"A-module/routers/mtool/api"
+	"A-module/routers/mtool/model"
 )
 
 func ScanDevice(ctx *gin.Context) {
@@ -34,21 +35,21 @@ func postDevice(ctx *gin.Context, command string) {
 	sendIBoF(ctx, iBoFRequest)
 }
 
-func ScanDeviceCLI() {
+func ScanDeviceCLI(param model.DeviceParam) {
 	getDeviceCLI("SCANDEVICE")
 }
 
-func ListDeviceCLI() {
+func ListDeviceCLI(param model.DeviceParam) {
 	getDeviceCLI("LISTDEVICE")
 }
 
-func AttachDeviceCLI() {
+func AttachDeviceCLI(param model.DeviceParam) {
 	//postDevice(ctx, "ATTACHDEVICE")
 	//api.MakeBadRequest(ctx, 40000)
 }
 
-func DetachDeviceCLI() {
-	postDeviceCLI("DETACHDEVICE")
+func DetachDeviceCLI(param model.DeviceParam) {
+	postDeviceCLI("DETACHDEVICE", param)
 }
 
 func getDeviceCLI(command string) {
@@ -56,8 +57,8 @@ func getDeviceCLI(command string) {
 	sendIBoFCLI(iBoFRequest)
 }
 
-func postDeviceCLI(command string) {
+func postDeviceCLI(command string, param model.DeviceParam) {
 	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
+	iBoFRequest.Param = param
 	sendIBoFCLI(iBoFRequest)
 }

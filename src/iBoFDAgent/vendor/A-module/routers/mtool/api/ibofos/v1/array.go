@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"encoding/json"
+	"A-module/routers/mtool/model"
 )
 
 func ListArrayDevice(ctx *gin.Context) {
@@ -40,32 +40,31 @@ func deleteArray(ctx *gin.Context, command string) {
 	sendIBoF(ctx, iBoFRequest)
 }
 
-func ListArrayDeviceCLI() {
+func ListArrayDeviceCLI(param model.ArrayParam) {
 	getArrayCLI("LISTARRAYDEVICE")
-
 }
 
-func LoadArrayCLI() {
+func LoadArrayCLI(param model.ArrayParam) {
 	getArrayCLI("LOADARRAY")
 }
 
-func CreateArrayCLI() {
-	postArrayCLI("CREATEARRAY")
+func CreateArrayCLI(param model.ArrayParam) {
+	postArrayCLI("CREATEARRAY", param)
 }
 
-func DeleteArrayCLI() {
-	deleteArrayCLI("DELETEARRAY")
+func DeleteArrayCLI(param model.ArrayParam) {
+	deleteArrayCLI("DELETEARRAY", param)
 }
 
-func postArrayCLI(command string) {
+func postArrayCLI(command string, param model.ArrayParam) {
 	iBoFRequest := makeRequestCLI(command)
-
+/*
 	doc := `{"buffer":[{"deviceName":"uram0"}],"data":[{"deviceName":"intel-unvmens-0"},{"deviceName":"intel-unvmens-1"},{"deviceName":"intel-unvmens-2"}],"fttype":1,"spare":[{"deviceName":"intel-unvmens-3"}]}`
 
 	var data map[string]interface{}
 	json.Unmarshal([]byte(doc), &data)
-
-	iBoFRequest.Param = data
+*/
+	iBoFRequest.Param = param
 	sendIBoFCLI(iBoFRequest)
 }
 
@@ -74,13 +73,8 @@ func getArrayCLI(command string) {
 	sendIBoFCLI(iBoFRequest)
 }
 
-func deleteArrayCLI(command string) {
+func deleteArrayCLI(command string, param model.ArrayParam) {
 	iBoFRequest := makeRequestCLI(command)
-	doc := `{"buffer":[{"deviceName":"uram0"}],"data":[{"deviceName":"intel-unvmens-0"},{"deviceName":"intel-unvmens-1"},{"deviceName":"intel-unvmens-2"}],"fttype":1,"spare":[{"deviceName":"intel-unvmens-3"}]}`
-
-	var data map[string]interface{}
-	json.Unmarshal([]byte(doc), &data)
-
-	iBoFRequest.Param = data
+	iBoFRequest.Param = param
 	sendIBoFCLI(iBoFRequest)
 }
