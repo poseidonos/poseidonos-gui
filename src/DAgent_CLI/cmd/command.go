@@ -109,15 +109,15 @@ func init() {
 
 	rootCmd.AddCommand(commandCmd)
 	commandCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
-	commandCmd.PersistentFlags().BoolVar(&Debug, "debug", false, "set a debug mode")
+	commandCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "set a debug mode")
 	
-	commandCmd.PersistentFlags().StringVar(&IP, "ip", "", "set ip adddress like \"-i 127.0.0.1\"")
-	commandCmd.PersistentFlags().StringVar(&Port, "port", "", "set port number like \"-p 18716\"")
+	commandCmd.PersistentFlags().StringVar(&IP, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
+	commandCmd.PersistentFlags().StringVar(&Port, "port", "", "set port number like \"--port 18716\"")
 
-	commandCmd.PersistentFlags().StringSliceVarP(&Buffer, "buffer", "b", []string{}, "set name \"-b uram0\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "d", []string{}, "set name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "p", []string{}, "set name \"-p unvme-ns-3\"")
-	commandCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "set name \"-n vol01\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "t", []string{}, "set data name \"-t unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "p", []string{}, "set spare name \"-p unvme-ns-3\"")
+	commandCmd.PersistentFlags().StringVarP(&Name, "name", "n",  "", "set name \"-n vol01\"")
 	commandCmd.PersistentFlags().IntVarP(&Size, "size", "s", 0, "set size \"-s 4194304\"")
 
 }
