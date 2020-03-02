@@ -29,19 +29,18 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [UNMOUNTIBOFOS](#9-unmountibofos)
   * [LOAD ARRAY](#10-load-array)
   * [DELETE ARRAY](#11-delete-array)
-  * [STATE ARRAY](#12-state-array)
-  * [CREATE VOLUME](#13-create-volume)
-  * [UPDATE VOLUME](#14-update-volume)
-  * [LIST VOLUME](#15-list-volume)
-  * [MOUNT VOULUME](#16-mount-voulume)
-  * [UNMOUNT VOLUME](#17-unmount-volume)
-  * [DELETE VOLUME](#18-delete-volume)
-  * [ATTACH DEVICE](#19-attach-device)
-  * [DETACH DEVICE](#20-detach-device)
+  * [CREATE VOLUME](#12-create-volume)
+  * [UPDATE VOLUME](#13-update-volume)
+  * [LIST VOLUME](#14-list-volume)
+  * [MOUNT VOLUME](#15-mount-volume)
+  * [UNMOUNT VOLUME](#16-unmount-volume)
+  * [DELETE VOLUME](#17-delete-volume)
+  * [ATTACH DEVICE](#18-attach-device)
+  * [DETACH DEVICE](#19-detach-device)
 
 * [Redfish](#redfish)
 
-  * [Cahsssis](#1-cahsssis)
+  * [Chasssis](#1-chasssis)
 
 * [Debug & Depricated](#debug-&-depricated)
 
@@ -61,12 +60,12 @@ Currently D-Agent provides only basic auth.
 
 #### Request Headers
 
-| Key | Value | Sample |
+| Key | Sample | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
-| ts | {{$timestamp}} | 1566287153702 |
+| X-Request-Id | UUID v4 |  |
+| ts | 1566287153702 | UNIX Timestamp |
 | Content-Type | application/json | application/json |
-| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |
+| Authorization | Basic YWRtaW46YWRtaW4= | Basic HTTP Authentication (RFC7617) |
 
 ***
 
@@ -85,11 +84,11 @@ Currently D-Agent provides only basic auth.
 
 #### Response Headers
 
-| Key | Value | Sample |
+| Key | Sample | Description |
 | --- | ------|-------------|
-| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
+| X-Request-Id | 44f1280b-982e-4d2e-ab14-fe9eb2022045 | The same as request's |
 | Content-Type | application/json | application/json |
-| Content-Length | {length}} | 97 |
+| Content-Length | 97 | Length |
 
 ***
 
@@ -151,36 +150,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/system/heartbeat
 ***Responses:***
 
 
-Status: Error - IBoF does not run | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 74228c0f-c5c2-4c1b-99b8-697278a095ae |
-| Date | Wed, 27 Nov 2019 04:59:48 GMT |
-| Content-Length | 79 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 12030,
-            "description": "iBoF does not run"
-        }
-    }
-}
-```
-
-
-
 Status: Error - iBoF is busy | Code: 400
 
 
@@ -204,6 +173,36 @@ Status: Error - iBoF is busy | Code: 400
         "status": {
             "code": 12000,
             "description": "iBoF is busy"
+        }
+    }
+}
+```
+
+
+
+Status: Error - IBoF does not run | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 74228c0f-c5c2-4c1b-99b8-697278a095ae |
+| Date | Wed, 27 Nov 2019 04:59:48 GMT |
+| Content-Length | 79 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 12030,
+            "description": "iBoF does not run"
         }
     }
 }
@@ -541,36 +540,6 @@ URL: http://{{host}}/mtool/api/dagent/v1/ibofos
 ***Responses:***
 
 
-Status: Error | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 5b20dc94-d1d5-43ad-8636-3fbba9154fe8 |
-| Date | Wed, 27 Nov 2019 02:16:35 GMT |
-| Content-Length | 94 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 11000,
-            "description": "exec Run: The iBoFOS already run"
-        }
-    }
-}
-```
-
-
-
 Status: Success | Code: 200
 
 
@@ -594,6 +563,36 @@ Status: Success | Code: 200
         "status": {
             "code": 0,
             "description": "Success"
+        }
+    }
+}
+```
+
+
+
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 5b20dc94-d1d5-43ad-8636-3fbba9154fe8 |
+| Date | Wed, 27 Nov 2019 02:16:35 GMT |
+| Content-Length | 94 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 11000,
+            "description": "exec Run: The iBoFOS already run"
         }
     }
 }
@@ -1426,6 +1425,39 @@ URL: http://{{host}}/mtool/api/ibofos/v1/system/mount
 
 
 
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 41bc4284-4367-48a4-869e-a32b2263d8d9 |
+| Date | Wed, 11 Dec 2019 09:18:39 GMT |
+| Content-Length | 65 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        }
+    }
+}
+```
+
+
+
 ### 10. LOAD ARRAY
 
 
@@ -1572,64 +1604,7 @@ Status: Success | Code: 200
 
 
 
-### 12. STATE ARRAY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 7834a0d2-2f4f-4a98-b5c4-3d09ac76f933 |
-| Date | Mon, 02 Dec 2019 11:10:48 GMT |
-| Content-Length | 98 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "7834a0d2-2f4f-4a98-b5c4-3d09ac76f933",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "Done"
-        }
-    }
-}
-```
-
-
-
-### 13. CREATE VOLUME
+### 12. CREATE VOLUME
 
 
 
@@ -1669,36 +1644,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ***Responses:***
 
 
-Status: Error | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 11238da7-6018-477a-aae1-74567cbc8e4d |
-| Date | Wed, 27 Nov 2019 04:37:58 GMT |
-| Content-Length | 61 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 2022,
-            "description": ""
-        }
-    }
-}
-```
-
-
-
 Status: Success | Code: 200
 
 
@@ -1729,7 +1674,37 @@ Status: Success | Code: 200
 
 
 
-### 14. UPDATE VOLUME
+Status: Error | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 11238da7-6018-477a-aae1-74567cbc8e4d |
+| Date | Wed, 27 Nov 2019 04:37:58 GMT |
+| Content-Length | 61 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "result": {
+        "status": {
+            "code": 2022,
+            "description": ""
+        }
+    }
+}
+```
+
+
+
+### 13. UPDATE VOLUME
 
 
 
@@ -1800,7 +1775,7 @@ Status: Success | Code: 200
 
 
 
-### 15. LIST VOLUME
+### 14. LIST VOLUME
 
 
 
@@ -1913,7 +1888,7 @@ Status: Success - Unmounted | Code: 200
 
 
 
-### 16. MOUNT VOULUME
+### 15. MOUNT VOLUME
 
 
 
@@ -1982,7 +1957,7 @@ Status: Success | Code: 200
 
 
 
-### 17. UNMOUNT VOLUME
+### 16. UNMOUNT VOLUME
 
 
 
@@ -2051,7 +2026,7 @@ Status: Success | Code: 200
 
 
 
-### 18. DELETE VOLUME
+### 17. DELETE VOLUME
 
 
 
@@ -2090,36 +2065,6 @@ URL: http://{{host}}/mtool/api/ibofos/v1/volume
 ***Responses:***
 
 
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | cefe68ce-51a4-4388-a8a1-32bb4ef2fe11 |
-| Date | Thu, 28 Nov 2019 01:09:25 GMT |
-| Content-Length | 98 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
-
-
-
 Status: Error | Code: 400
 
 
@@ -2150,7 +2095,37 @@ Status: Error | Code: 400
 
 
 
-### 19. ATTACH DEVICE
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | cefe68ce-51a4-4388-a8a1-32bb4ef2fe11 |
+| Date | Thu, 28 Nov 2019 01:09:25 GMT |
+| Content-Length | 98 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11",
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "DONE"
+        }
+    }
+}
+```
+
+
+
+### 18. ATTACH DEVICE
 
 
 Response Sample
@@ -2192,7 +2167,7 @@ URL: http://{{host}}/mtool/api/ibofos/v1/device/attach
 
 
 
-### 20. DETACH DEVICE
+### 19. DETACH DEVICE
 
 
 Response Sample
@@ -2248,7 +2223,7 @@ The biz-logic execute in both D-Agent and BMC module
 
 
 
-### 1. Cahsssis
+### 1. Chasssis
 
 
 
@@ -2349,4 +2324,4 @@ URL: http://{{host}}/mtool/api/ibofos/v1/test/report
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2019-12-11 17:35:35 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-02-19 00:19:23 by [docgen](https://github.com/thedevsaddam/docgen)
