@@ -1,4 +1,4 @@
-# Dynamic Agent
+# Demon Agent
 
 *  This app provides RESTFul APIs to contorl iBoF System (iBoFOS, BMC ...)
 
@@ -10,10 +10,10 @@
 ***
 
 ## Dev Enviroment
-* Language : GoLang 1.13
+* Language : GoLang 1.14
 * Test : Ubuntu 19.10
 * D-Agent Branch : devel (Latest)
-* iBoFOS Branch : devel (12/12 - 9d061e4c2b1db07f57c7bda71c651e4aaa2b024d)
+* iBoFOS Branch : devel (20/03/02 - 6bd0472aca5fbae73bf39ba43da668ec9e383e25)
 
 ***
 
