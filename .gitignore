@@ -1,4 +1,5 @@
-src/iBoFDAgent/.idea/
-src/iBoFDAgnet/.DS_Store
-src/iBoFDAgent/core
-src/iBoFDAgent/.bin/core
+/src/DAgent/.idea/
+/src/DAgent/.DS_Store
+/src/DAgent/core
+/src/DAgent/bin/core
+
