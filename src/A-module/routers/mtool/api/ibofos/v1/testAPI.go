@@ -1,5 +1,5 @@
 package v1
-
+/*
 import "github.com/gin-gonic/gin"
 
 func ReportTest(ctx *gin.Context) {
@@ -10,12 +10,12 @@ func getReportTest(ctx *gin.Context, command string) {
 	iBoFRequest := makeRequest(ctx, command)
 	sendIBoF(ctx, iBoFRequest)
 }
-
-func ReportTestiCLI() {
-	getReportTestCLI("REPORTTEST")
+*/
+func ReportTest() {
+	getReportTest("REPORTTEST")
 }
 
-func getReportTestCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	sendIBoFCLI(iBoFRequest)
+func getReportTest(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }

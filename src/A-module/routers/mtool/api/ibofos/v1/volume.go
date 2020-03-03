@@ -1,11 +1,9 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"A-module/routers/mtool/model"
 )
-
+/*
 func CreateVolume(ctx *gin.Context) {
 	postVolume(ctx, "CREATEVOLUME")
 }
@@ -52,59 +50,51 @@ func deleteVolume(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
+*/
 
-func CreateVolumeCLI(param model.VolumeParam) {
-	postVolumeCLI("CREATEVOLUME", param)
+func CreateVolume(param model.VolumeParam) {
+	postVolume("CREATEVOLUME", param)
 }
 
-func UpdateVolumeCLI(param model.VolumeParam) {
-	putVolumeCLI("UPDATEVOLUMEQOS", param)
+func UpdateVolume(param model.VolumeParam) {
+	putVolume("UPDATEVOLUMEQOS", param)
 }
 
-func MountVolumeCLI(param model.VolumeParam) {
-	postVolumeCLI("MOUNTVOLUME", param)
+func MountVolume(param model.VolumeParam) {
+	postVolume("MOUNTVOLUME", param)
 }
 
-func UnmountVolumeCLI(param model.VolumeParam) {
-	postVolumeCLI("UNMOUNTVOLUME", param)
+func UnmountVolume(param model.VolumeParam) {
+	postVolume("UNMOUNTVOLUME", param)
 }
 
-func DeleteVolumeCLI(param model.VolumeParam) {
-	deleteVolumeCLI("DELETEVOLUME", param)
+func DeleteVolume(param model.VolumeParam) {
+	deleteVolume("DELETEVOLUME", param)
 }
 
-func ListVolumeCLI(param model.VolumeParam) {
-	getVolumeCLI("LISTVOLUME")
+func ListVolume(param model.VolumeParam) {
+	getVolume("LISTVOLUME")
 }
 
-func getVolumeCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	sendIBoFCLI(iBoFRequest)
+func getVolume(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }
 
-func postVolumeCLI(command string, param model.VolumeParam) {
-	iBoFRequest := makeRequestCLI(command)
+func postVolume(command string, param model.VolumeParam) {
+	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	
-	/*
-	doc := `{"name": "vol01","size": 4194304}`
-
-	var data map[string]interface{}
-	json.Unmarshal([]byte(doc), &data)
-
-	iBoFRequest.Param = data
-	*/
-	sendIBoFCLI(iBoFRequest)
+	sendIBoF(iBoFRequest)
 }
 
-func putVolumeCLI(command string, param model.VolumeParam) {
-	iBoFRequest := makeRequestCLI(command)
+func putVolume(command string, param model.VolumeParam) {
+	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoFCLI(iBoFRequest)
+	sendIBoF(iBoFRequest)
 }
 
-func deleteVolumeCLI(command string, param model.VolumeParam) {
-	iBoFRequest := makeRequestCLI(command)
+func deleteVolume(command string, param model.VolumeParam) {
+	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoFCLI(iBoFRequest)
+	sendIBoF(iBoFRequest)
 }
