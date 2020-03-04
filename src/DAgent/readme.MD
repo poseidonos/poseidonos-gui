@@ -9,14 +9,6 @@
 
 ***
 
-## Dev Enviroment
-* Language : GoLang 1.14
-* Test : Ubuntu 19.10
-* D-Agent Branch : devel (Latest)
-* iBoFOS Branch : devel (20/03/02 - 6bd0472aca5fbae73bf39ba43da668ec9e383e25)
-
-***
-
 ## Pre Requirement
 #### iBoFOS
 * The iBoFOS should be installed
