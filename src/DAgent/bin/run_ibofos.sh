@@ -13,7 +13,7 @@ IP=10.100.11.7
 if [ ! -f "$ibofos" ]; then
         echo "fail to find $ibofos. run make prior to run run_ibofos.sh"
 else
-#       ${root_dir}/script/mtool/setup_env.sh
+       ${root_dir}/script/setup_env.sh
         \rm -rf /dev/shm/ibof_nvmf_trace*
 #       ${root_dir}/script/mtool/cpumode.sh max
         nohup $ibofos primary &>> ${logfile} &
