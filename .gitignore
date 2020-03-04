@@ -4,3 +4,6 @@ src/DAgent/.DS_Store
 src/DAgent/ibofdagent
 src/DAgent/core
 src/DAgent/bin/core
+src/DAgent/bin/VSAMap.0.bin
+src/DAgent/bin/ibofos.log
+src/DAgent/bin/StripeMap.bin
