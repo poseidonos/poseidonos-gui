@@ -2,8 +2,11 @@ package mtool
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"A-module/routers/mtool/model"
 	dagentV1 "A-module/routers/mtool/api/dagent/v1"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
+	"DAgent/src/routers/mtool/api"
 	"DAgent/src/routers/mtool/middleware"
 	"net/http"
 )
@@ -41,53 +44,149 @@ func Route(router *gin.Engine) {
 	// For Test
 	{
 		iBoFOS.POST("/test/report", func(c *gin.Context) {
-				iBoFOSV1.ReportTest()
+			iBoFOSV1.ReportTest()
 		})
 	}
 
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-				iBoFOSV1.Heartbeat()
+			response, err := iBoFOSV1.Heartbeat()
+			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
-				iBoFOSV1.ExitiBoFOS()
+			response, err := iBoFOSV1.ExitiBoFOS()
+			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/system", func(c *gin.Context) {
-				iBoFOSV1.IBoFOSInfo()
+			response, err := iBoFOSV1.IBoFOSInfo()
+			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/system/mount", func(c *gin.Context) {
-				iBoFOSV1.MountiBoFOS()
+			response, err := iBoFOSV1.MountiBoFOS()
+			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
-				iBoFOSV1.UnmountiBoFOS()
+			response, err := iBoFOSV1.UnmountiBoFOS()
+			makeResponse(c, response, err)
 		})
 	}
-/*
+
 	// Device
 	{
-		iBoFOS.GET("/device", iBoFOSV1.ListDevice)
-		iBoFOS.GET("/device/scan", iBoFOSV1.ScanDevice)
-		iBoFOS.POST("/device/attach", iBoFOSV1.AttachDevice)
-		iBoFOS.DELETE("/device/detach", iBoFOSV1.DetachDevice)
+		iBoFOS.GET("/device", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.ListDevice(request.Param.(model.DeviceParam))
+			makeResponse(c, response, err)
+
+		})
+		iBoFOS.GET("/device/scan", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.ScanDevice(request.Param.(model.DeviceParam))
+			makeResponse(c, response, err)
+
+		})
+		iBoFOS.POST("/device/attach", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.AttachDevice(request.Param.(model.DeviceParam))
+			makeResponse(c, response, err)
+
+		})
+		iBoFOS.DELETE("/device/detach", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.DetachDevice(request.Param.(model.DeviceParam))
+			makeResponse(c, response, err)
+
+		})
 	}
 
 	// Array
 	{
-		iBoFOS.GET("/array/device", iBoFOSV1.ListArrayDevice)
-		iBoFOS.GET("/array", iBoFOSV1.LoadArray)
-		iBoFOS.POST("/array", iBoFOSV1.CreateArray)
-		iBoFOS.DELETE("/array", iBoFOSV1.DeleteArray)
+		iBoFOS.GET("/array/device", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.ListArrayDevice(request.Param.(model.ArrayParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.GET("/array", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.LoadArray(request.Param.(model.ArrayParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.POST("/array", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.CreateArray(request.Param.(model.ArrayParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.DELETE("/array", func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.DeleteArray(request.Param.(model.ArrayParam))
+			makeResponse(c, response, err)
+		})
 	}
 
 	// Volume
 	{
-		iBoFOS.POST("/volume", iBoFOSV1.CreateVolume)
-		iBoFOS.GET("/volume", iBoFOSV1.ListVolume)
-		iBoFOS.PUT("/volume", iBoFOSV1.UpdateVolume)
-		iBoFOS.DELETE("/volume", iBoFOSV1.DeleteVolume)
-		iBoFOS.POST("/volume/mount", iBoFOSV1.MountVolume)
-		iBoFOS.DELETE("/volume/mount", iBoFOSV1.UnmountVolume)
+		iBoFOS.POST("/volume",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.CreateVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.GET("/volume",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.ListVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.PUT("/volume",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.UpdateVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.DELETE("/volume",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.DeleteVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.POST("/volume/mount",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.MountVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
+		iBoFOS.DELETE("/volume/mount",  func(c *gin.Context) {
+			request := model.Request{}
+			c.ShouldBindBodyWith(&request, binding.JSON)
+			response, err := iBoFOSV1.UnmountVolume(request.Param.(model.VolumeParam))
+			makeResponse(c, response, err)
+		})
 	}
-*/
+}
+
+func makeResponse(c *gin.Context, response model.Response, err error) {
+
+	if err == iBoFOSV1.ErrBadReq {
+		api.MakeBadRequest(c, 12000)
+
+	} else if err == iBoFOSV1.ErrSending {
+		api.MakeResponse(c, 400, error.Error(err), 19002)
+
+	} else if err == iBoFOSV1.ErrJson {
+		api.MakeResponse(c, 400, error.Error(err), 12310)
+
+	} else if err == iBoFOSV1.ErrRes {
+		api.MakeBadRequest(c, response.Result.Status.Code)
+	} else {
+		api.MakeSuccessWithRes(c, response)
+	}
 }

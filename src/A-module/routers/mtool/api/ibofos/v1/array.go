@@ -4,70 +4,35 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-/*
-func ListArrayDevice(ctx *gin.Context) {
-	getArray(ctx, "LISTARRAYDEVICE")
-
+func ListArrayDevice(param model.ArrayParam) (model.Response, error) {
+	return getArray("LISTARRAYDEVICE")
 }
 
-func LoadArray(ctx *gin.Context) {
-	getArray(ctx, "LOADARRAY")
+func LoadArray(param model.ArrayParam) (model.Response, error) {
+	return getArray("LOADARRAY")
 }
 
-func CreateArray(ctx *gin.Context) {
-	postArray(ctx, "CREATEARRAY")
+func CreateArray(param model.ArrayParam) (model.Response, error) {
+	return postArray("CREATEARRAY", param)
 }
 
-func DeleteArray(ctx *gin.Context) {
-	deleteArray(ctx, "DELETEARRAY")
+func DeleteArray(param model.ArrayParam) (model.Response, error) {
+	return deleteArray("DELETEARRAY", param)
 }
 
-func postArray(ctx *gin.Context, command string) {
-	iBoFRequest := makeRequest(ctx, command)
-	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendIBoF(ctx, iBoFRequest)
-}
-
-func getArray(ctx *gin.Context, command string) {
-	iBoFRequest := makeRequest(ctx, command)
-	sendIBoF(ctx, iBoFRequest)
-}
-
-func deleteArray(ctx *gin.Context, command string) {
-	iBoFRequest := makeRequest(ctx, command)
-	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendIBoF(ctx, iBoFRequest)
-}
-*/
-func ListArrayDevice(param model.ArrayParam) {
-	getArray("LISTARRAYDEVICE")
-}
-
-func LoadArray(param model.ArrayParam) {
-	getArray("LOADARRAY")
-}
-
-func CreateArray(param model.ArrayParam) {
-	postArray("CREATEARRAY", param)
-}
-
-func DeleteArray(param model.ArrayParam) {
-	deleteArray("DELETEARRAY", param)
-}
-
-func postArray(command string, param model.ArrayParam) {
+func postArray(command string, param model.ArrayParam) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoF(iBoFRequest)
+	return sendIBoF(iBoFRequest)
 }
 
-func getArray(command string) {
+func getArray(command string) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
-	sendIBoF(iBoFRequest)
+	return sendIBoF(iBoFRequest)
 }
 
-func deleteArray(command string, param model.ArrayParam) {
+func deleteArray(command string, param model.ArrayParam) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoF(iBoFRequest)
+	return sendIBoF(iBoFRequest)
 }

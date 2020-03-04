@@ -20,60 +20,19 @@ const (
 var (
 	locker    = stateUnlocked
 	errLocked = errors.New("Locked out buddy")
+	ErrBadReq = errors.New("Bad request")
+	ErrSending = errors.New("errSending")
+	ErrJson = errors.New("errJson")
+	ErrRes = errors.New("errRes")
 )
-/*
-func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
-	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Printf("sendIBoF : %+v", iBoFRequest)
-		api.MakeBadRequest(ctx, 12000)
-		return
-	}
-	defer atomic.StoreUint32(&locker, stateUnlocked)
 
-	log.Printf("sendIBoF : %+v", iBoFRequest)
-	marshaled, _ := json.Marshal(iBoFRequest)
-	err := handler.WriteToIBoFSocket(marshaled)
+func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
-	if err != nil {
-		log.Printf("sendIBoF : %v", err)
-		api.MakeResponse(ctx, 400, error.Error(err), 19002)
-		return
-	}
-
-	for {
-		temp := handler.GetIBoFResponse()
-		log.Printf("Response From iBoF : %s", string(temp))
-
-		response := model.Response{}
-		err := json.Unmarshal(temp, &response)
-
-		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-			log.Printf("Previous request's response, Wait again")
-			continue
-		}
-
-		if err != nil {
-			log.Printf("Response Unmarshal Error : %v", err)
-			api.MakeResponse(ctx, 400, error.Error(err), 12310)
-			return
-		} else if response.Result.Status.Code != 0 {
-			api.MakeBadRequest(ctx, response.Result.Status.Code)
-			return
-		} else {
-			api.MakeSuccessWithRes(ctx, response)
-			//ctx.JSON(http.StatusOK, &response)
-			return
-		}
-	}
-}
-*/
-
-func sendIBoF(iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		log.Printf("sendIBoFCLI : %+v", iBoFRequest)
-		//api.MakeBadRequest(ctx, 12000)
-		return
+		return model.Response{}, ErrBadReq
 	}
+
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	b, _ := json.MarshalIndent(iBoFRequest.Param, "", "    ")
@@ -90,8 +49,7 @@ func sendIBoF(iBoFRequest model.Request) {
 
 	if err != nil {
 		log.Printf("sendIBoFCLI : %v", err)
-		//api.MakeResponse(ctx, 400, error.Error(err), 19002)
-		return
+		return model.Response{}, ErrSending
 	}
 
 	for {
@@ -100,7 +58,7 @@ func sendIBoF(iBoFRequest model.Request) {
 
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
-		
+
 		fmt.Println("Response from Poseidon OS")
 		fmt.Println("    Code        : ", response.Result.Status.Code)
 		fmt.Println("    Description : ", response.Result.Status.Description)
@@ -112,17 +70,18 @@ func sendIBoF(iBoFRequest model.Request) {
 
 		if err != nil {
 			log.Printf("Response CLI Unmarshal Error : %v", err)
-			//api.MakeResponse(ctx, 400, error.Error(err), 12310)
-			return
+			return model.Response{}, ErrJson
+
 		} else if response.Result.Status.Code != 0 {
-			//api.MakeBadRequest(ctx, response.Result.Status.Code)
-			return
+			return model.Response{}, ErrRes
+
 		} else {
-			//api.MakeSuccessWithRes(ctx, response)
 			//ctx.JSON(http.StatusOK, &response)
-			return
+			return response, nil
 		}
 	}
+
+	return model.Response{}, nil
 }
 
 func makeRequest(xrId string, command string) model.Request {

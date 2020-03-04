@@ -25,21 +25,21 @@ var Name string
 
 var Size int
 
-var ArrayCommand = map[string]func(model.ArrayParam) {
+var ArrayCommand = map[string]func(model.ArrayParam) (model.Response, error) {
 	"listarray"   : iBoFOSV1.ListArrayDevice,
 	"loadarray"   : iBoFOSV1.LoadArray,
 	"createarray" : iBoFOSV1.CreateArray,
 	"deletearray" : iBoFOSV1.DeleteArray,
 }
 
-var DeviceCommand = map[string]func(model.DeviceParam) {
+var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
 	"scandevice" : iBoFOSV1.ScanDevice,
 	"listdevice" : iBoFOSV1.ListDevice,
 	"attachdevice" : iBoFOSV1.AttachDevice,
 	"detachdevice" : iBoFOSV1.DetachDevice,
 }
 
-var SystemCommand = map[string]func() {
+var SystemCommand = map[string]func() (model.Response, error) {
 	"heartbeat" : iBoFOSV1.Heartbeat,
 	"exitibofos" :iBoFOSV1.ExitiBoFOS,
 	"info" :iBoFOSV1.IBoFOSInfo,
@@ -47,7 +47,7 @@ var SystemCommand = map[string]func() {
 	"unmountibof" :iBoFOSV1.UnmountiBoFOS,
 }
 
-var VolumeCommand = map[string]func(model.VolumeParam) {
+var VolumeCommand = map[string]func(model.VolumeParam) (model.Response, error) {
 	"create" : iBoFOSV1.CreateVolume,
 	"update" : iBoFOSV1.UpdateVolume,
 	"mountvolume" : iBoFOSV1.MountVolume,

@@ -3,59 +3,32 @@ package v1
 import (
 	"A-module/routers/mtool/model"
 )
-/*
-func ScanDevice(ctx *gin.Context) {
-	getDevice(ctx, "SCANDEVICE")
+
+func ScanDevice(param model.DeviceParam) (model.Response, error) {
+	return getDevice("SCANDEVICE")
 }
 
-func ListDevice(ctx *gin.Context) {
-	getDevice(ctx, "LISTDEVICE")
+func ListDevice(param model.DeviceParam) (model.Response, error) {
+	return getDevice("LISTDEVICE")
 }
 
-func AttachDevice(ctx *gin.Context) {
-	//postDevice(ctx, "ATTACHDEVICE")
-	api.MakeBadRequest(ctx, 40000)
-}
-
-func DetachDevice(ctx *gin.Context) {
-	postDevice(ctx, "DETACHDEVICE")
-}
-
-func getDevice(ctx *gin.Context, command string) {
-	iBoFRequest := makeRequest(ctx, command)
-	sendIBoF(ctx, iBoFRequest)
-}
-
-func postDevice(ctx *gin.Context, command string) {
-	iBoFRequest := makeRequest(ctx, command)
-	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendIBoF(ctx, iBoFRequest)
-}
-*/
-func ScanDevice(param model.DeviceParam) {
-	getDevice("SCANDEVICE")
-}
-
-func ListDevice(param model.DeviceParam) {
-	getDevice("LISTDEVICE")
-}
-
-func AttachDevice(param model.DeviceParam) {
+func AttachDevice(param model.DeviceParam) (model.Response, error) {
 	//postDevice(ctx, "ATTACHDEVICE")
 	//api.MakeBadRequest(ctx, 40000)
+	return model.Response{}, ErrBadReq
 }
 
-func DetachDevice(param model.DeviceParam) {
-	postDevice("DETACHDEVICE", param)
+func DetachDevice(param model.DeviceParam) (model.Response, error) {
+	return postDevice("DETACHDEVICE", param)
 }
 
-func getDevice(command string) {
+func getDevice(command string) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
-	sendIBoF(iBoFRequest)
+	return sendIBoF(iBoFRequest)
 }
 
-func postDevice(command string, param model.DeviceParam) {
+func postDevice(command string, param model.DeviceParam) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoF(iBoFRequest)
+	return sendIBoF(iBoFRequest)
 }
