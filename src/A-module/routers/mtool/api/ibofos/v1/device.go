@@ -1,12 +1,9 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"A-module/routers/mtool/api"
 	"A-module/routers/mtool/model"
 )
-
+/*
 func ScanDevice(ctx *gin.Context) {
 	getDevice(ctx, "SCANDEVICE")
 }
@@ -34,31 +31,31 @@ func postDevice(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
-
-func ScanDeviceCLI(param model.DeviceParam) {
-	getDeviceCLI("SCANDEVICE")
+*/
+func ScanDevice(param model.DeviceParam) {
+	getDevice("SCANDEVICE")
 }
 
-func ListDeviceCLI(param model.DeviceParam) {
-	getDeviceCLI("LISTDEVICE")
+func ListDevice(param model.DeviceParam) {
+	getDevice("LISTDEVICE")
 }
 
-func AttachDeviceCLI(param model.DeviceParam) {
+func AttachDevice(param model.DeviceParam) {
 	//postDevice(ctx, "ATTACHDEVICE")
 	//api.MakeBadRequest(ctx, 40000)
 }
 
-func DetachDeviceCLI(param model.DeviceParam) {
-	postDeviceCLI("DETACHDEVICE", param)
+func DetachDevice(param model.DeviceParam) {
+	postDevice("DETACHDEVICE", param)
 }
 
-func getDeviceCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	sendIBoFCLI(iBoFRequest)
+func getDevice(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }
 
-func postDeviceCLI(command string, param model.DeviceParam) {
-	iBoFRequest := makeRequestCLI(command)
+func postDevice(command string, param model.DeviceParam) {
+	iBoFRequest := makeRequest("", command)
 	iBoFRequest.Param = param
-	sendIBoFCLI(iBoFRequest)
+	sendIBoF(iBoFRequest)
 }

@@ -1,10 +1,8 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
-
+/*
 func Heartbeat(ctx *gin.Context) {
 	getSystem(ctx, "HEARTBEAT")
 }
@@ -42,43 +40,39 @@ func postSystem(ctx *gin.Context, command string) {
 	ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
 	sendIBoF(ctx, iBoFRequest)
 }
-
-//for CLi without gin-tonic
-
-func HeartbeatCLI() {
-	getSystemCLI("HEARTBEAT")
+*/
+func Heartbeat() {
+	getSystem("HEARTBEAT")
 }
 
-func ExitiBoFOSCLI() {
-	deleteSystemCLI("EXITIBOFOS")
+func ExitiBoFOS() {
+	deleteSystem("EXITIBOFOS")
 }
 
-func IBoFOSInfoCLI() {
-	getSystemCLI("GETIBOFOSINFO")
+func IBoFOSInfo() {
+	getSystem("GETIBOFOSINFO")
 }
 
-func MountiBoFOSCLI() {
-	postSystemCLI("MOUNTIBOFOS")
+func MountiBoFOS() {
+	postSystem("MOUNTIBOFOS")
 }
 
-func UnmountiBoFOSCLI() {
-	postSystemCLI("UNMOUNTIBOFOS")
+func UnmountiBoFOS() {
+	postSystem("UNMOUNTIBOFOS")
 
 }
 
-func deleteSystemCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendIBoFCLI(iBoFRequest)
+func deleteSystem(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }
 
-func getSystemCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	sendIBoFCLI(iBoFRequest)
+func getSystem(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }
 
-func postSystemCLI(command string) {
-	iBoFRequest := makeRequestCLI(command)
-	//ctx.ShouldBindBodyWith(&iBoFRequest, binding.JSON)
-	sendIBoFCLI(iBoFRequest)
+func postSystem(command string) {
+	iBoFRequest := makeRequest("", command)
+	sendIBoF(iBoFRequest)
 }

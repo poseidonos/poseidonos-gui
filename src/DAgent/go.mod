@@ -1,4 +1,4 @@
-module ibofdagent
+module DAgent
 
 go 1.13
 

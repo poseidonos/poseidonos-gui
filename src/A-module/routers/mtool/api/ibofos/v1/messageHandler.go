@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"encoding/json"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"A-module/log"
 	"A-module/handler"
-	"A-module/routers/mtool/api"
+	//"A-module/routers/mtool/api"
 	"A-module/routers/mtool/model"
+	"github.com/google/uuid"
 	"sync/atomic"
 )
 
@@ -21,7 +21,7 @@ var (
 	locker    = stateUnlocked
 	errLocked = errors.New("Locked out buddy")
 )
-
+/*
 func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		log.Printf("sendIBoF : %+v", iBoFRequest)
@@ -66,8 +66,9 @@ func sendIBoF(ctx *gin.Context, iBoFRequest model.Request) {
 		}
 	}
 }
+*/
 
-func sendIBoFCLI(iBoFRequest model.Request) {
+func sendIBoF(iBoFRequest model.Request) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 		//api.MakeBadRequest(ctx, 12000)
@@ -80,6 +81,7 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 
 	fmt.Println("Request to Poseidon OS")
+	fmt.Println("    Rid         : ", iBoFRequest.Rid)
 	fmt.Println("    Command     : ", iBoFRequest.Command)
 	fmt.Println("    Param       : \n", string(b))
 
@@ -123,19 +125,20 @@ func sendIBoFCLI(iBoFRequest model.Request) {
 	}
 }
 
-func makeRequest(ctx *gin.Context, command string) model.Request {
-	xrId := ctx.GetHeader("X-request-Id")
+func makeRequest(xrId string, command string) model.Request {
+	//xrId := ctx.GetHeader("X-request-Id")
+
+	if len(xrId) == 0 {
+
+		uuid, err := uuid.NewUUID()
+		if err == nil {
+			xrId = uuid.String()
+		}
+	}
+	
 	request := model.Request{
 		Command: command,
 		Rid:     xrId,
-	}
-	return request
-}
-
-func makeRequestCLI(command string) model.Request {
-	request := model.Request{
-		Command: command,
-		Rid:     "6fc6463e-6c3f-4fd9-a385-01c381ee32d6",
 	}
 	return request
 }

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-		"fmt"
+//		"fmt"
 		"time"
 		"github.com/spf13/cobra"
 		"A-module/log"
@@ -26,34 +26,34 @@ var Name string
 var Size int
 
 var ArrayCommand = map[string]func(model.ArrayParam) {
-	"listarray"   : iBoFOSV1.ListArrayDeviceCLI,
-	"loadarray"   : iBoFOSV1.LoadArrayCLI,
-	"createarray" : iBoFOSV1.CreateArrayCLI,
-	"deletearray" : iBoFOSV1.DeleteArrayCLI,
+	"listarray"   : iBoFOSV1.ListArrayDevice,
+	"loadarray"   : iBoFOSV1.LoadArray,
+	"createarray" : iBoFOSV1.CreateArray,
+	"deletearray" : iBoFOSV1.DeleteArray,
 }
 
 var DeviceCommand = map[string]func(model.DeviceParam) {
-	"scandevice" : iBoFOSV1.ScanDeviceCLI,
-	"listdevice" : iBoFOSV1.ListDeviceCLI,
-	"attachdevice" : iBoFOSV1.AttachDeviceCLI,
-	"detachdevice" : iBoFOSV1.DetachDeviceCLI,
+	"scandevice" : iBoFOSV1.ScanDevice,
+	"listdevice" : iBoFOSV1.ListDevice,
+	"attachdevice" : iBoFOSV1.AttachDevice,
+	"detachdevice" : iBoFOSV1.DetachDevice,
 }
 
 var SystemCommand = map[string]func() {
-	"heartbeat" : iBoFOSV1.HeartbeatCLI,
-	"exitibofos" :iBoFOSV1.ExitiBoFOSCLI,
-	"info" :iBoFOSV1.IBoFOSInfoCLI,
-	"mountibof" :iBoFOSV1.MountiBoFOSCLI,
-	"unmountibof" :iBoFOSV1.UnmountiBoFOSCLI,
+	"heartbeat" : iBoFOSV1.Heartbeat,
+	"exitibofos" :iBoFOSV1.ExitiBoFOS,
+	"info" :iBoFOSV1.IBoFOSInfo,
+	"mountibof" :iBoFOSV1.MountiBoFOS,
+	"unmountibof" :iBoFOSV1.UnmountiBoFOS,
 }
 
 var VolumeCommand = map[string]func(model.VolumeParam) {
-	"create" : iBoFOSV1.CreateVolumeCLI,
-	"update" : iBoFOSV1.UpdateVolumeCLI,
-	"mountvolume" : iBoFOSV1.MountVolumeCLI,
-	"unmountvolume" : iBoFOSV1.UnmountVolumeCLI,
-	"delete" : iBoFOSV1.DeleteVolumeCLI,
-	"list" : iBoFOSV1.ListVolumeCLI,
+	"create" : iBoFOSV1.CreateVolume,
+	"update" : iBoFOSV1.UpdateVolume,
+	"mountvolume" : iBoFOSV1.MountVolume,
+	"unmountvolume" : iBoFOSV1.UnmountVolume,
+	"delete" : iBoFOSV1.DeleteVolume,
+	"list" : iBoFOSV1.ListVolume,
 }
 
 var commandCmd = &cobra.Command{
@@ -146,7 +146,7 @@ func Send(command string) {
 
 	time.Sleep(time.Second*1)
 
-	if len(setting.Config.IBoFOSSocketAddr) > 0 {
+	//if len(setting.Config.IBoFOSSocketAddr) > 0 {
 
 		val1, arrayExists := ArrayCommand[command]
 		val2, deviceExists := DeviceCommand[command]
@@ -198,7 +198,7 @@ func Send(command string) {
 		} else {
 			//commands[command]()
 		}
-	} else {
-		fmt.Println("Cannot connect to Poseidon OS !!!")
-	}
+	//} else {
+	//	fmt.Println("Cannot connect to Poseidon OS !!!")
+	//}
 }
