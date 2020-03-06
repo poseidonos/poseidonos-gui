@@ -42,7 +42,9 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	fmt.Println("Request to Poseidon OS")
 	fmt.Println("    Rid         : ", iBoFRequest.Rid)
 	fmt.Println("    Command     : ", iBoFRequest.Command)
-	fmt.Println("    Param       : \n", string(b))
+	if string(b) != "null" {
+		fmt.Println("    Param       : ", string(b))
+	}
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err := handler.WriteToIBoFSocket(marshaled)

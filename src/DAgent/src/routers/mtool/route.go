@@ -9,6 +9,7 @@ import (
 	"DAgent/src/routers/mtool/api"
 	"DAgent/src/routers/mtool/middleware"
 	"net/http"
+	"encoding/json"
 )
 
 func Route(router *gin.Engine) {
@@ -77,28 +78,40 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/device", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.ListDevice(request.Param.(model.DeviceParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.DeviceParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.ListDevice(param)
 			makeResponse(c, response, err)
 
 		})
 		iBoFOS.GET("/device/scan", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.ScanDevice(request.Param.(model.DeviceParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.DeviceParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.ScanDevice(param)
 			makeResponse(c, response, err)
 
 		})
 		iBoFOS.POST("/device/attach", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.AttachDevice(request.Param.(model.DeviceParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.DeviceParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.AttachDevice(param)
 			makeResponse(c, response, err)
 
 		})
 		iBoFOS.DELETE("/device/detach", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.DetachDevice(request.Param.(model.DeviceParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.DeviceParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.DetachDevice(param)
 			makeResponse(c, response, err)
 
 		})
@@ -109,25 +122,37 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/array/device", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.ListArrayDevice(request.Param.(model.ArrayParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.ArrayParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.ListArrayDevice(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/array", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.LoadArray(request.Param.(model.ArrayParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.ArrayParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.LoadArray(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/array", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.CreateArray(request.Param.(model.ArrayParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.ArrayParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.CreateArray(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/array", func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.DeleteArray(request.Param.(model.ArrayParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.ArrayParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.DeleteArray(param)
 			makeResponse(c, response, err)
 		})
 	}
@@ -137,37 +162,55 @@ func Route(router *gin.Engine) {
 		iBoFOS.POST("/volume",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.CreateVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.CreateVolume(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/volume",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.ListVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.ListVolume(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.PUT("/volume",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.UpdateVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.UpdateVolume(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/volume",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.DeleteVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.DeleteVolume(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/volume/mount",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.MountVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.MountVolume(param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/volume/mount",  func(c *gin.Context) {
 			request := model.Request{}
 			c.ShouldBindBodyWith(&request, binding.JSON)
-			response, err := iBoFOSV1.UnmountVolume(request.Param.(model.VolumeParam))
+			b, _ := json.Marshal(request.Param)
+			param := model.VolumeParam{}
+			json.Unmarshal(b, &param)
+			response, err := iBoFOSV1.UnmountVolume(param)
 			makeResponse(c, response, err)
 		})
 	}
