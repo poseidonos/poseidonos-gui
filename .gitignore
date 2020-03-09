@@ -1,6 +1,7 @@
 src/.idea/
 src/DAgent/.idea/
 src/DAgent/.DS_Store
+src/DAgent/pkg
 src/DAgent/DAgent
 src/DAgent/core
 src/DAgent/DAgent.exe
