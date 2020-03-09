@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"A-module/handler"
-	"DAgent/src/routers"
-	"A-module/setting"
 	"A-module/log"
+	"A-module/setting"
+	"github.com/gin-gonic/gin"
+	"DAgent/src/routers"
 	"net/http"
 	"time"
 )

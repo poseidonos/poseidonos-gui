@@ -48,7 +48,7 @@ server:
 * It does not need any dependency pkg after compiling.
 ```shell script
 $ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git
-$ cd ibofdagent
+$ cd ibofdagent\src\Dagent
 $ go mod vendor
 $ go build -mod vendor
 #or
@@ -57,7 +57,7 @@ $ ./localbuild # It will also generate api documentation
 #### Run
 * The exec binaray is also uploaded, so you can run without build
 ```shell script
-$ sudo ./ibofdagent # General Run
+$ sudo ./Dagent # General Run
 # Or
 $ sudo ./bin/run_dagent.sh # Background Run 
 ```

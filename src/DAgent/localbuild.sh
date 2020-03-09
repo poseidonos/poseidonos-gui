@@ -1,6 +1,6 @@
 #!/bin/bash
 go build -mod vendor
-mv ibofdagent ./bin
+mv DAgent ./bin
 
 if [ ! -d doc ]; then
     mkdir doc
@@ -12,5 +12,5 @@ cd tool
 cd ..
 
 cd bin
-sudo ./ibofdagent
+sudo ./DAgent
 

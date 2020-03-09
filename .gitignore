@@ -1,8 +1,9 @@
 src/.idea/
 src/DAgent/.idea/
 src/DAgent/.DS_Store
-src/DAgent/ibofdagent
+src/DAgent/Dagent
 src/DAgent/core
+src/DAgent/DAgent.exe
 src/DAgent/bin/core
 src/DAgent/bin/VSAMap.0.bin
 src/DAgent/bin/ibofos.log
