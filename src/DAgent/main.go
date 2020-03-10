@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// ToDo: Use Lorgus => https://github.com/sirupsen/logrus
+// ToDo: Use Lorgus => https://github.com/sirupsen/llogrus
 // Log level Redefine
 
 func init() {

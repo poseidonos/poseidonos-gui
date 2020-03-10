@@ -48,9 +48,9 @@ server:
 * It does not need any dependency pkg after compiling.
 ```shell script
 $ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git
-$ cd ibofdagent\src\Dagent
-$ go mod vendor
+$ cd ibofdagent\src\DAgent
 $ go build -mod vendor
+
 #or
 $ ./localbuild # It will also generate api documentation
 ```

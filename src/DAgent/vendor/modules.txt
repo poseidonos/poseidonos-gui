@@ -2,7 +2,6 @@
 ## explicit
 A-module/handler
 A-module/log
-A-module/mongodb
 A-module/routers/mtool/api/dagent/v1
 A-module/routers/mtool/api/ibofos/v1
 A-module/routers/mtool/model
