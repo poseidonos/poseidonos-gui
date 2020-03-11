@@ -1,7 +1,7 @@
 **/.idea
 **/.DS_Store
 **/pkg
-src/DAgent/DAgent
+DAgent/DAgent
 core
 DAgent.exe
 VSAMap.0.bin
