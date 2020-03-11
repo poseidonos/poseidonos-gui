@@ -1,4 +1,4 @@
 #!/bin/bash
 go build -mod vendor
 
-sudo ./CLI
+#sudo ./CLI

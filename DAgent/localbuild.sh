@@ -11,6 +11,5 @@ cd tool
 ./docgen_md.sh
 cd ..
 
-cd bin
-sudo ./DAgent
-
+#cd bin
+#sudo ./DAgent
