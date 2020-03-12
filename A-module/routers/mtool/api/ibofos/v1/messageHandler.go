@@ -39,7 +39,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 
-	fmt.Println("Request to Poseidon OS")
+	fmt.Println("\n\nRequest to Poseidon OS")
 	fmt.Println("    Rid         : ", iBoFRequest.Rid)
 	fmt.Println("    Command     : ", iBoFRequest.Command)
 	if string(b) != "null" {
@@ -61,7 +61,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
 
-		fmt.Println("Response from Poseidon OS")
+		fmt.Println("\n\nResponse from Poseidon OS")
 		fmt.Println("    Code        : ", response.Result.Status.Code)
 		fmt.Println("    Description : ", response.Result.Status.Description)
 
@@ -70,6 +70,8 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			fmt.Println("    Data       : ", string(b))
 		}
 
+		fmt.Println("\n")
+		
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")
 			continue
