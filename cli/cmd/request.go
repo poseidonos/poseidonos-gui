@@ -27,27 +27,27 @@ var ArrayCommand = map[string]func(model.ArrayParam) (model.Response, error) {
 }
 
 var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
-	"scan_device" : iBoFOSV1.ScanDevice,
-	"list_device" : iBoFOSV1.ListDevice,
-	"attach_device" : iBoFOSV1.AttachDevice,
-	"detach_device" : iBoFOSV1.DetachDevice,
+	"scan_dev" : iBoFOSV1.ScanDevice,
+	"list_dev" : iBoFOSV1.ListDevice,
+	"attach_dev" : iBoFOSV1.AttachDevice,
+	"detach_dev" : iBoFOSV1.DetachDevice,
 }
 
 var SystemCommand = map[string]func() (model.Response, error) {
 	"heartbeat" : iBoFOSV1.Heartbeat,
 	"exit_ibofos" :iBoFOSV1.ExitiBoFOS,
 	"info" :iBoFOSV1.IBoFOSInfo,
-	"mount_ibof" :iBoFOSV1.MountiBoFOS,
-	"unmount_ibof" :iBoFOSV1.UnmountiBoFOS,
+	"mount_ibofos" :iBoFOSV1.MountiBoFOS,
+	"unmount_ibofos" :iBoFOSV1.UnmountiBoFOS,
 }
 
 var VolumeCommand = map[string]func(model.VolumeParam) (model.Response, error) {
-	"create_volume" : iBoFOSV1.CreateVolume,
-	"update_volume" : iBoFOSV1.UpdateVolume,
-	"mount_volume" : iBoFOSV1.MountVolume,
-	"unmount_volume" : iBoFOSV1.UnmountVolume,
-	"delete_volume" : iBoFOSV1.DeleteVolume,
-	"list_volume" : iBoFOSV1.ListVolume,
+	"create_vol" : iBoFOSV1.CreateVolume,
+	"update_vol" : iBoFOSV1.UpdateVolume,
+	"mount_vol" : iBoFOSV1.MountVolume,
+	"unmount_vol" : iBoFOSV1.UnmountVolume,
+	"delete_vol" : iBoFOSV1.DeleteVolume,
+	"list_vol" : iBoFOSV1.ListVolume,
 }
 
 var commandCmd = &cobra.Command{
@@ -60,8 +60,8 @@ Available msg list :
 [Category] : [msg]
 array      : list_array, load_array, create_array, delete_array
 device     : scan_device, list_device, attach_device, detach_device
-system     : heartbeat,exit_ibofos, info, mount_ibof, unmount_ibof
-volume     : create_volume, update_volume, mount_volume, unmount_volume, delete_volume, list_volume
+system     : heartbeat,exit_ibofos, info, mount_ibofos, unmount_ibofos
+volume     : create_vol, update_vol, mount_vol, unmount_vol, delete_vol, list_vol
 
 
 You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
