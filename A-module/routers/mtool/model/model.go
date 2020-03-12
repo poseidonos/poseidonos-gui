@@ -44,3 +44,9 @@ type VolumeParam struct {
 	Name string	`json:"name"`
 	Size int	`json:"size"`
 }
+
+type WBTParam struct {
+	Name string `json:"testname"`
+	Argc int `json:"argc"`
+	Argv string `json:"argb"`
+}
