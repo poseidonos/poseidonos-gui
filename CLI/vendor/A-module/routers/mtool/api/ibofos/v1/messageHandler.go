@@ -65,6 +65,11 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		fmt.Println("    Code        : ", response.Result.Status.Code)
 		fmt.Println("    Description : ", response.Result.Status.Description)
 
+		b, _ := json.MarshalIndent(response.Result.Data, "", "    ")
+		if string(b) != "null" {
+			fmt.Println("    Data       : ", string(b))
+		}
+
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")
 			continue
