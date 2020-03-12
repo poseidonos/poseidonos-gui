@@ -20,34 +20,34 @@ var Name string
 var Size int
 
 var ArrayCommand = map[string]func(model.ArrayParam) (model.Response, error) {
-	"listarray"   : iBoFOSV1.ListArrayDevice,
-	"loadarray"   : iBoFOSV1.LoadArray,
-	"createarray" : iBoFOSV1.CreateArray,
-	"deletearray" : iBoFOSV1.DeleteArray,
+	"list_array"   : iBoFOSV1.ListArrayDevice,
+	"load_array"   : iBoFOSV1.LoadArray,
+	"create_array" : iBoFOSV1.CreateArray,
+	"delete_array" : iBoFOSV1.DeleteArray,
 }
 
 var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
-	"scandevice" : iBoFOSV1.ScanDevice,
-	"listdevice" : iBoFOSV1.ListDevice,
-	"attachdevice" : iBoFOSV1.AttachDevice,
-	"detachdevice" : iBoFOSV1.DetachDevice,
+	"scan_device" : iBoFOSV1.ScanDevice,
+	"list_device" : iBoFOSV1.ListDevice,
+	"attach_device" : iBoFOSV1.AttachDevice,
+	"detach_device" : iBoFOSV1.DetachDevice,
 }
 
 var SystemCommand = map[string]func() (model.Response, error) {
 	"heartbeat" : iBoFOSV1.Heartbeat,
-	"exitibofos" :iBoFOSV1.ExitiBoFOS,
+	"exit_ibofos" :iBoFOSV1.ExitiBoFOS,
 	"info" :iBoFOSV1.IBoFOSInfo,
-	"mountibof" :iBoFOSV1.MountiBoFOS,
-	"unmountibof" :iBoFOSV1.UnmountiBoFOS,
+	"mount_ibof" :iBoFOSV1.MountiBoFOS,
+	"unmount_ibof" :iBoFOSV1.UnmountiBoFOS,
 }
 
 var VolumeCommand = map[string]func(model.VolumeParam) (model.Response, error) {
-	"create" : iBoFOSV1.CreateVolume,
-	"update" : iBoFOSV1.UpdateVolume,
-	"mountvolume" : iBoFOSV1.MountVolume,
-	"unmountvolume" : iBoFOSV1.UnmountVolume,
-	"delete" : iBoFOSV1.DeleteVolume,
-	"list" : iBoFOSV1.ListVolume,
+	"create_volume" : iBoFOSV1.CreateVolume,
+	"update_volume" : iBoFOSV1.UpdateVolume,
+	"mount_volume" : iBoFOSV1.MountVolume,
+	"unmount_volume" : iBoFOSV1.UnmountVolume,
+	"delete_volume" : iBoFOSV1.DeleteVolume,
+	"list_volume" : iBoFOSV1.ListVolume,
 }
 
 var commandCmd = &cobra.Command{
@@ -58,10 +58,10 @@ var commandCmd = &cobra.Command{
 Available msg list :
 
 [Category] : [msg]
-array      : listarray, loadarray, createarray, deletearray
-device     : scandevice, listdevice, attachdevice, detachdevice
-system     : heartbeat,exitibofos, info, mountibof, unmountibof
-volume     : create, update, mountvolume, unmountvolume, delete, list
+array      : list_array, load_array, create_array, delete_array
+device     : scan_device, list_device, attach_device, detach_device
+system     : heartbeat,exit_ibofos, info, mount_ibof, unmount_ibof
+volume     : create_volume, update_volume, mount_volume, unmount_volume, delete_volume, list_volume
 
 
 You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
