@@ -119,20 +119,20 @@ func init() {
 
 func InitConnect() bool{
 
-	if Verbose == true {
+	if verbose == true {
 		log.SetVerboseMode()
-	} else if Debug == true {
+	} else if debug == true {
 		log.SetDebugMode()
 	}
 
 	setting.LoadConfig()
 
-	if len(IP) != 0 {
-		setting.Config.Server.IBoF.IP = IP
+	if len(ip) != 0 {
+		setting.Config.Server.IBoF.IP = ip
 	}
 
-	if len(Port) != 0 {
-		setting.Config.Server.IBoF.Port = Port
+	if len(port) != 0 {
+		setting.Config.Server.IBoF.Port = port
 	}
 
 	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)

@@ -5,11 +5,11 @@ import (
 		"github.com/spf13/cobra"
 	   )
 
-var Verbose bool
-var Debug bool
+var verbose bool
+var debug bool
 
-var IP string
-var Port string
+var ip string
+var port string
 
 var rootCmd = &cobra.Command{
 	Use:   "cli",
@@ -33,10 +33,12 @@ func Execute() {
 }
 
 func init() {
+
+	if Mode == "debug" {
+		rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
+		rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set a debug mode")
+	}
 	
-	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVar(&Debug, "debug", false, "set a debug mode")
-	
-	rootCmd.PersistentFlags().StringVar(&IP, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
-	rootCmd.PersistentFlags().StringVar(&Port, "port", "", "set port number like \"--port 18716\"")
+	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
+	rootCmd.PersistentFlags().StringVar(&port, "port", "", "set port number like \"--port 18716\"")
 }

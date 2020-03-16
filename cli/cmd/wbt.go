@@ -44,7 +44,9 @@ Port : 18716
 
 func init() {
 
-	rootCmd.AddCommand(wbtCmd)
+	if Mode == "debug" {
+		rootCmd.AddCommand(wbtCmd)
+	}
 }
 
 func WBT(cmd *cobra.Command, args []string) {
