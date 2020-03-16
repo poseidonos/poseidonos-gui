@@ -18,6 +18,10 @@ func AttachDevice(param model.DeviceParam) (model.Response, error) {
 	return model.Response{}, ErrBadReq
 }
 
+func AddDevice(param model.DeviceParam) (model.Response, error) {
+	return postDevice("ADDDEVICE", param)
+}
+
 func DetachDevice(param model.DeviceParam) (model.Response, error) {
 	return postDevice("DETACHDEVICE", param)
 }

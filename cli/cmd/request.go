@@ -34,6 +34,7 @@ var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
 	"list_dev" : iBoFOSV1.ListDevice,
 	"attach_dev" : iBoFOSV1.AttachDevice,
 	"detach_dev" : iBoFOSV1.DetachDevice,
+	"add_dev" : iBoFOSV1.AddDevice,
 }
 
 var SystemCommand = map[string]func() (model.Response, error) {
@@ -62,7 +63,7 @@ Available msg list :
 
 [Category] : [msg]
 array      : list_array, load_array, create_array, delete_array
-device     : scan_device, list_device, attach_device, detach_device
+device     : scan_device, list_device, attach_device, detach_device, add_device
 system     : heartbeat,exit_ibofos, info, mount_ibofos, unmount_ibofos
 volume     : create_vol, update_vol, mount_vol, unmount_vol, delete_vol, list_vol
 
@@ -187,6 +188,9 @@ func Send(cmd *cobra.Command, command string) {
 
 			param := model.DeviceParam {}
 			param.Name = Name
+			if cmd.PersistentFlags().Changed("spare") {
+				param.Spare = Spare[0]
+			}
 			DeviceCommand[command](param)
 
 		} else if systemExists {
