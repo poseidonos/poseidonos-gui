@@ -9,7 +9,7 @@ import (
 )
 
 var wbtCmd = &cobra.Command{
-  Use:   "wbt [msg]",
+  Use:   "wbt [argument...]",
   Short: "WBT for Poseidon OS",
   Long:  `Execute WBT for Poseidon OS.
 
