@@ -1,10 +1,15 @@
 package v1
 
-func WBTTest() {
-	getReportTest("REPORTTEST")
+import (
+	"A-module/routers/mtool/model"
+)
+
+func WBTTest(param model.WBTParam) (model.Response, error) {
+	return postWBTTest("WBT", param)
 }
 
-func postWBTTest(command string) {
+func postWBTTest(command string, param model.WBTParam) (model.Response, error) {
 	iBoFRequest := makeRequest("", command)
-	sendIBoF(iBoFRequest)
+	iBoFRequest.Param = param
+	return sendIBoF(iBoFRequest)
 }

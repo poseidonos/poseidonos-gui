@@ -30,7 +30,7 @@ type Device struct {
 }
 
 type ArrayParam  struct {
-	FtType  int	        `json:"fttype"`
+	FtType  int	        `json:"fttype,omitempty"`
 	Buffer []  Device   `json:"buffer,omitempty"`
 	Data []  Device     `json:"data,omitempty"`
 	Spare []  Device    `json:"spare,omitempty"`
@@ -41,12 +41,15 @@ type DeviceParam  struct {
 }
 
 type VolumeParam struct {
-	Name string	`json:"name"`
-	Size int	`json:"size"`
+	Name string	`json:"name,omitempty"`
+	Size int	`json:"size,omitempty"`
+	Maxiops int	`json:"maxiops,omitempty"`
+	Maxbw int	`json:"maxbw,omitempty"`
+
 }
 
 type WBTParam struct {
-	Name string `json:"testname"`
-	Argc int `json:"argc"`
-	Argv string `json:"argb"`
+	Name string `json:"testname,omitempty"`
+	Argc int `json:"argc,omitempty"`
+	Argv string `json:"argv"`
 }

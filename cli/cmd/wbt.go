@@ -1,19 +1,12 @@
 package cmd
 
 import (
-		"fmt"
-		"time"
+//		"fmt"
 		"github.com/spf13/cobra"
-		"A-module/log"
 		"A-module/errors"
-		"A-module/handler"
-		"A-module/setting"
 		"A-module/routers/mtool/model"
+		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 )
-
-var testname string
-var argv []string
-var argc int
 
 var wbtCmd = &cobra.Command{
   Use:   "wbt [msg]",
@@ -37,68 +30,40 @@ Port : 18716
 	  `,
   Args: func(cmd *cobra.Command, args []string) error {
 
-	if len(args) != 3 {
-      return errors.New("need test name, argc and argv !!!")
+	if len(args) < 1 {
+      return errors.New("need one more args !!!")
     }
-	
+
 	return nil
   },
 
   Run: func(cmd *cobra.Command, args []string) {
-	Wbt()
+	WBT(cmd, args)
   },
 }
 
 func init() {
 
 	rootCmd.AddCommand(wbtCmd)
-
-	wbtCmd.PersistentFlags().StringVarP(&testname,"name", "n", "", "input test name \"-n moon\"")
-	wbtCmd.PersistentFlags().StringSliceVarP(&argv, "argv", "v", []string{}, "input argv like \"-v 1,2,3\"")
-	wbtCmd.PersistentFlags().IntVarP(&argc, "argc", "c", 0, "input argc like \"-c 5\"")
-
 }
 
-func Wbt() {
+func WBT(cmd *cobra.Command, args []string) {
 
-	if Verbose == true {
-		log.SetVerboseMode()
-	} else if Debug == true {
-		log.SetDebugMode()
-	}
+	if InitConnect() {
 
-	setting.LoadConfig()
+		param := model.WBTParam{}
+		param.Name = args[0]
+		param.Argc = len(args)
 
-	if len(IP) != 0 {
-		setting.Config.Server.IBoF.IP = IP
-	}
-
-	if len(Port) != 0 {
-		setting.Config.Server.IBoF.Port = Port
-	}
-
-	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
-
-	go handler.ConnectToIBoFOS()
-
-	time.Sleep(time.Second*1)
-
-	if len(setting.Config.IBoFOSSocketAddr) > 0 {
-
-			param := model.WBTParam{}
-			param.Name = testname
-			param.Argc = argc
-
-			for _, v := range argv {
-				fmt.Println(", ", v)
-				//device := model.Device{}
-				//device.DeviceName = v
-				//param.Buffer = append(param.Buffer, device)
-
+		for i, v := range args {
+			if i > 0 {
+				param.Argv += v + " "
 			}
-			
-			//ArrayCommand[command](param)
+		}
+
+		iBoFOSV1.WBTTest(param)
+
 	} else {
-		fmt.Println("Cannot connect to Poseidon OS !!!")
+		errors.New("Cannot connect to Poseidon OS !!!")
 	}
 }

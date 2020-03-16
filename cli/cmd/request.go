@@ -17,7 +17,10 @@ var Data []string
 var Spare []string
 var Name string
 
-var Size int
+var fttype int
+var size int
+var maxiops int
+var maxbw int
 
 var ArrayCommand = map[string]func(model.ArrayParam) (model.Response, error) {
 	"list_array"   : iBoFOSV1.ListArrayDevice,
@@ -95,7 +98,7 @@ Port : 18716
   },
 
   Run: func(cmd *cobra.Command, args []string) {
-	Send(args[0])
+	Send(cmd, args[0])
   },
 }
 
@@ -103,15 +106,17 @@ func init() {
 
 	rootCmd.AddCommand(commandCmd)
 
+	commandCmd.PersistentFlags().IntVarP(&fttype, "fttype", "f", 0, "set fttype \"-f 4194304\"")
 	commandCmd.PersistentFlags().StringSliceVarP(&Buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "t", []string{}, "set data name \"-t unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "p", []string{}, "set spare name \"-p unvme-ns-3\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "s", []string{}, "set spare name \"-p unvme-ns-3\"")
 	commandCmd.PersistentFlags().StringVarP(&Name, "name", "n",  "", "set name \"-n vol01\"")
-	commandCmd.PersistentFlags().IntVarP(&Size, "size", "s", 0, "set size \"-s 4194304\"")
-
+	commandCmd.PersistentFlags().IntVar(&size, "size", 0, "set size \"-s 4194304\"")
+	commandCmd.PersistentFlags().IntVar(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
+	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 }
 
-func Send(command string) {
+func InitConnect() bool{
 
 	if Verbose == true {
 		log.SetVerboseMode()
@@ -136,6 +141,15 @@ func Send(command string) {
 	time.Sleep(time.Second*1)
 
 	if len(setting.Config.IBoFOSSocketAddr) > 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func Send(cmd *cobra.Command, command string) {
+
+	if InitConnect() {
 
 		val1, arrayExists := ArrayCommand[command]
 		val2, deviceExists := DeviceCommand[command]
@@ -149,8 +163,10 @@ func Send(command string) {
 		if arrayExists {
 
 			param := model.ArrayParam {}
-			param.FtType = 1
-
+			
+			//if cmd.PersistentFlags().Changed("fttype") {
+				param.FtType = fttype
+			//}
 			for _, v := range Buffer {
 				device := model.Device{}
 				device.DeviceName = v
@@ -181,13 +197,21 @@ func Send(command string) {
 
 			param := model.VolumeParam {}
 			param.Name = Name
-			param.Size = Size
+			param.Size = size
+			if cmd.PersistentFlags().Changed("maxiops") {
+				param.Maxiops = maxiops
+				fmt.Println("maxiops")
+			}
+			if cmd.PersistentFlags().Changed("maxbw") {
+				param.Maxbw = maxbw
+			}
+
 			VolumeCommand[command](param)
 
 		} else {
 			//commands[command]()
 		}
 	} else {
-		fmt.Println("Cannot connect to Poseidon OS !!!")
+		errors.New("Cannot connect to Poseidon OS !!!")
 	}
 }

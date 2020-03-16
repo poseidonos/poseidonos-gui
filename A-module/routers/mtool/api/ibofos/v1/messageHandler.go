@@ -43,7 +43,8 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	fmt.Println("    Rid         : ", iBoFRequest.Rid)
 	fmt.Println("    Command     : ", iBoFRequest.Command)
 	if string(b) != "null" {
-		fmt.Println("    Param       : ", string(b))
+		fmt.Println("    Param       :")
+		fmt.Println(string(b))
 	}
 
 	marshaled, _ := json.Marshal(iBoFRequest)
