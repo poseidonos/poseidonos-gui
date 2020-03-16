@@ -1,13 +1,8 @@
 package cmd
 
 import (
-		"fmt"
-		"time"
 		"github.com/spf13/cobra"
-		"A-module/log"
 		"A-module/errors"
-		"A-module/handler"
-		"A-module/setting"
 		"A-module/routers/mtool/model"
 		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	   )
@@ -117,37 +112,6 @@ func init() {
 	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 }
 
-func InitConnect() bool{
-
-	if verbose == true {
-		log.SetVerboseMode()
-	} else if debug == true {
-		log.SetDebugMode()
-	}
-
-	setting.LoadConfig()
-
-	if len(ip) != 0 {
-		setting.Config.Server.IBoF.IP = ip
-	}
-
-	if len(port) != 0 {
-		setting.Config.Server.IBoF.Port = port
-	}
-
-	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
-
-	go handler.ConnectToIBoFOS()
-
-	time.Sleep(time.Second*1)
-
-	if len(setting.Config.IBoFOSSocketAddr) > 0 {
-		return true
-	} else {
-		return false
-	}
-}
-
 func Send(cmd *cobra.Command, command string) {
 
 	if InitConnect() {
@@ -204,7 +168,6 @@ func Send(cmd *cobra.Command, command string) {
 			param.Size = size
 			if cmd.PersistentFlags().Changed("maxiops") {
 				param.Maxiops = maxiops
-				fmt.Println("maxiops")
 			}
 			if cmd.PersistentFlags().Changed("maxbw") {
 				param.Maxbw = maxbw

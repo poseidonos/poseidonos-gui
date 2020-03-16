@@ -2,8 +2,12 @@ package cmd
 
 import (
 		"os"
+		"time"
 		"github.com/spf13/cobra"
-	   )
+		"A-module/log"
+		"A-module/handler"
+		"A-module/setting"
+)
 
 var verbose bool
 var debug bool
@@ -36,9 +40,40 @@ func init() {
 
 	if Mode == "debug" {
 		rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
-		rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set a debug mode")
+		rootCmd.PersistentFlags().BoolVar(&debug, "debug", true, "set a debug mode")
 	}
 	
 	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
 	rootCmd.PersistentFlags().StringVar(&port, "port", "", "set port number like \"--port 18716\"")
+}
+
+func InitConnect() bool{
+
+	if verbose == true {
+		log.SetVerboseMode()
+	} else if debug == true {
+		log.SetDebugMode()
+	}
+
+	setting.LoadConfig()
+
+	if len(ip) != 0 {
+		setting.Config.Server.IBoF.IP = ip
+	}
+
+	if len(port) != 0 {
+		setting.Config.Server.IBoF.Port = port
+	}
+
+	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
+
+	go handler.ConnectToIBoFOS()
+
+	time.Sleep(time.Second*1)
+
+	if len(setting.Config.IBoFOSSocketAddr) > 0 {
+		return true
+	} else {
+		return false
+	}
 }
