@@ -60,7 +60,14 @@ func FileInput(cmd *cobra.Command, args []string) {
 	}
 
 	request := model.Request{}
-	json.Unmarshal(b, &request)
+
+	err = json.Unmarshal(b, &request)
+
+	if err != nil {
+		fmt.Println("invalid json file :", err)
+		return
+	}
+
 	log.Println(request)
 
 	if InitConnect() {
