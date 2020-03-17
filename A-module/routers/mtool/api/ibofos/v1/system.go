@@ -4,37 +4,37 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func Heartbeat() (model.Response, error) {
-	return getSystem("HEARTBEAT")
+func Heartbeat(rid string) (model.Response, error) {
+	return getSystem(rid, "HEARTBEAT")
 }
 
-func ExitiBoFOS() (model.Response, error) {
-	return deleteSystem("EXITIBOFOS")
+func ExitiBoFOS(rid string) (model.Response, error) {
+	return deleteSystem(rid, "EXITIBOFOS")
 }
 
-func IBoFOSInfo() (model.Response, error) {
-	return getSystem("GETIBOFOSINFO")
+func IBoFOSInfo(rid string) (model.Response, error) {
+	return getSystem(rid, "GETIBOFOSINFO")
 }
 
-func MountiBoFOS() (model.Response, error) {
-	return postSystem("MOUNTIBOFOS")
+func MountiBoFOS(rid string) (model.Response, error) {
+	return postSystem(rid, "MOUNTIBOFOS")
 }
 
-func UnmountiBoFOS() (model.Response, error) {
-	return postSystem("UNMOUNTIBOFOS")
+func UnmountiBoFOS(rid string) (model.Response, error) {
+	return postSystem(rid, "UNMOUNTIBOFOS")
 }
 
-func deleteSystem(command string) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func deleteSystem(rid string, command string) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	return sendIBoF(iBoFRequest)
 }
 
-func getSystem(command string) (model.Response, error)  {
-	iBoFRequest := makeRequest("", command)
+func getSystem(rid string, command string) (model.Response, error)  {
+	iBoFRequest := makeRequest(rid, command)
 	return sendIBoF(iBoFRequest)
 }
 
-func postSystem(command string) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func postSystem(rid string, command string) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	return sendIBoF(iBoFRequest)
 }

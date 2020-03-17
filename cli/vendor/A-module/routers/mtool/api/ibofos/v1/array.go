@@ -4,35 +4,35 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func ListArrayDevice(param model.ArrayParam) (model.Response, error) {
-	return getArray("LISTARRAYDEVICE")
+func ListArrayDevice(rid string, param model.ArrayParam) (model.Response, error) {
+	return getArray(rid, "LISTARRAYDEVICE")
 }
 
-func LoadArray(param model.ArrayParam) (model.Response, error) {
-	return getArray("LOADARRAY")
+func LoadArray(rid string, param model.ArrayParam) (model.Response, error) {
+	return getArray(rid, "LOADARRAY")
 }
 
-func CreateArray(param model.ArrayParam) (model.Response, error) {
-	return postArray("CREATEARRAY", param)
+func CreateArray(rid string, param model.ArrayParam) (model.Response, error) {
+	return postArray(rid, "CREATEARRAY", param)
 }
 
-func DeleteArray(param model.ArrayParam) (model.Response, error) {
-	return deleteArray("DELETEARRAY", param)
+func DeleteArray(rid string, param model.ArrayParam) (model.Response, error) {
+	return deleteArray(rid, "DELETEARRAY", param)
 }
 
-func postArray(command string, param model.ArrayParam) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func postArray(rid string, command string, param model.ArrayParam) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	iBoFRequest.Param = param
 	return sendIBoF(iBoFRequest)
 }
 
-func getArray(command string) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func getArray(rid string, command string) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	return sendIBoF(iBoFRequest)
 }
 
-func deleteArray(command string, param model.ArrayParam) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func deleteArray(rid string, command string, param model.ArrayParam) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	iBoFRequest.Param = param
 	return sendIBoF(iBoFRequest)
 }

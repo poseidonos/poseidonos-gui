@@ -1,6 +1,7 @@
 package cmd
 
 import (
+		"github.com/google/uuid"
 		"github.com/spf13/cobra"
 		"A-module/errors"
 		"A-module/routers/mtool/model"
@@ -17,14 +18,14 @@ var size int
 var maxiops int
 var maxbw int
 
-var ArrayCommand = map[string]func(model.ArrayParam) (model.Response, error) {
+var ArrayCommand = map[string]func(string, model.ArrayParam) (model.Response, error) {
 	"list_array"   : iBoFOSV1.ListArrayDevice,
 	"load_array"   : iBoFOSV1.LoadArray,
 	"create_array" : iBoFOSV1.CreateArray,
 	"delete_array" : iBoFOSV1.DeleteArray,
 }
 
-var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
+var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Response, error) {
 	"scan_dev" : iBoFOSV1.ScanDevice,
 	"list_dev" : iBoFOSV1.ListDevice,
 	"attach_dev" : iBoFOSV1.AttachDevice,
@@ -32,7 +33,7 @@ var DeviceCommand = map[string]func(model.DeviceParam) (model.Response, error) {
 	"add_dev" : iBoFOSV1.AddDevice,
 }
 
-var SystemCommand = map[string]func() (model.Response, error) {
+var SystemCommand = map[string]func(string) (model.Response, error) {
 	"heartbeat" : iBoFOSV1.Heartbeat,
 	"exit_ibofos" :iBoFOSV1.ExitiBoFOS,
 	"info" :iBoFOSV1.IBoFOSInfo,
@@ -40,7 +41,7 @@ var SystemCommand = map[string]func() (model.Response, error) {
 	"unmount_ibofos" :iBoFOSV1.UnmountiBoFOS,
 }
 
-var VolumeCommand = map[string]func(model.VolumeParam) (model.Response, error) {
+var VolumeCommand = map[string]func(string, model.VolumeParam) (model.Response, error) {
 	"create_vol" : iBoFOSV1.CreateVolume,
 	"update_vol" : iBoFOSV1.UpdateVolume,
 	"mount_vol" : iBoFOSV1.MountVolume,
@@ -116,6 +117,12 @@ func Send(cmd *cobra.Command, command string) {
 
 	if InitConnect() {
 
+		var xrId string
+		uuid, err := uuid.NewUUID()
+		if err == nil {
+			xrId = uuid.String()
+		}
+		
 		val1, arrayExists := ArrayCommand[command]
 		val2, deviceExists := DeviceCommand[command]
 		val3, systemExists := SystemCommand[command]
@@ -147,7 +154,7 @@ func Send(cmd *cobra.Command, command string) {
 				device.DeviceName = v
 				param.Spare = append(param.Spare, device)
 			}
-			ArrayCommand[command](param)
+			ArrayCommand[command](xrId, param)
 		} else if deviceExists {
 
 			param := model.DeviceParam {}
@@ -155,11 +162,11 @@ func Send(cmd *cobra.Command, command string) {
 			if cmd.PersistentFlags().Changed("spare") {
 				param.Spare = Spare[0]
 			}
-			DeviceCommand[command](param)
+			DeviceCommand[command](xrId, param)
 
 		} else if systemExists {
 
-			SystemCommand[command]()
+			SystemCommand[command](xrId)
 
 		} else if volumeExists {
 
@@ -173,7 +180,7 @@ func Send(cmd *cobra.Command, command string) {
 				param.Maxbw = maxbw
 			}
 
-			VolumeCommand[command](param)
+			VolumeCommand[command](xrId, param)
 
 		} else {
 			//commands[command]()

@@ -8,7 +8,6 @@ import (
 	"A-module/handler"
 	//"A-module/routers/mtool/api"
 	"A-module/routers/mtool/model"
-	"github.com/google/uuid"
 	"sync/atomic"
 )
 
@@ -95,15 +94,6 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 }
 
 func makeRequest(xrId string, command string) model.Request {
-	//xrId := ctx.GetHeader("X-request-Id")
-
-	if len(xrId) == 0 {
-
-		uuid, err := uuid.NewUUID()
-		if err == nil {
-			xrId = uuid.String()
-		}
-	}
 	
 	request := model.Request{
 		Command: command,

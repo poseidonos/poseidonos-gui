@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"A-module/handler"
-    "A-module/log"
+//    "A-module/log"
     "A-module/setting"
     "github.com/gin-gonic/gin"
     "DAgent/src/routers"
@@ -61,7 +61,7 @@ func Dagent() {
 
 	setting.LoadConfig()
     gin.SetMode(gin.DebugMode)
-    log.SetDebugMode()
+    //log.SetDebugMode()
 
 	go handler.ConnectToIBoFOS()
     startServer()

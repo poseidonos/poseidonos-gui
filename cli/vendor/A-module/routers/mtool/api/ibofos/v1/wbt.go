@@ -4,12 +4,12 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func WBTTest(param model.WBTParam) (model.Response, error) {
-	return postWBTTest("WBT", param)
+func WBTTest(rid string, param model.WBTParam) (model.Response, error) {
+	return postWBTTest(rid, "WBT", param)
 }
 
-func postWBTTest(command string, param model.WBTParam) (model.Response, error) {
-	iBoFRequest := makeRequest("", command)
+func postWBTTest(rid string, command string, param model.WBTParam) (model.Response, error) {
+	iBoFRequest := makeRequest(rid, command)
 	iBoFRequest.Param = param
 	return sendIBoF(iBoFRequest)
 }

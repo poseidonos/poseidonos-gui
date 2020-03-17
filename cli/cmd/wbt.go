@@ -2,6 +2,7 @@ package cmd
 
 import (
 //		"fmt"
+		"github.com/google/uuid"
 		"github.com/spf13/cobra"
 		"A-module/errors"
 		"A-module/routers/mtool/model"
@@ -53,6 +54,12 @@ func WBT(cmd *cobra.Command, args []string) {
 
 	if InitConnect() {
 
+		var xrId string
+		uuid, err := uuid.NewUUID()
+		if err == nil {
+			xrId = uuid.String()
+		}
+
 		param := model.WBTParam{}
 		param.Name = args[0]
 		param.Argc = len(args)
@@ -63,7 +70,7 @@ func WBT(cmd *cobra.Command, args []string) {
 			}
 		}
 
-		iBoFOSV1.WBTTest(param)
+		iBoFOSV1.WBTTest(xrId, param)
 
 	} else {
 		errors.New("Cannot connect to Poseidon OS !!!")

@@ -1,10 +1,10 @@
 package v1
 
-func ReportTest() {
-	getReportTest("REPORTTEST")
+func ReportTest(rid string) {
+	getReportTest(rid, "REPORTTEST")
 }
 
-func getReportTest(command string) {
-	iBoFRequest := makeRequest("", command)
+func getReportTest(rid string, command string) {
+	iBoFRequest := makeRequest(rid, command)
 	sendIBoF(iBoFRequest)
 }

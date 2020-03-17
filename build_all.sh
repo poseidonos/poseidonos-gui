@@ -1,5 +1,5 @@
 #!/bin/bash
-cd CLI
+cd cli
 ./localbuild.sh
 cd ..
 cd DAgent
