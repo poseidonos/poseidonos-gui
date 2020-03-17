@@ -40,7 +40,7 @@ func init() {
 
 	if Mode == "debug" {
 		rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
-		rootCmd.PersistentFlags().BoolVar(&debug, "debug", true, "set a debug mode")
+		rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set a debug mode")
 	}
 	
 	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")

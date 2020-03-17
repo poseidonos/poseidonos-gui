@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"A-module/handler"
 //    "A-module/log"
     "A-module/setting"
-    "github.com/gin-gonic/gin"
     "DAgent/src/routers"
     "net/http"
     "time"
@@ -54,17 +52,10 @@ func init() {
 }
 
 func Daemon(cmd *cobra.Command, args []string) {
-	Dagent()
-}
 
-func Dagent() {
-
-	setting.LoadConfig()
-    gin.SetMode(gin.DebugMode)
-    //log.SetDebugMode()
-
-	go handler.ConnectToIBoFOS()
-    startServer()
+	if InitConnect() {
+		startServer()
+	}
 }
 
 func startServer() {
