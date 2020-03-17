@@ -128,7 +128,7 @@ func Send(cmd *cobra.Command, command string) {
 		if arrayExists {
 
 			param := model.ArrayParam {}
-			
+
 			//if cmd.PersistentFlags().Changed("fttype") {
 				param.FtType = fttype
 			//}
