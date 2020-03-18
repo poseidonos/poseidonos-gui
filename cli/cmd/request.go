@@ -221,9 +221,9 @@ func printReqRes (req model.Request, res model.Response) {
 
 	if isJson {
 		b, _ := json.Marshal(req)
-		fmt.Println("Request    : ", string(b))
+		fmt.Println("{Request:", string(b), "}")
 		b, _ = json.Marshal(res)
-		fmt.Println("Response   : ", string(b))
+		fmt.Println("{Response:", string(b),"}")
 	} else {
 		b, _ := json.MarshalIndent(req.Param, "", "    ")
 

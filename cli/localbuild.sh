@@ -8,6 +8,6 @@ cp -rf ../DAgent/src ./vendor/DAgent/
 go build -mod vendor -tags debug
 #go build -mod vendor -tags release
 
-cp cli ../../ibofos/bin/
+cp cli ../../ibofos/tool/cli_client/
 
 #sudo ./CLI
