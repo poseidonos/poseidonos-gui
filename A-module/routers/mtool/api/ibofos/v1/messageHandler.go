@@ -1,12 +1,10 @@
 package v1
 
 import (
-	"fmt"
 	"encoding/json"
 	"errors"
 	"A-module/log"
 	"A-module/handler"
-	//"A-module/routers/mtool/api"
 	"A-module/routers/mtool/model"
 	"sync/atomic"
 )
@@ -34,17 +32,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
-	b, _ := json.MarshalIndent(iBoFRequest.Param, "", "    ")
-
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
-
-	fmt.Println("\n\nRequest to Poseidon OS")
-	fmt.Println("    Rid         : ", iBoFRequest.Rid)
-	fmt.Println("    Command     : ", iBoFRequest.Command)
-	if string(b) != "null" {
-		fmt.Println("    Param       :")
-		fmt.Println(string(b))
-	}
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err := handler.WriteToIBoFSocket(marshaled)
@@ -60,17 +48,6 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
-
-		fmt.Println("\n\nResponse from Poseidon OS")
-		fmt.Println("    Code        : ", response.Result.Status.Code)
-		fmt.Println("    Description : ", response.Result.Status.Description)
-
-		b, _ := json.MarshalIndent(response.Result.Data, "", "    ")
-		if string(b) != "null" {
-			fmt.Println("    Data       : ", string(b))
-		}
-
-		fmt.Println("\n")
 		
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")

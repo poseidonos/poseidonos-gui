@@ -1,12 +1,15 @@
 package cmd
 
 import (
-		"github.com/google/uuid"
-		"github.com/spf13/cobra"
-		"A-module/errors"
-		"A-module/routers/mtool/model"
-		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
-	   )
+	"fmt"
+	"encoding/json"
+	"github.com/google/uuid"
+	"github.com/spf13/cobra"
+	"A-module/errors"
+	"A-module/log"
+	"A-module/routers/mtool/model"
+	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
+)
 
 var Buffer []string
 var Data []string
@@ -18,14 +21,16 @@ var size int
 var maxiops int
 var maxbw int
 
-var ArrayCommand = map[string]func(string, model.ArrayParam) (model.Response, error) {
+var isJson bool
+
+var ArrayCommand = map[string]func(string, model.ArrayParam) (model.Request, model.Response, error) {
 	"list_array"   : iBoFOSV1.ListArrayDevice,
 	"load_array"   : iBoFOSV1.LoadArray,
 	"create_array" : iBoFOSV1.CreateArray,
 	"delete_array" : iBoFOSV1.DeleteArray,
 }
 
-var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Response, error) {
+var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Request, model.Response, error) {
 	"scan_dev" : iBoFOSV1.ScanDevice,
 	"list_dev" : iBoFOSV1.ListDevice,
 	"attach_dev" : iBoFOSV1.AttachDevice,
@@ -33,7 +38,7 @@ var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Response, 
 	"add_dev" : iBoFOSV1.AddDevice,
 }
 
-var SystemCommand = map[string]func(string) (model.Response, error) {
+var SystemCommand = map[string]func(string) (model.Request, model.Response, error) {
 	"heartbeat" : iBoFOSV1.Heartbeat,
 	"exit_ibofos" :iBoFOSV1.ExitiBoFOS,
 	"info" :iBoFOSV1.IBoFOSInfo,
@@ -41,7 +46,7 @@ var SystemCommand = map[string]func(string) (model.Response, error) {
 	"unmount_ibofos" :iBoFOSV1.UnmountiBoFOS,
 }
 
-var VolumeCommand = map[string]func(string, model.VolumeParam) (model.Response, error) {
+var VolumeCommand = map[string]func(string, model.VolumeParam) (model.Request, model.Response, error) {
 	"create_vol" : iBoFOSV1.CreateVolume,
 	"update_vol" : iBoFOSV1.UpdateVolume,
 	"mount_vol" : iBoFOSV1.MountVolume,
@@ -59,7 +64,7 @@ Available msg list :
 
 [Category] : [msg]
 array      : list_array, load_array, create_array, delete_array
-device     : scan_device, list_device, attach_device, detach_device, add_device
+device     : scan_dev, list_dev, attach_dev, detach_dev, add_dev
 system     : heartbeat,exit_ibofos, info, mount_ibofos, unmount_ibofos
 volume     : create_vol, update_vol, mount_vol, unmount_vol, delete_vol, list_vol
 
@@ -111,6 +116,7 @@ func init() {
 	commandCmd.PersistentFlags().IntVar(&size, "size", 0, "set size \"-s 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
+	commandCmd.PersistentFlags().BoolVarP(&isJson, "json", "j", false, "print request and response fommated json")
 }
 
 func Send(cmd *cobra.Command, command string) {
@@ -135,10 +141,7 @@ func Send(cmd *cobra.Command, command string) {
 		if arrayExists {
 
 			param := model.ArrayParam {}
-
-			//if cmd.PersistentFlags().Changed("fttype") {
-				param.FtType = fttype
-			//}
+			param.FtType = fttype
 			for _, v := range Buffer {
 				device := model.Device{}
 				device.DeviceName = v
@@ -154,7 +157,15 @@ func Send(cmd *cobra.Command, command string) {
 				device.DeviceName = v
 				param.Spare = append(param.Spare, device)
 			}
-			ArrayCommand[command](xrId, param)
+
+			req, res , err := ArrayCommand[command](xrId, param)
+
+			if err != nil {
+				log.Println(err)
+			} else {
+				printReqRes(req, res)
+			}
+
 		} else if deviceExists {
 
 			param := model.DeviceParam {}
@@ -162,11 +173,24 @@ func Send(cmd *cobra.Command, command string) {
 			if cmd.PersistentFlags().Changed("spare") {
 				param.Spare = Spare[0]
 			}
-			DeviceCommand[command](xrId, param)
+
+			req, res , err := DeviceCommand[command](xrId, param)
+
+			if err != nil {
+				log.Println(err)
+			} else {
+				printReqRes(req, res)
+			}
 
 		} else if systemExists {
 
-			SystemCommand[command](xrId)
+			req, res , err := SystemCommand[command](xrId)
+
+			if err != nil {
+				log.Println(err)
+			} else {
+				printReqRes(req, res)
+			}
 
 		} else if volumeExists {
 
@@ -180,12 +204,48 @@ func Send(cmd *cobra.Command, command string) {
 				param.Maxbw = maxbw
 			}
 
-			VolumeCommand[command](xrId, param)
+			req, res , err := VolumeCommand[command](xrId, param)
 
-		} else {
-			//commands[command]()
+			if err != nil {
+				log.Println(err)
+			} else {
+				printReqRes(req, res)
+			}
 		}
 	} else {
 		errors.New("Cannot connect to Poseidon OS !!!")
+	}
+}
+
+func printReqRes (req model.Request, res model.Response) {
+
+	if isJson {
+		b, _ := json.Marshal(req)
+		fmt.Println("Request    : ", string(b))
+		b, _ = json.Marshal(res)
+		fmt.Println("Response   : ", string(b))
+	} else {
+		b, _ := json.MarshalIndent(req.Param, "", "    ")
+
+		fmt.Println("\n\nRequest to Poseidon OS")
+		fmt.Println("    xrId        : ", req.Rid)
+		fmt.Println("    Command     : ", req.Command)
+
+		if string(b) != "null" {
+			fmt.Println("    Param       :")
+				fmt.Println(string(b))
+		}
+
+		fmt.Println("\n\nResponse from Poseidon OS")
+		fmt.Println("    Code        : ", res.Result.Status.Code)
+		fmt.Println("    Description : ", res.Result.Status.Description)
+
+		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
+
+		if string(b) != "null" {
+			fmt.Println("    Data       : ", string(b))
+		}
+
+		fmt.Println("\n")
 	}
 }
