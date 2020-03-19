@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"A-module/log"
 	"os/exec"
 )
@@ -36,7 +35,7 @@ func ExecCmd(cmd string, background bool) {
 	}
 }
 
-func RunScript(ctx *gin.Context, filePath string, background bool) {
+func RunScript(filePath string, background bool) {
 	grantPermission(filePath)
 	ExecCmd(filePath, background)
 }
