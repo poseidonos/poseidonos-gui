@@ -9,15 +9,17 @@ else
 	echo "Offline"
 	rm -rf vendor/A-module
 	cp -rf ../A-module ./vendor/
+	rm -rf vendor/DAgent
+	mkdir vendor/DAgent
+	cp -rf ../DAgent/src ./vendor/DAgent/
 fi
-
-rm -rf vendor/DAgent
-mkdir vendor/DAgent
-cp -rf ../DAgent/src ./vendor/DAgent/
 
 go build -mod vendor -tags debug
 #go build -mod vendor -tags release
 
-cp cli ../../ibofos/tool/cli_client/
+
+if [ -d ../../ibofos ]; then
+	cp cli ../../ibofos/tool/cli_client/
+fi
 
 #sudo ./CLI
