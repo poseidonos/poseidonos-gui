@@ -6,6 +6,7 @@ import (
 	"A-module/routers/mtool/model"
 	"DAgent/src/routers/mtool/api"
 	"DAgent/src/routers/mtool/middleware"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
@@ -44,36 +45,30 @@ func Route(router *gin.Engine) {
 	// For Test
 	{
 		iBoFOS.POST("/test/report", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			iBoFOSV1.ReportTest(xrId)
+			iBoFOSV1.ReportTest(xrId(c))
 		})
 	}
 
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			_, response, err := iBoFOSV1.Heartbeat(xrId)
+			_, response, err := iBoFOSV1.Heartbeat(xrId(c))
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			_, response, err := iBoFOSV1.ExitiBoFOS(xrId)
+			_, response, err := iBoFOSV1.ExitiBoFOS(xrId(c))
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/system", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			_, response, err := iBoFOSV1.IBoFOSInfo(c.GetHeader(xrId))
+			_, response, err := iBoFOSV1.IBoFOSInfo(c.GetHeader(xrId(c)))
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/system/mount", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			_, response, err := iBoFOSV1.MountiBoFOS(xrId)
+			_, response, err := iBoFOSV1.MountiBoFOS(xrId(c))
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
-			xrId, _ := dataFromRequest(c)
-			_, response, err := iBoFOSV1.UnmountiBoFOS(xrId)
+			_, response, err := iBoFOSV1.UnmountiBoFOS(xrId(c))
 			makeResponse(c, response, err)
 		})
 	}
@@ -81,24 +76,24 @@ func Route(router *gin.Engine) {
 	// Device
 	{
 		iBoFOS.GET("/device", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.ListDevice(xrId, param.(model.DeviceParam))
+			param := deviceParam(c)
+			_, response, err := iBoFOSV1.ListDevice(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/device/scan", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.ScanDevice(xrId, param.(model.DeviceParam))
+			param := deviceParam(c)
+			_, response, err := iBoFOSV1.ScanDevice(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/device/attach", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.AttachDevice(xrId, param.(model.DeviceParam))
+			param := deviceParam(c)
+			_, response, err := iBoFOSV1.AttachDevice(xrId(c), param)
 			makeResponse(c, response, err)
 
 		})
 		iBoFOS.DELETE("/device/detach", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.DetachDevice(xrId, param.(model.DeviceParam))
+			param := deviceParam(c)
+			_, response, err := iBoFOSV1.DetachDevice(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 	}
@@ -106,23 +101,23 @@ func Route(router *gin.Engine) {
 	// Array
 	{
 		iBoFOS.GET("/array/device", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.ListArrayDevice(xrId, param.(model.ArrayParam))
+			param := arrayParam(c)
+			_, response, err := iBoFOSV1.ListArrayDevice(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/array", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.LoadArray(xrId, param.(model.ArrayParam))
+			param := arrayParam(c)
+			_, response, err := iBoFOSV1.LoadArray(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/array", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.CreateArray(xrId, param.(model.ArrayParam))
+			param := arrayParam(c)
+			_, response, err := iBoFOSV1.CreateArray(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/array", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.DeleteArray(xrId, param.(model.ArrayParam))
+			param := arrayParam(c)
+			_, response, err := iBoFOSV1.DeleteArray(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 	}
@@ -130,43 +125,64 @@ func Route(router *gin.Engine) {
 	// Volume
 	{
 		iBoFOS.POST("/volume", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.CreateVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.CreateVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.GET("/volume", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.ListVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.ListVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.PUT("/volume", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.UpdateVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.UpdateVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/volume", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.DeleteVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.DeleteVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.POST("/volume/mount", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.MountVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.MountVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 		iBoFOS.DELETE("/volume/mount", func(c *gin.Context) {
-			xrId, param := dataFromRequest(c)
-			_, response, err := iBoFOSV1.UnmountVolume(xrId, param.(model.VolumeParam))
+			param := volumeParam(c)
+			_, response, err := iBoFOSV1.UnmountVolume(xrId(c), param)
 			makeResponse(c, response, err)
 		})
 	}
 }
+func xrId(c *gin.Context) string {
+	return c.GetHeader("X-request-Id")
+}
 
-func dataFromRequest(c *gin.Context) (string, interface{}) {
+func requestParam(c *gin.Context) []byte {
 	request := model.Request{}
 	c.ShouldBindBodyWith(&request, binding.JSON)
-	xrId := c.GetHeader("X-request-Id")
-	return xrId, request.Param
+	requestParam, _ := json.Marshal(request.Param)
+	return requestParam
+}
+
+func deviceParam(c *gin.Context) model.DeviceParam {
+	param := model.DeviceParam{}
+	json.Unmarshal(requestParam(c), &param)
+	return param
+}
+
+func arrayParam(c *gin.Context) model.ArrayParam {
+	param := model.ArrayParam{}
+	json.Unmarshal(requestParam(c), &param)
+	return param
+}
+
+func volumeParam(c *gin.Context) model.VolumeParam {
+	param := model.VolumeParam{}
+	json.Unmarshal(requestParam(c), &param)
+	return param
 }
 
 func makeResponse(c *gin.Context, response model.Response, err error) {
