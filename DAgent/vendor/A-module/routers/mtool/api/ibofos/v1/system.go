@@ -4,37 +4,40 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func Heartbeat(rid string) (model.Response, error) {
-	return getSystem(rid, "HEARTBEAT")
+func Heartbeat(xrId string) (model.Request, model.Response, error) {
+	return getSystem(xrId, "HEARTBEAT")
 }
 
-func ExitiBoFOS(rid string) (model.Response, error) {
-	return deleteSystem(rid, "EXITIBOFOS")
+func ExitiBoFOS(xrId string) (model.Request, model.Response, error) {
+	return deleteSystem(xrId, "EXITIBOFOS")
 }
 
-func IBoFOSInfo(rid string) (model.Response, error) {
-	return getSystem(rid, "GETIBOFOSINFO")
+func IBoFOSInfo(xrId string) (model.Request, model.Response, error) {
+	return getSystem(xrId, "GETIBOFOSINFO")
 }
 
-func MountiBoFOS(rid string) (model.Response, error) {
-	return postSystem(rid, "MOUNTIBOFOS")
+func MountiBoFOS(xrId string) (model.Request, model.Response, error) {
+	return postSystem(xrId, "MOUNTIBOFOS")
 }
 
-func UnmountiBoFOS(rid string) (model.Response, error) {
-	return postSystem(rid, "UNMOUNTIBOFOS")
+func UnmountiBoFOS(xrId string) (model.Request, model.Response, error) {
+	return postSystem(xrId, "UNMOUNTIBOFOS")
 }
 
-func deleteSystem(rid string, command string) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
-	return sendIBoF(iBoFRequest)
+func deleteSystem(xrId string, command string) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func getSystem(rid string, command string) (model.Response, error)  {
-	iBoFRequest := makeRequest(rid, command)
-	return sendIBoF(iBoFRequest)
+func getSystem(xrId string, command string) (model.Request, model.Response, error)  {
+	iBoFRequest := makeRequest(xrId, command)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func postSystem(rid string, command string) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
-	return sendIBoF(iBoFRequest)
+func postSystem(xrId string, command string) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }

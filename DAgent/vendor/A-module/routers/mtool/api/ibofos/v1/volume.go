@@ -4,49 +4,53 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func CreateVolume(rid string, param model.VolumeParam) (model.Response, error) {
-	return postVolume(rid, "CREATEVOLUME", param)
+func CreateVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
+	return postVolume(xrId, "CREATEVOLUME", param)
 }
 
-func UpdateVolume(rid string, param model.VolumeParam) (model.Response, error) {
-	return putVolume(rid, "UPDATEVOLUMEQOS", param)
+func UpdateVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
+	return putVolume(xrId, "UPDATEVOLUMEQOS", param)
 }
 
-func MountVolume(rid string, param model.VolumeParam) (model.Response, error)  {
-	return postVolume(rid, "MOUNTVOLUME", param)
+func MountVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error)  {
+	return postVolume(xrId, "MOUNTVOLUME", param)
 }
 
-func UnmountVolume(rid string, param model.VolumeParam) (model.Response, error) {
-	return postVolume(rid, "UNMOUNTVOLUME", param)
+func UnmountVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
+	return postVolume(xrId, "UNMOUNTVOLUME", param)
 }
 
-func DeleteVolume(rid string, param model.VolumeParam) (model.Response, error) {
-	return deleteVolume(rid, "DELETEVOLUME", param)
+func DeleteVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
+	return deleteVolume(xrId, "DELETEVOLUME", param)
 }
 
-func ListVolume(rid string, param model.VolumeParam) (model.Response, error) {
-	return getVolume(rid, "LISTVOLUME")
+func ListVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
+	return getVolume(xrId, "LISTVOLUME")
 }
 
-func getVolume(rid string, command string) (model.Response, error) {
+func getVolume(xrId string, command string) (model.Request, model.Response, error) {
 	iBoFRequest := makeRequest("", command)
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func postVolume(rid string, command string, param model.VolumeParam) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
+func postVolume(xrId string, command string, param model.VolumeParam) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
 	iBoFRequest.Param = param
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func putVolume(rid string, command string, param model.VolumeParam) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
+func putVolume(xrId string, command string, param model.VolumeParam) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
 	iBoFRequest.Param = param
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func deleteVolume(rid string, command string, param model.VolumeParam) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
+func deleteVolume(xrId string, command string, param model.VolumeParam) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
 	iBoFRequest.Param = param
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }

@@ -4,35 +4,38 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func ListArrayDevice(rid string, param model.ArrayParam) (model.Response, error) {
-	return getArray(rid, "LISTARRAYDEVICE")
+func ListArrayDevice(xrId string, param model.ArrayParam) (model.Request, model.Response, error) {
+	return getArray(xrId, "LISTARRAYDEVICE")
 }
 
-func LoadArray(rid string, param model.ArrayParam) (model.Response, error) {
-	return getArray(rid, "LOADARRAY")
+func LoadArray(xrId string, param model.ArrayParam) (model.Request, model.Response, error) {
+	return getArray(xrId, "LOADARRAY")
 }
 
-func CreateArray(rid string, param model.ArrayParam) (model.Response, error) {
-	return postArray(rid, "CREATEARRAY", param)
+func CreateArray(xrId string, param model.ArrayParam) (model.Request, model.Response, error) {
+	return postArray(xrId, "CREATEARRAY", param)
 }
 
-func DeleteArray(rid string, param model.ArrayParam) (model.Response, error) {
-	return deleteArray(rid, "DELETEARRAY", param)
+func DeleteArray(xrId string, param model.ArrayParam) (model.Request, model.Response, error) {
+	return deleteArray(xrId, "DELETEARRAY", param)
 }
 
-func postArray(rid string, command string, param model.ArrayParam) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
+func postArray(xrId string, command string, param model.ArrayParam) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
 	iBoFRequest.Param = param
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func getArray(rid string, command string) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
-	return sendIBoF(iBoFRequest)
+func getArray(xrId string, command string) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func deleteArray(rid string, command string, param model.ArrayParam) (model.Response, error) {
-	iBoFRequest := makeRequest(rid, command)
+func deleteArray(xrId string, command string, param model.ArrayParam) (model.Request, model.Response, error) {
+	iBoFRequest := makeRequest(xrId, command)
 	iBoFRequest.Param = param
-	return sendIBoF(iBoFRequest)
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
