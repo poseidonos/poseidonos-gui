@@ -1,8 +1,18 @@
 #!/bin/bash
-rm -rf vendor/A-module
+wget -q --tries=1 --timeout=3 --spider http://google.com
+
+if [[ $? -eq 0 ]]; then
+	echo "Online"
+	go mod vendor	
+
+else
+	echo "Offline"
+	rm -rf vendor/A-module
+	cp -rf ../A-module ./vendor/
+fi
+
 rm -rf vendor/DAgent
 mkdir vendor/DAgent
-cp -rf ../A-module ./vendor/
 cp -rf ../DAgent/src ./vendor/DAgent/
 
 go build -mod vendor -tags debug
