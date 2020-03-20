@@ -8,10 +8,6 @@ import (
 	//"net/http"
 )
 
-func RunFio() {
-	util.RunScript("/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py", true)
-}
-
 func RunIBoF(ctx *gin.Context) {
 	defer checkReturnFail(ctx)
 
