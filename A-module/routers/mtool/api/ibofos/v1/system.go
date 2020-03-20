@@ -24,6 +24,10 @@ func UnmountiBoFOS(xrId string) (model.Request, model.Response, error) {
 	return postSystem(xrId, "UNMOUNTIBOFOS")
 }
 
+func StopRebuilding(xrId string) (model.Request, model.Response, error) {
+	return postSystem(xrId, "STOPREBUILDING")
+}
+
 func deleteSystem(xrId string, command string) (model.Request, model.Response, error) {
 	iBoFRequest := makeRequest(xrId, command)
 	res, err := sendIBoF(iBoFRequest)

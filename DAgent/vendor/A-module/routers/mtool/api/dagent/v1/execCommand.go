@@ -8,11 +8,8 @@ import (
 	//"net/http"
 )
 
-func RunFio(ctx *gin.Context) {
-	defer checkReturnFail(ctx)
-	util.RunScript(ctx, "/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py", true)
-
-	//api.MakeSuccess(ctx)
+func RunFio() {
+	util.RunScript("/root/workspace/ibofos/test/system/nvmf/initiator/fio_full_bench.py", true)
 }
 
 func RunIBoF(ctx *gin.Context) {
@@ -22,20 +19,15 @@ func RunIBoF(ctx *gin.Context) {
 		panic(fmt.Errorf("exec Run: The iBoFOS already run"))
 	}
 
-	util.RunScript(ctx, "./run_ibofos.sh", false)
+	util.RunScript("./run_ibofos.sh", false)
 
 	if util.IsIBoFRun() == false {
 		panic(fmt.Errorf("exec Run: Fail to run iBoFOS"))
 	}
-
-	//api.MakeSuccess(ctx)
 }
 
-func ForceKillIbof(ctx *gin.Context) {
-	defer checkReturnFail(ctx)
-
+func ForceKillIbof() {
 	util.ExecCmd("pkill -9 ibofos", false)
-	//api.MakeSuccess(ctx)
 }
 
 func checkReturnFail(ctx *gin.Context) {

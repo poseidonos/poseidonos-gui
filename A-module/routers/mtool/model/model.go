@@ -22,7 +22,7 @@ type Status struct {
 }
 
 type StatusList struct {
-	StatusList []     Status `json:"StatusList"`
+	StatusList [] Status `json:"StatusList"`
 }
 
 type Device struct {
@@ -31,9 +31,9 @@ type Device struct {
 
 type ArrayParam  struct {
 	FtType  int	        `json:"fttype,omitempty"`
-	Buffer []  Device   `json:"buffer,omitempty"`
-	Data []  Device     `json:"data,omitempty"`
-	Spare []  Device    `json:"spare,omitempty"`
+	Buffer [] Device   `json:"buffer,omitempty"`
+	Data [] Device     `json:"data,omitempty"`
+	Spare [] Device    `json:"spare,omitempty"`
 }
 
 type DeviceParam  struct {
@@ -52,5 +52,5 @@ type VolumeParam struct {
 type WBTParam struct {
 	Name string `json:"testname,omitempty"`
 	Argc int `json:"argc,omitempty"`
-	Argv string `json:"argv"`
+	Argv string `json:"argv,omitempty"`
 }

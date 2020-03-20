@@ -9,6 +9,8 @@ import (
 		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 )
 
+var list bool
+
 var wbtCmd = &cobra.Command{
   Use:   "wbt [argument...]",
   Short: "WBT for Poseidon OS",
@@ -31,10 +33,6 @@ Port : 18716
 	  `,
   Args: func(cmd *cobra.Command, args []string) error {
 
-	if len(args) < 1 {
-      return errors.New("need one more args !!!")
-    }
-
 	return nil
   },
 
@@ -48,6 +46,8 @@ func init() {
 	if Mode == "debug" {
 		rootCmd.AddCommand(wbtCmd)
 	}
+
+	wbtCmd.PersistentFlags().BoolVarP(&list, "list", "l", false, "list wbt")
 }
 
 func WBT(cmd *cobra.Command, args []string) {
@@ -59,18 +59,22 @@ func WBT(cmd *cobra.Command, args []string) {
 		if err == nil {
 			xrId = uuid.String()
 		}
+		
+		if !list {
+			param := model.WBTParam{}
+			param.Name = args[0]
+			param.Argc = len(args)
 
-		param := model.WBTParam{}
-		param.Name = args[0]
-		param.Argc = len(args)
-
-		for i, v := range args {
-			if i > 0 {
-				param.Argv += v + " "
+			for i, v := range args {
+				if i > 0 {
+					param.Argv += v + " "
+				}
 			}
-		}
 
-		iBoFOSV1.WBTTest(xrId, param)
+			iBoFOSV1.WBTTest(xrId, param)
+		} else {
+			iBoFOSV1.WBTList(xrId, model.WBTParam{})
+		}
 
 	} else {
 		errors.New("Cannot connect to Poseidon OS !!!")

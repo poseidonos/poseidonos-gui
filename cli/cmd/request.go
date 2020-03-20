@@ -44,6 +44,7 @@ var SystemCommand = map[string]func(string) (model.Request, model.Response, erro
 	"info" :iBoFOSV1.IBoFOSInfo,
 	"mount_ibofos" :iBoFOSV1.MountiBoFOS,
 	"unmount_ibofos" :iBoFOSV1.UnmountiBoFOS,
+	"stop_rebuilding" : iBoFOSV1.StopRebuilding,
 }
 
 var VolumeCommand = map[string]func(string, model.VolumeParam) (model.Request, model.Response, error) {
