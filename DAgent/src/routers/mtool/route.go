@@ -39,13 +39,6 @@ func Route(router *gin.Engine) {
 	iBoFOS := uri.Group("/ibofos/v1")
 	iBoFOS.Use(middleware.CheckiBoFRun())
 
-	// For Test
-	{
-		iBoFOS.POST("/test/report", func(c *gin.Context) {
-			iBoFOSV1.ReportTest(xrId(c))
-		})
-	}
-
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
