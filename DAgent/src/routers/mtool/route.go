@@ -49,24 +49,19 @@ func Route(router *gin.Engine) {
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.Heartbeat(xrId(c))
-			makeResponse(c, response, err)
+			system(c,iBoFOSV1.Heartbeat)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.ExitiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c,iBoFOSV1.ExitiBoFOS)
 		})
 		iBoFOS.GET("/system", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.IBoFOSInfo(c.GetHeader(xrId(c)))
-			makeResponse(c, response, err)
+			system(c,iBoFOSV1.IBoFOSInfo)
 		})
 		iBoFOS.POST("/system/mount", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.MountiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c,iBoFOSV1.MountiBoFOS)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.UnmountiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c,iBoFOSV1.UnmountiBoFOS)
 		})
 	}
 
@@ -136,10 +131,8 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error))  {
-	param := model.VolumeParam{}
-	json.Unmarshal(requestParam(c), &param)
-	_, response, err := f(xrId(c), param)
+func system(c *gin.Context, f func(string) (model.Request, model.Response, error))  {
+	_, response, err := f(xrId(c))
 	makeResponse(c, response, err)
 }
 
@@ -152,6 +145,13 @@ func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, mo
 
 func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error))  {
 	param := model.ArrayParam{}
+	json.Unmarshal(requestParam(c), &param)
+	_, response, err := f(xrId(c), param)
+	makeResponse(c, response, err)
+}
+
+func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error))  {
+	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, response, err := f(xrId(c), param)
 	makeResponse(c, response, err)
