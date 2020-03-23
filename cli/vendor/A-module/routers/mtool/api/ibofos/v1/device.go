@@ -5,36 +5,17 @@ import (
 )
 
 func ScanDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
-	return getDevice(xrId, "SCANDEVICE")
+	return Requester{xrId, param}.Get("SCANDEVICE")
 }
 
 func ListDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
-	return getDevice(xrId, "LISTDEVICE")
+	return Requester{xrId, param}.Get("LISTDEVICE")
 }
 
 func AttachDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
-	//postDevice(ctx, "ATTACHDEVICE")
-	//api.MakeBadRequest(ctx, 40000)
-	return model.Request{}, model.Response{}, ErrBadReq
-}
-
-func AddDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
-	return postDevice(xrId, "ADDDEVICE", param)
+	return Requester{xrId, param}.Post("ATTACHDEVICE")
 }
 
 func DetachDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
-	return postDevice(xrId, "DETACHDEVICE", param)
-}
-
-func getDevice(xrId string, command string) (model.Request, model.Response, error) {
-	iBoFRequest := makeRequest(xrId, command)
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func postDevice(xrId string, command string, param model.DeviceParam) (model.Request, model.Response, error) {
-	iBoFRequest := makeRequest(xrId, command)
-	iBoFRequest.Param = param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
+	return Requester{xrId, param}.Delete("DETACHDEVICE")
 }

@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
-	"DAgent/src/routers/mtool/api"
 	"A-module/util"
+	"DAgent/src/routers/mtool/api"
+	"github.com/gin-gonic/gin"
 )
 
 func CheckHeader(ctx *gin.Context) {
@@ -11,11 +11,11 @@ func CheckHeader(ctx *gin.Context) {
 	ts := ctx.GetHeader("ts")
 
 	if util.IsValidUUID(xrid) == false {
-		api.MakeBadRequest(ctx, 10240)
+		api.BadRequest(ctx, 10240)
 	}
 
 	if ts == "" {
-		api.MakeBadRequest(ctx, 10250)
+		api.BadRequest(ctx, 10250)
 	}
 
 	ctx.Next()

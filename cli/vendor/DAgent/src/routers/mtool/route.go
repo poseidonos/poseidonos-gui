@@ -35,133 +35,84 @@ func Route(router *gin.Engine) {
 		})
 	}
 
-	// For Test
-	{
-		dagent.GET("/test/fio", func(c *gin.Context) {
-			dagentV1.RunFio()
-			//			makeResponse(c, response, err)
-			//api.MakeSuccess(ctx)
-		})
-	}
-
 	// iBoFOS
 	iBoFOS := uri.Group("/ibofos/v1")
 	iBoFOS.Use(middleware.CheckiBoFRun())
 
-	// For Test
-	{
-		iBoFOS.POST("/test/report", func(c *gin.Context) {
-			iBoFOSV1.ReportTest(xrId(c))
-		})
-	}
-
 	// System
 	{
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.Heartbeat(xrId(c))
-			makeResponse(c, response, err)
+			system(c, iBoFOSV1.Heartbeat)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.ExitiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c, iBoFOSV1.ExitiBoFOS)
 		})
 		iBoFOS.GET("/system", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.IBoFOSInfo(c.GetHeader(xrId(c)))
-			makeResponse(c, response, err)
+			system(c, iBoFOSV1.IBoFOSInfo)
 		})
 		iBoFOS.POST("/system/mount", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.MountiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c, iBoFOSV1.MountiBoFOS)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
-			_, response, err := iBoFOSV1.UnmountiBoFOS(xrId(c))
-			makeResponse(c, response, err)
+			system(c, iBoFOSV1.UnmountiBoFOS)
 		})
 	}
 
 	// Device
 	{
 		iBoFOS.GET("/device", func(c *gin.Context) {
-			param := deviceParam(c)
-			_, response, err := iBoFOSV1.ListDevice(xrId(c), param)
-			makeResponse(c, response, err)
+			device(c, iBoFOSV1.ListDevice)
 		})
 		iBoFOS.GET("/device/scan", func(c *gin.Context) {
-			param := deviceParam(c)
-			_, response, err := iBoFOSV1.ScanDevice(xrId(c), param)
-			makeResponse(c, response, err)
+			device(c, iBoFOSV1.ScanDevice)
 		})
 		iBoFOS.POST("/device/attach", func(c *gin.Context) {
-			param := deviceParam(c)
-			_, response, err := iBoFOSV1.AttachDevice(xrId(c), param)
-			makeResponse(c, response, err)
-
+			device(c, iBoFOSV1.AttachDevice)
 		})
 		iBoFOS.DELETE("/device/detach", func(c *gin.Context) {
-			param := deviceParam(c)
-			_, response, err := iBoFOSV1.DetachDevice(xrId(c), param)
-			makeResponse(c, response, err)
+			device(c, iBoFOSV1.DetachDevice)
 		})
 	}
 
 	// Array
 	{
 		iBoFOS.GET("/array/device", func(c *gin.Context) {
-			param := arrayParam(c)
-			_, response, err := iBoFOSV1.ListArrayDevice(xrId(c), param)
-			makeResponse(c, response, err)
+			array(c, iBoFOSV1.ListArrayDevice)
 		})
 		iBoFOS.GET("/array", func(c *gin.Context) {
-			param := arrayParam(c)
-			_, response, err := iBoFOSV1.LoadArray(xrId(c), param)
-			makeResponse(c, response, err)
+			array(c, iBoFOSV1.LoadArray)
 		})
 		iBoFOS.POST("/array", func(c *gin.Context) {
-			param := arrayParam(c)
-			_, response, err := iBoFOSV1.CreateArray(xrId(c), param)
-			makeResponse(c, response, err)
+			array(c, iBoFOSV1.CreateArray)
 		})
 		iBoFOS.DELETE("/array", func(c *gin.Context) {
-			param := arrayParam(c)
-			_, response, err := iBoFOSV1.DeleteArray(xrId(c), param)
-			makeResponse(c, response, err)
+			array(c, iBoFOSV1.DeleteArray)
 		})
 	}
 
 	// Volume
 	{
 		iBoFOS.POST("/volume", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.CreateVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.CreateVolume)
 		})
 		iBoFOS.GET("/volume", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.ListVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.ListVolume)
 		})
 		iBoFOS.PUT("/volume", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.UpdateVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.UpdateVolume)
 		})
 		iBoFOS.DELETE("/volume", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.DeleteVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.DeleteVolume)
 		})
 		iBoFOS.POST("/volume/mount", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.MountVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.MountVolume)
 		})
 		iBoFOS.DELETE("/volume/mount", func(c *gin.Context) {
-			param := volumeParam(c)
-			_, response, err := iBoFOSV1.UnmountVolume(xrId(c), param)
-			makeResponse(c, response, err)
+			volume(c, iBoFOSV1.UnmountVolume)
 		})
 	}
 }
+
 func xrId(c *gin.Context) string {
 	return c.GetHeader("X-request-Id")
 }
@@ -173,35 +124,29 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func deviceParam(c *gin.Context) model.DeviceParam {
+func system(c *gin.Context, f func(string) (model.Request, model.Response, error)) {
+	_, res, err := f(xrId(c))
+	api.HttpResponse(c, res, err)
+}
+
+func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
 	json.Unmarshal(requestParam(c), &param)
-	return param
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func arrayParam(c *gin.Context) model.ArrayParam {
+func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
 	json.Unmarshal(requestParam(c), &param)
-	return param
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func volumeParam(c *gin.Context) model.VolumeParam {
+func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
-	return param
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func makeResponse(c *gin.Context, response model.Response, err error) {
-	switch err {
-	case iBoFOSV1.ErrBadReq:
-		api.MakeBadRequest(c, 12000)
-	case iBoFOSV1.ErrSending:
-		api.MakeResponse(c, 400, error.Error(err), 19002)
-	case iBoFOSV1.ErrJson:
-		api.MakeResponse(c, 400, error.Error(err), 12310)
-	case iBoFOSV1.ErrRes:
-		api.MakeBadRequest(c, response.Result.Status.Code)
-	default:
-		api.MakeSuccessWithRes(c, response)
-	}
-}

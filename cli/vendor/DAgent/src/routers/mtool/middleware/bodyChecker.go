@@ -1,12 +1,12 @@
 package middleware
 
 import (
+	"A-module/log"
+	"A-module/routers/mtool/model"
+	"DAgent/src/routers/mtool/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"DAgent/src/routers/mtool/api"
-	"A-module/routers/mtool/model"
 	"io"
-	"A-module/log"
 )
 
 func CheckBody(ctx *gin.Context) {
@@ -16,7 +16,7 @@ func CheckBody(ctx *gin.Context) {
 		err := ctx.ShouldBindBodyWith(&body, binding.JSON)
 		if err != nil && err != io.EOF {
 			log.Printf("Request Body Error : %v", err)
-			api.MakeBadRequest(ctx, 10310)
+			api.BadRequest(ctx, 10310)
 			return
 		}
 	}
