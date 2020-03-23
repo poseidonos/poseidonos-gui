@@ -28,7 +28,7 @@ type Requester struct {
 	param interface{}
 }
 
-func (rq Requester) Wbt(command string) (int, error) {
+func (rq Requester) Wbt(command string) (model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
@@ -39,54 +39,55 @@ func (rq Requester) Wbt(command string) (int, error) {
 		iBoFRequest.Param = rq.param
 	}
 
-	code, err := sendIBoF(iBoFRequest)
-	return code, err
+	res, err := sendIBoF(iBoFRequest)
+	return res, err
 }
 
-func (rq Requester) Post(command string) (model.Request, int, error) {
+func (rq Requester) Post(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
 	iBoFRequest.Param = rq.param
-	code, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, code, err
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func (rq Requester) Put(command string) (model.Request, int, error) {
+func (rq Requester) Put(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
 	iBoFRequest.Param = rq.param
-	code, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, code, err
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func (rq Requester) Delete(command string) (model.Request, int, error) {
+func (rq Requester) Delete(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
 	iBoFRequest.Param = rq.param
-	code, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, code, err
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func (rq Requester) Get(command string) (model.Request, int, error) {
+func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
 	iBoFRequest.Param = rq.param
-	code, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, code, err
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
 
-func sendIBoF(iBoFRequest model.Request) (int, error) {
+func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
+
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		log.Printf("sendIBoFCLI : %+v", iBoFRequest)
-		return 12000, ErrBadReq
+		return model.Response{}, ErrBadReq
 	}
 
 	defer atomic.StoreUint32(&locker, stateUnlocked)
@@ -98,7 +99,7 @@ func sendIBoF(iBoFRequest model.Request) (int, error) {
 
 	if err != nil {
 		log.Printf("sendIBoFCLI : %v", err)
-		return 19002, ErrSending
+		return model.Response{}, ErrSending
 	}
 
 	for {
@@ -115,16 +116,16 @@ func sendIBoF(iBoFRequest model.Request) (int, error) {
 
 		if err != nil {
 			log.Printf("Response CLI Unmarshal Error : %v", err)
-			return 12310, ErrJson
+			return model.Response{}, ErrJson
 
 		} else if response.Result.Status.Code != 0 {
-			return response.Result.Status.Code, ErrRes
+			return response, ErrRes
 
 		} else {
 			//ctx.JSON(http.StatusOK, &response)
-			return response.Result.Status.Code, nil
+			return response, nil
 		}
 	}
 
-	return -1, nil
+	return model.Response{}, nil
 }

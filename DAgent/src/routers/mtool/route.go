@@ -126,35 +126,35 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func exec(c *gin.Context, f func() (int, error)) {
-	code, err := f()
-	api.HttpResponse2(c, code, err)
+func exec(c *gin.Context, f func() (model.Response, error)) {
+	res, err := f()
+	api.HttpResponse(c, res, err)
 }
 
-func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, int, error)) {
+func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, model.Response, error)) {
 	param := model.SystemParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, code, err := f(xrId(c), param)
-	api.HttpResponse2(c, code, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, int, error)) {
+func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, code, err := f(xrId(c), param)
-	api.HttpResponse2(c, code, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, int, error)) {
+func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, code, err := f(xrId(c), param)
-	api.HttpResponse2(c, code, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, int, error)) {
+func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, code, err := f(xrId(c), param)
-	api.HttpResponse2(c, code, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }

@@ -4,26 +4,26 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func CreateVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func CreateVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("CREATEVOLUME")
 }
 
-func UpdateVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func UpdateVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Put("UPDATEVOLUMEQOS")
 }
 
-func MountVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func MountVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("MOUNTVOLUME")
 }
 
-func UnmountVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func UnmountVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("UPDATEVOLUMEQOS")
 }
 
-func DeleteVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func DeleteVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("DELETEVOLUME")
 }
 
-func ListVolume(xrId string, param model.VolumeParam) (model.Request,int , error) {
+func ListVolume(xrId string, param model.VolumeParam) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("LISTVOLUME")
 }
