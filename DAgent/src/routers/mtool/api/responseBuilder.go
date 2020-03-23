@@ -9,42 +9,41 @@ import (
 	"net/http"
 )
 
-func HttpResponse(c *gin.Context, res model.Response, err error) {
+func HttpResponse2(c *gin.Context, code int, err error) {
 	switch err {
 	case iBoFOSV1.ErrBadReq:
-		BadRequest(c, 12000)
+		BadRequest(c, code)
 	case iBoFOSV1.ErrSending:
 		BadRequest(c, 19002)
 	case iBoFOSV1.ErrJson:
 		BadRequest(c, 12310)
 	case iBoFOSV1.ErrRes:
-		BadRequest(c, res.Result.Status.Code)
-	default:
+		BadRequest(c, code)
+	case nil:
 		success(c)
+	default:
+		//Unknown logic error
 	}
 }
 
 func Unauthorized(ctx *gin.Context, code int) {
-	makeResponse(ctx, http.StatusUnauthorized, "", code)
+	makeResponse(ctx, http.StatusUnauthorized, code)
 }
 
 func BadRequest(ctx *gin.Context, code int) {
-	makeResponse(ctx, http.StatusBadRequest, "", code)
+	makeResponse(ctx, http.StatusBadRequest, code)
 }
 
 func success(ctx *gin.Context) {
-	makeResponse(ctx, http.StatusOK, "", 0)
+	makeResponse(ctx, http.StatusOK, 0)
 }
 
-func makeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
+func makeResponse(ctx *gin.Context, httpStatus int, code int) {
 	res := model.Response{}
 	res.Result.Status.Code = code
-
-	if description == "" {
-		res.Result.Status.Description = codeToDescription(code)
-	}
-
+	res.Result.Status.Description = codeToDescription(code)
 	log.Printf("makeResponse : %+v", res)
+
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
 
