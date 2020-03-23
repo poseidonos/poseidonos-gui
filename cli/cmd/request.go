@@ -35,7 +35,6 @@ var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Request, m
 	"list_dev" : iBoFOSV1.ListDevice,
 	"attach_dev" : iBoFOSV1.AttachDevice,
 	"detach_dev" : iBoFOSV1.DetachDevice,
-	"add_dev" : iBoFOSV1.AddDevice,
 }
 
 var SystemCommand = map[string]func(string) (model.Request, model.Response, error) {
