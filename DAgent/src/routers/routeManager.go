@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"github.com/gin-gonic/gin"
 	"DAgent/src/routers/bmc"
 	"DAgent/src/routers/mtool"
 	"DAgent/src/routers/nbp"
+	"github.com/gin-gonic/gin"
 )
 
 // Init Router Info

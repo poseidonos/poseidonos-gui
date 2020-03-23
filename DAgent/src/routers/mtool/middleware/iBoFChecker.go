@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
-	"DAgent/src/routers/mtool/api"
 	"A-module/util"
+	"DAgent/src/routers/mtool/api"
+	"github.com/gin-gonic/gin"
 	//"github.com/dgrijalva/jwt-go"
 )
 
