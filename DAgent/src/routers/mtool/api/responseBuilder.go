@@ -20,7 +20,7 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 	case iBoFOSV1.ErrRes:
 		BadRequest(c, res.Result.Status.Code)
 	default:
-		Success(c)
+		success(c)
 	}
 }
 
@@ -32,7 +32,7 @@ func BadRequest(ctx *gin.Context, code int) {
 	makeResponse(ctx, http.StatusBadRequest, "", code)
 }
 
-func Success(ctx *gin.Context) {
+func success(ctx *gin.Context) {
 	makeResponse(ctx, http.StatusOK, "", 0)
 }
 
@@ -41,13 +41,13 @@ func makeResponse(ctx *gin.Context, httpStatus int, description string, code int
 	res.Result.Status.Code = code
 
 	if description == "" {
-		res.Result.Status.Description = StatusDescription(code)
+		res.Result.Status.Description = codeToDescription(code)
 	}
 
 	log.Printf("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
 
-func StatusDescription(code int) string {
+func codeToDescription(code int) string {
 	return setting.StatusMap[code]
 }
