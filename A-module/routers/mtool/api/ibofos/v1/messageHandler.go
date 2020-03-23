@@ -1,11 +1,11 @@
 package v1
 
 import (
+	"A-module/handler"
+	"A-module/log"
+	"A-module/routers/mtool/model"
 	"encoding/json"
 	"errors"
-	"A-module/log"
-	"A-module/handler"
-	"A-module/routers/mtool/model"
 	"sync/atomic"
 )
 
@@ -15,12 +15,12 @@ const (
 )
 
 var (
-	locker    = stateUnlocked
-	errLocked = errors.New("Locked out buddy")
-	ErrBadReq = errors.New("Bad request")
+	locker     = stateUnlocked
+	errLocked  = errors.New("Locked out buddy")
+	ErrBadReq  = errors.New("Bad request")
 	ErrSending = errors.New("errSending")
-	ErrJson = errors.New("errJson")
-	ErrRes = errors.New("errRes")
+	ErrJson    = errors.New("errJson")
+	ErrRes     = errors.New("errRes")
 )
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
@@ -48,7 +48,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 		response := model.Response{}
 		err := json.Unmarshal(temp, &response)
-		
+
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")
 			continue
@@ -71,10 +71,55 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 }
 
 func makeRequest(xrId string, command string) model.Request {
-	
+
 	request := model.Request{
 		Command: command,
 		Rid:     xrId,
 	}
 	return request
+}
+
+type Requester struct {
+	xrId    string
+	param   interface{}
+}
+
+func (rc Requester) Post(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rc.xrId,
+	}
+	iBoFRequest.Param = rc.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rc Requester) Put(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rc.xrId,
+	}
+	iBoFRequest.Param = rc.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rc Requester) Delete(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rc.xrId,
+	}
+	iBoFRequest.Param = rc.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rc Requester) Get(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rc.xrId,
+	}
+	iBoFRequest.Param = rc.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
 }
