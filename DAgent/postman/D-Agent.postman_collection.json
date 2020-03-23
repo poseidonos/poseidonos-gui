@@ -3461,65 +3461,7 @@
 		},
 		{
 			"name": "Debug & Depricated",
-			"item": [
-				{
-					"name": "TEST - REPORTTEST",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/test/report",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"test",
-								"report"
-							]
-						},
-						"description": "* It makes a report file for self test.\n* It is made for only test, so it can be deprecated without any notice.\n* Report file directory : /etc/ibofos/report/  \nReport file name : report.log / report.1.log / report.2.log ... report.4.log  \n(5 files, rotationally write, 100MB per file)\n* Code Definition : See below Error Code section\n\nFormat\n```\n[{timestamp}][{code}}][{level}] [{value}]\n```\n\nSample in report.log\n```\n[1567675252][2804][info] [85]\n[1567675253][2804][info] [86]\n[1567675254][2804][info] [87]\n[1567675266][2804][info] [99]\n[1567675267][2804][info] [100]\n```\n\nResponse Sample\n* It takes about 100 sec, so D-Agent will make timeout."
-					},
-					"response": []
-				}
-			],
+			"item": [],
 			"description": "Only for debug, test and depricated API  \nThese APIs will be able to remove without any notice",
 			"event": [
 				{
