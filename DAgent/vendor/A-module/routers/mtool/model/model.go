@@ -22,35 +22,38 @@ type Status struct {
 }
 
 type StatusList struct {
-	StatusList [] Status `json:"StatusList"`
+	StatusList []Status `json:"StatusList"`
 }
 
 type Device struct {
 	DeviceName string `json:"deviceName"`
 }
 
-type ArrayParam  struct {
-	FtType  int	        `json:"fttype,omitempty"`
-	Buffer [] Device   `json:"buffer,omitempty"`
-	Data [] Device     `json:"data,omitempty"`
-	Spare [] Device    `json:"spare,omitempty"`
+type SystemParam struct {
+	Level string `json:"level,omitempty"`
 }
 
-type DeviceParam  struct {
-	Name string	`json:"name,omitempty"`
+type ArrayParam struct {
+	FtType int      `json:"fttype,omitempty"`
+	Buffer []Device `json:"buffer,omitempty"`
+	Data   []Device `json:"data,omitempty"`
+	Spare  []Device `json:"spare,omitempty"`
+}
+
+type DeviceParam struct {
+	Name  string `json:"name,omitempty"`
 	Spare string `json:"spare,omitempty"`
 }
 
 type VolumeParam struct {
-	Name string	`json:"name,omitempty"`
-	Size int	`json:"size,omitempty"`
-	Maxiops int	`json:"maxiops,omitempty"`
-	Maxbw int	`json:"maxbw,omitempty"`
-
+	Name    string `json:"name,omitempty"`
+	Size    int    `json:"size,omitempty"`
+	Maxiops int    `json:"maxiops,omitempty"`
+	Maxbw   int    `json:"maxbw,omitempty"`
 }
 
 type WBTParam struct {
 	Name string `json:"testname,omitempty"`
-	Argc int `json:"argc,omitempty"`
+	Argc int    `json:"argc,omitempty"`
 	Argv string `json:"argv,omitempty"`
 }

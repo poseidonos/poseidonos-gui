@@ -124,8 +124,10 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func system(c *gin.Context, f func(string) (model.Request, model.Response, error)) {
-	_, res, err := f(xrId(c))
+func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, model.Response, error)) {
+	param := model.SystemParam{}
+	json.Unmarshal(requestParam(c), &param)
+	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
 
@@ -149,4 +151,3 @@ func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, mo
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
-
