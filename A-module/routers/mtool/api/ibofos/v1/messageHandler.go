@@ -23,6 +23,66 @@ var (
 	ErrRes     = errors.New("errRes")
 )
 
+type Requester struct {
+	xrId  string
+	param interface{}
+}
+
+func (rq Requester) Wbt(command string) (model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rq.xrId,
+	}
+
+	// Why check????
+	if rq.param != (model.WBTParam{}) {
+		iBoFRequest.Param = rq.param
+	}
+
+	res, err := sendIBoF(iBoFRequest)
+	return res, err
+}
+
+func (rq Requester) Post(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rq.xrId,
+	}
+	iBoFRequest.Param = rq.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rq Requester) Put(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rq.xrId,
+	}
+	iBoFRequest.Param = rq.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rq Requester) Delete(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rq.xrId,
+	}
+	iBoFRequest.Param = rq.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
+func (rq Requester) Get(command string) (model.Request, model.Response, error) {
+	iBoFRequest := model.Request{
+		Command: command,
+		Rid:     rq.xrId,
+	}
+	iBoFRequest.Param = rq.param
+	res, err := sendIBoF(iBoFRequest)
+	return iBoFRequest, res, err
+}
+
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
@@ -68,58 +128,4 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	}
 
 	return model.Response{}, nil
-}
-
-func makeRequest(xrId string, command string) model.Request {
-
-	request := model.Request{
-		Command: command,
-		Rid:     xrId,
-	}
-	return request
-}
-
-type Requester struct {
-	xrId    string
-	param   interface{}
-}
-
-func (rc Requester) Post(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rc.xrId,
-	}
-	iBoFRequest.Param = rc.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func (rc Requester) Put(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rc.xrId,
-	}
-	iBoFRequest.Param = rc.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func (rc Requester) Delete(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rc.xrId,
-	}
-	iBoFRequest.Param = rc.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func (rc Requester) Get(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rc.xrId,
-	}
-	iBoFRequest.Param = rc.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
 }

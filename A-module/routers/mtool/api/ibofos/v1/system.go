@@ -5,43 +5,25 @@ import (
 )
 
 func Heartbeat(xrId string) (model.Request, model.Response, error) {
-	return getSystem(xrId, "HEARTBEAT")
+	return Requester{xrId, param}.Get("HEARTBEAT")
 }
 
 func ExitiBoFOS(xrId string) (model.Request, model.Response, error) {
-	return deleteSystem(xrId, "EXITIBOFOS")
+	return Requester{xrId, param}.Delete("EXITIBOFOS")
 }
 
 func IBoFOSInfo(xrId string) (model.Request, model.Response, error) {
-	return getSystem(xrId, "GETIBOFOSINFO")
+	return Requester{xrId, param}.Get("GETIBOFOSINFO")
 }
 
 func MountiBoFOS(xrId string) (model.Request, model.Response, error) {
-	return postSystem(xrId, "MOUNTIBOFOS")
+	return Requester{xrId, param}.Post("MOUNTIBOFOS")
 }
 
 func UnmountiBoFOS(xrId string) (model.Request, model.Response, error) {
-	return postSystem(xrId, "UNMOUNTIBOFOS")
+	return Requester{xrId, param}.Delete("UNMOUNTIBOFOS")
 }
 
 func StopRebuilding(xrId string) (model.Request, model.Response, error) {
-	return postSystem(xrId, "STOPREBUILDING")
-}
-
-func deleteSystem(xrId string, command string) (model.Request, model.Response, error) {
-	iBoFRequest := makeRequest(xrId, command)
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func getSystem(xrId string, command string) (model.Request, model.Response, error)  {
-	iBoFRequest := makeRequest(xrId, command)
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
-
-func postSystem(xrId string, command string) (model.Request, model.Response, error) {
-	iBoFRequest := makeRequest(xrId, command)
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
+	return Requester{xrId, param}.Put("STOPREBUILDING")
 }
