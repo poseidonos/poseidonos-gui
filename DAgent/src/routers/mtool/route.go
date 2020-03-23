@@ -30,10 +30,17 @@ func Route(router *gin.Engine) {
 		dagent.GET("/ping", dagentV1.Ping)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
 		dagent.POST("/ibofos", func(c *gin.Context) {
-			dagentV1.RunIBoF()
+			err := dagentV1.RunIBoF()
+			if err == nil {
+				//api.HttpResponse(c, nil, err)
+			} else {
+				//api.HttpResponse(c, nil, err)
+				//api.MakeResponse(ctx, http.StatusBadRequest, description, 11000)
+			}
 		})
 		dagent.DELETE("/ibofos", func(c *gin.Context) {
-			dagentV1.ForceKillIbof()
+			//err := dagentV1.ForceKillIbof()
+			//api.HttpResponse(c, nil, err)
 		})
 	}
 

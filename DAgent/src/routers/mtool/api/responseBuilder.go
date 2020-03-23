@@ -20,9 +20,14 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 	case iBoFOSV1.ErrRes:
 		BadRequest(c, res.Result.Status.Code)
 	default:
-		SuccessWithRes(c, res)
+		if err == nil {
+			Success(c)
+		} else {
+
+		}
 	}
 }
+
 func Unauthorized(ctx *gin.Context, code int) {
 	makeResponse(ctx, http.StatusUnauthorized, "", code)
 }
@@ -31,31 +36,22 @@ func BadRequest(ctx *gin.Context, code int) {
 	makeResponse(ctx, http.StatusBadRequest, "", code)
 }
 
-func makeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
-	res := model.Response{}
-	makeResponseWithRes(ctx, httpStatus, description, code, res)
+func Success(ctx *gin.Context) {
+	makeResponse(ctx, http.StatusOK, "", 0)
 }
 
-func makeResponseWithRes(ctx *gin.Context, httpStatus int, description string, code int, res model.Response) {
-	res.Result.Status.Code = code
+func makeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
+	res := model.Response{}
+
 	if description == "" {
 		res.Result.Status.Description = StatusDescription(code)
 	}
+
+	res.Result.Status.Description = StatusDescription(code)
 	log.Printf("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
 
-func Success(ctx *gin.Context) {
-	res := model.Response{}
-	SuccessWithRes(ctx, res)
-}
-
-func SuccessWithRes(ctx *gin.Context, res model.Response) {
-	makeResponseWithRes(ctx, http.StatusOK, "", 0, res)
-}
-
-// https://golang.org/doc/effective_go.html#Getters
-// it's neither idiomatic nor necessary to put Get into the getter's name.
 func StatusDescription(code int) string {
 	return setting.StatusMap[code]
 }
