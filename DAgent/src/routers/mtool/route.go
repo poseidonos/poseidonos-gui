@@ -29,7 +29,9 @@ func Route(router *gin.Engine) {
 	{
 		dagent.GET("/ping", dagentV1.Ping)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
-		dagent.POST("/ibofos", dagentV1.RunIBoF)
+		dagent.POST("/ibofos", func(c *gin.Context) {
+			dagentV1.RunIBoF()
+		})
 		dagent.DELETE("/ibofos", func(c *gin.Context) {
 			dagentV1.ForceKillIbof()
 		})
