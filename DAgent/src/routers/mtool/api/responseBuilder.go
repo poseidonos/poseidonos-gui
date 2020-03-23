@@ -14,17 +14,13 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 	case iBoFOSV1.ErrBadReq:
 		BadRequest(c, 12000)
 	case iBoFOSV1.ErrSending:
-		makeResponse(c, 400, error.Error(err), 19002)
+		BadRequest(c, 19002)
 	case iBoFOSV1.ErrJson:
-		makeResponse(c, 400, error.Error(err), 12310)
+		BadRequest(c, 12310)
 	case iBoFOSV1.ErrRes:
 		BadRequest(c, res.Result.Status.Code)
 	default:
-		if err == nil {
-			Success(c)
-		} else {
-
-		}
+		Success(c)
 	}
 }
 
