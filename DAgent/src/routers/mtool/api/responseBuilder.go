@@ -38,12 +38,12 @@ func Success(ctx *gin.Context) {
 
 func makeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
 	res := model.Response{}
+	res.Result.Status.Code = code
 
 	if description == "" {
 		res.Result.Status.Description = StatusDescription(code)
 	}
 
-	res.Result.Status.Description = StatusDescription(code)
 	log.Printf("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
