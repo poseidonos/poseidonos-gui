@@ -125,42 +125,28 @@ func requestParam(c *gin.Context) []byte {
 }
 
 func system(c *gin.Context, f func(string) (model.Request, model.Response, error)) {
-	_, response, err := f(xrId(c))
-	makeResponse(c, response, err)
+	_, res, err := f(xrId(c))
+	api.HttpResponse(c, res, err)
 }
 
 func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, response, err := f(xrId(c), param)
-	makeResponse(c, response, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
 func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, response, err := f(xrId(c), param)
-	makeResponse(c, response, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
 func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
-	_, response, err := f(xrId(c), param)
-	makeResponse(c, response, err)
+	_, res, err := f(xrId(c), param)
+	api.HttpResponse(c, res, err)
 }
 
-func makeResponse(c *gin.Context, response model.Response, err error) {
-	switch err {
-	case iBoFOSV1.ErrBadReq:
-		api.MakeBadRequest(c, 12000)
-	case iBoFOSV1.ErrSending:
-		api.MakeResponse(c, 400, error.Error(err), 19002)
-	case iBoFOSV1.ErrJson:
-		api.MakeResponse(c, 400, error.Error(err), 12310)
-	case iBoFOSV1.ErrRes:
-		api.MakeBadRequest(c, response.Result.Status.Code)
-	default:
-		api.MakeSuccessWithRes(c, response)
-	}
-}

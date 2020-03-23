@@ -10,7 +10,7 @@ import (
 func CheckiBoFRun() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if util.IsIBoFRun() == false {
-			api.MakeBadRequest(ctx, 12030)
+			api.BadRequest(ctx, 12030)
 			return
 		}
 		ctx.Next()
