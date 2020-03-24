@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"A-module/routers/mtool/model"
 	"A-module/util"
 	"DAgent/src/routers/mtool/api"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 func CheckiBoFRun() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if util.IsIBoFRun() == false {
-			api.BadRequest(ctx, 12030)
+			api.BadRequest(ctx, model.Response{}, 10240)
 			return
 		}
 		ctx.Next()

@@ -38,7 +38,7 @@ var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Request, m
 	"detach_dev": iBoFOSV1.DetachDevice,
 }
 
-var SystemCommand = map[string]func(string, model.SystemParam) (model.Request, model.Response, error){
+var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"heartbeat":       iBoFOSV1.Heartbeat,
 	"exit_ibofos":     iBoFOSV1.ExitiBoFOS,
 	"info":            iBoFOSV1.IBoFOSInfo,
@@ -187,10 +187,17 @@ func Send(cmd *cobra.Command, command string) {
 
 		} else if systemExists {
 
-			param := model.SystemParam{}
-			param.Level = level
+			var req model.Request
+			var res model.Response
+			var err error
 
-			req, res, err := SystemCommand[command](xrId, param)
+			if cmd.PersistentFlags().Changed("level") {
+				param := model.SystemParam{}
+				param.Level = level
+				req, res, err = SystemCommand[command](xrId, param)
+			} else {
+				req, res, err = SystemCommand[command](xrId, nil)
+			}
 
 			if err != nil {
 				log.Println(err)

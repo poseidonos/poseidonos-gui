@@ -12,50 +12,41 @@ import (
 func HttpResponse(c *gin.Context, res model.Response, err error) {
 	switch err {
 	case iBoFOSV1.ErrBadReq:
-		BadRequest(c, 12000)
+		BadRequest(c, res, 12000)
 	case iBoFOSV1.ErrSending:
-		makeResponse(c, 400, error.Error(err), 19002)
+		BadRequest(c, res, 19002)
 	case iBoFOSV1.ErrJson:
-		makeResponse(c, 400, error.Error(err), 12310)
+		BadRequest(c, res, 12310)
 	case iBoFOSV1.ErrRes:
-		BadRequest(c, res.Result.Status.Code)
+		BadRequest(c, res, res.Result.Status.Code)
 	default:
-		SuccessWithRes(c, res)
+		success(c, res, res.Result.Status.Code)
 	}
 }
-func Unauthorized(ctx *gin.Context, code int) {
-	makeResponse(ctx, http.StatusUnauthorized, "", code)
+
+func Unauthorized(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusUnauthorized, res, code)
 }
 
-func BadRequest(ctx *gin.Context, code int) {
-	makeResponse(ctx, http.StatusBadRequest, "", code)
+func BadRequest(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusBadRequest, res, code)
 }
 
-func makeResponse(ctx *gin.Context, httpStatus int, description string, code int) {
-	res := model.Response{}
-	makeResponseWithRes(ctx, httpStatus, description, code, res)
+func success(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusOK, res, code)
 }
 
-func makeResponseWithRes(ctx *gin.Context, httpStatus int, description string, code int, res model.Response) {
+func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
 	res.Result.Status.Code = code
-	if description == "" {
-		res.Result.Status.Description = StatusDescription(code)
+
+	if res.Result.Status.Description == "" {
+		res.Result.Status.Description = codeToDescription(code)
 	}
+
 	log.Printf("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
 
-func Success(ctx *gin.Context) {
-	res := model.Response{}
-	SuccessWithRes(ctx, res)
-}
-
-func SuccessWithRes(ctx *gin.Context, res model.Response) {
-	makeResponseWithRes(ctx, http.StatusOK, "", 0, res)
-}
-
-// https://golang.org/doc/effective_go.html#Getters
-// it's neither idiomatic nor necessary to put Get into the getter's name.
-func StatusDescription(code int) string {
+func codeToDescription(code int) string {
 	return setting.StatusMap[code]
 }

@@ -29,9 +29,11 @@ func Route(router *gin.Engine) {
 	{
 		dagent.GET("/ping", dagentV1.Ping)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
-		dagent.POST("/ibofos", dagentV1.RunIBoF)
+		dagent.POST("/ibofos", func(c *gin.Context) {
+			exec(c, dagentV1.RunIBoF)
+		})
 		dagent.DELETE("/ibofos", func(c *gin.Context) {
-			dagentV1.ForceKillIbof()
+			exec(c, dagentV1.ForceKillIbof)
 		})
 	}
 
@@ -124,7 +126,12 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, model.Response, error)) {
+func exec(c *gin.Context, f func() (model.Response, error)) {
+	res, err := f()
+	api.HttpResponse(c, res, err)
+}
+
+func system(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.SystemParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)

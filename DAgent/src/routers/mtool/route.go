@@ -131,7 +131,7 @@ func exec(c *gin.Context, f func() (model.Response, error)) {
 	api.HttpResponse(c, res, err)
 }
 
-func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, model.Response, error)) {
+func system(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.SystemParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
