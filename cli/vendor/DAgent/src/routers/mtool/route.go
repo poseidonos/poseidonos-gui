@@ -1,7 +1,8 @@
 package mtool
 
 import (
-	dagentV1 "A-module/routers/mtool/api/dagent/v1"
+	dagentV1 "DAgent/src/routers/mtool/api/dagent/v1"
+	exec "A-module/routers/mtool/api/exec"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"DAgent/src/routers/mtool/api"
@@ -30,10 +31,10 @@ func Route(router *gin.Engine) {
 		dagent.GET("/ping", dagentV1.Ping)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
 		dagent.POST("/ibofos", func(c *gin.Context) {
-			exec(c, dagentV1.RunIBoF)
+			cmd(c, exec.RunIBoF)
 		})
 		dagent.DELETE("/ibofos", func(c *gin.Context) {
-			exec(c, dagentV1.ForceKillIbof)
+			cmd(c, exec.ForceKillIbof)
 		})
 	}
 
@@ -126,7 +127,7 @@ func requestParam(c *gin.Context) []byte {
 	return requestParam
 }
 
-func exec(c *gin.Context, f func() (model.Response, error)) {
+func cmd(c *gin.Context, f func() (model.Response, error)) {
 	res, err := f()
 	api.HttpResponse(c, res, err)
 }

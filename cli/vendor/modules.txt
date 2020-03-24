@@ -3,7 +3,7 @@
 A-module/errors
 A-module/handler
 A-module/log
-A-module/routers/mtool/api/dagent/v1
+A-module/routers/mtool/api/exec
 A-module/routers/mtool/api/ibofos/v1
 A-module/routers/mtool/model
 A-module/setting
@@ -14,6 +14,7 @@ DAgent/src/routers
 DAgent/src/routers/bmc
 DAgent/src/routers/mtool
 DAgent/src/routers/mtool/api
+DAgent/src/routers/mtool/api/dagent/v1
 DAgent/src/routers/mtool/middleware
 DAgent/src/routers/nbp
 # github.com/gin-contrib/sse v0.1.0
