@@ -12,5 +12,5 @@ require (
 	github.com/gin-gonic/gin v1.5.0 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/juju/errors v0.0.0-20190930114154-d42613fe1ab9 // indirect
-	github.com/spf13/cobra v0.0.6
+	github.com/spf13/cobra v0.0.6 // indirect
 )
