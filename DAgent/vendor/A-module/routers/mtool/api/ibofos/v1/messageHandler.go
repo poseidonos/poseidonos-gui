@@ -119,7 +119,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			return model.Response{}, ErrJson
 
 		} else if response.Result.Status.Code != 0 {
-			return model.Response{}, ErrRes
+			return response, ErrRes
 
 		} else {
 			//ctx.JSON(http.StatusOK, &response)

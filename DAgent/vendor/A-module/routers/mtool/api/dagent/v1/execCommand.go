@@ -2,26 +2,32 @@ package v1
 
 import (
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
+	"A-module/routers/mtool/model"
 	"A-module/util"
 )
 
-func RunIBoF() error {
+func RunIBoF() (model.Response, error) {
+	res := model.Response{}
+
 	if util.IsIBoFRun() == true {
-		//return errors.New("exec Run: The iBoFOS already run")
-		return iBoFOSV1.ErrRes
+		res.Result.Status.Code = 27756
+		return res, iBoFOSV1.ErrRes
 	}
 
 	util.RunScript("./run_ibofos.sh", false)
 
 	if util.IsIBoFRun() == false {
-		//return errors.New("exec Run: Fail to run iBoFOS")
-		return iBoFOSV1.ErrRes
+		res.Result.Status.Code = 27757
+		return res, iBoFOSV1.ErrRes
 	}
 
-	return nil
+	res.Result.Status.Code = 0
+	return res, nil
 }
 
-func ForceKillIbof() error {
+func ForceKillIbof() (model.Response, error) {
 	util.ExecCmd("pkill -9 ibofos", false)
-	return nil
+	res := model.Response{}
+	res.Result.Status.Code = 0
+	return res, nil
 }
