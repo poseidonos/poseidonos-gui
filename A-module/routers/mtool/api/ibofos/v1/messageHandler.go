@@ -33,12 +33,7 @@ func (rq Requester) Wbt(command string) (model.Response, error) {
 		Command: command,
 		Rid:     rq.xrId,
 	}
-
-	// Why check????
-	if rq.param != (model.WBTParam{}) {
-		iBoFRequest.Param = rq.param
-	}
-
+	iBoFRequest.Param = rq.param
 	res, err := sendIBoF(iBoFRequest)
 	return res, err
 }

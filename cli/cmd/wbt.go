@@ -1,20 +1,20 @@
 package cmd
 
 import (
-//		"fmt"
-		"github.com/google/uuid"
-		"github.com/spf13/cobra"
-		"A-module/errors"
-		"A-module/routers/mtool/model"
-		iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
+	//		"fmt"
+	"A-module/errors"
+	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
+	"A-module/routers/mtool/model"
+	"github.com/google/uuid"
+	"github.com/spf13/cobra"
 )
 
 var list bool
 
 var wbtCmd = &cobra.Command{
-  Use:   "wbt [argument...]",
-  Short: "WBT for Poseidon OS",
-  Long:  `Execute WBT for Poseidon OS.
+	Use:   "wbt [argument...]",
+	Short: "WBT for Poseidon OS",
+	Long: `Execute WBT for Poseidon OS.
 
 Usage : 
 
@@ -31,14 +31,14 @@ Port : 18716
 
 
 	  `,
-  Args: func(cmd *cobra.Command, args []string) error {
+	Args: func(cmd *cobra.Command, args []string) error {
 
-	return nil
-  },
+		return nil
+	},
 
-  Run: func(cmd *cobra.Command, args []string) {
-	WBT(cmd, args)
-  },
+	Run: func(cmd *cobra.Command, args []string) {
+		WBT(cmd, args)
+	},
 }
 
 func init() {
@@ -59,7 +59,7 @@ func WBT(cmd *cobra.Command, args []string) {
 		if err == nil {
 			xrId = uuid.String()
 		}
-		
+
 		if !list {
 			param := model.WBTParam{}
 			param.Name = args[0]
@@ -73,7 +73,7 @@ func WBT(cmd *cobra.Command, args []string) {
 
 			iBoFOSV1.WBTTest(xrId, param)
 		} else {
-			iBoFOSV1.WBTList(xrId, model.WBTParam{})
+			iBoFOSV1.WBTList(xrId, nil)
 		}
 
 	} else {

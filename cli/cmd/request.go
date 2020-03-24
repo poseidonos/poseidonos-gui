@@ -24,14 +24,14 @@ var maxbw int
 
 var isJson bool
 
-var ArrayCommand = map[string]func(string, model.ArrayParam) (model.Request, model.Response, error){
+var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"list_array":   iBoFOSV1.ListArrayDevice,
 	"load_array":   iBoFOSV1.LoadArray,
 	"create_array": iBoFOSV1.CreateArray,
 	"delete_array": iBoFOSV1.DeleteArray,
 }
 
-var DeviceCommand = map[string]func(string, model.DeviceParam) (model.Request, model.Response, error){
+var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"scan_dev":   iBoFOSV1.ScanDevice,
 	"list_dev":   iBoFOSV1.ListDevice,
 	"attach_dev": iBoFOSV1.AttachDevice,
@@ -48,7 +48,7 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"set_log_level":   iBoFOSV1.SetLogLevel,
 }
 
-var VolumeCommand = map[string]func(string, model.VolumeParam) (model.Request, model.Response, error){
+var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_vol":  iBoFOSV1.CreateVolume,
 	"update_vol":  iBoFOSV1.UpdateVolume,
 	"mount_vol":   iBoFOSV1.MountVolume,

@@ -4,18 +4,18 @@ import (
 	"A-module/routers/mtool/model"
 )
 
-func ScanDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
+func ScanDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("SCANDEVICE")
 }
 
-func ListDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
+func ListDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("LISTDEVICE")
 }
 
-func AttachDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
+func AttachDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("ATTACHDEVICE")
 }
 
-func DetachDevice(xrId string, param model.DeviceParam) (model.Request, model.Response, error) {
+func DetachDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("DETACHDEVICE")
 }

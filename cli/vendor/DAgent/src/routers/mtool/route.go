@@ -138,21 +138,21 @@ func system(c *gin.Context, f func(string, interface{}) (model.Request, model.Re
 	api.HttpResponse(c, res, err)
 }
 
-func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, model.Response, error)) {
+func device(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
 
-func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error)) {
+func array(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
 
-func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error)) {
+func volume(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
