@@ -39,13 +39,14 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"heartbeat":       iBoFOSV1.Heartbeat,
-	"exit_ibofos":     iBoFOSV1.ExitiBoFOS,
-	"info":            iBoFOSV1.IBoFOSInfo,
-	"mount_ibofos":    iBoFOSV1.MountiBoFOS,
-	"unmount_ibofos":  iBoFOSV1.UnmountiBoFOS,
-	"stop_rebuilding": iBoFOSV1.StopRebuilding,
-	"set_log_level":   iBoFOSV1.SetLogLevel,
+	"heartbeat":        iBoFOSV1.Heartbeat,
+	"exit_ibofos":      iBoFOSV1.ExitiBoFOS,
+	"info":             iBoFOSV1.IBoFOSInfo,
+	"mount_ibofos":     iBoFOSV1.MountiBoFOS,
+	"unmount_ibofos":   iBoFOSV1.UnmountiBoFOS,
+	"stop_rebuilding":  iBoFOSV1.StopRebuilding,
+	"set_log_level":    iBoFOSV1.SetLogLevel,
+	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){

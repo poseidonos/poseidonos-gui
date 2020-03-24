@@ -31,3 +31,7 @@ func StopRebuilding(xrId string, param interface{}) (model.Request, model.Respon
 func SetLogLevel(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Put("SETLOGLEVEL")
 }
+
+func ApplyLogFilter(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Put("APPLYLOGFILTER")
+}
