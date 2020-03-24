@@ -128,33 +128,33 @@ func requestParam(c *gin.Context) []byte {
 
 func exec(c *gin.Context, f func() (model.Response, error)) {
 	res, err := f()
-	api.HttpResponseWithRes(c, res, err)
+	api.HttpResponse(c, res, err)
 }
 
 func system(c *gin.Context, f func(string, model.SystemParam) (model.Request, model.Response, error)) {
 	param := model.SystemParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
-	api.HttpResponseWithRes(c, res, err)
+	api.HttpResponse(c, res, err)
 }
 
 func device(c *gin.Context, f func(string, model.DeviceParam) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
-	api.HttpResponseWithRes(c, res, err)
+	api.HttpResponse(c, res, err)
 }
 
 func array(c *gin.Context, f func(string, model.ArrayParam) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
-	api.HttpResponseWithRes(c, res, err)
+	api.HttpResponse(c, res, err)
 }
 
 func volume(c *gin.Context, f func(string, model.VolumeParam) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
 	json.Unmarshal(requestParam(c), &param)
 	_, res, err := f(xrId(c), param)
-	api.HttpResponseWithRes(c, res, err)
+	api.HttpResponse(c, res, err)
 }

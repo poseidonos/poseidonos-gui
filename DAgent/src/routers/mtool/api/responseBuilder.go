@@ -9,11 +9,7 @@ import (
 	"net/http"
 )
 
-func HttpResponse(c *gin.Context, err error) {
-	HttpResponseWithRes(c, model.Response{}, err)
-}
-
-func HttpResponseWithRes(c *gin.Context, res model.Response, err error) {
+func HttpResponse(c *gin.Context, res model.Response, err error) {
 	switch err {
 	case iBoFOSV1.ErrBadReq:
 		BadRequest(c, res, 12000)
