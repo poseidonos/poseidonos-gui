@@ -1,15 +1,15 @@
 package mtool
 
 import (
-	dagentV1 "DAgent/src/routers/mtool/api/dagent/v1"
 	exec "A-module/routers/mtool/api/exec"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"DAgent/src/routers/mtool/api"
+	dagentV1 "DAgent/src/routers/mtool/api/dagent/v1"
 	"DAgent/src/routers/mtool/middleware"
-	"encoding/json"
+	_ "encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
+	_ "github.com/gin-gonic/gin/binding"
 	"net/http"
 )
 
@@ -120,13 +120,6 @@ func xrId(c *gin.Context) string {
 	return c.GetHeader("X-request-Id")
 }
 
-func requestParam(c *gin.Context) []byte {
-	request := model.Request{}
-	c.ShouldBindBodyWith(&request, binding.JSON)
-	requestParam, _ := json.Marshal(request.Param)
-	return requestParam
-}
-
 func cmd(c *gin.Context, f func() (model.Response, error)) {
 	res, err := f()
 	api.HttpResponse(c, res, err)
@@ -134,28 +127,27 @@ func cmd(c *gin.Context, f func() (model.Response, error)) {
 
 func system(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.SystemParam{}
-	json.Unmarshal(requestParam(c), &param)
-	_, res, err := f(xrId(c), param)
-	api.HttpResponse(c, res, err)
+	logicCaller(c, f, param)
 }
 
 func device(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.DeviceParam{}
-	json.Unmarshal(requestParam(c), &param)
-	_, res, err := f(xrId(c), param)
-	api.HttpResponse(c, res, err)
+	logicCaller(c, f, param)
 }
 
 func array(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.ArrayParam{}
-	json.Unmarshal(requestParam(c), &param)
-	_, res, err := f(xrId(c), param)
-	api.HttpResponse(c, res, err)
+	logicCaller(c, f, param)
 }
 
 func volume(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	param := model.VolumeParam{}
-	json.Unmarshal(requestParam(c), &param)
+	logicCaller(c, f, param)
+}
+
+func logicCaller(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
+	request := model.Request{}
+	request.Param = param
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
