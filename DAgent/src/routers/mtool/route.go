@@ -7,9 +7,7 @@ import (
 	"DAgent/src/routers/mtool/api"
 	dagentV1 "DAgent/src/routers/mtool/api/dagent/v1"
 	"DAgent/src/routers/mtool/middleware"
-	_ "encoding/json"
 	"github.com/gin-gonic/gin"
-	_ "github.com/gin-gonic/gin/binding"
 	"net/http"
 )
 
