@@ -65,11 +65,30 @@ var commandCmd = &cobra.Command{
 
 Available msg list :
 
-[Category] : [msg]
-array      : list_array, load_array, create_array, delete_array
-device     : scan_dev, list_dev, attach_dev, detach_dev, add_dev
-system     : heartbeat,exit_ibofos, info, mount_ibofos, unmount_ibofos
-volume     : create_vol, update_vol, mount_vol, unmount_vol, delete_vol, list_vol
+[Category] : [msg]           : [example of flag]
+array      : list_array      :  
+           : load_array      :
+           : create_array    : -b, -d, -s : -b uram0 -d /dev/sdb1 /dev/sdb2 /dev/sdb3 -s /dev/sdb4
+           : delete_array    : 	
+
+device     : scan_dev        : 
+           : list_dev        : 
+		   : attach_dev      :
+		   : detach_dev      :
+		   : add_dev         :
+          
+system     : heartbeat       :
+           : exit_ibofos     :
+		   : info            :
+		   : mount_ibofos    : 
+		   : unmount_ibofos  :
+
+volume     : create_vol      : --name vol1 --size 1024
+           : update_vol      :
+		   : mount_vol       : --name vol1
+		   : unmount_vol     : 
+		   : delete_vol      :
+		   : list_vol        :
 
 
 You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
