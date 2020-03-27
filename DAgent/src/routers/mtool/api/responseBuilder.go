@@ -24,29 +24,29 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 	}
 }
 
-func Unauthorized(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusUnauthorized, res, code)
+func Unauthorized(c *gin.Context, res model.Response, code int) {
+	makeResponse(c, http.StatusUnauthorized, res, code)
 }
 
-func BadRequest(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusBadRequest, res, code)
+func BadRequest(c *gin.Context, res model.Response, code int) {
+	makeResponse(c, http.StatusBadRequest, res, code)
 }
 
-func success(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusOK, res, code)
+func success(c *gin.Context, res model.Response, code int) {
+	makeResponse(c, http.StatusOK, res, code)
 }
 
-func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
+func makeResponse(c *gin.Context, httpStatus int, res model.Response, code int) {
 	res.Result.Status.Code = code
 
 	if res.Result.Status.Description == "" {
-		res.Result.Status.Description = codeToDescription(code)
+		res.Result.Status.Description = description(code)
 	}
 
 	log.Printf("makeResponse : %+v", res)
-	ctx.AbortWithStatusJSON(httpStatus, &res)
+	c.AbortWithStatusJSON(httpStatus, &res)
 }
 
-func codeToDescription(code int) string {
+func description(code int) string {
 	return setting.StatusMap[code]
 }
