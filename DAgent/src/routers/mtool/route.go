@@ -42,74 +42,82 @@ func Route(router *gin.Engine) {
 
 	// System
 	{
+		param := model.DeviceParam{}
+
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-			system(c, iBoFOSV1.Heartbeat)
+			callAmodule(c, iBoFOSV1.Heartbeat, param)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
-			system(c, iBoFOSV1.ExitiBoFOS)
+			callAmodule(c, iBoFOSV1.ExitiBoFOS, param)
 		})
 		iBoFOS.GET("/system", func(c *gin.Context) {
-			system(c, iBoFOSV1.IBoFOSInfo)
+			callAmodule(c, iBoFOSV1.IBoFOSInfo, param)
 		})
 		iBoFOS.POST("/system/mount", func(c *gin.Context) {
-			system(c, iBoFOSV1.MountiBoFOS)
+			callAmodule(c, iBoFOSV1.MountiBoFOS, param)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
-			system(c, iBoFOSV1.UnmountiBoFOS)
+			callAmodule(c, iBoFOSV1.UnmountiBoFOS, param)
 		})
 	}
 
 	// Device
 	{
+		param := model.DeviceParam{}
+
 		iBoFOS.GET("/device", func(c *gin.Context) {
-			device(c, iBoFOSV1.ListDevice)
+			callAmodule(c, iBoFOSV1.ListDevice, param)
 		})
 		iBoFOS.GET("/device/scan", func(c *gin.Context) {
-			device(c, iBoFOSV1.ScanDevice)
+			callAmodule(c, iBoFOSV1.ScanDevice, param)
 		})
 		iBoFOS.POST("/device/attach", func(c *gin.Context) {
-			device(c, iBoFOSV1.AttachDevice)
+			callAmodule(c, iBoFOSV1.AttachDevice, param)
 		})
 		iBoFOS.DELETE("/device/detach", func(c *gin.Context) {
-			device(c, iBoFOSV1.DetachDevice)
+			callAmodule(c, iBoFOSV1.DetachDevice, param)
 		})
 	}
 
 	// Array
 	{
+		param := model.ArrayParam{}
+
 		iBoFOS.GET("/array/device", func(c *gin.Context) {
-			array(c, iBoFOSV1.ListArrayDevice)
+			callAmodule(c, iBoFOSV1.ListArrayDevice, param)
 		})
 		iBoFOS.GET("/array", func(c *gin.Context) {
-			array(c, iBoFOSV1.LoadArray)
+			callAmodule(c, iBoFOSV1.LoadArray, param)
 		})
 		iBoFOS.POST("/array", func(c *gin.Context) {
-			array(c, iBoFOSV1.CreateArray)
+			callAmodule(c, iBoFOSV1.CreateArray, param)
 		})
 		iBoFOS.DELETE("/array", func(c *gin.Context) {
-			array(c, iBoFOSV1.DeleteArray)
+			callAmodule(c, iBoFOSV1.DeleteArray, param)
 		})
 	}
 
 	// Volume
 	{
+		param := model.VolumeParam{}
+
 		iBoFOS.POST("/volume", func(c *gin.Context) {
-			volume(c, iBoFOSV1.CreateVolume)
+			callAmodule(c, iBoFOSV1.CreateVolume, param)
 		})
 		iBoFOS.GET("/volume", func(c *gin.Context) {
-			volume(c, iBoFOSV1.ListVolume)
+			callAmodule(c, iBoFOSV1.ListVolume, param)
 		})
 		iBoFOS.PUT("/volume", func(c *gin.Context) {
-			volume(c, iBoFOSV1.UpdateVolume)
+			callAmodule(c, iBoFOSV1.UpdateVolume, param)
 		})
 		iBoFOS.DELETE("/volume", func(c *gin.Context) {
-			volume(c, iBoFOSV1.DeleteVolume)
+			callAmodule(c, iBoFOSV1.DeleteVolume, param)
 		})
 		iBoFOS.POST("/volume/mount", func(c *gin.Context) {
-			volume(c, iBoFOSV1.MountVolume)
+			callAmodule(c, iBoFOSV1.MountVolume, param)
 		})
 		iBoFOS.DELETE("/volume/mount", func(c *gin.Context) {
-			volume(c, iBoFOSV1.UnmountVolume)
+			callAmodule(c, iBoFOSV1.UnmountVolume, param)
 		})
 	}
 }
@@ -123,27 +131,7 @@ func cmd(c *gin.Context, f func() (model.Response, error)) {
 	api.HttpResponse(c, res, err)
 }
 
-func system(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
-	param := model.SystemParam{}
-	logicCaller(c, f, param)
-}
-
-func device(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
-	param := model.DeviceParam{}
-	logicCaller(c, f, param)
-}
-
-func array(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
-	param := model.ArrayParam{}
-	logicCaller(c, f, param)
-}
-
-func volume(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
-	param := model.VolumeParam{}
-	logicCaller(c, f, param)
-}
-
-func logicCaller(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
+func callAmodule(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
 	request := model.Request{}
 	request.Param = param
 	_, res, err := f(xrId(c), param)
