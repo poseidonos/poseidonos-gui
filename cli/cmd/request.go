@@ -65,30 +65,38 @@ var commandCmd = &cobra.Command{
 
 Available msg list :
 
-[Category] : [msg]           : [example of flag]
-array      : list_array      :  
-           : load_array      :
-           : create_array    : -b, -d, -s : -b uram0 -d /dev/sdb1 /dev/sdb2 /dev/sdb3 -s /dev/sdb4
-           : delete_array    : 	
+[Category] : [msg]            : [example of flag]
 
-device     : scan_dev        : 
-           : list_dev        : 
-		   : attach_dev      :
-		   : detach_dev      :
-		   : add_dev         :
+array      : list_array       : not needed 
+           : load_array       : not needed
+           : create_array     : -b [buffer devs] -d [data devs] -s [spare devs] 
+           : delete_array     : not needed
+
+device     : scan_dev         : not needed 
+           : list_dev         : not needed
+           : attach_dev       : TBA 
+           : detach_dev       : -n [dev name]
+           : add_dev          : -s [spare devs]
           
-system     : heartbeat       :
-           : exit_ibofos     :
-		   : info            :
-		   : mount_ibofos    : 
-		   : unmount_ibofos  :
+system     : heartbeat        : not needed
+           : exit_ibofos      : not needed
+           : info             : not needed
+           : mount_ibofos     : not needed
+           : unmount_ibofos   : not needed
+           : stop_rebuilding  : not needed
+           : set_log_level"   : -l [log level]
+           : apply_log_filter : not needed
 
-volume     : create_vol      : --name vol1 --size 1024
-           : update_vol      :
-		   : mount_vol       : --name vol1
-		   : unmount_vol     : 
-		   : delete_vol      :
-		   : list_vol        :
+volume     : create_vol       : -n [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
+                                maxiops, maxbw are optional and default value is 0.
+           : update_vol       : TBA 
+           : mount_vol        : -n [vol name]
+           : unmount_vol      : -n [vol name]
+           : delete_vol       : -n [vol name]
+           : list_vol         : not needed
+
+If you want to input multiple flag parameter, you have to seperate with ",". 
+For example, "-d dev1,dev2,dev3". seperation by space is not allowed.
 
 
 You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
@@ -186,7 +194,7 @@ func Send(cmd *cobra.Command, command string) {
 			if err != nil {
 				log.Println(err)
 			} else {
-				printReqRes(req, res)
+				PrintReqRes(req, res)
 			}
 
 		} else if deviceExists {
@@ -202,7 +210,7 @@ func Send(cmd *cobra.Command, command string) {
 			if err != nil {
 				log.Println(err)
 			} else {
-				printReqRes(req, res)
+				PrintReqRes(req, res)
 			}
 
 		} else if systemExists {
@@ -222,7 +230,7 @@ func Send(cmd *cobra.Command, command string) {
 			if err != nil {
 				log.Println(err)
 			} else {
-				printReqRes(req, res)
+				PrintReqRes(req, res)
 			}
 
 		} else if volumeExists {
@@ -242,7 +250,7 @@ func Send(cmd *cobra.Command, command string) {
 			if err != nil {
 				log.Println(err)
 			} else {
-				printReqRes(req, res)
+				PrintReqRes(req, res)
 			}
 		}
 	} else {
@@ -250,7 +258,7 @@ func Send(cmd *cobra.Command, command string) {
 	}
 }
 
-func printReqRes(req model.Request, res model.Response) {
+func PrintReqRes(req model.Request, res model.Response) {
 
 	if isJson {
 		b, _ := json.Marshal(req)
