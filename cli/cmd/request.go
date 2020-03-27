@@ -22,8 +22,6 @@ var size int
 var maxiops int
 var maxbw int
 
-var isJson bool
-
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"list_array":   iBoFOSV1.ListArrayDevice,
 	"load_array":   iBoFOSV1.LoadArray,
@@ -149,7 +147,6 @@ func init() {
 	commandCmd.PersistentFlags().IntVar(&size, "size", 0, "set size \"-s 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
-	commandCmd.PersistentFlags().BoolVarP(&isJson, "json", "j", false, "print request and response fommated json")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
 }
 
