@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	//		"fmt"
 	"A-module/errors"
+	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
+	_ "fmt"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
@@ -61,19 +62,33 @@ func WBT(cmd *cobra.Command, args []string) {
 		}
 
 		if !list {
-			param := model.WBTParam{}
-			param.Name = args[0]
-			param.Argc = len(args)
+			if len(args) > 0 {
+				param := model.WBTParam{}
+				param.Name = args[0]
+				param.Argc = len(args)
 
-			for i, v := range args {
-				if i > 0 {
-					param.Argv += v + " "
+				for i, v := range args {
+					if i > 0 {
+						param.Argv += v + " "
+					}
+				}
+
+				req, res, err := iBoFOSV1.WBTTest(xrId, param)
+				if err != nil {
+					log.Println(err)
+					PrintReqRes(req, res)
+				} else {
+					PrintReqRes(req, res)
 				}
 			}
-
-			iBoFOSV1.WBTTest(xrId, param)
 		} else {
-			iBoFOSV1.WBTList(xrId, nil)
+			req, res, err := iBoFOSV1.WBTList(xrId, nil)
+			if err != nil {
+				log.Println(err)
+				PrintReqRes(req, res)
+			} else {
+				PrintReqRes(req, res)
+			}
 		}
 
 	} else {

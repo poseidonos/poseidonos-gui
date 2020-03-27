@@ -28,14 +28,14 @@ type Requester struct {
 	param interface{}
 }
 
-func (rq Requester) Wbt(command string) (model.Response, error) {
+func (rq Requester) Wbt(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
 	iBoFRequest.Param = rq.param
 	res, err := sendIBoF(iBoFRequest)
-	return res, err
+	return iBoFRequest, res, err
 }
 
 func (rq Requester) Post(command string) (model.Request, model.Response, error) {

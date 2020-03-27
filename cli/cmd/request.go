@@ -36,6 +36,8 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"list_dev":   iBoFOSV1.ListDevice,
 	"attach_dev": iBoFOSV1.AttachDevice,
 	"detach_dev": iBoFOSV1.DetachDevice,
+	"add_dev":    iBoFOSV1.AddDevice,
+	"remove_dev": iBoFOSV1.RemoveDevice,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -77,6 +79,7 @@ device     : scan_dev         : not needed
            : attach_dev       : TBA 
            : detach_dev       : -n [dev name]
            : add_dev          : -s [spare devs]
+           : remove_dev       : -n [dev name]
           
 system     : heartbeat        : not needed
            : exit_ibofos      : not needed

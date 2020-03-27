@@ -19,3 +19,11 @@ func AttachDevice(xrId string, param interface{}) (model.Request, model.Response
 func DetachDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("DETACHDEVICE")
 }
+
+func AddDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("ADDDEVICE")
+}
+
+func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("REMOVEDEVICE")
+}
