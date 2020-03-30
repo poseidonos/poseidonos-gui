@@ -11,10 +11,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Buffer []string
-var Data []string
-var Spare []string
-var Name string
+var buffer []string
+var data []string
+var spare []string
+var name string
+var newName string
 var level string
 
 var fttype int
@@ -23,19 +24,22 @@ var maxiops int
 var maxbw int
 
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"list_array":   iBoFOSV1.ListArrayDevice,
-	"load_array":   iBoFOSV1.LoadArray,
 	"create_array": iBoFOSV1.CreateArray,
 	"delete_array": iBoFOSV1.DeleteArray,
+	"list_array":   iBoFOSV1.ListArrayDevice,
+	"load_array":   iBoFOSV1.LoadArray,
 }
 
 var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"scan_dev":   iBoFOSV1.ScanDevice,
-	"list_dev":   iBoFOSV1.ListDevice,
-	"attach_dev": iBoFOSV1.AttachDevice,
-	"detach_dev": iBoFOSV1.DetachDevice,
-	"add_dev":    iBoFOSV1.AddDevice,
-	"remove_dev": iBoFOSV1.RemoveDevice,
+	"scan_dev":         iBoFOSV1.ScanDevice,
+	"list_dev":         iBoFOSV1.ListDevice,
+	"attach_dev":       iBoFOSV1.AttachDevice,
+	"detach_dev":       iBoFOSV1.DetachDevice,
+	"add_dev":          iBoFOSV1.AddDevice,
+	"remove_dev":       iBoFOSV1.RemoveDevice,
+	"start_monitoring": iBoFOSV1.StartDeviceMonitoring,
+	"stop_monitoring":  iBoFOSV1.StopDeviceMonitoring,
+	"monitoring_state": iBoFOSV1.DeviceMonitoringState,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -50,12 +54,15 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"create_vol":  iBoFOSV1.CreateVolume,
-	"update_vol":  iBoFOSV1.UpdateVolume,
-	"mount_vol":   iBoFOSV1.MountVolume,
-	"unmount_vol": iBoFOSV1.UnmountVolume,
-	"delete_vol":  iBoFOSV1.DeleteVolume,
-	"list_vol":    iBoFOSV1.ListVolume,
+	"create_vol": iBoFOSV1.CreateVolume,
+	//	"update_vol":  iBoFOSV1.UpdateVolume,
+	"mount_vol":      iBoFOSV1.MountVolume,
+	"unmount_vol":    iBoFOSV1.UnmountVolume,
+	"delete_vol":     iBoFOSV1.DeleteVolume,
+	"list_vol":       iBoFOSV1.ListVolume,
+	"update_vol_qos": iBoFOSV1.UpdateVolumeQoS,
+	"rename_vol":     iBoFOSV1.RenameVolume,
+	"resize_vol":     iBoFOSV1.ResizeVolume,
 }
 
 var commandCmd = &cobra.Command{
@@ -67,10 +74,10 @@ Available msg list :
 
 [Category] : [msg]            : [example of flag]
 
-array      : list_array       : not needed 
-           : load_array       : not needed
-           : create_array     : -b [buffer devs] -d [data devs] -s [spare devs] 
+array      : create_array     : -b [buffer devs] -d [data devs] -s [spare devs] 
            : delete_array     : not needed
+           : list_array       : not needed 
+           : load_array       : not needed
 
 device     : scan_dev         : not needed 
            : list_dev         : not needed
@@ -78,23 +85,30 @@ device     : scan_dev         : not needed
            : detach_dev       : -n [dev name]
            : add_dev          : -s [spare devs]
            : remove_dev       : -n [dev name]
-          
+           : start_monitoring : not needed
+           : stop_monitoring  : not needed
+           : monitoring_state : not needed
+
 system     : heartbeat        : not needed
            : exit_ibofos      : not needed
            : info             : not needed
            : mount_ibofos     : not needed
            : unmount_ibofos   : not needed
            : stop_rebuilding  : not needed
-           : set_log_level"   : -l [log level]
+           : set_log_level"   : --level [log level]
            : apply_log_filter : not needed
 
-volume     : create_vol       : -n [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
+volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
-           : update_vol       : TBA 
-           : mount_vol        : -n [vol name]
-           : unmount_vol      : -n [vol name]
-           : delete_vol       : -n [vol name]
+           : mount_vol        : --name [vol name]
+           : unmount_vol      : --name [vol name]
+           : delete_vol       : --name [vol name]
            : list_vol         : not needed
+		   : update_vol_qos   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
+           : rename_vol       : --name [vol name] --newname [new vol name]
+           : resize_vol       : --name [vol name] --size [vol size] 
+
+
 
 If you want to input multiple flag parameter, you have to seperate with ",". 
 For example, "-d dev1,dev2,dev3". seperation by space is not allowed.
@@ -140,10 +154,11 @@ func init() {
 	rootCmd.AddCommand(commandCmd)
 
 	commandCmd.PersistentFlags().IntVarP(&fttype, "fttype", "f", 0, "set fttype \"-f 4194304\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&Spare, "spare", "s", []string{}, "set spare name \"-p unvme-ns-3\"")
-	commandCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "set name \"-n vol01\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-p unvme-ns-3\"")
+	commandCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
+	commandCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
 	commandCmd.PersistentFlags().IntVar(&size, "size", 0, "set size \"-s 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
@@ -173,17 +188,17 @@ func Send(cmd *cobra.Command, command string) {
 
 			param := model.ArrayParam{}
 			param.FtType = fttype
-			for _, v := range Buffer {
+			for _, v := range buffer {
 				device := model.Device{}
 				device.DeviceName = v
 				param.Buffer = append(param.Buffer, device)
 			}
-			for _, v := range Data {
+			for _, v := range data {
 				device := model.Device{}
 				device.DeviceName = v
 				param.Data = append(param.Data, device)
 			}
-			for _, v := range Spare {
+			for _, v := range spare {
 				device := model.Device{}
 				device.DeviceName = v
 				param.Spare = append(param.Spare, device)
@@ -200,9 +215,9 @@ func Send(cmd *cobra.Command, command string) {
 		} else if deviceExists {
 
 			param := model.DeviceParam{}
-			param.Name = Name
+			param.Name = name
 			if cmd.PersistentFlags().Changed("spare") {
-				param.Spare = Spare[0]
+				param.Spare = spare[0]
 			}
 
 			req, res, err := DeviceCommand[command](xrId, param)
@@ -236,13 +251,16 @@ func Send(cmd *cobra.Command, command string) {
 		} else if volumeExists {
 
 			param := model.VolumeParam{}
-			param.Name = Name
+			param.Name = name
 			param.Size = size
 			if cmd.PersistentFlags().Changed("maxiops") {
 				param.Maxiops = maxiops
 			}
 			if cmd.PersistentFlags().Changed("maxbw") {
 				param.Maxbw = maxbw
+			}
+			if cmd.PersistentFlags().Changed("newname") {
+				param.NewName = newName
 			}
 
 			req, res, err := VolumeCommand[command](xrId, param)

@@ -27,3 +27,15 @@ func AddDevice(xrId string, param interface{}) (model.Request, model.Response, e
 func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("REMOVEDEVICE")
 }
+
+func StartDeviceMonitoring(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("STARTDEVICEMONITORING")
+}
+
+func StopDeviceMonitoring(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("STOPDEVICEMONITORING")
+}
+
+func DeviceMonitoringState(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("DEVICEMONITORINGSTATE")
+}

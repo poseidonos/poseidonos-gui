@@ -47,6 +47,7 @@ type DeviceParam struct {
 
 type VolumeParam struct {
 	Name    string `json:"name,omitempty"`
+	NewName string `json:"newname,omitempty"`
 	Size    int    `json:"size,omitempty"`
 	Maxiops int    `json:"maxiops,omitempty"`
 	Maxbw   int    `json:"maxbw,omitempty"`
