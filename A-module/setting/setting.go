@@ -1,11 +1,11 @@
 package setting
 
 import (
+	"A-module/log"
+	"A-module/routers/mtool/model"
 	"encoding/json"
 	"gopkg.in/yaml.v2"
-	"A-module/routers/mtool/model"
 	"io/ioutil"
-	"A-module/log"
 )
 
 var Config ConfigScheme
@@ -75,5 +75,14 @@ func loadStatusCode() {
 	StatusMap = make(map[int]string)
 	for _, status := range StatusList.StatusList {
 		StatusMap[status.Code] = status.Description
+	}
+}
+
+func GetStatusDesc(code int) string {
+	desc, exist := StatusMap[code]
+	if exist {
+		return desc
+	} else {
+		return "not defined"
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
+	"A-module/setting"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
@@ -296,7 +297,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 		}
 
 		fmt.Println("\n\nResponse from Poseidon OS")
-		fmt.Println("    Code        : ", res.Result.Status.Code)
+		fmt.Println("    Code        : ", setting.GetStatusDesc(res.Result.Status.Code))
 		fmt.Println("    Description : ", res.Result.Status.Description)
 
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
