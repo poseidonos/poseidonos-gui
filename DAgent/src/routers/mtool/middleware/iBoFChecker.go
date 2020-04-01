@@ -11,7 +11,7 @@ import (
 func CheckiBoFRun() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if util.IsIBoFRun() == false {
-			api.BadRequest(ctx, model.Response{}, 10240)
+			api.BadRequest(ctx, model.Response{}, 12030)
 			return
 		}
 		ctx.Next()

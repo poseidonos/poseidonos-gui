@@ -133,7 +133,9 @@ func cmd(c *gin.Context, f func() (model.Response, error)) {
 
 func callAmodule(c *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
 	request := model.Request{}
+	c.ShouldBindBodyWith(&request, binding.JSON)
 	request.Param = param
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
+
