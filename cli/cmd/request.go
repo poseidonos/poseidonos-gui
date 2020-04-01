@@ -215,13 +215,24 @@ func Send(cmd *cobra.Command, command string) {
 
 		} else if deviceExists {
 
+			var req model.Request
+			var res model.Response
+			var err error
+
 			param := model.DeviceParam{}
-			param.Name = name
+
+			if cmd.PersistentFlags().Changed("name") {
+				param.Name = name
+			}
 			if cmd.PersistentFlags().Changed("spare") {
 				param.Spare = spare[0]
 			}
 
-			req, res, err := DeviceCommand[command](xrId, param)
+			if param != (model.DeviceParam{}) {
+				req, res, err = DeviceCommand[command](xrId, param)
+			} else {
+				req, res, err = DeviceCommand[command](xrId, nil)
+			}
 
 			if err != nil {
 				log.Println(err)
