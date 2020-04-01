@@ -55,7 +55,7 @@ $ go build -mod vendor
 $ ./localbuild # It will also generate api documentation
 ```
 #### Run
-* The exec binaray is also uploaded, so you can run without build
+* Note that only master branch will have  exec binaray in bin folder
 ```shell script
 $ sudo ./Dagent # General Run
 # Or
