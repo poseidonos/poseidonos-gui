@@ -2,6 +2,8 @@
 **/.DS_Store
 **/pkg
 DAgent/DAgent
+DAgent/bin/DAgent
+DAgent/bin/DAgent.exe
 core
 DAgent.exe
 VSAMap.0.bin
