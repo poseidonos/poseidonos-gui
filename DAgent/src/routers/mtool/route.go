@@ -8,6 +8,7 @@ import (
 	dagentV1 "DAgent/src/routers/mtool/api/dagent/v1"
 	"DAgent/src/routers/mtool/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"net/http"
 )
 
@@ -137,4 +138,3 @@ func callAmodule(c *gin.Context, f func(string, interface{}) (model.Request, mod
 	_, res, err := f(xrId(c), param)
 	api.HttpResponse(c, res, err)
 }
-

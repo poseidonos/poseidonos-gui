@@ -70,15 +70,12 @@ func FileInput(cmd *cobra.Command, args []string) {
 
 	log.Println(request)
 
-	if InitConnect() {
-		res, err := iBoFOSV1.SendRequestJson(request)
-		if err != nil {
-			log.Println(err)
-		} else {
-			PrintReqRes(request, res)
-		}
+	InitConnect()
+	res, err := iBoFOSV1.SendRequestJson(request)
 
+	if err != nil {
+		fmt.Println(err)
 	} else {
-		errors.New("Cannot connect to Poseidon OS !!!")
+		PrintReqRes(request, res)
 	}
 }

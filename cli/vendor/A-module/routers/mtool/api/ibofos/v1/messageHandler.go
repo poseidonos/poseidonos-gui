@@ -15,12 +15,13 @@ const (
 )
 
 var (
-	locker     = stateUnlocked
-	errLocked  = errors.New("Locked out buddy")
-	ErrBadReq  = errors.New("Bad request")
-	ErrSending = errors.New("errSending")
-	ErrJson    = errors.New("errJson")
-	ErrRes     = errors.New("errRes")
+	locker       = stateUnlocked
+	errLocked    = errors.New("Locked out buddy")
+	ErrBadReq    = errors.New("Bad request")
+	ErrSending   = errors.New("Sending error")
+	ErrReceiving = errors.New("Receiving error")
+	ErrJson      = errors.New("Json error")
+	ErrRes       = errors.New("Response error")
 )
 
 type Requester struct {
@@ -80,6 +81,14 @@ func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
+	err := handler.ConnectToIBoFOS()
+
+	if err != nil {
+		return model.Response{}, err
+	}
+
+	defer handler.DisconnectToIBoFOS()
+
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
 		log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 		return model.Response{}, ErrBadReq
@@ -90,19 +99,25 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	log.Printf("sendIBoFCLI : %+v", iBoFRequest)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
-	err := handler.WriteToIBoFSocket(marshaled)
+	err = handler.WriteToIBoFSocket(marshaled)
 
 	if err != nil {
-		log.Printf("sendIBoFCLI : %v", err)
+		log.Printf("sendIBoFCLI write error : %v", err)
 		return model.Response{}, ErrSending
 	}
 
 	for {
-		temp := handler.GetIBoFResponse()
-		log.Printf("Response From iBoFCLI : %s", string(temp))
+		temp, err := handler.ReadFromIBoFSocket()
+
+		if err != nil {
+			log.Printf("sendIBoFCLI read error : %v", err)
+			return model.Response{}, ErrReceiving
+		} else {
+			log.Printf("Response From iBoFCLI : %s", string(temp))
+		}
 
 		response := model.Response{}
-		err := json.Unmarshal(temp, &response)
+		err = json.Unmarshal(temp, &response)
 
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Printf("Previous CLI request's response, Wait again")

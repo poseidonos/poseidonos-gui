@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"A-module/errors"
-	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
@@ -129,14 +128,10 @@ Port : 18716
 			return errors.New("need an one msg !!!")
 		}
 
-		val1, arrayExists := ArrayCommand[args[0]]
-		val2, deviceExists := DeviceCommand[args[0]]
-		val3, systemExists := SystemCommand[args[0]]
-		val4, volumeExists := VolumeCommand[args[0]]
-		_ = val1
-		_ = val2
-		_ = val3
-		_ = val4
+		_, arrayExists := ArrayCommand[args[0]]
+		_, deviceExists := DeviceCommand[args[0]]
+		_, systemExists := SystemCommand[args[0]]
+		_, volumeExists := VolumeCommand[args[0]]
 
 		if !arrayExists && !deviceExists && !systemExists && !volumeExists {
 			return errors.New("not available msg !!!")
@@ -168,123 +163,92 @@ func init() {
 
 func Send(cmd *cobra.Command, command string) {
 
-	if InitConnect() {
+	var req model.Request
+	var res model.Response
+	var err error
 
-		var xrId string
-		uuid, err := uuid.NewUUID()
-		if err == nil {
-			xrId = uuid.String()
+	InitConnect()
+
+	var xrId string
+	uuid, err := uuid.NewUUID()
+	if err == nil {
+		xrId = uuid.String()
+	}
+
+	_, arrayExists := ArrayCommand[command]
+	_, deviceExists := DeviceCommand[command]
+	_, systemExists := SystemCommand[command]
+	_, volumeExists := VolumeCommand[command]
+
+	if arrayExists {
+
+		param := model.ArrayParam{}
+		param.FtType = fttype
+		for _, v := range buffer {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Buffer = append(param.Buffer, device)
+		}
+		for _, v := range data {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Data = append(param.Data, device)
+		}
+		for _, v := range spare {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Spare = append(param.Spare, device)
 		}
 
-		val1, arrayExists := ArrayCommand[command]
-		val2, deviceExists := DeviceCommand[command]
-		val3, systemExists := SystemCommand[command]
-		val4, volumeExists := VolumeCommand[command]
-		_ = val1
-		_ = val2
-		_ = val3
-		_ = val4
+		req, res, err = ArrayCommand[command](xrId, param)
+	} else if deviceExists {
 
-		if arrayExists {
+		param := model.DeviceParam{}
 
-			param := model.ArrayParam{}
-			param.FtType = fttype
-			for _, v := range buffer {
-				device := model.Device{}
-				device.DeviceName = v
-				param.Buffer = append(param.Buffer, device)
-			}
-			for _, v := range data {
-				device := model.Device{}
-				device.DeviceName = v
-				param.Data = append(param.Data, device)
-			}
-			for _, v := range spare {
-				device := model.Device{}
-				device.DeviceName = v
-				param.Spare = append(param.Spare, device)
-			}
-
-			req, res, err := ArrayCommand[command](xrId, param)
-
-			if err != nil {
-				log.Println(err)
-			} else {
-				PrintReqRes(req, res)
-			}
-
-		} else if deviceExists {
-
-			var req model.Request
-			var res model.Response
-			var err error
-
-			param := model.DeviceParam{}
-
-			if cmd.PersistentFlags().Changed("name") {
-				param.Name = name
-			}
-			if cmd.PersistentFlags().Changed("spare") {
-				param.Spare = spare[0]
-			}
-
-			if param != (model.DeviceParam{}) {
-				req, res, err = DeviceCommand[command](xrId, param)
-			} else {
-				req, res, err = DeviceCommand[command](xrId, nil)
-			}
-
-			if err != nil {
-				log.Println(err)
-			} else {
-				PrintReqRes(req, res)
-			}
-
-		} else if systemExists {
-
-			var req model.Request
-			var res model.Response
-			var err error
-
-			if cmd.PersistentFlags().Changed("level") {
-				param := model.SystemParam{}
-				param.Level = level
-				req, res, err = SystemCommand[command](xrId, param)
-			} else {
-				req, res, err = SystemCommand[command](xrId, nil)
-			}
-
-			if err != nil {
-				log.Println(err)
-			} else {
-				PrintReqRes(req, res)
-			}
-
-		} else if volumeExists {
-
-			param := model.VolumeParam{}
+		if cmd.PersistentFlags().Changed("name") {
 			param.Name = name
-			param.Size = size
-			if cmd.PersistentFlags().Changed("maxiops") {
-				param.Maxiops = maxiops
-			}
-			if cmd.PersistentFlags().Changed("maxbw") {
-				param.Maxbw = maxbw
-			}
-			if cmd.PersistentFlags().Changed("newname") {
-				param.NewName = newName
-			}
-
-			req, res, err := VolumeCommand[command](xrId, param)
-
-			if err != nil {
-				log.Println(err)
-			} else {
-				PrintReqRes(req, res)
-			}
 		}
+		if cmd.PersistentFlags().Changed("spare") {
+			param.Spare = spare[0]
+		}
+
+		if param != (model.DeviceParam{}) {
+			req, res, err = DeviceCommand[command](xrId, param)
+		} else {
+			req, res, err = DeviceCommand[command](xrId, nil)
+		}
+	} else if systemExists {
+
+		if cmd.PersistentFlags().Changed("level") {
+			param := model.SystemParam{}
+			param.Level = level
+			req, res, err = SystemCommand[command](xrId, param)
+		} else {
+			req, res, err = SystemCommand[command](xrId, nil)
+		}
+	} else if volumeExists {
+
+		param := model.VolumeParam{}
+		param.Name = name
+		param.Size = size
+
+		if cmd.PersistentFlags().Changed("maxiops") {
+			param.Maxiops = maxiops
+		}
+		if cmd.PersistentFlags().Changed("maxbw") {
+			param.Maxbw = maxbw
+		}
+		if cmd.PersistentFlags().Changed("newname") {
+			param.NewName = newName
+		}
+
+		req, res, err = VolumeCommand[command](xrId, param)
+	}
+
+	if err != nil {
+		fmt.Println(err)
 	} else {
-		errors.New("Cannot connect to Poseidon OS !!!")
+		PrintReqRes(req, res)
 	}
 }
 
@@ -308,7 +272,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 		}
 
 		fmt.Println("\n\nResponse from Poseidon OS")
-		fmt.Println("    Code        : ", setting.GetStatusDesc(res.Result.Status.Code))
+		fmt.Println("    Code        : ", setting.GetStatusDesc(res.Result.Status.Code), "(", res.Result.Status.Code, ")")
 		fmt.Println("    Description : ", res.Result.Status.Description)
 
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
