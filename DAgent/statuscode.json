@@ -137,17 +137,14 @@
       "description": "iBof Socket Connection Error"
     },
     {
-      "code": 27756,
-      "level": "ERROR",
-      "description": "exec Run: The iBoFOS already run"
-    },    {
-      "code": 27757,
-      "level": "ERROR",
-      "description": "exec Run: Fail to run iBoFOS"
-    },    {
       "code": 40000,
       "level": "ERROR",
       "description": "This API does not implemente yet"
+    },
+    {
+      "code": 99999,
+      "level": "ERROR",
+      "description": "Unknown Error"
     }
   ]
 }
