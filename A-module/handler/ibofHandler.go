@@ -1,71 +1,83 @@
 package handler
 
 import (
-	"bytes"
-	"encoding/json"
-	"errors"
-	"A-module/routers/mtool/model"
+	"A-module/log"
+	_ "A-module/routers/mtool/model"
 	"A-module/setting"
 	"A-module/util"
-	"A-module/log"
+	"bytes"
+	_ "encoding/json"
+	"errors"
 	"io"
 	"net"
-	"time"
+	_ "time"
 )
 
 var conn net.Conn
-var iBoFReceiveChan chan []byte
-var bmcSendChan chan string
-var bmcReceiveChan chan string
+
+//var iBoFReceiveChan chan []byte
+//var bmcSendChan chan string
+//var bmcReceiveChan chan string
 
 func init() {
-	iBoFReceiveChan = make(chan []byte, 1000)
-	go readFromIBoFSocket()
+	//iBoFReceiveChan = make(chan []byte, 1000)
+	//go readFromIBoFSocket()
 }
 
-func ConnectToIBoFOS() {
+func ConnectToIBoFOS() error {
 	var err error = nil
-	for {
-		if conn == nil {
-			uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
-			conn, err = net.Dial("tcp", uri)
-			if err != nil {
-				log.Println("ConnectToIBoFOS : ", err)
-				setting.Config.DAgentSocketAddr = "Disconnect"
-				setting.Config.IBoFOSSocketAddr = "Disconnect"
-			} else {
-				setting.Config.DAgentSocketAddr = conn.LocalAddr().String()
-				setting.Config.IBoFOSSocketAddr = conn.RemoteAddr().String()
-			}
-			util.PrintCurrentServerStatus()
-		}
-		time.Sleep(time.Second * 1)
+
+	uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
+	conn, err = net.Dial("tcp", uri)
+
+	if err != nil {
+		log.Println("ConnectToIBoFOS : ", err)
+		setting.Config.DAgentSocketAddr = "Disconnect"
+		setting.Config.IBoFOSSocketAddr = "Disconnect"
+	} else {
+		setting.Config.DAgentSocketAddr = conn.LocalAddr().String()
+		setting.Config.IBoFOSSocketAddr = conn.RemoteAddr().String()
 	}
+	util.PrintCurrentServerStatus()
+
+	return err
 }
 
-func readFromIBoFSocket() {
-	for {
-		log.Println("readFromIBoFSocket Start")
-		if conn == nil {
-			log.Println("readFromIBoFSocket : Conn is nil")
-			time.Sleep(time.Second)
+func DisconnectToIBoFOS() error {
+	var err error = nil
+
+	if conn != nil {
+		err = conn.Close()
+	}
+
+	return err
+}
+
+func ReadFromIBoFSocket() ([]byte, error) {
+
+	var err error
+	var buf []byte
+
+	log.Println("readFromIBoFSocket Start")
+
+	if conn == nil {
+		log.Println("readFromIBoFSocket : Conn is nil")
+	} else {
+		buf = make([]byte, 4096)
+		_, err = conn.Read(buf)
+		if err != nil || err == io.EOF {
+			log.Println("readFromIBoFSocket : Message Receive Fail :", err)
+			conn.Close()
+			conn = nil
 		} else {
-			buf := make([]byte, 4096)
-			_, err := conn.Read(buf)
-			if err != nil || err == io.EOF {
-				log.Println("readFromIBoFSocket : Message Receive Fail :", err)
-				conn.Close()
-				conn = nil
-			} else {
-				log.Println("readFromIBoFSocket : Message Receive Success")
-				buf = bytes.Trim(buf, "\x00")
-				iBoFReceiveChan <- buf
-				log.Println("readFromIBoFSocket : Message -> iBoFReceiveChan")
-			}
+			log.Println("readFromIBoFSocket : Message Receive Success")
+			buf = bytes.Trim(buf, "\x00")
 		}
 	}
+	return buf, err
 }
 
+/*
 func GetIBoFResponse() []byte {
 	select {
 	case ret := <-iBoFReceiveChan:
@@ -79,6 +91,7 @@ func GetIBoFResponse() []byte {
 		return ret
 	}
 }
+*/
 
 func WriteToIBoFSocket(marshaled []byte) error {
 	var err error = nil

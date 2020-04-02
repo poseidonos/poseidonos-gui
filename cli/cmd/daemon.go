@@ -1,20 +1,20 @@
 package cmd
 
 import (
-//    "A-module/log"
-    "A-module/setting"
-    "DAgent/src/routers"
-    "net/http"
-    "time"
-//	"fmt"
-	"github.com/spf13/cobra"
+	//    "A-module/log"
+	_ "A-module/setting"
+	//_ "DAgent/src/routers"
+	_ "net/http"
+	_ "time"
+	//	"fmt"
 	"A-module/errors"
+	"github.com/spf13/cobra"
 )
 
 var daemonCmd = &cobra.Command{
-  Use:   "daemon",
-  Short: "daemon mode",
-  Long:  `run on daemon mode.
+	Use:   "daemon",
+	Short: "daemon mode",
+	Long: `run on daemon mode.
 
 Usage : 
 
@@ -30,18 +30,18 @@ Port : 18716
 
 
 	  `,
-  Args: func(cmd *cobra.Command, args []string) error {
+	Args: func(cmd *cobra.Command, args []string) error {
 
-	if len(args) > 0 {
-      return errors.New("no args !!!")
-    }
+		if len(args) > 0 {
+			return errors.New("no args !!!")
+		}
 
-	return nil
-  },
+		return nil
+	},
 
-  Run: func(cmd *cobra.Command, args []string) {
-	Daemon(cmd, args)
-  },
+	Run: func(cmd *cobra.Command, args []string) {
+		Daemon(cmd, args)
+	},
 }
 
 func init() {
@@ -53,21 +53,20 @@ func init() {
 
 func Daemon(cmd *cobra.Command, args []string) {
 
-	if InitConnect() {
-		startServer()
-	}
+	InitConnect()
+	startServer()
 }
 
 func startServer() {
-    routersInit := routers.InitRouter()
-
-    server := &http.Server{
-        Addr:           ":" + setting.Config.Server.Dagent.Port,
-        Handler:        routersInit,
-        ReadTimeout:    30 * time.Second,
-        WriteTimeout:   30 * time.Second,
-        MaxHeaderBytes: 1 << 20,
-    }
-
-    server.ListenAndServe()
+	//routersInit := routers.InitRouter()
+	/*
+		server := &http.Server{
+			Addr:           ":" + setting.Config.Server.Dagent.Port,
+			Handler:        routersInit,
+			ReadTimeout:    30 * time.Second,
+			WriteTimeout:   30 * time.Second,
+			MaxHeaderBytes: 1 << 20,
+		}
+	*/
+	//server.ListenAndServe()
 }

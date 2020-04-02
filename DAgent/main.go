@@ -1,11 +1,11 @@
 package main
 
 import (
-	"A-module/handler"
+	_ "A-module/handler"
 	"A-module/log"
 	"A-module/setting"
-	"github.com/gin-gonic/gin"
 	"DAgent/src/routers"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 )
@@ -20,7 +20,7 @@ func init() {
 }
 
 func main() {
-	go handler.ConnectToIBoFOS()
+	//go handler.ConnectToIBoFOS()
 	startServer()
 }
 

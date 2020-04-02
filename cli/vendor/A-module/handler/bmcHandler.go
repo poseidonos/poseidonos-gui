@@ -4,6 +4,9 @@ import (
 	"A-module/log"
 )
 
+var bmcSendChan chan string
+var bmcReceiveChan chan string
+
 func init() {
 	bmcSendChan = make(chan string, 1)
 }

@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"A-module/errors"
 	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
-	_ "fmt"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
@@ -53,36 +52,27 @@ func init() {
 
 func WBT(cmd *cobra.Command, args []string) {
 
-	if InitConnect() {
+	InitConnect()
 
-		var xrId string
-		uuid, err := uuid.NewUUID()
-		if err == nil {
-			xrId = uuid.String()
-		}
+	var xrId string
+	uuid, err := uuid.NewUUID()
+	if err == nil {
+		xrId = uuid.String()
+	}
 
-		if !list {
-			if len(args) > 0 {
-				param := model.WBTParam{}
-				param.Name = args[0]
-				param.Argc = len(args)
+	if !list {
+		if len(args) > 0 {
+			param := model.WBTParam{}
+			param.Name = args[0]
+			param.Argc = len(args)
 
-				for i, v := range args {
-					if i > 0 {
-						param.Argv += v + " "
-					}
-				}
-
-				req, res, err := iBoFOSV1.WBTTest(xrId, param)
-				if err != nil {
-					log.Println(err)
-					PrintReqRes(req, res)
-				} else {
-					PrintReqRes(req, res)
+			for i, v := range args {
+				if i > 0 {
+					param.Argv += v + " "
 				}
 			}
-		} else {
-			req, res, err := iBoFOSV1.WBTList(xrId, nil)
+
+			req, res, err := iBoFOSV1.WBTTest(xrId, param)
 			if err != nil {
 				log.Println(err)
 				PrintReqRes(req, res)
@@ -90,8 +80,12 @@ func WBT(cmd *cobra.Command, args []string) {
 				PrintReqRes(req, res)
 			}
 		}
-
 	} else {
-		errors.New("Cannot connect to Poseidon OS !!!")
+		req, res, err := iBoFOSV1.WBTList(xrId, nil)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			PrintReqRes(req, res)
+		}
 	}
 }
