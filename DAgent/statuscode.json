@@ -50,7 +50,7 @@
       "level": "ERROR",
       "description": "Array is already umounted"
     }, {
-      "code": 2052,
+      "code": 2502,
       "level": "ERROR",
       "description": "Array already exists"
     },
