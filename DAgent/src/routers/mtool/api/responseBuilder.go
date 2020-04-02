@@ -20,7 +20,11 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 	case iBoFOSV1.ErrRes:
 		BadRequest(c, res, res.Result.Status.Code)
 	default:
-		success(c, res, res.Result.Status.Code)
+		if err != nil {
+			BadRequest(c, res, 99999)
+		} else {
+			success(c, res, res.Result.Status.Code)
+		}
 	}
 }
 

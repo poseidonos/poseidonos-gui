@@ -140,6 +140,11 @@
       "code": 40000,
       "level": "ERROR",
       "description": "This API does not implemente yet"
+    },
+    {
+      "code": 99999,
+      "level": "ERROR",
+      "description": "Unknown Error"
     }
   ]
 }
