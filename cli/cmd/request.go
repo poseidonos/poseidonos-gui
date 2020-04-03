@@ -51,6 +51,8 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"stop_rebuilding":  iBoFOSV1.StopRebuilding,
 	"set_log_level":    iBoFOSV1.SetLogLevel,
 	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
+	"wbt":              iBoFOSV1.WBT,
+	"list_wbt":         iBoFOSV1.ListWBT,
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -97,6 +99,8 @@ system     : heartbeat        : not needed
            : stop_rebuilding  : not needed
            : set_log_level"   : --level [log level]
            : apply_log_filter : not needed
+		   : wbt              : not needed
+		   : list_wbt         : not needed
 
 volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
@@ -124,7 +128,8 @@ Port : 18716
 	  `,
 	Args: func(cmd *cobra.Command, args []string) error {
 
-		if len(args) != 1 {
+		if (len(args) != 1 && args[0] != "wbt") ||
+			(len(args) == 1 && args[0] == "wbt") {
 			return errors.New("need an one msg !!!")
 		}
 
@@ -141,7 +146,7 @@ Port : 18716
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		Send(cmd, args[0])
+		Send(cmd, args)
 	},
 }
 
@@ -161,19 +166,20 @@ func init() {
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
 }
 
-func Send(cmd *cobra.Command, command string) {
+func Send(cmd *cobra.Command, args []string) {
 
 	var req model.Request
 	var res model.Response
 	var err error
-
-	InitConnect()
-
 	var xrId string
 	uuid, err := uuid.NewUUID()
+	command := args[0]
+
 	if err == nil {
 		xrId = uuid.String()
 	}
+
+	InitConnect()
 
 	_, arrayExists := ArrayCommand[command]
 	_, deviceExists := DeviceCommand[command]
@@ -219,12 +225,25 @@ func Send(cmd *cobra.Command, command string) {
 		}
 	} else if systemExists {
 
-		if cmd.PersistentFlags().Changed("level") {
+		if command == "wbt" {
 			param := model.SystemParam{}
-			param.Level = level
+			param.Name = args[1]
+			param.Argc = len(args) - 1
+
+			for i, v := range args {
+				if i > 1 {
+					param.Argv += v + " "
+				}
+			}
 			req, res, err = SystemCommand[command](xrId, param)
 		} else {
-			req, res, err = SystemCommand[command](xrId, nil)
+			if cmd.PersistentFlags().Changed("level") {
+				param := model.SystemParam{}
+				param.Level = level
+				req, res, err = SystemCommand[command](xrId, param)
+			} else {
+				req, res, err = SystemCommand[command](xrId, nil)
+			}
 		}
 	} else if volumeExists {
 
@@ -256,9 +275,9 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 	if isJson {
 		b, _ := json.Marshal(req)
-		fmt.Println("{Request:", string(b), "}")
+		fmt.Print("{\n \"Request\":", string(b), ", \n")
 		b, _ = json.Marshal(res)
-		fmt.Println("{Response:", string(b), "}")
+		fmt.Print(" \"Response\":", string(b), "\n}\n")
 	} else {
 		b, _ := json.MarshalIndent(req.Param, "", "    ")
 

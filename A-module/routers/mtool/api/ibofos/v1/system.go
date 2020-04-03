@@ -35,3 +35,11 @@ func SetLogLevel(xrId string, param interface{}) (model.Request, model.Response,
 func ApplyLogFilter(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Put("APPLYLOGFILTER")
 }
+
+func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Put("WBT")
+}
+
+func ListWBT(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("LISTWBT")
+}

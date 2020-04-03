@@ -128,8 +128,8 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Printf("Response CLI Unmarshal Error : %v", err)
 			return model.Response{}, ErrJson
 
-		} else if response.Result.Status.Code != 0 {
-			return response, ErrRes
+			//} else if response.Result.Status.Code != 0 {
+			//	return response, ErrRes
 
 		} else {
 			//ctx.JSON(http.StatusOK, &response)

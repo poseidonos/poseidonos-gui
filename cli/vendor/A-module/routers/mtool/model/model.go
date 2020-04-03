@@ -31,6 +31,9 @@ type Device struct {
 
 type SystemParam struct {
 	Level string `json:"level,omitempty"`
+	Name  string `json:"testname,omitempty"`
+	Argc  int    `json:"argc,omitempty"`
+	Argv  string `json:"argv,omitempty"`
 }
 
 type ArrayParam struct {
@@ -51,10 +54,4 @@ type VolumeParam struct {
 	Size    int    `json:"size,omitempty"`
 	Maxiops int    `json:"maxiops,omitempty"`
 	Maxbw   int    `json:"maxbw,omitempty"`
-}
-
-type WBTParam struct {
-	Name string `json:"testname,omitempty"`
-	Argc int    `json:"argc,omitempty"`
-	Argv string `json:"argv,omitempty"`
 }
