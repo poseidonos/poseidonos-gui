@@ -99,8 +99,8 @@ system     : heartbeat        : not needed
            : stop_rebuilding  : not needed
            : set_log_level"   : --level [log level]
            : apply_log_filter : not needed
-		   : wbt              : not needed
-		   : list_wbt         : not needed
+           : wbt              : not needed
+           : list_wbt         : not needed
 
 volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
@@ -108,7 +108,7 @@ volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [m
            : unmount_vol      : --name [vol name]
            : delete_vol       : --name [vol name]
            : list_vol         : not needed
-		   : update_vol_qos   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
+           : update_vol_qos   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
            : rename_vol       : --name [vol name] --newname [new vol name]
            : resize_vol       : --name [vol name] --size [vol size] 
 
@@ -128,7 +128,7 @@ Port : 18716
 	  `,
 	Args: func(cmd *cobra.Command, args []string) error {
 
-		if (len(args) != 1 && args[0] != "wbt") ||
+		if (len(args) == 0) ||
 			(len(args) == 1 && args[0] == "wbt") {
 			return errors.New("need an one msg !!!")
 		}
