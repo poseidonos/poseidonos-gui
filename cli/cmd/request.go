@@ -128,9 +128,10 @@ Port : 18716
 	  `,
 	Args: func(cmd *cobra.Command, args []string) error {
 
-		if (len(args) == 0) ||
-			(len(args) == 1 && args[0] == "wbt") {
+		if len(args) > 1 && args[0] != "wbt" {
 			return errors.New("need an one msg !!!")
+		} else if len(args) == 1 && args[0] == "wbt" {
+			return errors.New("wbt msg need one more argument!!!")
 		}
 
 		_, arrayExists := ArrayCommand[args[0]]
