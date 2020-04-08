@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
-	"os"
 )
 
 func Route(router *gin.Engine) {
@@ -30,9 +29,7 @@ func Route(router *gin.Engine) {
 	{
 		dagent.GET("/ping", dagentV1.Ping)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
-		dagent.DELETE("/dagent", func(c *gin.Context) {
-			os.Exit(0)
-		})
+		dagent.DELETE("/dagent", dagentV1.KillDAgent)
 		dagent.POST("/ibofos", func(c *gin.Context) {
 			cmd(c, exec.RunIBoF)
 		})
