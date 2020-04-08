@@ -54,7 +54,7 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/system", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.IBoFOSInfo, param)
 		})
-		iBoFOS.GET("/system/mount", func(c *gin.Context) {
+		iBoFOS.POST("/system/mount", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.MountiBoFOS, param)
 		})
 		iBoFOS.DELETE("/system/mount", func(c *gin.Context) {
