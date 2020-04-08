@@ -5,7 +5,7 @@ import (
 	"A-module/setting"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
+	"syscall"
 )
 
 func Ping(ctx *gin.Context) {
@@ -27,7 +27,6 @@ func KillDAgent(ctx *gin.Context) {
 	response := model.Response{}
 	response.Result.Status.Code = 0
 	response.Result.Status.Description = "Success"
-	response.Result.Data = setting.StatusList
 	ctx.JSON(http.StatusOK, &response)
-	os.Exit(0)
+	syscall.Kill(syscall.Getpid(), syscall.SIGINT)
 }
