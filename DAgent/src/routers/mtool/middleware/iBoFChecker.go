@@ -7,8 +7,8 @@ import (
 
 func CheckiBoFRun() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-	// This middle ware will be removed.
-	// The iBofOS running will be checked by A-module thru socket checking
+		// This middle ware will be removed.
+		// The iBofOS running will be checked by A-module thru socket checking
 		ctx.Next()
 	}
 }

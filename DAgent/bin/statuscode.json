@@ -49,7 +49,8 @@
       "code": 2501,
       "level": "ERROR",
       "description": "Array is already umounted"
-    }, {
+    },
+    {
       "code": 2052,
       "level": "ERROR",
       "description": "Array already exists"
@@ -140,11 +141,13 @@
       "code": 27756,
       "level": "ERROR",
       "description": "exec Run: The iBoFOS already run"
-    },    {
+    },
+    {
       "code": 27757,
       "level": "ERROR",
       "description": "exec Run: Fail to run iBoFOS"
-    },    {
+    },
+    {
       "code": 40000,
       "level": "ERROR",
       "description": "This API does not implemente yet"
