@@ -43,3 +43,7 @@ func WBT(xrId string, param interface{}) (model.Request, model.Response, error) 
 func ListWBT(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("LISTWBT")
 }
+
+func DoGC(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("DOGC")
+}

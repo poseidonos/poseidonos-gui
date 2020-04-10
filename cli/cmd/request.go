@@ -53,6 +53,7 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
 	"wbt":              iBoFOSV1.WBT,
 	"list_wbt":         iBoFOSV1.ListWBT,
+	"do_gc":            iBoFOSV1.DoGC,
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -101,6 +102,7 @@ system     : heartbeat        : not needed
            : apply_log_filter : not needed
            : wbt              : not needed
            : list_wbt         : not needed
+           : do_gc            : not needed
 
 volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
