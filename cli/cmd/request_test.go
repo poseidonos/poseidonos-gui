@@ -8,20 +8,49 @@ import (
 
 func TestSend(t *testing.T) {
 
-	tests := [][]string{
+	test1 := [][]string{
 		[]string{"heartbeat"},
 		[]string{"scan_dev"},
+		[]string{"create_array"},
+		[]string{"list_array"},
 		[]string{"mount_ibofos"},
+		[]string{"create_vol"},
+		[]string{"mount_vol"},
+		[]string{"list_vol"},
+		[]string{"unmount_vol"},
+		[]string{"delete_vol"},
+		[]string{"unmount_ibofos"},
 		[]string{"exit_ibofos"},
 	}
 
-	for _, tt := range tests {
+	for _, test := range test1 {
 
-		var cmd cobra.Command
-		isQuiet = true
+		t.Run(test[0], func(t *testing.T) {
 
-		t.Run(tt[0], func(t *testing.T) {
-			res, err := Send(&cmd, tt)
+			var cmd cobra.Command
+			cmd.PersistentFlags().BoolVar(&isQuiet, "quiet", false, "")
+
+			if test[0] == "create_array" {
+
+				cmd.PersistentFlags().StringSliceVar(&buffer, "buffer", []string{"uram0"}, "")
+				cmd.PersistentFlags().StringSliceVar(&data, "data", []string{"unvme-ns-0", "unvme-ns-1", "unvme-ns-2"}, "")
+				cmd.PersistentFlags().StringSliceVar(&spare, "spare", []string{"unvme-ns-3"}, "")
+			} else if test[0] == "create_vol" {
+
+				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
+				cmd.PersistentFlags().IntVar(&size, "size", 4194304, "")
+			} else if test[0] == "mount_vol" {
+
+				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
+			} else if test[0] == "unmount_vol" {
+
+				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
+			} else if test[0] == "delete_vol" {
+
+				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
+			}
+
+			res, err := Send(&cmd, test)
 
 			if err != nil || res.Result.Status.Code != 0 {
 				t.Error("error")

@@ -17,7 +17,7 @@ func MountVolume(xrId string, param interface{}) (model.Request, model.Response,
 }
 
 func UnmountVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Delete("UPDATEVOLUMEQOS")
+	return Requester{xrId, param}.Delete("UNMOUNTVOLUME")
 }
 
 func DeleteVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
