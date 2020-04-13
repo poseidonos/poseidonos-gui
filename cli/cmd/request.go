@@ -169,7 +169,7 @@ func init() {
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
 }
 
-func Send(cmd *cobra.Command, args []string) {
+func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 	var req model.Request
 	var res model.Response
@@ -272,9 +272,14 @@ func Send(cmd *cobra.Command, args []string) {
 	} else {
 		PrintReqRes(req, res)
 	}
+	return res, err
 }
 
 func PrintReqRes(req model.Request, res model.Response) {
+
+	if isQuiet {
+		return
+	}
 
 	if isJson {
 		b, _ := json.Marshal(req)
@@ -302,7 +307,6 @@ func PrintReqRes(req model.Request, res model.Response) {
 		if string(b) != "null" {
 			fmt.Println("    Data       : ", string(b))
 		}
-
-		fmt.Println("\n")
+		fmt.Print("\n\n")
 	}
 }

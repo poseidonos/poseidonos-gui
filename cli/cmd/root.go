@@ -12,6 +12,7 @@ import (
 var verbose bool
 var debug bool
 var isJson bool
+var isQuiet bool
 
 var ip string
 var port string
@@ -43,6 +44,7 @@ func init() {
 		rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 		rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set a debug mode")
 		rootCmd.PersistentFlags().BoolVarP(&isJson, "json", "j", false, "print request and response fommated json")
+		rootCmd.PersistentFlags().BoolVarP(&isQuiet, "quiet", "q", false, "set a quiet mode")
 	}
 
 	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
