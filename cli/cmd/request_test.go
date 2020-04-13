@@ -12,6 +12,7 @@ func TestSend(t *testing.T) {
 		[]string{"heartbeat"},
 		[]string{"scan_dev"},
 		[]string{"mount_ibofos"},
+		[]string{"exit_ibofos"},
 	}
 
 	for _, tt := range tests {
