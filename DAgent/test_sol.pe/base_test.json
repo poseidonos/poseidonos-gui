@@ -6,6 +6,70 @@
 	},
 	"item": [
 		{
+			"name": "RUNIBOFOS Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a333aec-2090-4e41-a149-9a3823470455",
+						"exec": [
+							"pm.test(\"EXITIBOFOS\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/runibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"system",
+						"runibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "SCAN DEVICE Copy",
 			"event": [
 				{
@@ -1298,6 +1362,212 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"rid\": \"493abe73-2aa7-4efb-969a-1b970f43e834\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "DELETE VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1d9be4cf-3973-4070-9cac-9a3adb38f2d9",
+						"exec": [
+							"pm.test(\"DELETE VOLUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Nov 2019 01:09:25 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"cefe68ce-51a4-4388-a8a1-32bb4ef2fe11\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "c1055589-a25c-4c22-b08e-2aadfe53ed24"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Nov 2019 01:09:39 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 2010,\n            \"description\": \"\"\n        }\n    }\n}"
 				}
 			]
 		},
