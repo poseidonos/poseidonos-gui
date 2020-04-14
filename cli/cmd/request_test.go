@@ -1,14 +1,16 @@
 package cmd
 
 import (
-	_ "A-module/routers/mtool/model"
 	"github.com/spf13/cobra"
+	"os"
 	"testing"
 )
 
 func TestSend(t *testing.T) {
+	os.Chdir("..")
 
 	test1 := [][]string{
+		[]string{"run_ibofos"},
 		[]string{"heartbeat"},
 		[]string{"scan_dev"},
 		[]string{"create_array"},

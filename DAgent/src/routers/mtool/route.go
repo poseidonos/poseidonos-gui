@@ -48,6 +48,9 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.Heartbeat, param)
 		})
+		iBoFOS.PUT("/system/runibofos", func(c *gin.Context) {
+			callAmodule(c, iBoFOSV1.RuniBoFOS, param)
+		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.ExitiBoFOS, param)
 		})

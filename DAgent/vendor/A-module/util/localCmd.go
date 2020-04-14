@@ -1,8 +1,8 @@
 package util
 
 import (
-	"fmt"
 	"A-module/log"
+	"fmt"
 	"os/exec"
 )
 
@@ -27,12 +27,17 @@ func grantPermission(fileName string) {
 	}
 }
 
-func ExecCmd(cmd string, background bool) {
+func ExecCmd(cmd string, background bool) error {
 	execCmd := exec.Command("sudo", "bash", "-c", cmd)
-	err := execCmd.Run()
+	output, err := execCmd.CombinedOutput()
+
 	if err != nil {
-		panic(fmt.Errorf("exec Run: %v", err))
+		return fmt.Errorf("exec Run: %v %s", err, output)
 	}
+
+	log.Println(string(output))
+
+	return nil
 }
 
 func RunScript(filePath string, background bool) {

@@ -45,6 +45,7 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"heartbeat":        iBoFOSV1.Heartbeat,
 	"exit_ibofos":      iBoFOSV1.ExitiBoFOS,
+	"run_ibofos":       iBoFOSV1.RuniBoFOS,
 	"info":             iBoFOSV1.IBoFOSInfo,
 	"mount_ibofos":     iBoFOSV1.MountiBoFOS,
 	"unmount_ibofos":   iBoFOSV1.UnmountiBoFOS,
@@ -93,6 +94,7 @@ device     : scan_dev         : not needed
            : monitoring_state : not needed
 
 system     : heartbeat        : not needed
+           : run_ibofos       : not needed
            : exit_ibofos      : not needed
            : info             : not needed
            : mount_ibofos     : not needed

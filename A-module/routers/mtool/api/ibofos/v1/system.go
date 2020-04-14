@@ -2,6 +2,9 @@ package v1
 
 import (
 	"A-module/routers/mtool/model"
+	"A-module/setting"
+	"A-module/util"
+	"fmt"
 )
 
 func Heartbeat(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -10,6 +13,28 @@ func Heartbeat(xrId string, param interface{}) (model.Request, model.Response, e
 
 func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("EXITIBOFOS")
+}
+
+func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
+
+	iBoFRequest := model.Request{
+		Command: "RUNIBOFOS",
+		Rid:     xrId,
+	}
+
+	iBoFRequest.Param = param
+	res := model.Response{}
+
+	cmd := fmt.Sprintf("./run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
+	err := util.ExecCmd(cmd, false)
+
+	if err != nil {
+		res.Result.Status.Code = 11000
+	} else {
+		res.Result.Status.Code = 0
+	}
+
+	return iBoFRequest, res, err
 }
 
 func IBoFOSInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
