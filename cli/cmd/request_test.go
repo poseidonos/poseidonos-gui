@@ -7,7 +7,7 @@ import (
 )
 
 func TestSend(t *testing.T) {
-	os.Chdir("..")
+	os.Chdir("../bin/")
 
 	test1 := [][]string{
 		[]string{"run_ibofos"},
