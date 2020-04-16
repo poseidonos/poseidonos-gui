@@ -14,6 +14,8 @@ A-module/util
 github.com/google/uuid
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
+# github.com/jstemmer/go-junit-report v0.9.1
+## explicit
 # github.com/juju/errors v0.0.0-20190930114154-d42613fe1ab9
 ## explicit
 github.com/juju/errors

@@ -1,4 +1,8 @@
 #!/bin/bash
+
+ROOT_DIR=$(readlink -f $(dirname $0))/
+cd $ROOT_DIR
+
 wget -q --tries=1 --timeout=3 --spider http://google.com
 
 if [[ $? -eq 0 ]]; then
@@ -16,10 +20,10 @@ fi
 
 go build -mod vendor -tags debug
 #go build -mod vendor -tags release
-
+mv cli bin/
 
 if [ -d ../../ibofos ]; then
-	cp cli ../../ibofos/tool/cli_client/
+	cp bin/cli ../../ibofos/tool/cli_client/
 fi
 
 #sudo ./CLI
