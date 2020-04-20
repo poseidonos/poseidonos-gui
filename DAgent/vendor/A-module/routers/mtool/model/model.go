@@ -29,9 +29,9 @@ type StatusList struct {
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress string `json:"rebuliding_progress"`
-	Capacity           string `json:"capacity"`
-	Used               string `json:"used"`
+	RebuildingProgress uint32 `json:"rebuliding_progress"`
+	Capacity           uint64 `json:"capacity"`
+	Used               uint64 `json:"used"`
 }
 
 type Device struct {
