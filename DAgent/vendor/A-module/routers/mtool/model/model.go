@@ -9,6 +9,7 @@ type Request struct {
 type Response struct {
 	Rid    string `json:"rid"`
 	Result Result `json:"result"`
+	Info   Info   `json:"info"`
 }
 
 type Result struct {
@@ -23,6 +24,14 @@ type Status struct {
 
 type StatusList struct {
 	StatusList []Status `json:"StatusList"`
+}
+
+type Info struct {
+	State              string `json:"state"`
+	Situation          string `json:"situation"`
+	RebuildingProgress string `json:"rebuliding_progress"`
+	Capacity           string `json:"capacity"`
+	Used               string `json:"used"`
 }
 
 type Device struct {
