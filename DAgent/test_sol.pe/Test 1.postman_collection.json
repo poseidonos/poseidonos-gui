@@ -1,0 +1,2056 @@
+{
+	"info": {
+		"_postman_id": "73dc8505-15d2-49a2-beb3-301ce3b34c67",
+		"name": "Test 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RUNIBOFOS Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a333aec-2090-4e41-a149-9a3823470455",
+						"exec": [
+							"pm.test(\"EXITIBOFOS\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/runibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"system",
+						"runibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SCAN DEVICE Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3dacb3eb-9a39-4ff7-bd57-4de860cceb15",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "22f3423e-3cf5-4b32-9484-acc3ff58e4ad",
+						"exec": [
+							"pm.test(\"SCAN DEVICE\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/device/scan",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"device",
+						"scan"
+					]
+				},
+				"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}\n```"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/scan",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"scan"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "953d26c8-2efe-4f86-8601-5294ce52fd89"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:34:26 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "110"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"953d26c8-2efe-4f86-8601-5294ce52fd89\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "CREATE ARRAY Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f76ee5fa-484c-4a02-bcac-ecc650b1803a",
+						"exec": [
+							"pm.test(\"CREATE ARRAY\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"unvme-ns-0\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-1\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"unvme-ns-3\"\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"array"
+					]
+				},
+				"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n   \"result\": {\n       \"status\": {\n           \"code\": 0,\n           \"description\": \"DONE\"\n       }\n   }\n}\n```"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "dba7fbc3-a46d-4c07-ba9c-271581fdec9c"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:35:20 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"dba7fbc3-a46d-4c07-ba9c-271581fdec9c\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Done\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "STATE ARRAY Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5469fcde-ce87-4b9c-8c40-8947d98e2c01",
+						"exec": [
+							"pm.test(\"STATE ARRAY\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"array"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "7834a0d2-2f4f-4a98-b5c4-3d09ac76f933"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 02 Dec 2019 11:10:48 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"7834a0d2-2f4f-4a98-b5c4-3d09ac76f933\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Done\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "LIST ARRAY DEVICE Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b99d09b6-b903-43c7-840d-0a04841b01f1",
+						"exec": [
+							"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"array",
+						"device"
+					]
+				},
+				"description": "Response Sample\n\n* Available Type : BUFFER, DATA, SPARE\n\n```json\n{\n    \"rid\": \"b447f812-ab74-4b19-8563-0d2a7613d010\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"level\": \"\",\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}\n```"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"device"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "8ac075a6-b741-40a2-bb43-719d7e917810"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:35:33 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "320"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"8ac075a6-b741-40a2-bb43-719d7e917810\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"intel-unvmens-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"intel-unvmens-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    }\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"device"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "53580d54-4375-4aaf-9619-0c3ac05c8f60"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:35:00 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "115"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"53580d54-4375-4aaf-9619-0c3ac05c8f60\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"NO ARRAY DEVICE EXIST\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "MOUNTIBOFOS Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a442d85a-08d9-44d2-bd32-1503374f6e25",
+						"exec": [
+							"pm.test(\"MOUNTIBOFOS\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"system",
+						"mount"
+					]
+				},
+				"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"mount"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "deb9617b-5697-45a9-a81d-4a9c7bfd6f87"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:35:54 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "95"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"deb9617b-5697-45a9-a81d-4a9c7bfd6f87\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"0\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "UNMOUNTIBOFOS Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5ece8d1e-d4bc-454b-a268-ff75257af7ac",
+						"exec": [
+							"pm.test(\"UNMOUNTIBOFOS\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"system",
+						"mount"
+					]
+				},
+				"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d2c33ab-b2af-4bc4-8d9d-43b3b9bdedc1",
+						"exec": [
+							"pm.test(\"CREATE VOLUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "11238da7-6018-477a-aae1-74567cbc8e4d"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:37:58 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 2022,\n            \"description\": \"\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "567e609b-854a-4672-8637-7ef9ce8c277a"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:37:34 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"567e609b-854a-4672-8637-7ef9ce8c277a\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "MOUNT VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "435d7ba2-6110-4487-b94e-8a64044041ed",
+						"exec": [
+							"pm.test(\"MOUNT VOULUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume",
+								"mount"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "24356bf1-92d3-48d1-82da-c2ea9c856927"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:39:04 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"24356bf1-92d3-48d1-82da-c2ea9c856927\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "LIST VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9cc229f5-13c4-43d8-a81c-012702839d10",
+						"exec": [
+							"pm.test(\"LIST VOLUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success - Mounted",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "b65bf976-2666-4b63-b755-cb08ae9cc18e"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:39:15 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "220"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"b65bf976-2666-4b63-b755-cb08ae9cc18e\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 6000,\n                    \"maxiops\": 0,\n                    \"name\": \"vol01\",\n                    \"remain\": 4194304,\n                    \"status\": \"Mounted\",\n                    \"total\": 4194304\n                }\n            ]\n        }\n    }\n}"
+				},
+				{
+					"name": "Success - Unmounted",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "5b1c50ea-fcd0-4d51-b226-430315fc8c50"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 04:38:35 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "221"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"5b1c50ea-fcd0-4d51-b226-430315fc8c50\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 6000,\n                    \"maxiops\": 0,\n                    \"name\": \"vol01\",\n                    \"remain\": 4194304,\n                    \"status\": \"Unmouted\",\n                    \"total\": 4194304\n                }\n            ]\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "UNMOUNT VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c026addf-ac9a-437f-a571-33da357c758c",
+						"exec": [
+							"pm.test(\"UNMOUNT VOLUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume",
+								"mount"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "493abe73-2aa7-4efb-969a-1b970f43e834"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Nov 2019 01:10:28 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"493abe73-2aa7-4efb-969a-1b970f43e834\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "DELETE VOLUME Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1d9be4cf-3973-4070-9cac-9a3adb38f2d9",
+						"exec": [
+							"pm.test(\"DELETE VOLUME\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"volume"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "c1055589-a25c-4c22-b08e-2aadfe53ed24"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Nov 2019 01:09:39 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 2010,\n            \"description\": \"\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "cefe68ce-51a4-4388-a8a1-32bb4ef2fe11"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Nov 2019 01:09:25 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"cefe68ce-51a4-4388-a8a1-32bb4ef2fe11\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "EXITIBOFOS Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a333aec-2090-4e41-a149-9a3823470455",
+						"exec": [
+							"pm.test(\"EXITIBOFOS\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/exitibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"ibofos",
+						"v1",
+						"system",
+						"exitibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "KILLDAGENT Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "132e0b9b-1e21-4e01-9c5e-af5926348ae1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3cdeb163-9b96-498e-9128-71408c393f59",
+						"exec": [
+							"pm.test(\"KILLDAGENT\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/mtool/api/dagent/v1/dagent",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"mtool",
+						"api",
+						"dagent",
+						"v1",
+						"dagent"
+					]
+				},
+				"description": "It just run command \"run_ibof.sh\" and does not gurantee to run."
+			},
+			"response": [
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/dagent/v1/ibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"dagent",
+								"v1",
+								"ibofos"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "5b20dc94-d1d5-43ad-8636-3fbba9154fe8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 02:16:35 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "94"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 11000,\n            \"description\": \"exec Run: The iBoFOS already run\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/dagent/v1/ibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"dagent",
+								"v1",
+								"ibofos"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "601b49e5-7cf6-4b79-8aa4-7c1ea374b7ce"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 27 Nov 2019 02:16:07 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "65"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    }\n}"
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}
