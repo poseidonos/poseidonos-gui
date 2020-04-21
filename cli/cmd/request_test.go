@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestSend(t *testing.T) {
@@ -53,6 +54,8 @@ func TestSend(t *testing.T) {
 			}
 
 			res, err := Send(&cmd, test)
+
+			time.Sleep(5 * time.Second)
 
 			if err != nil || res.Result.Status.Code != 0 {
 				t.Error("error")
