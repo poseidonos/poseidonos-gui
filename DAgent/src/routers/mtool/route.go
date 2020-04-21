@@ -45,9 +45,6 @@ func Route(router *gin.Engine) {
 	{
 		param := model.DeviceParam{}
 
-		iBoFOS.GET("/system/heartbeat", func(c *gin.Context) {
-			callAmodule(c, iBoFOSV1.Heartbeat, param)
-		})
 		iBoFOS.PUT("/system/runibofos", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.RuniBoFOS, param)
 		})

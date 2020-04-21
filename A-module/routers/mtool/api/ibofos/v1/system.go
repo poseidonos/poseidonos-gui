@@ -7,10 +7,6 @@ import (
 	"fmt"
 )
 
-func Heartbeat(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("HEARTBEAT")
-}
-
 func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("EXITIBOFOS")
 }
