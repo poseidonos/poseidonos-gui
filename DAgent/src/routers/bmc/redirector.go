@@ -16,6 +16,6 @@ func RedirectRedfish(ctx *gin.Context) {
 		req.URL.Host = setting.Config.Server.BMC.IP
 	}
 
-	proxy := &httputil.ReverseProxy{Director: director}
-	proxy.ServeHTTP(ctx.Writer, ctx.Request)
+	reverseProxy := &httputil.ReverseProxy{Director: director}
+	reverseProxy.ServeHTTP(ctx.Writer, ctx.Request)
 }
