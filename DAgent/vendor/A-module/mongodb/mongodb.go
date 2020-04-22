@@ -34,7 +34,7 @@ package mongodb
 //		cur, err := collection.Find(ctx, filter)
 //
 //		if err != nil {
-//			log.Println(err)
+//			log.Info(err)
 //		} else {
 //			for cur.Next(ctx) {
 //				defer cur.Close(ctx)

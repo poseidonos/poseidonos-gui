@@ -47,14 +47,14 @@ func loadSeverConfig() {
 	file, err := ioutil.ReadFile(filename)
 
 	if err != nil {
-		log.Printf("LoadSeverConfig : %v\nD-Agent will use default value\n", err)
+		log.Infof("LoadSeverConfig : %v\nD-Agent will use default value\n", err)
 	} else {
 		err = yaml.Unmarshal(file, &Config)
 		if err != nil {
 			log.Fatalf("loadSeverConfig Error : %v", err)
 		} else {
-			log.Printf("Open Success : %s", filename)
-			log.Printf("Loaded Config Info : %+v", Config)
+			log.Infof("Open Success : %s", filename)
+			log.Infof("Loaded Config Info : %+v", Config)
 		}
 	}
 }
@@ -63,13 +63,13 @@ func loadStatusCode() {
 	filename := "statuscode.json"
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Printf("LoadStatusList : %v\n", err)
+		log.Infof("LoadStatusList : %v\n", err)
 	} else {
 		err = json.Unmarshal(file, &StatusList)
 		if err != nil {
 			log.Fatalf("loadStatusCode Error : %v", err)
 		} else {
-			log.Printf("Open Success : %s", filename)
+			log.Infof("Open Success : %s", filename)
 		}
 	}
 	StatusMap = make(map[int]string)
