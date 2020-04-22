@@ -68,7 +68,7 @@ func FileInput(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	log.Println(request)
+	log.Info(request)
 
 	InitConnect()
 	res, err := iBoFOSV1.SendRequestJson(request)

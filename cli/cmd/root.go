@@ -69,5 +69,5 @@ func InitConnect() {
 		setting.Config.Server.IBoF.Port = port
 	}
 
-	log.Println("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
+	log.Info("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
 }
