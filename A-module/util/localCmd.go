@@ -35,7 +35,7 @@ func ExecCmd(cmd string, background bool) error {
 		return fmt.Errorf("exec Run: %v %s", err, output)
 	}
 
-	log.Println(string(output))
+	log.Info(string(output))
 
 	return nil
 }
