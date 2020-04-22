@@ -10,7 +10,7 @@ func PrettyJson(jsonByte interface{}) []byte {
 	prettyJSON, err := json.MarshalIndent(jsonByte, "", "    ")
 
 	if err != nil {
-		log.Println(err)
+		log.Error(err)
 		return nil
 	}
 	return prettyJSON

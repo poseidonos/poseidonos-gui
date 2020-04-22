@@ -6,7 +6,7 @@ import (
 )
 
 func PrintCurrentServerStatus() {
-	log.Print("\n" +
+	log.Info("\n" +
 		"\n                  #############" +
 		"\n               ####################" +
 		"\n            ##########################" +
