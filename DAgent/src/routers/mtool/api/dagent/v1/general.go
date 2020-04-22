@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-func Ping(ctx *gin.Context) {
+func HeartBeat(ctx *gin.Context) {
 	response := model.Response{}
 	response.Result.Status.Code = 0
 	response.Result.Status.Description = "Pong"
