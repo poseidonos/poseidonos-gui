@@ -43,14 +43,6 @@ func Critical(args ...interface{}) {
      logrus.Fatal(args...)
 }
 
-func Print(args ...interface{}) {
-     logrus.Print(args...)
-}
-
-func Println(args ...interface{}) {
-     logrus.Println(args...)
-}
-
 func Printf(format string, args ...interface{}) {
      logrus.Printf(format, args...)
 }

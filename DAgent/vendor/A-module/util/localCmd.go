@@ -11,7 +11,7 @@ func IsIBoFRun() bool {
 	out, _ := execCmd.Output()
 
 	strOut := string(out)
-	log.Printf("The iBoFOS Pid is %s", strOut)
+	log.Info("The iBoFOS Pid is %s", strOut)
 	if strOut == "" {
 		return false
 	} else {
@@ -35,7 +35,7 @@ func ExecCmd(cmd string, background bool) error {
 		return fmt.Errorf("exec Run: %v %s", err, output)
 	}
 
-	log.Println(string(output))
+	log.Info(string(output))
 
 	return nil
 }

@@ -21,7 +21,7 @@ func GetBMCResponse() string {
 
 func SendBMC(bmcMsg string) {
 	bmcSendChan <- bmcMsg
-	log.Printf("SendBMC : Message -> bmcSendChan\n%s", bmcMsg)
+	log.Infof("SendBMC : Message -> bmcSendChan\n%s", bmcMsg)
 }
 
 func writeToBMCSomething(bmcMsg string) {
