@@ -15,7 +15,7 @@ func CheckBody(ctx *gin.Context) {
 	if "GET" != ctx.Request.Method {
 		err := ctx.ShouldBindBodyWith(&body, binding.JSON)
 		if err != nil && err != io.EOF {
-			log.Printf("Request Body Error : %v", err)
+			log.Infof("Request Body Error : %v", err)
 			api.BadRequest(ctx, model.Response{}, 10310)
 			return
 		}

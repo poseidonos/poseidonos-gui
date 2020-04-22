@@ -47,7 +47,7 @@ func startServer() {
 
 	<-quit
 
-	log.Println("Shutdown Server ...")
+	log.Info("Shutdown Server ...")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
 	defer cancel()
@@ -57,5 +57,5 @@ func startServer() {
 
 	}
 
-	log.Println("Server exiting")
+	log.Info("Server exiting")
 }

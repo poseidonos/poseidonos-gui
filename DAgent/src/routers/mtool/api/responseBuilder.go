@@ -47,7 +47,7 @@ func makeResponse(c *gin.Context, httpStatus int, res model.Response, code int) 
 		res.Result.Status.Description = description(code)
 	}
 
-	log.Printf("makeResponse : %+v", res)
+	log.Infof("makeResponse : %+v", res)
 	c.AbortWithStatusJSON(httpStatus, &res)
 }
 
