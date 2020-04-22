@@ -12,7 +12,6 @@ func TestSend(t *testing.T) {
 
 	test1 := [][]string{
 		[]string{"run_ibofos"},
-		[]string{"heartbeat"},
 		[]string{"scan_dev"},
 		[]string{"create_array"},
 		[]string{"list_array"},
@@ -57,7 +56,7 @@ func TestSend(t *testing.T) {
 
 			time.Sleep(5 * time.Second)
 
-			if err != nil || res.Result.Status.Code != 0 {
+			if err != nil || (res.Result.Status.Code != 0 && res.Result.Status.Code != 1022) {
 				t.Error("error")
 			}
 		})
