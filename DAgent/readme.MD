@@ -55,9 +55,9 @@ $ go build -mod vendor
 $ ./localbuild # It will also generate api documentation
 ```
 #### Run
-* Note that only master branch will have  exec binaray in bin folder
+* Note that only master branch will have exec binaray in bin folder
 ```shell script
-$ sudo ./Dagent # General Run
+$ sudo ./DAgent # General Run
 # Or
 $ sudo ./bin/run_dagent.sh # Background Run 
 ```
