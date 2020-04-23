@@ -45,7 +45,7 @@ func Route(router *gin.Engine) {
 	{
 		param := model.DeviceParam{}
 
-		iBoFOS.PUT("/system/runibofos", func(c *gin.Context) {
+		iBoFOS.POST("/system/runibofos", func(c *gin.Context) {
 			callAmodule(c, iBoFOSV1.RuniBoFOS, param)
 		})
 		iBoFOS.DELETE("/system/exitibofos", func(c *gin.Context) {
