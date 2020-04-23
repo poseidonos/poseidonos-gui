@@ -10,7 +10,7 @@ SPDK_DIR=/root/workspace/ibofos/lib/spdk-19.10
 TRANSPORT=TCP
 IP=10.100.11.7
 
-pgrep ibofos | xargs kill -9
+pkill -9 ibofos
 sleep 2
 
 if [ ! -f "$ibofos" ]; then
