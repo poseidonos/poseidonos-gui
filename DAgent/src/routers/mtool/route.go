@@ -37,7 +37,7 @@ func Route(router *gin.Engine) {
 
 	// iBoFOS
 	iBoFOS := uri.Group("/ibofos/v1")
-	iBoFOS.Use(middleware.PostInterceptor)
+	iBoFOS.Use(middleware.PostHandler)
 
 	// System
 	{
