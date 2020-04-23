@@ -22,8 +22,8 @@ go build -mod vendor -tags debug
 #go build -mod vendor -tags release
 mv cli bin/
 
-if [ -d ../../ibofos ]; then
-	cp bin/cli ../../ibofos/tool/cli_client/
-fi
+#if [ -d ../../ibofos ]; then
+#	cp bin/cli ../../ibofos/tool/cli_client/
+#fi
 
 #sudo ./CLI
