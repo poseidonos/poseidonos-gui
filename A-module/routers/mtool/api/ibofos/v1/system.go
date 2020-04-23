@@ -31,7 +31,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 		res.Result.Status.Code = 0
 	}
 
-	log.Infof("RuniBoFOS result : ", res.Result.Status.Code)
+	log.Info("RuniBoFOS result : ", res.Result.Status.Code)
 
 	return iBoFRequest, res, err
 }
