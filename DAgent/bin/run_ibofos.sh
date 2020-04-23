@@ -10,10 +10,8 @@ SPDK_DIR=/root/workspace/ibofos/lib/spdk-19.10
 TRANSPORT=TCP
 IP=10.100.11.7
 
-echo "kill ibofos now..."
 pgrep ibofos | xargs kill -9
 sleep 2
-echo "ibofos killed.."
 
 if [ ! -f "$ibofos" ]; then
         echo "fail to find $ibofos. run make prior to run run_ibofos.sh"
@@ -34,5 +32,3 @@ else
 	sudo $SPDK_DIR/scripts/rpc.py nvmf_subsystem_add_listener nqn.2019-04.ibof:subsystem1 -t $TRANSPORT -a $IP -s 1158
 	sudo $SPDK_DIR/scripts/rpc.py nvmf_get_subsystems
 fi
-echo "finish run_ibofos.sh"
-
