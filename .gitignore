@@ -1,10 +1,10 @@
 **/.idea
 **/.DS_Store
 **/pkg
-DAgent
+/DAgent/bin/DAgent
 core
 DAgent.exe
 VSAMap.0.bin
 ibofos.log
 StripeMap.bin
-cli
+/cli/bin/cli
