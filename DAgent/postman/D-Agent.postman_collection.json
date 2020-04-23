@@ -982,7 +982,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/runibofos",
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -993,7 +993,7 @@
 								"ibofos",
 								"v1",
 								"system",
-								"runibofos"
+								"ibofos"
 							]
 						}
 					},
@@ -1046,7 +1046,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/exitibofos",
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1057,7 +1057,7 @@
 								"ibofos",
 								"v1",
 								"system",
-								"exitibofos"
+								"ibofos"
 							]
 						}
 					},
