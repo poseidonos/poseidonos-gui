@@ -30,9 +30,6 @@ func Route(router *gin.Engine) {
 		dagent.GET("/heartbeat", dagentV1.HeartBeat)
 		dagent.GET("/statuscode", dagentV1.StatusCode)
 		dagent.DELETE("/dagent", dagentV1.KillDAgent)
-		dagent.POST("/ibofos", func(c *gin.Context) {
-			cmd(c, exec.RunIBoF)
-		})
 		dagent.DELETE("/ibofos", func(c *gin.Context) {
 			cmd(c, exec.ForceKillIbof)
 		})
