@@ -90,19 +90,19 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	defer handler.DisconnectToIBoFOS()
 
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Infof("sendIBoFCLI : %+v", iBoFRequest)
+		log.Infof("sendIBoF : %+v", iBoFRequest)
 		return model.Response{}, ErrBadReq
 	}
 
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
-	log.Infof("sendIBoFCLI : %+v", iBoFRequest)
+	log.Infof("sendIBoF : %+v", iBoFRequest)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err = handler.WriteToIBoFSocket(marshaled)
 
 	if err != nil {
-		log.Infof("sendIBoFCLI write error : %v", err)
+		log.Infof("sendIBoF write error : %v", err)
 		return model.Response{}, ErrSending
 	}
 
@@ -110,22 +110,22 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		temp, err := handler.ReadFromIBoFSocket()
 
 		if err != nil {
-			log.Infof("sendIBoFCLI read error : %v", err)
+			log.Infof("sendIBoF read error : %v", err)
 			return model.Response{}, ErrReceiving
 		} else {
-			log.Infof("Response From iBoFCLI : %s", string(temp))
+			log.Infof("Response From iBoF : %s", string(temp))
 		}
 
 		response := model.Response{}
 		err = json.Unmarshal(temp, &response)
 
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-			log.Infof("Previous CLI request's response, Wait again")
+			log.Infof("Previous request's response, Wait again")
 			continue
 		}
 
 		if err != nil {
-			log.Infof("Response CLI Unmarshal Error : %v", err)
+			log.Infof("Response Unmarshal Error : %v", err)
 			return model.Response{}, ErrJson
 
 			//} else if response.Result.Status.Code != 0 {

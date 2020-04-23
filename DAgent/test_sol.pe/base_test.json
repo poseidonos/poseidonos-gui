@@ -23,7 +23,7 @@
 					"script": {
 						"id": "0a333aec-2090-4e41-a149-9a3823470455",
 						"exec": [
-							"pm.test(\"EXITIBOFOS\", function () {\r",
+							"pm.test(\"RUNIBOFOS\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],

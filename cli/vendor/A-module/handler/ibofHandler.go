@@ -31,7 +31,7 @@ func ConnectToIBoFOS() error {
 	conn, err = net.Dial("tcp", uri)
 
 	if err != nil {
-		log.Println("ConnectToIBoFOS : ", err)
+		log.Info("ConnectToIBoFOS : ", err)
 		setting.Config.DAgentSocketAddr = "Disconnect"
 		setting.Config.IBoFOSSocketAddr = "Disconnect"
 	} else {
@@ -58,19 +58,19 @@ func ReadFromIBoFSocket() ([]byte, error) {
 	var err error
 	var buf []byte
 
-	log.Println("readFromIBoFSocket Start")
+	log.Info("readFromIBoFSocket Start")
 
 	if conn == nil {
-		log.Println("readFromIBoFSocket : Conn is nil")
+		log.Info("readFromIBoFSocket : Conn is nil")
 	} else {
 		buf = make([]byte, 4096)
 		_, err = conn.Read(buf)
 		if err != nil || err == io.EOF {
-			log.Println("readFromIBoFSocket : Message Receive Fail :", err)
+			log.Info("readFromIBoFSocket : Message Receive Fail :", err)
 			conn.Close()
 			conn = nil
 		} else {
-			log.Println("readFromIBoFSocket : Message Receive Success")
+			log.Info("readFromIBoFSocket : Message Receive Success")
 			buf = bytes.Trim(buf, "\x00")
 		}
 	}
@@ -83,7 +83,7 @@ func GetIBoFResponse() []byte {
 	case ret := <-iBoFReceiveChan:
 		return ret
 	case <-time.After(time.Second * 29):
-		log.Println("GetIBoFResponse : Timeout")
+		log.Info("GetIBoFResponse : Timeout")
 		response := model.Response{}
 		response.Rid = "timeout"
 		response.Result.Status.Code = 19000
@@ -97,16 +97,16 @@ func WriteToIBoFSocket(marshaled []byte) error {
 	var err error = nil
 	if conn == nil {
 		err = errors.New("WriteToIBoFSocket : Conn is nil")
-		log.Println(err)
+		log.Error(err)
 	} else {
 		_, err = conn.Write(marshaled)
 		if err != nil {
 			conn.Close()
 			conn = nil
-			log.Printf("WriteToIBoFSocket : Writre Fail - %s\n", err)
-			log.Printf("WriteToIBoFSocket : Conn closed\n")
+			log.Infof("WriteToIBoFSocket : Writre Fail - %s\n", err)
+			log.Infof("WriteToIBoFSocket : Conn closed\n")
 		} else {
-			log.Printf("WriteToIBoFSocket : Write Success\n")
+			log.Infof("WriteToIBoFSocket : Write Success\n")
 		}
 	}
 	return err

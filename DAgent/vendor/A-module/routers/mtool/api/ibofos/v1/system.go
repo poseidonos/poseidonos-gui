@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"A-module/log"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
 	"A-module/util"
@@ -29,6 +30,8 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 	} else {
 		res.Result.Status.Code = 0
 	}
+
+	log.Infof("RuniBoFOS result : ", res.Result.Status.Code)
 
 	return iBoFRequest, res, err
 }
