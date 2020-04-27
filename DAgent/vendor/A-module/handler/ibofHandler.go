@@ -2,33 +2,21 @@ package handler
 
 import (
 	"A-module/log"
-	_ "A-module/routers/mtool/model"
 	"A-module/setting"
 	"A-module/util"
 	"bytes"
-	_ "encoding/json"
 	"errors"
 	"io"
-	"net"
-	_ "time"
 )
 
-var conn net.Conn
-
-//var iBoFReceiveChan chan []byte
-//var bmcSendChan chan string
-//var bmcReceiveChan chan string
-
 func init() {
-	//iBoFReceiveChan = make(chan []byte, 1000)
-	//go readFromIBoFSocket()
 }
 
 func ConnectToIBoFOS() error {
 	var err error = nil
-
 	uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
-	conn, err = net.Dial("tcp", uri)
+
+	conn, err = Dial("tcp", uri)
 
 	if err != nil {
 		log.Info("ConnectToIBoFOS : ", err)

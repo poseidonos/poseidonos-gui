@@ -16,23 +16,20 @@ github.com/google/uuid
 github.com/inconshreveable/mousetrap
 # github.com/jstemmer/go-junit-report v0.9.1
 ## explicit
-# github.com/juju/errors v0.0.0-20190930114154-d42613fe1ab9
+# github.com/juju/errors v0.0.0-20200330140219-3fe23663418f
 ## explicit
 github.com/juju/errors
 # github.com/konsorten/go-windows-terminal-sequences v1.0.1
 github.com/konsorten/go-windows-terminal-sequences
-# github.com/sirupsen/logrus v1.2.0
+# github.com/sirupsen/logrus v1.5.0
 github.com/sirupsen/logrus
 # github.com/spf13/cobra v0.0.6
 ## explicit
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.3
 github.com/spf13/pflag
-# golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
-golang.org/x/crypto/ssh/terminal
 # golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a
 golang.org/x/sys/unix
-golang.org/x/sys/windows
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
 # A-module => ../A-module

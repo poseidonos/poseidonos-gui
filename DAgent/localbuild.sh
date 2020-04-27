@@ -15,7 +15,7 @@ else
 	cp -rf ../A-module ./vendor/
 fi
 
-go build -mod vendor
+go build -mod vendor -tags ssloff
 mv DAgent ./bin
 
 if [ ! -d doc ]; then
