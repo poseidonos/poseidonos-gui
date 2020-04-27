@@ -18,6 +18,4 @@ func CheckHeader(ctx *gin.Context) {
 	if ts == "" {
 		api.BadRequest(ctx, model.Response{}, 10250)
 	}
-
-	ctx.Next()
 }

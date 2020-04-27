@@ -20,10 +20,8 @@ func CheckAPIActivate(ctx *gin.Context) {
 	//	api.MakeUnauthorized(ctx, 10110)
 	//	return
 	//}
-	//ctx.Next()
 }
 
 func JWTAuth(ctx *gin.Context) {
 	// ToDo: Implement
-	ctx.Next()
 }

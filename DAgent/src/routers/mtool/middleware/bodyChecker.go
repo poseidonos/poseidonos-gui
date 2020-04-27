@@ -20,5 +20,4 @@ func CheckBody(ctx *gin.Context) {
 			return
 		}
 	}
-	ctx.Next()
 }
