@@ -22,6 +22,7 @@ var (
 	ErrReceiving = errors.New("Receiving error")
 	ErrJson      = errors.New("Json error")
 	ErrRes       = errors.New("Response error")
+	ErrConn      = errors.New("iBoF Connection Error")
 )
 
 type Requester struct {
