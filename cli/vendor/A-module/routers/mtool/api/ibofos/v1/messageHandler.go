@@ -85,7 +85,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	err := handler.ConnectToIBoFOS()
 
 	if err != nil {
-		return model.Response{}, err
+		return model.Response{}, ErrConn
 	}
 
 	defer handler.DisconnectToIBoFOS()
