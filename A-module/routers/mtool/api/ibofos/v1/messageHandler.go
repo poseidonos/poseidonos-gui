@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"sync/atomic"
+	"time"
 )
 
 const (
@@ -134,6 +135,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 		} else {
 			//ctx.JSON(http.StatusOK, &response)
+			response.LastUpdateTime = time.Now().UTC().Unix()
 			return response, nil
 		}
 	}

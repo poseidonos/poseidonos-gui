@@ -7,9 +7,10 @@ type Request struct {
 }
 
 type Response struct {
-	Rid    string `json:"rid"`
-	Result Result `json:"result"`
-	Info   Info   `json:"info"`
+	Rid            string `json:"rid"`
+	LastUpdateTime int64  `json:"lastUpdateTime"`
+	Result         Result `json:"result"`
+	Info           Info   `json:"info"`
 }
 
 type Result struct {
