@@ -22,9 +22,10 @@ func HeartBeat(ctx *gin.Context) {
 	var res model.Response
 
 	if LastAliveTime <= 0 {
-		res.Result.Status.Description = "alive"
+		res.Result.Status.Description = "One of iBoF service is dead"
 		api.BadRequest(ctx, res, 98989)
 	} else {
+		res.LastAliveTime = LastAliveTime
 		res.Result.Status.Description = "alive"
 		api.Success(ctx, res, 0)
 	}

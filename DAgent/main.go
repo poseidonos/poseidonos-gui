@@ -12,9 +12,6 @@ import (
 	"time"
 )
 
-// ToDo: Use Lorgus => https://github.com/sirupsen/llogrus
-// Log level Redefine
-
 func init() {
 	setting.LoadConfig()
 	gin.SetMode(gin.DebugMode)
