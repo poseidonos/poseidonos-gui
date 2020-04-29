@@ -18,7 +18,7 @@ else
 	cp -rf ../DAgent/src ./vendor/DAgent/
 fi
 
-go build -mod vendor -tags debug #,sslon
+go build -mod vendor -tags debug,ssloff
 #go build -mod vendor -tags release
 mv cli bin/
 
