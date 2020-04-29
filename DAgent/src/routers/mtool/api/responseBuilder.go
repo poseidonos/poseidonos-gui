@@ -25,7 +25,7 @@ func HttpResponse(c *gin.Context, res model.Response, err error) {
 		if err != nil {
 			BadRequest(c, res, 99999)
 		} else {
-			success(c, res, res.Result.Status.Code)
+			Success(c, res, res.Result.Status.Code)
 		}
 	}
 }
@@ -38,7 +38,7 @@ func BadRequest(c *gin.Context, res model.Response, code int) {
 	makeResponse(c, http.StatusBadRequest, res, code)
 }
 
-func success(c *gin.Context, res model.Response, code int) {
+func Success(c *gin.Context, res model.Response, code int) {
 	makeResponse(c, http.StatusOK, res, code)
 }
 

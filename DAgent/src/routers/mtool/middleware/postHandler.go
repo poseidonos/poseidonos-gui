@@ -2,8 +2,10 @@ package middleware
 
 import (
 	"A-module/log"
+	v1 "DAgent/src/routers/mtool/api/dagent/v1"
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type responseBody struct {
@@ -26,9 +28,19 @@ func PostHandler(ctx *gin.Context) {
 	log.Debugf("Response Header  : %v", rb.Header())
 	log.Debugf("Response Body  : %s", rb.body.String())
 
-	saveHeartBeat(rb.body)
+	updateHeartBeat(rb.body)
 }
 
-func saveHeartBeat(body *bytes.Buffer) {
-
+func updateHeartBeat(body *bytes.Buffer) {
+	v1.LastAliveTime = time.Now().UTC().Unix()
 }
+
+//{
+//"rid": "527630b1-31d5-42db-94d7-a057676faffd",
+//"result": {
+//"status": {
+//"code": 0,
+//"description": "alive"
+//}
+//}
+//}
