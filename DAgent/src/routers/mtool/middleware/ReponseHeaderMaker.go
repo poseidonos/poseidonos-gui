@@ -7,5 +7,4 @@ import (
 func ReponseHeader(ctx *gin.Context) {
 	xrid := ctx.GetHeader("X-request-Id")
 	ctx.Header("X-request-Id", xrid)
-	ctx.Header("Content-Type", "application/json; charset=utf-8")
 }
