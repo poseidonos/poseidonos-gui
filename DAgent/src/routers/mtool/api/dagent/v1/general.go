@@ -1,12 +1,12 @@
 package v1
 
 import (
+	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
 	"DAgent/src/routers/mtool/api"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 	"syscall"
 	"time"
@@ -16,12 +16,27 @@ var LastAliveTime int64
 
 const MAX_AGE int64 = 4 // 4sec
 
-func HeartBeat(ctx *gin.Context) {
-	updateLastAliveTime()
+func HeartBeat(xrId string, ctx *gin.Context) {
 
 	var res model.Response
 
-	if LastAliveTime <= 0 {
+	//need
+	//boolean?
+	//lasttime, status = lastAliveTime()
+	//res.LastAliveTime = Lasttime
+	//if status {
+	//	res.Result.Status.Description = "alive"
+	//	api.Success(ctx, res, 0)
+	//} else {
+	//	res.Result.Status.Description = "One of iBoF service is dead"
+	//	api.BadRequest(ctx, res, 98989)
+	//}
+
+	if lastAliveTime(xrId) <= 0 {
+		log.Debugf("res.LastAliveTime  : %d", res.LastAliveTime)
+		log.Debugf("LastAliveTime  : %d", LastAliveTime)
+
+		res.LastAliveTime = LastAliveTime
 		res.Result.Status.Description = "One of iBoF service is dead"
 		api.BadRequest(ctx, res, 98989)
 	} else {
@@ -31,13 +46,13 @@ func HeartBeat(ctx *gin.Context) {
 	}
 }
 
-func updateLastAliveTime() {
+func lastAliveTime(xrId string) int64 {
 	if LastAliveTime+MAX_AGE < time.Now().UTC().Unix() {
-		uuid, _ := uuid.NewUUID()
-		xrId := uuid.String()
 		param := model.DeviceParam{}
 		_, res, _ := iBoFOSV1.IBoFOSInfo(xrId, param)
-		LastAliveTime = res.LastAliveTime
+		return res.LastAliveTime
+	} else {
+		return LastAliveTime
 	}
 }
 

@@ -27,7 +27,9 @@ func Route(router *gin.Engine) {
 	// D-Agent
 	dagent := uri.Group("/dagent/v1")
 	{
-		dagent.GET("/heartbeat", dagentV1.HeartBeat)
+		dagent.GET("/heartbeat", func(c *gin.Context) {
+			dagentV1.HeartBeat(xrId(c), c)
+		})
 		dagent.GET("/statuscode", dagentV1.StatusCode)
 		dagent.DELETE("/dagent", dagentV1.KillDAgent)
 		dagent.DELETE("/ibofos", func(c *gin.Context) {

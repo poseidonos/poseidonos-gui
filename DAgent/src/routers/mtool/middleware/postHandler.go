@@ -19,7 +19,7 @@ func (w responseBody) Write(b []byte) (int, error) {
 }
 
 func PostHandler(ctx *gin.Context) {
-	// Gin does not save rb rb, so we write rb rb manually
+	// Gin does not save rb, so we write rb rb manually
 	rb := &responseBody{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
 	ctx.Writer = rb
 
@@ -28,10 +28,10 @@ func PostHandler(ctx *gin.Context) {
 	log.Debugf("Response Header  : %v", rb.Header())
 	log.Debugf("Response Body  : %s", rb.body.String())
 
-	updateHeartBeat(rb.body)
+	updateHeartBeat()
 }
 
-func updateHeartBeat(body *bytes.Buffer) {
+func updateHeartBeat() {
 	v1.LastAliveTime = time.Now().UTC().Unix()
 }
 
