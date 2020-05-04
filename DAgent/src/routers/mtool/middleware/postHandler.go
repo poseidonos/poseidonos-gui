@@ -25,7 +25,7 @@ func PostHandler(ctx *gin.Context) {
 	ctx.Writer = rb
 
 	ctx.Next()
-	log.Debugf("Response Status Code : %s", string(rb.Status()))
+	log.Debugf("Response Status Code : %d", rb.Status())
 	log.Debugf("Response Header  : %v", rb.Header())
 	log.Debugf("Response Body  : %s", rb.body.String())
 
