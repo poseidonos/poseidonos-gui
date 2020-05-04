@@ -33,13 +33,16 @@ func HeartBeat(xrId string, ctx *gin.Context) {
 	//}
 
 	if lastAliveTime(xrId) <= 0 {
-		log.Debugf("res.LastAliveTime  : %d", res.LastAliveTime)
-		log.Debugf("LastAliveTime  : %d", LastAliveTime)
+		log.Debugf("1 res.LastAliveTime  : %d", res.LastAliveTime)
+		log.Debugf("1 LastAliveTime  : %d", LastAliveTime)
 
 		res.LastAliveTime = LastAliveTime
 		res.Result.Status.Description = "One of iBoF service is dead"
 		api.BadRequest(ctx, res, 98989)
 	} else {
+		log.Debugf("2 res.LastAliveTime  : %d", res.LastAliveTime)
+		log.Debugf("2 LastAliveTime  : %d", LastAliveTime)
+
 		res.LastAliveTime = LastAliveTime
 		res.Result.Status.Description = "alive"
 		api.Success(ctx, res, 0)
