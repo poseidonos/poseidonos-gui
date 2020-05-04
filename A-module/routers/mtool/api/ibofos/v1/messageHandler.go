@@ -135,7 +135,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 		} else {
 			//ctx.JSON(http.StatusOK, &response)
-			response.LastAliveTime = time.Now().UTC().Unix()
+			response.LastSuccessTime = time.Now().UTC().Unix()
 			return response, nil
 		}
 	}

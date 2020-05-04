@@ -9,40 +9,40 @@ import (
 	"net/http"
 )
 
-func HttpResponse(c *gin.Context, res model.Response, err error) {
+func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {
 	case iBoFOSV1.ErrBadReq:
-		BadRequest(c, res, 12000)
+		BadRequest(ctx, res, 12000)
 	case iBoFOSV1.ErrSending:
-		BadRequest(c, res, 19002)
+		BadRequest(ctx, res, 19002)
 	case iBoFOSV1.ErrJson:
-		BadRequest(c, res, 12310)
+		BadRequest(ctx, res, 12310)
 	case iBoFOSV1.ErrConn:
-		BadRequest(c, res, 88888)
+		BadRequest(ctx, res, 88888)
 	case iBoFOSV1.ErrRes:
-		BadRequest(c, res, res.Result.Status.Code)
+		BadRequest(ctx, res, res.Result.Status.Code)
 	default:
 		if err != nil {
-			BadRequest(c, res, 99999)
+			BadRequest(ctx, res, 99999)
 		} else {
-			Success(c, res, res.Result.Status.Code)
+			Success(ctx, res, res.Result.Status.Code)
 		}
 	}
 }
 
-func Unauthorized(c *gin.Context, res model.Response, code int) {
-	makeResponse(c, http.StatusUnauthorized, res, code)
+func Unauthorized(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusUnauthorized, res, code)
 }
 
-func BadRequest(c *gin.Context, res model.Response, code int) {
-	makeResponse(c, http.StatusBadRequest, res, code)
+func BadRequest(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusBadRequest, res, code)
 }
 
-func Success(c *gin.Context, res model.Response, code int) {
-	makeResponse(c, http.StatusOK, res, code)
+func Success(ctx *gin.Context, res model.Response, code int) {
+	makeResponse(ctx, http.StatusOK, res, code)
 }
 
-func makeResponse(c *gin.Context, httpStatus int, res model.Response, code int) {
+func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
 	res.Result.Status.Code = code
 
 	if res.Result.Status.Description == "" {
@@ -50,7 +50,7 @@ func makeResponse(c *gin.Context, httpStatus int, res model.Response, code int) 
 	}
 
 	log.Infof("makeResponse : %+v", res)
-	c.AbortWithStatusJSON(httpStatus, &res)
+	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
 
 func description(code int) string {

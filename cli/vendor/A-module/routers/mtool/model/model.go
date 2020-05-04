@@ -8,7 +8,7 @@ type Request struct {
 
 type Response struct {
 	Rid            string `json:"rid"`
-	LastAliveTime int64  `json:"lastAliveTime"`
+	LastSuccessTime int64  `json:"lastAliveTime"`
 	Result         Result `json:"result"`
 	Info           Info   `json:"info"`
 }
