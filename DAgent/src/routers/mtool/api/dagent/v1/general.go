@@ -4,7 +4,7 @@ import (
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
-	"DAgent/src/routers/mtool/api"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"syscall"
@@ -15,19 +15,22 @@ var LastSuccessTime int64
 
 const MAX_AGE int64 = 4 // 4sec
 
-func HeartBeat(xrId string, ctx *gin.Context) {
-
+func HeartBeat(xrId string) (model.Response, error) {
 	var res model.Response
 	successTime := updatSuccessTime(xrId)
+
 	if successTime <= 0 {
+		err := errors.New("One of iBoF service is dead")
 		res.LastSuccessTime = LastSuccessTime
-		res.Result.Status.Description = "One of iBoF service is dead"
-		api.BadRequest(ctx, res, 98989)
+		res.Result.Status.Code = 98989
+		res.Result.Status.Description = err.Error()
+		return res, err
 	} else {
 		LastSuccessTime = successTime
 		res.LastSuccessTime = LastSuccessTime
+		res.Result.Status.Code = 0
 		res.Result.Status.Description = "alive"
-		api.Success(ctx, res, 0)
+		return res, nil
 	}
 }
 
