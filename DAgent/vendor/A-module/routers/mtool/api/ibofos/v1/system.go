@@ -6,6 +6,7 @@ import (
 	"A-module/setting"
 	"A-module/util"
 	"fmt"
+	"time"
 )
 
 func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -29,6 +30,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 		res.Result.Status.Code = 11000
 	} else {
 		res.Result.Status.Code = 0
+		res.LastSuccessTime = time.Now().UTC().Unix()
 	}
 
 	log.Info("RuniBoFOS result : ", res.Result.Status.Code)

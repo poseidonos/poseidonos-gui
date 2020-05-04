@@ -23,7 +23,7 @@ func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 		BadRequest(ctx, res, res.Result.Status.Code)
 	default:
 		if err != nil {
-			BadRequest(ctx, res, 99999)
+			BadRequest(ctx, res, res.Result.Status.Code)
 		} else {
 			Success(ctx, res, res.Result.Status.Code)
 		}
