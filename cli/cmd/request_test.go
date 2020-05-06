@@ -40,7 +40,7 @@ func TestSend(t *testing.T) {
 			} else if test[0] == "create_vol" {
 
 				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
-				cmd.PersistentFlags().IntVar(&size, "size", 4194304, "")
+				cmd.PersistentFlags().StringVar(&size, "size", "4194304", "")
 			} else if test[0] == "mount_vol" {
 
 				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
