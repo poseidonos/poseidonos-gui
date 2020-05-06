@@ -7,10 +7,10 @@ type Request struct {
 }
 
 type Response struct {
-	Rid            string `json:"rid"`
+	Rid             string `json:"rid"`
 	LastSuccessTime int64  `json:"lastSuccessTime"`
-	Result         Result `json:"result"`
-	Info           Info   `json:"info"`
+	Result          Result `json:"result"`
+	Info            Info   `json:"info"`
 }
 
 type Result struct {
@@ -61,7 +61,7 @@ type DeviceParam struct {
 type VolumeParam struct {
 	Name    string `json:"name,omitempty"`
 	NewName string `json:"newname,omitempty"`
-	Size    int    `json:"size,omitempty"`
-	Maxiops int    `json:"maxiops,omitempty"`
-	Maxbw   int    `json:"maxbw,omitempty"`
+	Size    uint64 `json:"size,omitempty"`
+	Maxiops uint32 `json:"maxiops,omitempty"`
+	Maxbw   uint32 `json:"maxbw,omitempty"`
 }

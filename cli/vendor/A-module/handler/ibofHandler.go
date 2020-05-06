@@ -51,7 +51,7 @@ func ReadFromIBoFSocket() ([]byte, error) {
 	if conn == nil {
 		log.Info("readFromIBoFSocket : Conn is nil")
 	} else {
-		buf = make([]byte, 4096)
+		buf = make([]byte, 4096*10)
 		_, err = conn.Read(buf)
 		if err != nil || err == io.EOF {
 			log.Info("readFromIBoFSocket : Message Receive Fail :", err)

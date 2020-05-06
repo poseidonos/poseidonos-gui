@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"A-module/errors"
+	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
 	"encoding/json"
 	"fmt"
+	"github.com/c2h5oh/datasize"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
@@ -19,9 +21,9 @@ var newName string
 var level string
 
 var fttype int
-var size int
-var maxiops int
-var maxbw int
+var size string
+var maxiops uint32
+var maxbw uint32
 
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_array": iBoFOSV1.CreateArray,
@@ -163,9 +165,9 @@ func init() {
 	commandCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-p unvme-ns-3\"")
 	commandCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
 	commandCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
-	commandCmd.PersistentFlags().IntVar(&size, "size", 0, "set size \"-s 4194304\"")
-	commandCmd.PersistentFlags().IntVar(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
-	commandCmd.PersistentFlags().IntVar(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
+	commandCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"-size 4194304\"")
+	commandCmd.PersistentFlags().Uint32Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
+	commandCmd.PersistentFlags().Uint32Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
 }
 
@@ -252,7 +254,13 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.VolumeParam{}
 		param.Name = name
-		param.Size = size
+
+		var v datasize.ByteSize
+		err := v.UnmarshalText([]byte(size))
+		if err != nil {
+			log.Info("invalid data metric ", err)
+		}
+		param.Size = uint64(v)
 
 		if cmd.PersistentFlags().Changed("maxiops") {
 			param.Maxiops = maxiops
