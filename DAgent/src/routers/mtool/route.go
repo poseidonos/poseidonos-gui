@@ -1,7 +1,7 @@
 package mtool
 
 import (
-	exec "A-module/routers/mtool/api/exec"
+	"A-module/routers/mtool/api/exec"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"DAgent/src/routers/mtool/api"
@@ -22,7 +22,7 @@ func Route(router *gin.Engine) {
 	//uri.Use(middleware.CheckAPIActivate())
 	uri.Use(middleware.CheckHeader)
 	uri.Use(middleware.CheckBody)
-	uri.Use(middleware.ReponseHeader)
+	uri.Use(middleware.ResponseHeader)
 
 	// D-Agent
 	dagent := uri.Group("/dagent/v1")
