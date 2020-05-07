@@ -1,8 +1,8 @@
 package util
 
 import (
-	"A-module/setting"
 	"A-module/log"
+	"A-module/setting"
 )
 
 func PrintCurrentServerStatus() {

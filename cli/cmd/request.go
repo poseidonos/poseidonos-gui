@@ -176,11 +176,11 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 	var res model.Response
 	var err error
 	var xrId string
-	uuid, err := uuid.NewUUID()
+	newUUID, err := uuid.NewUUID()
 	command := args[0]
 
 	if err == nil {
-		xrId = uuid.String()
+		xrId = newUUID.String()
 	}
 
 	InitConnect()
