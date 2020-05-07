@@ -39,3 +39,7 @@ func RenameVolume(xrId string, param interface{}) (model.Request, model.Response
 func ResizeVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("RESIZEVOLUME")
 }
+
+func GetMaxVolumeCount(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("GETMAXVOLUMECOUNT")
+}

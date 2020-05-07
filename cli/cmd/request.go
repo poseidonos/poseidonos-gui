@@ -67,6 +67,7 @@ var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"update_vol_qos": iBoFOSV1.UpdateVolumeQoS,
 	"rename_vol":     iBoFOSV1.RenameVolume,
 	//"resize_vol":     iBoFOSV1.ResizeVolume,
+        "get_max_vol_cnt": iBoFOSV1.GetMaxVolumeCount,
 }
 
 var commandCmd = &cobra.Command{
