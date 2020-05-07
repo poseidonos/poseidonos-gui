@@ -45,17 +45,17 @@ func updatSuccessTime(xrId string) int64 {
 }
 
 func StatusCode(ctx *gin.Context) {
-	response := model.Response{}
-	response.Result.Status.Code = 0
-	response.Result.Status.Description = "Success"
-	response.Result.Data = setting.StatusList
-	ctx.JSON(http.StatusOK, &response)
+	res := model.Response{}
+	res.Result.Status.Code = 0
+	res.Result.Status.Description = "Success"
+	res.Result.Data = setting.StatusList
+	ctx.JSON(http.StatusOK, &res)
 }
 
-func KillDAgent(ctx *gin.Context) {
-	response := model.Response{}
-	response.Result.Status.Code = 0
-	response.Result.Status.Description = "Success"
-	ctx.JSON(http.StatusOK, &response)
+func KillDAgent(xrId string) (model.Response, error) {
+	res := model.Response{}
+	res.Result.Status.Code = 0
+	res.Result.Status.Description = "Success"
 	syscall.Kill(syscall.Getpid(), syscall.SIGINT)
+	return res, nil
 }
