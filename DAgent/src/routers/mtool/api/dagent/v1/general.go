@@ -16,22 +16,22 @@ var LastSuccessTime int64
 const MAXAGE int64 = 4 // 4sec
 
 func HeartBeat(xrId string) (model.Response, error) {
+	var err error
 	var res model.Response
 	successTime := updateSuccessTime(xrId)
 
 	if successTime <= 0 {
-		err := errors.New("one of iBoF service is dead")
-		res.LastSuccessTime = LastSuccessTime
+		err = errors.New("one of iBoF service is dead")
 		res.Result.Status.Code = 98989
 		res.Result.Status.Description = err.Error()
-		return res, err
 	} else {
 		LastSuccessTime = successTime
-		res.LastSuccessTime = LastSuccessTime
 		res.Result.Status.Code = 0
 		res.Result.Status.Description = "alive"
-		return res, nil
 	}
+
+	res.LastSuccessTime = LastSuccessTime
+	return res, err
 }
 
 func updateSuccessTime(xrId string) int64 {
