@@ -140,5 +140,6 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		}
 	}
 
-	return model.Response{}, nil
+	// Unreachable code....
+	// return model.Response{}, nil
 }
