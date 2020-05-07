@@ -137,7 +137,7 @@ func dagentLogic(ctx *gin.Context, f func(string) (model.Response, error)) {
 	api.HttpResponse(ctx, res, err)
 }
 
-func amoduleLogic(ctxtx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
+func amoduleLogic(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
 	param = req.Param
