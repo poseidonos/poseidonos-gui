@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"A-module/errors"
-	"A-module/log"
 	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
 	"A-module/routers/mtool/model"
 	"A-module/setting"
@@ -258,7 +257,8 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		var v datasize.ByteSize
 		err := v.UnmarshalText([]byte(size))
 		if err != nil {
-			log.Info("invalid data metric ", err)
+			fmt.Println("invalid data metric ", err)
+			return res, err
 		}
 		param.Size = uint64(v)
 
