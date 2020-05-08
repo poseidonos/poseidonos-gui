@@ -61,7 +61,7 @@ func loadSeverConfig(filename string) {
 func loadStatusCode(filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Infof("LoadStatusList : %v\n", err)
+		log.Fatalf("LoadStatusList : %v\n", err)
 	} else {
 		err = json.Unmarshal(file, &StatusList)
 		if err != nil {
