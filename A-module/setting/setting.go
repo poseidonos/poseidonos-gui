@@ -78,7 +78,7 @@ func loadStatusCode() {
 	}
 }
 
-func GetStatusDesc(code int) string {
+func StatusDesc(code int) string {
 	desc, exist := StatusMap[code]
 	if exist {
 		return desc
