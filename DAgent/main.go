@@ -13,9 +13,9 @@ import (
 )
 
 func init() {
+	log.SetDebugMode()
 	setting.LoadConfig()
 	gin.SetMode(gin.DebugMode)
-	log.SetDebugMode()
 }
 
 func main() {
