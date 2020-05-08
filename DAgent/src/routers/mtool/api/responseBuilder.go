@@ -22,16 +22,20 @@ func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	case iBoFOSV1.ErrRes:
 		BadRequest(ctx, res, res.Result.Status.Code)
 	default:
-		if err != nil {
-			BadRequest(ctx, res, res.Result.Status.Code)
-		} else {
-			Success(ctx, res, res.Result.Status.Code)
-		}
+		makeResponseWithErr(ctx, res, res.Result.Status.Code, err)
 	}
 }
 
 func Unauthorized(ctx *gin.Context, res model.Response, code int) {
 	makeResponse(ctx, http.StatusUnauthorized, res, code)
+}
+
+func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err error) {
+	if err != nil || res.Result.Status.Code != 0 {
+		BadRequest(ctx, res, res.Result.Status.Code)
+	} else {
+		Success(ctx, res, res.Result.Status.Code)
+	}
 }
 
 func BadRequest(ctx *gin.Context, res model.Response, code int) {
