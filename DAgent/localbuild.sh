@@ -17,6 +17,7 @@ fi
 
 go build -mod vendor -tags ssloff
 mv DAgent ./bin
+cp statuscode.json ./bin
 
 if [ ! -d doc ]; then
     mkdir doc
