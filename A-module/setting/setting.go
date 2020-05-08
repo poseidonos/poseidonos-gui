@@ -38,12 +38,11 @@ func init() {
 }
 
 func LoadConfig() {
-	loadSeverConfig()
-	loadStatusCode()
+	loadSeverConfig("config.yaml")
+	loadStatusCode("statuscode.json")
 }
 
-func loadSeverConfig() {
-	filename := "config.yaml"
+func loadSeverConfig(filename string) {
 	file, err := ioutil.ReadFile(filename)
 
 	if err != nil {
@@ -59,8 +58,7 @@ func loadSeverConfig() {
 	}
 }
 
-func loadStatusCode() {
-	filename := "statuscode.json"
+func loadStatusCode(filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Infof("LoadStatusList : %v\n", err)
