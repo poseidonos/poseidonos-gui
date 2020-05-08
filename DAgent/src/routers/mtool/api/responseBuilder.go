@@ -46,13 +46,9 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	res.Result.Status.Code = code
 
 	if res.Result.Status.Description == "" {
-		res.Result.Status.Description = description(code)
+		res.Result.Status.Description = setting.StatusDesc(code)
 	}
 
 	log.Infof("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
-}
-
-func description(code int) string {
-	return setting.StatusMap[code]
 }
