@@ -85,7 +85,6 @@ array      : create_array     : -b [buffer devs] -d [data devs] -s [spare devs]
 
 device     : scan_dev         : not needed 
            : list_dev         : not needed
-           : attach_dev       : TBA 
            : detach_dev       : -n [dev name]
            : add_dev          : -s [spare devs]
            : remove_dev       : -n [dev name]
@@ -101,6 +100,7 @@ system     : run_ibofos       : not needed
            : stop_rebuilding  : not needed
            : set_log_level"   : --level [log level]
            : apply_log_filter : not needed
+           : detach_dev       : -n [dev name]
            : wbt              : not needed
            : list_wbt         : not needed
 
