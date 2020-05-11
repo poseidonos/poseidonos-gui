@@ -34,8 +34,6 @@ var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Re
 var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"scan_dev":         iBoFOSV1.ScanDevice,
 	"list_dev":         iBoFOSV1.ListDevice,
-	"attach_dev":       iBoFOSV1.AttachDevice,
-	"detach_dev":       iBoFOSV1.DetachDevice,
 	"add_dev":          iBoFOSV1.AddDevice,
 	"remove_dev":       iBoFOSV1.RemoveDevice,
 	"start_monitoring": iBoFOSV1.StartDeviceMonitoring,
@@ -44,6 +42,7 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
+	"detach_dev":       iBoFOSV1.DetachDevice,
 	"exit_ibofos":      iBoFOSV1.ExitiBoFOS,
 	"run_ibofos":       iBoFOSV1.RuniBoFOS,
 	"info":             iBoFOSV1.IBoFOSInfo,

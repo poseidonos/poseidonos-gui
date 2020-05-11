@@ -63,6 +63,9 @@ func Route(router *gin.Engine) {
 		iBoFOS.DELETE("/system/mount", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.UnmountiBoFOS, param)
 		})
+		iBoFOS.DELETE("/system/disk/", func(ctx *gin.Context) {
+			amoduleLogic(ctx, iBoFOSV1.DetachDevice, param)
+		})
 	}
 
 	// Device
@@ -75,11 +78,11 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/device/scan", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.ScanDevice, param)
 		})
-		iBoFOS.POST("/device/attach", func(ctx *gin.Context) {
-			amoduleLogic(ctx, iBoFOSV1.AttachDevice, param)
+		iBoFOS.POST("/device/spare", func(ctx *gin.Context) {
+			amoduleLogic(ctx, iBoFOSV1.AddDevice, param)
 		})
-		iBoFOS.DELETE("/device/detach", func(ctx *gin.Context) {
-			amoduleLogic(ctx, iBoFOSV1.DetachDevice, param)
+		iBoFOS.DELETE("/device/spare", func(ctx *gin.Context) {
+			amoduleLogic(ctx, iBoFOSV1.RemoveDevice, param)
 		})
 	}
 

@@ -73,3 +73,7 @@ func ListWBT(xrId string, param interface{}) (model.Request, model.Response, err
 func DoGC(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("DOGC")
 }
+
+func DetachDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Delete("DETACHDEVICE")
+}
