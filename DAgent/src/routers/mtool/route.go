@@ -78,10 +78,10 @@ func Route(router *gin.Engine) {
 		iBoFOS.GET("/device/scan", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.ScanDevice, param)
 		})
-		iBoFOS.POST("/device/spare", func(ctx *gin.Context) {
+		iBoFOS.POST("/device", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.AddDevice, param)
 		})
-		iBoFOS.DELETE("/device/spare", func(ctx *gin.Context) {
+		iBoFOS.DELETE("/device", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.RemoveDevice, param)
 		})
 	}
