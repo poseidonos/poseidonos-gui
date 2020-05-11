@@ -120,6 +120,9 @@ func Route(router *gin.Engine) {
 		iBoFOS.DELETE("/volume", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.DeleteVolume, param)
 		})
+		iBoFOS.GET("/volume/maxcount", func(ctx *gin.Context) {
+			amoduleLogic(ctx, iBoFOSV1.GetMaxVolumeCount, param)
+		})
 		iBoFOS.POST("/volume/mount", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.MountVolume, param)
 		})
