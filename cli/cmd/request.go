@@ -21,8 +21,8 @@ var level string
 
 var fttype int
 var size string
-var maxiops uint32
-var maxbw uint32
+var maxiops uint64
+var maxbw uint64
 
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_array": iBoFOSV1.CreateArray,
@@ -165,8 +165,8 @@ func init() {
 	commandCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
 	commandCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
 	commandCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"-size 4194304\"")
-	commandCmd.PersistentFlags().Uint32Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
-	commandCmd.PersistentFlags().Uint32Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
+	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
+	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
 }
 
@@ -252,16 +252,19 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 	} else if volumeExists {
 
 		param := model.VolumeParam{}
-		param.Name = name
-
-		var v datasize.ByteSize
-		err := v.UnmarshalText([]byte(size))
-		if err != nil {
-			fmt.Println("invalid data metric ", err)
-			return res, err
+		
+		if cmd.PersistentFlags().Changed("name") {
+			param.Name = name
 		}
-		param.Size = uint64(v)
-
+		if cmd.PersistentFlags().Changed("size") {
+			var v datasize.ByteSize
+			err := v.UnmarshalText([]byte(size))
+			if err != nil {
+				fmt.Println("invalid data metric ", err)
+				return res, err
+			}
+			param.Size = uint64(v)
+		}
 		if cmd.PersistentFlags().Changed("maxiops") {
 			param.Maxiops = maxiops
 		}
@@ -271,8 +274,12 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("newname") {
 			param.NewName = newName
 		}
-
-		req, res, err = VolumeCommand[command](xrId, param)
+		
+		if param == (model.VolumeParam{}) {
+			req, res, err = VolumeCommand[command](xrId, nil)
+		} else {
+			req, res, err = VolumeCommand[command](xrId, param)
+		}
 	}
 
 	if err != nil {

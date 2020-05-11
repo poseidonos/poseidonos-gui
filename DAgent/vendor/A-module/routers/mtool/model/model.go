@@ -65,6 +65,6 @@ type VolumeParam struct {
 	Name    string `json:"name,omitempty"`
 	NewName string `json:"newname,omitempty"`
 	Size    uint64 `json:"size,omitempty"`
-	Maxiops uint32 `json:"maxiops,omitempty"`
-	Maxbw   uint32 `json:"maxbw,omitempty"`
+	Maxiops uint64 `json:"maxiops,omitempty"`
+	Maxbw   uint64 `json:"maxbw,omitempty"`
 }
