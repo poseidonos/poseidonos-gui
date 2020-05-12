@@ -253,18 +253,16 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.VolumeParam{}
 		
-		if cmd.PersistentFlags().Changed("name") {
-			param.Name = name
+		param.Name = name
+		
+		var v datasize.ByteSize
+		err := v.UnmarshalText([]byte(size))
+		if err != nil {
+			fmt.Println("invalid data metric ", err)
+			return res, err
 		}
-		if cmd.PersistentFlags().Changed("size") {
-			var v datasize.ByteSize
-			err := v.UnmarshalText([]byte(size))
-			if err != nil {
-				fmt.Println("invalid data metric ", err)
-				return res, err
-			}
-			param.Size = uint64(v)
-		}
+		param.Size = uint64(v)
+	
 		if cmd.PersistentFlags().Changed("maxiops") {
 			param.Maxiops = maxiops
 		}
