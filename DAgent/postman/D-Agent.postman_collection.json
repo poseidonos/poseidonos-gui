@@ -1465,6 +1465,214 @@
 					]
 				},
 				{
+					"name": "ADD DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "60463924-005a-4d53-b46f-9d4b5a3f27b4",
+								"exec": [
+									"pm.test(\"ATTACH DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/attach",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"attach"
+							]
+						},
+						"description": "Response Sample\n\n```json\nTBD\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "REMOVE DEVICE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e80e2c9-9d02-4334-b4ca-4b91574e5d44",
+								"exec": [
+									"pm.test(\"DETACH DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"device"
+							]
+						},
+						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
+					},
+					"response": [
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/device/detach",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"device",
+										"detach"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "06cdfc9f-bceb-41ef-8324-468696b14763"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 May 2020 10:22:47 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "280"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"06cdfc9f-bceb-41ef-8324-468696b14763\",\n    \"lastSuccessTime\": 1588933367,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2417,\n            \"description\": \"an error occurred during DETACHDEVICE\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 0\n    }\n}"
+						}
+					]
+				},
+				{
 					"name": "LIST DEVICE",
 					"event": [
 						{
@@ -2483,7 +2691,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"fea9d5f8-9e7e-4360-9a58-f09898b5af90\",\n    \"lastSuccessTime\": 1588934236,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2500,\n            \"description\": \"2500\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 8388608\n    }\n}"
+							"body": "{\n    \"rid\": \"fea9d5f8-9e7e-4360-9a58-f09898b5af90\",\n    \"lastSuccessTime\": 1588934236,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 500000,\n            \"description\": \"2500\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 8388608\n    }\n}"
 						},
 						{
 							"name": "Fail - Array is not created",
@@ -2552,7 +2760,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"8f97c091-fd8f-4d6f-92bb-c27935c54d65\",\n    \"lastSuccessTime\": 1588934330,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2503,\n            \"description\": \"2503\"\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"8f97c091-fd8f-4d6f-92bb-c27935c54d65\",\n    \"lastSuccessTime\": 1588934330,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 500000,\n            \"description\": \"2503\"\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
 						}
 					]
 				},
@@ -3667,148 +3875,6 @@
 					]
 				},
 				{
-					"name": "GETMAXVOLUMECOUNT",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "d567309b-b463-4505-9790-485e6659d7b4",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "2cb4d902-74db-48f5-a335-86260ed3ab2f",
-								"exec": [
-									"pm.test(\"LIST VOLUME\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/maxcount",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"volume",
-								"maxcount"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/maxcount",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"ibofos",
-										"v1",
-										"volume",
-										"maxcount"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "9b40da6f-4512-40aa-b141-901698991d70"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 11 May 2020 05:36:10 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "258"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"9b40da6f-4512-40aa-b141-901698991d70\",\n    \"lastSuccessTime\": 1589175370,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"count\": \"256\"\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						}
-					]
-				},
-				{
 					"name": "MOUNT VOLUME",
 					"event": [
 						{
@@ -4431,282 +4497,6 @@
 							"body": "{\n    \"rid\": \"1aa7f401-1851-44da-ba74-4b6c6cd4f770\",\n    \"lastSuccessTime\": 1588933326,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 0\n    }\n}"
 						}
 					]
-				},
-				{
-					"name": "DETACH DEVICE",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "3e80e2c9-9d02-4334-b4ca-4b91574e5d44",
-								"exec": [
-									"pm.test(\"DETACH DEVICE\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
-						},
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/disk",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"system",
-								"disk"
-							]
-						},
-						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
-					},
-					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/mtool/api/ibofos/v1/device/detach",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"ibofos",
-										"v1",
-										"device",
-										"detach"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "06cdfc9f-bceb-41ef-8324-468696b14763"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 08 May 2020 10:22:47 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "280"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"06cdfc9f-bceb-41ef-8324-468696b14763\",\n    \"lastSuccessTime\": 1588933367,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2417,\n            \"description\": \"an error occurred during DETACHDEVICE\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 0\n    }\n}"
-						}
-					]
-				},
-				{
-					"name": "ADD DEVICE",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "d376d140-d500-4e1f-81eb-0fec49fc45af",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "3da861b5-6716-4303-ad3d-6d2c608df476",
-								"exec": [
-									"pm.test(\"DETACH DEVICE\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"spare\": \"intel-unvmens-0\"\n    }\n}"
-						},
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/device",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"device"
-							]
-						},
-						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
-					},
-					"response": []
-				},
-				{
-					"name": "REMOVE DEVICE",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "340fd1ad-2b8d-48b0-8767-478241586f33",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "40e89df6-ebe5-4284-97e8-8c578159c7d5",
-								"exec": [
-									"pm.test(\"DETACH DEVICE\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"spare\": \"intel-unvmens-0\"\n    }\n}"
-						},
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/device",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"device"
-							]
-						},
-						"description": "Response Sample\n\n```json\n{\n   \"rid\": \"3980c07e-a400-475a-b06a-0cdb9080b2f0\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"success\"\n        }\n    }\n}\n```"
-					},
-					"response": []
 				}
 			],
 			"description": "The biz-logic execute in both D-Agent and iBoFOS module",
