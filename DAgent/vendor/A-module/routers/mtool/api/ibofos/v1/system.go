@@ -6,6 +6,8 @@ import (
 	"A-module/setting"
 	"A-module/util"
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -23,8 +25,9 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 	iBoFRequest.Param = param
 	res := model.Response{}
 
-	cmd := fmt.Sprintf("./run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
-	err := util.ExecCmd(cmd, false)
+	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	cmd := fmt.Sprintf("/run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
+	err := util.ExecCmd(path+cmd, false)
 
 	if err != nil {
 		res.Result.Status.Code = 11000

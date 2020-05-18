@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 var Config ConfigScheme
@@ -38,8 +40,9 @@ func init() {
 }
 
 func LoadConfig() {
-	loadSeverConfig("config.yaml")
-	loadStatusCode("statuscode.json")
+	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	loadSeverConfig(path + "/config.yaml")
+	loadStatusCode(path + "/statuscode.json")
 }
 
 func loadSeverConfig(filename string) {
