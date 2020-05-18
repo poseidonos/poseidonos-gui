@@ -9,6 +9,6 @@ else
 	sudo nohup $SCRIPT_PATH/DAgent &>> ${LOG_FILE} &
 	echo "D-Agent is running in background."
 	echo "Run Path : ${SCRIPT_PATH}"
-	echo "logfile=${LOG_FILE}"
+	echo "Log File : ${LOG_FILE}"
 fi
 
