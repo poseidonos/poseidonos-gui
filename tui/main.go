@@ -5,7 +5,7 @@
 package main
 
 import (
-	"log"
+	"A-module/log"
 	"math"
 	"time"
 
