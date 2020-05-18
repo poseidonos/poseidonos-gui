@@ -1,12 +1,14 @@
 #!/bin/bash
-logfile="/etc/ibofos/log/DAgent.log"
+SCRIPT_PATH=$(dirname $(realpath $0))
+LOG_FILE="/etc/ibofos/log/DAgent.log"
 
-if [ ! -f "DAgent" ]; then
+if [ ! -f "$SCRIPT_PATH/DAgent" ]; then
 	echo "Fail to find executable file."
 else
 	sudo pkill -9 DAgent
-	sudo nohup ./DAgent &>> ${logfile} &
+	sudo nohup $SCRIPT_PATH/DAgent &>> ${LOG_FILE} &
 	echo "D-Agent is running in background."
-	echo "logfile=${logfile}"
+	echo "Run Path : ${SCRIPT_PATH}"
+	echo "logfile=${LOG_FILE}"
 fi
 
