@@ -1,6 +1,6 @@
 #!/bin/bash
 cd cli
-./localbuild.sh
+./build_cli.sh
 cd ..
 cd DAgent
 ./localbuild.sh

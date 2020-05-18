@@ -3,9 +3,11 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
-export GOROOT="$ROOT_DIR../../lib/go"
-export GOPATH="$ROOT_DIR../"
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+if [[ -z "${GOROOT}" ]]; then
+	export GOROOT="$ROOT_DIR../../lib/go"
+	export GOPATH="$ROOT_DIR../"
+	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+fi
 
 :<<END
 wget -q --tries=1 --timeout=3 --spider http://google.com
@@ -25,3 +27,4 @@ fi
 END
 
 go build -mod vendor -tags debug,ssloff
+mv cli bin/
