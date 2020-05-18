@@ -7,5 +7,5 @@ rm -rf vendor/A-module
 cp -rf ../A-module ./vendor/
 
 go build -mod vendor -tags ssloff
-#mkdir -p ./bin
+mkdir -p ./bin
 mv tui ./bin
