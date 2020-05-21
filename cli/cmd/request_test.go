@@ -1,14 +1,25 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"testing"
 	"time"
 )
 
 func TestSend(t *testing.T) {
-	os.Chdir("../bin/")
+
+	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	cmd := "cp -rf ../bin/* " + path
+	cpCmd := exec.Command("/bin/sh", "-c", cmd)
+	err := cpCmd.Run()
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	test1 := [][]string{
 		[]string{"run_ibofos"},

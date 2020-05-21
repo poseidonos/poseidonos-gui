@@ -26,5 +26,13 @@ else
 fi
 END
 
+if [ -d "../A-module" ]; then
+	rm -rf vendor/A-module
+	cp -rf ../A-module ./vendor/
+	rm -rf vendor/DAgent
+	mkdir vendor/DAgent
+	cp -rf ../DAgent/src ./vendor/DAgent/
+fi
+
 go build -mod vendor -tags debug,ssloff
 mv cli bin/
