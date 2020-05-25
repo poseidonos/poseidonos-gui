@@ -51,8 +51,8 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"stop_rebuilding":  iBoFOSV1.StopRebuilding,
 	"set_log_level":    iBoFOSV1.SetLogLevel,
 	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
-	"wbt":              iBoFOSV1.WBT,
-	"list_wbt":         iBoFOSV1.ListWBT,
+	//"wbt":              iBoFOSV1.WBT,
+	//"list_wbt":         iBoFOSV1.ListWBT,
 	//"do_gc":            iBoFOSV1.DoGC,
 }
 
@@ -101,8 +101,6 @@ system     : run_ibofos       : not needed
            : set_log_level"   : --level [log level]
            : apply_log_filter : not needed
            : detach_dev       : -n [dev name]
-           : wbt              : not needed
-           : list_wbt         : not needed
 
 volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
@@ -131,10 +129,8 @@ Port : 18716
 	  `,
 	Args: func(cmd *cobra.Command, args []string) error {
 
-		if len(args) > 1 && args[0] != "wbt" {
+		if len(args) != 1 {
 			return errors.New("need an one msg !!!")
-		} else if len(args) == 1 && args[0] == "wbt" {
-			return errors.New("wbt msg need one more argument!!!")
 		}
 
 		_, arrayExists := ArrayCommand[args[0]]
@@ -252,9 +248,9 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 	} else if volumeExists {
 
 		param := model.VolumeParam{}
-		
+
 		param.Name = name
-		
+
 		var v datasize.ByteSize
 		err := v.UnmarshalText([]byte(size))
 		if err != nil {
@@ -262,7 +258,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			return res, err
 		}
 		param.Size = uint64(v)
-	
+
 		if cmd.PersistentFlags().Changed("maxiops") {
 			param.Maxiops = maxiops
 		}
@@ -272,7 +268,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("newname") {
 			param.NewName = newName
 		}
-		
+
 		if param == (model.VolumeParam{}) {
 			req, res, err = VolumeCommand[command](xrId, nil)
 		} else {

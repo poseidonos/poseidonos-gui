@@ -9,8 +9,8 @@ import (
 	_ "time"
 )
 
-var verbose bool
-var debug bool
+var isVerbose bool
+var isDebug bool
 var isJson bool
 var isQuiet bool
 
@@ -41,10 +41,10 @@ func Execute() {
 func init() {
 
 	if Mode == "debug" {
-		rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
-		rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set a debug mode")
-		rootCmd.PersistentFlags().BoolVarP(&isJson, "json", "j", false, "print request and response fommated json")
-		rootCmd.PersistentFlags().BoolVarP(&isQuiet, "quiet", "q", false, "set a quiet mode")
+		rootCmd.PersistentFlags().BoolVar(&isVerbose, "verbose", false, "verbose output")
+		rootCmd.PersistentFlags().BoolVar(&isDebug, "debug", false, "set a debug mode")
+		rootCmd.PersistentFlags().BoolVar(&isJson, "json", false, "print request and response fommated json")
+		rootCmd.PersistentFlags().BoolVar(&isQuiet, "quiet", false, "set a quiet mode")
 	}
 
 	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
@@ -53,9 +53,9 @@ func init() {
 
 func InitConnect() {
 
-	if verbose == true {
+	if isVerbose == true {
 		log.SetVerboseMode()
-	} else if debug == true {
+	} else if isDebug == true {
 		log.SetDebugMode()
 	}
 

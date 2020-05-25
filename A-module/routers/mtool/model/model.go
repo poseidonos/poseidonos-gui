@@ -68,3 +68,30 @@ type VolumeParam struct {
 	Maxiops uint64 `json:"maxiops,omitempty"`
 	Maxbw   uint64 `json:"maxbw,omitempty"`
 }
+
+type WBTParam struct {
+	TestName string  `json:"testname,omitempty"`
+	Argv     WBTArgv `json:"argv"`
+}
+
+type WBTArgv struct {
+	Name      string `json:"name,omitempty"`
+	Input     string `json:"input,omitempty"`
+	Output    string `json:"output,omitempty"`
+	Integrity string `json:"integrity,omitempty"`
+	Access    string `json:"access,omitempty"`
+	Operation string `json:"operation,omitempty"`
+	Rba       string `json:"rba,omitempty"`
+	Lba       string `json:"lba,omitempty"`
+	Vsid      string `json:"vsid,omitempty"`
+	Lsid      string `json:"lsid,omitempty"`
+	Offset    string `json:"offset,omitempty"`
+	Size      string `json:"size,omitempty"`
+	Count     string `json:"count,omitempty"`
+	Pattern   string `json:"pattern,omitempty"`
+	Loc       string `json:"loc,omitempty"`
+	Fd        string `json:"fd,omitempty"`
+	Dev       string `json:"dev,omitempty"`
+	Normal    string `json:"normal,omitempty"`
+	Urgent    string `json:"urgent,omitempty"`
+}

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"sync/atomic"
 	"time"
+	"bytes"
 )
 
 const (
@@ -119,7 +120,13 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		}
 
 		response := model.Response{}
-		err = json.Unmarshal(temp, &response)
+		
+		d := json.NewDecoder(bytes.NewBuffer(temp))
+		d.UseNumber()
+		
+		if err = d.Decode(&response); err != nil {
+			log.Fatal(err)
+		}
 
 		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
 			log.Infof("Previous request's response, Wait again")
