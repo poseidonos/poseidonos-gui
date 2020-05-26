@@ -23,7 +23,6 @@ func Route(router *gin.Engine) {
 	uri.Use(middleware.CheckHeader)
 	uri.Use(middleware.CheckBody)
 	uri.Use(middleware.ResponseHeader)
-
 	// D-Agent
 	dagent := uri.Group("/dagent/v1")
 	{
@@ -107,9 +106,12 @@ func Route(router *gin.Engine) {
 	// Volume
 	{
 		param := model.VolumeParam{}
-
 		iBoFOS.POST("/volume", func(ctx *gin.Context) {
-			amoduleLogic(ctx, iBoFOSV1.CreateVolume, param)
+			if multiVolRes,ok := isMultiVolume(ctx); ok {
+				implementAsyncMultiVolume(ctx, iBoFOSV1.CreateVolume, &multiVolRes,CREATE_VOLUME)
+			} else {
+				amoduleLogic(ctx, iBoFOSV1.CreateVolume, param)
+			}
 		})
 		iBoFOS.GET("/volume", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.ListVolume, param)
@@ -124,7 +126,11 @@ func Route(router *gin.Engine) {
 			amoduleLogic(ctx, iBoFOSV1.GetMaxVolumeCount, param)
 		})
 		iBoFOS.POST("/volume/mount", func(ctx *gin.Context) {
-			amoduleLogic(ctx, iBoFOSV1.MountVolume, param)
+			if multiVolRes,ok := isMultiVolume(ctx); ok {
+				implementAsyncMultiVolume(ctx, iBoFOSV1.MountVolume, &multiVolRes,MOUNT_VOLUME)
+			} else {
+				amoduleLogic(ctx, iBoFOSV1.MountVolume, param)
+			}
 		})
 		iBoFOS.DELETE("/volume/mount", func(ctx *gin.Context) {
 			amoduleLogic(ctx, iBoFOSV1.UnmountVolume, param)
