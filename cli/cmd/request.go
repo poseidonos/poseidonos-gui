@@ -39,10 +39,10 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"start_monitoring": iBoFOSV1.StartDeviceMonitoring,
 	"stop_monitoring":  iBoFOSV1.StopDeviceMonitoring,
 	"monitoring_state": iBoFOSV1.DeviceMonitoringState,
+	"detach_dev":       iBoFOSV1.DetachDevice,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"detach_dev":       iBoFOSV1.DetachDevice,
 	"exit_ibofos":      iBoFOSV1.ExitiBoFOS,
 	"run_ibofos":       iBoFOSV1.RuniBoFOS,
 	"info":             iBoFOSV1.IBoFOSInfo,
