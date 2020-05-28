@@ -2,5 +2,7 @@
 cd cli
 ./build_cli.sh
 cd ..
-cd DAgent
-./localbuild.sh
+
+./DAgent/localbuild.sh
+./tui/localbuild.sh
+
