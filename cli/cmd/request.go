@@ -50,6 +50,7 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"unmount_ibofos":   iBoFOSV1.UnmountiBoFOS,
 	"stop_rebuilding":  iBoFOSV1.StopRebuilding,
 	"set_log_level":    iBoFOSV1.SetLogLevel,
+	"get_log_level":    iBoFOSV1.GetLogLevel,
 	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
 	//"wbt":              iBoFOSV1.WBT,
 	//"list_wbt":         iBoFOSV1.ListWBT,
@@ -99,6 +100,7 @@ system     : run_ibofos       : not needed
            : unmount_ibofos   : not needed
            : stop_rebuilding  : not needed
            : set_log_level"   : --level [log level]
+           : get_log_level"   : not needed
            : apply_log_filter : not needed
            : detach_dev       : -n [dev name]
 

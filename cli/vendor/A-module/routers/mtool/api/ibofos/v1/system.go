@@ -61,6 +61,10 @@ func SetLogLevel(xrId string, param interface{}) (model.Request, model.Response,
 	return Requester{xrId, param}.Put("SETLOGLEVEL")
 }
 
+func GetLogLevel(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("GETLOGLEVEL")
+}
+
 func ApplyLogFilter(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Put("APPLYLOGFILTER")
 }
