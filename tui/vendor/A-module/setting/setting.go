@@ -2,7 +2,7 @@ package setting
 
 import (
 	"A-module/log"
-	"A-module/routers/mtool/model"
+	"A-module/routers/m9k/model"
 	"encoding/json"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

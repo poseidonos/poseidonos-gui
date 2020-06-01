@@ -1,7 +1,7 @@
 package main
 
 import (
-	"A-module/routers/mtool/model"
+	"A-module/routers/m9k/model"
 	"A-module/setting"
 	"DAgent/src/routers"
 	"bytes"
@@ -25,8 +25,8 @@ const (
 	TIMESTAMP           = "ts"
 	ONE_GB              = 1073741824
 	POST                = "POST"
-	CREATE_VOLUME       = "/mtool/api/ibofos/v1/volume"
-	MOUNT_VOLUME        = "/mtool/api/ibofos/v1/volume/mount"
+	CREATE_VOLUME       = "/m9k/api/ibofos/v1/volume"
+	MOUNT_VOLUME        = "/m9k/api/ibofos/v1/volume/mount"
 )
 
 var reqBody *model.VolumeParam = &model.VolumeParam{
