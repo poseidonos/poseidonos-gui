@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"sync/atomic"
 	"time"
 )
 
@@ -92,12 +91,12 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	defer handler.DisconnectToIBoFOS()
 
-	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Infof("sendIBoF : %+v", iBoFRequest)
-		return model.Response{}, ErrBadReq
-	}
-
-	defer atomic.StoreUint32(&locker, stateUnlocked)
+	//if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
+	//	log.Infof("sendIBoF : %+v", iBoFRequest)
+	//	return model.Response{}, ErrBadReq
+	//}
+	//
+	//defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	log.Infof("sendIBoF : %+v", iBoFRequest)
 
