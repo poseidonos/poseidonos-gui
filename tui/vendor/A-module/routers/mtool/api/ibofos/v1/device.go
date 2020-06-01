@@ -31,3 +31,7 @@ func StopDeviceMonitoring(xrId string, param interface{}) (model.Request, model.
 func DeviceMonitoringState(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("DEVICEMONITORINGSTATE")
 }
+
+func PassThroughNvmeAdmin(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("NVMEADMIN")
+}

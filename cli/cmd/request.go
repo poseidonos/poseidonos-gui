@@ -40,6 +40,7 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"stop_monitoring":  iBoFOSV1.StopDeviceMonitoring,
 	"monitoring_state": iBoFOSV1.DeviceMonitoringState,
 	"detach_dev":       iBoFOSV1.DetachDevice,
+	"nvme_admin":       iBoFOSV1.NvmeAdmin,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
