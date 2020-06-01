@@ -13,9 +13,11 @@ func CheckHeader(ctx *gin.Context) {
 
 	if util.IsValidUUID(xrid) == false {
 		api.BadRequest(ctx, model.Response{}, 10240)
+		return
 	}
 
 	if ts == "" {
 		api.BadRequest(ctx, model.Response{}, 10250)
+		return
 	}
 }
