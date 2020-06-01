@@ -109,12 +109,6 @@
       "description": "Exec command error"
     },
     {
-      "code": 12000,
-      "level": "ERROR",
-      "description": "iBoF is busy",
-      "solution": "Try later"
-    },
-    {
       "code": 12030,
       "level": "ERROR",
       "description": "iBoF does not run",
