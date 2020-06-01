@@ -11,6 +11,8 @@ import (
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {
+	//case iBoFOS.ErrBadReq:
+	//	BadRequest(ctx, res, 12000)
 	case iBoFOS.ErrSending:
 		BadRequest(ctx, res, 19002)
 	case iBoFOS.ErrJson:
