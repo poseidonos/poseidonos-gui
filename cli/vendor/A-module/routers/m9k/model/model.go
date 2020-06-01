@@ -61,23 +61,22 @@ type DeviceParam struct {
 	Spare string `json:"spare,omitempty"`
 }
 type VolumeParam struct {
-	Name    string `json:"name,omitempty"`
-	NewName string `json:"newname,omitempty"`
-	Size    uint64 `json:"size,omitempty"`
-	Maxiops uint64 `json:"maxiops,omitempty"`
-	Maxbw   uint64 `json:"maxbw,omitempty"`
-	NameSuffix uint64 `json:"namesuffix,omitempty"`
-	TotalCount uint64 `json:"totalcount,omitempty"`
-	StopOnError bool `json:"stoponerror,omitempty"`
-	MountAll bool `json:"mountall,omitempty"`
+	Name        string `json:"name,omitempty"`
+	NewName     string `json:"newname,omitempty"`
+	Size        uint64 `json:"size,omitempty"`
+	Maxiops     uint64 `json:"maxiops,omitempty"`
+	Maxbw       uint64 `json:"maxbw,omitempty"`
+	NameSuffix  uint64 `json:"namesuffix,omitempty"`
+	TotalCount  uint64 `json:"totalcount,omitempty"`
+	StopOnError bool   `json:"stoponerror,omitempty"`
+	MountAll    bool   `json:"mountall,omitempty"`
 }
 
 type CallbackMultiVol struct {
-	TotalCount int 
-	Pass int
-	Fail int
-	MultiVolArray [] Response
-
+	TotalCount    int
+	Pass          int
+	Fail          int
+	MultiVolArray []Response
 }
 
 type WBTParam struct {

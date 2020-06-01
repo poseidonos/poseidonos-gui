@@ -4,11 +4,11 @@ import (
 	"A-module/handler"
 	"A-module/log"
 	"A-module/routers/m9k/model"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"sync/atomic"
 	"time"
-	"bytes"
 )
 
 const (
@@ -120,10 +120,10 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		}
 
 		response := model.Response{}
-		
+
 		d := json.NewDecoder(bytes.NewBuffer(temp))
 		d.UseNumber()
-		
+
 		if err = d.Decode(&response); err != nil {
 			log.Fatal(err)
 		}
