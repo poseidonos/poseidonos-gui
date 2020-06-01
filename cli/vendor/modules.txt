@@ -10,17 +10,12 @@ A-module/util
 # github.com/c2h5oh/datasize v0.0.0-20200112174442-28bbd4740fee
 ## explicit
 github.com/c2h5oh/datasize
-# github.com/gin-gonic/gin v1.5.0
-## explicit
 # github.com/google/uuid v1.1.1
 ## explicit
 github.com/google/uuid
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
-# github.com/jstemmer/go-junit-report v0.9.1
-## explicit
 # github.com/juju/errors v0.0.0-20200330140219-3fe23663418f
-## explicit
 github.com/juju/errors
 # github.com/konsorten/go-windows-terminal-sequences v1.0.1
 github.com/konsorten/go-windows-terminal-sequences
@@ -31,7 +26,10 @@ github.com/sirupsen/logrus
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.3
 github.com/spf13/pflag
+# github.com/stretchr/testify v1.4.0
+## explicit
 # golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a
+## explicit
 golang.org/x/sys/unix
 # gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
