@@ -128,10 +128,10 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Fatal(err)
 		}
 
-		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-			log.Infof("Previous request's response, Wait again")
-			continue
-		}
+		//if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
+		//	log.Infof("Previous request's response, Wait again")
+		//	continue
+		//}
 
 		if err != nil {
 			log.Infof("Response Unmarshal Error : %v", err)
