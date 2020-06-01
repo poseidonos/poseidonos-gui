@@ -5,12 +5,11 @@ import (
 	"A-module/routers/m9k/model"
 	"A-module/setting"
 	"errors"
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"syscall"
 	"time"
 )
 
+var GitCommit string
 var LastSuccessTime int64
 
 const MAXAGE int64 = 4 // 4sec
@@ -44,18 +43,23 @@ func updateSuccessTime(xrId string) int64 {
 	}
 }
 
-func StatusCode(ctx *gin.Context) {
+func StatusCode(xrId string) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
-	res.Result.Status.Description = "Success"
 	res.Result.Data = setting.StatusList
-	ctx.JSON(http.StatusOK, &res)
+	return res, nil
 }
 
 func KillDAgent(xrId string) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
-	res.Result.Status.Description = "Success"
 	syscall.Kill(syscall.Getpid(), syscall.SIGINT)
+	return res, nil
+}
+
+func Version(xrId string) (model.Response, error) {
+	res := model.Response{}
+	res.Result.Status.Code = 0
+	res.Result.Data = GitCommit
 	return res, nil
 }

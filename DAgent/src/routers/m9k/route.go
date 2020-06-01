@@ -12,10 +12,11 @@ import (
 )
 
 func Route(router *gin.Engine) {
-	uri := router.Group("/m9k/api")
+	// This URI should be changed /api, remove /mtool
+	uri := router.Group("/mtool/api")
 
 	// Doc Static
-	uri.StaticFS("/dagentPath/v1/doc", http.Dir("./doc"))
+	uri.StaticFS("/dagent/v1/doc", http.Dir("./doc"))
 
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())
@@ -23,13 +24,18 @@ func Route(router *gin.Engine) {
 	uri.Use(middleware.CheckBody)
 	uri.Use(middleware.ResponseHeader)
 	// D-Agent
-	dagentPath := uri.Group("/dagentPath/v1")
+	dagentPath := uri.Group("/dagent/v1")
 	{
 		dagentPath.GET("/heartbeat", func(ctx *gin.Context) {
 			dagent.DagentLogic(ctx, dagent.HeartBeat)
 		})
-		dagentPath.GET("/statuscode", dagent.StatusCode)
-		dagentPath.DELETE("/dagentPath", func(ctx *gin.Context) {
+		dagentPath.GET("/version", func(ctx *gin.Context) {
+			dagent.DagentLogic(ctx, dagent.Version)
+		})
+		dagentPath.GET("/statuscode", func(ctx *gin.Context) {
+			dagent.DagentLogic(ctx, dagent.StatusCode)
+		})
+		dagentPath.DELETE("/dagent", func(ctx *gin.Context) {
 			dagent.DagentLogic(ctx, dagent.KillDAgent)
 		})
 		dagentPath.DELETE("/ibofos", func(ctx *gin.Context) {
