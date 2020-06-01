@@ -3,7 +3,7 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
-if [[ -z "${GOROOT}" ]]; then
+if [[ -z "${GOROOT}" ]] && [[ -z "$(go env var GOROOT)" ]]; then
 	export GOROOT="$ROOT_DIR../../lib/go"
 	export GOPATH="$ROOT_DIR../"
 	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
@@ -35,4 +35,5 @@ if [ -d "../A-module" ]; then
 fi
 
 go build -mod vendor -tags debug,ssloff
+
 mv cli bin/
