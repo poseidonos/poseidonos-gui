@@ -3,8 +3,8 @@ package cmd
 import (
 	"A-module/errors"
 	"A-module/log"
-	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
-	"A-module/routers/mtool/model"
+	iBoFOS "A-module/routers/m9k/api/ibofos"
+	"A-module/routers/m9k/model"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
@@ -71,7 +71,7 @@ func FileInput(cmd *cobra.Command, args []string) {
 	log.Info(request)
 
 	InitConnect()
-	res, err := iBoFOSV1.SendRequestJson(request)
+	res, err := iBoFOS.SendRequestJson(request)
 
 	if err != nil {
 		fmt.Println(err)

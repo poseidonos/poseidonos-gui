@@ -2,7 +2,7 @@ package routers
 
 import (
 	"DAgent/src/routers/bmc"
-	"DAgent/src/routers/mtool"
+	"DAgent/src/routers/m9k"
 	"DAgent/src/routers/nbp"
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +14,7 @@ func InitRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	bmc.Route(router)
-	mtool.Route(router)
+	m9k.Route(router)
 	nbp.Route(router)
 
 	return router

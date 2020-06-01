@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"A-module/errors"
-	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
-	"A-module/routers/mtool/model"
+	iBoFOS "A-module/routers/m9k/api/ibofos"
+	"A-module/routers/m9k/model"
 	_ "A-module/setting"
 	_ "encoding/json"
 	"fmt"
@@ -95,7 +95,7 @@ func WBT(cmd *cobra.Command, args []string) (model.Response, error) {
 	InitConnect()
 
 	if args[0] == "list_wbt" {
-		req, res, err = iBoFOSV1.ListWBT(xrId, nil)
+		req, res, err = iBoFOS.ListWBT(xrId, nil)
 	} else {
 
 		param := model.WBTParam{}
@@ -106,7 +106,7 @@ func WBT(cmd *cobra.Command, args []string) (model.Response, error) {
 				reflect.ValueOf(&param.Argv).Elem().FieldByName(strings.Title(strings.ToLower(attr.name))).SetString(attr.value)
 			}
 		}
-		req, res, err = iBoFOSV1.WBT(xrId, param)
+		req, res, err = iBoFOS.WBT(xrId, param)
 	}
 
 	if err != nil {

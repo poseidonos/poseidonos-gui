@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"A-module/errors"
-	iBoFOSV1 "A-module/routers/mtool/api/ibofos/v1"
-	"A-module/routers/mtool/model"
+	iBoFOS "A-module/routers/m9k/api/ibofos"
+	"A-module/routers/m9k/model"
 	"A-module/setting"
 	"encoding/json"
 	"fmt"
@@ -25,50 +25,50 @@ var maxiops uint64
 var maxbw uint64
 
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"create_array": iBoFOSV1.CreateArray,
-	"delete_array": iBoFOSV1.DeleteArray,
-	"list_array":   iBoFOSV1.ListArrayDevice,
-	"load_array":   iBoFOSV1.LoadArray,
+	"create_array": iBoFOS.CreateArray,
+	"delete_array": iBoFOS.DeleteArray,
+	"list_array":   iBoFOS.ListArrayDevice,
+	"load_array":   iBoFOS.LoadArray,
 }
 
 var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"scan_dev":         iBoFOSV1.ScanDevice,
-	"list_dev":         iBoFOSV1.ListDevice,
-	"add_dev":          iBoFOSV1.AddDevice,
-	"remove_dev":       iBoFOSV1.RemoveDevice,
-	"start_monitoring": iBoFOSV1.StartDeviceMonitoring,
-	"stop_monitoring":  iBoFOSV1.StopDeviceMonitoring,
-	"monitoring_state": iBoFOSV1.DeviceMonitoringState,
-	"detach_dev":       iBoFOSV1.DetachDevice,
-	"nvme_admin":       iBoFOSV1.NvmeAdmin,
+	"scan_dev":         iBoFOS.ScanDevice,
+	"list_dev":         iBoFOS.ListDevice,
+	"add_dev":          iBoFOS.AddDevice,
+	"remove_dev":       iBoFOS.RemoveDevice,
+	"start_monitoring": iBoFOS.StartDeviceMonitoring,
+	"stop_monitoring":  iBoFOS.StopDeviceMonitoring,
+	"monitoring_state": iBoFOS.DeviceMonitoringState,
+	"detach_dev":       iBoFOS.DetachDevice,
+	"nvme_admin":       iBoFOS.NvmeAdmin,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"exit_ibofos":      iBoFOSV1.ExitiBoFOS,
-	"run_ibofos":       iBoFOSV1.RuniBoFOS,
-	"info":             iBoFOSV1.IBoFOSInfo,
-	"mount_ibofos":     iBoFOSV1.MountiBoFOS,
-	"unmount_ibofos":   iBoFOSV1.UnmountiBoFOS,
-	"stop_rebuilding":  iBoFOSV1.StopRebuilding,
-	"set_log_level":    iBoFOSV1.SetLogLevel,
-	"get_log_level":    iBoFOSV1.GetLogLevel,
-	"apply_log_filter": iBoFOSV1.ApplyLogFilter,
-	//"wbt":              iBoFOSV1.WBT,
-	//"list_wbt":         iBoFOSV1.ListWBT,
-	//"do_gc":            iBoFOSV1.DoGC,
+	"exit_ibofos":      iBoFOS.ExitiBoFOS,
+	"run_ibofos":       iBoFOS.RuniBoFOS,
+	"info":             iBoFOS.IBoFOSInfo,
+	"mount_ibofos":     iBoFOS.MountiBoFOS,
+	"unmount_ibofos":   iBoFOS.UnmountiBoFOS,
+	"stop_rebuilding":  iBoFOS.StopRebuilding,
+	"set_log_level":    iBoFOS.SetLogLevel,
+	"get_log_level":    iBoFOS.GetLogLevel,
+	"apply_log_filter": iBoFOS.ApplyLogFilter,
+	//"wbt":              iBoFOS.WBT,
+	//"list_wbt":         iBoFOS.ListWBT,
+	//"do_gc":            iBoFOS.DoGC,
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"create_vol": iBoFOSV1.CreateVolume,
-	//	"update_vol":  iBoFOSV1.UpdateVolume,
-	"mount_vol":      iBoFOSV1.MountVolume,
-	"unmount_vol":    iBoFOSV1.UnmountVolume,
-	"delete_vol":     iBoFOSV1.DeleteVolume,
-	"list_vol":       iBoFOSV1.ListVolume,
-	"update_vol_qos": iBoFOSV1.UpdateVolumeQoS,
-	"rename_vol":     iBoFOSV1.RenameVolume,
-	//"resize_vol":     iBoFOSV1.ResizeVolume,
-	"get_max_vol_cnt": iBoFOSV1.GetMaxVolumeCount,
+	"create_vol": iBoFOS.CreateVolume,
+	//	"update_vol":  iBoFOS.UpdateVolume,
+	"mount_vol":      iBoFOS.MountVolume,
+	"unmount_vol":    iBoFOS.UnmountVolume,
+	"delete_vol":     iBoFOS.DeleteVolume,
+	"list_vol":       iBoFOS.ListVolume,
+	"update_vol_qos": iBoFOS.UpdateVolumeQoS,
+	"rename_vol":     iBoFOS.RenameVolume,
+	//"resize_vol":     iBoFOS.ResizeVolume,
+	"get_max_vol_cnt": iBoFOS.GetMaxVolumeCount,
 }
 
 var commandCmd = &cobra.Command{
