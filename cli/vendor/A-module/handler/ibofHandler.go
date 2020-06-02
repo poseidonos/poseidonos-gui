@@ -42,7 +42,6 @@ func DisconnectToIBoFOS() error {
 }
 
 func ReadFromIBoFSocket() ([]byte, error) {
-
 	var err error
 	var buf []byte
 
