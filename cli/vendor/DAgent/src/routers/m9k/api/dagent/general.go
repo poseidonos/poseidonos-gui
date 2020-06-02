@@ -60,6 +60,8 @@ func KillDAgent(xrId string) (model.Response, error) {
 func Version(xrId string) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
-	res.Result.Data = GitCommit
+	buildTime := time.Now().UTC().Unix()
+	buildInfo := model.BuildInfo{GitHash: GitCommit, BuildTime: buildTime}
+	res.Result.Data = buildInfo
 	return res, nil
 }

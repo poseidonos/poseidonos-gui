@@ -7,7 +7,7 @@ rm -rf vendor/A-module
 cp -rf ../A-module ./vendor/
 
 export GIT_COMMIT=$(git rev-list -1 HEAD)
-go build -mod vendor -tags ssloff -ldflags "-X dagent.GitCommit=$GIT_COMMIT"
+go build -mod vendor -tags ssloff -ldflags "-X DAgent/src/routers/m9k/api/dagent.GitCommit=$GIT_COMMIT"
 #mkdir -p ./bin
 mv DAgent ./bin
 cp statuscode.json ./bin

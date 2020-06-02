@@ -105,3 +105,8 @@ type WBTArgv struct {
 	Normal    string `json:"normal,omitempty"`
 	Urgent    string `json:"urgent,omitempty"`
 }
+
+type BuildInfo struct {
+	GitHash   string `json:"githash"`
+	BuildTime int64 `json:"build_time"`
+}
