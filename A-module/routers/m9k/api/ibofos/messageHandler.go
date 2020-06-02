@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"time"
+	"sync"
 )
 
 const (
@@ -24,6 +25,7 @@ var (
 	ErrJson      = errors.New("Json error")
 	ErrRes       = errors.New("Response error")
 	ErrConn      = errors.New("iBoF Connection Error")
+	mutex        = &sync.Mutex{}
 )
 
 type Requester struct {
@@ -82,6 +84,8 @@ func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 }
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
+	mutex.Lock()
+	defer mutex.Unlock()
 
 	err := handler.ConnectToIBoFOS()
 

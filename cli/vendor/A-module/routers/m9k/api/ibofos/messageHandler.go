@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"sync/atomic"
 	"time"
+	"sync"
 )
 
 const (
@@ -19,12 +19,13 @@ const (
 var (
 	locker       = stateUnlocked
 	errLocked    = errors.New("Locked out buddy")
-	ErrBadReq    = errors.New("Bad request")
+	//ErrBadReq    = errors.New("Bad request")
 	ErrSending   = errors.New("Sending error")
 	ErrReceiving = errors.New("Receiving error")
 	ErrJson      = errors.New("Json error")
 	ErrRes       = errors.New("Response error")
 	ErrConn      = errors.New("iBoF Connection Error")
+	mutex        = &sync.Mutex{}
 )
 
 type Requester struct {
@@ -83,6 +84,8 @@ func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 }
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
+	mutex.Lock()
+	defer mutex.Unlock()
 
 	err := handler.ConnectToIBoFOS()
 
@@ -92,12 +95,12 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	defer handler.DisconnectToIBoFOS()
 
-	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Infof("sendIBoF : %+v", iBoFRequest)
-		return model.Response{}, ErrBadReq
-	}
-
-	defer atomic.StoreUint32(&locker, stateUnlocked)
+	//if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
+	//	log.Infof("sendIBoF : %+v", iBoFRequest)
+	//	return model.Response{}, ErrBadReq
+	//}
+	//
+	//defer atomic.StoreUint32(&locker, stateUnlocked)
 
 	log.Infof("sendIBoF : %+v", iBoFRequest)
 
@@ -128,10 +131,10 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Fatal(err)
 		}
 
-		if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-			log.Infof("Previous request's response, Wait again")
-			continue
-		}
+		//if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
+		//	log.Infof("Previous request's response, Wait again")
+		//	continue
+		//}
 
 		if err != nil {
 			log.Infof("Response Unmarshal Error : %v", err)
