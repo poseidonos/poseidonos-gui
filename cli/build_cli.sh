@@ -34,6 +34,11 @@ if [ -d "../A-module" ]; then
 	cp -rf ../DAgent/src ./vendor/DAgent/
 fi
 
-go build -mod vendor -tags debug,ssloff
+export GIT_COMMIT=$(git rev-list -1 HEAD)
+export BUILD_TIME=$(date +%s)
+
+go build -mod vendor -tags debug,ssloff -ldflags "-X cli/cmd.GitCommit=$GIT_COMMIT -X cli/cmd.BuildTime=$BUILD_TIME"
+
+
 
 mv cli bin/
