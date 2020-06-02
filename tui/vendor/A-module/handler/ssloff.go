@@ -6,12 +6,10 @@ import (
 	"net"
 )
 
-var conn net.Conn
+//var conn net.Conn
 
 func Dial(network, addr string) (net.Conn, error) {
-	var err error = nil
-
-	conn, err = net.Dial(network, addr)
-
+	//var err error = nil
+	conn, err := net.Dial(network, addr)
 	return conn, err
 }

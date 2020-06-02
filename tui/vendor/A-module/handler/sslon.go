@@ -9,8 +9,6 @@ import (
 	"io/ioutil"
 )
 
-var conn *tls.Conn
-
 func Dial(network, addr string) (*tls.Conn, error) {
 
 	caCert, err := ioutil.ReadFile("/etc/ibofos/cert/cert.crt")

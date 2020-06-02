@@ -7,16 +7,17 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"net"
 )
 
 func init() {
 }
 
-func ConnectToIBoFOS() error {
+func ConnectToIBoFOS() (net.Conn, error) {
 	var err error = nil
 	uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
 
-	conn, err = Dial("tcp", uri)
+	conn, err := Dial("tcp", uri)
 
 	if err != nil {
 		log.Info("ConnectToIBoFOS : ", err)
@@ -28,10 +29,10 @@ func ConnectToIBoFOS() error {
 	}
 	util.PrintCurrentServerStatus()
 
-	return err
+	return conn, err
 }
 
-func DisconnectToIBoFOS() error {
+func DisconnectToIBoFOS(conn net.Conn) error {
 	var err error = nil
 
 	if conn != nil {
@@ -41,7 +42,7 @@ func DisconnectToIBoFOS() error {
 	return err
 }
 
-func ReadFromIBoFSocket() ([]byte, error) {
+func ReadFromIBoFSocket(conn net.Conn) ([]byte, error) {
 	var err error
 	var buf []byte
 
@@ -80,7 +81,7 @@ func GetIBoFResponse() []byte {
 }
 */
 
-func WriteToIBoFSocket(marshaled []byte) error {
+func WriteToIBoFSocket(conn net.Conn, marshaled []byte) error {
 	var err error = nil
 	if conn == nil {
 		err = errors.New("WriteToIBoFSocket : Conn is nil")

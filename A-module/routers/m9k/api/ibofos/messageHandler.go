@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"sync"
-	"sync/atomic"
 	"time"
 )
 
@@ -20,7 +19,6 @@ const (
 var (
 	locker       = stateUnlocked
 	errLocked    = errors.New("Locked out buddy")
-	ErrBadReq    = errors.New("Bad request")
 	ErrSending   = errors.New("Sending error")
 	ErrReceiving = errors.New("Receiving error")
 	ErrJson      = errors.New("Json error")
@@ -85,12 +83,6 @@ func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 }
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
-	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-			//log.Infof("sendIBoF : %+v", iBoFRequest)
-			//return model.Response{}, ErrBadReq
-	}
-	defer atomic.StoreUint32(&locker, stateUnlocked)
-
 	conn, err := handler.ConnectToIBoFOS()
 	if err != nil {
 		return model.Response{}, ErrConn
