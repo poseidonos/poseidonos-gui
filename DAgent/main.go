@@ -4,6 +4,7 @@ import (
 	"A-module/log"
 	"A-module/setting"
 	"DAgent/src/routers"
+	"DAgent/src/routers/m9k/api/dagent"
 	"context"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -19,7 +20,12 @@ func init() {
 }
 
 func main() {
+	showBuildInfo()
 	startServer()
+}
+
+func showBuildInfo() {
+	log.Infof("GitHash : %s / Build Time (UTC) : %s", dagent.GitCommit, dagent.BuildTime)
 }
 
 func startServer() {
