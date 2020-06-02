@@ -10,6 +10,8 @@ import (
 )
 
 var GitCommit string
+var BuildTime string
+
 var LastSuccessTime int64
 
 const MAXAGE int64 = 4 // 4sec
@@ -60,8 +62,7 @@ func KillDAgent(xrId string) (model.Response, error) {
 func Version(xrId string) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
-	buildTime := time.Now().UTC().Unix()
-	buildInfo := model.BuildInfo{GitHash: GitCommit, BuildTime: buildTime}
+	buildInfo := model.BuildInfo{GitHash: GitCommit, BuildTime: BuildTime}
 	res.Result.Data = buildInfo
 	return res, nil
 }

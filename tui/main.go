@@ -10,6 +10,7 @@ import (
 )
 
 var GitCommit string
+var BuildTime string
 
 func init() {
 	if err := ui.Init(); err != nil {
@@ -123,8 +124,8 @@ func addWidget3() {
 	p2.TextStyle.Fg = ui.ColorMagenta
 
 	p3.Title = "Help"
-	p3.Text = "Q: Quit\nC: Change View\nVersion: " + GitCommit
-	p3.SetRect(0, 25, 75, 30)
+	p3.Text = "Q: Quit\nC: Change View\nVersion: " + GitCommit + "\nBuild Time: " + BuildTime
+	p3.SetRect(0, 25, 75, 35)
 	p3.TextStyle.Fg = ui.ColorWhite
 	p3.BorderStyle.Fg = ui.ColorCyan
 

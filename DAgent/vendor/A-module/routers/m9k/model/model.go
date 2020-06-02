@@ -108,5 +108,5 @@ type WBTArgv struct {
 
 type BuildInfo struct {
 	GitHash   string `json:"githash"`
-	BuildTime int64 `json:"build_time"`
+	BuildTime string `json:"build_time"`
 }
