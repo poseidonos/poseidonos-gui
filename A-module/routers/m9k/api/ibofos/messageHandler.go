@@ -86,21 +86,21 @@ func (rq Requester) Get(command string) (model.Request, model.Response, error) {
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	if !atomic.CompareAndSwapUint32(&locker, stateUnlocked, stateLocked) {
-		log.Infof("sendIBoF : %+v", iBoFRequest)
-		return model.Response{}, ErrBadReq
+			//log.Infof("sendIBoF : %+v", iBoFRequest)
+			//return model.Response{}, ErrBadReq
 	}
 	defer atomic.StoreUint32(&locker, stateUnlocked)
 
-	err := handler.ConnectToIBoFOS()
+	conn, err := handler.ConnectToIBoFOS()
 	if err != nil {
 		return model.Response{}, ErrConn
 	}
-	defer handler.DisconnectToIBoFOS()
+	defer handler.DisconnectToIBoFOS(conn)
 
 	log.Infof("sendIBoF : %+v", iBoFRequest)
 
 	marshaled, _ := json.Marshal(iBoFRequest)
-	err = handler.WriteToIBoFSocket(marshaled)
+	err = handler.WriteToIBoFSocket(conn, marshaled)
 
 	if err != nil {
 		log.Infof("sendIBoF write error : %v", err)
@@ -108,7 +108,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	}
 
 	for {
-		temp, err := handler.ReadFromIBoFSocket()
+		temp, err := handler.ReadFromIBoFSocket(conn	)
 
 		if err != nil {
 			log.Infof("sendIBoF read error : %v", err)
@@ -144,7 +144,4 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			return response, nil
 		}
 	}
-
-	// Unreachable code....
-	// return model.Response{}, nil
 }
