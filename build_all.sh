@@ -1,4 +1,4 @@
 #!/bin/bash
 ./cli/build_cli.sh
-./DAgent/localbuild.sh
-./tui/localbuild.sh
+./DAgent/build_dagent.sh
+./tui/build_tui.sh
