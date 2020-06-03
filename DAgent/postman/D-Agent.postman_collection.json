@@ -235,7 +235,7 @@
 			"name": "D-Agent",
 			"item": [
 				{
-					"name": "HEARTBEAT",
+					"name": "VERSION",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -251,6 +251,135 @@
 							"listen": "test",
 							"script": {
 								"id": "b16f97a4-49da-4fec-be3a-0914659c7f4f",
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"dagent",
+								"v1",
+								"version"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/heartbeat",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"heartbeat"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "6e87f233-44bc-4981-a747-e2c325d4268f"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 May 2020 09:15:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "186"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 1588929337,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "HEARTBEAT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e00daea2-2202-4de6-b59a-e42782582967",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3b5b459b-ecf1-4844-aae8-f26515db2516",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
