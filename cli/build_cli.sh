@@ -20,9 +20,9 @@ else
 	echo "Offline"
 	rm -rf vendor/a-module
 	cp -rf ../a-module ./vendor/
-	rm -rf vendor/DAgent
-	mkdir vendor/DAgent
-	cp -rf ../DAgent/src ./vendor/DAgent/
+	rm -rf vendor/dagent
+	mkdir vendor/dagent
+	cp -rf ../dagent/src ./vendor/dagent/
 fi
 END
 
