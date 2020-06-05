@@ -1,10 +1,13 @@
 # Project
 ## Demon Agent
-Collecting Data and Providing RestAPI
+Providing RestAPI about management stack
 
-## Cli Client
-Command line interface
+## ClI Client
+Command Line Interface
+
+## TUI Client
+Text-Based User Interface
 
 ## Modules
 ### A-Module
-The module for communicating iBoFOS
+The Go module for communicating management stack
