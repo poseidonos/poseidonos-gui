@@ -60,9 +60,14 @@ func KillDAgent(xrId string) (model.Response, error) {
 }
 
 func Version(xrId string) (model.Response, error) {
-	res := model.Response{}
-	res.Result.Status.Code = 0
 	buildInfo := model.BuildInfo{GitHash: GitCommit, BuildTime: BuildTime}
+	res := model.Response{}
 	res.Result.Data = buildInfo
+
+	if GitCommit == "" || BuildTime == "" {
+		res.Result.Status.Code = 56565
+	} else {
+		res.Result.Status.Code = 0
+	}
 	return res, nil
 }
