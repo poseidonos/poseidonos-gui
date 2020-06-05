@@ -93,7 +93,7 @@ device     : scan_dev         : not needed
            : start_monitoring : not needed
            : stop_monitoring  : not needed
            : monitoring_state : not needed
-           : nvme_admin       : -n [dev name]
+           : smart            : -n [dev name]
 
 system     : run_ibofos       : not needed
            : exit_ibofos      : not needed
