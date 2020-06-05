@@ -1,9 +1,9 @@
 package m9k
 
 import (
-	"A-module/routers/m9k/api/exec"
-	iBoFOS "A-module/routers/m9k/api/ibofos"
-	"A-module/routers/m9k/model"
+	"a-module/routers/m9k/api/exec"
+	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"a-module/routers/m9k/model"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/middleware"
@@ -111,8 +111,8 @@ func Route(router *gin.Engine) {
 	{
 		param := model.VolumeParam{}
 		iBoFOSPath.POST("/volume", func(ctx *gin.Context) {
-			if multiVolRes, ok := ibofos.IsMultiVolume(ctx); ok {
-				ibofos.ImplementAsyncMultiVolume(ctx, iBoFOS.CreateVolume, &multiVolRes, ibofos.CREATE_VOLUME)
+			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
+				dagent.ImplementAsyncMultiVolume(ctx, iBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
 				ibofos.AmoduleLogic(ctx, iBoFOS.CreateVolume, param)
 			}
@@ -130,8 +130,8 @@ func Route(router *gin.Engine) {
 			ibofos.AmoduleLogic(ctx, iBoFOS.GetMaxVolumeCount, param)
 		})
 		iBoFOSPath.POST("/volume/mount", func(ctx *gin.Context) {
-			if multiVolRes, ok := ibofos.IsMultiVolume(ctx); ok {
-				ibofos.ImplementAsyncMultiVolume(ctx, iBoFOS.MountVolume, &multiVolRes, ibofos.MOUNT_VOLUME)
+			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
+				dagent.ImplementAsyncMultiVolume(ctx, iBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
 			} else {
 				ibofos.AmoduleLogic(ctx, iBoFOS.MountVolume, param)
 			}

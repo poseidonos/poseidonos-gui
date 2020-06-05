@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	//"A-module/routers/m9k/model"
-	"A-module/util"
+	//"a-module/routers/m9k/model"
+	"a-module/util"
 	//"dagent/src/routers/m9k/api"
 	"github.com/gin-gonic/gin"
 )

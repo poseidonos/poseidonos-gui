@@ -1,7 +1,7 @@
 package main
 
 import (
-	"A-module/log"
+	"a-module/log"
 	"math"
 	"time"
 

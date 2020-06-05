@@ -18,17 +18,17 @@ if [[ $? -eq 0 ]]; then
 
 else
 	echo "Offline"
-	rm -rf vendor/A-module
-	cp -rf ../A-module ./vendor/
+	rm -rf vendor/a-module
+	cp -rf ../a-module ./vendor/
 	rm -rf vendor/DAgent
 	mkdir vendor/DAgent
 	cp -rf ../DAgent/src ./vendor/DAgent/
 fi
 END
 
-if [ -d "../A-module" ]; then
-	rm -rf vendor/A-module
-	cp -rf ../A-module ./vendor/
+if [ -d "../a-module" ]; then
+	rm -rf vendor/a-module
+	cp -rf ../a-module ./vendor/
 	rm -rf vendor/dagent
 	mkdir vendor/dagent
 	cp -rf ../dagent/src ./vendor/dagent/

@@ -1,10 +1,10 @@
 package api
 
 import (
-	"A-module/log"
-	iBoFOS "A-module/routers/m9k/api/ibofos"
-	"A-module/routers/m9k/model"
-	"A-module/setting"
+	"a-module/log"
+	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"a-module/routers/m9k/model"
+	"a-module/setting"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

@@ -3,8 +3,8 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
-rm -rf vendor/A-module
-cp -rf ../A-module ./vendor/
+rm -rf vendor/a-module
+cp -rf ../a-module ./vendor/
 
 export GIT_COMMIT=$(git rev-list -1 HEAD)
 export BUILD_TIME=$(date +%s)

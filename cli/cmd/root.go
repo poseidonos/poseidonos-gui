@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	_ "A-module/handler"
-	"A-module/log"
-	"A-module/setting"
+	_ "a-module/handler"
+	"a-module/log"
+	"a-module/setting"
 	"github.com/spf13/cobra"
 	"os"
 	"time"

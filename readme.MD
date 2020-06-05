@@ -9,5 +9,5 @@ Command Line Interface
 Text-Based User Interface
 
 ## Modules
-### A-Module
+### a-module
 The Go module for communicating management stack
