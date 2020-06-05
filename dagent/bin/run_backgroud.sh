@@ -1,8 +1,8 @@
 #!/bin/bash
 SCRIPT_PATH=$(dirname $(realpath $0))
-LOG_FILE="/etc/ibofos/log/DAgent.log"
+LOG_FILE="/etc/ibofos/log/dagent.log"
 
-if [ ! -f "$SCRIPT_PATH/DAgent" ]; then
+if [ ! -f "$SCRIPT_PATH/dagent" ]; then
 	echo "Fail to find executable file."
 else
 	sudo pkill -9 dagent
