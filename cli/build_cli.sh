@@ -29,9 +29,9 @@ END
 if [ -d "../A-module" ]; then
 	rm -rf vendor/A-module
 	cp -rf ../A-module ./vendor/
-	rm -rf vendor/DAgent
-	mkdir vendor/DAgent
-	cp -rf ../DAgent/src ./vendor/DAgent/
+	rm -rf vendor/dagent
+	mkdir vendor/dagent
+	cp -rf ../dagent/src ./vendor/dagent/
 fi
 
 export GIT_COMMIT=$(git rev-list -1 HEAD)

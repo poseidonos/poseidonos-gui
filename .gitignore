@@ -1,10 +1,10 @@
 **/.idea
 **/.DS_Store
 **/pkg
-/DAgent/bin/DAgent
-/DAgent/DAgent
-/DAgent/test_sol.pe/result.xml
-/DAgent/doc
+/dagent/bin/DAgent
+/dagent/DAgent
+/dagent/test_sol.pe/result.xml
+/dagent/doc
 DAgent.exe
 ibofos.log
 core

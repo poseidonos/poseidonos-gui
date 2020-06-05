@@ -11,9 +11,9 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of DAgent CLI",
-	Long:  `All software has versions. This is DAgent CLI's`,
+	Short: "Print the version number of dagent CLI",
+	Long:  `All software has versions. This is dagent CLI's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("DAgent CLI Version 0.1.")
+		fmt.Println("dagent CLI Version 0.1.")
 	},
 }

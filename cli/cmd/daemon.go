@@ -3,7 +3,7 @@ package cmd
 import (
 	//    "A-module/log"
 	_ "A-module/setting"
-	//_ "DAgent/src/routers"
+	//_ "dagent/src/routers"
 	_ "net/http"
 	_ "time"
 	//	"fmt"
