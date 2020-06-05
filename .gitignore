@@ -1,9 +1,9 @@
 **/.idea
 **/.DS_Store
 **/pkg
-/m9k/bin/dagent
-/m9k/dagent
-/m9k/test_sol.pe/result.xml
+/dagent/bin/dagent
+/dagent/dagent
+/dagent/test_sol.pe/result.xml
 dagent.exe
 ibofos.log
 core
