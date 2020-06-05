@@ -40,7 +40,7 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"stop_monitoring":  iBoFOS.StopDeviceMonitoring,
 	"monitoring_state": iBoFOS.DeviceMonitoringState,
 	"detach_dev":       iBoFOS.DetachDevice,
-	"nvme_admin":       iBoFOS.NvmeAdminCommand,
+	"smart":            iBoFOS.GetSMART,
 }
 
 var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){

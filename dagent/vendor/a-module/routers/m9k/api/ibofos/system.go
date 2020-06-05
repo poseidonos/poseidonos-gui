@@ -16,7 +16,6 @@ func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, 
 }
 
 func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
-
 	iBoFRequest := model.Request{
 		Command: "RUNIBOFOS",
 		Rid:     xrId,
