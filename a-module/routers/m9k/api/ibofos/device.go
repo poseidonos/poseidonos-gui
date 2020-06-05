@@ -33,5 +33,5 @@ func DeviceMonitoringState(xrId string, param interface{}) (model.Request, model
 }
 
 func NvmeAdminCommand(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("NVMEADMINCOMMAND")
+	return Requester{xrId, param}.Get("SMART")
 }
