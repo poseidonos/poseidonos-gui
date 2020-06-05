@@ -10,5 +10,7 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/spf13/cobra v0.0.6
 	github.com/stretchr/testify v1.4.0 // indirect
+	github.com/tidwall/gjson v1.6.0
+	github.com/tidwall/pretty v1.0.1 // indirect
 	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
 )
