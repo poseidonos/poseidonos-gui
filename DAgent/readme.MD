@@ -47,17 +47,13 @@ server:
 * It can be run on any path.
 * It does not need any dependency pkg after compiling.
 ```shell script
-$ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git
-$ cd ibofdagent\src\DAgent
-$ go build -mod vendor
-
-#or
-$ ./localbuild # It will also generate api documentation
+$ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git m9k
+$ cd m9k/DAgent
+$ ./build_dagent # It will also generate api documentation
 ```
 #### Run
-* Note that only master branch will have exec binaray in bin folder
 ```shell script
-$ sudo ./DAgent # General Run
+$ sudo ./bin/DAgent # General Run
 # Or
 $ sudo ./bin/run_dagent.sh # Background Run 
 ```
