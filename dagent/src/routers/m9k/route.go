@@ -84,6 +84,7 @@ func Route(router *gin.Engine) {
 			ibofos.AmoduleLogic(ctx, iBoFOS.RemoveDevice)
 		})
 		iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
+			// GET Method does not support payload
 			//deviceName := ctx.Param("deviceName")
 			ibofos.AmoduleLogic(ctx, iBoFOS.GetSMART)
 		})
