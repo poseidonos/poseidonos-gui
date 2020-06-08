@@ -56,7 +56,7 @@ func loadSeverConfig(filename string) {
 			log.Fatalf("loadSeverConfig Error : %v", err)
 		} else {
 			log.Infof("Open Success : %s", filename)
-			log.Infof("Loaded Config Info : %+v", Config)
+			log.Infof("Loaded Config info : %+v", Config)
 		}
 	}
 }

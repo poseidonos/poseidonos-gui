@@ -8,9 +8,17 @@ import (
 var GitCommit string
 var BuildTime string
 
-func InitInfo() *widgets.Paragraph {
+type infoWidget struct {
+	Widget *widgets.Paragraph
+}
+
+var Info = infoWidget{
+	Widget: initInfo(),
+}
+
+func initInfo() *widgets.Paragraph {
 	p := widgets.NewParagraph()
-	p.Title = "Info"
+	p.Title = "info"
 	p.Text = "GitCommit: " + GitCommit + "\nBuildTime: " + BuildTime
 	p.SetRect(0, 25, 75, 30)
 	p.TextStyle.Fg = termui.ColorWhite

@@ -304,7 +304,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		fmt.Println("\n\nRequest to Poseidon OS")
 		fmt.Println("    xrId        : ", req.Rid)
-		fmt.Println("    Command     : ", req.Command)
+		fmt.Println("    command     : ", req.Command)
 
 		if string(b) != "null" {
 			fmt.Println("    Param       :")
@@ -318,7 +318,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
 
 		if string(b) != "null" {
-			fmt.Println("    Command       : ", string(b))
+			fmt.Println("    command       : ", string(b))
 		}
 		fmt.Print("\n\n")
 	}

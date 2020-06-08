@@ -5,16 +5,20 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
-type command struct {
-	list []string
+type commandWidget struct {
+	Widget *widgets.List
 }
 
-func (cm command) Count() int {
-	return len(cm.list)
+func (cm commandWidget) Count() int {
+	return len(commandList())
 }
 
-var commandData = command{
-	list: []string{
+var Command = commandWidget{
+	Widget: initCommand(),
+}
+
+func commandList() []string {
+	return []string{
 		"[0] Scan Device",
 		"[1] List Devices",
 		"[2] S.M.A.R.T.",
@@ -23,13 +27,13 @@ var commandData = command{
 		"[5] list volumes",
 		"[6] Blah~",
 		"[7] Blah~ Blah~",
-	},
+	}
 }
 
-func InitCommand() *widgets.List {
+func initCommand() *widgets.List {
 	list := widgets.NewList()
-	list.Title = "Command (J & K)"
-	list.Rows = commandData.list
+	list.Title = "commandWidget (J & K)"
+	list.Rows = commandList()
 	list.SetRect(0, 6, 25, 15)
 	list.TextStyle.Fg = termui.ColorYellow
 

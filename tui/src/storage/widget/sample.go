@@ -1,8 +1,6 @@
 package widget
 
 import (
-	termui "github.com/gizak/termui/v3"
-	"github.com/gizak/termui/v3/widgets"
 	"math"
 )
 
@@ -18,31 +16,6 @@ var SinData = (func() []float64 {
 	}
 	return ps
 })()
-
-func InitPlot1() *widgets.Plot {
-	plot1 := widgets.NewPlot()
-	plot1.Title = "Vol1 Bandwidth"
-	plot1.Data = make([][]float64, 1)
-	plot1.Data[0] = SinData
-	plot1.SetRect(0, 15, 50, 25)
-	plot1.AxesColor = termui.ColorWhite
-	plot1.LineColors[0] = termui.ColorRed
-	plot1.Marker = widgets.MarkerDot
-
-	return plot1
-}
-
-func IinitPlot2() *widgets.Plot {
-	plot2 := widgets.NewPlot()
-	plot2.Title = "Vol1 IOPs"
-	plot2.Data = make([][]float64, 1)
-	plot2.Data[0] = SinData
-	plot2.SetRect(50, 15, 75, 25)
-	plot2.AxesColor = termui.ColorWhite
-	plot2.LineColors[0] = termui.ColorYellow
-
-	return plot2
-}
 
 /*
 func initStatus() *widgets.Gauge {
@@ -61,7 +34,7 @@ func initBarChart() *widgets.BarChart {
 	bc := widgets.NewBarChart()
 	bc.Title = "PIDs"
 	bc.SetRect(50, 0, 75, 15)
-	bc.Labels = []string{"PID Info"}
+	bc.Labels = []string{"PID info"}
 	bc.BarColors[0] = termui.ColorGreen
 	bc.NumStyles[0] = termui.NewStyle(termui.ColorBlack)
 

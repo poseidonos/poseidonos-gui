@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Init Router Info
+// Init Router info
 func InitRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())

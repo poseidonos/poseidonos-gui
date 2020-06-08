@@ -8,7 +8,7 @@ cp -rf ../a-module ./vendor/
 
 export GIT_COMMIT=$(git rev-list -1 HEAD)
 export BUILD_TIME=$(date +%s)
-go build -mod vendor -tags ssloff -ldflags "-X tui/src/storage.GitCommit=$GIT_COMMIT -X tui/src/storage.BuildTime=$BUILD_TIME"
+go build -mod vendor -tags ssloff -ldflags "-X tui/src/storage/widget.GitCommit=$GIT_COMMIT -X tui/src/storage/widget.BuildTime=$BUILD_TIME"
 
 mkdir -p ./bin
 mv tui ./bin

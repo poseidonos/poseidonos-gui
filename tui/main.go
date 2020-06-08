@@ -5,20 +5,15 @@ import (
 	termui "github.com/gizak/termui/v3"
 	"time"
 	"tui/src/storage/layout"
+	"tui/src/storage/widget"
 )
-
-var GitCommit string
-var BuildTime string
-
-var StorageLayout layout.StorageLayout
 
 func main() {
 	if err := termui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
 	defer termui.Close()
-	StorageLayout = layout.Layout()
-	StorageLayout.Draw()
+	layout.Draw()
 	waitInput()
 }
 
@@ -33,25 +28,33 @@ func waitInput() {
 		select {
 		case e := <-uiEvents:
 			switch e.ID {
+			case "s":
+				widget.MainMenu.Storage()
+			case "m":
+				widget.MainMenu.Monitoring()
+			case "d":
+				widget.MainMenu.Debug()
+			case "q", "<C-c>":
+				widget.MainMenu.Quit()
 			case "k":
 				tickerCount++
-				//Layout.Command.Rows =  Layout.Command.Command[tickerCount%Layout.Command.Count():]
-				StorageLayout.MainMenu.Title = "Press kkkkkk"
-				StorageLayout.Draw()
+				//Layout.command.Rows =  Layout.command.command[tickerCount%Layout.command.Count():]
+				//widget.MainMenu.
+				widget.MainMenu.Widget.Title = "Press kkkkkk"
+				layout.Draw()
 			case "j":
 				tickerCount--
 				if tickerCount < 0 {
 					tickerCount = 0
 				}
-				//Layout.Command.ListWidget.Rows =  Layout.Command.Command[tickerCount%Layout.Command.Count():]
-				StorageLayout.MainMenu.Title = "Press jjj"
-				StorageLayout.Draw()
-			case "q", "<C-c>":
-				return
+				//Layout.command.ListWidget.Rows =  Layout.command.command[tickerCount%Layout.command.Count():]
+				widget.MainMenu.Widget.Title = "Press JJJj"
+				layout.Draw()
 			}
 		case aaa := <-ticker:
-			StorageLayout.Result.Text = "Ticker : " + aaa.String()
-			StorageLayout.Draw()
+			log.Info(aaa)
+			//StorageLayout.result.Text = "Ticker : " + aaa.String()
+			//StorageLayout.Draw()
 		}
 	}
 }
