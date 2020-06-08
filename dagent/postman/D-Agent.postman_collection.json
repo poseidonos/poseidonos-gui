@@ -297,6 +297,67 @@
 					},
 					"response": [
 						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 56565,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						},
+						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -319,7 +380,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/heartbeat",
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -329,7 +390,7 @@
 										"api",
 										"dagent",
 										"v1",
-										"heartbeat"
+										"version"
 									]
 								}
 							},
@@ -343,15 +404,15 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "6e87f233-44bc-4981-a747-e2c325d4268f"
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 08 May 2020 09:15:37 GMT"
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "186"
+									"value": "267"
 								},
 								{
 									"key": "Connection",
@@ -359,7 +420,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 1588929337,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"alive\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
 						}
 					]
 				},
@@ -1594,6 +1655,72 @@
 					]
 				},
 				{
+					"name": "SMART",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f15806bd-dd39-4722-ae34-5c4a3abdace1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7dc5b06b-ad5c-4f60-a492-bab57e3e935e",
+								"exec": [
+									"pm.test(\"SCAN DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/smart/unvme-ns-0",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"device",
+								"smart",
+								"unvme-ns-0"
+							]
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}\n```"
+					},
+					"response": []
+				},
+				{
 					"name": "ADD DEVICE",
 					"event": [
 						{
@@ -1641,7 +1768,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
+							"raw": "{\n    \"param\": {\n        \"name\": \"intel-unvmens-0\"\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/attach",
@@ -2665,7 +2792,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
+							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"unvme-ns-0\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-1\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"unvme-ns-3\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
