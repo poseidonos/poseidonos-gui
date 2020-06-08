@@ -7,10 +7,10 @@ import (
 )
 
 type Layout struct {
+	Command        *widgets.List
 	Paragraph1     *widgets.Paragraph
 	Paragraph2     *widgets.Paragraph
 	Paragraph3     *widgets.Paragraph
-	List1          *widgets.List
 	Guage1         *widgets.Gauge
 	Sparklinegroup *widgets.SparklineGroup
 	Plot1          *widgets.Plot
@@ -28,14 +28,14 @@ func (layout Layout) Draw() {
 
 func MainLayout() Layout {
 	return Layout{
-		Paragraph1:     Paragraph1(),
-		Paragraph2:     Paragraph2(),
-		Paragraph3:     Paragraph3(),
-		List1:          List1(),
-		Guage1:         Gauge1(),
-		Sparklinegroup: SparklineGroup(),
-		Plot1:          Plot1(),
-		Plot2:          Plot2(),
-		Barchart1:      BarChart1(),
+		Command:        initCommand(),
+		Paragraph1:     initParagraph1(),
+		Paragraph2:     initParagraph2(),
+		Paragraph3:     initParagraph3(),
+		Guage1:         initGauge(),
+		Sparklinegroup: initSparklineGroup(),
+		Plot1:          initPlot1(),
+		Plot2:          iinitPlot2(),
+		Barchart1:      initBarChart(),
 	}
 }

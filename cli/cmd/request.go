@@ -318,7 +318,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
 
 		if string(b) != "null" {
-			fmt.Println("    Data       : ", string(b))
+			fmt.Println("    Command       : ", string(b))
 		}
 		fmt.Print("\n\n")
 	}
