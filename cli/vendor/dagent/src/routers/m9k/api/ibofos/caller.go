@@ -15,10 +15,10 @@ func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, mo
 	api.HttpResponse(ctx, res, err)
 }
 
-func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), pathValue interface{}) {
+func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	req.Param = pathValue
+	req.Param = param
 	_, res, err := f(header.XrId(ctx), req.Param)
 	api.HttpResponse(ctx, res, err)
 }

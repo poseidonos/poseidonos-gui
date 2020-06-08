@@ -87,6 +87,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
 			// GET Method does not support payload
 			deviceName := ctx.Param("deviceName")
+
 			param := model.DeviceParam{Name: deviceName}
 			ibofos.CalliBoFOSwithParam(ctx, iBoFOS.GetSMART, param)
 		})
