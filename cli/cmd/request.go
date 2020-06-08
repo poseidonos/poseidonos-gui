@@ -27,7 +27,7 @@ var maxbw uint64
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_array": iBoFOS.CreateArray,
 	"delete_array": iBoFOS.DeleteArray,
-	"list_array":   iBoFOS.ListArrayDevice,
+	"list_array_device":   iBoFOS.ListArrayDevice,
 	"load_array":   iBoFOS.LoadArray,
 }
 
@@ -82,7 +82,7 @@ Available msg list :
 
 array      : create_array     : -b [buffer devs] -d [data devs] -s [spare devs] 
            : delete_array     : not needed
-           : list_array       : not needed 
+           : list_array_device: not needed 
            : load_array       : not needed
 
 device     : scan_dev         : not needed 
@@ -104,7 +104,6 @@ system     : run_ibofos       : not needed
            : set_log_level"   : --level [log level]
            : get_log_level"   : not needed
            : apply_log_filter : not needed
-           : detach_dev       : -n [dev name]
 
 volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
                                 maxiops, maxbw are optional and default value is 0.
@@ -117,6 +116,7 @@ volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [m
            : resize_vol       : --name [vol name] --size [vol size] 
            : get_max_vol_cnt  : not needed
 
+internal   : detach_dev       : -n [dev name]
 
 
 If you want to input multiple flag parameter, you have to seperate with ",". 
