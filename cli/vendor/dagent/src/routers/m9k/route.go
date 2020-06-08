@@ -3,6 +3,7 @@ package m9k
 import (
 	"a-module/routers/m9k/api/exec"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"a-module/routers/m9k/model"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/middleware"
@@ -27,19 +28,19 @@ func Route(router *gin.Engine) {
 	dagentPath := uri.Group("/dagent/v1")
 	{
 		dagentPath.GET("/heartbeat", func(ctx *gin.Context) {
-			dagent.DagentLogic(ctx, dagent.HeartBeat)
+			dagent.CallDagent(ctx, dagent.HeartBeat)
 		})
 		dagentPath.GET("/version", func(ctx *gin.Context) {
-			dagent.DagentLogic(ctx, dagent.Version)
+			dagent.CallDagent(ctx, dagent.Version)
 		})
 		dagentPath.GET("/statuscode", func(ctx *gin.Context) {
-			dagent.DagentLogic(ctx, dagent.StatusCode)
+			dagent.CallDagent(ctx, dagent.StatusCode)
 		})
 		dagentPath.DELETE("/dagent", func(ctx *gin.Context) {
-			dagent.DagentLogic(ctx, dagent.KillDAgent)
+			dagent.CallDagent(ctx, dagent.KillDAgent)
 		})
 		dagentPath.DELETE("/ibofos", func(ctx *gin.Context) {
-			dagent.DagentLogic(ctx, exec.ForceKillIbof)
+			dagent.CallDagent(ctx, exec.ForceKillIbof)
 		})
 	}
 
@@ -50,64 +51,60 @@ func Route(router *gin.Engine) {
 	// System
 	{
 		iBoFOSPath.POST("/system/ibofos", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.RuniBoFOS)
+			ibofos.CalliBoFOS(ctx, iBoFOS.RuniBoFOS)
 		})
 		iBoFOSPath.DELETE("/system/ibofos", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.ExitiBoFOS)
+			ibofos.CalliBoFOS(ctx, iBoFOS.ExitiBoFOS)
 		})
 		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.IBoFOSInfo)
+			ibofos.CalliBoFOS(ctx, iBoFOS.IBoFOSInfo)
 		})
 		iBoFOSPath.POST("/system/mount", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.MountiBoFOS)
+			ibofos.CalliBoFOS(ctx, iBoFOS.MountiBoFOS)
 		})
 		iBoFOSPath.DELETE("/system/mount", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.UnmountiBoFOS)
+			ibofos.CalliBoFOS(ctx, iBoFOS.UnmountiBoFOS)
 		})
 		iBoFOSPath.DELETE("/system/disk/", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.DetachDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.DetachDevice)
 		})
 	}
 
 	// Device
 	{
 		iBoFOSPath.GET("/device", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.ListDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.ListDevice)
 		})
 		iBoFOSPath.GET("/device/scan", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.ScanDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.ScanDevice)
 		})
 		iBoFOSPath.POST("/device", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.AddDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.AddDevice)
 		})
 		iBoFOSPath.DELETE("/device", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.RemoveDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.RemoveDevice)
 		})
-		//iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
-		//	// GET Method does not support payload
-		//	//deviceName := ctx.Param("deviceName")
-		//	ibofos.AmoduleLogic(ctx, iBoFOS.GetSMART)
-		//})
-		iBoFOSPath.POST("/device/smart", func(ctx *gin.Context) {
+		iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
 			// GET Method does not support payload
-			//deviceName := ctx.Param("deviceName")
-			ibofos.AmoduleLogic(ctx, iBoFOS.GetSMART)
+			deviceName := ctx.Param("deviceName")
+			param := model.DeviceParam{Name: deviceName}
+			ibofos.CalliBoFOSwithParam(ctx, iBoFOS.GetSMART, param)
 		})
 	}
 
 	// Array
 	{
 		iBoFOSPath.GET("/array/device", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.ListArrayDevice)
+			ibofos.CalliBoFOS(ctx, iBoFOS.ListArrayDevice)
 		})
 		iBoFOSPath.GET("/array", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.LoadArray)
+			ibofos.CalliBoFOS(ctx, iBoFOS.LoadArray)
 		})
 		iBoFOSPath.POST("/array", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.CreateArray)
+			ibofos.CalliBoFOS(ctx, iBoFOS.CreateArray)
 		})
 		iBoFOSPath.DELETE("/array", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.DeleteArray)
+			ibofos.CalliBoFOS(ctx, iBoFOS.DeleteArray)
 		})
 	}
 
@@ -117,30 +114,30 @@ func Route(router *gin.Engine) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, iBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
-				ibofos.AmoduleLogic(ctx, iBoFOS.CreateVolume)
+				ibofos.CalliBoFOS(ctx, iBoFOS.CreateVolume)
 			}
 		})
 		iBoFOSPath.GET("/volume", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.ListVolume)
+			ibofos.CalliBoFOS(ctx, iBoFOS.ListVolume)
 		})
 		iBoFOSPath.PUT("/volume", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.UpdateVolume)
+			ibofos.CalliBoFOS(ctx, iBoFOS.UpdateVolume)
 		})
 		iBoFOSPath.DELETE("/volume", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.DeleteVolume)
+			ibofos.CalliBoFOS(ctx, iBoFOS.DeleteVolume)
 		})
 		iBoFOSPath.GET("/volume/maxcount", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.GetMaxVolumeCount)
+			ibofos.CalliBoFOS(ctx, iBoFOS.GetMaxVolumeCount)
 		})
 		iBoFOSPath.POST("/volume/mount", func(ctx *gin.Context) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, iBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
 			} else {
-				ibofos.AmoduleLogic(ctx, iBoFOS.MountVolume)
+				ibofos.CalliBoFOS(ctx, iBoFOS.MountVolume)
 			}
 		})
 		iBoFOSPath.DELETE("/volume/mount", func(ctx *gin.Context) {
-			ibofos.AmoduleLogic(ctx, iBoFOS.UnmountVolume)
+			ibofos.CalliBoFOS(ctx, iBoFOS.UnmountVolume)
 		})
 	}
 }
