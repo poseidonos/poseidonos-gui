@@ -1,4 +1,4 @@
-package layout
+package widget
 
 import (
 	"github.com/gizak/termui/v3"
@@ -6,15 +6,15 @@ import (
 )
 
 type command struct {
-	data []string
+	list []string
 }
 
 func (cm command) Count() int {
-	return len(cm.data)
+	return len(cm.list)
 }
 
 var commandData = command{
-	data: []string{
+	list: []string{
 		"[0] Scan Device",
 		"[1] List Devices",
 		"[2] S.M.A.R.T.",
@@ -26,11 +26,11 @@ var commandData = command{
 	},
 }
 
-func initCommand() *widgets.List {
+func InitCommand() *widgets.List {
 	list := widgets.NewList()
-	list.Title = "CommandWidget (J & K)"
-	list.Rows = commandData.data
-	list.SetRect(0, 5, 25, 12)
+	list.Title = "Command (J & K)"
+	list.Rows = commandData.list
+	list.SetRect(0, 6, 25, 15)
 	list.TextStyle.Fg = termui.ColorYellow
 
 	return list

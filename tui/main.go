@@ -4,21 +4,21 @@ import (
 	"a-module/log"
 	termui "github.com/gizak/termui/v3"
 	"time"
-	"tui/src/layout"
+	"tui/src/storage/layout"
 )
 
 var GitCommit string
 var BuildTime string
 
-var MainLayout layout.Layout
+var StorageLayout layout.StorageLayout
 
 func main() {
 	if err := termui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
 	defer termui.Close()
-	MainLayout = layout.MainLayout()
-	MainLayout.Draw()
+	StorageLayout = layout.Layout()
+	StorageLayout.Draw()
 	waitInput()
 }
 
@@ -35,24 +35,23 @@ func waitInput() {
 			switch e.ID {
 			case "k":
 				tickerCount++
-				//MainLayout.Command.Rows =  MainLayout.Command.Command[tickerCount%MainLayout.Command.Count():]
-				MainLayout.Paragraph1.Title = "Press kkkkkk"
-				MainLayout.Draw()
+				//Layout.Command.Rows =  Layout.Command.Command[tickerCount%Layout.Command.Count():]
+				StorageLayout.MainMenu.Title = "Press kkkkkk"
+				StorageLayout.Draw()
 			case "j":
 				tickerCount--
 				if tickerCount < 0 {
 					tickerCount = 0
 				}
-				//MainLayout.Command.ListWidget.Rows =  MainLayout.Command.Command[tickerCount%MainLayout.Command.Count():]
-				MainLayout.Paragraph1.Title = "Press jjj"
-				MainLayout.Draw()
+				//Layout.Command.ListWidget.Rows =  Layout.Command.Command[tickerCount%Layout.Command.Count():]
+				StorageLayout.MainMenu.Title = "Press jjj"
+				StorageLayout.Draw()
 			case "q", "<C-c>":
 				return
 			}
 		case aaa := <-ticker:
-			MainLayout.Paragraph1.Title = "Ticker : " + aaa.String()
-			MainLayout.Draw()
-			tickerCount++
+			StorageLayout.Result.Text = "Ticker : " + aaa.String()
+			StorageLayout.Draw()
 		}
 	}
 }
@@ -70,10 +69,10 @@ func waitInput() {
 //		//lc2.initCommand[0] = test.SinData[2*count%220:]
 //		//bc.initCommand = barchartData[count/2%10:]
 //
-//		//for _, widget := range MainLayout. {
+//		//for _, widget := range Layout. {
 //		//	termui.Render(widget)
 //		//}
-//		v := reflect.ValueOf(MainLayout)
+//		v := reflect.ValueOf(Layout)
 //		typeOfS := v.Type()
 //
 //		for i := 0; i < v.NumField(); i++ {
