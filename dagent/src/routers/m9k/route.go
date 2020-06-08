@@ -3,6 +3,7 @@ package m9k
 import (
 	"a-module/routers/m9k/api/exec"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"a-module/routers/m9k/model"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/middleware"
@@ -85,8 +86,9 @@ func Route(router *gin.Engine) {
 		})
 		iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
 			// GET Method does not support payload
-			//deviceName := ctx.Param("deviceName")
-			ibofos.CalliBoFOS(ctx, iBoFOS.GetSMART)
+			deviceName := ctx.Param("deviceName")
+			param := model.DeviceParam{Name: deviceName}
+			ibofos.CalliBoFOSwithParam(ctx, iBoFOS.GetSMART, param)
 		})
 	}
 
