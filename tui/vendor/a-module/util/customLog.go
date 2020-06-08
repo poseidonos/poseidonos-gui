@@ -15,7 +15,7 @@ func PrintCurrentServerStatus() {
 		"\n      #####          D-Agent           #####" +
 		"\n      ######################################" +
 		"\n      #####----------------------------#####" +
-		"\n      #####      Config.json info      #####" +
+		"\n      #####      Config.json Info      #####" +
 		"\n      #####  D-Agent Port : " + setting.Config.Server.Dagent.Port + "       #####" +
 		"\n      #####  iBoFOS Host : " + setting.Config.Server.IBoF.IP + "   #####" +
 		"\n      #####  iBoFOS Port : " + setting.Config.Server.IBoF.Port + "       #####" +

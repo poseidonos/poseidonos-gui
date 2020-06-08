@@ -71,10 +71,10 @@ func GetIBoFResponse() []byte {
 	case ret := <-iBoFReceiveChan:
 		return ret
 	case <-time.After(time.Second * 29):
-		log.info("GetIBoFResponse : Timeout")
+		log.Info("GetIBoFResponse : Timeout")
 		response := model.Response{}
 		response.Rid = "timeout"
-		response.result.Status.Code = 19000
+		response.Result.Status.Code = 19000
 		ret, _ := json.Marshal(response)
 		return ret
 	}

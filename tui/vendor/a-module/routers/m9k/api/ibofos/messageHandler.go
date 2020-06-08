@@ -127,7 +127,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Infof("Response Unmarshal Error : %v", err)
 			return model.Response{}, ErrJson
 
-			//} else if response.result.Status.Code != 0 {
+			//} else if response.Result.Status.Code != 0 {
 			//	return response, ErrRes
 
 		} else {
