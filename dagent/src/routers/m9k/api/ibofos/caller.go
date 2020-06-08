@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-func AmoduleLogic(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
+func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
 	_, res, err := f(header.XrId(ctx), req.Param)
