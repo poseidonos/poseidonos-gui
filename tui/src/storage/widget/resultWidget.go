@@ -15,7 +15,7 @@ var Result = resultWidget{
 
 func initResult() *widgets.Paragraph {
 	paragraph := widgets.NewParagraph()
-	paragraph.Title = "result"
+	paragraph.Title = "Result"
 	paragraph.Text = "The result of latest request"
 	paragraph.SetRect(25, 0, 75, 15)
 	paragraph.TextStyle.Fg = termui.ColorWhite

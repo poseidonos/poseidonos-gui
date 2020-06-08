@@ -32,7 +32,7 @@ func commandList() []string {
 
 func initCommand() *widgets.List {
 	list := widgets.NewList()
-	list.Title = "commandWidget (J & K)"
+	list.Title = "Command (J & K)"
 	list.Rows = commandList()
 	list.SetRect(0, 6, 25, 15)
 	list.TextStyle.Fg = termui.ColorYellow
