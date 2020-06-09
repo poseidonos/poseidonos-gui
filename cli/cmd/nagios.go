@@ -44,15 +44,14 @@ func PrintVol(cmd *cobra.Command, args []string) {
 			if string(b) == "null" {
 				fmt.Println("CRITICAL: Fail to get the size of volumes")
 			} else {
-				result := "OK: Success |"
+				result := "OK: Success|"
 
 				for i :=0 ; i < int(gjson.Get(string(b),"volumes.#").Int()) ; i++ {
 
 					value := gjson.Get(string(b), "volumes." + strconv.Itoa(i)).String()
-					result += "'" + gjson.Get(value, "name").String() + "'=" + gjson.Get(value, "total").String() + "B;" 
+					result += "'" + gjson.Get(value, "name").String() + "'=" + gjson.Get(value, "total").String() + "B; "
 				}
-
-				fmt.Println(result[:len(result)-1])
+				fmt.Println(result[:len(result)-2])
 			}
 		}
 	} else if command[0]== "smart" {
@@ -68,12 +67,11 @@ func PrintVol(cmd *cobra.Command, args []string) {
 				var result string
 
 				if args[1] == "temperature" {
-
-					result = "OK: Success temperature of " + name + "|'temperature' = " + gjson.Get(string(b), "current_temperature").String() + ";"
+					result = "OK: Success temperature of " + name + "|'temperature'=" + gjson.Get(string(b), "current_temperature").String()
 				} else if args[1] == "power_on_hours" {
-					result = "OK: Success power_on_hours of " + name + "|'power_on_hours' = " + gjson.Get(string(b), "power_on_hours").String() + ";"
+					result = "OK: Success power_on_hours of " + name + "|'power_on_hours'="  + gjson.Get(string(b), "power_on_hours").String()
 				} else if args[1] == "unsafe_shutdowns" {
-					result = "OK: Success unsafe_shutdowns of " + name + "|'unsafe_shutdowns' = " + gjson.Get(string(b), "unsafe_shutdowns").String() + ";"
+					result = "OK: Success unsafe_shutdowns of " + name + "|'unsafe_shutdowns'=" + gjson.Get(string(b), "unsafe_shutdowns").String()
 				}
 				fmt.Println(result)
 			}
