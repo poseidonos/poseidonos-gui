@@ -7,6 +7,7 @@ import (
 	"github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"github.com/google/uuid"
+	"github.com/tidwall/gjson"
 )
 
 type commandWidget struct {
@@ -48,24 +49,31 @@ func excuteCommand(position int) {
 	case 3:
 		iBoFRequest, res, err := iBoFOS.ListDevice(xrId, nil)
 		showResult(iBoFRequest, res, err)
-		resStr := fmt.Sprintf("%+v", res.Result.Data)
-		Device.Widget.Text = resStr
+
+		if err != nil && res.Result.Data != nil {
+			value := gjson.Get(res.Result.Data.(string), "devicelist[0].name")
+			Device.Widget.Text = value.String()
+		}
 	case 4:
 		deviceName := "unvme-ns-0"
 		param := model.DeviceParam{Name: deviceName}
 		iBoFRequest, res, err := iBoFOS.GetSMART(xrId, param)
 		showResult(iBoFRequest, res, err)
-		resStr := fmt.Sprintf("%+v", res.Result.Data)
-		Device.Widget.Text = resStr
+
+		if err != nil && res.Result.Data != nil {
+			value := gjson.Get(res.Result.Data.(string), "read_only")
+			Volume.Widget.Text = value.String()
+		}
 	}
 }
 
 func showResult(iBoFRequest model.Request, res model.Response, err error) {
 	if err != nil {
 		errStr := fmt.Sprintf("%+v", err)
-		Info.Widget.Text = " Error : " + errStr
+		Info.Widget.Text = iBoFRequest.Command + "Error : " + errStr
 	} else {
-		Info.Widget.Text = " Success : " + iBoFRequest.Command + "\n" + res.Result.Status.Description
+		dataStr := fmt.Sprintf("%+v", res.Result.Data)
+		Info.Widget.Text = iBoFRequest.Command + "Success : " + "\n" + res.Result.Status.Description + "\n" + dataStr
 	}
 }
 

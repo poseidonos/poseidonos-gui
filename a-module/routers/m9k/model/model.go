@@ -110,3 +110,27 @@ type BuildInfo struct {
 	GitHash   string `json:"githash"`
 	BuildTime string `json:"build_time"`
 }
+
+type SMART struct {
+	AvailableSpare           string `json:"available_spare,omitempty"`
+	AvailableSpareSpace      string `json:"available_spare_space,omitempty"`
+	AvailableSpareThreshold  string `json:"available_spare_threshold,omitempty"`
+	ContollerBusyTime        string `json:"contoller_busy_time,omitempty"`
+	CriticalTemperatureTime  string `json:"critical_temperature_time,omitempty"`
+	CurrentTemperature       string `json:"current_temperature,omitempty"`
+	DataUnitsRead            string `json:"data_units_read,omitempty"`
+	DataUnitsWritten         string `json:"data_units_written,omitempty"`
+	DeviceReliability        string `json:"device_reliability,omitempty"`
+	HostReadCommands         string `json:"host_read_commands,omitempty"`
+	HostWriteCommands        string `json:"host_write_commands,omitempty"`
+	LifPercentageUsed        string `json:"life_percentage_used,omitempty"`
+	LifetimeErrorLogEntries  string `json:"lifetime_error_log_entries,omitempty"`
+	PowerCycles              string `json:"power_cycles,omitempty"`
+	PowerOnHours             string `json:"power_on_hours,omitempty"`
+	ReadOnly                 string `json:"read_only,omitempty"`
+	Temperature              string `json:"temperature,omitempty"`
+	UnrecoverableMediaErrors string `json:"unrecoverable_media_errors,omitempty"`
+	UnsafeShutdowns          string `json:"unsafe_shutdowns,omitempty"`
+	VolatileMemoryBackup     string `json:"volatile_memory_backup,omitempty"`
+	WarningTemperatureTime   string `json:"warning_temperature_time,omitempty"`
+}
