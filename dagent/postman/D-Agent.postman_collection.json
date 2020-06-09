@@ -1701,7 +1701,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/smart/unvme-ns-0",
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/smart/{{deviceName1}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1713,12 +1713,80 @@
 								"v1",
 								"device",
 								"smart",
-								"unvme-ns-0"
+								"{{deviceName1}}"
 							]
 						},
 						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"Scan Device Done\"\n        }\n    }\n}\n```"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/device/smart/unvme-ns-0",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"device",
+										"smart",
+										"unvme-ns-0"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "5fc25342-a46f-4567-8e2b-a748a5ffb09a"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Jun 2020 00:25:17 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "935"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"5fc25342-a46f-4567-8e2b-a748a5ffb09a\",\n    \"lastSuccessTime\": 1591662317,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"available_spare\": \"1%\",\n            \"available_spare_space\": \"OK\",\n            \"available_spare_threshold\": \"100%\",\n            \"contoller_busy_time\": \"0x50000000000000000m\",\n            \"critical_temperature_time\": \"0m\",\n            \"current_temperature\": \"11759C\",\n            \"data_units_read\": \"0x60000000000000000\",\n            \"data_units_written\": \"0x50000000000000000\",\n            \"device_reliability\": \"OK\",\n            \"host_read_commands\": \"0x17700000000000000000\",\n            \"host_write_commands\": \"0x13880000000000000000\",\n            \"life_percentage_used\": \"0%\",\n            \"lifetime_error_log_entries\": \"0\",\n            \"power_cycles\": \"0xA0000000000000000\",\n            \"power_on_hours\": \"0x3C0000000000000000h\",\n            \"read_only\": \"No\",\n            \"temperature\": \"OK\",\n            \"unrecoverable_media_errors\": \"0\",\n            \"unsafe_shutdowns\": \"0\",\n            \"volatile_memory_backup\": \"OK\",\n            \"warning_temperature_time\": \"0m\"\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "ADD DEVICE",
@@ -2106,7 +2174,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"unvme-ns-0\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-1\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"unvme-ns-3\"\n            }\n        ]\n    }\n}"
+							"raw": "{\n    \"param\": {\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
@@ -4908,6 +4976,32 @@
 					"tests[\"response code is 200\"] = responseCode.code === 200;"
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "ebb8af9a-111c-4287-95a9-d33003323aa5",
+			"key": "deviceName1",
+			"value": "unvme-ns-0",
+			"type": "string"
+		},
+		{
+			"id": "d0b11f33-5ecb-45c0-bc48-8b5812977d56",
+			"key": "deviceName2",
+			"value": "unvme-ns-1",
+			"type": "string"
+		},
+		{
+			"id": "d0f7b144-7dd9-4946-888d-547218411fa6",
+			"key": "deviceName3",
+			"value": "unvme-ns-2",
+			"type": "string"
+		},
+		{
+			"id": "fa87e3f5-136d-4f11-8164-35de243738ab",
+			"key": "deviceName4",
+			"value": "unvme-ns-3",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}
