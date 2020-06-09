@@ -113,7 +113,6 @@ volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [m
            : list_vol         : not needed
            : update_vol_qos   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
            : rename_vol       : --name [vol name] --newname [new vol name]
-           : resize_vol       : --name [vol name] --size [vol size] 
            : get_max_vol_cnt  : not needed
 
 internal   : detach_dev       : -n [dev name]
