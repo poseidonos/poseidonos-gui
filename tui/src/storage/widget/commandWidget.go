@@ -2,6 +2,7 @@ package widget
 
 import (
 	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"fmt"
 	"github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"github.com/google/uuid"
@@ -35,7 +36,18 @@ func excuteCommand(position int) {
 
 	switch position {
 	case 0:
-		iBoFOS.RuniBoFOS(xrId, nil)
+		iBoFRequest, res, err := iBoFOS.RuniBoFOS(xrId, nil)
+
+		temp1 := fmt.Sprintf("iBoFRequest : %+v", iBoFRequest)
+		temp2 := fmt.Sprintf("res : %+v", res)
+		temp3 := fmt.Sprintf("err : %+v", err)
+		Info.Widget.WrapText = true
+		Info.Widget.Text = temp1
+		Info.Widget.Text = temp2
+		Info.Widget.Text = temp3
+
+		Info.Widget.Text = temp2
+
 	case 1:
 		iBoFOS.ExitiBoFOS(xrId, nil)
 	case 2:

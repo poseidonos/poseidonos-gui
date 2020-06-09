@@ -18,7 +18,7 @@ var Info = infoWidget{
 
 func initInfo() *widgets.Paragraph {
 	p := widgets.NewParagraph()
-	p.Title = "info"
+	p.Title = "Info"
 	p.Text = "GitCommit: " + GitCommit + "\nBuildTime: " + BuildTime
 	p.SetRect(0, 25, 75, 30)
 	p.TextStyle.Fg = termui.ColorWhite
