@@ -15,9 +15,9 @@ var Volume = volumeWidget{
 
 func initVolume() *widgets.Paragraph {
 	paragraph := widgets.NewParagraph()
-	paragraph.Title = "Volume"
-	paragraph.Text = "No Volume"
-	paragraph.SetRect(50, 0, 75, 15)
+	paragraph.Title = "S.M.A.R.T."
+	paragraph.Text = "No Info"
+	paragraph.SetRect(40, 0, 75, 15)
 	paragraph.TextStyle.Fg = termui.ColorWhite
 
 	return paragraph

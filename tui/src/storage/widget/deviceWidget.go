@@ -17,7 +17,7 @@ func initDevice() *widgets.Paragraph {
 	paragraph := widgets.NewParagraph()
 	paragraph.Title = "Device"
 	paragraph.Text = "No Device"
-	paragraph.SetRect(25, 0, 50, 15)
+	paragraph.SetRect(25, 0, 40, 15)
 	paragraph.TextStyle.Fg = termui.ColorWhite
 
 	return paragraph
