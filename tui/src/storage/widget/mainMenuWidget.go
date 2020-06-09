@@ -32,7 +32,8 @@ func (mm *mainMenuWidget) Input(key string) {
 	case "d", "D":
 		mm.Debug()
 	case "q", "Q", "<C-c>":
-		mm.Quit()
+		termui.Close()
+		os.Exit(0)
 	}
 }
 

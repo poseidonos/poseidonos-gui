@@ -3,6 +3,7 @@ package widget
 import (
 	iBoFOS "a-module/routers/m9k/api/ibofos"
 	"a-module/routers/m9k/model"
+	"encoding/json"
 	"fmt"
 	"github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -50,9 +51,17 @@ func excuteCommand(position int) {
 		iBoFRequest, res, err := iBoFOS.ListDevice(xrId, nil)
 		showResult(iBoFRequest, res, err)
 
-		if err != nil && res.Result.Data != nil {
-			value := gjson.Get(res.Result.Data.(string), "devicelist[0].name")
-			Device.Widget.Text = value.String()
+		marshalled, _ := json.Marshal(res.Result.Data)
+		strJson := string(marshalled)
+
+		if err == nil && strJson != "" {
+			result := gjson.Get(strJson, "devicelist.#.name")
+
+			var deviceName string
+			for _, name := range result.Array() {
+				deviceName = deviceName + name.String() + "\n"
+			}
+			Device.Widget.Text = deviceName
 		}
 	case 4:
 		deviceName := "unvme-ns-0"
@@ -60,9 +69,18 @@ func excuteCommand(position int) {
 		iBoFRequest, res, err := iBoFOS.GetSMART(xrId, param)
 		showResult(iBoFRequest, res, err)
 
-		if err != nil && res.Result.Data != nil {
-			value := gjson.Get(res.Result.Data.(string), "read_only")
-			Volume.Widget.Text = value.String()
+		marshalled, _ := json.Marshal(res.Result.Data)
+		strJson := string(marshalled)
+
+		var smartValue string
+		if err == nil && strJson != "" {
+			smartValue = smartValue + "available_spare: " + gjson.Get(strJson, "available_spare").String() + "\n"
+			smartValue = smartValue + "current_temperature: " + gjson.Get(strJson, "current_temperature").String() + "\n"
+			smartValue = smartValue + "data_units_read: " + gjson.Get(strJson, "data_units_read").String() + "\n"
+			smartValue = smartValue + "data_units_written: " + gjson.Get(strJson, "data_units_written").String() + "\n"
+			smartValue = smartValue + "power_on_hours: " + gjson.Get(strJson, "power_on_hours").String() + "\n"
+
+			Volume.Widget.Text = smartValue
 		}
 	}
 }
@@ -72,7 +90,10 @@ func showResult(iBoFRequest model.Request, res model.Response, err error) {
 		errStr := fmt.Sprintf("%+v", err)
 		Info.Widget.Text = iBoFRequest.Command + " Error : " + errStr
 	} else {
-		dataStr := fmt.Sprintf("%+v", res.Result.Data)
+		var dataStr string
+		if res.Result.Data != nil {
+			dataStr = fmt.Sprintf("%+v", res.Result.Data)
+		}
 		Info.Widget.Text = iBoFRequest.Command + " Success\n" + res.Result.Status.Description + "\n" + dataStr
 	}
 }
