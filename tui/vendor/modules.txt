@@ -1,11 +1,19 @@
 # a-module v0.0.0-00010101000000-000000000000 => ./../a-module
 ## explicit
+a-module/handler
 a-module/log
+a-module/routers/m9k/api/ibofos
+a-module/routers/m9k/model
+a-module/setting
+a-module/util
 # github.com/gizak/termui/v3 v3.1.0
 ## explicit
 github.com/gizak/termui/v3
 github.com/gizak/termui/v3/drawille
 github.com/gizak/termui/v3/widgets
+# github.com/google/uuid v1.1.1
+## explicit
+github.com/google/uuid
 # github.com/konsorten/go-windows-terminal-sequences v1.0.1
 github.com/konsorten/go-windows-terminal-sequences
 # github.com/mattn/go-runewidth v0.0.2
@@ -18,4 +26,6 @@ github.com/nsf/termbox-go
 github.com/sirupsen/logrus
 # golang.org/x/sys v0.0.0-20190422165155-953cdadca894
 golang.org/x/sys/unix
+# gopkg.in/yaml.v2 v2.2.8
+gopkg.in/yaml.v2
 # a-module => ./../a-module
