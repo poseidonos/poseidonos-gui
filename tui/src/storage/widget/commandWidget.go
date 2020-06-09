@@ -70,10 +70,10 @@ func excuteCommand(position int) {
 func showResult(iBoFRequest model.Request, res model.Response, err error) {
 	if err != nil {
 		errStr := fmt.Sprintf("%+v", err)
-		Info.Widget.Text = iBoFRequest.Command + "Error : " + errStr
+		Info.Widget.Text = iBoFRequest.Command + " Error : " + errStr
 	} else {
 		dataStr := fmt.Sprintf("%+v", res.Result.Data)
-		Info.Widget.Text = iBoFRequest.Command + "Success : " + "\n" + res.Result.Status.Description + "\n" + dataStr
+		Info.Widget.Text = iBoFRequest.Command + " Success\n" + res.Result.Status.Description + "\n" + dataStr
 	}
 }
 
