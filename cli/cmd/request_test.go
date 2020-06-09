@@ -32,7 +32,7 @@ func TestSend(t *testing.T) {
 		[]string{"list_vol"},
 		[]string{"unmount_vol"},
 		[]string{"delete_vol"},
-		//		[]string{"unmount_ibofos"},
+		[]string{"unmount_ibofos"},
 		[]string{"exit_ibofos"},
 	}
 
