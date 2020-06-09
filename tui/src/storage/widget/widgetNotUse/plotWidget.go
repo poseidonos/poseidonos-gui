@@ -1,4 +1,4 @@
-package widget
+package widgetNotUse
 
 import (
 	"github.com/gizak/termui/v3"

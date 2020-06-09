@@ -41,10 +41,6 @@ func excuteCommand(position int) {
 		temp1 := fmt.Sprintf("iBoFRequest : %+v", iBoFRequest)
 		temp2 := fmt.Sprintf("res : %+v", res)
 		temp3 := fmt.Sprintf("err : %+v", err)
-		Info.Widget.WrapText = true
-		Info.Widget.Text = temp1
-		Info.Widget.Text = temp2
-		Info.Widget.Text = temp3
 
 		Info.Widget.Text = temp2
 

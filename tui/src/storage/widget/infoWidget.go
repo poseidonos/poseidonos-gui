@@ -20,9 +20,9 @@ func initInfo() *widgets.Paragraph {
 	p := widgets.NewParagraph()
 	p.Title = "Info"
 	p.Text = "GitCommit: " + GitCommit + "\nBuildTime: " + BuildTime
-	p.SetRect(0, 25, 75, 30)
+	p.SetRect(0, 15, 75, 30)
 	p.TextStyle.Fg = termui.ColorWhite
 	p.BorderStyle.Fg = termui.ColorCyan
-
+	p.WrapText = true
 	return p
 }
