@@ -37,35 +37,35 @@ func excuteCommand(position int) {
 
 	switch position {
 	case 0:
-		_, _, err := iBoFOS.RuniBoFOS(xrId, nil)
-		showResult("RuniBoFOS", err)
+		iBoFRequest, res, err := iBoFOS.RuniBoFOS(xrId, nil)
+		showResult(iBoFRequest, res, err)
 	case 1:
-		_, _, err := iBoFOS.ExitiBoFOS(xrId, nil)
-		showResult("ExitiBoFOS", err)
+		iBoFRequest, res, err := iBoFOS.ExitiBoFOS(xrId, nil)
+		showResult(iBoFRequest, res, err)
 	case 2:
-		_, _, err := iBoFOS.ScanDevice(xrId, nil)
-		showResult("ScanDevice", err)
+		iBoFRequest, res, err := iBoFOS.ScanDevice(xrId, nil)
+		showResult(iBoFRequest, res, err)
 	case 3:
-		_, res, err := iBoFOS.ListDevice(xrId, nil)
-		showResult("ListDevice", err)
+		iBoFRequest, res, err := iBoFOS.ListDevice(xrId, nil)
+		showResult(iBoFRequest, res, err)
 		resStr := fmt.Sprintf("%+v", res.Result.Data)
 		Device.Widget.Text = resStr
 	case 4:
 		deviceName := "unvme-ns-0"
 		param := model.DeviceParam{Name: deviceName}
-		_, res, err := iBoFOS.GetSMART(xrId, param)
-		showResult("SMART", err)
+		iBoFRequest, res, err := iBoFOS.GetSMART(xrId, param)
+		showResult(iBoFRequest, res, err)
 		resStr := fmt.Sprintf("%+v", res.Result.Data)
 		Device.Widget.Text = resStr
 	}
 }
 
-func showResult(commandName string, err error) {
+func showResult(iBoFRequest model.Request, res model.Response, err error) {
 	if err != nil {
 		errStr := fmt.Sprintf("%+v", err)
-		Info.Widget.Text = commandName + " Error : " + errStr
+		Info.Widget.Text = " Error : " + errStr
 	} else {
-		Info.Widget.Text = commandName + " Success"
+		Info.Widget.Text = " Success : " + iBoFRequest.Command + "\n" + res.Result.Status.Description
 	}
 }
 
