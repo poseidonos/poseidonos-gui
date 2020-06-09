@@ -2,6 +2,7 @@ package widget
 
 import (
 	iBoFOS "a-module/routers/m9k/api/ibofos"
+	"a-module/routers/m9k/model"
 	"fmt"
 	"github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -37,28 +38,34 @@ func excuteCommand(position int) {
 	switch position {
 	case 0:
 		_, _, err := iBoFOS.RuniBoFOS(xrId, nil)
-		if err != nil {
-			errStr := fmt.Sprintf("%+v", err)
-			Info.Widget.Text = "Error : " + errStr
-		} else {
-			Info.Widget.Text = "Success RuniBoFOS"
-		}
+		showResult("RuniBoFOS", err)
 	case 1:
 		_, _, err := iBoFOS.ExitiBoFOS(xrId, nil)
-		if err != nil {
-			errStr := fmt.Sprintf("%+v", err)
-			Info.Widget.Text = "Error : " + errStr
-		} else {
-			Info.Widget.Text = "Success ExitiBoFOS"
-		}
+		showResult("ExitiBoFOS", err)
 	case 2:
 		_, _, err := iBoFOS.ScanDevice(xrId, nil)
-		if err != nil {
-			errStr := fmt.Sprintf("%+v", err)
-			Info.Widget.Text = "Error : " + errStr
-		} else {
-			Info.Widget.Text = "Success ExitiBoFOS"
-		}
+		showResult("ScanDevice", err)
+	case 3:
+		_, res, err := iBoFOS.ListDevice(xrId, nil)
+		showResult("ListDevice", err)
+		resStr := fmt.Sprintf("%+v", res.Result.Data)
+		Device.Widget.Text = resStr
+	case 4:
+		deviceName := "unvme-ns-0"
+		param := model.DeviceParam{Name: deviceName}
+		_, _, err := iBoFOS.GetSMART(xrId, param)
+		showResult("SMART", err)
+		resStr := fmt.Sprintf("%+v", res.Result.Data)
+		Device.Widget.Text = resStr
+	}
+}
+
+func showResult(commandName string, err error) {
+	if err != nil {
+		errStr := fmt.Sprintf("%+v", err)
+		Info.Widget.Text = commandName + " Error : " + errStr
+	} else {
+		Info.Widget.Text = commandName + " Success"
 	}
 }
 
@@ -73,12 +80,12 @@ var commandList = []string{
 	"[1] Exit POS",
 	"[2] Scan Device",
 	"[3] List Device",
-	"[4] Create Array",
-	"[5] Load Array",
-	"[6] Delete Array",
-	"[7] State Array",
-	"[8] Mount POS",
-	"[9] Unmount POS",
+	"[4] SMART",
+	"[5] Load Array (TBD)",
+	"[6] Delete Array (TBD)",
+	"[7] State Array (TBD)",
+	"[8] Mount POS (TBD)",
+	"[9] Unmount POS (TBD)",
 }
 
 func initCommand() *widgets.List {
