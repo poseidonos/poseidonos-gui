@@ -5,19 +5,19 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
-type resultWidget struct {
+type volumeWidget struct {
 	Widget *widgets.Paragraph
 }
 
-var Result = resultWidget{
-	Widget: initResult(),
+var Volume = volumeWidget{
+	Widget: initVolume(),
 }
 
-func initResult() *widgets.Paragraph {
+func initVolume() *widgets.Paragraph {
 	paragraph := widgets.NewParagraph()
-	paragraph.Title = "Result"
-	paragraph.Text = "The result of latest request"
-	paragraph.SetRect(25, 0, 75, 15)
+	paragraph.Title = "Volume"
+	paragraph.Text = "No Volume"
+	paragraph.SetRect(50, 0, 75, 15)
 	paragraph.TextStyle.Fg = termui.ColorWhite
 
 	return paragraph

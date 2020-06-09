@@ -18,21 +18,34 @@ func mainMenulist() []string {
 	return []string{
 		"(S)torage",
 		"(M)onitoring",
-		"(D)ebug.",
+		"(N)VMe Admin",
 		"(Q)uit",
 	}
 }
 
-func (mm mainMenuWidget) Storage() {
+func (mm *mainMenuWidget) Input(key string) {
+	switch key {
+	case "s", "S":
+		mm.Storage()
+	case "m", "M":
+		mm.Monitoring()
+	case "d", "D":
+		mm.Debug()
+	case "q", "Q", "<C-c>":
+		mm.Quit()
+	}
+}
+
+func (mm *mainMenuWidget) Storage() {
 
 }
-func (mm mainMenuWidget) Monitoring() {
+func (mm *mainMenuWidget) Monitoring() {
 
 }
-func (mm mainMenuWidget) Debug() {
+func (mm *mainMenuWidget) Debug() {
 
 }
-func (mm mainMenuWidget) Quit() {
+func (mm *mainMenuWidget) Quit() {
 	os.Exit(0)
 }
 

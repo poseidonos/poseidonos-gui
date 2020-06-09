@@ -8,7 +8,8 @@ import (
 func Draw() {
 	termui.Render(widget.MainMenu.Widget)
 	termui.Render(widget.Command.Widget)
-	termui.Render(widget.Result.Widget)
+	termui.Render(widget.Device.Widget)
+	termui.Render(widget.Volume.Widget)
 	termui.Render(widget.Plot.Widget)
 	termui.Render(widget.Plot2.Widget)
 	termui.Render(widget.Info.Widget)
