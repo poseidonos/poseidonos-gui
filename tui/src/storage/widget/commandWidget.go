@@ -36,19 +36,29 @@ func excuteCommand(position int) {
 
 	switch position {
 	case 0:
-		iBoFRequest, res, err := iBoFOS.RuniBoFOS(xrId, nil)
-
-		temp1 := fmt.Sprintf("iBoFRequest : %+v", iBoFRequest)
-		temp2 := fmt.Sprintf("res : %+v", res)
-		temp3 := fmt.Sprintf("err : %+v", err)
-
-		Info.Widget.Text = temp2
-
+		_, _, err := iBoFOS.RuniBoFOS(xrId, nil)
+		if err != nil {
+			errStr := fmt.Sprintf("%+v", err)
+			Info.Widget.Text = "Error : " + errStr
+		} else {
+			Info.Widget.Text = "Success RuniBoFOS"
+		}
 	case 1:
-		iBoFOS.ExitiBoFOS(xrId, nil)
+		_, _, err := iBoFOS.ExitiBoFOS(xrId, nil)
+		if err != nil {
+			errStr := fmt.Sprintf("%+v", err)
+			Info.Widget.Text = "Error : " + errStr
+		} else {
+			Info.Widget.Text = "Success ExitiBoFOS"
+		}
 	case 2:
-		iBoFOS.ScanDevice(xrId, nil)
-
+		_, _, err := iBoFOS.ScanDevice(xrId, nil)
+		if err != nil {
+			errStr := fmt.Sprintf("%+v", err)
+			Info.Widget.Text = "Error : " + errStr
+		} else {
+			Info.Widget.Text = "Success ExitiBoFOS"
+		}
 	}
 }
 
