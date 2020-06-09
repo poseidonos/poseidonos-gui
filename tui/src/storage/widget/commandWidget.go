@@ -53,7 +53,7 @@ func excuteCommand(position int) {
 	case 4:
 		deviceName := "unvme-ns-0"
 		param := model.DeviceParam{Name: deviceName}
-		_, _, err := iBoFOS.GetSMART(xrId, param)
+		_, res, err := iBoFOS.GetSMART(xrId, param)
 		showResult("SMART", err)
 		resStr := fmt.Sprintf("%+v", res.Result.Data)
 		Device.Widget.Text = resStr
