@@ -1572,6 +1572,138 @@
 			]
 		},
 		{
+					"name": "UNMOUNTIBOFOS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdae99dc-0b7b-40d8-8b1c-716123507df6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5ece8d1e-d4bc-454b-a268-ff75257af7ac",
+								"exec": [
+									"pm.test(\"UNMOUNTIBOFOS\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"ibofos",
+								"v1",
+								"system",
+								"mount"
+							]
+						},
+						"description": "Response Sample\n```json\n{\n    \"rid\": \"bdae9f64-ae85-4fd2-9b8a-3c2570298334\",\n    \"result\": {\n        \"status\": {\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    }\n}\n```"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"system",
+										"mount"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "ebed102c-17c9-4f80-9063-d2e66f60f50a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 May 2020 09:03:14 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "244"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"ebed102c-17c9-4f80-9063-d2e66f60f50a\",\n    \"lastSuccessTime\": 1588928594,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 0\n    }\n}"
+						}
+					]
+				},
+		{
 			"name": "EXITIBOFOS Copy",
 			"event": [
 				{
