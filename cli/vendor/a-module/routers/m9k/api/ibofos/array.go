@@ -19,3 +19,7 @@ func CreateArray(xrId string, param interface{}) (model.Request, model.Response,
 func DeleteArray(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("DELETEARRAY")
 }
+
+func ArrayInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("ARRAYINFO")
+}

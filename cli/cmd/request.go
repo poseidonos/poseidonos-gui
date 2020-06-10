@@ -29,6 +29,7 @@ var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Re
 	"delete_array": iBoFOS.DeleteArray,
 	"list_array_device":   iBoFOS.ListArrayDevice,
 	"load_array":   iBoFOS.LoadArray,
+	"array_info":   iBoFOS.ArrayInfo,
 }
 
 var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -84,6 +85,7 @@ array      : create_array     : -b [buffer devs] -d [data devs] -s [spare devs]
            : delete_array     : not needed
            : list_array_device: not needed 
            : load_array       : not needed
+           : array_info       : not needed
 
 device     : scan_dev         : not needed 
            : list_dev         : not needed
