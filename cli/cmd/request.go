@@ -25,11 +25,11 @@ var maxiops uint64
 var maxbw uint64
 
 var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"create_array": iBoFOS.CreateArray,
-	"delete_array": iBoFOS.DeleteArray,
-	"list_array_device":   iBoFOS.ListArrayDevice,
-	"load_array":   iBoFOS.LoadArray,
-	"array_info":   iBoFOS.ArrayInfo,
+	"create_array":      iBoFOS.CreateArray,
+	"delete_array":      iBoFOS.DeleteArray,
+	"list_array_device": iBoFOS.ListArrayDevice,
+	"load_array":        iBoFOS.LoadArray,
+	"array_info":        iBoFOS.ArrayInfo,
 }
 
 var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
@@ -124,7 +124,7 @@ If you want to input multiple flag parameter, you have to seperate with ",".
 For example, "-d dev1,dev2,dev3". seperation by space is not allowed.
 
 
-You can set ip and port number for connent to Poseidon OS using config.yaml or flags.
+You can set ip and port number for connect to Poseidon OS using config.yaml or flags.
 Default value is as below.
 
 IP   : 127.0.0.1
@@ -162,10 +162,10 @@ func init() {
 	commandCmd.PersistentFlags().IntVarP(&fttype, "fttype", "f", 0, "set fttype \"-f 4194304\"")
 	commandCmd.PersistentFlags().StringSliceVarP(&buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
 	commandCmd.PersistentFlags().StringSliceVarP(&data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-p unvme-ns-3\"")
+	commandCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-s unvme-ns-3\"")
 	commandCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
 	commandCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
-	commandCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"-size 4194304\"")
+	commandCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"--size 4194304\"")
 	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
