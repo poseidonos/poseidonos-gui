@@ -79,45 +79,43 @@ var commandCmd = &cobra.Command{
 
 Available msg list :
 
-[Category] : [msg]            : [example of flag]
+[Category] : [msg]            : [description]                                                    : [example of flag]
 
-array      : create_array     : -b [buffer devs] -d [data devs] -s [spare devs] 
-           : delete_array     : not needed
-           : list_array_device: not needed 
-           : load_array       : not needed
-           : array_info       : not needed
+array      : create_array     : Provides device configuration information for configuring array. : -b [buffer devs] -d [data devs] -s [spare devs] 
+           : delete_array     : Delete array.                                                    : not needed
+           : list_array_device: Show all devices in the Array.                                   : not needed
+           : load_array       : Load device configuration from mbr data.                         : not needed
+           : array_info       : Show Information about Array.                                    : not needed
 
-device     : scan_dev         : not needed 
-           : list_dev         : not needed
-           : detach_dev       : -n [dev name]
-           : add_dev          : -s [spare devs]
-           : remove_dev       : -n [dev name]
-           : start_monitoring : not needed
-           : stop_monitoring  : not needed
-           : monitoring_state : not needed
-           : smart            : -n [dev name]
+device     : scan_dev         : Scan devices in the system.                                      : not needed
+           : list_dev         : Show all devices in the system.                                  : not needed
+           : add_dev          : Add spare device to the Array.                                   : -s [spare devs]
+           : remove_dev       : Remove spare device from the Array.                              : -n [dev name]
+           : smart            : Get SMART from NVMe device.                                      : -n [dev name]
 
-system     : run_ibofos       : not needed
-           : exit_ibofos      : not needed
-           : info             : not needed
-           : mount_ibofos     : not needed
-           : unmount_ibofos   : not needed
-           : stop_rebuilding  : not needed
-           : set_log_level"   : --level [log level]
-           : get_log_level"   : not needed
-           : apply_log_filter : not needed
+system     : run_ibofos       : Run iBoFOS.                                                      : not needed
+           : exit_ibofos      : Exit iBoFOS.                                                     : not needed
+           : info             : Show current state of IbofOS.                                    : not needed
+           : mount_ibofos     : Mount iBoFOS.                                                    : not needed
+           : unmount_ibofos   : Unmount iBoFOS.                                                  : not needed
+           : set_log_level"   : Set filtering level to logger.                                   : --level [log level]
+           : get_log_level"   : Get filtering level to logger.                                   : not needed
+           : apply_log_filter : Apply filtering policy to logger.                                : not needed
 
-volume     : create_vol       : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] 
-                                maxiops, maxbw are optional and default value is 0.
-           : mount_vol        : --name [vol name]
-           : unmount_vol      : --name [vol name]
-           : delete_vol       : --name [vol name]
-           : list_vol         : not needed
-           : update_vol_qos   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
-           : rename_vol       : --name [vol name] --newname [new vol name]
-           : get_max_vol_cnt  : not needed
+volume     : create_vol       : Create a new volume in unit of bytes.                            : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] (maxiops, maxbw are optional and default value is 0.)
+           : mount_vol        : Mount a volume.                                                  : --name [vol name]
+           : unmount_vol      : Unmount a volume.                                                : --name [vol name]
+           : delete_vol       : Delete a volume.                                                 : --name [vol name]
+           : list_vol         : Listing all volumes.                                             : not needed
+           : update_vol_qos   : Update volumes QoS properties.                                   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
+           : rename_vol       : Update volume name.                                              : --name [vol name] --newname [new vol name]
+           : get_max_vol_cnt  : Get max volume count.                                            : not needed
 
-internal   : detach_dev       : -n [dev name]
+internal   : detach_dev       : Detach device from the system.                                   : -n [dev name]
+           : start_monitoring : Start monitoring daemon manually.                                : not needed
+           : stop_monitoring  : Stop monitoring daemon manually.                                 : not needed
+           : monitoring_state : Get monitoring state.                                            : not needed
+           : stop_rebuilding  : Stop rebuilding.                                                 : not needed
 
 
 If you want to input multiple flag parameter, you have to seperate with ",". 
