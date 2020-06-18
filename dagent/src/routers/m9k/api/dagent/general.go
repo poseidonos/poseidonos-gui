@@ -23,7 +23,7 @@ func HeartBeat(xrId string) (model.Response, error) {
 
 	if successTime <= 0 {
 		err = errors.New("one of iBoF service is dead")
-		res.Result.Status.Code = 98989
+		res.Result.Status.Code = 12010
 		res.Result.Status.Description = err.Error()
 	} else {
 		LastSuccessTime = successTime
@@ -65,7 +65,7 @@ func Version(xrId string) (model.Response, error) {
 	res.Result.Data = buildInfo
 
 	if GitCommit == "" || BuildTime == "" {
-		res.Result.Status.Code = 56565
+		res.Result.Status.Code = 12020
 	} else {
 		res.Result.Status.Code = 0
 	}

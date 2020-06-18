@@ -12,11 +12,11 @@ import (
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {
 	case iBoFOS.ErrSending:
-		BadRequest(ctx, res, 19002)
+		BadRequest(ctx, res, 11000)
 	case iBoFOS.ErrJson:
-		BadRequest(ctx, res, 12310)
+		BadRequest(ctx, res, 11010)
 	case iBoFOS.ErrConn:
-		BadRequest(ctx, res, 88888)
+		BadRequest(ctx, res, 11020)
 	case iBoFOS.ErrRes:
 		BadRequest(ctx, res, res.Result.Status.Code)
 	default:
