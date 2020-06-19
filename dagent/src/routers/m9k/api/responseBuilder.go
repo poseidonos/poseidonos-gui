@@ -4,7 +4,8 @@ import (
 	"a-module/log"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
 	"a-module/routers/m9k/model"
-	"a-module/setting"
+	//"a-module/setting"
+	"a-module/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -46,10 +47,10 @@ func Success(ctx *gin.Context, res model.Response, code int) {
 
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
 	res.Result.Status.Code = code
-
-	if res.Result.Status.Description == "" {
-		res.Result.Status.Description = setting.StatusDesc(code)
-	}
+        util.ReturnEventsDets(&res.Result.Status)
+	//if res.Result.Status.Description == "" {
+	//	res.Result.Status.Description = setting.StatusDesc(code)
+	//}
 
 	log.Infof("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)

@@ -3,6 +3,7 @@ package main
 import (
 	"a-module/log"
 	"a-module/setting"
+	"a-module/util"
 	"dagent/src/routers"
 	"dagent/src/routers/m9k/api/dagent"
 	"context"
@@ -16,6 +17,7 @@ import (
 func init() {
 	log.SetDebugMode()
 	setting.LoadConfig()
+	util.LoadEvents()
 	gin.SetMode(gin.DebugMode)
 }
 

@@ -4,7 +4,8 @@ import (
 	"a-module/errors"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
 	"a-module/routers/m9k/model"
-	"a-module/setting"
+	//"a-module/setting"
+	"a-module/util"
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"
@@ -311,8 +312,16 @@ func PrintReqRes(req model.Request, res model.Response) {
 		}
 
 		fmt.Println("\n\nResponse from Poseidon OS")
-		fmt.Println("    Code        : ", setting.StatusDesc(res.Result.Status.Code), "(", res.Result.Status.Code, ")")
-		fmt.Println("    Description : ", res.Result.Status.Description)
+		util.ReturnEventsDets(&res.Result.Status)
+		fmt.Println("    Code         : ", res.Result.Status.Code )
+		fmt.Println("    Level        : ", res.Result.Status.Level )
+                fmt.Println("    Description  : ", res.Result.Status.Description)
+		fmt.Println("    Problem      : ", res.Result.Status.Problem )
+                fmt.Println("    Solution     : ", res.Result.Status.Solution)
+
+
+		//fmt.Println("    Code        : ", setting.StatusDesc(res.Result.Status.Code), "(", res.Result.Status.Code, ")")
+		//fmt.Println("    Description : ", res.Result.Status.Description)
 
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
 
