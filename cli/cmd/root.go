@@ -4,6 +4,7 @@ import (
 	_ "a-module/handler"
 	"a-module/log"
 	"a-module/setting"
+	"a-module/util"
 	"github.com/spf13/cobra"
 	"os"
 	"time"
@@ -65,6 +66,7 @@ func InitConnect() {
 	}
 
 	setting.LoadConfig()
+	util.LoadEvents()
 
 	if len(ip) != 0 {
 		setting.Config.Server.IBoF.IP = ip
