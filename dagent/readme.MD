@@ -77,8 +77,8 @@ There are two type documentations; api.html and api.MD
 
 * Endpoint  
 ```
-/mtool/api/dagent/v1/doc/api.html
-/mtool/api/dagent/v1/doc/api.md
+/api/dagent/v1/doc/api.html
+/api/dagent/v1/doc/api.md
 ```
 
 ***
@@ -88,7 +88,7 @@ Use below APIs to get error codes
 
 * Endpoint
 ```
-/mtool/api/dagent/v1/statuscode
+/api/dagent/v1/statuscode
 ```
 
 ***
