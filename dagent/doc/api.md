@@ -130,7 +130,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/system/heartbeat
+URL: http://{{host}}/api/ibofos/v1/system/heartbeat
 ```
 
 
@@ -222,7 +222,7 @@ The biz-logic execute in D-Agent own module
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/dagent/v1/version
+URL: http://{{host}}/api/dagent/v1/version
 ```
 
 
@@ -334,7 +334,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/dagent/v1/heartbeat
+URL: http://{{host}}/api/dagent/v1/heartbeat
 ```
 
 
@@ -400,7 +400,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/dagent/v1/statuscode
+URL: http://{{host}}/api/dagent/v1/statuscode
 ```
 
 
@@ -625,7 +625,7 @@ It just runs "pkill -9 ibofos"
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/dagent/v1/ibofos
+URL: http://{{host}}/api/dagent/v1/ibofos
 ```
 
 
@@ -693,7 +693,7 @@ It just run command "run_ibof.sh" and does not gurantee to run.
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/dagent/v1/dagent
+URL: http://{{host}}/api/dagent/v1/dagent
 ```
 
 
@@ -764,7 +764,7 @@ The biz-logic execute in both D-Agent and iBoFOS module
 ```bash
 Method: POST
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/system/ibofos
+URL: http://{{host}}/api/ibofos/v1/system/ibofos
 ```
 
 
@@ -868,7 +868,7 @@ Status: Success | Code: 200
 ```bash
 Method: DELETE
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/system/ibofos
+URL: http://{{host}}/api/ibofos/v1/system/ibofos
 ```
 
 
@@ -994,7 +994,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/system
+URL: http://{{host}}/api/ibofos/v1/system
 ```
 
 
@@ -1073,7 +1073,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/device/scan
+URL: http://{{host}}/api/ibofos/v1/device/scan
 ```
 
 
@@ -1152,7 +1152,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/device/smart/{{deviceName1}}
+URL: http://{{host}}/api/ibofos/v1/device/smart/{{deviceName1}}
 ```
 
 
@@ -1247,7 +1247,7 @@ TBD
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/device/attach
+URL: http://{{host}}/api/ibofos/v1/device/attach
 ```
 
 
@@ -1297,7 +1297,7 @@ Response Sample
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/device
+URL: http://{{host}}/api/ibofos/v1/device
 ```
 
 
@@ -1432,7 +1432,7 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/device
+URL: http://{{host}}/api/ibofos/v1/device
 ```
 
 
@@ -1561,7 +1561,7 @@ Response Sample
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array
+URL: http://{{host}}/api/ibofos/v1/array
 ```
 
 
@@ -1676,7 +1676,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array/device
+URL: http://{{host}}/api/ibofos/v1/array/device
 ```
 
 
@@ -1779,7 +1779,7 @@ Response Sample
 ```bash
 Method: POST
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/system/mount
+URL: http://{{host}}/api/ibofos/v1/system/mount
 ```
 
 
@@ -1858,7 +1858,7 @@ Response Sample
 ```bash
 Method: DELETE
 Type: 
-URL: http://{{host}}/mtool/api/ibofos/v1/system/mount
+URL: http://{{host}}/api/ibofos/v1/system/mount
 ```
 
 
@@ -1942,7 +1942,7 @@ Response Sample
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array
+URL: http://{{host}}/api/ibofos/v1/array
 ```
 
 
@@ -2022,7 +2022,7 @@ Response Sample
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array
+URL: http://{{host}}/api/ibofos/v1/array
 ```
 
 
@@ -2199,7 +2199,7 @@ Status: Fail - Array is not created | Code: 400
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/array
+URL: http://{{host}}/api/ibofos/v1/array
 ```
 
 
@@ -2265,7 +2265,7 @@ Status: Fail | Code: 400
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volume
 ```
 
 
@@ -2577,7 +2577,7 @@ Status: Fail | Code: 400
 ```bash
 Method: PUT
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volume
 ```
 
 
@@ -2657,7 +2657,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volume
 ```
 
 
@@ -2827,7 +2827,7 @@ Status: Success - Mounted | Code: 200
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume/mount
+URL: http://{{host}}/api/ibofos/v1/volume/mount
 ```
 
 
@@ -2944,7 +2944,7 @@ Status: Success | Code: 200
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume/mount
+URL: http://{{host}}/api/ibofos/v1/volume/mount
 ```
 
 
@@ -3061,7 +3061,7 @@ Status: Fail - invalid volume name | Code: 400
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/mtool/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volume
 ```
 
 

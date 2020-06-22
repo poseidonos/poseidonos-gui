@@ -52,7 +52,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos",
+					"raw": "http://{{host}}/api/ibofos/v1/system/ibofos",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -116,7 +116,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/device/scan",
+					"raw": "http://{{host}}/api/ibofos/v1/device/scan",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -156,7 +156,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/device/scan",
+							"raw": "http://{{host}}/api/ibofos/v1/device/scan",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -252,7 +252,7 @@
 					"raw": "{\n    \"param\": {\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"unvme-ns-0\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-1\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"unvme-ns-3\"\n            }\n        ]\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+					"raw": "http://{{host}}/api/ibofos/v1/array",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -295,7 +295,7 @@
 							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/array",
+							"raw": "http://{{host}}/api/ibofos/v1/array",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -393,7 +393,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+					"raw": "http://{{host}}/api/ibofos/v1/array/device",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -433,7 +433,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+							"raw": "http://{{host}}/api/ibofos/v1/array/device",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -499,7 +499,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+							"raw": "http://{{host}}/api/ibofos/v1/array/device",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -591,7 +591,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+					"raw": "http://{{host}}/api/ibofos/v1/system/mount",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -635,7 +635,7 @@
 							"raw": "{\n    \"param\": {\n        \"fttype\": 1,\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"intel-unvmens-0\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-1\"\n            },\n            {\n                \"deviceName\": \"intel-unvmens-2\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"intel-unvmens-3\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+							"raw": "http://{{host}}/api/ibofos/v1/system/mount",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -731,7 +731,7 @@
 					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"raw": "http://{{host}}/api/ibofos/v1/volume",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -773,7 +773,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -842,7 +842,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\",\n        \"size\": 4194304\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -937,7 +937,7 @@
 					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+					"raw": "http://{{host}}/api/ibofos/v1/volume/mount",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -980,7 +980,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+							"raw": "http://{{host}}/api/ibofos/v1/volume/mount",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1079,7 +1079,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"raw": "http://{{host}}/api/ibofos/v1/volume",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1117,7 +1117,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1182,7 +1182,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1277,7 +1277,7 @@
 					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+					"raw": "http://{{host}}/api/ibofos/v1/volume/mount",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1320,7 +1320,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume/mount",
+							"raw": "http://{{host}}/api/ibofos/v1/volume/mount",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1416,7 +1416,7 @@
 					"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+					"raw": "http://{{host}}/api/ibofos/v1/volume",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1458,7 +1458,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1527,7 +1527,7 @@
 							"raw": "{\n    \"param\": {\n        \"name\": \"vol01\"\n    }\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/volume",
+							"raw": "http://{{host}}/api/ibofos/v1/volume",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1618,7 +1618,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+							"raw": "http://{{host}}/api/ibofos/v1/system/mount",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1658,7 +1658,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/ibofos/v1/system/mount",
+									"raw": "http://{{host}}/api/ibofos/v1/system/mount",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1750,7 +1750,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos",
+					"raw": "http://{{host}}/api/ibofos/v1/system/ibofos",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1818,7 +1818,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}/mtool/api/dagent/v1/dagent",
+					"raw": "http://{{host}}/api/dagent/v1/dagent",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1861,7 +1861,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/dagent/v1/ibofos",
+							"raw": "http://{{host}}/api/dagent/v1/ibofos",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1930,7 +1930,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{host}}/mtool/api/dagent/v1/ibofos",
+							"raw": "http://{{host}}/api/dagent/v1/ibofos",
 							"protocol": "http",
 							"host": [
 								"{{host}}"

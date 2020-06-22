@@ -22,7 +22,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)</title><style media
 </code></pre><hr><h4>Timeout</h4><ul><li>D-Agent default both read and write timeout is 30sec<li>D-Agent waits 29sec from iBoFOS<br></ul><hr><h4>Busy Status</h4><ul><li>If iBof is busy, D-Agent return busy response</ul><div class=request-item><div class=panel-group id=accordion-Common><div class="panel panel-info" id=jump-Common-Common><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Common href=#collapse-Common-Common><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>Common</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/heartbeat</h4></a></div><div id=collapse-Common-Common class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error - iBoF is busy&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1a9368ad-5205-48cc-9569-60f9fc124af5<tr><td>Date<td>Wed, 27 Nov 2019 05:02:21 GMT<tr><td>Content-Length<td>74<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/system/heartbeat</h4></a></div><div id=collapse-Common-Common class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Error - iBoF is busy&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1a9368ad-5205-48cc-9569-60f9fc124af5<tr><td>Date<td>Wed, 27 Nov 2019 05:02:21 GMT<tr><td>Content-Length<td>74<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "result": {
 "status": {
@@ -42,7 +42,7 @@ http://{{host}}/mtool/api/ibofos/v1/system/heartbeat</h4></a></div><div id=colla
 <span class=badge>5</span></h3></div><div class=panel-body><p><p>The biz-logic execute in D-Agent own module<div class=request-item><div class=panel-group id=accordion-DAgent><div class="panel panel-info" id=jump-DAgent-VERSION><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-DAgent href=#collapse-DAgent-VERSION><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>VERSION</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/dagent/v1/version</h4></a></div><div id=collapse-DAgent-VERSION class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>c950f121-dd24-4f31-822e-69c70f1c432a<tr><td>Date<td>Fri, 05 Jun 2020 06:32:42 GMT<tr><td>Content-Length<td>223</table><span class=resp-prettyprint>{
+http://{{host}}/api/dagent/v1/version</h4></a></div><div id=collapse-DAgent-VERSION class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>c950f121-dd24-4f31-822e-69c70f1c432a<tr><td>Date<td>Fri, 05 Jun 2020 06:32:42 GMT<tr><td>Content-Length<td>223</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -87,7 +87,7 @@ http://{{host}}/mtool/api/dagent/v1/version</h4></a></div><div id=collapse-DAgen
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-info" id=jump-DAgent-HEARTBEAT><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-DAgent href=#collapse-DAgent-HEARTBEAT><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>HEARTBEAT</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/dagent/v1/heartbeat</h4></a></div><div id=collapse-DAgent-HEARTBEAT class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>6e87f233-44bc-4981-a747-e2c325d4268f<tr><td>Date<td>Fri, 08 May 2020 09:15:37 GMT<tr><td>Content-Length<td>186<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/dagent/v1/heartbeat</h4></a></div><div id=collapse-DAgent-HEARTBEAT class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>6e87f233-44bc-4981-a747-e2c325d4268f<tr><td>Date<td>Fri, 08 May 2020 09:15:37 GMT<tr><td>Content-Length<td>186<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 1588929337,
 "result": {
@@ -107,7 +107,7 @@ http://{{host}}/mtool/api/dagent/v1/heartbeat</h4></a></div><div id=collapse-DAg
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-info" id=jump-DAgent-STATUSCODE><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-DAgent href=#collapse-DAgent-STATUSCODE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>STATUS CODE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/dagent/v1/statuscode</h4></a></div><div id=collapse-DAgent-STATUSCODE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1dd8be0f-cf72-4c11-ae9e-8216d47717fa<tr><td>Date<td>Fri, 08 May 2020 09:15:51 GMT<tr><td>Transfer-Encoding<td>chunked<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/dagent/v1/statuscode</h4></a></div><div id=collapse-DAgent-STATUSCODE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>1dd8be0f-cf72-4c11-ae9e-8216d47717fa<tr><td>Date<td>Fri, 08 May 2020 09:15:51 GMT<tr><td>Transfer-Encoding<td>chunked<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -284,7 +284,7 @@ http://{{host}}/mtool/api/dagent/v1/statuscode</h4></a></div><div id=collapse-DA
 <a class=text-danger data-toggle=collapse data-parent=#accordion-DAgent href=#collapse-DAgent-FORCEKILLIBOFOS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>FORCEKILLIBOFOS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/dagent/v1/ibofos</h4></a></div><div id=collapse-DAgent-FORCEKILLIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It just runs &ldquo;pkill -9 ibofos&rdquo;</small><br><br><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>e236b251-5bbf-457b-97e2-b1b63aacadd9<tr><td>Date<td>Fri, 08 May 2020 10:13:46 GMT<tr><td>Content-Length<td>179<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/dagent/v1/ibofos</h4></a></div><div id=collapse-DAgent-FORCEKILLIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It just runs &ldquo;pkill -9 ibofos&rdquo;</small><br><br><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>e236b251-5bbf-457b-97e2-b1b63aacadd9<tr><td>Date<td>Fri, 08 May 2020 10:13:46 GMT<tr><td>Content-Length<td>179<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -305,7 +305,7 @@ http://{{host}}/mtool/api/dagent/v1/ibofos</h4></a></div><div id=collapse-DAgent
 <a class=text-danger data-toggle=collapse data-parent=#accordion-DAgent href=#collapse-DAgent-KILLDAGENT><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>KILLDAGENT</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/dagent/v1/dagent</h4></a></div><div id=collapse-DAgent-KILLDAGENT class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It just run command &ldquo;run_ibof.sh&rdquo; and does not gurantee to run.</small><br><br><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>41872401-0604-4ced-b2a9-d722a7b465c7<tr><td>Date<td>Fri, 08 May 2020 10:14:44 GMT<tr><td>Content-Length<td>179<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/dagent/v1/dagent</h4></a></div><div id=collapse-DAgent-KILLDAGENT class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It just run command &ldquo;run_ibof.sh&rdquo; and does not gurantee to run.</small><br><br><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>41872401-0604-4ced-b2a9-d722a7b465c7<tr><td>Date<td>Fri, 08 May 2020 10:14:44 GMT<tr><td>Content-Length<td>179<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -326,7 +326,7 @@ http://{{host}}/mtool/api/dagent/v1/dagent</h4></a></div><div id=collapse-DAgent
 <span class=badge>21</span></h3></div><div class=panel-body><p><p>The biz-logic execute in both D-Agent and iBoFOS module<div class=request-item><div class=panel-group id=accordion-iBoFOS><div class="panel panel-success" id=jump-iBoFOS-RUNIBOFOS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-RUNIBOFOS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>RUNIBOFOS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse-iBoFOS-RUNIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>992167b4-5e3b-4067-94b9-56adddf00bda<tr><td>Date<td>Fri, 08 May 2020 10:16:19 GMT<tr><td>Content-Length<td>194<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse-iBoFOS-RUNIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>992167b4-5e3b-4067-94b9-56adddf00bda<tr><td>Date<td>Fri, 08 May 2020 10:16:19 GMT<tr><td>Content-Length<td>194<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -362,7 +362,7 @@ http://{{host}}/mtool/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-danger" id=jump-iBoFOS-EXITIBOFOS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-EXITIBOFOS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>EXITIBOFOS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse-iBoFOS-EXITIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>bccc8e71-0cc0-4371-83b1-f09dc7ee776d<tr><td>Date<td>Fri, 08 May 2020 10:16:39 GMT<tr><td>Content-Length<td>197<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse-iBoFOS-EXITIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>bccc8e71-0cc0-4371-83b1-f09dc7ee776d<tr><td>Date<td>Fri, 08 May 2020 10:16:39 GMT<tr><td>Content-Length<td>197<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "",
 "lastSuccessTime": 0,
 "result": {
@@ -400,7 +400,7 @@ http://{{host}}/mtool/api/ibofos/v1/system/ibofos</h4></a></div><div id=collapse
 <a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-iBOFOSINFO><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>iBOFOSINFO</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system</h4></a></div><div id=collapse-iBoFOS-iBOFOSINFO class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li><code>capacity</code> : The logical storage size / Unit : Byte</ul><pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/system</h4></a></div><div id=collapse-iBoFOS-iBOFOSINFO class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li><code>capacity</code> : The logical storage size / Unit : Byte</ul><pre><code class=language-json>{
     &quot;rid&quot;: &quot;8a6773aa-3eb8-4c26-b4b7-be5cec6fb415&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -434,7 +434,7 @@ http://{{host}}/mtool/api/ibofos/v1/system</h4></a></div><div id=collapse-iBoFOS
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-info" id=jump-iBoFOS-SCANDEVICE><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-SCANDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>SCAN DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/device/scan</h4></a></div><div id=collapse-iBoFOS-SCANDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/device/scan</h4></a></div><div id=collapse-iBoFOS-SCANDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
     &quot;rid&quot;: &quot;bdae9f64-ae85-4fd2-9b8a-3c2570298334&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -463,7 +463,7 @@ http://{{host}}/mtool/api/ibofos/v1/device/scan</h4></a></div><div id=collapse-i
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-info" id=jump-iBoFOS-SMART><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-SMART><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>SMART</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/device/smart/{{deviceName1}}</h4></a></div><div id=collapse-iBoFOS-SMART class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/device/smart/{{deviceName1}}</h4></a></div><div id=collapse-iBoFOS-SMART class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
     &quot;rid&quot;: &quot;bdae9f64-ae85-4fd2-9b8a-3c2570298334&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -516,7 +516,7 @@ http://{{host}}/mtool/api/ibofos/v1/device/smart/{{deviceName1}}</h4></a></div><
 <a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-ADDDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>ADD DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/device/attach</h4></a></div><div id=collapse-iBoFOS-ADDDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>TBD
+http://{{host}}/api/ibofos/v1/device/attach</h4></a></div><div id=collapse-iBoFOS-ADDDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>TBD
 </code></pre></small><br><br><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "intel-unvmens-0"
@@ -525,7 +525,7 @@ http://{{host}}/mtool/api/ibofos/v1/device/attach</h4></a></div><div id=collapse
 <a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-REMOVEDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>REMOVE DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS-REMOVEDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS-REMOVEDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
    &quot;rid&quot;: &quot;3980c07e-a400-475a-b06a-0cdb9080b2f0&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -558,7 +558,7 @@ http://{{host}}/mtool/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-info" id=jump-iBoFOS-LISTDEVICE><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-LISTDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LIST DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS-LISTDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li><code>mn</code> : Model Number<li><code>sn</code> : Serial Number<li><code>size</code> : Currently It is page size, it will be fixed as &ldquo;byte&rdquo;</ul><pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS-LISTDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li><code>mn</code> : Model Number<li><code>sn</code> : Serial Number<li><code>size</code> : Currently It is page size, it will be fixed as &ldquo;byte&rdquo;</ul><pre><code class=language-json>{
     &quot;rid&quot;: &quot;3922e5eb-3061-433c-a543-5fdeb3b32d25&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -676,7 +676,7 @@ http://{{host}}/mtool/api/ibofos/v1/device</h4></a></div><div id=collapse-iBoFOS
 <a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-CREATEARRAY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>CREATE ARRAY</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-CREATEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-CREATEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
    &quot;rid&quot;: &quot;3980c07e-a400-475a-b06a-0cdb9080b2f0&quot;,
    &quot;result&quot;: {
        &quot;status&quot;: {
@@ -730,7 +730,7 @@ http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-
 <a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-LISTARRAYDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LIST ARRAY DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/array/device</h4></a></div><div id=collapse-iBoFOS-LISTARRAYDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li>Available Type : BUFFER, DATA, SPARE</ul><pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/array/device</h4></a></div><div id=collapse-iBoFOS-LISTARRAYDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<ul><li>Available Type : BUFFER, DATA, SPARE</ul><pre><code class=language-json>{
     &quot;rid&quot;: &quot;b447f812-ab74-4b19-8563-0d2a7613d010&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -784,7 +784,7 @@ http://{{host}}/mtool/api/ibofos/v1/array/device</h4></a></div><div id=collapse-
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-success" id=jump-iBoFOS-MOUNTIBOFOS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-MOUNTIBOFOS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>MOUNTIBOFOS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-iBoFOS-MOUNTIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-iBoFOS-MOUNTIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
     &quot;rid&quot;: &quot;bdae9f64-ae85-4fd2-9b8a-3c2570298334&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -813,7 +813,7 @@ http://{{host}}/mtool/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-
 }</span><div class=clearfix></div></div></div></div><div class="panel panel-danger" id=jump-iBoFOS-UNMOUNTIBOFOS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-UNMOUNTIBOFOS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>UNMOUNTIBOFOS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-iBoFOS-UNMOUNTIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-iBoFOS-UNMOUNTIBOFOS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
     &quot;rid&quot;: &quot;bdae9f64-ae85-4fd2-9b8a-3c2570298334&quot;,
     &quot;result&quot;: {
         &quot;status&quot;: {
@@ -843,7 +843,7 @@ http://{{host}}/mtool/api/ibofos/v1/system/mount</h4></a></div><div id=collapse-
 <a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-LOADARRAY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LOAD ARRAY</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-LOADARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It loads the array info from MBR.<br>This method should be called after run ibofos and before creating array.<br>If success, you do not neet to create array.<p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-LOADARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>It loads the array info from MBR.<br>This method should be called after run ibofos and before creating array.<br>If success, you do not neet to create array.<p>Response Sample<pre><code class=language-json>{
    &quot;rid&quot;: &quot;3980c07e-a400-475a-b06a-0cdb9080b2f0&quot;,
    &quot;result&quot;: {
        &quot;status&quot;: {
@@ -873,7 +873,7 @@ http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-
 <a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-DELETEARRAY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>DELETE ARRAY</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-DELETEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
+http://{{host}}/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-DELETEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-default">Description</h5><br><small><p>Response Sample<pre><code class=language-json>{
    &quot;rid&quot;: &quot;3980c07e-a400-475a-b06a-0cdb9080b2f0&quot;,
    &quot;result&quot;: {
        &quot;status&quot;: {
@@ -962,7 +962,7 @@ http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-
 <a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-STATEARRAY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>STATE ARRAY</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-STATEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>b2b3a577-4579-40c7-8d7c-f67363ce6936<tr><td>Date<td>Fri, 08 May 2020 09:11:17 GMT<tr><td>Content-Length<td>249<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-STATEARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Fail&nbsp;|&nbsp;Code: 400</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>b2b3a577-4579-40c7-8d7c-f67363ce6936<tr><td>Date<td>Fri, 08 May 2020 09:11:17 GMT<tr><td>Content-Length<td>249<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "b2b3a577-4579-40c7-8d7c-f67363ce6936",
 "lastSuccessTime": 1588929077,
 "result": {
@@ -983,7 +983,7 @@ http://{{host}}/mtool/api/ibofos/v1/array</h4></a></div><div id=collapse-iBoFOS-
 <a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-CREATEVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>CREATE VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-CREATEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-CREATEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "vol01",
 "size": 4194304
@@ -1111,7 +1111,7 @@ http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS
 <a class=text-warning data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-UPDATEVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>UPDATE VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-warning">PUT</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-UPDATEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-UPDATEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "vol01",
 "maxiops": 0,
@@ -1138,7 +1138,7 @@ http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS
 <a class=text-info data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-LISTVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LIST VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-LISTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success - No Volume&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>83c92a03-b2b0-4c83-923c-13a398629c6d<tr><td>Date<td>Fri, 08 May 2020 09:12:29 GMT<tr><td>Content-Length<td>255<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-LISTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-success">Response</h5><div class=clearfix></div><h6>Success - No Volume&nbsp;|&nbsp;Code: 200</h6><h5 class="label label-warning">Response Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<tbody><tr><td>Content-Type<td>application/json; charset=utf-8<tr><td>X-Request-Id<td>83c92a03-b2b0-4c83-923c-13a398629c6d<tr><td>Date<td>Fri, 08 May 2020 09:12:29 GMT<tr><td>Content-Length<td>255<tr><td>Connection<td>keep-alive</table><span class=resp-prettyprint>{
 "rid": "83c92a03-b2b0-4c83-923c-13a398629c6d",
 "lastSuccessTime": 1588929149,
 "result": {
@@ -1219,7 +1219,7 @@ http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS
 <a class=text-success data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-MOUNTVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>MOUNT VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-iBoFOS-MOUNTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-iBoFOS-MOUNTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "vol01"
 }
@@ -1261,7 +1261,7 @@ http://{{host}}/mtool/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-
 <a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-UNMOUNTVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>UNMOUNT VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-iBoFOS-UNMOUNTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-iBoFOS-UNMOUNTVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "vol01"
 }
@@ -1303,7 +1303,7 @@ http://{{host}}/mtool/api/ibofos/v1/volume/mount</h4></a></div><div id=collapse-
 <a class=text-danger data-toggle=collapse data-parent=#accordion-iBoFOS href=#collapse-iBoFOS-DELETEVOLUME><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>DELETE VOLUME</strong> &nbsp;|&nbsp;
 <strong class="request-method border-danger">DELETE</strong>
 &nbsp;
-http://{{host}}/mtool/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-DELETEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
+http://{{host}}/api/ibofos/v1/volume</h4></a></div><div id=collapse-iBoFOS-DELETEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 "param": {
 "name": "vol01"
 }
