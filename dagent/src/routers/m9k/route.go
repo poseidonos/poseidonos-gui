@@ -3,9 +3,11 @@ package m9k
 import (
 	"a-module/routers/m9k/api/exec"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
+	mAgent "a-module/routers/m9k/api/magent"
 	"a-module/routers/m9k/model"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
+	"dagent/src/routers/m9k/api/magent"
 	"dagent/src/routers/m9k/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -139,6 +141,60 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, iBoFOS.UnmountVolume)
 		})
 	}
+	
+	// MAgentPath
+	mAgentPath := uri.Group("/magentmetrics/v1")
+	{
+		mAgentPath.GET("/cpu/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetCPUData, param)
+		})
+		mAgentPath.GET("/cpu/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetCPUData, param)
+		})
+		mAgentPath.GET("/disk/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetDiskData, param)
+		})
+
+		mAgentPath.GET("/disk/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetDiskData, param)
+		})
+
+		mAgentPath.GET("/memory/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetMemoryData, param)
+		})
+
+		mAgentPath.GET("/memory/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetMemoryData, param)
+		})
+
+		mAgentPath.GET("/network/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetNetData, param)
+		})
+
+		mAgentPath.GET("/network/:networkfield", func(ctx *gin.Context) {
+			networkfield := ctx.Param("networkfield")
+			if networkfield == "driver" {
+				param := model.MAgentParam{}
+				magent.CallMagent(ctx, mAgent.GetNetDriver, param)
+			} else if networkfield == "hardwareaddress" {
+				param := model.MAgentParam{}
+				magent.CallMagent(ctx, mAgent.GetNetAddress, param)
+			} else {
+				param := model.MAgentParam{Time: networkfield}
+				magent.CallMagent(ctx, mAgent.GetNetData, param)
+			}
+		})
+	}
 }
 
 // ToDd : This Route path must be removed after mtool fix
@@ -268,6 +324,59 @@ func RouteLegacy(router *gin.Engine) {
 		})
 		iBoFOSPath.DELETE("/volume/mount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, iBoFOS.UnmountVolume)
+		})
+	}
+	// MAgentPath
+	mAgentPath := uri.Group("/magentmetrics/v1")
+	{
+		mAgentPath.GET("/cpu/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetCPUData, param)
+		})
+		mAgentPath.GET("/cpu/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetCPUData, param)
+		})
+		mAgentPath.GET("/disk/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetDiskData, param)
+		})
+
+		mAgentPath.GET("/disk/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetDiskData, param)
+		})
+
+		mAgentPath.GET("/memory/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetMemoryData, param)
+		})
+
+		mAgentPath.GET("/memory/:time", func(ctx *gin.Context) {
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, mAgent.GetMemoryData, param)
+		})
+
+		mAgentPath.GET("/network/", func(ctx *gin.Context) {
+			param := model.MAgentParam{}
+			magent.CallMagent(ctx, mAgent.GetNetData, param)
+		})
+
+		mAgentPath.GET("/network/:networkfield", func(ctx *gin.Context) {
+			networkfield := ctx.Param("networkfield")
+			if networkfield == "driver" {
+				param := model.MAgentParam{}
+				magent.CallMagent(ctx, mAgent.GetNetDriver, param)
+			} else if networkfield == "hardwareaddress" {
+				param := model.MAgentParam{}
+				magent.CallMagent(ctx, mAgent.GetNetAddress, param)
+			} else {
+				param := model.MAgentParam{Time: networkfield}
+				magent.CallMagent(ctx, mAgent.GetNetData, param)
+			}
 		})
 	}
 }
