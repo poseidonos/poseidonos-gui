@@ -7,17 +7,20 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [Common](#common)
 
-  * [Common](#1-common)
+  * [Template Dummy](#1-template-dummy)
+
+* [Internal](#internal)
+
+  * [STATUS CODE](#1-status-code)
+  * [FORCEKILLIBOFOS](#2-forcekillibofos)
 
 * [D-Agent](#d-agent)
 
   * [VERSION](#1-version)
   * [HEARTBEAT](#2-heartbeat)
-  * [STATUS CODE](#3-status-code)
-  * [FORCEKILLIBOFOS](#4-forcekillibofos)
-  * [KILLDAGENT](#5-killdagent)
+  * [KILLDAGENT](#3-killdagent)
 
-* [iBoFOS](#ibofos)
+* [POS](#pos)
 
   * [RUNIBOFOS](#1-runibofos)
   * [EXITIBOFOS](#2-exitibofos)
@@ -50,21 +53,31 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 
 ## Common
-Most scheme of json is the similar to iBoF External API  
-The id/pass for basic auth is the same as M-Tool's (It use the same DB)  
-Currently D-Agent provides only basic auth.  
+***
+#### Contact
+* Contact : d.moon@samsung.com / hs.moon0112@samsung.com  
+
+***
+#### About
+* D-Agent provides only basic auth.
+* If you want to use basic auth, you should install M-Tool first, the id/pass for basic auth is the same as M-Tool's (It use the same DB)
+* If you do not install M-tool, D-Agent does not use basic auth
+* D-Agent's default port is 3000
+* Dev Doucment : http://10.227.30.174:7990/projects/IBOF/repos/m9k/browse/dagent/readme.MD
 
 ***
 
 #### Request Headers
+* UUID : https://tools.ietf.org/html/rfc4122  
+* Basuc Auth : https://tools.ietf.org/html/rfc7617  
 
 | Key | Value | Sample |
 | --- | ------|-------------|
-| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
-| ts | {{$timestamp}} | 1566287153702 |
+| X-Request-Id | {uuid4} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
+| ts | {unix_timestamp} | 1566287153702 |
 | Content-Type | application/json | application/json |
-| Authorization | {{basic_auth}} | Basic YWRtaW46YWRtaW4= |
-
+| Authorization | {basic_auth} | Basic YWRtaW46YWRtaW4= |
+ 
 ***
 
 #### Request Body (CUD)
@@ -84,9 +97,9 @@ Currently D-Agent provides only basic auth.
 
 | Key | Value | Sample |
 | --- | ------|-------------|
-| X-Request-Id | {{$guid}} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
+| X-Request-Id | {the same as request's} | 44f1280b-982e-4d2e-ab14-fe9eb2022045 |
 | Content-Type | application/json | application/json |
-| Content-Length | {length}} | 97 |
+| Content-Length | {ength} | 97 |
 
 ***
 
@@ -99,11 +112,18 @@ Response Sample
    "result":{
     "status":{
       "code":0,
-      "description":"Volume Create Success"
+      "description":"Some Message"
     },
-    "data":{
+    "data":{ // Optional
       // Ref. each command
     } 
+  },
+  "info": { // Optional
+      "state": "OFFLINE",
+      "situation": "DEFAULT",
+      "rebuliding_progress": 0,
+      "capacity": 0,
+      "used": 0
   }
 }
 ```
@@ -112,7 +132,7 @@ Response Sample
 
 #### Timeout
 * D-Agent default both read and write timeout is 30sec
-* D-Agent waits 29sec from iBoFOS  
+* D-Agent waits 29sec from POS  
 
 ***
 
@@ -121,7 +141,7 @@ Response Sample
 
 
 
-### 1. Common
+### 1. Template Dummy
 
 
 
@@ -130,269 +150,21 @@ Response Sample
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/ibofos/v1/system/heartbeat
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Error - iBoF is busy | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 1a9368ad-5205-48cc-9569-60f9fc124af5 |
-| Date | Wed, 27 Nov 2019 05:02:21 GMT |
-| Content-Length | 74 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 12000,
-            "description": "iBoF is busy"
-        }
-    }
-}
+URL: 
 ```
 
 
 
-Status: Error - IBoF does not run | Code: 400
+## Internal
+Internal is only for POS developer and QA.  
+Internal APIs will not provide to 3rd party
 
 
 
-***Response Headers:***
+### 1. STATUS CODE
 
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 74228c0f-c5c2-4c1b-99b8-697278a095ae |
-| Date | Wed, 27 Nov 2019 04:59:48 GMT |
-| Content-Length | 79 |
-| Connection | keep-alive |
 
-
-
-```js
-{
-    "rid": "",
-    "result": {
-        "status": {
-            "code": 12030,
-            "description": "iBoF does not run"
-        }
-    }
-}
-```
-
-
-
-## D-Agent
-The biz-logic execute in D-Agent own module
-
-
-
-### 1. VERSION
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/version
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee |
-| Date | Fri, 05 Jun 2020 06:34:16 GMT |
-| Content-Length | 267 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Success"
-        },
-        "data": {
-            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
-            "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 2. HEARTBEAT
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/heartbeat
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 6e87f233-44bc-4981-a747-e2c325d4268f |
-| Date | Fri, 08 May 2020 09:15:37 GMT |
-| Content-Length | 186 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 1588929337,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "alive"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 3. STATUS CODE
-
+It will return all POS syste status code and description
 
 
 ***Endpoint:***
@@ -613,7 +385,7 @@ Status: Success | Code: 200
 
 
 
-### 4. FORCEKILLIBOFOS
+### 2. FORCEKILLIBOFOS
 
 
 It just runs "pkill -9 ibofos"
@@ -682,7 +454,193 @@ Status: Success | Code: 200
 
 
 
-### 5. KILLDAGENT
+## D-Agent
+The most biz-logic executes in D-Agent own module
+
+
+
+### 1. VERSION
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/dagent/v1/version
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee |
+| Date | Fri, 05 Jun 2020 06:34:16 GMT |
+| Content-Length | 267 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "Success"
+        },
+        "data": {
+            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
+            "build_time": "1591338851"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 2. HEARTBEAT
+
+
+It will check POS status.
+D-Agent holds cached status of POS for 4sec.
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/dagent/v1/heartbeat
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 6e87f233-44bc-4981-a747-e2c325d4268f |
+| Date | Fri, 08 May 2020 09:15:37 GMT |
+| Content-Length | 186 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 1588929337,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "alive"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 3. KILLDAGENT
 
 
 It just run command "run_ibof.sh" and does not gurantee to run.
@@ -750,7 +708,7 @@ Status: Success | Code: 200
 
 
 
-## iBoFOS
+## POS
 The biz-logic execute in both D-Agent and iBoFOS module
 
 
@@ -782,6 +740,44 @@ URL: http://{{host}}/api/ibofos/v1/system/ibofos
 ***Responses:***
 
 
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 603c7ae6-252c-4832-9384-fdf1dc61aeef |
+| Date | Mon, 04 May 2020 08:02:24 GMT |
+| Content-Length | 176 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 1588579344,
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Fail | Code: 400
 
 
@@ -807,44 +803,6 @@ Status: Fail | Code: 400
             "module": "",
             "code": 11000,
             "description": "Exec command error"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 603c7ae6-252c-4832-9384-fdf1dc61aeef |
-| Date | Mon, 04 May 2020 08:02:24 GMT |
-| Content-Length | 176 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 1588579344,
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "Success"
         }
     },
     "info": {
@@ -967,27 +925,6 @@ Status: Success | Code: 200
 ### 3. iBOFOSINFO
 
 
-Response Sample
-
-* `capacity` : The logical storage size / Unit : Byte
-
-```json
-{
-    "rid": "8a6773aa-3eb8-4c26-b4b7-be5cec6fb415",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "state": "Unmounted",
-            "capacity": 40964096, 
-            "used": 10240
-        }
-    }
-}
-```
-
 
 ***Endpoint:***
 
@@ -1054,19 +991,6 @@ Status: Success | Code: 200
 ### 4. SCAN DEVICE
 
 
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "Scan Device Done"
-        }
-    }
-}
-```
-
 
 ***Endpoint:***
 
@@ -1132,19 +1056,6 @@ Status: Success | Code: 200
 
 ### 5. SMART
 
-
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "Scan Device Done"
-        }
-    }
-}
-```
 
 
 ***Endpoint:***
@@ -1235,12 +1146,6 @@ Status: Success | Code: 200
 ### 6. ADD DEVICE
 
 
-Response Sample
-
-```json
-TBD
-```
-
 
 ***Endpoint:***
 
@@ -1276,20 +1181,6 @@ URL: http://{{host}}/api/ibofos/v1/device/attach
 
 ### 7. REMOVE DEVICE
 
-
-Response Sample
-
-```json
-{
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "success"
-        }
-    }
-}
-```
 
 
 ***Endpoint:***
@@ -1368,63 +1259,6 @@ Status: Fail | Code: 400
 
 ### 8. LIST DEVICE
 
-
-Response Sample
-
-* `mn` : Model Number
-* `sn` : Serial Number
-* `size` : Currently It is page size, it will be fixed as "byte"
-
-```json
-{
-    "rid": "3922e5eb-3061-433c-a543-5fdeb3b32d25",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "intel-unvmens-0",
-                    "size": 67108864,
-                    "sn": "VMWare NVME-0002",
-                    "type": "SSD"
-                },
-                {
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "intel-unvmens-1",
-                    "size": 67108864,
-                    "sn": "VMWare NVME-0003",
-                    "type": "SSD"
-                },
-                {
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "intel-unvmens-2",
-                    "size": 67108864,
-                    "sn": "VMWare NVME-0000",
-                    "type": "SSD"
-                },
-                {
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "intel-unvmens-3",
-                    "size": 67108864,
-                    "sn": "VMWare NVME-0001",
-                    "type": "SSD"
-                },
-                {
-                    "mn": "",
-                    "name": "uram0",
-                    "size": 262144,
-                    "sn": "",
-                    "type": "NVRAM"
-                }
-            ]
-        }
-    }
-}
-```
 
 
 ***Endpoint:***
@@ -1541,20 +1375,6 @@ Status: Success | Code: 200
 ### 9. CREATE ARRAY
 
 
-Response Sample
-
-```json
-{
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-   "result": {
-       "status": {
-           "code": 0,
-           "description": "DONE"
-       }
-   }
-}
-```
-
 
 ***Endpoint:***
 
@@ -1653,23 +1473,6 @@ Status: Success | Code: 200
 ### 10. LIST ARRAY DEVICE
 
 
-Response Sample
-
-* Available Type : BUFFER, DATA, SPARE
-
-```json
-{
-    "rid": "b447f812-ab74-4b19-8563-0d2a7613d010",
-    "result": {
-        "status": {
-            "code": 0,
-            "level": "",
-            "description": "NO ARRAY DEVICE EXIST"
-        }
-    }
-}
-```
-
 
 ***Endpoint:***
 
@@ -1760,19 +1563,6 @@ Status: Success | Code: 200
 ### 11. MOUNTIBOFOS
 
 
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
-
 
 ***Endpoint:***
 
@@ -1838,19 +1628,6 @@ Status: Fail - Timeout / Mounting | Code: 200
 
 ### 12. UNMOUNTIBOFOS
 
-
-Response Sample
-```json
-{
-    "rid": "bdae9f64-ae85-4fd2-9b8a-3c2570298334",
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "DONE"
-        }
-    }
-}
-```
 
 
 ***Endpoint:***
@@ -1918,24 +1695,6 @@ Status: Success | Code: 200
 ### 13. LOAD ARRAY
 
 
-It loads the array info from MBR.  
-This method should be called after run ibofos and before creating array.  
-If success, you do not neet to create array.
-
-Response Sample
-
-```json
-{
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-   "result": {
-       "status": {
-           "code": 0,
-           "description": "DONE"
-       }
-   }
-}
-```
-
 
 ***Endpoint:***
 
@@ -2001,20 +1760,6 @@ Status: Fail | Code: 200
 
 ### 14. DELETE ARRAY
 
-
-Response Sample
-
-```json
-{
-   "rid": "3980c07e-a400-475a-b06a-0cdb9080b2f0",
-   "result": {
-       "status": {
-           "code": 0,
-           "description": "DONE"
-       }
-   }
-}
-```
 
 
 ***Endpoint:***
@@ -2296,6 +2041,84 @@ URL: http://{{host}}/api/ibofos/v1/volume
 ***Responses:***
 
 
+Status: Fail - Volume Name Special Character | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c5d59f2b-54ea-431c-b264-a62e7467e129 |
+| Date | Fri, 08 May 2020 10:32:19 GMT |
+| Content-Length | 256 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c5d59f2b-54ea-431c-b264-a62e7467e129",
+    "lastSuccessTime": 1588933939,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2023,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 12582912
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 2ed41e67-7c0d-4888-8b40-76d2c2edbf0a |
+| Date | Fri, 08 May 2020 10:19:39 GMT |
+| Content-Length | 250 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "2ed41e67-7c0d-4888-8b40-76d2c2edbf0a",
+    "lastSuccessTime": 1588933179,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
 Status: Fail - Volume Name Duplicated | Code: 400
 
 
@@ -2335,7 +2158,7 @@ Status: Fail - Volume Name Duplicated | Code: 400
 
 
 
-Status: Fail - Volume Name Empty | Code: 400
+Status: Fail - Volume size Empty | Code: 400
 
 
 
@@ -2344,29 +2167,28 @@ Status: Fail - Volume Name Empty | Code: 400
 | Key | Value |
 | --- | ------|
 | Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | a08ce0f5-851c-47f4-9611-ad105850517f |
-| Date | Fri, 08 May 2020 10:25:14 GMT |
-| Content-Length | 249 |
+| Date | Fri, 08 May 2020 10:25:49 GMT |
+| Content-Length | 199 |
 | Connection | keep-alive |
 
 
 
 ```js
 {
-    "rid": "a08ce0f5-851c-47f4-9611-ad105850517f",
-    "lastSuccessTime": 1588933514,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
             "module": "",
-            "code": 2020,
-            "description": "FAILED"
+            "code": 10310,
+            "description": "Body Error : Json Error"
         }
     },
     "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
+        "state": "",
+        "situation": "",
         "rebuliding_progress": 0,
-        "capacity": 120795955200,
+        "capacity": 0,
         "used": 0
     }
 }
@@ -2413,7 +2235,7 @@ Status: Fail - Volume Size 0 | Code: 400
 
 
 
-Status: Fail - Volume size Empty | Code: 400
+Status: Fail - Volume Name Empty | Code: 400
 
 
 
@@ -2422,98 +2244,21 @@ Status: Fail - Volume size Empty | Code: 400
 | Key | Value |
 | --- | ------|
 | Content-Type | application/json; charset=utf-8 |
-| Date | Fri, 08 May 2020 10:25:49 GMT |
-| Content-Length | 199 |
+| X-Request-Id | a08ce0f5-851c-47f4-9611-ad105850517f |
+| Date | Fri, 08 May 2020 10:25:14 GMT |
+| Content-Length | 249 |
 | Connection | keep-alive |
 
 
 
 ```js
 {
-    "rid": "",
-    "lastSuccessTime": 0,
+    "rid": "a08ce0f5-851c-47f4-9611-ad105850517f",
+    "lastSuccessTime": 1588933514,
     "result": {
         "status": {
             "module": "",
-            "code": 10310,
-            "description": "Body Error : Json Error"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 2ed41e67-7c0d-4888-8b40-76d2c2edbf0a |
-| Date | Fri, 08 May 2020 10:19:39 GMT |
-| Content-Length | 250 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "2ed41e67-7c0d-4888-8b40-76d2c2edbf0a",
-    "lastSuccessTime": 1588933179,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 4194304
-    }
-}
-```
-
-
-
-Status: Fail - Volume Name Special Character | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c5d59f2b-54ea-431c-b264-a62e7467e129 |
-| Date | Fri, 08 May 2020 10:32:19 GMT |
-| Content-Length | 256 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "c5d59f2b-54ea-431c-b264-a62e7467e129",
-    "lastSuccessTime": 1588933939,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2023,
+            "code": 2020,
             "description": "FAILED"
         }
     },
@@ -2522,7 +2267,7 @@ Status: Fail - Volume Name Special Character | Code: 400
         "situation": "NORMAL",
         "rebuliding_progress": 0,
         "capacity": 120795955200,
-        "used": 12582912
+        "used": 0
     }
 }
 ```
@@ -2714,58 +2459,6 @@ Status: Success - No Volume | Code: 200
 
 
 
-Status: Success - Unmounted | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c44d9d44-88a5-46aa-acc1-2b6c3dd0074f |
-| Date | Fri, 08 May 2020 10:20:15 GMT |
-| Content-Length | 371 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "c44d9d44-88a5-46aa-acc1-2b6c3dd0074f",
-    "lastSuccessTime": 1588933215,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "volumes": [
-                {
-                    "id": 0,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "name": "vol01",
-                    "remain": 4194304,
-                    "status": "Unmounted",
-                    "total": 4194304
-                }
-            ]
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 4194304
-    }
-}
-```
-
-
-
 Status: Success - Mounted | Code: 200
 
 
@@ -2801,6 +2494,58 @@ Status: Success - Mounted | Code: 200
                     "name": "vol01",
                     "remain": 4194304,
                     "status": "Mounted",
+                    "total": 4194304
+                }
+            ]
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
+Status: Success - Unmounted | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c44d9d44-88a5-46aa-acc1-2b6c3dd0074f |
+| Date | Fri, 08 May 2020 10:20:15 GMT |
+| Content-Length | 371 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c44d9d44-88a5-46aa-acc1-2b6c3dd0074f",
+    "lastSuccessTime": 1588933215,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "id": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "name": "vol01",
+                    "remain": 4194304,
+                    "status": "Unmounted",
                     "total": 4194304
                 }
             ]
@@ -3091,45 +2836,6 @@ URL: http://{{host}}/api/ibofos/v1/volume
 ***Responses:***
 
 
-Status: Fail - Does not exist name | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c67e8be1-30f6-4c49-afe4-f2ae7c4f322e |
-| Date | Fri, 08 May 2020 09:14:25 GMT |
-| Content-Length | 249 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "c67e8be1-30f6-4c49-afe4-f2ae7c4f322e",
-    "lastSuccessTime": 1588929265,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2010,
-            "description": "FAILED"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
 Status: Success | Code: 200
 
 
@@ -3169,9 +2875,47 @@ Status: Success | Code: 200
 
 
 
+Status: Fail - Does not exist name | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c67e8be1-30f6-4c49-afe4-f2ae7c4f322e |
+| Date | Fri, 08 May 2020 09:14:25 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c67e8be1-30f6-4c49-afe4-f2ae7c4f322e",
+    "lastSuccessTime": 1588929265,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2010,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
 ## Redfish
-The biz-logic execute in both D-Agent and BMC module
-* Redfish also uses basic auth. Not D-Agent's user info, But BMC user info 
+Currently, D-Agent does not support Redfish.
 
 
 
@@ -3209,4 +2953,4 @@ URL: http://{{host}}/redfish/v1/Chassis
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-06-18 17:34:17 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-06-22 11:08:33 by [docgen](https://github.com/thedevsaddam/docgen)
