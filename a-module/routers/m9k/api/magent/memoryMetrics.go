@@ -17,77 +17,54 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
+	"fmt"
 )
 
-type memField struct {
+type MemoryField struct {
 	Time      string
 	UsageUser json.Number
 }
 
-type memFields []memField
+type MemoryFields []MemoryField
 
-// Collecting Memory data based time parameter and retuning JSON resonse
-func GetMemoryData(xrId string, param interface{}) (model.Response, error) {
+// Getting Memory data based time parameter and retuning JSON resonse
+func GetMemoryData(param interface{}) (model.Response, error) {
 	var res model.Response
-	var err error
-	DBClient, err := ConnectDB()
-	defer DBClient.Close()
-	var cmd string
-	var result []client.Result
-	FieldsList := make(memFields, 0)
-
-	if err != nil {
-		res.Result.Status.Description = ConnErrMsg
-		return res, err
-	}
-
-	ParamStruct := param.(model.MAgentParam)
-
-	if ParamStruct.Time != "" {
-		TimeInterval := param.(model.MAgentParam).Time
-		if _, found := TimeGroupsDefault[TimeInterval]; !found {
+	var query string
+	fieldsList := make(MemoryFields, 0)
+	paramStruct := param.(model.MAgentParam)
+	if paramStruct.Time != "" {
+		timeInterval := param.(model.MAgentParam).Time
+		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = EndPointErrMsg
-			return res, err
+			return res, nil
 		}
-		if Contains(AggTime, TimeInterval) {
-			cmd = "SELECT \"used_perent\" AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + AggRP + "\".\"mean_mem\" WHERE time > now() - " + TimeInterval
+		if Contains(AggTime, timeInterval) {
+			query = fmt.Sprintf(MemoryAggRPQ, AggRP, timeInterval)
 		} else {
-			cmd = "SELECT mean(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" WHERE time > now() - " + TimeInterval + " GROUP BY time(" + TimeGroupsDefault[TimeInterval] + ")"
+			query = fmt.Sprintf(MemoryDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		cmd = "SELECT last(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" LIMIT 1"
+		query = fmt.Sprintf(MemoryLastRecordQ, DefaultRP)
 	}
-
-	QueryObject := client.Query{
-		Command:  cmd,
-		Database: DBName,
-	}
-
-	if response, err := DBClient.Query(QueryObject); err == nil {
-		if response.Error() != nil {
-			res.Result.Status.Description = QueryErrMsg
-			return res, err
-		}
-		result = response.Results
-	} else {
-		res.Result.Status.Description = QueryErrMsg
-		return res, err
+	result, errMsg := ExecuteQuery(query)
+	if errMsg != "" {
+		res.Result.Status.Description = errMsg
+		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
-		return res, err
+		return res, nil
 	}
-
-	for _, Values := range result[0].Series[0].Values {
-		if Values[1] != nil {
-			FieldsList = append(FieldsList, memField{Values[0].(string), Values[1].(json.Number)})
+	for _, values := range result[0].Series[0].Values {
+		if values[1] != nil {
+			fieldsList = append(fieldsList, MemoryField{values[0].(string), values[1].(json.Number)})
 		}
 	}
 
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
-	res.Result.Data = FieldsList
-	return res, err
+	res.Result.Data = fieldsList
+	return res, nil
 }

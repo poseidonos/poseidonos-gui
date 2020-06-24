@@ -17,75 +17,54 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
+	"fmt"
 )
 
-type diskField struct {
+type DiskField struct {
 	Time      string
-	UsageUser json.Number
+	UsageUserBytes json.Number
 }
 
-type diskFields []diskField
+type DiskFields []DiskField
 
-// Collecting Disk data based time parameter and retuning JSON resonse
-func GetDiskData(xrId string, param interface{}) (model.Response, error) {
+// Getting Disk data based time parameter and retuning JSON resonse
+func GetDiskData(param interface{}) (model.Response, error) {
 	var res model.Response
-	var err error
-	DBClient, err := ConnectDB()
-	defer DBClient.Close()
-	var cmd string
-	var result []client.Result
-	FieldsList := make(diskFields, 0)
-
-	if err != nil {
-		res.Result.Status.Description = ConnErrMsg
-		return res, err
-	}
-
-	ParamStruct := param.(model.MAgentParam)
-
-	if ParamStruct.Time != "" {
-		TimeInterval := param.(model.MAgentParam).Time
-		if _, found := TimeGroupsDefault[TimeInterval]; !found {
+	var query string
+	fieldsList := make(DiskFields, 0)
+	paramStruct := param.(model.MAgentParam)
+	if paramStruct.Time != "" {
+		timeInterval := param.(model.MAgentParam).Time
+		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = EndPointErrMsg
-			return res, err
+			return res, nil
 		}
-		if Contains(AggTime, TimeInterval) {
-			cmd = "SELECT \"used\" AS \"mean_used\" FROM \"" + DBName + "\".\"" + AggRP + "\".\"mean_disk\" WHERE time > now() - " + TimeInterval
+		if Contains(AggTime, timeInterval) {
+			query = fmt.Sprintf(DiskAggRPQ, AggRP, timeInterval)
 		} else {
-			cmd = "SELECT mean(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" WHERE time > now() - " + TimeInterval + " GROUP BY time(" + TimeGroupsDefault[TimeInterval] + ")"
+			query = fmt.Sprintf(DiskDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		cmd = "SELECT last(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" LIMIT 1"
+		query = fmt.Sprintf(DiskLastRecordQ, DefaultRP)
+	}
+	result, errMsg := ExecuteQuery(query)
+	if errMsg != "" {
+		res.Result.Status.Description = errMsg
+		return res, nil
 	}
 
-	QueryObject := client.Query{
-		Command:  cmd,
-		Database: DBName,
-	}
-	if response, err := DBClient.Query(QueryObject); err == nil {
-		if response.Error() != nil {
-			res.Result.Status.Description = QueryErrMsg
-			return res, err
-		}
-		result = response.Results
-
-	} else {
-		res.Result.Status.Description = QueryErrMsg
-		return res, err
-	}
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
-		return res, err
+		return res, nil
 	}
-	for _, Values := range result[0].Series[0].Values {
-		if Values[1] != nil {
-			FieldsList = append(FieldsList, diskField{Values[0].(string), Values[1].(json.Number)})
+	for _, values := range result[0].Series[0].Values {
+		if values[1] != nil {
+			fieldsList = append(fieldsList, DiskField{values[0].(string), values[1].(json.Number)})
 		}
 	}
 
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
-	res.Result.Data = FieldsList
-	return res, err
+	res.Result.Data = fieldsList
+	return res, nil
 }

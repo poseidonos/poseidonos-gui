@@ -16,7 +16,6 @@ package magent
 
 import (
 	"a-module/routers/m9k/model"
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 type NetDriverField struct {
@@ -27,53 +26,29 @@ type NetDriverField struct {
 type NetDriverFields []NetDriverField
 
 // Getting network driver names and retuning JSON resonse
-func GetNetDriver(xrId string, param interface{}) (model.Response, error) {
+func GetNetDriver(param interface{}) (model.Response, error) {
 	var res model.Response
-	var err error
-	DBClient, err := ConnectDB()
-	defer DBClient.Close()
-	var cmd string
-	var result []client.Result
-	FieldsList := make(NetDriverFields, 0)
-
-	if err != nil {
-		res.Result.Status.Description = ConnErrMsg
-		return res, err
-	}
-
-	cmd = "SELECT \"time\",\"name\" ,\"driver\" FROM \"" + DBName + "\".\"autogen\".\"ethernet\""
-
-	QueryObject := client.Query{
-		Command:  cmd,
-		Database: DBName,
-	}
-
-	if response, err := DBClient.Query(QueryObject); err == nil {
-		if response.Error() != nil {
-			res.Result.Status.Description = QueryErrMsg
-			return res, err
-		}
-		result = response.Results
-
-	} else {
-		res.Result.Status.Description = QueryErrMsg
-		return res, err
+	fieldsList := make(NetDriverFields, 0)
+	result, errMsg := ExecuteQuery(NetDriverQ)
+	if errMsg != "" {
+		res.Result.Status.Description = errMsg
+		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
-		return res, err
-	}
+		return res, nil
 
-	for _, Values := range result[0].Series[0].Values {
-		if Values[1] != nil {
-			FieldsList = append(FieldsList, NetDriverField{Values[1].(string), Values[2].(string)})
+	}
+	for _, values := range result[0].Series[0].Values {
+		if values[1] != nil {
+			fieldsList = append(fieldsList, NetDriverField{values[1].(string), values[2].(string)})
 		}
 	}
 
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
-	res.Result.Data = FieldsList
+	res.Result.Data = fieldsList
 
-	return res, err
+	return res, nil
 }
