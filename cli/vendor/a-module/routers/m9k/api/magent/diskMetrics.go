@@ -20,7 +20,6 @@ import (
 	"github.com/influxdata/influxdb/client/v2"
 )
 
-
 type diskField struct {
 	Time      string
 	UsageUser json.Number
@@ -37,6 +36,7 @@ func GetDiskData(xrId string, param interface{}) (model.Response, error) {
 	var cmd string
 	var result []client.Result
 	FieldsList := make(diskFields, 0)
+
 	if err != nil {
 		res.Result.Status.Description = ConnErrMsg
 		return res, err
@@ -55,10 +55,10 @@ func GetDiskData(xrId string, param interface{}) (model.Response, error) {
 		} else {
 			cmd = "SELECT mean(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" WHERE time > now() - " + TimeInterval + " GROUP BY time(" + TimeGroupsDefault[TimeInterval] + ")"
 		}
-
 	} else {
-		 cmd = "SELECT last(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" LIMIT 1"
+		cmd = "SELECT last(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" LIMIT 1"
 	}
+
 	QueryObject := client.Query{
 		Command:  cmd,
 		Database: DBName,
@@ -82,8 +82,8 @@ func GetDiskData(xrId string, param interface{}) (model.Response, error) {
 		if Values[1] != nil {
 			FieldsList = append(FieldsList, diskField{Values[0].(string), Values[1].(json.Number)})
 		}
-
 	}
+
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
 	res.Result.Data = FieldsList
