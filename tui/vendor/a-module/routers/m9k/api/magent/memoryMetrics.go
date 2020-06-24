@@ -20,7 +20,6 @@ import (
 	"github.com/influxdata/influxdb/client/v2"
 )
 
-
 type memField struct {
 	Time      string
 	UsageUser json.Number
@@ -37,6 +36,7 @@ func GetMemoryData(xrId string, param interface{}) (model.Response, error) {
 	var cmd string
 	var result []client.Result
 	FieldsList := make(memFields, 0)
+
 	if err != nil {
 		res.Result.Status.Description = ConnErrMsg
 		return res, err
@@ -55,35 +55,37 @@ func GetMemoryData(xrId string, param interface{}) (model.Response, error) {
 		} else {
 			cmd = "SELECT mean(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" WHERE time > now() - " + TimeInterval + " GROUP BY time(" + TimeGroupsDefault[TimeInterval] + ")"
 		}
-
 	} else {
-		 cmd = "SELECT last(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" LIMIT 1"
+		cmd = "SELECT last(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" LIMIT 1"
 	}
+
 	QueryObject := client.Query{
 		Command:  cmd,
 		Database: DBName,
 	}
+
 	if response, err := DBClient.Query(QueryObject); err == nil {
 		if response.Error() != nil {
 			res.Result.Status.Description = QueryErrMsg
 			return res, err
 		}
 		result = response.Results
-
 	} else {
 		res.Result.Status.Description = QueryErrMsg
 		return res, err
 	}
+
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
 		return res, err
 	}
+
 	for _, Values := range result[0].Series[0].Values {
 		if Values[1] != nil {
 			FieldsList = append(FieldsList, memField{Values[0].(string), Values[1].(json.Number)})
 		}
-
 	}
+
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
 	res.Result.Data = FieldsList

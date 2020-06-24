@@ -20,8 +20,8 @@ import (
 )
 
 type NetAddsField struct {
-	Interface		string
-	Address			string
+	Interface string
+	Address   string
 }
 
 type NetAddsFields []NetAddsField
@@ -40,13 +40,14 @@ func GetNetAddress(xrId string, param interface{}) (model.Response, error) {
 		res.Result.Status.Description = ConnErrMsg
 		return res, err
 	}
-	
+
 	cmd = "SELECT \"time\",\"name\" ,\"address\" FROM \"" + DBName + "\".\"autogen\".\"ethernet\""
 
 	QueryObject := client.Query{
 		Command:  cmd,
 		Database: DBName,
 	}
+
 	if response, err := DBClient.Query(QueryObject); err == nil {
 		if response.Error() != nil {
 			res.Result.Status.Description = QueryErrMsg
@@ -58,16 +59,19 @@ func GetNetAddress(xrId string, param interface{}) (model.Response, error) {
 		res.Result.Status.Description = QueryErrMsg
 		return res, err
 	}
+
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
 		return res, err
 
 	}
+
 	for _, Values := range result[0].Series[0].Values {
 		if Values[1] != nil {
 			FieldsList = append(FieldsList, NetAddsField{Values[1].(string), Values[2].(string)})
 		}
 	}
+
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
 	res.Result.Data = FieldsList
