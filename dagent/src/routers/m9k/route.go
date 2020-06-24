@@ -143,7 +143,7 @@ func Route(router *gin.Engine) {
 	}
 
 	// MAgentPath
-	mAgentPath := uri.Group("/metrics/v1")
+	mAgentPath := uri.Group("/metric/v1")
 	{
 		mAgentPath.GET("/cpu/", func(ctx *gin.Context) {
 			param := model.MAgentParam{}
