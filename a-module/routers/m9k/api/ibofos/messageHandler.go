@@ -100,7 +100,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	}
 
 	for {
-		temp, err := handler.ReadFromIBoFSocket(conn	)
+		temp, err := handler.ReadFromIBoFSocket(conn)
 
 		if err != nil {
 			log.Infof("sendIBoF read error : %v", err)

@@ -7,7 +7,7 @@ var AggRP = "agg_rp"
 var DefaultRP = "default_rp"
 var ConnErrMsg = "Could not connect to Influxdb"
 var QueryErrMsg = "Could not query to database"
-var DataErrMsg	= "No data available"
+var DataErrMsg = "No data available"
 var EndPointErrMsg = "Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
 var TimeGroupsDefault = map[string]string{
 	"1m":  "1s",

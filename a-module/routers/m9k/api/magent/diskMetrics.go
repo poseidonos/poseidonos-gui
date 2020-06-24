@@ -17,9 +17,7 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
 )
-
 
 type diskField struct {
 	Time      string
@@ -57,7 +55,7 @@ func GetDiskData(xrId string, param interface{}) (model.Response, error) {
 		}
 
 	} else {
-		 cmd = "SELECT last(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" LIMIT 1"
+		cmd = "SELECT last(\"used\") AS \"mean_used\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"disk\" LIMIT 1"
 	}
 	QueryObject := client.Query{
 		Command:  cmd,

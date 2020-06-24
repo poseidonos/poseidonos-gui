@@ -16,12 +16,11 @@ package magent
 
 import (
 	"a-module/routers/m9k/model"
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 type NetDriverField struct {
-	Interface		string
-	Driver			string
+	Interface string
+	Driver    string
 }
 
 type NetDriverFields []NetDriverField
@@ -40,7 +39,7 @@ func GetNetDriver(xrId string, param interface{}) (model.Response, error) {
 		res.Result.Status.Description = ConnErrMsg
 		return res, err
 	}
-	
+
 	cmd = "SELECT \"time\",\"name\" ,\"driver\" FROM \"" + DBName + "\".\"autogen\".\"ethernet\""
 
 	QueryObject := client.Query{

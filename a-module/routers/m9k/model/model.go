@@ -57,7 +57,7 @@ type ArrayParam struct {
 	Spare  []Device `json:"spare,omitempty"`
 }
 type MAgentParam struct {
-	Time  string
+	Time string
 }
 type DeviceParam struct {
 	Name  string `json:"name,omitempty"`

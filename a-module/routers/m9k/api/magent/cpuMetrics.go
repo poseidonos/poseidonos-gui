@@ -17,7 +17,6 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 func Contains(arr []string, element string) bool {
@@ -28,7 +27,6 @@ func Contains(arr []string, element string) bool {
 	}
 	return false
 }
-
 
 type Field struct {
 	Time      string

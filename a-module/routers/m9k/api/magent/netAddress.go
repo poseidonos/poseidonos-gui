@@ -16,12 +16,11 @@ package magent
 
 import (
 	"a-module/routers/m9k/model"
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 type NetAddsField struct {
-	Interface		string
-	Address			string
+	Interface string
+	Address   string
 }
 
 type NetAddsFields []NetAddsField
@@ -40,7 +39,7 @@ func GetNetAddress(xrId string, param interface{}) (model.Response, error) {
 		res.Result.Status.Description = ConnErrMsg
 		return res, err
 	}
-	
+
 	cmd = "SELECT \"time\",\"name\" ,\"address\" FROM \"" + DBName + "\".\"autogen\".\"ethernet\""
 
 	QueryObject := client.Query{

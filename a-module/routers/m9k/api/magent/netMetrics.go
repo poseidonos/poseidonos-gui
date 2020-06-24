@@ -17,7 +17,6 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 type NetField struct {

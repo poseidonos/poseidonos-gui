@@ -17,9 +17,7 @@ package magent
 import (
 	"a-module/routers/m9k/model"
 	"encoding/json"
-	"github.com/influxdata/influxdb/client/v2"
 )
-
 
 type memField struct {
 	Time      string
@@ -57,7 +55,7 @@ func GetMemoryData(xrId string, param interface{}) (model.Response, error) {
 		}
 
 	} else {
-		 cmd = "SELECT last(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" LIMIT 1"
+		cmd = "SELECT last(\"used_percent\") AS \"mean_used_percent\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"mem\" LIMIT 1"
 	}
 	QueryObject := client.Query{
 		Command:  cmd,
