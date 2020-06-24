@@ -218,7 +218,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("name") {
 			param.Name = name
 		}
-		if cmd.PersistentFlags().Changed("spare") {
+		if cmd.PersistentFlags().Changed("spare") && len(spare) != 0 {
 			param.Spare = spare[0]
 		}
 
