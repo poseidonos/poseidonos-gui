@@ -63,36 +63,37 @@ func GetCPUData(xrId string, param interface{}) (model.Response, error) {
 		} else {
 			cmd = "SELECT mean(\"usage_user\") AS \"mean_usage_user\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"cpu\" WHERE time > now() - " + TimeInterval + " GROUP BY time(" + TimeGroupsDefault[TimeInterval] + ")"
 		}
-
 	} else {
 		cmd = "SELECT last(\"usage_user\") AS \"mean_usage_user\" FROM \"" + DBName + "\".\"" + DefaultRP + "\".\"cpu\" LIMIT 1"
-
 	}
+
 	QueryObject := client.Query{
 		Command:  cmd,
 		Database: DBName,
 	}
+
 	if response, err := DBClient.Query(QueryObject); err == nil {
 		if response.Error() != nil {
 			res.Result.Status.Description = QueryErrMsg
 			return res, err
 		}
 		result = response.Results
-
 	} else {
 		res.Result.Status.Description = QueryErrMsg
 		return res, err
 	}
+
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = DataErrMsg
 		return res, err
 	}
+
 	for _, Values := range result[0].Series[0].Values {
 		if Values[1] != nil {
 			FieldsList = append(FieldsList, Field{Values[0].(string), Values[1].(json.Number)})
 		}
-
 	}
+
 	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
 	res.Result.Data = FieldsList
