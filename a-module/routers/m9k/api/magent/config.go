@@ -16,26 +16,27 @@ var TimeGroupsDefault = map[string]string{
 	"12h": "5m",
 	"24h": "10m",
 	"7d":  "1h",
-	"30d": "6h"}
+	"30d": "6h",
+}
 
 var (
-	ConnErrMsg     = errors.New("Could not connect to Influxdb")
-	QueryErrMsg    = errors.New("Could not query to database")
-	DataErrMsg     = errors.New("No data available")
-	EndPointErrMsg = errors.New("Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d")
+	errConnInfluxDB = errors.New("could not connect to Influxdb")
+	errQuery        = errors.New("could not query to database")
+	errData         = errors.New("no data available")
+	errEndPoint     = errors.New("use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d")
 )
 
-var NetAggRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.mean_net WHERE time > now() - %s"
-var NetDefaultRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.net WHERE time > now() - %s GROUP BY time(%s)"
-var NetLastRecordQ = "SELECT mean(bytes_recv), mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.net LIMIT 1"
-var NetAddQ = "SELECT time, \"name\", address FROM " + DBName + ".autogen.ethernet"
-var NetDriverQ = "SELECT time,\"name\" ,driver FROM " + DBName + ".autogen.ethernet"
-var CPUAggRPQ = "SELECT usage_user AS mean_usage_user FROM " + DBName + ".%s.mean_cpu WHERE time > now() - %s"
-var CPUDefaultRPQ = "SELECT mean(usage_user) AS mean_usage_user FROM " + DBName + ".%s.cpu WHERE time > now() - %s GROUP BY time(%s)"
-var CPULastRecordQ = "SELECT last(usage_user) AS mean_usage_user FROM " + DBName + ".%s.cpu LIMIT 1"
-var DiskAggRPQ = "SELECT used AS mean_used_bytes FROM " + DBName + ".%s.mean_disk WHERE time > now() - %s"
-var DiskDefaultRPQ = "SELECT mean(used) AS mean_used_bytes FROM " + DBName + ".%s.disk WHERE time > now() - %s GROUP BY time(%s)"
-var DiskLastRecordQ = "SELECT last(used) AS mean_used_bytes FROM " + DBName + ".%s.disk LIMIT 1"
-var MemoryAggRPQ = "SELECT used_percent AS mean_used_percent FROM " + DBName + ".%s.mean_mem WHERE time > now() - %s"
-var MemoryDefaultRPQ = "SELECT mean(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem WHERE time > now() - %s GROUP BY time(%s)"
-var MemoryLastRecordQ = "SELECT last(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem LIMIT 1"
+var netAggRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.mean_net WHERE time > now() - %s"
+var netDefaultRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.net WHERE time > now() - %s GROUP BY time(%s)"
+var netLastRecordQ = "SELECT mean(bytes_recv), mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM " + DBName + ".%s.net LIMIT 1"
+var netAddQ = "SELECT time, \"name\", address FROM " + DBName + ".autogen.ethernet"
+var netDriverQ = "SELECT time,\"name\" ,driver FROM " + DBName + ".autogen.ethernet"
+var cpuAggRPQ = "SELECT usage_user AS mean_usage_user FROM " + DBName + ".%s.mean_cpu WHERE time > now() - %s"
+var cpuDefaultRPQ = "SELECT mean(usage_user) AS mean_usage_user FROM " + DBName + ".%s.cpu WHERE time > now() - %s GROUP BY time(%s)"
+var cpuLastRecordQ = "SELECT last(usage_user) AS mean_usage_user FROM " + DBName + ".%s.cpu LIMIT 1"
+var diskAggRPQ = "SELECT used AS mean_used_bytes FROM " + DBName + ".%s.mean_disk WHERE time > now() - %s"
+var diskDefaultRPQ = "SELECT mean(used) AS mean_used_bytes FROM " + DBName + ".%s.disk WHERE time > now() - %s GROUP BY time(%s)"
+var diskLastRecordQ = "SELECT last(used) AS mean_used_bytes FROM " + DBName + ".%s.disk LIMIT 1"
+var memoryAggRPQ = "SELECT used_percent AS mean_used_percent FROM " + DBName + ".%s.mean_mem WHERE time > now() - %s"
+var memoryDefaultRPQ = "SELECT mean(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem WHERE time > now() - %s GROUP BY time(%s)"
+var memoryLastRecordQ = "SELECT last(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem LIMIT 1"

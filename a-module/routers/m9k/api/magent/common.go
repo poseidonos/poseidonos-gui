@@ -6,12 +6,11 @@ import (
 
 func ExecuteQuery(query string) ([]client.Result, error) {
 	var result []client.Result
-	var err error
 	dbClient, err := ConnectDB()
 	defer dbClient.Close()
 
 	if err != nil {
-		err = ConnErrMsg
+		err = errConnInfluxDB
 		return result, err
 	}
 
@@ -22,12 +21,12 @@ func ExecuteQuery(query string) ([]client.Result, error) {
 
 	if response, err := dbClient.Query(queryObject); err == nil {
 		if response.Error() != nil {
-			err = QueryErrMsg
+			err = errQuery
 		}
 		result = response.Results
 
 	} else {
-		err = QueryErrMsg
+		err = errQuery
 	}
 	return result, err
 }
