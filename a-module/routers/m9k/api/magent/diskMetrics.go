@@ -33,6 +33,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	var query string
 	fieldsList := make(DiskFields, 0)
 	paramStruct := param.(model.MAgentParam)
+
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
@@ -47,6 +48,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	} else {
 		query = fmt.Sprintf(DiskLastRecordQ, DefaultRP)
 	}
+
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		res.Result.Status.Description = err.Error()
