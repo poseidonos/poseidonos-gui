@@ -32,16 +32,16 @@ func GetCPUData(param interface{}) (model.Response, error) {
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			res.Result.Status.Description = EndPointErrMsg.Error()
+			res.Result.Status.Description = errEndPoint.Error()
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(CPUAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(cpuAggRPQ, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(CPUDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(cpuDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(CPULastRecordQ, DefaultRP)
+		query = fmt.Sprintf(cpuLastRecordQ, DefaultRP)
 	}
 
 	result, err := ExecuteQuery(query)
@@ -51,7 +51,7 @@ func GetCPUData(param interface{}) (model.Response, error) {
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg.Error()
+		res.Result.Status.Description = errData.Error()
 		return res, nil
 	}
 

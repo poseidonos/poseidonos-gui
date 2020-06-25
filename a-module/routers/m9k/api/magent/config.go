@@ -40,3 +40,25 @@ var diskLastRecordQ = "SELECT last(used) AS mean_used_bytes FROM " + DBName + ".
 var memoryAggRPQ = "SELECT used_percent AS mean_used_percent FROM " + DBName + ".%s.mean_mem WHERE time > now() - %s"
 var memoryDefaultRPQ = "SELECT mean(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem WHERE time > now() - %s GROUP BY time(%s)"
 var memoryLastRecordQ = "SELECT last(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem LIMIT 1"
+
+var ReadBandwidthAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var ReadBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "mtool_db"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var ReadBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."%s"."air" limit 1`
+
+var WriteBandwidthAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var WriteBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "mtool_db"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var WriteBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."%s"."air" limit 1`
+
+var ReadIOPSAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var ReadIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "mtool_db"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var ReadIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."%s"."air" limit 1`
+
+var WriteIOPSAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var WriteIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "mtool_db"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var WriteIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."%s"."air" limit 1`
+
+var LatencyAggRPQ = `SELECT /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "mtool_db"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var LatencyDefaultRPQ = `SELECT mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "latency" FROM "mtool_db"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var LatencyLastRecordQ = `SELECT /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "mtool_db"."%s"."air" limit 1`
+
+var RebuildingLogQ = `SELECT "value" FROM "mtool_db"."autogen"."rebuilding_status" WHERE time > now() - %s`

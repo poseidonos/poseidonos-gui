@@ -23,16 +23,16 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			res.Result.Status.Description = EndPointErrMsg.Error()
+			res.Result.Status.Description = errEndPoint.Error()
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(DiskAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(diskAggRPQ, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(DiskDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(diskDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(DiskLastRecordQ, DefaultRP)
+		query = fmt.Sprintf(diskLastRecordQ, DefaultRP)
 	}
 
 	result, err := ExecuteQuery(query)
@@ -42,7 +42,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg.Error()
+		res.Result.Status.Description = errData.Error()
 		return res, nil
 	}
 	for _, values := range result[0].Series[0].Values {

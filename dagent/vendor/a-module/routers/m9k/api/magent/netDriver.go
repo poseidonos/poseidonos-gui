@@ -15,7 +15,7 @@ type NetDriverFields []NetDriverField
 func GetNetDriver(param interface{}) (model.Response, error) {
 	var res model.Response
 	fieldsList := make(NetDriverFields, 0)
-	result, err := ExecuteQuery(NetDriverQ)
+	result, err := ExecuteQuery(netDriverQ)
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()
@@ -23,7 +23,7 @@ func GetNetDriver(param interface{}) (model.Response, error) {
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg.Error()
+		res.Result.Status.Description = errData.Error()
 		return res, nil
 	}
 
