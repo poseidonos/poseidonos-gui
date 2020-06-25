@@ -21,7 +21,7 @@ import (
 )
 
 type DiskField struct {
-	Time      string
+	Time           string
 	UsageUserBytes json.Number
 }
 
