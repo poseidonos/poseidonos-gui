@@ -33,4 +33,3 @@ var DiskLastRecordQ = "SELECT last(used) AS mean_used_bytes FROM " + DBName + ".
 var MemoryAggRPQ = "SELECT used_percent AS mean_used_percent FROM " + DBName + ".%s.mean_mem WHERE time > now() - %s"
 var MemoryDefaultRPQ = "SELECT mean(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem WHERE time > now() - %s GROUP BY time(%s)"
 var MemoryLastRecordQ = "SELECT last(used_percent) AS mean_used_percent FROM " + DBName + ".%s.mem LIMIT 1"
-

@@ -44,7 +44,7 @@ func GetNetData(param interface{}) (model.Response, error) {
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			res.Result.Status.Description = EndPointErrMsg
+			res.Result.Status.Description = EndPointErrMsg.Error()
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -56,15 +56,15 @@ func GetNetData(param interface{}) (model.Response, error) {
 		query = fmt.Sprintf(NetLastRecordQ, DefaultRP)
 	}
 
-	result, errMsg := ExecuteQuery(query)
+	result, err := ExecuteQuery(query)
 
-	if errMsg != "" {
-		res.Result.Status.Description = errMsg
+	if err != nil {
+		res.Result.Status.Description = err.Error()
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg
+		res.Result.Status.Description = DataErrMsg.Error()
 		return res, nil
 	}
 
