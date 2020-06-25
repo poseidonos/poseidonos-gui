@@ -1,17 +1,3 @@
-/*
-In this code we are using gin framework and influxdb golang client libraries
-Gin is a web framework written in Go (Golang). It features a martini-like API with performance that is up to 40 times faster than other frameworks
-
-
-DESCRIPTION: <File description> *
-NAME : diskMetrics.go
-@AUTHORS: Jay Sanghavi
-@Version : 1.0 *
-@REVISION HISTORY
-[5/27/2020] [Jay] : Prototyping..........////////////////////
-
-*/
-
 package magent
 
 import (
@@ -33,6 +19,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	var query string
 	fieldsList := make(DiskFields, 0)
 	paramStruct := param.(model.MAgentParam)
+
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
@@ -47,6 +34,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 	} else {
 		query = fmt.Sprintf(DiskLastRecordQ, DefaultRP)
 	}
+
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		res.Result.Status.Description = err.Error()
