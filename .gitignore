@@ -1,6 +1,5 @@
 **/.idea
 **/.DS_Store
-**/pkg
 /dagent/bin/dagent
 /dagent/dagent
 /dagent/test_sol.pe/result.xml
