@@ -1,0 +1,19 @@
+modules {
+  module {
+    name = "poseidon"
+    language = "python"
+  }
+}
+
+collection_group {
+  collect_every = 10
+  time_threshold = 50
+  metric {
+    name = "used_size"
+    title = "Size Used by Volumes"
+  }
+   metric {
+    name = "total_size"
+    title = "Total Size"
+  }
+}
