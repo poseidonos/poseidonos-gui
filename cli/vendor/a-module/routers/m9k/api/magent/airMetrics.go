@@ -39,9 +39,9 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]
 	} else {
 		query = fmt.Sprintf(LastRecordQ, DefaultRP)
 	}
-	result, errMsg := ExecuteQuery(query)
-	if errMsg != "" {
-		return nil, nil, fmt.Errorf(errMsg)
+	result, err := ExecuteQuery(query)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
@@ -109,7 +109,7 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 }
 
 // GetReadBandwidth returns metrics related to Read Bandwidth
-func GetReadBandwidth(xrId string, param interface{}) (model.Response, error) {
+func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
 	values, columns, err := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ)
@@ -125,7 +125,7 @@ func GetReadBandwidth(xrId string, param interface{}) (model.Response, error) {
 }
 
 // GetWriteBandwidth returns the metrics related to Write Bandwidth
-func GetWriteBandwidth(xrId string, param interface{}) (model.Response, error) {
+func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
 	values, columns, err := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ)
@@ -141,7 +141,7 @@ func GetWriteBandwidth(xrId string, param interface{}) (model.Response, error) {
 }
 
 // GetReadIOPS returns the metrics related to Read IOPS
-func GetReadIOPS(xrId string, param interface{}) (model.Response, error) {
+func GetReadIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
 	values, columns, err := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ)
@@ -157,7 +157,7 @@ func GetReadIOPS(xrId string, param interface{}) (model.Response, error) {
 }
 
 // GetWriteIOPS returns the metrics related to Write IOPS
-func GetWriteIOPS(xrId string, param interface{}) (model.Response, error) {
+func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
 	values, columns, err := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ)
@@ -173,7 +173,7 @@ func GetWriteIOPS(xrId string, param interface{}) (model.Response, error) {
 }
 
 // GetLatency collects the latency metrics from influxdb
-func GetLatency(xrId string, param interface{}) (model.Response, error) {
+func GetLatency(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
 	values, columns, err := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ)

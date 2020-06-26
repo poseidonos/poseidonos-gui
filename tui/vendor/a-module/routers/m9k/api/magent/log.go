@@ -27,18 +27,18 @@ type LogsField struct {
 type LogsFields []LogsField
 
 // GetRebuildLogs gets the logs from influxdb and returns a JSON response
-func GetRebuildLogs(xrId string, param interface{}) (model.Response, error) {
+func GetRebuildLogs(param interface{}) (model.Response, error) {
 	var res model.Response
 	fieldsList := make(LogsFields, 0)
 	timeInterval := param.(model.MAgentParam).Time
 	query := fmt.Sprintf(RebuildingLogQ, timeInterval)
-	result, errMsg := ExecuteQuery(query)
-	if errMsg != "" {
-		res.Result.Status.Description = errMsg
+	result, err := ExecuteQuery(query)
+	if err != nil {
+		res.Result.Status.Description = err.Error()
 		return res, nil
 	}
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg
+		res.Result.Status.Description = errData.Error()
 		return res, nil
 
 	}
