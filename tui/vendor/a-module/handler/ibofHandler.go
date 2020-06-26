@@ -10,9 +10,6 @@ import (
 	"net"
 )
 
-func init() {
-}
-
 func ConnectToIBoFOS() (net.Conn, error) {
 	var err error = nil
 	uri := setting.Config.Server.IBoF.IP + ":" + setting.Config.Server.IBoF.Port
@@ -64,22 +61,6 @@ func ReadFromIBoFSocket(conn net.Conn) ([]byte, error) {
 	}
 	return buf, err
 }
-
-/*
-func GetIBoFResponse() []byte {
-	select {
-	case ret := <-iBoFReceiveChan:
-		return ret
-	case <-time.After(time.Second * 29):
-		log.Info("GetIBoFResponse : Timeout")
-		response := model.Response{}
-		response.Rid = "timeout"
-		response.Result.Status.Code = 19000
-		ret, _ := json.Marshal(response)
-		return ret
-	}
-}
-*/
 
 func WriteToIBoFSocket(conn net.Conn, marshaled []byte) error {
 	var err error = nil

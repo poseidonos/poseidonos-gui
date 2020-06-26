@@ -4,15 +4,14 @@ import (
 	"github.com/influxdata/influxdb/client/v2"
 )
 
-func ExecuteQuery(query string) ([]client.Result, string) {
+func ExecuteQuery(query string) ([]client.Result, error) {
 	var result []client.Result
-	var errMsg = ""
 	dbClient, err := ConnectDB()
 	defer dbClient.Close()
 
 	if err != nil {
-		errMsg = ConnErrMsg
-		return result, errMsg
+		err = errConnInfluxDB
+		return result, err
 	}
 
 	queryObject := client.Query{
@@ -22,12 +21,12 @@ func ExecuteQuery(query string) ([]client.Result, string) {
 
 	if response, err := dbClient.Query(queryObject); err == nil {
 		if response.Error() != nil {
-			errMsg = QueryErrMsg
+			err = errQuery
 		}
 		result = response.Results
 
 	} else {
-		errMsg = QueryErrMsg
+		err = errQuery
 	}
-	return result, errMsg
+	return result, err
 }

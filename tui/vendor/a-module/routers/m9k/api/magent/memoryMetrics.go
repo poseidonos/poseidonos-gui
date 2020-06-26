@@ -23,27 +23,27 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			res.Result.Status.Description = EndPointErrMsg
+			res.Result.Status.Description = errEndPoint.Error()
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(MemoryAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(memoryAggRPQ, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(MemoryDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(memoryDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(MemoryLastRecordQ, DefaultRP)
+		query = fmt.Sprintf(memoryLastRecordQ, DefaultRP)
 	}
 
-	result, errMsg := ExecuteQuery(query)
+	result, err := ExecuteQuery(query)
 
-	if errMsg != "" {
-		res.Result.Status.Description = errMsg
+	if err != nil {
+		res.Result.Status.Description = err.Error()
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = DataErrMsg
+		res.Result.Status.Description = errData.Error()
 		return res, nil
 	}
 	for _, values := range result[0].Series[0].Values {
