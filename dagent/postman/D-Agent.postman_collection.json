@@ -5756,7 +5756,7 @@
 					]
 				},
 				{
-					"name": "STATE ARRAY",
+					"name": "LOAD ARRAY",
 					"event": [
 						{
 							"listen": "prerequest",
