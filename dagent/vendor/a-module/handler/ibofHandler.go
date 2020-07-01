@@ -52,8 +52,8 @@ func ReadFromIBoFSocket(conn net.Conn) ([]byte, error) {
 		_, err = conn.Read(buf)
 		if err != nil || err == io.EOF {
 			log.Info("readFromIBoFSocket : Message Receive Fail :", err)
-			conn.Close()
-			conn = nil
+			//conn.Close()
+			//conn = nil
 		} else {
 			log.Info("readFromIBoFSocket : Message Receive Success")
 			buf = bytes.Trim(buf, "\x00")
@@ -70,8 +70,8 @@ func WriteToIBoFSocket(conn net.Conn, marshaled []byte) error {
 	} else {
 		_, err = conn.Write(marshaled)
 		if err != nil {
-			conn.Close()
-			conn = nil
+			//conn.Close()
+			//conn = nil
 			log.Infof("WriteToIBoFSocket : Writre Fail - %s\n", err)
 			log.Infof("WriteToIBoFSocket : Conn closed\n")
 		} else {

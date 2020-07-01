@@ -118,20 +118,10 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Fatal(err)
 		}
 
-		//if response.Rid != "timeout" && iBoFRequest.Rid != response.Rid {
-		//	log.Infof("Previous request's response, Wait again")
-		//	continue
-		//}
-
 		if err != nil {
 			log.Infof("Response Unmarshal Error : %v", err)
 			return model.Response{}, ErrJson
-
-			//} else if response.Result.Status.Code != 0 {
-			//	return response, ErrRes
-
 		} else {
-			//ctx.JSON(http.StatusOK, &response)
 			response.LastSuccessTime = time.Now().UTC().Unix()
 			return response, nil
 		}
