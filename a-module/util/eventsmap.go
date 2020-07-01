@@ -33,11 +33,6 @@ type PosEvents struct {
 	Modules []module `yaml:"modules"`
 }
 
-//var eventsmap  modules
-
-//func init()
-//{
-//}
 func LoadEvents() {
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	path = path + "/events.yaml"
@@ -46,7 +41,6 @@ func LoadEvents() {
 	if err != nil {
 		log.Infof("LoadSeverConfig : %v\n EventId cannot be decoded\n", err)
 	} else {
-		// log.Infof("Loaded Config Info : %+v", file)
 		err = yaml.Unmarshal(file, &eventsmap)
 		if err != nil {
 			log.Fatalf("loadevents Error : %v", err)
@@ -79,11 +73,8 @@ func ReturnEventsDets(status *model.Status) int {
 					//log.Infof("Name : %s, Level : %s,  Desc : %s, Problem : %s, Solution = %s ",  status.Module, status.Level, status.Description,  status.Problem, status.Solution)
 					return 1
 				}
-
 			}
-
 		}
-
 	}
 	return 0
 }
