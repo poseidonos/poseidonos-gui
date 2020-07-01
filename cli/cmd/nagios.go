@@ -4,9 +4,9 @@ import (
 	_ "a-module/routers/m9k/model"
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/tidwall/gjson"
+	"strconv"
 )
 
 var nagiosCmd = &cobra.Command{
@@ -46,15 +46,15 @@ func PrintVol(cmd *cobra.Command, args []string) {
 			} else {
 				result := "OK: Success|"
 
-				for i :=0 ; i < int(gjson.Get(string(b),"volumes.#").Int()) ; i++ {
+				for i := 0; i < int(gjson.Get(string(b), "volumes.#").Int()); i++ {
 
-					value := gjson.Get(string(b), "volumes." + strconv.Itoa(i)).String()
+					value := gjson.Get(string(b), "volumes."+strconv.Itoa(i)).String()
 					result += "'" + gjson.Get(value, "name").String() + "'=" + gjson.Get(value, "total").String() + "B; "
 				}
 				fmt.Println(result[:len(result)-2])
 			}
 		}
-	} else if command[0]== "smart" {
+	} else if command[0] == "smart" {
 
 		res, _ := Send(cmd, command)
 
@@ -69,7 +69,7 @@ func PrintVol(cmd *cobra.Command, args []string) {
 				if args[1] == "temperature" {
 					result = "OK: Success temperature of " + name + "|'temperature'=" + gjson.Get(string(b), "current_temperature").String()
 				} else if args[1] == "power_on_hours" {
-					result = "OK: Success power_on_hours of " + name + "|'power_on_hours'="  + gjson.Get(string(b), "power_on_hours").String()
+					result = "OK: Success power_on_hours of " + name + "|'power_on_hours'=" + gjson.Get(string(b), "power_on_hours").String()
 				} else if args[1] == "unsafe_shutdowns" {
 					result = "OK: Success unsafe_shutdowns of " + name + "|'unsafe_shutdowns'=" + gjson.Get(string(b), "unsafe_shutdowns").String()
 				}

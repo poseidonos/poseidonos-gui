@@ -7,8 +7,8 @@ import (
 	"a-module/util"
 	"github.com/spf13/cobra"
 	"os"
-	"time"
 	"strconv"
+	"time"
 )
 
 var isVerbose bool
@@ -46,7 +46,7 @@ func Execute() {
 func init() {
 
 	if Mode == "debug" {
-		
+
 		rootCmd.PersistentFlags().BoolVar(&isVerbose, "verbose", false, "verbose output")
 		rootCmd.PersistentFlags().BoolVar(&isDebug, "debug", false, "set a debug mode")
 		rootCmd.PersistentFlags().BoolVar(&isJson, "json", false, "print request and response fommated json")
@@ -58,7 +58,7 @@ func init() {
 }
 
 func InitConnect() {
-	
+
 	if isVerbose == true {
 		log.SetVerboseMode()
 	} else if isDebug == true {
@@ -78,7 +78,7 @@ func InitConnect() {
 
 	unixIntValue, _ := strconv.ParseInt(BuildTime, 10, 64)
 
-	log.Info("Git commit: " + GitCommit + "  Build Time: ",time.Unix(unixIntValue,0))
+	log.Info("Git commit: "+GitCommit+"  Build Time: ", time.Unix(unixIntValue, 0))
 
 	log.Info("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
 }

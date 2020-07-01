@@ -47,7 +47,7 @@ func Success(ctx *gin.Context, res model.Response, code int) {
 
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
 	res.Result.Status.Code = code
-        util.ReturnEventsDets(&res.Result.Status)
+	util.ReturnEventsDets(&res.Result.Status)
 	//if res.Result.Status.Description == "" {
 	//	res.Result.Status.Description = setting.StatusDesc(code)
 	//}

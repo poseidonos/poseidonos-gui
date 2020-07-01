@@ -313,12 +313,11 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		fmt.Println("\n\nResponse from Poseidon OS")
 		util.ReturnEventsDets(&res.Result.Status)
-		fmt.Println("    Code         : ", res.Result.Status.Code )
-		fmt.Println("    Level        : ", res.Result.Status.Level )
-                fmt.Println("    Description  : ", res.Result.Status.Description)
-		fmt.Println("    Problem      : ", res.Result.Status.Problem )
-                fmt.Println("    Solution     : ", res.Result.Status.Solution)
-
+		fmt.Println("    Code         : ", res.Result.Status.Code)
+		fmt.Println("    Level        : ", res.Result.Status.Level)
+		fmt.Println("    Description  : ", res.Result.Status.Description)
+		fmt.Println("    Problem      : ", res.Result.Status.Problem)
+		fmt.Println("    Solution     : ", res.Result.Status.Solution)
 
 		//fmt.Println("    Code        : ", setting.StatusDesc(res.Result.Status.Code), "(", res.Result.Status.Code, ")")
 		//fmt.Println("    Description : ", res.Result.Status.Description)
