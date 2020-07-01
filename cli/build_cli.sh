@@ -3,9 +3,7 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
-basename=$(git remote get-url origin)
-
-if [[ $basename =~ "ibofos" ]]; then
+if [ -d "../../tool" ]; then
 	export GOROOT="$ROOT_DIR../../lib/go"
 	export GOPATH="$ROOT_DIR../"
 	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
