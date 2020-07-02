@@ -1,6 +1,7 @@
 package util
 
 import (
+	"a-module/errors"
 	"a-module/log"
 	"a-module/routers/m9k/model"
 	"gopkg.in/yaml.v2"
@@ -32,7 +33,6 @@ func init() {
 }
 
 func LoadEvents() {
-
 	file, err := Asset("../resources/events.yaml")
 
 	if err != nil {
@@ -56,9 +56,11 @@ func LoadEvents() {
 	}
 }
 
-func ReturnEventsDets(status *model.Status) bool {
+func GetStatusInfo(eventid int) (model.Status, error) {
+	var status model.Status
+	status.Code = eventid
 	totMods := len(eventsmap.Modules)
-	eventid := status.Code
+
 	for i := 0; i < totMods; i++ {
 		if eventid >= eventsmap.Modules[i].Idstart && eventid <= eventsmap.Modules[i].Idend {
 			totcodes := len(eventsmap.Modules[i].Codes)
@@ -70,11 +72,12 @@ func ReturnEventsDets(status *model.Status) bool {
 					status.Solution = eventsmap.Modules[i].Codes[j].Solution
 					status.Level = eventsmap.Modules[i].Codes[j].Level
 
-					return true
+					return status, nil
 				}
 			}
 		}
 	}
 
-	return false
+	err := errors.New("there is no event info")
+	return status, err
 }

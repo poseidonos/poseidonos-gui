@@ -4,8 +4,8 @@ import (
 	"a-module/errors"
 	iBoFOS "a-module/routers/m9k/api/ibofos"
 	"a-module/routers/m9k/model"
-	//"a-module/setting"
 	"a-module/util"
+
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"
@@ -312,7 +312,8 @@ func PrintReqRes(req model.Request, res model.Response) {
 		}
 
 		fmt.Println("\n\nResponse from Poseidon OS")
-		util.ReturnEventsDets(&res.Result.Status)
+		res.Result.Status, _ = util.GetStatusInfo(res.Result.Status.Code)
+		//util.ReturnEventsDets(&res.Result.Status)
 		fmt.Println("    Code         : ", res.Result.Status.Code)
 		fmt.Println("    Level        : ", res.Result.Status.Level)
 		fmt.Println("    Description  : ", res.Result.Status.Description)

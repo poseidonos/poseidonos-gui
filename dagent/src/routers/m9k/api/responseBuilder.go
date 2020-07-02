@@ -46,12 +46,7 @@ func Success(ctx *gin.Context, res model.Response, code int) {
 }
 
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
-	res.Result.Status.Code = code
-	util.ReturnEventsDets(&res.Result.Status)
-	//if res.Result.Status.Description == "" {
-	//	res.Result.Status.Description = setting.StatusDesc(code)
-	//}
-
+	res.Result.Status, _ = util.GetStatusInfo(code)
 	log.Infof("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
