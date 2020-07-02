@@ -2,20 +2,20 @@
 Goal: Events Unification
 modules:
   - name: "COMMON"
-    counts: 999
+    count: 999
     idStart: 0
     idEnd:   999
-    codes:
+    info:
       - code: 0
         level: "INFO"
         message: "Success"
         problem: ""
         solution: ""
   - name: "CLI"
-    counts: 100
+    count: 99
     idStart: 1000
-    idEnd:   1099
-    codes:
+    idEnd:   1098
+    info:
       - code: 1000
         level: "INFO"
         message: "cli server initialized"
@@ -82,10 +82,10 @@ modules:
         problem:
         solution:
   - name: "IBoFOS State Manager"
-    counts: 200
+    count: 200
     idStart: 1100
     idEnd:   1299
-    codes:
+    info:
       - code: 1100
         level: DEBUG
         message: state_publisher
@@ -132,10 +132,10 @@ modules:
         problem:
         solution:
   - name: "VolumeManager"
-    counts: 300
+    count: 300
     idStart: 2000
     idEnd:   2299
-    codes:
+    info:
       - code: 2000
         level: INFO
         message: Volume created
@@ -302,10 +302,10 @@ modules:
         problem: Attempt to mount volume with no subsystem created
         solution: Subsystems must be created before mounting volumes
   - name: "MBR Manager"
-    counts: 100
+    count: 100
     idStart: 2300
     idEnd:   2399
-    codes:
+    info:
       - code: 2300
         level: INFO
         message: Allocate memory success
@@ -377,10 +377,10 @@ modules:
         problem:
         solution:
   - name: "DeviceManager"
-    counts: 100
+    count: 100
     idStart: 2400
     idEnd:   2499
-    codes:
+    info:
       - code: 2400
         level: INFO
         message: Initial scan
@@ -497,10 +497,10 @@ modules:
         problem:
         solution:
   - name: "Array"
-    counts: 300
+    count: 300
     idStart: 2500
     idEnd:   2799
-    codes:
+    info:
       - code: 2500
         level: ERROR
         message: Array is alreday mounted.
@@ -657,10 +657,10 @@ modules:
         problem: fault tolerance exceeded due to device failure
         solution: replace fault devices and re-create array
   - name: "Rebuild"
-    counts: 100
+    count: 100
     idStart: 2800
     idEnd:   2899
-    codes:
+    info:
       - code: 2805
         level: INFO
         message: rebuild progress
@@ -707,10 +707,10 @@ modules:
         problem:
         solution:
   - name: "ConfigManager"
-    counts: 100
+    count: 100
     idStart: 2900
     idEnd:   2999
-    codes:
+    info:
       - code: 2900
         level: INFO
         message: config file read done
@@ -767,20 +767,20 @@ modules:
         problem: request get value & validate value after file open fail, read error & format error
         solution:
   - name: "Mapper"
-    counts: 200
+    count: 200
     idStart: 3000
     idEnd:   3199
-    codes:
+    info:
   - name: "Allocator"
-    counts: 200
+    count: 200
     idStart: 3200
     idEnd:   3399
-    codes:
+    info:
   - name: "GC"
-    counts: 100
+    count: 100
     idStart: 3400
     idEnd:   3499
-    codes:
+    info:
       - code: 3400
         level: INFO
         message: GC triggered
@@ -817,10 +817,10 @@ modules:
         problem:
         solution:
   - name: "MetaFS"
-    counts: 500
+    count: 500
     idStart: 4000
     idEnd:   4499
-    codes:
+    info:
       - code: 4000
         level: DEBUG
         message: Message type for debugging
@@ -1077,10 +1077,10 @@ modules:
         problem:
         solution:
   - name: "Sys-event"
-    counts: 80
+    count: 80
     idStart: 4500
     idEnd:   4579
-    codes:
+    info:
       - code: 4500
         level: DEBUG
         message: volume_event
@@ -1097,10 +1097,10 @@ modules:
         problem:
         solution:
   - name: "Logger"
-    counts: 20
+    count: 20
     idStart: 4580
     idEnd:   4599
-    codes:
+    info:
       - code: 4580
         level: WARN
         message: filter syntax error
@@ -1117,25 +1117,25 @@ modules:
         problem:
         solution:
   - name: "IOPath-nvmf"
-    counts: 100
+    count: 100
     idStart: 5000
     idEnd:   5099
-    codes:
+    info:
   - name: "IOPath-frontend"
-    counts: 100
+    count: 100
     idStart: 5100
     idEnd:   5199
-    codes:
+    info:
   - name: "IOPath-backend"
-    counts: 100
+    count: 100
     idStart: 5200
     idEnd:   5299
-    codes:
+    info:
   - name: "system"
-    counts: 1000
+    count: 1000
     idStart: 9000
     idEnd:   9999
-    codes:
+    info:
       - code: 9000
         level: INFO
         message: SPACE INFO
@@ -1157,7 +1157,7 @@ modules:
         problem: ibofos already has been mounted
         solution:
   - name: "M9K (M-Tool/D-Agent)"
-    counts: 10000
+    count: 10000
     idStart: 10000
     idEnd:   20000
 

@@ -13,4 +13,3 @@ go build -mod vendor -tags ssloff -ldflags "-X dagent/src/routers/m9k/api/dagent
 
 #mkdir -p ./bin
 mv dagent ./bin
-cp statuscode.json ./bin

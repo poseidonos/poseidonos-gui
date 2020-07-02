@@ -4,13 +4,14 @@ import (
 	"a-module/errors"
 	"a-module/log"
 	"a-module/routers/m9k/model"
+	"fmt"
 	"gopkg.in/yaml.v2"
 )
 
 var eventsmap PosEvents
 
-type code struct {
-	Eventid  int    `yaml:"code"`
+type info2 struct {
+	Code     int    `yaml:"code"`
 	Level    string `yaml:"level"`
 	Message  string `yaml:"message"`
 	Problem  string `yaml:"problem,omitempty"`
@@ -19,10 +20,10 @@ type code struct {
 
 type module struct {
 	Name    string `yaml:"name"`
-	Count   int    `yaml:"counts"`
+	Count   int    `yaml:"count"`
 	Idstart int    `yaml:"idStart"`
 	Idend   int    `yaml:"idEnd"`
-	Codes   []code `yaml:"codes"`
+	Info    []info2 `yaml:"info"`
 }
 type PosEvents struct {
 	Modules []module `yaml:"modules"`
@@ -56,21 +57,35 @@ func LoadEvents() {
 	}
 }
 
-func GetStatusInfo(eventid int) (model.Status, error) {
+func GetStatusInfo(code int) (model.Status, error) {
 	var status model.Status
-	status.Code = eventid
+	status.Code = code
 	totMods := len(eventsmap.Modules)
 
 	for i := 0; i < totMods; i++ {
-		if eventid >= eventsmap.Modules[i].Idstart && eventid <= eventsmap.Modules[i].Idend {
-			totcodes := len(eventsmap.Modules[i].Codes)
-			for j := 0; j < totcodes; j++ {
-				if eventsmap.Modules[i].Codes[j].Eventid == eventid {
+		fmt.Println("codecode = ",code)
+		fmt.Println("count = ",eventsmap.Modules[i].Count)
+		fmt.Println("name = ",eventsmap.Modules[i].Name)
+		fmt.Println("eventsmap.Modules[i].Idstart = ",eventsmap.Modules[i].Idstart)
+		fmt.Println("eventsmap.Modules[i].Idend = ",eventsmap.Modules[i].Idend)
+
+		fmt.Println("totMods = ",totMods)
+
+		if code >= eventsmap.Modules[i].Idstart && code <= eventsmap.Modules[i].Idend {
+			totInfo := len(eventsmap.Modules[i].Info)
+			fmt.Println("totInfo = ", totInfo)
+			fmt.Println("ccccccccccccccccc = ", eventsmap.Modules[i].Name)
+
+
+			for j := 0; j < totInfo; j++ {
+				fmt.Println("eventsmap.Modules[i].Info[j].Code = ",eventsmap.Modules[i].Info[j].Code)
+				fmt.Println("Code = ", code)
+				if eventsmap.Modules[i].Info[j].Code == code {
 					status.Module = eventsmap.Modules[i].Name
-					status.Description = eventsmap.Modules[i].Codes[j].Message
-					status.Problem = eventsmap.Modules[i].Codes[j].Problem
-					status.Solution = eventsmap.Modules[i].Codes[j].Solution
-					status.Level = eventsmap.Modules[i].Codes[j].Level
+					status.Description = eventsmap.Modules[i].Info[j].Message
+					status.Problem = eventsmap.Modules[i].Info[j].Problem
+					status.Solution = eventsmap.Modules[i].Info[j].Solution
+					status.Level = eventsmap.Modules[i].Info[j].Level
 
 					return status, nil
 				}
@@ -79,5 +94,6 @@ func GetStatusInfo(eventid int) (model.Status, error) {
 	}
 
 	err := errors.New("there is no event info")
+	status.Description = err.Error()
 	return status, err
 }
