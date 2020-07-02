@@ -23,27 +23,27 @@ func (m *mockClient) Write(bp client.BatchPoints) error{
 	return nil
 }
 
-var LastReadBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."default_rp"."air" limit 1`
+var LastReadBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."default_rp"."air" order by time desc limit 1`
 
 var ArrayReadBandwidthQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "mtool_db"."default_rp"."air" WHERE time > now() - 15m GROUP BY time(1m) FILL(null)`
 
 var AggregatedReadBandwidthQuery = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."agg_rp"."mean_air" WHERE time > now() - 30d FILL(null)`
 
-var LastReadIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."default_rp"."air" limit 1`
+var LastReadIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."default_rp"."air" order by time desc limit 1`
 
 var ArrayReadIOPSQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "mtool_db"."default_rp"."air" WHERE time > now() - 15m GROUP BY time(1m) FILL(null)`
 
-var LastWriteBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."default_rp"."air" limit 1`
+var LastWriteBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "mtool_db"."default_rp"."air" order by time desc limit 1`
 
 var ArrayWriteBandwidthQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "mtool_db"."default_rp"."air" WHERE time > now() - 15m GROUP BY time(1m) FILL(null)`
 
-var LastWriteIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."default_rp"."air" limit 1`
+var LastWriteIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "mtool_db"."default_rp"."air" order by time desc limit 1`
 
 var ArrayWriteIOPSQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "mtool_db"."default_rp"."air" WHERE time > now() - 15m GROUP BY time(1m) FILL(null)`
 
 var LatencyQuery = `SELECT mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "latency" FROM "mtool_db"."default_rp"."air" WHERE time > now() - 15m GROUP BY time(1m) FILL(null)`
 
-var LastLatencyQuery = `SELECT /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "mtool_db"."default_rp"."air" limit 1`
+var LastLatencyQuery = `SELECT /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "mtool_db"."default_rp"."air" order by time desc limit 1`
 
 var MemoryLastQuery = "SELECT last(used_percent) AS mean_used_percent FROM mtool_db.default_rp.mem LIMIT 1"
 

@@ -10,9 +10,9 @@ cd $ROOT_DIR
 rm -rf vendor/a-module
 cp -rf ../a-module ./vendor/
 
-export GIT_COMMIT=$(git rev-list -1 HEAD)
-export BUILD_TIME=$(date +%s)
-go build -mod vendor -tags ssloff -ldflags "-X tui/src/storage/widget.GitCommit=$GIT_COMMIT -X tui/src/storage/widget.BuildTime=$BUILD_TIME"
+export GIT_COMMIT_TUI=$(git rev-list -1 HEAD)
+export BUILD_TIME_TUI=$(date +%s)
+go build -mod vendor -tags ssloff -ldflags "-X tui/src/storage/widget.GitCommit=$GIT_COMMIT_TUI -X tui/src/storage/widget.BuildTime=$BUILD_TIME_TUI"
 
 mkdir -p ./bin
 mv tui ./bin

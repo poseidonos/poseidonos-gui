@@ -6,7 +6,7 @@ import (
 
 func ExecuteQuery(query string) ([]client.Result, error) {
 	var result []client.Result
-	dbClient, err := ConnectDB()
+	dbClient, err := IDBClient.ConnectDB()
 	defer dbClient.Close()
 
 	if err != nil {

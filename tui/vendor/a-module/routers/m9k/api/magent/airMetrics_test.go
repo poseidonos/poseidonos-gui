@@ -46,32 +46,32 @@ func TestGetReadBandwidth(t *testing.T) {
 			err: nil,
 		},
 		{
-                        input: model.MAgentParam{
-                                Time:  "30d",
-                                Level: "0",
-                        },
-                        expected: []map[string]interface{}{
-                                {"BW": json.Number("100"), "Time": "1589872050483860738"},
-                                {"BW": json.Number("700"), "Time": "1589872050483870738"},
-                        },
-                        err: nil,
-                },
-		{
 			input: model.MAgentParam{
-				Time: "5m",
+				Time:  "30d",
 				Level: "0",
 			},
-			expected: nil,
+			expected: []map[string]interface{}{
+				{"BW": json.Number("100"), "Time": "1589872050483860738"},
+				{"BW": json.Number("700"), "Time": "1589872050483870738"},
+			},
 			err: nil,
 		},
 		{
 			input: model.MAgentParam{
-                                Time: "20m",
-                                Level: "0",
-                        },
-                        expected: nil,
-                        err: nil,
-                },
+				Time:  "5m",
+				Level: "0",
+			},
+			expected: nil,
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
+				Time:  "20m",
+				Level: "0",
+			},
+			expected: nil,
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -122,14 +122,14 @@ func TestGetWriteBandwidth(t *testing.T) {
 			err: nil,
 		},
 
-                {
-                        input: model.MAgentParam{
-                                Time: "5m",
-                                Level: "0",
-                        },
-                        expected: nil,
-                        err: nil,
-                },
+		{
+			input: model.MAgentParam{
+				Time:  "5m",
+				Level: "0",
+			},
+			expected: nil,
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -180,14 +180,14 @@ func TestGetReadIOPS(t *testing.T) {
 			err: nil,
 		},
 
-                {
-                        input: model.MAgentParam{
-                                Time: "5m",
-                                Level: "0",
-                        },
-                        expected: nil,
-                        err: nil,
-                },
+		{
+			input: model.MAgentParam{
+				Time:  "5m",
+				Level: "0",
+			},
+			expected: nil,
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -238,14 +238,14 @@ func TestGetWriteIOPS(t *testing.T) {
 			err: nil,
 		},
 
-                {
-                        input: model.MAgentParam{
-                                Time: "5m",
-                                Level: "0",
-                        },
-                        expected: nil,
-                        err: nil,
-                },
+		{
+			input: model.MAgentParam{
+				Time:  "5m",
+				Level: "0",
+			},
+			expected: nil,
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -296,13 +296,13 @@ func TestGetLatency(t *testing.T) {
 			err: nil,
 		},
 
-                {
-                        input: model.MAgentParam{
-                                Time: "5m",
-                        },
-                        expected: nil,
-                        err: nil,
-                },
+		{
+			input: model.MAgentParam{
+				Time: "5m",
+			},
+			expected: nil,
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}

@@ -38,9 +38,9 @@ if [ -d "../a-module" ]; then
 	cp -rf ../dagent/src ./vendor/dagent/
 fi
 
-export GIT_COMMIT=$(git rev-list -1 HEAD)
-export BUILD_TIME=$(date +%s)
+export GIT_COMMIT_CLI=$(git rev-list -1 HEAD)
+export BUILD_TIME_CLI=$(date +%s)
 
-go build -mod vendor -tags debug,ssloff -ldflags "-X cli/cmd.GitCommit=$GIT_COMMIT -X cli/cmd.BuildTime=$BUILD_TIME"
+go build -mod vendor -tags debug,ssloff -ldflags "-X cli/cmd.GitCommit=$GIT_COMMIT_CLI -X cli/cmd.BuildTime=$BUILD_TIME_CLI"
 
 mv cli bin/
