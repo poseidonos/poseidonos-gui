@@ -1,6 +1,16 @@
 ---
 Goal: Events Unification
 modules:
+  - name: "COMMON"
+    counts: 999
+    idStart: 0
+    idEnd:   999
+    codes:
+      - code: 0
+        level: "INFO"
+        message: "Success"
+        problem: ""
+        solution: ""
   - name: "CLI"
     counts: 100
     idStart: 1000
