@@ -27,12 +27,12 @@ func GetDiskData(param interface{}) (model.Response, error) {
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(diskAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(diskAggRPQ, DBName, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(diskDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(diskDefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(diskLastRecordQ, DefaultRP)
+		query = fmt.Sprintf(diskLastRecordQ, DBName, DefaultRP)
 	}
 
 	result, err := ExecuteQuery(query)

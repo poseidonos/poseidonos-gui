@@ -1,0 +1,13 @@
+[Unit]
+Description=Testing MAgent Startup
+
+[Service]
+WorkingDirectory=/usr/local/magent
+ExecStart=/usr/local/magent/magent
+StandardOutput=file:/var/log/logmagent1.log
+StandardError=file:/var/log/logmagent2.log
+
+[Install]
+WantedBy=default.target
+
+

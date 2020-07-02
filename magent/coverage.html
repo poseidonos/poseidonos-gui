@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">magent/cpu.go (86.8%)</option>
+				
+				<option value="file1">magent/influxdb.go (64.0%)</option>
+				
+				<option value="file2">magent/magent.go (35.0%)</option>
+				
+				<option value="file3">magent/tail.go (91.7%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "context"
+        "fmt"
+        "github.com/shirou/gopsutil/cpu"
+        "time"
+)
+
+type cpuClient interface {
+        Times(percpu bool) ([]cpu.TimesStat, error)
+}
+
+type myCpu struct{}
+
+func (m myCpu) Times(percpu bool) ([]cpu.TimesStat, error) <span class="cov0" title="0">{
+        return cpu.Times(percpu)
+}</span>
+
+var magentCpu cpuClient = myCpu{}
+
+func getCPUData(ctx context.Context, dataChan chan clientPoint) <span class="cov8" title="1">{
+        defer fmt.Println("Closing CPU Input")
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-ctx.Done():<span class="cov8" title="1">
+                        return</span>
+                default:<span class="cov8" title="1"></span>
+                }
+                <span class="cov8" title="1">times, err := cpuTimes(magentCpu, true, true)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("error getting CPU info: %s", err)
+                }</span>
+                <span class="cov8" title="1">lastStats := make(map[string]cpu.TimesStat)
+
+                for _, cts := range times </span><span class="cov8" title="1">{
+                        lastStats[cts.CPU] = cts
+                }</span>
+                <span class="cov8" title="1">time.Sleep(2000 * time.Millisecond)
+                times, err = cpuTimes(magentCpu, true, true)
+                stats := make(map[string]cpu.TimesStat)
+                fields := make(map[string]interface{})
+                tags := map[string]string{"cpu": "cpu-total"}
+                for _, cts := range times </span><span class="cov8" title="1">{
+                        if cts.CPU == "cpu-total" </span><span class="cov8" title="1">{
+                                stats[cts.CPU] = cts
+                                lastCts, _ := lastStats[cts.CPU]
+                                lastTotal := (lastCts.User + lastCts.System + lastCts.Nice + lastCts.Iowait + lastCts.Irq + lastCts.Softirq + lastCts.Steal + lastCts.Idle)
+                                total := cts.User + cts.System + cts.Nice + cts.Iowait + cts.Irq + cts.Softirq + cts.Steal + cts.Idle
+                                totalDelta := total - lastTotal
+                                if totalDelta &lt;= 0 </span><span class="cov0" title="0">{
+                                        continue</span>
+                                }
+                                //fmt.Println("CPU User Usage", cts.CPU, 100*(cts.User-lastCts.User-(cts.Guest-lastCts.Guest))/totalDelta)
+
+                                // Create a point and add to batch
+                                <span class="cov8" title="1">fields["usage_user"] = 100 * (cts.User - lastCts.User - (cts.Guest - lastCts.Guest)) / totalDelta</span>
+                        }
+                }
+                <span class="cov8" title="1">newPoint := clientPoint{
+                        fields:      fields,
+                        tags:        tags,
+                        measurement: "cpu",
+                }
+                dataChan &lt;- newPoint</span>
+        }
+}
+
+func cpuTimes(client cpuClient, perCPU, totalCPU bool) ([]cpu.TimesStat, error) <span class="cov8" title="1">{
+        var cpuTimes []cpu.TimesStat
+        if perCPU </span><span class="cov8" title="1">{
+                if perCPUTimes, err := client.Times(true); err == nil </span><span class="cov8" title="1">{
+                        cpuTimes = append(cpuTimes, perCPUTimes...)
+                }</span> else<span class="cov0" title="0"> {
+                        return nil, err
+                }</span>
+        }
+        <span class="cov8" title="1">if totalCPU </span><span class="cov8" title="1">{
+                if totalCPUTimes, err := client.Times(false); err == nil </span><span class="cov8" title="1">{
+                        cpuTimes = append(cpuTimes, totalCPUTimes...)
+                }</span> else<span class="cov0" title="0"> {
+                        return nil, err
+                }</span>
+        }
+        <span class="cov8" title="1">return cpuTimes, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package main
+
+import (
+        "bytes"
+        "context"
+        "fmt"
+        client1 "github.com/influxdata/influxdb1-client"
+        "log"
+        "net"
+        "net/http"
+        "net/url"
+        "path"
+        "time"
+)
+
+type InfluxDB struct {
+        URL              string
+        Database         string
+        WriteConsistency string
+        RetentionPolicy  string
+        Client           *http.Client
+        CreateHTTPClient func(config *HTTPConfig) (*http.Client, error)
+}
+
+type HTTPConfig struct {
+        URLString     string
+        URL           *url.URL
+        TransportType string
+}
+
+var config *HTTPConfig = &amp;HTTPConfig{
+        URLString:     "http://127.0.0.1:8086",
+        TransportType: "http",
+
+        //URLString: url.Parse("unix:///var/run/influxdb.sock")
+        //TransportType: "unix"
+}
+
+func Init(mode string) *InfluxDB <span class="cov8" title="1">{
+        if mode == "unix" </span><span class="cov8" title="1">{
+                config.URLString = "unix:///var/run/influxdb.sock"
+                config.TransportType = "unix"
+        }</span>
+        <span class="cov8" title="1">return &amp;InfluxDB{
+                CreateHTTPClient: func(config *HTTPConfig) (*http.Client, error) </span><span class="cov0" title="0">{
+                        return NewHTTPClient(config)
+                }</span>,
+        }
+}
+
+func NewHTTPClient(config *HTTPConfig) (*http.Client, error) <span class="cov8" title="1">{
+        var transport *http.Transport
+        config.URL, _ = url.Parse(config.URLString)
+        switch config.URL.Scheme </span>{
+        case "http":<span class="cov8" title="1">
+                transport = &amp;http.Transport{}
+                config.URL.Path = path.Join(config.URL.Path, "write")</span>
+        case "unix":<span class="cov8" title="1">
+                unixPath := config.URL.Path
+                unixScheme := config.URL.Scheme
+                transport = &amp;http.Transport{
+                        Dial: func(_, _ string) (net.Conn, error) </span><span class="cov8" title="1">{
+                                return net.DialTimeout(
+                                        unixScheme,
+                                        unixPath,
+                                        5*time.Second,
+                                )
+                        }</span>,
+                }
+                <span class="cov8" title="1">config.URL.Scheme = "http"
+                config.URL.Host = "127.0.0.1"
+                config.URL.Path = "/write"</span>
+        default:<span class="cov0" title="0">
+                return nil, fmt.Errorf("unsupported scheme %q", config.URL.Scheme)</span>
+        }
+
+        <span class="cov8" title="1">client := &amp;http.Client{
+                Timeout:   5 * time.Second,
+                Transport: transport,
+        }
+        return client, nil</span>
+}
+
+func (i *InfluxDB) Write(client *http.Client, bp client1.BatchPoints, ctx context.Context, config *HTTPConfig) error <span class="cov8" title="1">{
+        params := url.Values{}
+        params.Set("db", MyDB)
+        params.Set("rp", "")
+        params.Set("consistency", "one")
+        config.URL.RawQuery = params.Encode()
+        urlStr := config.URL.String()
+        var b bytes.Buffer
+        for _, p := range bp.Points </span><span class="cov8" title="1">{
+                err := checkPointTypes(p)
+                if err != nil </span><span class="cov8" title="1">{
+                        fmt.Println("CheckPoint Error: ", err)
+                        return err
+                }</span>
+                <span class="cov8" title="1">if p.Raw != "" </span><span class="cov0" title="0">{
+                        if _, err := b.WriteString(p.Raw); err != nil </span><span class="cov0" title="0">{
+                                fmt.Println("StringWriteError: ", err)
+                        }</span>
+                } else<span class="cov8" title="1"> {
+                        for k, v := range bp.Tags </span><span class="cov0" title="0">{
+                                if p.Tags == nil </span><span class="cov0" title="0">{
+                                        p.Tags = make(map[string]string, len(bp.Tags))
+                                }</span>
+                                <span class="cov0" title="0">p.Tags[k] = v</span>
+                        }
+
+                        <span class="cov8" title="1">if _, err := b.WriteString(p.MarshalString()); err != nil </span><span class="cov0" title="0">{
+                                fmt.Println("Non Raw StringWriteError: ", err)
+                        }</span>
+                }
+                <span class="cov8" title="1">if err := b.WriteByte('\n'); err != nil </span><span class="cov0" title="0">{
+                        fmt.Println("ByteWriteError: ", err)
+                }</span>
+        }
+        <span class="cov8" title="1">req, _ := http.NewRequest("POST", urlStr, &amp;b)
+        req.Header.Set("Content-Type", "text/plain; charset=utf-8")
+        start := time.Now()
+        fmt.Println("Writing Data to InfluxDB", time.Now())
+        resp, err := client.Do(req.WithContext(ctx))
+        fmt.Println("Wrote Data to InfluxDB: ", time.Now().Sub(start))
+        if resp.StatusCode != http.StatusOK &amp;&amp; resp.StatusCode != 204 &amp;&amp; resp.StatusCode != 200 </span><span class="cov8" title="1">{
+                return fmt.Errorf("Data Write Error")
+        }</span>
+        <span class="cov8" title="1">if err != nil </span><span class="cov0" title="0">{
+                fmt.Println(err)
+                return err
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+
+
+func WriteToDB(mode string, ctx context.Context, dataChan chan clientPoint) <span class="cov0" title="0">{
+        // Create a new HTTPClient
+        bufSize := 1
+        influxdb := Init(mode)
+        client, err := influxdb.CreateHTTPClient(config)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Cannot create connection")
+        }</span>
+
+        <span class="cov0" title="0">start := 0
+        bp := client1.BatchPoints{
+                Precision:        "ms",
+                WriteConsistency: "one",
+                RetentionPolicy:  "autogen",
+        }
+        for point := range dataChan </span><span class="cov0" title="0">{
+                pt := client1.Point{
+                        Measurement: point.measurement,
+                        Tags:        point.tags,
+                        Fields:      point.fields,
+                        Time:        time.Now()}
+                bp.Points = append(bp.Points, pt)
+                start = start + 1
+                if start &gt;= bufSize </span><span class="cov0" title="0">{
+                        start = 0
+                        influxdb.Write(client, bp, ctx, config)
+                        bp = client1.BatchPoints{
+                                Precision:        "ms",
+                                WriteConsistency: "one",
+                                RetentionPolicy:  "",
+                        }
+
+                }</span>
+        }
+}
+
+func checkPointTypes(p client1.Point) error <span class="cov8" title="1">{
+        for _, v := range p.Fields </span><span class="cov8" title="1">{
+                switch v.(type) </span>{
+                case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, float32, float64, bool, string, nil:<span class="cov8" title="1">
+                        return nil</span>
+                default:<span class="cov8" title="1">
+                        return fmt.Errorf("unsupported point type: %T", v)</span>
+                }
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package main
+
+import (
+        "context"
+        "fmt"
+        "os"
+        "os/signal"
+        "syscall"
+        "time"
+)
+
+const (
+        MyDB     = "telegraf"
+        username = ""
+        password = ""
+)
+
+type clientPoint struct {
+        fields      map[string]interface{}
+        tags        map[string]string
+        measurement string
+}
+
+type tailFields struct {
+        test string
+}
+
+func main() <span class="cov0" title="0">{
+        dataChan := make(chan clientPoint, 100)
+        ctx, cancel := context.WithCancel(context.Background())
+
+        //The following code is for capturing OS signals and to close the application
+        signals := make(chan os.Signal)
+        signal.Notify(signals, os.Interrupt, syscall.SIGHUP,
+                syscall.SIGTERM, syscall.SIGINT)
+        go func() </span><span class="cov0" title="0">{
+                &lt;-signals
+                fmt.Printf("Exit Signal received")
+                cancel()
+        }</span>()
+        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
+                startInputs(ctx, dataChan)
+                close(dataChan)
+        }</span>()
+        <span class="cov0" title="0">WriteToDB("unix", ctx, dataChan)</span>
+}
+
+func startInputs(ctx context.Context, dataChan chan clientPoint) <span class="cov8" title="1">{
+        defer fmt.Println("All inputs Closed")
+        go tailFile(ctx, false, "/tmp/air_result.json", dataChan)
+        go getCPUData(ctx, dataChan)
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-ctx.Done():<span class="cov8" title="1">
+                        time.Sleep(2 * time.Second)
+                        return</span>
+                default:<span class="cov0" title="0"></span>
+                }
+                <span class="cov0" title="0">time.Sleep(2 * time.Second)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package main
+
+import (
+        "context"
+        "encoding/json"
+        "fmt"
+        "github.com/hpcloud/tail"
+        "github.com/jeremywohl/flatten"
+        "os"
+        "regexp"
+)
+
+func tailFile(ctx context.Context, fromBeginning bool, name string, dataChan chan clientPoint) <span class="cov8" title="1">{
+        position := os.SEEK_SET
+        if !fromBeginning </span><span class="cov8" title="1">{
+                position = os.SEEK_END
+        }</span>
+        <span class="cov8" title="1">t, _ := tail.TailFile(name, tail.Config{Follow: true, Location: &amp;tail.SeekInfo{0, position}})
+        tags := map[string]string{}
+        defer fmt.Println("Closing Tail Input")
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-ctx.Done():<span class="cov8" title="1">
+                        t.Stop()
+                        return</span>
+                case line := &lt;-t.Lines:<span class="cov8" title="1">
+                        fields := map[string]interface{}{}
+                        UnderscoreStyle := flatten.SeparatorStyle{Middle: "_"}
+                        flat, err := flatten.FlattenString(line.Text, "", UnderscoreStyle)
+                        if err != nil </span><span class="cov8" title="1">{
+                                fmt.Println("Invalid JSON Format Encountered", err)
+                                continue</span>
+                        }
+                        <span class="cov8" title="1">json.Unmarshal([]byte(flat), &amp;fields)
+                        for key, element := range fields </span><span class="cov8" title="1">{
+                                match, _ := regexp.MatchString("_aid$", key)
+                                if match </span><span class="cov0" title="0">{
+                                        tags[key] = fmt.Sprintf("%v", element)
+                                        delete(fields, key)
+                                }</span>
+                        }
+                        //fmt.Println(fields)
+                        <span class="cov8" title="1">newPoint := clientPoint{
+                                fields:      fields,
+                                tags:        tags,
+                                measurement: "air_magent",
+                        }
+                        dataChan &lt;- newPoint</span>
+                }
+        }
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

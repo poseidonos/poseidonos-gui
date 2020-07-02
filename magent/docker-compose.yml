@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: '3.3'
+services:
+  magent:
+    restart: always
+    #image: tiangolo/uwsgi-nginx-flask:python3.7
+    image: golang:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-magent
+    volumes:
+      - ./:/app
+      - /tmp/air_result.json:/tmp/air_result.json
+      - /etc/ibofos:/etc/ibofos
+    ports:
+      - 8090:8090
+        #links:
+            #- influxdb
+    container_name: magent
+    environment:
+      - INFLUX_HOST=influxdb
+        #networks:
+        #- Jay
+        # depends_on: ['influxdb',]
+networks:
+  default:
+    external:
+      name: M9K

@@ -2,6 +2,7 @@ package magent
 
 import (
 	"a-module/routers/m9k/model"
+	"fmt"
 )
 
 type NetAddsField struct {
@@ -15,7 +16,7 @@ type NetAddsFields []NetAddsField
 func GetNetAddress(param interface{}) (model.Response, error) {
 	var res model.Response
 	fieldsList := make(NetAddsFields, 0)
-	result, err := ExecuteQuery(netAddQ)
+	result, err := ExecuteQuery(fmt.Sprintf(netAddQ, DBName))
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()

@@ -21,7 +21,7 @@ import (
 	"strconv"
 )
 
-// GetAirData fetches AIR data from influx db based on time parameter and returns the values and fields
+// GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
 func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]interface{}, []string, error) {
 	var query string
 	paramStruct := param.(model.MAgentParam)
@@ -91,10 +91,10 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 			currentValue["Time"] = val[0]
 			sum := 0.0
 			for _, aid := range aidArr {
-				if val[indexMap[aid]] != nil {
+				if _, ok := indexMap[aid]; ok && val[indexMap[aid]] != nil {
 					if idx, err := val[indexMap[aid]].(json.Number).Int64(); err == nil && idx == int64(volID) {
 						fieldKey := "mean" + aid[len(metrics):(len(aid)-len("aid"))] + metricOps
-						if val[indexMap[fieldKey]] != nil {
+						if _, ok = indexMap[fieldKey]; ok && val[indexMap[fieldKey]] != nil {
 							v, _ := val[indexMap[fieldKey]].(json.Number).Float64()
 							sum += v
 						}
