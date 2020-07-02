@@ -3,6 +3,7 @@ module a-module
 go 1.14
 
 require (
+	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/google/uuid v1.1.1
 	github.com/influxdata/influxdb v1.8.0
 	github.com/juju/errors v0.0.0-20200330140219-3fe23663418f
