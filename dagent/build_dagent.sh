@@ -3,6 +3,10 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
+cd ../a-module/util
+../bin/go-bindata -o resource.go  -pkg util ../resources/
+cd $ROOT_DIR
+
 rm -rf vendor/a-module
 cp -rf ../a-module ./vendor/
 

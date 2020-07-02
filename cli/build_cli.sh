@@ -26,6 +26,10 @@ else
 fi
 END
 
+cd ../a-module/util
+../bin/go-bindata -o resource.go  -pkg util ../resources/
+cd $ROOT_DIR
+
 if [ -d "../a-module" ]; then
 	rm -rf vendor/a-module
 	cp -rf ../a-module ./vendor/
