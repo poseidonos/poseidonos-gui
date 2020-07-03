@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"magent/src"
 	"os"
 	"os/signal"
 	"syscall"
@@ -57,17 +56,17 @@ func main() {
 	go func() {
 		startInputs(ctx, dataChan)
 	}()
-	src.WriteToDB(ctx, "http", dataChan)
+	WriteToDB(ctx, "http", dataChan)
 }
 
 func startInputs(ctx context.Context, dataChan chan ClientPoint) {
 	defer log.Println("All inputs Closed")
 	go tailFile(ctx, false, "/tmp/air_result.json", "json", "air", "default_rp", dataChan)
 	go tailFile(ctx, false, "/etc/ibofos/report/report.log", "text", "rebuilding_status", "autogen", dataChan)
-	go src.collectCPUData(ctx, dataChan)
-	go src.CollectMemoryData(ctx, dataChan)
-	go src.CollectDiskData(ctx, dataChan)
-	go src.CollectEthernetData(ctx, dataChan)
-	go src.CollectNetworkData(ctx, dataChan)
+	go collectCPUData(ctx, dataChan)
+	go CollectMemoryData(ctx, dataChan)
+	go CollectDiskData(ctx, dataChan)
+	go CollectEthernetData(ctx, dataChan)
+	go CollectNetworkData(ctx, dataChan)
 	<-ctx.Done()
 }
