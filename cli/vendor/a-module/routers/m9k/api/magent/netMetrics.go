@@ -34,12 +34,12 @@ func GetNetData(param interface{}) (model.Response, error) {
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(netAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(netAggRPQ, DBName, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(netDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(netDefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(netLastRecordQ, DefaultRP)
+		query = fmt.Sprintf(netLastRecordQ, DBName, DefaultRP)
 	}
 
 	result, err := ExecuteQuery(query)

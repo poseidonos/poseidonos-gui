@@ -1,9 +1,11 @@
-package main
+package src
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/stretchr/testify/assert"
+	"magent"
+
 	//"github.com/stretchr/testify/mock"
 	"sync"
 	"testing"
@@ -195,7 +197,7 @@ func TestCpuTimes(t *testing.T) {
 func TestGetCPUData(t *testing.T) {
 	magentCPU = magentCPUTest{}
 	var wg sync.WaitGroup
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan main.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	wg.Add(1)
 	go func() {

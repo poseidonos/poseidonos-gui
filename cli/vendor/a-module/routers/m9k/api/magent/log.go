@@ -19,11 +19,13 @@ import (
 	"fmt"
 )
 
+// LogsField defines the structure in which log data is returned
 type LogsField struct {
 	Time  string
 	Value string
 }
 
+// LogsFields is an array of LogsField
 type LogsFields []LogsField
 
 // GetRebuildLogs gets the logs from influxdb and returns a JSON response

@@ -8,17 +8,18 @@ NAME : net_test.go
 [5/28/2020] [aswin.kk]: Added code for testing fetched RNIC data
 */
 
-package main
+package src
 
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
+	"magent/src"
 	"testing"
 )
 
 // TestGetNetworkData tests if the data collected is from an RNIC
 func TestGetNetworkData(t *testing.T) {
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan src.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go CollectNetworkData(ctx, dataChan)
 	val := <-dataChan

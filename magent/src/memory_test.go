@@ -1,9 +1,10 @@
-package main
+package src
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/stretchr/testify/assert"
+	"magent/src"
 	"testing"
 )
 
@@ -51,7 +52,7 @@ var memError error
 
 func TestCollectMemoryData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan src.ClientPoint, 10)
 	magentMem = magentMemTest{}
 	go CollectMemoryData(ctx, dataChan)
 	data := <-dataChan

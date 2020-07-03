@@ -9,7 +9,7 @@ NAME : net.go
 
 */
 
-package main
+package src
 
 import (
 	"bytes"
@@ -17,6 +17,7 @@ import (
 	"github.com/shirou/gopsutil/net"
 	"io"
 	"log"
+	"magent/src"
 	"os/exec"
 	"strings"
 	"time"
@@ -86,7 +87,7 @@ func lsHW(pciList []string) map[string]bool {
 }
 
 // CollectNetworkData collects the network details and passes it to the channel
-func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
+func CollectNetworkData(ctx context.Context, dataChan chan src.ClientPoint) {
 	pcis := lsPCI()
 	portList := lsHW(pcis)
 	defer log.Println("Closing Network Output")
@@ -112,7 +113,7 @@ func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
 				tags := map[string]string{
 					"interface": counter.Name,
 				}
-				newPoint := ClientPoint{
+				newPoint := src.ClientPoint{
 					Fields:          fields,
 					Tags:            tags,
 					Measurement:     "net",
@@ -123,6 +124,6 @@ func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
 
 			}
 		}
-		time.Sleep(time.Duration(MAgentConfig.Interval) * time.Millisecond)
+		time.Sleep(time.Duration(src.MAgentConfig.Interval) * time.Millisecond)
 	}
 }

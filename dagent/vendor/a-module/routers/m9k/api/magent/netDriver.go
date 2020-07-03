@@ -2,6 +2,7 @@ package magent
 
 import (
 	"a-module/routers/m9k/model"
+	"fmt"
 )
 
 type NetDriverField struct {
@@ -11,11 +12,11 @@ type NetDriverField struct {
 
 type NetDriverFields []NetDriverField
 
-// Getting network driver names and retuning JSON resonse
+// Getting network driver names and retuning JSON response
 func GetNetDriver(param interface{}) (model.Response, error) {
 	var res model.Response
 	fieldsList := make(NetDriverFields, 0)
-	result, err := ExecuteQuery(netDriverQ)
+	result, err := ExecuteQuery(fmt.Sprintf(netDriverQ, DBName))
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()

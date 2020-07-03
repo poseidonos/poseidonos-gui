@@ -27,12 +27,12 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(memoryAggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(memoryAggRPQ, DBName, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(memoryDefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(memoryDefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 	} else {
-		query = fmt.Sprintf(memoryLastRecordQ, DefaultRP)
+		query = fmt.Sprintf(memoryLastRecordQ, DBName, DefaultRP)
 	}
 
 	result, err := ExecuteQuery(query)

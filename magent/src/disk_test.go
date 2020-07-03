@@ -1,10 +1,11 @@
-package main
+package src
 
 import (
 	"context"
 	"errors"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
+	"magent"
 	"testing"
 )
 
@@ -65,7 +66,7 @@ var (
 
 func TestCollectDiskData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan main.ClientPoint, 10)
 	magentDisk = magentDiskTest{}
 	go CollectDiskData(ctx, dataChan)
 	data := <-dataChan

@@ -12,13 +12,14 @@ NAME : eth.go
 
 */
 
-package main
+package src
 
 import (
 	"context"
 	"github.com/safchain/ethtool"
 	"github.com/shirou/gopsutil/net"
 	"log"
+	"magent"
 	"time"
 )
 
@@ -37,7 +38,7 @@ func (m MAgentEthernet) InterfacesInfo() ([]net.InterfaceStat, error) {
 var magentEthernet ethernetClient = MAgentEthernet{}
 
 // CollectEthernetData collects the Ethernet Information and writes to the channel passed
-func CollectEthernetData(ctx context.Context, dataChan chan ClientPoint) {
+func CollectEthernetData(ctx context.Context, dataChan chan main.ClientPoint) {
 	defer log.Println("Closing Ethernet Input")
 	ethHandle, err := ethtool.NewEthtool()
 	LocalTime := 1589467537002519008 //using static time becasue data is static
@@ -63,7 +64,7 @@ func CollectEthernetData(ctx context.Context, dataChan chan ClientPoint) {
 				"driver":  EthernetIDriver,
 			}
 			tags := map[string]string{"eth": "interface"}
-			newPoint := ClientPoint{
+			newPoint := main.ClientPoint{
 				Timestamp:       time.Unix(0, int64(LocalTime)),
 				Fields:          fields,
 				Tags:            tags,

@@ -1,4 +1,4 @@
-package main
+package src
 
 import (
 	"bytes"
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	client1 "github.com/influxdata/influxdb1-client"
 	"log"
+	"magent"
 	"net"
 	"net/http"
 	"net/url"
@@ -95,7 +96,7 @@ func NewHTTPClient(config *HTTPConfig) (*http.Client, error) {
 
 func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.BatchPoints, config *HTTPConfig) error {
 	params := url.Values{}
-	params.Set("db", MAgentDB)
+	params.Set("db", main.MAgentDB)
 	params.Set("rp", bp.RetentionPolicy)
 	params.Set("consistency", "one")
 	config.URL.RawQuery = params.Encode()
@@ -143,7 +144,7 @@ func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.Ba
 }
 
 // WriteToDB writes the data it receives in dataChan to InfluxDB
-func WriteToDB(ctx context.Context, mode string, dataChan chan ClientPoint) {
+func WriteToDB(ctx context.Context, mode string, dataChan chan main.ClientPoint) {
 	// Create a new HTTPClient
 	bufSize := 1
 	influxdb := Init(mode)
@@ -154,7 +155,7 @@ func WriteToDB(ctx context.Context, mode string, dataChan chan ClientPoint) {
 	writeToInfluxDB(ctx, dataChan, client, config, bufSize, influxdb)
 }
 
-func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *http.Client, config *HTTPConfig, bufSize int, influxdb *InfluxDB) {
+func writeToInfluxDB(ctx context.Context, dataChan chan main.ClientPoint, client *http.Client, config *HTTPConfig, bufSize int, influxdb *InfluxDB) {
 	start := 0
 	bp := client1.BatchPoints{
 		Precision:        "ms",
