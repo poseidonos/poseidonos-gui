@@ -4,10 +4,12 @@
 /dagent/dagent
 /dagent/test_sol.pe/result.xml
 dagent.exe
+/cli/bin/cli
+/tui/tui
+/tui/bin/tui
+/magent/bin/magent
+/magent/magent
 ibofos.log
 core
 VSAMap.0.bin
 StripeMap.bin
-/cli/bin/cli
-/tui/tui
-/tui/bin/tui
