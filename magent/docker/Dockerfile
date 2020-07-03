@@ -5,13 +5,13 @@ FROM golang:latest
 WORKDIR /app
 
 # Copy go mod and go sum files
-COPY go.mod go.sum ./
+COPY ../go.mod go.sum ./
 
 # Download dependencies
 RUN go mod download
 
 # Copy source from current directory to app directory inside container
-COPY . .
+COPY .. .
 
 # Download vendor dependencies
 RUN go mod vendor

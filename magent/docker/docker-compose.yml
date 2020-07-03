@@ -6,7 +6,7 @@ services:
     #image: tiangolo/uwsgi-nginx-flask:python3.7
     image: golang:latest
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile-magent
     volumes:
       - ./:/app
