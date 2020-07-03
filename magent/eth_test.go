@@ -10,18 +10,17 @@ NAME : eth.go
 
 */
 
-package src
+package main
 
 import (
 	"context"
-	"magent"
 	"testing"
 	"time"
 )
 
 func TestCollectEthernetData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan main.ClientPoint, 1)
+	dataChan := make(chan ClientPoint, 1)
 	go CollectEthernetData(ctx, dataChan)
 	go func() {
 		time.Sleep(5 * time.Second)

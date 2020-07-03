@@ -1,4 +1,4 @@
-package src
+package main
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	client1 "github.com/influxdata/influxdb1-client"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
-	"magent"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -88,7 +87,7 @@ func TestWriteToDBHTTP(t *testing.T) {
 	config.URL = u
 
 	//Should send an http request using http protocol with the points in the channel
-	clientPoint := main.ClientPoint{
+	clientPoint := ClientPoint{
 		Fields: map[string]interface{}{
 			"cpu": 10,
 		},
@@ -97,7 +96,7 @@ func TestWriteToDBHTTP(t *testing.T) {
 		RetentionPolicy: "autogen",
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan main.ClientPoint, 100)
+	dataChan := make(chan ClientPoint, 100)
 	dataChan <- clientPoint
 	go func() {
 		time.Sleep(1 * time.Second)
