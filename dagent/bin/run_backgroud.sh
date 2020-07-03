@@ -11,4 +11,3 @@ else
 	echo "Run Path : ${SCRIPT_PATH}"
 	echo "Log File : ${LOG_FILE}"
 fi
-

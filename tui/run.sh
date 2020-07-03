@@ -2,4 +2,4 @@
 
 ./build_tui.sh
 sudo pkill -9 tui
-./bin/tui
+sudo ./bin/tui

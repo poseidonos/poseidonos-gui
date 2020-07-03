@@ -2,4 +2,4 @@
 
 ./build_magent.sh
 pkill -9 magent
-./bin/magent
+sudo ./bin/magent
