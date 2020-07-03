@@ -11,7 +11,7 @@ then
   cd /tmp/
   chmod 666 ibofmgmt_package.tar.gz
   tar -xzvf ibofmgmt_package.tar.gz
-  cd /root/ibofmgmt_package/
+  cd ibofmgmt_package
   chmod 666 -R *
   echo "DONE"
   dpkg -s influxdb &>/dev/null

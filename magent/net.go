@@ -22,27 +22,10 @@ import (
 	"time"
 )
 
-type linuxClient interface {
-	executeCommand(args ...string) *cmd
-}
-
-type cmd struct {
-	*exec.Cmd
-}
-
-// MAgentLinuxClient implements linuxClient interface
-type MAgentLinuxClient struct{}
-
-func (m MAgentLinuxClient) executeCommand(name string, args ...string) *exec.Cmd {
-	return exec.Command(name, args...)
-}
-
-var magentLinuxClient = MAgentLinuxClient{}
-
 // lsPCI executes the lspci command and returns the data in a list
 func lsPCI() []string {
-	lspci := magentLinuxClient.executeCommand("lspci")
-	grep := magentLinuxClient.executeCommand("grep", "Mellanox")
+	lspci := exec.Command("lspci")
+	grep := exec.Command("grep", "Mellanox")
 	r, w := io.Pipe()
 	lspci.Stdout = w
 	grep.Stdin = r
@@ -70,7 +53,7 @@ func lsPCI() []string {
 
 // lsHW executes the lshw command and return the data in a map
 func lsHW(pciList []string) map[string]bool {
-	lshw, _ := magentLinuxClient.executeCommand("lshw", "-c", "network", "-businfo").Output()
+	lshw, _ := exec.Command("lshw", "-c", "network", "-businfo").Output()
 	hw := strings.Split(string(lshw), "\n")
 	portList := map[string]bool{}
 	for _, pci := range pciList {
