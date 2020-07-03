@@ -3,10 +3,10 @@ currdir=$(readlink -f $(dirname $0))
 cd $currdir
 parentdir="$(dirname "$currdir")"
 x=`systemctl is-active magent.service`
+
 if [ $x = "active" ]
 then
         echo MAgent service is already running!
-
 else
 	#create a soft link of the directory, to get the absolute path for starting the service
 	sudo service influxdb stop
@@ -27,7 +27,6 @@ else
 	sudo systemctl enable magent.service
 	sudo systemctl start magent
 
-
 	echo "Starting MAgent...."
 	sleep 8s
 	echo "Checking Status..."
@@ -35,8 +34,7 @@ else
 	x=`systemctl is-active magent.service`
 	if [ $x = "active" ]
 	then
-        	echo MAgent Service Started Succesfully
-
+  	echo MAgent Service Started Succesfully
 	else
 		sleep 90s
 		if [ $x = "active" ]
@@ -45,6 +43,5 @@ else
 		else
         		echo MAgent Service Failed to Start!
 		fi
-
 	fi
 fi
