@@ -5,7 +5,7 @@ import (
 	iBoFOS "a-module/routers/m9k/api/ibofos"
 	"a-module/routers/m9k/model"
 	"a-module/util"
-
+	"a-module/log"
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"
@@ -215,10 +215,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.DeviceParam{}
 
-		if cmd.PersistentFlags().Changed("name") {
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
 		}
-		if cmd.PersistentFlags().Changed("spare") {
+		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
 			param.Spare = spare[0]
 		}
 
@@ -241,7 +241,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			}
 			req, res, err = SystemCommand[command](xrId, param)
 		} else {
-			if cmd.PersistentFlags().Changed("level") {
+			if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
 				param := model.SystemParam{}
 				param.Level = level
 				req, res, err = SystemCommand[command](xrId, param)
@@ -263,13 +263,13 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 		param.Size = uint64(v)
 
-		if cmd.PersistentFlags().Changed("maxiops") {
+		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
 			param.Maxiops = maxiops
 		}
-		if cmd.PersistentFlags().Changed("maxbw") {
+		if cmd.PersistentFlags().Changed("maxbw") && maxbw > 0 {
 			param.Maxbw = maxbw
 		}
-		if cmd.PersistentFlags().Changed("newname") {
+		if cmd.PersistentFlags().Changed("newname") && len(newName) > 0 {
 			param.NewName = newName
 		}
 
@@ -312,16 +312,20 @@ func PrintReqRes(req model.Request, res model.Response) {
 		}
 
 		fmt.Println("\n\nResponse from Poseidon OS")
-		res.Result.Status, _ = util.GetStatusInfo(res.Result.Status.Code)
-		//util.ReturnEventsDets(&res.Result.Status)
-		fmt.Println("    Code         : ", res.Result.Status.Code)
-		fmt.Println("    Level        : ", res.Result.Status.Level)
-		fmt.Println("    Description  : ", res.Result.Status.Description)
-		fmt.Println("    Problem      : ", res.Result.Status.Problem)
-		fmt.Println("    Solution     : ", res.Result.Status.Solution)
-
-		//fmt.Println("    Code        : ", setting.StatusDesc(res.Result.Status.Code), "(", res.Result.Status.Code, ")")
-		//fmt.Println("    Description : ", res.Result.Status.Description)
+		result, err := util.GetStatusInfo(res.Result.Status.Code)
+		
+		if err == nil {
+			fmt.Println("    Code         : ", result.Code)
+			fmt.Println("    Level        : ", result.Level)
+			fmt.Println("    Description  : ", result.Description)
+			fmt.Println("    Problem      : ", result.Problem)
+			fmt.Println("    Solution     : ", result.Solution)
+		} else {
+			
+			fmt.Println("    Code        : ", res.Result.Status.Code)
+			fmt.Println("    Description : ", res.Result.Status.Description)
+			log.Infof("%v\n", err)
+		}
 
 		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
 

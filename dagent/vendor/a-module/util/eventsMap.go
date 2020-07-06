@@ -4,7 +4,7 @@ import (
 	"a-module/errors"
 	"a-module/log"
 	"a-module/routers/m9k/model"
-	"fmt"
+	_"fmt"
 	"gopkg.in/yaml.v2"
 )
 
@@ -63,23 +63,23 @@ func GetStatusInfo(code int) (model.Status, error) {
 	totMods := len(eventsmap.Modules)
 
 	for i := 0; i < totMods; i++ {
-		fmt.Println("codecode = ",code)
-		fmt.Println("count = ",eventsmap.Modules[i].Count)
-		fmt.Println("name = ",eventsmap.Modules[i].Name)
-		fmt.Println("eventsmap.Modules[i].Idstart = ",eventsmap.Modules[i].Idstart)
-		fmt.Println("eventsmap.Modules[i].Idend = ",eventsmap.Modules[i].Idend)
+		//fmt.Println("codecode = ",code)
+		//fmt.Println("count = ",eventsmap.Modules[i].Count)
+		//fmt.Println("name = ",eventsmap.Modules[i].Name)
+		//fmt.Println("eventsmap.Modules[i].Idstart = ",eventsmap.Modules[i].Idstart)
+		//fmt.Println("eventsmap.Modules[i].Idend = ",eventsmap.Modules[i].Idend)
 
-		fmt.Println("totMods = ",totMods)
+		//fmt.Println("totMods = ",totMods)
 
 		if code >= eventsmap.Modules[i].Idstart && code <= eventsmap.Modules[i].Idend {
 			totInfo := len(eventsmap.Modules[i].Info)
-			fmt.Println("totInfo = ", totInfo)
-			fmt.Println("ccccccccccccccccc = ", eventsmap.Modules[i].Name)
+			//fmt.Println("totInfo = ", totInfo)
+			//fmt.Println("ccccccccccccccccc = ", eventsmap.Modules[i].Name)
 
 
 			for j := 0; j < totInfo; j++ {
-				fmt.Println("eventsmap.Modules[i].Info[j].Code = ",eventsmap.Modules[i].Info[j].Code)
-				fmt.Println("Code = ", code)
+				//fmt.Println("eventsmap.Modules[i].Info[j].Code = ",eventsmap.Modules[i].Info[j].Code)
+				//fmt.Println("Code = ", code)
 				if eventsmap.Modules[i].Info[j].Code == code {
 					status.Module = eventsmap.Modules[i].Name
 					status.Description = eventsmap.Modules[i].Info[j].Message
@@ -94,6 +94,7 @@ func GetStatusInfo(code int) (model.Status, error) {
 	}
 
 	err := errors.New("there is no event info")
-	status.Description = err.Error()
+	//status.Description = err.Error()
+	
 	return status, err
 }

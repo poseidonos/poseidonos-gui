@@ -52,3 +52,36 @@ func TestGetCPUData(t *testing.T) {
 	}
 
 }
+
+func TestGetCPUDataError(t *testing.T) {
+	var tests = []struct {
+		input    model.MAgentParam
+		expected int
+		err      error
+	}{
+		{
+			input: model.MAgentParam{
+				Time: "115m", //incorrect param
+			},
+			expected: 500,
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
+				Time: "60d", //no data
+			},
+			expected: 500,
+			err:      nil,
+		},
+	}
+
+	IDBClient = mocks.MockInfluxClient{}
+	for _, test := range tests {
+		result, err := GetCPUData(test.input)
+		output := result.Result.Status.Code
+		if !reflect.DeepEqual(output, test.expected) || err != test.err {
+			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
+		}
+	}
+
+}

@@ -17,6 +17,7 @@ var TimeGroupsDefault = map[string]string{
 	"24h": "10m",
 	"7d":  "1h",
 	"30d": "6h",
+	"60d": "60d",
 }
 
 var (
