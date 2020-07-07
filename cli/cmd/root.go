@@ -51,7 +51,7 @@ func init() {
 		rootCmd.PersistentFlags().BoolVar(&isQuiet, "quiet", false, "set a quiet mode")
 	}
 
-	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip adddress like \"--ip 127.0.0.1\"")
+	rootCmd.PersistentFlags().StringVar(&ip, "ip", "", "set ip address like \"--ip 127.0.0.1\"")
 	rootCmd.PersistentFlags().StringVar(&port, "port", "", "set port number like \"--port 18716\"")
 }
 
