@@ -3,7 +3,6 @@ package routers
 import (
 	"dagent/src/routers/bmc"
 	"dagent/src/routers/m9k"
-	"dagent/src/routers/nbp"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,7 +14,6 @@ func InitRouter() *gin.Engine {
 
 	bmc.Route(router)
 	m9k.Route(router)
-	nbp.Route(router)
 
 	return router
 }
