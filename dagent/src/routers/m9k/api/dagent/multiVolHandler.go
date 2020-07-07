@@ -1,9 +1,9 @@
 package dagent
 
 import (
-	"a-module/log"
-	iBoFOS "a-module/routers/m9k/api/ibofos"
-	"a-module/routers/m9k/model"
+	"a-module/src/log"
+	iBoFOS "a-module/src/routers/m9k/api/ibofos"
+	"a-module/src/routers/m9k/model"
 	"bytes"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"

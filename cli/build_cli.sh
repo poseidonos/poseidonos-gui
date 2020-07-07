@@ -26,8 +26,8 @@ else
 fi
 END
 
-cd ../a-module/util
-../bin/go-bindata -o resource.go  -pkg util ../resources/
+cd ../a-module/bin
+./go-bindata -o resource.go  -pkg util ../resources/
 cd $ROOT_DIR
 
 if [ -d "../a-module" ]; then

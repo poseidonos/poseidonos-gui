@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	_ "a-module/routers/m9k/model"
+	_ "a-module/src/routers/m9k/model"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"

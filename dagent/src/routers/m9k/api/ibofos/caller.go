@@ -1,7 +1,7 @@
 package ibofos
 
 import (
-	"a-module/routers/m9k/model"
+	"a-module/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"dagent/src/routers/m9k/header"
 	"github.com/gin-gonic/gin"

@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"a-module/routers/m9k/model"
-	//"a-module/routers/m9k/model"
-	"a-module/util"
+	"a-module/src/routers/m9k/model"
+	//"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"dagent/src/routers/m9k/api"
 
 	//"dagent/src/routers/m9k/api"

@@ -3,8 +3,8 @@
 ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR
 
-cd ../a-module/util
-../bin/go-bindata -o resource.go  -pkg util ../resources/
+cd ../a-module/bin
+./go-bindata -o resource.go  -pkg util ../resources/
 cd $ROOT_DIR
 
 rm -rf vendor/a-module

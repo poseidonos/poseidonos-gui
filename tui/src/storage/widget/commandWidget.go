@@ -1,8 +1,8 @@
 package widget
 
 import (
-	iBoFOS "a-module/routers/m9k/api/ibofos"
-	"a-module/routers/m9k/model"
+	iBoFOS "a-module/src/routers/m9k/api/ibofos"
+	"a-module/src/routers/m9k/model"
 	"encoding/json"
 	"fmt"
 	"github.com/gizak/termui/v3"

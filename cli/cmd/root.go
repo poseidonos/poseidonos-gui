@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"a-module/log"
-	"a-module/setting"
+	"a-module/src/log"
+	"a-module/src/setting"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"

@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"a-module/errors"
-	iBoFOS "a-module/routers/m9k/api/ibofos"
-	"a-module/routers/m9k/model"
-	"a-module/util"
-	"a-module/log"
+	"a-module/src/errors"
+	iBoFOS "a-module/src/routers/m9k/api/ibofos"
+	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
+	"a-module/src/log"
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"a-module/log"
-	"a-module/setting"
-	"a-module/util"
+	"a-module/src/log"
+	"a-module/src/setting"
+	"a-module/src/util"
 	"context"
 	"dagent/src/routers"
 	"dagent/src/routers/m9k/api/dagent"

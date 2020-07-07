@@ -1,8 +1,8 @@
 package dagent
 
 import (
-	"a-module/routers/m9k/model"
-	"a-module/setting"
+	"a-module/src/routers/m9k/model"
+	"a-module/src/setting"
 	"bytes"
 	"dagent/src/routers"
 	"encoding/json"
