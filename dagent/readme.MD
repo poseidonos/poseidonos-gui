@@ -1,6 +1,6 @@
 # Demon Agent
 
-*  This app provides RESTFul APIs to contorl iBoF System (iBoFOS, BMC ...)
+*  This app provides RESTFul APIs to contorl iBoF System (POS, BMC ...)
 
 ***
 
@@ -10,11 +10,11 @@
 ***
 
 ## Pre Requirement
-#### iBoFOS
-* The iBoFOS should be installed
+#### POS
+* The POS should be installed
 
 #### M-Tool
-* D-Agent uses the same user DB as M-Tool. Therefore, the M-Tool (or mongodb) should be installed. 
+* D-Agent uses the same user DB as M-Tool. Therefore, the M-Tool (or sqlite) should be installed. 
 
 #### Config File
 * config.yaml file should be in the same location as the executable file.
@@ -48,14 +48,14 @@ server:
 * It does not need any dependency pkg after compiling.
 ```shell script
 $ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git m9k
-$ cd m9k/DAgent
-$ ./build_dagent # It will also generate api documentation
+$ cd m9k/dagent
+$ ./script/build_dagent # It will also generate api documentation
 ```
 #### Run
 ```shell script
-$ sudo ./bin/DAgent # General Run
+$ sudo ./bin/dagent # General Run
 # Or
-$ sudo ./bin/run_dagent.sh # Background Run 
+$ sudo ./script/run_dagent.sh # Background Run 
 ```
 
 ***
@@ -64,12 +64,12 @@ $ sudo ./bin/run_dagent.sh # Background Run
 #### Postman
 1. Install Postman
 2. Import Collection in postman folder
-3. Import envirments in postman folder
-4. Call FORCEKILLIBOFOS
-    : To kill current iBoFOS  
-5. Call RUNIBOFOS 
-    : it exec "run_ibofos.sh"
-6. Test
+3. Import Envirments in postman folder
+4. Call FORCEKILLIBOFOS  
+    : It exec "pkill -9 ibofos"  
+5. Call RUNIBOFOS   
+    : It exec "run_remote_ibofos.sh"
+6. Call APIs to Test
 
 #### API Spec HTML & Markdown
 There are two type documentations; api.html and api.MD
