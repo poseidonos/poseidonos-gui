@@ -1,13 +1,14 @@
 #!/bin/bash
 
 ROOT_DIR=$(readlink -f $(dirname $0))/
-cd $ROOT_DIR
 
-cd ../a-module/bin
+cd $ROOT_DIR
+cd ../../a-module/bin
 ./go-bindata -o resource.go  -pkg util ../resources/
-cd $ROOT_DIR
 
-rm -rf vendor/a-module
+cd $ROOT_DIR
+cd ..
+rm -rf ./vendor/a-module
 cp -rf ../a-module ./vendor/
 
 export GIT_COMMIT_DAGENT=$(git rev-list -1 HEAD)
