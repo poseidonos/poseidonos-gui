@@ -1,12 +1,12 @@
 #!/bin/bash
 
-ROOT_DIR=$(readlink -f $(dirname $0))/
+SCRIPT_PATH=$(readlink -f $(dirname $0))/
 
-cd $ROOT_DIR
+cd $SCRIPT_PATH
 cd ../../a-module/bin
 ./go-bindata -o resource.go  -pkg util ../resources/
 
-cd $ROOT_DIR
+cd $SCRIPT_PATH
 cd ..
 rm -rf ./vendor/a-module
 cp -rf ../a-module ./vendor/

@@ -1,5 +1,5 @@
 #!/bin/bash
 ./cli/build_cli.sh
-./dagent/build_dagent.sh
-./tui/build_tui.sh
-./magent/build_magent.sh
+./dagent/script/build_dagent.sh
+./tui/script/build_tui.sh
+./magent/script/build_magent.sh
