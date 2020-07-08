@@ -25,7 +25,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 	res := model.Response{}
 
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	cmd := fmt.Sprintf("/run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
+	cmd := fmt.Sprintf("/../script/run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
 	err := util.ExecCmd(path+cmd, false)
 
 	if err != nil {
