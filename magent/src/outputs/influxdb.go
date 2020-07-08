@@ -1,4 +1,4 @@
-package main
+package outputs
 
 import (
 	"bytes"
@@ -12,6 +12,8 @@ import (
 	"os"
 	"path"
 	"time"
+	"magent/src/models"
+	"magent/src/config"
 )
 
 var ip = "127.0.0.1"
@@ -24,7 +26,7 @@ type InfluxDB struct {
 	WriteConsistency string
 	RetentionPolicy  string
 	Client           *http.Client
-	CreateHTTPClient func(config *HTTPConfig) (*http.Client, error)
+	CreateHTTPClient func(dbConfig *HTTPConfig) (*http.Client, error)
 }
 
 // HTTPConfig maintains the data for http connection
@@ -34,7 +36,7 @@ type HTTPConfig struct {
 	TransportType string
 }
 
-var config = &HTTPConfig{
+var dbConfig = &HTTPConfig{
 	URLString:     "http://" + ip + ":8086",
 	TransportType: "http",
 
@@ -42,34 +44,33 @@ var config = &HTTPConfig{
 	//TransportType: "unix"
 }
 
-// Init initializes inlfuxdb configuration
+// Init initializes inlfuxdb dbConfiguration
 func Init(mode string) *InfluxDB {
 	if mode == "unix" {
-		config.URLString = "unix:///var/run/influxdb.sock"
-		config.TransportType = "unix"
+		dbConfig.URLString = "unix:///var/run/influxdb.sock"
+		dbConfig.TransportType = "unix"
 	}
 	if ip, ok = os.LookupEnv("INFLUX_HOST"); !ok {
 		ip = "127.0.0.1"
 	}
 	return &InfluxDB{
-		CreateHTTPClient: func(config *HTTPConfig) (*http.Client, error) {
-			config.URLString = "http://" + ip + ":8086"
-			return NewHTTPClient(config)
+		CreateHTTPClient: func(dbConfig *HTTPConfig) (*http.Client, error) {
+			return NewHTTPClient(dbConfig)
 		},
 	}
 }
 
-// NewHTTPClient creates an HTTP client based on the configuration
-func NewHTTPClient(config *HTTPConfig) (*http.Client, error) {
+// NewHTTPClient creates an HTTP client based on the dbConfiguration
+func NewHTTPClient(dbConfig *HTTPConfig) (*http.Client, error) {
 	var transport *http.Transport
-	config.URL, _ = url.Parse(config.URLString)
-	switch config.URL.Scheme {
+	dbConfig.URL, _ = url.Parse(dbConfig.URLString)
+	switch dbConfig.URL.Scheme {
 	case "http":
 		transport = &http.Transport{}
-		config.URL.Path = path.Join(config.URL.Path, "write")
+		dbConfig.URL.Path = path.Join(dbConfig.URL.Path, "write")
 	case "unix":
-		unixPath := config.URL.Path
-		unixScheme := config.URL.Scheme
+		unixPath := dbConfig.URL.Path
+		unixScheme := dbConfig.URL.Scheme
 		transport = &http.Transport{
 			Dial: func(_, _ string) (net.Conn, error) {
 				return net.DialTimeout(
@@ -79,11 +80,11 @@ func NewHTTPClient(config *HTTPConfig) (*http.Client, error) {
 				)
 			},
 		}
-		config.URL.Scheme = "http"
-		config.URL.Host = ip
-		config.URL.Path = "/write"
+		dbConfig.URL.Scheme = "http"
+		dbConfig.URL.Host = ip
+		dbConfig.URL.Path = "/write"
 	default:
-		return nil, fmt.Errorf("unsupported scheme %q", config.URL.Scheme)
+		return nil, fmt.Errorf("unsupported scheme %q", dbConfig.URL.Scheme)
 	}
 
 	client := &http.Client{
@@ -93,13 +94,13 @@ func NewHTTPClient(config *HTTPConfig) (*http.Client, error) {
 	return client, nil
 }
 
-func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.BatchPoints, config *HTTPConfig) error {
+func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.BatchPoints, dbConfig *HTTPConfig) error {
 	params := url.Values{}
-	params.Set("db", MAgentDB)
+	params.Set("db", config.MAgentDB)
 	params.Set("rp", bp.RetentionPolicy)
 	params.Set("consistency", "one")
-	config.URL.RawQuery = params.Encode()
-	urlStr := config.URL.String()
+	dbConfig.URL.RawQuery = params.Encode()
+	urlStr := dbConfig.URL.String()
 	var b bytes.Buffer
 	for _, p := range bp.Points {
 		err := checkPointTypes(p)
@@ -143,18 +144,18 @@ func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.Ba
 }
 
 // WriteToDB writes the data it receives in dataChan to InfluxDB
-func WriteToDB(ctx context.Context, mode string, dataChan chan ClientPoint) {
+func WriteToDB(ctx context.Context, mode string, dataChan chan models.ClientPoint) {
 	// Create a new HTTPClient
 	bufSize := 1
 	influxdb := Init(mode)
-	client, err := influxdb.CreateHTTPClient(config)
+	client, err := influxdb.CreateHTTPClient(dbConfig)
 	if err != nil {
 		log.Fatal("Cannot create connection")
 	}
-	writeToInfluxDB(ctx, dataChan, client, config, bufSize, influxdb)
+	writeToInfluxDB(ctx, dataChan, client, dbConfig, bufSize, influxdb)
 }
 
-func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *http.Client, config *HTTPConfig, bufSize int, influxdb *InfluxDB) {
+func writeToInfluxDB(ctx context.Context, dataChan chan models.ClientPoint, client *http.Client, dbConfig *HTTPConfig, bufSize int, influxdb *InfluxDB) {
 	start := 0
 	bp := client1.BatchPoints{
 		Precision:        "ms",
@@ -169,6 +170,7 @@ func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *htt
 			if pointTime.IsZero() {
 				pointTime = time.Now()
 			}
+			point.Fields["unixTimestamp"] = pointTime.UnixNano()
 			pt := client1.Point{
 				Measurement: point.Measurement,
 				Tags:        point.Tags,
@@ -179,7 +181,7 @@ func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *htt
 			start = start + 1
 			if start >= bufSize {
 				start = 0
-				err := influxdb.Write(ctxBg, client, bp, config)
+				err := influxdb.Write(ctxBg, client, bp, dbConfig)
 				if err != nil {
 					log.Println(err)
 				}
@@ -192,7 +194,7 @@ func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *htt
 			}
 		case <-ticker.C:
 			if len(bp.Points) > 0 {
-				err := influxdb.Write(ctxBg, client, bp, config)
+				err := influxdb.Write(ctxBg, client, bp, dbConfig)
 				if err != nil {
 					log.Println(err)
 				}
@@ -206,7 +208,7 @@ func writeToInfluxDB(ctx context.Context, dataChan chan ClientPoint, client *htt
 		case <-ctx.Done():
 			log.Println("Writing Data remaining in buffer to DB ...")
 			if len(bp.Points) > 0 {
-				err := influxdb.Write(ctxBg, client, bp, config)
+				err := influxdb.Write(ctxBg, client, bp, dbConfig)
 				if err != nil {
 					log.Println(err)
 				}

@@ -1,10 +1,12 @@
-package main
+package inputs
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/disk"
 	"log"
 	"time"
+	"magent/src/models"
+	"magent/src/config"
 )
 
 type diskClient interface {
@@ -28,7 +30,7 @@ func (d MAgentDisk) Usage(path string) (*disk.UsageStat, error) {
 var magentDisk diskClient = MAgentDisk{}
 
 //CollectDiskData collects the Disk Information Periodically and writes to the channel passed
-func CollectDiskData(ctx context.Context, dataChan chan ClientPoint) {
+func CollectDiskData(ctx context.Context, dataChan chan models.ClientPoint) {
 	defer log.Println("Closing Disk Input")
 	for {
 		select {
@@ -44,6 +46,7 @@ func CollectDiskData(ctx context.Context, dataChan chan ClientPoint) {
 			du, err := magentDisk.Usage(d.Mountpoint)
 			if err != nil {
 				log.Println("Error while fetching Disk Usage", err)
+				continue
 			}
 			tags := map[string]string{
 				"path":   du.Path,
@@ -58,7 +61,7 @@ func CollectDiskData(ctx context.Context, dataChan chan ClientPoint) {
 				"inodes_used":  int(du.InodesUsed),
 			}
 
-			newPoint := ClientPoint{
+			newPoint := models.ClientPoint{
 				Fields:          fields,
 				Tags:            tags,
 				Measurement:     "disk",
@@ -66,6 +69,6 @@ func CollectDiskData(ctx context.Context, dataChan chan ClientPoint) {
 			}
 			dataChan <- newPoint
 		}
-		time.Sleep(time.Duration(MAgentConfig.Interval) * time.Millisecond)
+		time.Sleep(time.Duration(config.MAgentConfig.Interval) * time.Millisecond)
 	}
 }

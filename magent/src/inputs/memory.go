@@ -1,10 +1,12 @@
-package main
+package inputs
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/mem"
 	"log"
 	"time"
+	"magent/src/models"
+	"magent/src/config"
 )
 
 type memClient interface {
@@ -23,7 +25,7 @@ var magentMem memClient = MAgentMem{}
 
 // CollectMemoryData collects the memory details periodically
 //and writes the data to the passed channel
-func CollectMemoryData(ctx context.Context, dataChan chan ClientPoint) {
+func CollectMemoryData(ctx context.Context, dataChan chan models.ClientPoint) {
 	defer log.Println("Closing Memory Input")
 	for {
 		select {
@@ -73,13 +75,13 @@ func CollectMemoryData(ctx context.Context, dataChan chan ClientPoint) {
 				"write_back_tmp":     int(memStat.WritebackTmp),
 			}
 
-			newPoint := ClientPoint{
+			newPoint := models.ClientPoint{
 				Fields:          fields,
 				Measurement:     "mem",
 				RetentionPolicy: "default_rp",
 			}
 			dataChan <- newPoint
 		}
-		time.Sleep(time.Duration(MAgentConfig.Interval) * time.Millisecond)
+		time.Sleep(time.Duration(config.MAgentConfig.Interval) * time.Millisecond)
 	}
 }

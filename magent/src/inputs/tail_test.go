@@ -1,4 +1,4 @@
-package main
+package inputs
 
 import (
 	"context"
@@ -9,10 +9,11 @@ import (
 	"os"
 	"testing"
 	"time"
+	"magent/src/models"
 )
 
 //Should start reading from the beginning of the file
-//This function creates temporary test file and calls the tailFile function
+//This function creates temporary test file and calls the TailFile function
 //It verifies if the whole data in the file is passed to the channel
 func TestTailFileFromBeginning(t *testing.T) {
 	tmpFile, err := ioutil.TempFile("", "test*.json")
@@ -30,11 +31,11 @@ func TestTailFileFromBeginning(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
-	testDataChan := make(chan ClientPoint, 10)
+	testDataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
 		//Write metric obtained by tailing file to data channel
-		tailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
+		TailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
 	}()
 	data = append(data, "{\"field1\": 50, \"field2\": 60}\n")
 	if _, err := tmpFile.WriteString(data[2]); err != nil {
@@ -51,7 +52,7 @@ func TestTailFileFromBeginning(t *testing.T) {
 }
 
 //Should start reading from the end of the file
-//This function creates temporary test file and calls the tailFile function
+//This function creates temporary test file and calls the TailFile function
 //It verifies if only the appended data in the file is passed to the channel
 func TestTailFileEnd(t *testing.T) {
 	tmpFile, err := ioutil.TempFile("", "test*.json")
@@ -69,10 +70,10 @@ func TestTailFileEnd(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
-	testDataChan := make(chan ClientPoint, 10)
+	testDataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
-		tailFile(ctx, false, tmpFile.Name(), "json", "", "", testDataChan)
+		TailFile(ctx, false, tmpFile.Name(), "json", "", "", testDataChan)
 	}()
 	time.Sleep(2 * time.Second)
 	line := "{\"field1\": 50, \"field2\": 60}\n"
@@ -88,7 +89,7 @@ func TestTailFileEnd(t *testing.T) {
 }
 
 //Should convert nested JSON to line protocol
-//This function creates temporary test file and calls the tailFile function
+//This function creates temporary test file and calls the TailFile function
 //It verifies if the nested JSON format is conerted to line protocol and passed to the channel
 func TestTailFileNested(t *testing.T) {
 	tmpFile, err := ioutil.TempFile("", "test*.json")
@@ -98,18 +99,18 @@ func TestTailFileNested(t *testing.T) {
 	defer os.Remove(tmpFile.Name())
 	defer tmpFile.Close()
 	data := []string{
-		"{\"field1\": 20, \"field2\": 30, \"field3\": [{\"f\": 40}]}\n",
+		"{\"field1\": 20, \"field2\": 30, \"field3\": [{\"f\": 40}], \"field4\": \"test\", \"field5\": true, \"field6\": null}\n",
 	}
-	line := "{\"field1\": 20, \"field2\": 30, \"field3_0_f\": 40}\n"
+	line := "{\"field1\": 20, \"field2\": 30, \"field3_0_f\": 40, \"field4\": \"test\", \"field5\": true}\n"
 	for _, line := range data {
 		if _, err := tmpFile.WriteString(line); err != nil {
 			require.NoError(t, err)
 		}
 	}
-	testDataChan := make(chan ClientPoint, 10)
+	testDataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
-		tailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
+		TailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
 	}()
 	fields := map[string]interface{}{}
 	str := <-testDataChan
@@ -120,7 +121,7 @@ func TestTailFileNested(t *testing.T) {
 }
 
 //Should write plain text to DB
-//This function creates temporary test file and calls the tailFile function
+//This function creates temporary test file and calls the TailFile function
 //It verifies if the plain text in the file is passed to the channel
 func TestTailFileText(t *testing.T) {
 	tmpFile, err := ioutil.TempFile("", "test*.txt")
@@ -138,10 +139,10 @@ func TestTailFileText(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
-	testDataChan := make(chan ClientPoint, 10)
+	testDataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
-		tailFile(ctx, true, tmpFile.Name(), "text", "", "", testDataChan)
+		TailFile(ctx, true, tmpFile.Name(), "text", "", "", testDataChan)
 	}()
 	fields := map[string]interface{}{}
 	str := <-testDataChan
@@ -153,7 +154,7 @@ func TestTailFileText(t *testing.T) {
 }
 
 //Should not write metric if data obtained from tail file is not in proper JSON format
-//This function creates temporary test file and calls the tailFile function
+//This function creates temporary test file and calls the TailFile function
 //It verifies if invalid JSON data in the file is not passed to the channel
 func TestTailFileInvalid(t *testing.T) {
 	tmpFile, err := ioutil.TempFile("", "test*.json")
@@ -163,7 +164,7 @@ func TestTailFileInvalid(t *testing.T) {
 	defer os.Remove(tmpFile.Name())
 	defer tmpFile.Close()
 	data := []string{
-		"{\"field1\": 20, \"field2\": 30}\n",
+		"{\"field1\": 20, \"field2\": \"3\"0}\n",
 		"{\"field1\": 40, \"field2\": 50\n",
 	}
 	for _, line := range data {
@@ -171,12 +172,12 @@ func TestTailFileInvalid(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
-	testDataChan := make(chan ClientPoint, 10)
+	testDataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
-		tailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
+		TailFile(ctx, true, tmpFile.Name(), "json", "", "", testDataChan)
 	}()
-	<-testDataChan
+	time.Sleep(2 * time.Second)
 	assert.Equal(t, len(testDataChan), 0)
 	close(testDataChan)
 	cancel()

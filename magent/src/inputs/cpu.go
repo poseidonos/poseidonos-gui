@@ -1,10 +1,11 @@
-package main
+package inputs
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/cpu"
 	"log"
 	"time"
+	"magent/src/models"
 )
 
 type cpuClient interface {
@@ -21,7 +22,8 @@ func (m MAgentCPU) Times(percpu bool) ([]cpu.TimesStat, error) {
 
 var magentCPU cpuClient = MAgentCPU{}
 
-func collectCPUData(ctx context.Context, dataChan chan ClientPoint) {
+// CollectCPUData collects the CPU User Usage and passes on to the channel
+func CollectCPUData(ctx context.Context, dataChan chan models.ClientPoint) {
 	defer log.Println("Closing CPU Input")
 	for {
 		select {
@@ -59,7 +61,7 @@ func collectCPUData(ctx context.Context, dataChan chan ClientPoint) {
 				fields["usage_user"] = 100 * (cts.User - lastCts.User - (cts.Guest - lastCts.Guest)) / totalDelta
 			}
 		}
-		newPoint := ClientPoint{
+		newPoint := models.ClientPoint{
 			Fields:          fields,
 			Tags:            tags,
 			Measurement:     "cpu",

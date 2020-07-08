@@ -9,7 +9,7 @@ NAME : net.go
 
 */
 
-package main
+package inputs
 
 import (
 	"bytes"
@@ -20,6 +20,8 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+	"magent/src/models"
+	"magent/src/config"
 )
 
 // lsPCI executes the lspci command and returns the data in a list
@@ -69,7 +71,7 @@ func lsHW(pciList []string) map[string]bool {
 }
 
 // CollectNetworkData collects the network details and passes it to the channel
-func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
+func CollectNetworkData(ctx context.Context, dataChan chan models.ClientPoint) {
 	pcis := lsPCI()
 	portList := lsHW(pcis)
 	defer log.Println("Closing Network Output")
@@ -95,7 +97,7 @@ func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
 				tags := map[string]string{
 					"interface": counter.Name,
 				}
-				newPoint := ClientPoint{
+				newPoint := models.ClientPoint{
 					Fields:          fields,
 					Tags:            tags,
 					Measurement:     "net",
@@ -106,6 +108,6 @@ func CollectNetworkData(ctx context.Context, dataChan chan ClientPoint) {
 
 			}
 		}
-		time.Sleep(time.Duration(MAgentConfig.Interval) * time.Millisecond)
+		time.Sleep(time.Duration(config.MAgentConfig.Interval) * time.Millisecond)
 	}
 }

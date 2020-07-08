@@ -1,13 +1,14 @@
-package main
+package inputs
 
 import (
 	"context"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/stretchr/testify/assert"
-	//"github.com/stretchr/testify/mock"
 	"sync"
+	"errors"
 	"testing"
 	"time"
+	"magent/src/models"
 )
 
 type magentCPUTest struct {
@@ -62,7 +63,9 @@ func (m magentCPUTest) Times(percpu bool) ([]cpu.TimesStat, error) {
 				GuestNice: 0.0,
 			}}, nil
 		}
-	case 5, 6, 9, 10:
+	case 5, 6:
+		return nil, errors.New("Fetching Error")
+	case 7, 8, 11, 12:
 		if percpu == false {
 			return []cpu.TimesStat{{
 				CPU:       "cpu-total",
@@ -93,7 +96,7 @@ func (m magentCPUTest) Times(percpu bool) ([]cpu.TimesStat, error) {
 				GuestNice: 0.324,
 			}}, nil
 		}
-	case 7, 8, 11, 12:
+	case 9, 10, 13, 14:
 		if percpu == false {
 			return []cpu.TimesStat{{
 				CPU:       "cpu-total",
@@ -188,19 +191,23 @@ func TestCpuTimes(t *testing.T) {
 	//Get total CPU times
 	times, _ = cpuTimes(magentCPU, false, true)
 	assert.Len(t, times, 1)
+
+	//Test error cases
+	times, _ = cpuTimes(magentCPU, true, true)
+	times, _ = cpuTimes(magentCPU, false, true)
 }
 
 //Write CPU Times to output data channel
-//This function tests the collectCPUData function and verifies if the collectCPUData outputs the correct cpu information to the passed channel
+//This function tests the CollectCPUData function and verifies if the CollectCPUData outputs the correct cpu information to the passed channel
 func TestGetCPUData(t *testing.T) {
 	magentCPU = magentCPUTest{}
 	var wg sync.WaitGroup
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		collectCPUData(ctx, dataChan)
+		CollectCPUData(ctx, dataChan)
 	}()
 	go func() {
 		for data := range dataChan {

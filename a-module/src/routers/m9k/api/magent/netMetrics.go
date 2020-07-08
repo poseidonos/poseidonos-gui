@@ -7,7 +7,7 @@ import (
 )
 
 type NetField struct {
-	Time        string
+	Time        json.Number
 	BytesRecv   json.Number
 	BytesSent   json.Number
 	DropIn      json.Number
@@ -31,6 +31,7 @@ func GetNetData(param interface{}) (model.Response, error) {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = errEndPoint.Error()
+			res.Result.Status.Code = 500
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -50,13 +51,14 @@ func GetNetData(param interface{}) (model.Response, error) {
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
+		res.Result.Status.Code = 500
 		res.Result.Status.Description = errData.Error()
 		return res, nil
 	}
 
 	for _, values := range result[0].Series[0].Values {
 		if values[1] != nil {
-			fieldsList = append(fieldsList, NetField{values[0].(string), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
+			fieldsList = append(fieldsList, NetField{values[0].(json.Number), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
 		}
 	}
 

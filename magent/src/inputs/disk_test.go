@@ -1,4 +1,4 @@
-package main
+package inputs
 
 import (
 	"context"
@@ -6,6 +6,8 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
+	"magent/src/models"
 )
 
 type magentDiskTest struct{}
@@ -23,6 +25,16 @@ func (d magentDiskTest) Usage(path string) (*disk.UsageStat, error) {
 	return nil, errors.New("Invalid Mount Path")
 }
 
+type magentDiskTestErr struct{}
+
+func (d magentDiskTestErr) Partitions(all bool) ([]disk.PartitionStat, error) {
+        return nil, errors.New("Fetch Partition Error")
+}
+
+func (d magentDiskTestErr) Usage(path string) (*disk.UsageStat, error) {
+        return nil, errors.New("Invalid Mount Path")
+}
+
 var (
 	partitions []disk.PartitionStat = []disk.PartitionStat{
 		{
@@ -37,6 +49,12 @@ var (
 			Fstype:     "ext4",
 			Opts:       "rw,noatime,nodiratime,errors=remount-ro",
 		},
+                {
+                        Device:     "/dev/sda",
+                        Mountpoint: "/err",
+                        Fstype:     "ext4",
+                        Opts:       "ro,noatime,nodiratime",
+                },
 	}
 	usage = []disk.UsageStat{
 		{
@@ -65,7 +83,7 @@ var (
 
 func TestCollectDiskData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan ClientPoint, 10)
+	dataChan := make(chan models.ClientPoint, 10)
 	magentDisk = magentDiskTest{}
 	go CollectDiskData(ctx, dataChan)
 	data := <-dataChan
@@ -74,5 +92,16 @@ func TestCollectDiskData(t *testing.T) {
 	data = <-dataChan
 	assert.Equal(t, "/home", data.Tags["path"])
 	assert.Equal(t, int(256), data.Fields["total"])
+	data = <-dataChan
+	assert.NotEqual(t, "/err", data.Tags["Path"])
 	cancel()
+
+	//Testing the error scenario
+	ctxErr, cancelErr := context.WithCancel(context.Background())
+	magentDisk = magentDiskTestErr{}
+	dataChanErr := make(chan models.ClientPoint, 10)
+	go CollectDiskData(ctxErr, dataChanErr)
+	time.Sleep(2 * time.Second)
+        assert.Equal(t, len(dataChanErr), 0)
+	cancelErr()
 }

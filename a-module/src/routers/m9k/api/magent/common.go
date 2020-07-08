@@ -15,8 +15,9 @@ func ExecuteQuery(query string) ([]client.Result, error) {
 	}
 
 	queryObject := client.Query{
-		Command:  query,
-		Database: DBName,
+		Command:   query,
+		Database:  DBName,
+		Precision: "ns",
 	}
 
 	if response, err := dbClient.Query(queryObject); err == nil {

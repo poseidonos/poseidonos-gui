@@ -1,4 +1,4 @@
-package main
+package inputs
 
 import (
 	"context"
@@ -7,9 +7,12 @@ import (
 	"log"
 	"os"
 	"strings"
+	"magent/src/models"
+	"magent/src/util"
 )
 
-func tailFile(ctx context.Context, fromBeginning bool, name string, format string, measurement string, rp string, dataChan chan ClientPoint) {
+// TailFile watches a file for changes and will send the changes to the channel
+func TailFile(ctx context.Context, fromBeginning bool, name string, format string, measurement string, rp string, dataChan chan models.ClientPoint) {
 	position := io.SeekStart
 	if !fromBeginning {
 		position = io.SeekEnd
@@ -40,7 +43,7 @@ func tailFile(ctx context.Context, fromBeginning bool, name string, format strin
 				fields["value"] = line.Text
 				fields["host"], _ = os.Hostname()
 			}
-			newPoint := ClientPoint{
+			newPoint := models.ClientPoint{
 				Fields:          fields,
 				Tags:            tags,
 				Measurement:     measurement,
@@ -53,5 +56,5 @@ func tailFile(ctx context.Context, fromBeginning bool, name string, format strin
 
 func formatJSON(line *tail.Line, fields *map[string]interface{}, tags *map[string]string) error {
 	text := strings.TrimRight(line.Text, "\r")
-	return Parse([]byte(text), fields, tags)
+	return util.Parse([]byte(text), fields, tags)
 }

@@ -19,7 +19,7 @@ func TestGetCPUData(t *testing.T) {
 			expected: CPUFields{
 				{
 					UsageUser: json.Number("20"),
-					Time:      "1589872050483860738",
+					Time:      json.Number("1589872050483860738"),
 				},
 			},
 			err: nil,
@@ -31,11 +31,11 @@ func TestGetCPUData(t *testing.T) {
 			expected: CPUFields{
 				{
 					UsageUser: json.Number("20"),
-					Time:      "1589872050483860738",
+					Time:      json.Number("1589872050483860738"),
 				},
 				{
 					UsageUser: json.Number("30"),
-					Time:      "1589872050483870738",
+					Time:      json.Number("1589872050483870738"),
 				},
 			},
 			err: nil,

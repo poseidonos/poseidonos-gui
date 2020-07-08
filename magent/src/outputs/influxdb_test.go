@@ -1,4 +1,4 @@
-package main
+package outputs
 
 import (
 	"context"
@@ -14,6 +14,7 @@ import (
 	"path"
 	"testing"
 	"time"
+	"magent/src/models"
 )
 
 //Should not raise an error if the data to be written to DB is valid
@@ -81,28 +82,31 @@ func TestWriteToDBHTTP(t *testing.T) {
 	}
 	bp.Points = append(bp.Points, newPoint)
 	ctx := context.Background()
-	client, err := NewHTTPClient(config)
+	client, err := NewHTTPClient(dbConfig)
 	require.NoError(t, err)
 	influxdb := Init("http")
-	config.URL = u
+	dbConfig.URL = u
 
 	//Should send an http request using http protocol with the points in the channel
-	clientPoint := ClientPoint{
+	clientPoint := models.ClientPoint{
 		Fields: map[string]interface{}{
 			"cpu": 10,
 		},
-		Tags:            map[string]string{},
+		Tags:            map[string]string{
+			"cpu_name": "cpu0",
+		},
 		Measurement:     "cpu_magent",
 		RetentionPolicy: "autogen",
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	dataChan := make(chan ClientPoint, 100)
+	dataChan := make(chan models.ClientPoint, 100)
 	dataChan <- clientPoint
 	go func() {
 		time.Sleep(1 * time.Second)
 		cancel()
 	}()
-	writeToInfluxDB(ctx, dataChan, client, config, 1, influxdb)
+	dbConfig.URLString = u.String()
+	WriteToDB(ctx,"http", dataChan)
 
 	//Should send an http request when the time interval for flushing is exceeded
 	ctx, cancel = context.WithCancel(context.Background())
@@ -111,11 +115,11 @@ func TestWriteToDBHTTP(t *testing.T) {
 		time.Sleep(2 * time.Second)
 		cancel()
 	}()
-	writeToInfluxDB(ctx, dataChan, client, config, 10, influxdb)
+	writeToInfluxDB(ctx, dataChan, client, dbConfig, 10, influxdb)
 
 	//Should raise an error when the request returns error
-	config.URL, _ = url.Parse(fmt.Sprintf("http://%s/test", ts.Listener.Addr().String()))
-	err = influxdb.Write(ctx, client, bp, config)
+	dbConfig.URL, _ = url.Parse(fmt.Sprintf("http://%s/test", ts.Listener.Addr().String()))
+	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.Error(t, err)
 
 	//Should not send request using  http protocol if data is invalid
@@ -128,7 +132,10 @@ func TestWriteToDBHTTP(t *testing.T) {
 		Time:        time.Now(),
 	}
 	bp.Points = append(bp.Points, point)
-	err = influxdb.Write(ctx, client, bp, config)
+	bp.Tags = map[string]string{
+		"test": "Test",
+	}
+	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.Error(t, err)
 }
 
@@ -176,18 +183,18 @@ func TestWriteToDBUnix(t *testing.T) {
 	})
 	ctx := context.Background()
 	influxdb := Init("unix")
-	config.URL = &url.URL{Scheme: "unix", Path: sock}
-	config.URLString = config.URL.String()
-	client, err := NewHTTPClient(config)
+	dbConfig.URL = &url.URL{Scheme: "unix", Path: sock}
+	dbConfig.URLString = dbConfig.URL.String()
+	client, err := NewHTTPClient(dbConfig)
 	require.NoError(t, err)
 
 	//Should send an http request using unix socket protocol with the points in the channel
-	err = influxdb.Write(ctx, client, bp, config)
+	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.NoError(t, err)
 
 	//Should raise an error when the response status is not OK
-	config.URL.Path = "/test"
-	err = influxdb.Write(ctx, client, bp, config)
+	dbConfig.URL.Path = "/test"
+	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.Error(t, err)
 
 	//Should not send request using  unix socket protocol if data is invalid
@@ -200,6 +207,6 @@ func TestWriteToDBUnix(t *testing.T) {
 		Time:        time.Now(),
 	}
 	bp.Points = append(bp.Points, point)
-	err = influxdb.Write(ctx, client, bp, config)
+	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.Error(t, err)
 }
