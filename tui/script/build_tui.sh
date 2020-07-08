@@ -3,10 +3,9 @@
 SCRIPT_PATH=$(readlink -f $(dirname $0))/
 
 cd $SCRIPT_PATH
-cd ../../a-module/bin
-./go-bindata -o resource.go  -pkg util ../resources/
 
-cd $SCRIPT_PATH
+../vendor/a-module/bin/go-bindata -o ../vendor/a-module/src/util/resource.go -pkg util ../vendor/a-module/resources/
+
 cd ..
 rm -rf ./vendor/a-module
 cp -rf ../a-module ./vendor/
