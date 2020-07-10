@@ -21,6 +21,14 @@ func TestSend(t *testing.T) {
 		fmt.Println(err)
 	}
 
+	cmd = "cp -rf ../bin/* " + path
+	cpCmd = exec.Command("/bin/sh", "-c", cmd)
+	err = cpCmd.Run()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	test1 := [][]string{
 		[]string{"run_ibofos"},
 		[]string{"scan_dev"},
@@ -42,6 +50,7 @@ func TestSend(t *testing.T) {
 
 			var cmd cobra.Command
 			cmd.PersistentFlags().BoolVar(&isQuiet, "quiet", false, "")
+			cmd.PersistentFlags().BoolVar(&isDebug, "debug", true, "")
 
 			if test[0] == "create_array" {
 
