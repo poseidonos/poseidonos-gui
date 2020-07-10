@@ -1823,7 +1823,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/read_bw",
+							"raw": "http://{{host}}/api/metric/v1/readbw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1832,7 +1832,7 @@
 								"api",
 								"metric",
 								"v1",
-								"read_bw"
+								"readbw"
 							]
 						}
 					},
@@ -2012,7 +2012,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//vol/{{volid01}}/read_bw/",
+							"raw": "http://{{host}}/api/metric/v1//vol/{{volid01}}/readbw/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2024,7 +2024,7 @@
 								"",
 								"vol",
 								"{{volid01}}",
-								"read_bw",
+								"readbw",
 								""
 							]
 						}
@@ -2205,7 +2205,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/write_bw",
+							"raw": "http://{{host}}/api/metric/v1/writebw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2214,7 +2214,7 @@
 								"api",
 								"metric",
 								"v1",
-								"write_bw"
+								"writebw"
 							]
 						}
 					},
@@ -2394,7 +2394,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/vol/{{volid01}}/write_bw/",
+							"raw": "http://{{host}}/api/metric/v1/vol/{{volid01}}/writebw/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2405,7 +2405,7 @@
 								"v1",
 								"vol",
 								"{{volid01}}",
-								"write_bw",
+								"writebw",
 								""
 							]
 						}
@@ -2586,7 +2586,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/read_iops/",
+							"raw": "http://{{host}}/api/metric/v1/readiops/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2595,7 +2595,7 @@
 								"api",
 								"metric",
 								"v1",
-								"read_iops",
+								"readiops",
 								""
 							]
 						}
@@ -2776,7 +2776,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/vol/{{volid01}}/read_iops/",
+							"raw": "http://{{host}}/api/metric/v1/vol/{{volid01}}/readiops/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2787,7 +2787,7 @@
 								"v1",
 								"vol",
 								"{{volid01}}",
-								"read_iops",
+								"readiops",
 								""
 							]
 						}
@@ -2968,7 +2968,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/write_iops/",
+							"raw": "http://{{host}}/api/metric/v1/writeiops/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2977,7 +2977,7 @@
 								"api",
 								"metric",
 								"v1",
-								"write_iops",
+								"writeiops",
 								""
 							]
 						}
@@ -3158,7 +3158,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//vol/{{volid01}}/write_iops/",
+							"raw": "http://{{host}}/api/metric/v1//vol/{{volid01}}/writeiops/",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -3170,7 +3170,7 @@
 								"",
 								"vol",
 								"{{volid01}}",
-								"write_iops",
+								"writeiops",
 								""
 							]
 						}
@@ -7673,32 +7673,32 @@
 	],
 	"variable": [
 		{
-			"id": "ccbee7be-e9d0-497d-8b42-b1021a1393b8",
+			"id": "b71064af-c5a0-4a9b-b3c4-65acbbb21157",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "ee58b686-2797-4881-8182-585c77e78d36",
+			"id": "4d37ea82-5555-4f0f-bf6c-4c8254c69a28",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "c054f2a0-1a96-4f45-b95a-de8684ef7777",
+			"id": "2e763528-08c1-44f1-a8f6-22b48daae377",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "168554c7-dbb8-4791-b221-a16add7560d7",
+			"id": "47cb94df-33ba-4cd6-8eb3-5d8d37f3ad49",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "bb1c5e15-dc8a-40c8-9e45-de18b7e452d3",
+			"id": "7226cf10-c622-45b2-b5f8-a322f1fa1228",
 			"key": "volid01",
 			"value": "vol01"
 		},
 		{
-			"id": "9cdc3406-7257-4c84-8291-d53eb507691e",
+			"id": "9825631a-1a84-4541-993b-bfd5b67bdc4e",
 			"key": "volid02",
 			"value": "vol02"
 		}
