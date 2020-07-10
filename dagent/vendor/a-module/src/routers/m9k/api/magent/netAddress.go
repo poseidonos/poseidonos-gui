@@ -25,6 +25,7 @@ func GetNetAddress(param interface{}) (model.Response, error) {
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
+		res.Result.Status.Code = 500
 		return res, nil
 	}
 

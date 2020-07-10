@@ -16,12 +16,13 @@ package magent
 
 import (
 	"a-module/src/routers/m9k/model"
+	"encoding/json"
 	"fmt"
 )
 
 // LogsField defines the structure in which log data is returned
 type LogsField struct {
-	Time  string
+	Time  json.Number
 	Value string
 }
 
@@ -46,7 +47,7 @@ func GetRebuildLogs(param interface{}) (model.Response, error) {
 	}
 	for _, Values := range result[0].Series[0].Values {
 		if Values[1] != nil {
-			fieldsList = append(fieldsList, LogsField{Values[0].(string), Values[1].(string)})
+			fieldsList = append(fieldsList, LogsField{Values[0].(json.Number), Values[1].(string)})
 		}
 	}
 	res.Result.Status.Code = 0

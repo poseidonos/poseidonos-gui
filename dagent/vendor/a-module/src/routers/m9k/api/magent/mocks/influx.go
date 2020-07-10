@@ -87,7 +87,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 				"perf_data_0_tid_arr_1_aid_arr_0_aid",
 			},
 			Values: [][]interface{}{
-				{"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
 			},
 		}
 		rows = append(rows, row)
@@ -101,8 +101,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "bw_perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
-				{"1589872050483870738", json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
                         },
                 }
                 rows = append(rows, row)
@@ -116,7 +116,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
                         },
                 }
                 rows = append(rows, row)
@@ -130,8 +130,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "bw_perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
-                                {"1589872050483870738", json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
                         },
                 }
                 rows = append(rows, row)
@@ -145,7 +145,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
                         },
                 }
                 rows = append(rows, row)
@@ -159,8 +159,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "iops_perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
-                                {"1589872050483870738", json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
                         },
                 }
                 rows = append(rows, row)
@@ -174,7 +174,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
                         },
                 }
                 rows = append(rows, row)
@@ -188,8 +188,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "iops_perf_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
-                                {"1589872050483870738", json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
                         },
                 }
 		rows = append(rows, row)
@@ -203,7 +203,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "latency_lat_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
                         },
                 }
                 rows = append(rows, row)
@@ -217,8 +217,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "latency_lat_data_0_tid_arr_1_aid_arr_0_aid",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
-                                {"1589872050483870738", json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
+                                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1"),},
+                                {json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0"),},
                         },
                 }
                 rows = append(rows, row)
@@ -229,7 +229,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 				"mean_used_percent",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("70"),},
+                                {json.Number("1589872050483860738"), json.Number("70"),},
                         },
                 }
                 rows = append(rows, row)
@@ -240,8 +240,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "mean_used_percent",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("50"),},
-				{"1589872050483870738", json.Number("40"),},
+                                {json.Number("1589872050483860738"), json.Number("50"),},
+				{json.Number("1589872050483870738"), json.Number("40"),},
                         },
                 }
 		rows = append(rows, row)
@@ -252,7 +252,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "mean_usage_user",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("20"),},
+                                {json.Number("1589872050483860738"), json.Number("20"),},
                         },
                 }
                 rows = append(rows, row)
@@ -263,8 +263,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "mean_usage_user",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("20"),},
-                                {"1589872050483870738", json.Number("30"),},
+                                {json.Number("1589872050483860738"), json.Number("20"),},
+                                {json.Number("1589872050483870738"), json.Number("30"),},
                         },
                 }
                 rows = append(rows, row)
@@ -275,7 +275,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "mean_used_bytes",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("200000"),},
+                                {json.Number("1589872050483860738"), json.Number("200000"),},
                         },
                 }
                 rows = append(rows, row)
@@ -286,8 +286,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "mean_used_bytes",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", json.Number("100000"),},
-                                {"1589872050483870738", json.Number("200000"),},
+                                {json.Number("1589872050483860738"), json.Number("100000"),},
+                                {json.Number("1589872050483870738"), json.Number("200000"),},
                         },
                 }
                 rows = append(rows, row)
@@ -306,7 +306,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                         },
                         Values: [][]interface{}{
                                 {
-					"1589872050483860738",
+					json.Number("1589872050483860738"),
 					json.Number("10"),
 					json.Number("20"),
 					json.Number("30"),
@@ -334,7 +334,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                         },
                         Values: [][]interface{}{
                                 {
-                                        "1589872050483860738",
+                                        json.Number("1589872050483860738"),
                                         json.Number("10"),
                                         json.Number("20"),
                                         json.Number("30"),
@@ -345,7 +345,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                         json.Number("80"),
                                 },
 				{
-                                        "1589872050483870738",
+                                        json.Number("1589872050483870738"),
                                         json.Number("50"),
                                         json.Number("60"),
                                         json.Number("30"),
@@ -367,7 +367,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 				"driver",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", "interface", "driver",},
+                                {json.Number("1589872050483860738"), "interface", "driver",},
                         },
                 }
 		rows = append(rows, row)
@@ -379,7 +379,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "address",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", "interface", "address",},
+                                {json.Number("1589872050483860738"), "interface", "address",},
                         },
                 }
                 rows = append(rows, row)
@@ -390,7 +390,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
                                 "value",
                         },
                         Values: [][]interface{}{
-                                {"1589872050483860738", "Log line 1",},
+                                {json.Number("1589872050483860738"), "Log line 1",},
                         },
                 }
                 rows = append(rows, row)

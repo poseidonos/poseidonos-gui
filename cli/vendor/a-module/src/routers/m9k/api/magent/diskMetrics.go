@@ -7,7 +7,7 @@ import (
 )
 
 type DiskField struct {
-	Time           string
+	Time           json.Number
 	UsageUserBytes json.Number
 }
 
@@ -24,6 +24,7 @@ func GetDiskData(param interface{}) (model.Response, error) {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = errEndPoint.Error()
+			res.Result.Status.Code = 500
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -43,11 +44,12 @@ func GetDiskData(param interface{}) (model.Response, error) {
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
+		res.Result.Status.Code = 500
 		return res, nil
 	}
 	for _, values := range result[0].Series[0].Values {
 		if values[1] != nil {
-			fieldsList = append(fieldsList, DiskField{values[0].(string), values[1].(json.Number)})
+			fieldsList = append(fieldsList, DiskField{values[0].(json.Number), values[1].(json.Number)})
 		}
 	}
 

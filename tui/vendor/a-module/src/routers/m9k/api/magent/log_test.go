@@ -3,6 +3,7 @@ package magent
 import (
 	"a-module/src/routers/m9k/api/magent/mocks"
 	"a-module/src/routers/m9k/model"
+	"encoding/json"
 	"reflect"
 	"testing"
 )
@@ -19,7 +20,7 @@ func TestGetRebuildLogs(t *testing.T) {
 			},
 			expected: LogsFields{
 				{
-					Time:  "1589872050483860738",
+					Time:  json.Number("1589872050483860738"),
 					Value: "Log line 1",
 				},
 			},

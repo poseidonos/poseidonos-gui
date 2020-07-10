@@ -31,11 +31,11 @@ func TestGetMemoryData(t *testing.T) {
 			expected: MemoryFields{
 				{
 					UsageUser: json.Number("50"),
-					Time:      "1589872050483860738",
+					Time:      json.Number("1589872050483860738"),
 				},
 				{
 					UsageUser: json.Number("40"),
-					Time:      "1589872050483870738",
+					Time:      json.Number("1589872050483870738"),
 				},
 			},
 			err: nil,
@@ -52,3 +52,36 @@ func TestGetMemoryData(t *testing.T) {
 	}
 
 }
+
+func TestGetMemoryDataError(t *testing.T) {
+	var tests = []struct {
+		input    model.MAgentParam
+		expected int
+		err      error
+	}{
+		{
+			input: model.MAgentParam{
+				Time: "115m", //incorrect param
+			},
+			expected: 500,
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
+				Time: "60d", //no data
+			},
+			expected: 500,
+			err:      nil,
+		},
+	}
+
+	IDBClient = mocks.MockInfluxClient{}
+	for _, test := range tests {
+		result, err := GetMemoryData(test.input)
+		output := result.Result.Status.Code
+		if !reflect.DeepEqual(output, test.expected) || err != test.err {
+			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
+		}
+	}
+}
+

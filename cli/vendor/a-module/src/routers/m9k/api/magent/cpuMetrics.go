@@ -18,7 +18,7 @@ func Contains(arr []string, element string) bool {
 
 // CPUField stores the cpu response structure
 type CPUField struct {
-	Time      string
+	Time      json.Number
 	UsageUser json.Number
 }
 
@@ -63,7 +63,7 @@ func GetCPUData(param interface{}) (model.Response, error) {
 
 	for _, values := range result[0].Series[0].Values {
 		if values[1] != nil {
-			fieldsList = append(fieldsList, CPUField{values[0].(string), values[1].(json.Number)})
+			fieldsList = append(fieldsList, CPUField{values[0].(json.Number), values[1].(json.Number)})
 		}
 	}
 
