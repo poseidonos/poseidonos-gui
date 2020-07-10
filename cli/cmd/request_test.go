@@ -13,7 +13,7 @@ import (
 func TestSend(t *testing.T) {
 
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	cmd := "cp -rf ../bin/* " + path
+	cmd := "cp -rf ../script " + path + "/../"
 	cpCmd := exec.Command("/bin/sh", "-c", cmd)
 	err := cpCmd.Run()
 
