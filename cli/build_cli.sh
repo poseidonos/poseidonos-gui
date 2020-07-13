@@ -26,9 +26,7 @@ else
 fi
 END
 
-cd ../a-module/bin
-./go-bindata -o resource.go  -pkg util ../resources/
-cd $ROOT_DIR
+./vendor/a-module/bin/go-bindata -o ./vendor/a-module/util/resource.go  -pkg util ./vendor/a-module/resources/
 
 if [ -d "../a-module" ]; then
 	rm -rf vendor/a-module
