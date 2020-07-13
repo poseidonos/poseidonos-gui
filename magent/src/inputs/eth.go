@@ -19,8 +19,8 @@ import (
 	"github.com/safchain/ethtool"
 	"github.com/shirou/gopsutil/net"
 	"log"
-	"time"
 	"magent/src/models"
+	"time"
 )
 
 type ethernetClient interface {
@@ -41,7 +41,7 @@ var magentEthernet ethernetClient = MAgentEthernet{}
 func CollectEthernetData(ctx context.Context, dataChan chan models.ClientPoint) {
 	defer log.Println("Closing Ethernet Input")
 	ethHandle, err := ethtool.NewEthtool()
-	LocalTime := 1589467537002519008 //using static time becasue data is static
+	Index := 1 //using Index as time becasue data is static
 	if err != nil {
 		log.Println("error in creating ethernet handler: ", err)
 	}
@@ -56,7 +56,7 @@ func CollectEthernetData(ctx context.Context, dataChan chan models.ClientPoint) 
 			EthernetIDriver, err := ethHandle.DriverName(JSONElement.Name)
 			if err != nil {
 				EthernetIDriver = "N/A"
-				log.Println("error in getting ethernet interface driver name : ", err)
+				//log.Println("error in getting ethernet interface driver name : ", err)
 			}
 			fields := map[string]interface{}{
 				"name":    JSONElement.Name,
@@ -64,15 +64,16 @@ func CollectEthernetData(ctx context.Context, dataChan chan models.ClientPoint) 
 				"driver":  EthernetIDriver,
 			}
 			tags := map[string]string{"eth": "interface"}
+			// we have to query like : "select * from autogen.ethernet"
 			newPoint := models.ClientPoint{
-				Timestamp:       time.Unix(0, int64(LocalTime)),
+				Timestamp:       time.Unix(0, int64(Index)),
 				Fields:          fields,
 				Tags:            tags,
 				Measurement:     "ethernet",
-				RetentionPolicy: "default_rp",
+				RetentionPolicy: "autogen",
 			}
 			dataChan <- newPoint
-			LocalTime = LocalTime + 1
+			Index = Index + 1
 		}
 	}
 }

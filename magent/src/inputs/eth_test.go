@@ -14,9 +14,9 @@ package inputs
 
 import (
 	"context"
+	"magent/src/models"
 	"testing"
 	"time"
-	"magent/src/models"
 )
 
 func TestCollectEthernetData(t *testing.T) {
