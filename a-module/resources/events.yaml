@@ -1156,8 +1156,23 @@ modules:
         message: failed to mount ibofos
         problem: ibofos already has been mounted
         solution:
-  - name: "M9K (M-Tool/D-Agent)"
+  - name: "Management Stack(M9K)"
     count: 10000
     idStart: 10000
     idEnd:   20000
-
+    info:
+      - code: 11000
+        level: ERROR
+        message: Sending error
+        problem: connection problem between POS and Management Stack
+        solution: restart POS
+      - code: 11010
+        level: ERROR
+        message: Json Error
+        problem: Maformed Json
+        solution: Use valid Json format
+      - code: 11020
+        level: ERROR
+        message: Connection error
+        problem: connection problem between POS and Management Stack
+        solution:
