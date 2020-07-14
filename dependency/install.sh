@@ -26,8 +26,10 @@ then
   sudo apt-get update
   sudo apt-get install python3-pip
   sudo apt-get install influxdb
+  sudo apt-get install chronograf
   sudo apt-get install kapacitor
   sudo service influxdb start
+  sudo service chronograf start
   sudo service kapacitor start
   sudo apt-get install nginx
   echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
@@ -44,6 +46,7 @@ fi
 
 # For uninstalling, comment out the above lines and uncomment below lines
 # sudo apt-get purge influxdb
+# sudo apt-get purge chronograf
 # sudo apt-get purge kapacitor
 # sudo apt-get purge nginx
 # sudo systemctl stop start-iBofMtool
