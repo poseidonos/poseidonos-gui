@@ -1,6 +1,6 @@
 # Demon Agent
 
-*  This app provides RESTFul APIs to contorl iBoF System (POS, BMC ...)
+*  This app provides RESTFul APIs to control Poseidon System (POS, Metric, BMC ...)
 
 ***
 
@@ -14,11 +14,14 @@
 * The POS should be installed
 
 #### M-Tool
-* D-Agent uses the same user DB as M-Tool. Therefore, the M-Tool (or sqlite) should be installed. 
+** Currently the DB feacture is disabled
+* D-Agent uses the same user DB as M-Tool. Therefore, the M-Tool (or sqlite) should be installed.
+ 
 
 #### Config File
 * config.yaml file should be in the same location as the executable file.
 If there is no config file, d-agent will use default values.
+* Management Stack uses Nginx and it will forward to 3000 port for D-Agent API.
 ```yaml
 server:
   dagent:
@@ -32,9 +35,6 @@ server:
     port: 443
 ```
 
-#### Patient & Coffee
-* This app is still in progress, so it can be died without any notice.
-
 ***
 
 ## Build & Run
@@ -47,9 +47,9 @@ server:
 * It can be run on any path.
 * It does not need any dependency pkg after compiling.
 ```shell script
-$ git clone http://10.227.30.174:7990/scm/ibof/ibofdagent.git m9k
+$ git clone http://10.227.30.174:7990/scm/ibof/m9k.git
 $ cd m9k/dagent
-$ ./script/build_dagent # It will also generate api documentation
+$ ./script/build_dagent.sh
 ```
 #### Run
 ```shell script
@@ -71,36 +71,28 @@ $ sudo ./script/run_dagent.sh # Background Run
     : It exec "run_remote_ibofos.sh"
 6. Call APIs to Test
 
-#### API Spec HTML & Markdown
-There are two type documentations; api.html and api.MD
-* The id/pass for basic auth is the same as M-Tool's (It use the same DB)
+#### API Spec and Error code
+* It does not require header values.
 
-* Endpoint  
+* API Spec  
 ```
 /api/dagent/v1/doc/api.html
 /api/dagent/v1/doc/api.md
 ```
-
-***
-
-#### Error Code
-Use below APIs to get error codes
-
-* Endpoint
+* Error Code  
 ```
-/api/dagent/v1/statuscode
+/api/dagent/v1/doc/events.yaml
 ```
 
 ***
 
-## Redfish
+## Redfish (TBD)
 #### API
 * Endpoint
 ```
 (ANY) /redfish/{redfishSpec}
 ```
   
-
 #### Request Headers
 * Redfish also uses basic auth. Not D-Agent's user info, But BMC user info 
 ```
