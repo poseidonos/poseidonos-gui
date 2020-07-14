@@ -7,15 +7,15 @@ import (
 )
 
 type NetField struct {
-	Time        json.Number
-	BytesRecv   json.Number
-	BytesSent   json.Number
-	DropIn      json.Number
-	DropOut     json.Number
-	ErrIn       json.Number
-	ErrOut      json.Number
-	PacketsRecv json.Number
-	PacketsSent json.Number
+	Time        json.Number `json:"time"`
+	BytesRecv   json.Number `json:"bytesRecv"`
+	BytesSent   json.Number `json:"bytesSent"`
+	DropIn      json.Number `json:"dropIn"`
+	DropOut     json.Number `json:"dropOut"`
+	ErrIn       json.Number `json:"errIn"`
+	ErrOut      json.Number `json:"errIn"`
+	PacketsRecv json.Number `json:"packetsRecv"`
+	PacketsSent json.Number `json:"packetsSent"`
 }
 
 type NetFields []NetField
@@ -32,6 +32,7 @@ func GetNetData(param interface{}) (model.Response, error) {
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = errEndPoint.Error()
 			res.Result.Status.Code = 500
+			res.Result.Data = make([]string, 0)
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -42,17 +43,19 @@ func GetNetData(param interface{}) (model.Response, error) {
 	} else {
 		query = fmt.Sprintf(netLastRecordQ, DBName, DefaultRP)
 	}
-
 	result, err := ExecuteQuery(query)
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()
+		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Code = 500
 		res.Result.Status.Description = errData.Error()
+		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
@@ -61,9 +64,8 @@ func GetNetData(param interface{}) (model.Response, error) {
 			fieldsList = append(fieldsList, NetField{values[0].(json.Number), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
 		}
 	}
-
-	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
+	res.Result.Status.Code = 0
 	res.Result.Data = fieldsList
 
 	return res, nil

@@ -105,4 +105,3 @@ func TestGetNetDataError(t *testing.T) {
 		}
 	}
 }
-

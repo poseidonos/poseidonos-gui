@@ -19,7 +19,7 @@ func TestGetReadBandwidth(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("300"), "Time": json.Number("1589872050483860738")},
+				{"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
 			},
 			err: nil,
 		},
@@ -29,8 +29,8 @@ func TestGetReadBandwidth(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("300"), "Time": json.Number("1589872050483860738")},
-				{"BW": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -40,8 +40,8 @@ func TestGetReadBandwidth(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"BW": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -51,8 +51,8 @@ func TestGetReadBandwidth(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"BW": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -61,7 +61,7 @@ func TestGetReadBandwidth(t *testing.T) {
 				Time:  "5m",
 				Level: "0",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 		{
@@ -69,7 +69,7 @@ func TestGetReadBandwidth(t *testing.T) {
 				Time:  "20m",
 				Level: "0",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 	}
@@ -95,7 +95,7 @@ func TestGetWriteBandwidth(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("300"), "Time": json.Number("1589872050483860738")},
+				{"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
 			},
 			err: nil,
 		},
@@ -105,8 +105,8 @@ func TestGetWriteBandwidth(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("300"), "Time": json.Number("1589872050483860738")},
-				{"BW": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -116,8 +116,8 @@ func TestGetWriteBandwidth(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"BW": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"BW": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -127,7 +127,7 @@ func TestGetWriteBandwidth(t *testing.T) {
 				Time:  "5m",
 				Level: "0",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 	}
@@ -142,7 +142,7 @@ func TestGetWriteBandwidth(t *testing.T) {
 	}
 }
 
-func TestGetReadIOPS(t *testing.T) {
+func TestGetReadiops(t *testing.T) {
 	var tests = []struct {
 		input    model.MAgentParam
 		expected interface{}
@@ -153,7 +153,7 @@ func TestGetReadIOPS(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("300"), "Time": json.Number("1589872050483860738")},
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
 			},
 			err: nil,
 		},
@@ -163,8 +163,8 @@ func TestGetReadIOPS(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("300"), "Time": json.Number("1589872050483860738")},
-				{"IOPS": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -174,8 +174,8 @@ func TestGetReadIOPS(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"IOPS": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"iops": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -185,7 +185,7 @@ func TestGetReadIOPS(t *testing.T) {
 				Time:  "5m",
 				Level: "0",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 	}
@@ -200,7 +200,7 @@ func TestGetReadIOPS(t *testing.T) {
 	}
 }
 
-func TestGetWriteIOPS(t *testing.T) {
+func TestGetWriteiops(t *testing.T) {
 	var tests = []struct {
 		input    model.MAgentParam
 		expected interface{}
@@ -211,7 +211,7 @@ func TestGetWriteIOPS(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("300"), "Time": json.Number("1589872050483860738")},
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
 			},
 			err: nil,
 		},
@@ -221,8 +221,8 @@ func TestGetWriteIOPS(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("300"), "Time": json.Number("1589872050483860738")},
-				{"IOPS": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -232,8 +232,8 @@ func TestGetWriteIOPS(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"IOPS": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"IOPS": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"iops": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -243,7 +243,7 @@ func TestGetWriteIOPS(t *testing.T) {
 				Time:  "5m",
 				Level: "0",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 	}
@@ -269,7 +269,7 @@ func TestGetLatency(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"Latency": json.Number("300"), "Time": json.Number("1589872050483860738")},
+				{"latency": json.Number("300"), "time": json.Number("1589872050483860738")},
 			},
 			err: nil,
 		},
@@ -279,8 +279,8 @@ func TestGetLatency(t *testing.T) {
 				Level: "array",
 			},
 			expected: []map[string]interface{}{
-				{"Latency": json.Number("300"), "Time": json.Number("1589872050483860738")},
-				{"Latency": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"latency": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"latency": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -290,8 +290,8 @@ func TestGetLatency(t *testing.T) {
 				Level: "0",
 			},
 			expected: []map[string]interface{}{
-				{"Latency": json.Number("100"), "Time": json.Number("1589872050483860738")},
-				{"Latency": json.Number("700"), "Time": json.Number("1589872050483870738")},
+				{"latency": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"latency": json.Number("700"), "time": json.Number("1589872050483870738")},
 			},
 			err: nil,
 		},
@@ -300,7 +300,7 @@ func TestGetLatency(t *testing.T) {
 			input: model.MAgentParam{
 				Time: "5m",
 			},
-			expected: nil,
+			expected: make([]string, 0),
 			err:      nil,
 		},
 	}

@@ -7,8 +7,8 @@ import (
 )
 
 type MemoryField struct {
-	Time      json.Number
-	UsageUser json.Number
+	Time      json.Number `json:"time"`
+	UsageUser json.Number `json:"usageUser"`
 }
 
 type MemoryFields []MemoryField
@@ -25,6 +25,7 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = errEndPoint.Error()
 			res.Result.Status.Code = 500
+			res.Result.Data = make([]string, 0)
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -40,12 +41,15 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()
+		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
 		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 	for _, values := range result[0].Series[0].Values {
@@ -54,8 +58,8 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 		}
 	}
 
-	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
+	res.Result.Status.Code = 0
 	res.Result.Data = fieldsList
 	return res, nil
 }

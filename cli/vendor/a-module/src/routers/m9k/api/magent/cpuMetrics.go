@@ -18,8 +18,8 @@ func Contains(arr []string, element string) bool {
 
 // CPUField stores the cpu response structure
 type CPUField struct {
-	Time      json.Number
-	UsageUser json.Number
+	Time      json.Number `json:"time"`
+	UsageUser json.Number `json:"usageUser"`
 }
 
 // CPUFields is an array of CPUField
@@ -37,6 +37,7 @@ func GetCPUData(param interface{}) (model.Response, error) {
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			res.Result.Status.Description = errEndPoint.Error()
 			res.Result.Status.Code = 500
+			res.Result.Data = make([]string, 0)
 			return res, nil
 		}
 		if Contains(AggTime, timeInterval) {
@@ -52,12 +53,14 @@ func GetCPUData(param interface{}) (model.Response, error) {
 	if err != nil {
 		res.Result.Status.Description = err.Error()
 		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
 		res.Result.Status.Code = 500
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
@@ -66,9 +69,8 @@ func GetCPUData(param interface{}) (model.Response, error) {
 			fieldsList = append(fieldsList, CPUField{values[0].(json.Number), values[1].(json.Number)})
 		}
 	}
-
-	res.Result.Status.Code = 0
 	res.Result.Status.Description = "DONE"
+	res.Result.Status.Code = 0
 	res.Result.Data = fieldsList
 	return res, nil
 }

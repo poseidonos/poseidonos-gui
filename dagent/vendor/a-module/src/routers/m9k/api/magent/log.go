@@ -34,14 +34,16 @@ func GetRebuildLogs(param interface{}) (model.Response, error) {
 	var res model.Response
 	fieldsList := make(LogsFields, 0)
 	timeInterval := param.(model.MAgentParam).Time
-	query := fmt.Sprintf(RebuildingLogQ, timeInterval)
+	query := fmt.Sprintf(RebuildingLogQ, DBName, timeInterval)
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		res.Result.Status.Description = err.Error()
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
+		res.Result.Data = make([]string, 0)
 		return res, nil
 
 	}

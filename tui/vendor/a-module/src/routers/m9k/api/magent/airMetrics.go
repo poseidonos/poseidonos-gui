@@ -31,13 +31,13 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]
 			return nil, nil, errEndPoint
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(AggRPQ, AggRP, timeInterval)
+			query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval)
 		} else {
-			query = fmt.Sprintf(DefaultRPQ, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 		}
 
 	} else {
-		query = fmt.Sprintf(LastRecordQ, DefaultRP)
+		query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP)
 	}
 	result, err := ExecuteQuery(query)
 	if err != nil {
@@ -62,7 +62,7 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 		}
 		for _, val := range values {
 			currentValue := make(map[string]interface{})
-			currentValue["Time"] = val[0]
+			currentValue["time"] = val[0]
 			sum := 0.0
 			for _, valIndex := range valueIndexes {
 				if val[valIndex] != nil {
@@ -88,7 +88,7 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 		}
 		for _, val := range values {
 			currentValue := make(map[string]interface{})
-			currentValue["Time"] = val[0]
+			currentValue["time"] = val[0]
 			sum := 0.0
 			for _, aid := range aidArr {
 				if _, ok := indexMap[aid]; ok && val[indexMap[aid]] != nil {
@@ -115,9 +115,10 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 	values, columns, err := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ)
 	if err != nil {
 		result.Result.Status.Description = err.Error()
+		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "BW", "bw", "bw_read", level)
+	res := extractValues(values, columns, "bw", "bw", "bw_read", level)
 	result.Result.Status.Code = 0
 	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
@@ -131,9 +132,10 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	values, columns, err := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ)
 	if err != nil {
 		result.Result.Status.Description = err.Error()
+		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "BW", "bw", "bw_write", level)
+	res := extractValues(values, columns, "bw", "bw", "bw_write", level)
 	result.Result.Status.Code = 0
 	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
@@ -147,9 +149,10 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 	values, columns, err := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ)
 	if err != nil {
 		result.Result.Status.Description = err.Error()
+		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "IOPS", "iops", "iops_read", level)
+	res := extractValues(values, columns, "iops", "iops", "iops_read", level)
 	result.Result.Status.Code = 0
 	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
@@ -163,9 +166,10 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 	values, columns, err := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ)
 	if err != nil {
 		result.Result.Status.Description = err.Error()
+		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "IOPS", "iops", "iops_write", level)
+	res := extractValues(values, columns, "iops", "iops", "iops_write", level)
 	result.Result.Status.Code = 0
 	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
@@ -179,9 +183,10 @@ func GetLatency(param interface{}) (model.Response, error) {
 	values, columns, err := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ)
 	if err != nil {
 		result.Result.Status.Description = err.Error()
+		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "Latency", "latency", "timelag_arr_0_mean", level)
+	res := extractValues(values, columns, "latency", "latency", "timelag_arr_0_mean", level)
 	result.Result.Status.Code = 0
 	result.Result.Status.Description = "DONE"
 	result.Result.Data = res

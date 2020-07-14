@@ -84,4 +84,3 @@ func TestGetMemoryDataError(t *testing.T) {
 		}
 	}
 }
-

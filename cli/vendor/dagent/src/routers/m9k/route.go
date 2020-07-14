@@ -219,7 +219,7 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
 		})
 
-		mAgentPath.GET("/write_bw/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/writebw/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			param := model.MAgentParam{Time: time, Level: "array"}
 			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
@@ -243,7 +243,7 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
 		})
 
-		mAgentPath.GET("/read_iops/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/readiops/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			param := model.MAgentParam{Time: time, Level: "array"}
 			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)

@@ -26,8 +26,6 @@ else
 fi
 END
 
-./vendor/a-module/bin/go-bindata -o ./vendor/a-module/src/util/resource.go -pkg util ./vendor/a-module/resources/
-
 if [ -d "../a-module" ]; then
 	rm -rf vendor/a-module
 	cp -rf ../a-module ./vendor/

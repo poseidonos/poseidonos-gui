@@ -6,8 +6,8 @@ import (
 )
 
 type NetDriverField struct {
-	Interface string
-	Driver    string
+	Interface string `json:"interface"`
+	Driver    string `json:"driver"`
 }
 
 type NetDriverFields []NetDriverField
@@ -20,11 +20,15 @@ func GetNetDriver(param interface{}) (model.Response, error) {
 
 	if err != nil {
 		res.Result.Status.Description = err.Error()
+		res.Result.Status.Code = 0
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status.Description = errData.Error()
+		res.Result.Status.Code = 0
+		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
