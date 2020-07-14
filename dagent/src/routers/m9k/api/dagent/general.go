@@ -3,7 +3,6 @@ package dagent
 import (
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
-	"a-module/src/setting"
 	"errors"
 	"syscall"
 	"time"
