@@ -1,12 +1,12 @@
 **/.idea
 **/.DS_Store
-/dagent/bin/dagent
+/dagent/bin
 /dagent/dagent
 /dagent/test_sol.pe/result.xml
 dagent.exe
 /cli/bin/cli
 /tui/tui
-/tui/bin/tui
+/tui/bin
 /magent/bin/magent
 /magent/magent
 ibofos.log
