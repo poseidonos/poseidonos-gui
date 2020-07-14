@@ -45,13 +45,6 @@ func updateSuccessTime(xrId string) int64 {
 	}
 }
 
-func StatusCode(xrId string) (model.Response, error) {
-	res := model.Response{}
-	res.Result.Status.Code = 0
-	res.Result.Data = setting.StatusList
-	return res, nil
-}
-
 func KillDAgent(xrId string) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
