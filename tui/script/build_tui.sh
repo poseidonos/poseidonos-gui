@@ -13,4 +13,6 @@ export BUILD_TIME_TUI=$(date +%s)
 
 go build -mod vendor -ldflags "-X dagent/src/routers/m9k/api/dagent.GitCommit=$GIT_COMMIT_TUI -X dagent/src/routers/m9k/api/dagent.BuildTime=$BUILD_TIME_TUI"
 
+rm -rf ./bin
+mkdir bin
 mv tui ./bin
