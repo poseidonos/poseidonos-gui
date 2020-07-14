@@ -8,6 +8,8 @@ cd ..
 rm -rf ./vendor/a-module
 cp -rf ../a-module ./vendor/
 
+cp ../a-module/resources/events.yaml ./doc
+
 export GIT_COMMIT_DAGENT=$(git rev-list -1 HEAD)
 export BUILD_TIME_DAGENT=$(date +%s)
 
