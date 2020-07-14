@@ -17,7 +17,7 @@ func Route(router *gin.Engine) {
 	uri := router.Group("/api")
 
 	// Doc Static
-	uri.StaticFS("/dagent/v1/doc", http.Dir("./doc"))
+	uri.StaticFS("/dagent/v1/doc", http.Dir("../doc"))
 
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())
@@ -33,9 +33,6 @@ func Route(router *gin.Engine) {
 		})
 		dagentPath.GET("/version", func(ctx *gin.Context) {
 			dagent.CallDagent(ctx, dagent.Version)
-		})
-		dagentPath.GET("/statuscode", func(ctx *gin.Context) {
-			dagent.CallDagent(ctx, dagent.StatusCode)
 		})
 		dagentPath.DELETE("/dagent", func(ctx *gin.Context) {
 			dagent.CallDagent(ctx, dagent.KillDAgent)

@@ -3,7 +3,6 @@ package dagent
 import (
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
-	"a-module/src/setting"
 	"errors"
 	"syscall"
 	"time"
@@ -43,13 +42,6 @@ func updateSuccessTime(xrId string) int64 {
 	} else {
 		return LastSuccessTime
 	}
-}
-
-func StatusCode(xrId string) (model.Response, error) {
-	res := model.Response{}
-	res.Result.Status.Code = 0
-	res.Result.Data = setting.StatusList
-	return res, nil
 }
 
 func KillDAgent(xrId string) (model.Response, error) {

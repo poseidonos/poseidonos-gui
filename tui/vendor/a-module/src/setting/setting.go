@@ -2,8 +2,6 @@ package setting
 
 import (
 	"a-module/src/log"
-	"a-module/src/routers/m9k/model"
-	"encoding/json"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
@@ -11,8 +9,6 @@ import (
 )
 
 var Config ConfigScheme
-var StatusMap map[int]string
-var StatusList model.StatusList
 
 type ConfigScheme struct {
 	Server           Server `yaml:"server"`
@@ -42,7 +38,6 @@ func init() {
 func LoadConfig() {
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	loadSeverConfig(path + "/config.yaml")
-	loadStatusCode(path + "/statuscode.json")
 }
 
 func loadSeverConfig(filename string) {
@@ -58,32 +53,5 @@ func loadSeverConfig(filename string) {
 			log.Infof("Open Success : %s", filename)
 			log.Infof("Loaded Config Info : %+v", Config)
 		}
-	}
-}
-
-func loadStatusCode(filename string) {
-	file, err := ioutil.ReadFile(filename)
-	if err != nil {
-		log.Infof("LoadStatusList : %v\n", err)
-	} else {
-		err = json.Unmarshal(file, &StatusList)
-		if err != nil {
-			log.Fatalf("loadStatusCode Error : %v", err)
-		} else {
-			log.Infof("Open Success : %s", filename)
-		}
-	}
-	StatusMap = make(map[int]string)
-	for _, status := range StatusList.StatusList {
-		StatusMap[status.Code] = status.Description
-	}
-}
-
-func StatusDesc(code int) string {
-	desc, exist := StatusMap[code]
-	if exist {
-		return desc
-	} else {
-		return "not defined"
 	}
 }
