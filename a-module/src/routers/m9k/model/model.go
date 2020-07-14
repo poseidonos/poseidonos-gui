@@ -21,15 +21,15 @@ type Result struct {
 type Status struct {
 	Module      string `json:"module"`
 	Code        int    `json:"code"`
-	Level       string `json:'level,omitempty"`
+	Level       string `json:"level,omitempty"`
 	Description string `json:"description"`
 	Problem     string `json:"problem,omitempty"`
 	Solution    string `json:"solution,omitempty"`
 }
 
-type StatusList struct {
-	StatusList []Status `json:"StatusList"`
-}
+//type StatusList struct {
+//	StatusList []Status `json:"StatusList"`
+//}
 
 type Info struct {
 	State              string `json:"state"`

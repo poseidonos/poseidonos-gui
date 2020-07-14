@@ -21,20 +21,20 @@ type Result struct {
 type Status struct {
 	Module      string `json:"module"`
 	Code        int    `json:"code"`
-	Level       string `json:'level,omitempty"`
+	Level       string `json:"level,omitempty"`
 	Description string `json:"description"`
 	Problem     string `json:"problem,omitempty"`
 	Solution    string `json:"solution,omitempty"`
 }
 
-type StatusList struct {
-	StatusList []Status `json:"StatusList"`
-}
+//type StatusList struct {
+//	StatusList []Status `json:"StatusList"`
+//}
 
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress uint32 `json:"rebuliding_progress"`
+	RebuildingProgress uint32 `json:"rebulidingProgress"`
 	Capacity           uint64 `json:"capacity"`
 	Used               uint64 `json:"used"`
 }
@@ -112,7 +112,7 @@ type WBTArgv struct {
 
 type BuildInfo struct {
 	GitHash   string `json:"githash"`
-	BuildTime string `json:"build_time"`
+	BuildTime string `json:"buildTime"`
 }
 
 //type SMART struct {
