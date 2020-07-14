@@ -34,7 +34,7 @@ type StatusList struct {
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress uint32 `json:"rebuliding_progress"`
+	RebuildingProgress uint32 `json:"rebulidingProgress"`
 	Capacity           uint64 `json:"capacity"`
 	Used               uint64 `json:"used"`
 }
@@ -112,7 +112,7 @@ type WBTArgv struct {
 
 type BuildInfo struct {
 	GitHash   string `json:"githash"`
-	BuildTime string `json:"build_time"`
+	BuildTime string `json:"buildTime"`
 }
 
 //type SMART struct {
