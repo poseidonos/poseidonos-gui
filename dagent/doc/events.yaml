@@ -1161,6 +1161,11 @@ modules:
     idStart: 10000
     idEnd:   20000
     info:
+      - code: 10010
+        level: INFO
+        message: Request Pending
+        problem: The D-Agent is creating multi volumes
+        solution: Wait call back
       - code: 11000
         level: ERROR
         message: Sending error
