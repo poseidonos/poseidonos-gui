@@ -1,0 +1,11 @@
+[Unit]
+Description=DAgent Startup
+
+[Service]
+WorkingDirectory=/usr/local/dagent
+ExecStart=/usr/local/dagent/bin/dagent
+StandardOutput=file:/var/log/dagent1.log
+StandardError=file:/var/log/dagent2.log
+
+[Install]
+WantedBy=default.target
