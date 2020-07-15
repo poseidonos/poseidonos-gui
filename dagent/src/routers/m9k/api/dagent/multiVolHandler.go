@@ -4,6 +4,7 @@ import (
 	"a-module/src/log"
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"bytes"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
@@ -23,9 +24,7 @@ const (
 	CALLBACK_PORT        = "5000"
 	CONTENT_TYPE         = "application/json"
 	CALLBACK_URL         = "http://" + CALLBACK_IP + ":" + CALLBACK_PORT + "/api/v1.0/multi_vol_response/"
-	REQUEST_PENDING      = "REQUEST PENDING"
 	MAX_RETRY_COUNT      = 5
-	PENDING_STATUS_CODE  = 999
 	POST                 = "POST"
 )
 
@@ -167,13 +166,14 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 }
 
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
-	response := model.Response{}
-	response.Result.Status.Code = PENDING_STATUS_CODE //PENDING
-	response.Result.Status.Description = REQUEST_PENDING
+	res := model.Response{}
+	res.Result.Status, _ = util.GetStatusInfo(10010)
+
 	if (command == CREATE_VOLUME && CreateVolumeMutex) || (command == MOUNT_VOLUME && MountVolumeMutex) {
-		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &response)
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
 	}
+
 	switch command {
 	case CREATE_VOLUME:
 		if CreateVolumeMutex == false {
@@ -191,5 +191,5 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (mo
 		}
 	}
 	//Pending Request 202
-	ctx.AbortWithStatusJSON(http.StatusAccepted, &response)
+	ctx.AbortWithStatusJSON(http.StatusAccepted, &res)
 }
