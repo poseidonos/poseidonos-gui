@@ -1,0 +1,101 @@
+# docker-compose.yml
+version: '3.3'
+services:
+        #node:
+        #restart: always
+        #image: node:10
+    #ports:
+            #  - 80:5000
+            #alpine:
+          #restart: always
+    #image: tiangolo/uwsgi-nginx-flask:python3.7
+    #image: alpine:latest
+  flask:
+    restart: always
+    #image: tiangolo/uwsgi-nginx-flask:python3.7
+    image: python:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    volumes:
+      - ./:/app
+    ports:
+      - 5000:5000
+    links:
+      - influxdb
+    container_name: mtool
+        #networks:
+        #- Jay
+    environment:
+      - DAGENT_HOST=dagent
+      - INFLUX_HOST=influxdb
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=UTF-8
+    depends_on: ['influxdb','kapacitor']
+  nginx:
+    restart: always
+    #image: tiangolo/uwsgi-nginx
+    image: nginx:latest
+    build:
+        context: .
+        dockerfile: Dockerfile-nginx
+        # networks:
+        #- Jay
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./public/index.html:/var/www/html/index.nginx-debian.html
+      - ./public:/usr/share/nginx/html
+      - ./public:/var/www/html
+        #command: service nginx restart
+    depends_on: ['influxdb','kapacitor','flask']
+  influxdb:
+          #restart: always
+    image: influxdb:1.7.10
+    container_name: influxdb
+    expose:
+      - 8086
+        #- 8082
+        #- 8089
+        #networks:
+            #- Jay
+    #  command: chmod 777 -R /etc/influxdb /var/lib/influxdb
+    volumes:
+      # Mount for influxdb data directory
+      - /var/lib/influxdb:/var/lib/influxdb:rw
+      - /etc/influxdb:/etc/influxdb:rw
+      # Mount for influxdb configuration
+      #- ./influxdb/config/:/etc/influxdb/:rw
+        # - /etc/influxdb:/etc/influxdb:rw
+    ports:
+      # The API for InfluxDB is served on port 8086
+      - 8086:8086
+        #- 8082:8082
+        # - 8089:8089
+        #- "8082:8082"
+        #- "8083:8083" 
+    environment:
+      - INFLUX_HOST=influxdb
+  kapacitor:
+          #restart: always
+    image: kapacitor:latest
+    container_name: kapacitor
+    #command: chmod 777 -R /etc/kapacitor/
+        #networks:
+            #- Jay
+    volumes:
+      - /var/lib/kapacitor:/var/lib/kapacitor:rw
+      - /etc/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+    ports:
+      - 9092:9092
+    depends_on: ['influxdb']
+    environment:
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+      - KAPACITOR_HOSTNAME=kapacitor
+        #networks:
+        #Jay:
+networks:
+  default:
+    external:
+      name: M9K

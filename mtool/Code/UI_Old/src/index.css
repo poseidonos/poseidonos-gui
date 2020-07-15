@@ -1,0 +1,84 @@
+/* @font-face {
+  font-family: 'SamsungOneUI';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Samsung One'), local('SamsungOneUI'),
+       url('./assets/fonts/SamsungOneUI-400.ttf') format('truetype'), /* Safari, Android, iOS 
+}
+@font-face {
+  font-family: 'SamsungOneUI';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Samsung One'), local('SamsungOneUI'),
+       url('./assets/fonts/SamsungOneUI-600.ttf') format('truetype'), /* Safari, Android, iOS 
+}
+@font-face {
+  font-family: 'SamsungOneUI';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Samsung One'), local('SamsungOneUI'),
+       url('./assets/fonts/SamsungOneUI-700.ttf') format('truetype'), /* Safari, Android, iOS 
+}
+@font-face {
+  font-family: 'Samsung One';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Samsung One'), local('SamsungOne'),
+       url('./assets/fonts/SamsungOneUI-800.ttf') format('truetype'), /* Safari, Android, iOS
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f1f0f5;
+  font-family: Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
+}
+
+code {
+  font-family: Arial, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.NewLine {
+  clear: both;
+}
+
+.root {
+  height: 100%;
+}
+
+.c3-axis-y-label {
+  font-size: 14px;
+}
+
+tspan {
+  font-size: 12px;
+}
+
+.c3 svg {
+  font-size: 12px;
+}
+
+.c3-axis-y text {
+  /* fill: greenyellow; */
+  font-size: 12px;
+}
+.c3-axis-x text {
+  font-size: 12px;
+  /* fill:white; */
+}
+
+.c3-event-rects {
+  cursor: default !important;
+}
+.c3-area {
+  stroke-width: 0;
+  opacity: 0.8;
+}
+
+.Dropdown-arrow {
+  top: 7px;
+}

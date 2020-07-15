@@ -1,0 +1,424 @@
+14de26578d1053d91fb663572d6e6b5a
+/* istanbul ignore next */
+"use strict";
+
+var cov_2f8mb12177 = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/userManagementAddNewUsersSaga.js";
+  var hash = "e705a34ace3873ef078e74750ce86b249564fdf7";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/userManagementAddNewUsersSaga.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 34,
+          column: 4
+        },
+        end: {
+          line: 74,
+          column: 5
+        }
+      },
+      "1": {
+        start: {
+          line: 35,
+          column: 25
+        },
+        end: {
+          line: 41,
+          column: 10
+        }
+      },
+      "2": {
+        start: {
+          line: 42,
+          column: 27
+        },
+        end: {
+          line: 42,
+          column: 35
+        }
+      },
+      "3": {
+        start: {
+          line: 43,
+          column: 8
+        },
+        end: {
+          line: 70,
+          column: 16
+        }
+      },
+      "4": {
+        start: {
+          line: 44,
+          column: 12
+        },
+        end: {
+          line: 44,
+          column: 35
+        }
+      },
+      "5": {
+        start: {
+          line: 45,
+          column: 12
+        },
+        end: {
+          line: 52,
+          column: 16
+        }
+      },
+      "6": {
+        start: {
+          line: 54,
+          column: 13
+        },
+        end: {
+          line: 70,
+          column: 16
+        }
+      },
+      "7": {
+        start: {
+          line: 55,
+          column: 12
+        },
+        end: {
+          line: 61,
+          column: 16
+        }
+      },
+      "8": {
+        start: {
+          line: 63,
+          column: 12
+        },
+        end: {
+          line: 70,
+          column: 16
+        }
+      },
+      "9": {
+        start: {
+          line: 78,
+          column: 4
+        },
+        end: {
+          line: 78,
+          column: 85
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "addNewUsersInfo",
+        decl: {
+          start: {
+            line: 33,
+            column: 17
+          },
+          end: {
+            line: 33,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 33,
+            column: 41
+          },
+          end: {
+            line: 75,
+            column: 1
+          }
+        },
+        line: 33
+      },
+      "1": {
+        name: "userManagementAddNewUsersWatcher",
+        decl: {
+          start: {
+            line: 77,
+            column: 17
+          },
+          end: {
+            line: 77,
+            column: 49
+          }
+        },
+        loc: {
+          start: {
+            line: 77,
+            column: 52
+          },
+          end: {
+            line: 79,
+            column: 1
+          }
+        },
+        line: 77
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 43,
+            column: 8
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 43,
+            column: 8
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        }, {
+          start: {
+            line: 43,
+            column: 8
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        }],
+        line: 43
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 54,
+            column: 13
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 54,
+            column: 13
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        }, {
+          start: {
+            line: 54,
+            column: 13
+          },
+          end: {
+            line: 70,
+            column: 16
+          }
+        }],
+        line: 54
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "e705a34ace3873ef078e74750ce86b249564fdf7"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addNewUsersInfo = addNewUsersInfo;
+exports.userManagementAddNewUsersWatcher = userManagementAddNewUsersWatcher;
+
+var
+/* istanbul ignore next */
+_axios = _interopRequireDefault(require("axios"));
+
+var
+/* istanbul ignore next */
+_effects = require("redux-saga/effects");
+
+var
+/* istanbul ignore next */
+actionTypes = _interopRequireWildcard(require("../store/actions/actionTypes"));
+
+var
+/* istanbul ignore next */
+_userManagementSaga = require("./userManagementSaga");
+
+var
+/* istanbul ignore next */
+actionCreators = _interopRequireWildcard(require("../store/actions/exportActionCreators"));
+
+function* addNewUsersInfo(action) {
+  /* istanbul ignore next */
+  cov_2f8mb12177.f[0]++;
+  cov_2f8mb12177.s[0]++;
+
+  try {
+    const response =
+    /* istanbul ignore next */
+    (cov_2f8mb12177.s[1]++, yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      call)([
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default,
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default.post], '/api/v1.0/add_new_user/', action.addNewUser, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
+    ));
+
+    /* istanbul ignore next */
+    const _ref = (cov_2f8mb12177.s[2]++, response),
+          status = _ref.status;
+
+    /* istanbul ignore next */
+    cov_2f8mb12177.s[3]++;
+
+    if (status === 200) {
+      /* istanbul ignore next */
+      cov_2f8mb12177.b[0][0]++;
+      cov_2f8mb12177.s[4]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _userManagementSaga.
+        /* istanbul ignore next */
+        fetchUsersInfo)()
+      );
+
+      /* istanbul ignore next */
+      cov_2f8mb12177.s[5]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _effects.
+        /* istanbul ignore next */
+        put)(actionCreators.openAlertBox({
+          alertOpen: true,
+          istypealert: true,
+          alerttype: 'info',
+          // alerttitle: "Success",
+          alerttitle: 'Add New User',
+          alertdescription: 'User added successfully'
+        }))
+      );
+    } else {
+      /* istanbul ignore next */
+      cov_2f8mb12177.b[0][1]++;
+      cov_2f8mb12177.s[6]++;
+
+      if (response === 400) {
+        /* istanbul ignore next */
+        cov_2f8mb12177.b[1][0]++;
+        cov_2f8mb12177.s[7]++;
+        yield (
+          /* istanbul ignore next */
+          (0,
+          /* istanbul ignore next */
+          _effects.
+          /* istanbul ignore next */
+          put)(actionCreators.openAlertBox({
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'alert',
+            alerttitle: 'Add New User',
+            alertdescription: 'User already exists'
+          }))
+        );
+      } else {
+        /* istanbul ignore next */
+        cov_2f8mb12177.b[1][1]++;
+        cov_2f8mb12177.s[8]++;
+        yield (
+          /* istanbul ignore next */
+          (0,
+          /* istanbul ignore next */
+          _effects.
+          /* istanbul ignore next */
+          put)(actionCreators.openAlertBox({
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'alert',
+            // alerttitle: "Failure",
+            alerttitle: 'Add New User',
+            alertdescription: 'Error in adding User'
+          }))
+        );
+      }
+    }
+  } catch (error) {
+    ;
+  }
+}
+
+function* userManagementAddNewUsersWatcher() {
+  /* istanbul ignore next */
+  cov_2f8mb12177.f[1]++;
+  cov_2f8mb12177.s[9]++;
+  yield (
+    /* istanbul ignore next */
+    (0,
+    /* istanbul ignore next */
+    _effects.
+    /* istanbul ignore next */
+    takeEvery)(actionTypes.SAGA_USER_MANAGEMENT_ADD_NEW_USERS, addNewUsersInfo)
+  );
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInVzZXJNYW5hZ2VtZW50QWRkTmV3VXNlcnNTYWdhLmpzIl0sIm5hbWVzIjpbImFkZE5ld1VzZXJzSW5mbyIsImFjdGlvbiIsInJlc3BvbnNlIiwiY2FsbCIsImF4aW9zIiwicG9zdCIsImFkZE5ld1VzZXIiLCJoZWFkZXJzIiwiQWNjZXB0IiwibG9jYWxTdG9yYWdlIiwiZ2V0SXRlbSIsInN0YXR1cyIsImZldGNoVXNlcnNJbmZvIiwicHV0IiwiYWN0aW9uQ3JlYXRvcnMiLCJvcGVuQWxlcnRCb3giLCJhbGVydE9wZW4iLCJpc3R5cGVhbGVydCIsImFsZXJ0dHlwZSIsImFsZXJ0dGl0bGUiLCJhbGVydGRlc2NyaXB0aW9uIiwiZXJyb3IiLCJ1c2VyTWFuYWdlbWVudEFkZE5ld1VzZXJzV2F0Y2hlciIsInRha2VFdmVyeSIsImFjdGlvblR5cGVzIiwiU0FHQV9VU0VSX01BTkFHRU1FTlRfQUREX05FV19VU0VSUyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUEwQkE7QUFBQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7QUFDQTtBQUFBO0FBQUE7O0FBQ0E7QUFBQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7QUFFTyxVQUFVQSxlQUFWLENBQTBCQyxNQUExQixFQUFrQztBQUFBO0FBQUE7QUFBQTs7QUFDckMsTUFBSTtBQUNBLFVBQU1DLFFBQVE7QUFBQTtBQUFBLDRCQUFHLE1BQU07QUFBQTtBQUFBO0FBQUFDO0FBQUFBO0FBQUFBO0FBQUFBLFlBQUs7QUFBQ0M7QUFBQUE7QUFBQUE7QUFBQUEsYUFBRDtBQUFRQTtBQUFBQTtBQUFBQTtBQUFBQSxjQUFNQyxJQUFkLENBQUwsRUFBMEIseUJBQTFCLEVBQXFESixNQUFNLENBQUNLLFVBQTVELEVBQXdFO0FBQzNGQyxRQUFBQSxPQUFPLEVBQUU7QUFDTEMsVUFBQUEsTUFBTSxFQUFFLGtCQURIO0FBRUwsMEJBQWdCLGtCQUZYO0FBR0wsNEJBQWtCQyxZQUFZLENBQUNDLE9BQWIsQ0FBcUIsT0FBckI7QUFIYjtBQURrRixPQUF4RTtBQUFOLEtBQUgsQ0FBZDs7QUFEQTtBQUFBLHlDQVFtQlIsUUFSbkI7QUFBQSxVQVFRUyxNQVJSLFFBUVFBLE1BUlI7O0FBQUE7QUFBQTs7QUFTQSxRQUFJQSxNQUFNLEtBQUssR0FBZixFQUFvQjtBQUFBO0FBQUE7QUFBQTtBQUNoQixZQUFNO0FBQUE7QUFBQTtBQUFBQztBQUFBQTtBQUFBQTtBQUFBQTtBQUFOOztBQURnQjtBQUFBO0FBRWhCLFlBQU07QUFBQTtBQUFBO0FBQUFDO0FBQUFBO0FBQUFBO0FBQUFBLGFBQUlDLGNBQWMsQ0FBQ0MsWUFBZixDQUE0QjtBQUNsQ0MsVUFBQUEsU0FBUyxFQUFFLElBRHVCO0FBRWxDQyxVQUFBQSxXQUFXLEVBQUUsSUFGcUI7QUFHbENDLFVBQUFBLFNBQVMsRUFBRSxNQUh1QjtBQUlsQztBQUNBQyxVQUFBQSxVQUFVLEVBQUUsY0FMc0I7QUFNbENDLFVBQUFBLGdCQUFnQixFQUFFO0FBTmdCLFNBQTVCLENBQUo7QUFBTjtBQVFILEtBVkQsTUFXSztBQUFBO0FBQUE7QUFBQTs7QUFBQSxVQUFJbEIsUUFBUSxLQUFLLEdBQWpCLEVBQ0Q7QUFBQTtBQUFBO0FBQUE7QUFBQSxjQUFNO0FBQUE7QUFBQTtBQUFBVztBQUFBQTtBQUFBQTtBQUFBQSxlQUFJQyxjQUFjLENBQUNDLFlBQWYsQ0FBNEI7QUFDbENDLFlBQUFBLFNBQVMsRUFBRSxJQUR1QjtBQUVsQ0MsWUFBQUEsV0FBVyxFQUFFLElBRnFCO0FBR2xDQyxZQUFBQSxTQUFTLEVBQUUsT0FIdUI7QUFJbENDLFlBQUFBLFVBQVUsRUFBRSxjQUpzQjtBQUtsQ0MsWUFBQUEsZ0JBQWdCLEVBQUU7QUFMZ0IsV0FBNUIsQ0FBSjtBQUFOO0FBTUksT0FQSCxNQVNEO0FBQUE7QUFBQTtBQUFBO0FBQUEsY0FBTTtBQUFBO0FBQUE7QUFBQVA7QUFBQUE7QUFBQUE7QUFBQUEsZUFBSUMsY0FBYyxDQUFDQyxZQUFmLENBQTRCO0FBQ2xDQyxZQUFBQSxTQUFTLEVBQUUsSUFEdUI7QUFFbENDLFlBQUFBLFdBQVcsRUFBRSxJQUZxQjtBQUdsQ0MsWUFBQUEsU0FBUyxFQUFFLE9BSHVCO0FBSWxDO0FBQ0FDLFlBQUFBLFVBQVUsRUFBRSxjQUxzQjtBQU1sQ0MsWUFBQUEsZ0JBQWdCLEVBQUU7QUFOZ0IsV0FBNUIsQ0FBSjtBQUFOO0FBT0k7QUFBQTtBQUNYLEdBckNELENBc0NBLE9BQU9DLEtBQVAsRUFBYztBQUNYO0FBQ0Y7QUFDSjs7QUFFTSxVQUFVQyxnQ0FBVixHQUE2QztBQUFBO0FBQUE7QUFBQTtBQUNoRCxRQUFNO0FBQUE7QUFBQTtBQUFBQztBQUFBQTtBQUFBQTtBQUFBQSxlQUFVQyxXQUFXLENBQUNDLGtDQUF0QixFQUEwRHpCLGVBQTFEO0FBQU47QUFDSCIsInNvdXJjZXNDb250ZW50IjpbIi8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgQ09QWVJJR0hUIChjKSAyMDE5IFNBTVNVTkcgRUxFQ1RST05JQ1MgQ08uLCBMVEQuICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgIEFMTCBSSUdIVFMgUkVTRVJWRUQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCB0byBsaWNlbnNlZXMgb2YgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gICAgICAgIC9cbi8gICBwcm9kdWN0cyB0byB1c2Ugb3IgYWJzdHJhY3QgdGhpcyBjb21wdXRlciBwcm9ncmFtIGZvciB0aGUgc29sZSBwdXJwb3NlIG9mICAgICAgICAgL1xuLyAgIGltcGxlbWVudGluZyBhIHByb2R1Y3QgYmFzZWQgb24gU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gcHJvZHVjdHMuICAgICAgICAgICAvXG4vICAgTm8gb3RoZXIgcmlnaHRzIHRvIHJlcHJvZHVjZSwgdXNlLCBvciBkaXNzZW1pbmF0ZSB0aGlzIGNvbXB1dGVyIHByb2dyYW0sICAgICAgICAgIC9cbi8gICB3aGV0aGVyIGluIHBhcnQgb3IgaW4gd2hvbGUsIGFyZSBncmFudGVkLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLyBcbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuIG1ha2VzIG5vIHJlcHJlc2VudGF0aW9uIG9yIHdhcnJhbnRpZXMgd2l0aCAgICAgICAgICAvXG4vICAgcmVzcGVjdCB0byB0aGUgcGVyZm9ybWFuY2Ugb2YgdGhpcyBjb21wdXRlciBwcm9ncmFtLCBhbmQgc3BlY2lmaWNhbGx5IGRpc2NsYWltcyAgIC9cbi8gICBhbnkgcmVzcG9uc2liaWxpdHkgZm9yIGFueSBkYW1hZ2VzLCBzcGVjaWFsIG9yIGNvbnNlcXVlbnRpYWwsIGNvbm5lY3RlZCAgICAgICAgICAgL1xuLyAgIHdpdGggdGhlIHVzZSBvZiB0aGlzIHByb2dyYW0uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL1xuXG5cbkRFU0NSSVBUSU9OOiA8Q29udGFpbnMgR2VuZXJhdG9yIEZ1bmN0aW9ucyBmb3IgQWRkIE5ldyBVc2VyIGNvbXBvbmVudD4gKlxuQE5BTUUgOiB1c2VyTWFuYWdlbWVudEFkZE5ld1VzZXJzU2FnYS5qc1xuQEFVVEhPUlM6IEpheSBIaXRlc2ggU2FuZ2hhdmlcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMDYvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cbmltcG9ydCBheGlvcyBmcm9tICdheGlvcyc7XG5pbXBvcnQgeyBjYWxsLCB0YWtlRXZlcnkscHV0IH0gZnJvbSAncmVkdXgtc2FnYS9lZmZlY3RzJztcbmltcG9ydCAqIGFzIGFjdGlvblR5cGVzIGZyb20gXCIuLi9zdG9yZS9hY3Rpb25zL2FjdGlvblR5cGVzXCI7XG5pbXBvcnQgeyBmZXRjaFVzZXJzSW5mbyB9IGZyb20gXCIuL3VzZXJNYW5hZ2VtZW50U2FnYVwiXG5pbXBvcnQgKiBhcyBhY3Rpb25DcmVhdG9ycyBmcm9tIFwiLi4vc3RvcmUvYWN0aW9ucy9leHBvcnRBY3Rpb25DcmVhdG9yc1wiXG5cbmV4cG9ydCBmdW5jdGlvbiogYWRkTmV3VXNlcnNJbmZvKGFjdGlvbikge1xuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0geWllbGQgY2FsbChbYXhpb3MsIGF4aW9zLnBvc3RdLCAnL2FwaS92MS4wL2FkZF9uZXdfdXNlci8nLCBhY3Rpb24uYWRkTmV3VXNlciwge1xuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIEFjY2VwdDogJ2FwcGxpY2F0aW9uL2pzb24nLFxuICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicsXG4gICAgICAgICAgICAgICAgJ3gtYWNjZXNzLXRva2VuJzogbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3Rva2VuJyksXG4gICAgICAgICAgICB9LFxuICAgICAgICB9KTtcbiAgICAgICAgY29uc3QgeyBzdGF0dXMgfSA9IHJlc3BvbnNlO1xuICAgICAgICBpZiAoc3RhdHVzID09PSAyMDApIHtcbiAgICAgICAgICAgIHlpZWxkIGZldGNoVXNlcnNJbmZvKCk7XG4gICAgICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMub3BlbkFsZXJ0Qm94KHtcbiAgICAgICAgICAgICAgICBhbGVydE9wZW46IHRydWUsXG4gICAgICAgICAgICAgICAgaXN0eXBlYWxlcnQ6IHRydWUsXG4gICAgICAgICAgICAgICAgYWxlcnR0eXBlOiAnaW5mbycsXG4gICAgICAgICAgICAgICAgLy8gYWxlcnR0aXRsZTogXCJTdWNjZXNzXCIsXG4gICAgICAgICAgICAgICAgYWxlcnR0aXRsZTogJ0FkZCBOZXcgVXNlcicsXG4gICAgICAgICAgICAgICAgYWxlcnRkZXNjcmlwdGlvbjogJ1VzZXIgYWRkZWQgc3VjY2Vzc2Z1bGx5JyxcbiAgICAgICAgICAgIH0pKTtcbiAgICAgICAgfVxuICAgICAgICBlbHNlIGlmIChyZXNwb25zZSA9PT0gNDAwKVxuICAgICAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLm9wZW5BbGVydEJveCh7XG4gICAgICAgICAgICAgICAgYWxlcnRPcGVuOiB0cnVlLFxuICAgICAgICAgICAgICAgIGlzdHlwZWFsZXJ0OiB0cnVlLFxuICAgICAgICAgICAgICAgIGFsZXJ0dHlwZTogJ2FsZXJ0JyxcbiAgICAgICAgICAgICAgICBhbGVydHRpdGxlOiAnQWRkIE5ldyBVc2VyJyxcbiAgICAgICAgICAgICAgICBhbGVydGRlc2NyaXB0aW9uOiAnVXNlciBhbHJlYWR5IGV4aXN0cycsXG4gICAgICAgICAgICB9KSk7XG4gICAgICAgIGVsc2VcbiAgICAgICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5vcGVuQWxlcnRCb3goe1xuICAgICAgICAgICAgICAgIGFsZXJ0T3BlbjogdHJ1ZSxcbiAgICAgICAgICAgICAgICBpc3R5cGVhbGVydDogdHJ1ZSxcbiAgICAgICAgICAgICAgICBhbGVydHR5cGU6ICdhbGVydCcsXG4gICAgICAgICAgICAgICAgLy8gYWxlcnR0aXRsZTogXCJGYWlsdXJlXCIsXG4gICAgICAgICAgICAgICAgYWxlcnR0aXRsZTogJ0FkZCBOZXcgVXNlcicsXG4gICAgICAgICAgICAgICAgYWxlcnRkZXNjcmlwdGlvbjogJ0Vycm9yIGluIGFkZGluZyBVc2VyJyxcbiAgICAgICAgICAgIH0pKTtcbiAgICB9XG4gICAgY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgO1xuICAgIH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uKiB1c2VyTWFuYWdlbWVudEFkZE5ld1VzZXJzV2F0Y2hlcigpIHtcbiAgICB5aWVsZCB0YWtlRXZlcnkoYWN0aW9uVHlwZXMuU0FHQV9VU0VSX01BTkFHRU1FTlRfQUREX05FV19VU0VSUywgYWRkTmV3VXNlcnNJbmZvKTtcbn1cbiJdfQ==

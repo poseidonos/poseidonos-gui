@@ -1,0 +1,36 @@
+#FROM tiangolo/uwsgi-nginx
+FROM nginx:latest
+# Nginx will listen on this port
+EXPOSE 80
+#EXPOSE 443
+#EXPOSE 5000
+#EXPOSE 8086
+#EXPOSE 8888
+#EXPOSE 9092
+ENV STATIC_PATH /app/public/
+# Remove the default config file that
+# /etc/nginx/nginx.conf includes
+#RUN rm /etc/nginx/conf.d/default.conf
+# We copy the requirements file in order to install
+# Python dependencies
+#RUN chmod 777 -R /etc/nginx
+RUN rm -r /etc/nginx/conf.d/*
+#RUN rm /etc/nginx/nginx.conf
+COPY virtual.conf /etc/nginx/conf.d
+#COPY nginx.conf /etc/nginx/nginx.conf
+RUN ls -a /etc/nginx/conf.d/
+RUN cat /etc/nginx/conf.d/*
+COPY ./public/ /usr/share/nginx/html/
+COPY ./public/ /var/www/html/
+RUN chmod 777 -R /var/www/html
+RUN chmod 777 -R /usr/share/nginx/html
+RUN ls -a /usr/share/nginx/html/
+RUN ls -a /var/www//html/
+RUN cat /usr/share/nginx/html/index.html
+#RUN cat /var/www/html/index.nginx-debian.html
+#CMD ["nginx", "-t"]
+#CMD ["systemctl", "restart", "nginx"]
+
+#RUN nginx -t
+#CMD ["systemctl","restart", "nginx"]
+

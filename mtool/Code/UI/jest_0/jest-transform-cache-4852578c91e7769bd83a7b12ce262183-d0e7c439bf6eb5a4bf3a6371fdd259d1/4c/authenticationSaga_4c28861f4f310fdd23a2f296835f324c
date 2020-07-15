@@ -1,0 +1,389 @@
+30099ae6e6f56b31fc065d4021440610
+/* istanbul ignore next */
+"use strict";
+
+var cov_1gd1pggw32 = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/authenticationSaga.js";
+  var hash = "17f9089bd866770cdeb4b23af08bc29bebe3fb72";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/authenticationSaga.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 9,
+          column: 2
+        },
+        end: {
+          line: 27,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 10,
+          column: 4
+        },
+        end: {
+          line: 10,
+          column: 48
+        }
+      },
+      "2": {
+        start: {
+          line: 11,
+          column: 21
+        },
+        end: {
+          line: 15,
+          column: 5
+        }
+      },
+      "3": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 22,
+          column: 7
+        }
+      },
+      "4": {
+        start: {
+          line: 17,
+          column: 8
+        },
+        end: {
+          line: 17,
+          column: 49
+        }
+      },
+      "5": {
+        start: {
+          line: 18,
+          column: 8
+        },
+        end: {
+          line: 18,
+          column: 63
+        }
+      },
+      "6": {
+        start: {
+          line: 19,
+          column: 8
+        },
+        end: {
+          line: 19,
+          column: 59
+        }
+      },
+      "7": {
+        start: {
+          line: 20,
+          column: 8
+        },
+        end: {
+          line: 20,
+          column: 50
+        }
+      },
+      "8": {
+        start: {
+          line: 21,
+          column: 8
+        },
+        end: {
+          line: 21,
+          column: 42
+        }
+      },
+      "9": {
+        start: {
+          line: 24,
+          column: 8
+        },
+        end: {
+          line: 24,
+          column: 51
+        }
+      },
+      "10": {
+        start: {
+          line: 25,
+          column: 8
+        },
+        end: {
+          line: 25,
+          column: 50
+        }
+      },
+      "11": {
+        start: {
+          line: 26,
+          column: 8
+        },
+        end: {
+          line: 26,
+          column: 52
+        }
+      },
+      "12": {
+        start: {
+          line: 32,
+          column: 2
+        },
+        end: {
+          line: 32,
+          column: 49
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "login",
+        decl: {
+          start: {
+            line: 8,
+            column: 17
+          },
+          end: {
+            line: 8,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 31
+          },
+          end: {
+            line: 28,
+            column: 1
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "authenticationWatcher",
+        decl: {
+          start: {
+            line: 31,
+            column: 17
+          },
+          end: {
+            line: 31,
+            column: 38
+          }
+        },
+        loc: {
+          start: {
+            line: 31,
+            column: 41
+          },
+          end: {
+            line: 34,
+            column: 1
+          }
+        },
+        line: 31
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 4
+          },
+          end: {
+            line: 22,
+            column: 7
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 16,
+            column: 4
+          },
+          end: {
+            line: 22,
+            column: 7
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 4
+          },
+          end: {
+            line: 22,
+            column: 7
+          }
+        }],
+        line: 16
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "17f9089bd866770cdeb4b23af08bc29bebe3fb72"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.login = login;
+exports.authenticationWatcher = authenticationWatcher;
+
+var
+/* istanbul ignore next */
+_axios = _interopRequireDefault(require("axios"));
+
+var
+/* istanbul ignore next */
+_effects = require("redux-saga/effects");
+
+var
+/* istanbul ignore next */
+actionTypes = _interopRequireWildcard(require("../store/actions/actionTypes"));
+
+var
+/* istanbul ignore next */
+actionCreators = _interopRequireWildcard(require("../store/actions/exportActionCreators"));
+
+function* login(action) {
+  /* istanbul ignore next */
+  cov_1gd1pggw32.f[0]++;
+  cov_1gd1pggw32.s[0]++;
+
+  try {
+    /* istanbul ignore next */
+    cov_1gd1pggw32.s[1]++;
+    localStorage.setItem('BMC_LoggedIn', false); // Set bmc_isLoggedIn false once the user logs in again
+
+    const response =
+    /* istanbul ignore next */
+    (cov_1gd1pggw32.s[2]++, yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      call)([
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default,
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default.post], '/api/v1.0/login/', action.payload)
+    ));
+
+    /* istanbul ignore next */
+    cov_1gd1pggw32.s[3]++;
+
+    if (response.data) {
+      /* istanbul ignore next */
+      cov_1gd1pggw32.b[0][0]++;
+      cov_1gd1pggw32.s[4]++;
+      localStorage.setItem('isLoggedIn', true);
+
+      /* istanbul ignore next */
+      cov_1gd1pggw32.s[5]++;
+      localStorage.setItem('userid', response.data.username);
+
+      /* istanbul ignore next */
+      cov_1gd1pggw32.s[6]++;
+      localStorage.setItem('token', response.data.token);
+
+      /* istanbul ignore next */
+      cov_1gd1pggw32.s[7]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _effects.
+        /* istanbul ignore next */
+        put)(actionCreators.setIsLoggedIn())
+      );
+
+      /* istanbul ignore next */
+      cov_1gd1pggw32.s[8]++;
+      action.history.push('/dashboard');
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1gd1pggw32.b[0][1]++;
+    }
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1gd1pggw32.s[9]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.setLoginFailed())
+    );
+
+    /* istanbul ignore next */
+    cov_1gd1pggw32.s[10]++;
+    localStorage.setItem('isLoggedIn', false);
+
+    /* istanbul ignore next */
+    cov_1gd1pggw32.s[11]++;
+    localStorage.setItem('BMC_LoggedIn', false);
+  }
+}
+
+function* authenticationWatcher() {
+  /* istanbul ignore next */
+  cov_1gd1pggw32.f[1]++;
+  cov_1gd1pggw32.s[12]++;
+  yield (
+    /* istanbul ignore next */
+    (0,
+    /* istanbul ignore next */
+    _effects.
+    /* istanbul ignore next */
+    takeEvery)(actionTypes.SAGA_LOGIN, login)
+  );
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF1dGhlbnRpY2F0aW9uU2FnYS5qcyJdLCJuYW1lcyI6WyJsb2dpbiIsImFjdGlvbiIsImxvY2FsU3RvcmFnZSIsInNldEl0ZW0iLCJyZXNwb25zZSIsImNhbGwiLCJheGlvcyIsInBvc3QiLCJwYXlsb2FkIiwiZGF0YSIsInVzZXJuYW1lIiwidG9rZW4iLCJwdXQiLCJhY3Rpb25DcmVhdG9ycyIsInNldElzTG9nZ2VkSW4iLCJoaXN0b3J5IiwicHVzaCIsImVycm9yIiwic2V0TG9naW5GYWlsZWQiLCJhdXRoZW50aWNhdGlvbldhdGNoZXIiLCJ0YWtlRXZlcnkiLCJhY3Rpb25UeXBlcyIsIlNBR0FfTE9HSU4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtBQUFBO0FBQUE7O0FBQ0E7QUFBQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7QUFDQTtBQUFBO0FBQUE7O0FBSU8sVUFBVUEsS0FBVixDQUFnQkMsTUFBaEIsRUFBd0I7QUFBQTtBQUFBO0FBQUE7O0FBQzdCLE1BQUk7QUFBQTtBQUFBO0FBQ0ZDLElBQUFBLFlBQVksQ0FBQ0MsT0FBYixDQUFxQixjQUFyQixFQUFxQyxLQUFyQyxFQURFLENBQzJDOztBQUM3QyxVQUFNQyxRQUFRO0FBQUE7QUFBQSw0QkFBRyxNQUFNO0FBQUE7QUFBQTtBQUFBQztBQUFBQTtBQUFBQTtBQUFBQSxZQUNyQjtBQUFDQztBQUFBQTtBQUFBQTtBQUFBQSxhQUFEO0FBQVFBO0FBQUFBO0FBQUFBO0FBQUFBLGNBQU1DLElBQWQsQ0FEcUIsRUFFckIsa0JBRnFCLEVBR3JCTixNQUFNLENBQUNPLE9BSGM7QUFBTixLQUFILENBQWQ7O0FBRkU7QUFBQTs7QUFPRixRQUFJSixRQUFRLENBQUNLLElBQWIsRUFBbUI7QUFBQTtBQUFBO0FBQUE7QUFDZlAsTUFBQUEsWUFBWSxDQUFDQyxPQUFiLENBQXFCLFlBQXJCLEVBQW1DLElBQW5DOztBQURlO0FBQUE7QUFFZkQsTUFBQUEsWUFBWSxDQUFDQyxPQUFiLENBQXFCLFFBQXJCLEVBQStCQyxRQUFRLENBQUNLLElBQVQsQ0FBY0MsUUFBN0M7O0FBRmU7QUFBQTtBQUdmUixNQUFBQSxZQUFZLENBQUNDLE9BQWIsQ0FBcUIsT0FBckIsRUFBOEJDLFFBQVEsQ0FBQ0ssSUFBVCxDQUFjRSxLQUE1Qzs7QUFIZTtBQUFBO0FBSWYsWUFBTTtBQUFBO0FBQUE7QUFBQUM7QUFBQUE7QUFBQUE7QUFBQUEsYUFBSUMsY0FBYyxDQUFDQyxhQUFmLEVBQUo7QUFBTjs7QUFKZTtBQUFBO0FBS2ZiLE1BQUFBLE1BQU0sQ0FBQ2MsT0FBUCxDQUFlQyxJQUFmLENBQW9CLFlBQXBCO0FBQ0QsS0FOSDtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBT0MsR0FkSCxDQWNJLE9BQU9DLEtBQVAsRUFBYztBQUFBO0FBQUE7QUFDWixVQUFNO0FBQUE7QUFBQTtBQUFBTDtBQUFBQTtBQUFBQTtBQUFBQSxXQUFJQyxjQUFjLENBQUNLLGNBQWYsRUFBSjtBQUFOOztBQURZO0FBQUE7QUFFWmhCLElBQUFBLFlBQVksQ0FBQ0MsT0FBYixDQUFxQixZQUFyQixFQUFtQyxLQUFuQzs7QUFGWTtBQUFBO0FBR1pELElBQUFBLFlBQVksQ0FBQ0MsT0FBYixDQUFxQixjQUFyQixFQUFxQyxLQUFyQztBQUNMO0FBQ0Y7O0FBR00sVUFBVWdCLHFCQUFWLEdBQWtDO0FBQUE7QUFBQTtBQUFBO0FBQ3ZDLFFBQU07QUFBQTtBQUFBO0FBQUFDO0FBQUFBO0FBQUFBO0FBQUFBLGVBQVVDLFdBQVcsQ0FBQ0MsVUFBdEIsRUFBa0N0QixLQUFsQztBQUFOO0FBRUQiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnO1xuaW1wb3J0IHsgY2FsbCwgdGFrZUV2ZXJ5LCBwdXQgfSBmcm9tICdyZWR1eC1zYWdhL2VmZmVjdHMnO1xuaW1wb3J0ICogYXMgYWN0aW9uVHlwZXMgZnJvbSAnLi4vc3RvcmUvYWN0aW9ucy9hY3Rpb25UeXBlcyc7XG5pbXBvcnQgKiBhcyBhY3Rpb25DcmVhdG9ycyBmcm9tICcuLi9zdG9yZS9hY3Rpb25zL2V4cG9ydEFjdGlvbkNyZWF0b3JzJztcblxuXG5cbmV4cG9ydCBmdW5jdGlvbiogbG9naW4oYWN0aW9uKSB7XG4gIHRyeSB7XG4gICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oJ0JNQ19Mb2dnZWRJbicsIGZhbHNlKTsgLy8gU2V0IGJtY19pc0xvZ2dlZEluIGZhbHNlIG9uY2UgdGhlIHVzZXIgbG9ncyBpbiBhZ2FpblxuICAgIGNvbnN0IHJlc3BvbnNlID0geWllbGQgY2FsbChcbiAgICAgIFtheGlvcywgYXhpb3MucG9zdF0sXG4gICAgICAnL2FwaS92MS4wL2xvZ2luLycsXG4gICAgICBhY3Rpb24ucGF5bG9hZFxuICAgICk7ICBcbiAgICBpZiAocmVzcG9uc2UuZGF0YSkge1xuICAgICAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgnaXNMb2dnZWRJbicsIHRydWUpO1xuICAgICAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgndXNlcmlkJywgcmVzcG9uc2UuZGF0YS51c2VybmFtZSk7XG4gICAgICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKCd0b2tlbicsIHJlc3BvbnNlLmRhdGEudG9rZW4pO1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuc2V0SXNMb2dnZWRJbigpKTtcbiAgICAgICAgYWN0aW9uLmhpc3RvcnkucHVzaCgnL2Rhc2hib2FyZCcpO1xuICAgICAgfVxuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5zZXRMb2dpbkZhaWxlZCgpKTtcbiAgICAgICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oJ2lzTG9nZ2VkSW4nLCBmYWxzZSk7XG4gICAgICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKCdCTUNfTG9nZ2VkSW4nLCBmYWxzZSk7XG4gIH1cbn1cblxuXG5leHBvcnQgZnVuY3Rpb24qIGF1dGhlbnRpY2F0aW9uV2F0Y2hlcigpIHtcbiAgeWllbGQgdGFrZUV2ZXJ5KGFjdGlvblR5cGVzLlNBR0FfTE9HSU4sIGxvZ2luKTtcbiAgXG59XG4iXX0=

@@ -1,0 +1,1007 @@
+43a6bf375c11246ed9b6f68d319e4e9c
+/* istanbul ignore next */
+"use strict";
+
+var cov_1studkk2ni = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/ChangePassword/index.js";
+  var hash = "6cc3313266e8be700b43d6ec425241752fc70cbd";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/ChangePassword/index.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 41,
+          column: 15
+        },
+        end: {
+          line: 87,
+          column: 2
+        }
+      },
+      "1": {
+        start: {
+          line: 41,
+          column: 25
+        },
+        end: {
+          line: 87,
+          column: 1
+        }
+      },
+      "2": {
+        start: {
+          line: 89,
+          column: 20
+        },
+        end: {
+          line: 103,
+          column: 2
+        }
+      },
+      "3": {
+        start: {
+          line: 90,
+          column: 41
+        },
+        end: {
+          line: 90,
+          column: 46
+        }
+      },
+      "4": {
+        start: {
+          line: 91,
+          column: 2
+        },
+        end: {
+          line: 102,
+          column: 4
+        }
+      },
+      "5": {
+        start: {
+          line: 105,
+          column: 23
+        },
+        end: {
+          line: 209,
+          column: 1
+        }
+      },
+      "6": {
+        start: {
+          line: 106,
+          column: 24
+        },
+        end: {
+          line: 106,
+          column: 29
+        }
+      },
+      "7": {
+        start: {
+          line: 107,
+          column: 4
+        },
+        end: {
+          line: 208,
+          column: 6
+        }
+      },
+      "8": {
+        start: {
+          line: 150,
+          column: 52
+        },
+        end: {
+          line: 150,
+          column: 98
+        }
+      },
+      "9": {
+        start: {
+          line: 163,
+          column: 52
+        },
+        end: {
+          line: 163,
+          column: 98
+        }
+      },
+      "10": {
+        start: {
+          line: 176,
+          column: 52
+        },
+        end: {
+          line: 176,
+          column: 98
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 41,
+            column: 15
+          },
+          end: {
+            line: 41,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 41,
+            column: 25
+          },
+          end: {
+            line: 87,
+            column: 1
+          }
+        },
+        line: 41
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 89,
+            column: 39
+          },
+          end: {
+            line: 89,
+            column: 40
+          }
+        },
+        loc: {
+          start: {
+            line: 89,
+            column: 48
+          },
+          end: {
+            line: 103,
+            column: 1
+          }
+        },
+        line: 89
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 105,
+            column: 23
+          },
+          end: {
+            line: 105,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 105,
+            column: 34
+          },
+          end: {
+            line: 209,
+            column: 1
+          }
+        },
+        line: 105
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 150,
+            column: 47
+          },
+          end: {
+            line: 150,
+            column: 48
+          }
+        },
+        loc: {
+          start: {
+            line: 150,
+            column: 52
+          },
+          end: {
+            line: 150,
+            column: 98
+          }
+        },
+        line: 150
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 163,
+            column: 47
+          },
+          end: {
+            line: 163,
+            column: 48
+          }
+        },
+        loc: {
+          start: {
+            line: 163,
+            column: 52
+          },
+          end: {
+            line: 163,
+            column: 98
+          }
+        },
+        line: 163
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 176,
+            column: 47
+          },
+          end: {
+            line: 176,
+            column: 48
+          }
+        },
+        loc: {
+          start: {
+            line: 176,
+            column: 52
+          },
+          end: {
+            line: 176,
+            column: 98
+          }
+        },
+        line: 176
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 150,
+            column: 52
+          },
+          end: {
+            line: 150,
+            column: 98
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 150,
+            column: 52
+          },
+          end: {
+            line: 150,
+            column: 76
+          }
+        }, {
+          start: {
+            line: 150,
+            column: 80
+          },
+          end: {
+            line: 150,
+            column: 98
+          }
+        }],
+        line: 150
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 163,
+            column: 52
+          },
+          end: {
+            line: 163,
+            column: 98
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 163,
+            column: 52
+          },
+          end: {
+            line: 163,
+            column: 76
+          }
+        }, {
+          start: {
+            line: 163,
+            column: 80
+          },
+          end: {
+            line: 163,
+            column: 98
+          }
+        }],
+        line: 163
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 176,
+            column: 52
+          },
+          end: {
+            line: 176,
+            column: 98
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 176,
+            column: 52
+          },
+          end: {
+            line: 176,
+            column: 76
+          }
+        }, {
+          start: {
+            line: 176,
+            column: 80
+          },
+          end: {
+            line: 176,
+            column: 98
+          }
+        }],
+        line: 176
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "6cc3313266e8be700b43d6ec425241752fc70cbd"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var
+/* istanbul ignore next */
+_react = _interopRequireDefault(require("react"));
+
+var
+/* istanbul ignore next */
+_Dialog = _interopRequireDefault(require("@material-ui/core/Dialog"));
+
+var
+/* istanbul ignore next */
+_DialogActions = _interopRequireDefault(require("@material-ui/core/DialogActions"));
+
+var
+/* istanbul ignore next */
+_DialogContent = _interopRequireDefault(require("@material-ui/core/DialogContent"));
+
+var
+/* istanbul ignore next */
+_DialogContentText = _interopRequireDefault(require("@material-ui/core/DialogContentText"));
+
+var
+/* istanbul ignore next */
+_styles = require("@material-ui/core/styles");
+
+var
+/* istanbul ignore next */
+_DialogTitle = _interopRequireDefault(require("@material-ui/core/DialogTitle"));
+
+var
+/* istanbul ignore next */
+_IconButton = _interopRequireDefault(require("@material-ui/core/IconButton"));
+
+var
+/* istanbul ignore next */
+_Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
+
+var
+/* istanbul ignore next */
+_Button = _interopRequireDefault(require("@material-ui/core/Button"));
+
+var
+/* istanbul ignore next */
+_MuiThemeProvider = _interopRequireDefault(require("@material-ui/core/styles/MuiThemeProvider"));
+
+var
+/* istanbul ignore next */
+_core = require("@material-ui/core");
+
+var
+/* istanbul ignore next */
+_theme = require("../../theme");
+
+/* istanbul ignore next */
+var _jsxFileName = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/ChangePassword/index.js";
+cov_1studkk2ni.s[0]++;
+
+const styles = theme => {
+  /* istanbul ignore next */
+  cov_1studkk2ni.f[0]++;
+  cov_1studkk2ni.s[1]++;
+  return {
+    title: {
+      backgroundColor: '#424850',
+      color: theme.palette.common.white,
+      padding: '5px'
+    },
+    dialogContent: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    submit: {
+      // background: '#007bff',
+      height: '1.8rem',
+      fontSize: '12px',
+      textTransform: 'none',
+      minWidth: '0px',
+      width: '60px'
+    },
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(),
+      top: '0px',
+      color: theme.palette.grey[500]
+    },
+    buttonStyle: {
+      height: '22px',
+      background: '#1a4d91',
+      padding: '2px 16px',
+      textAlign: 'center',
+      cursor: 'pointer',
+      color: 'white',
+      margin: '0 5px',
+      border: 'none',
+      display: 'flex',
+      justifyContent: 'center',
+      align: 'center'
+    },
+    textField: {
+      width: '70%'
+    },
+    actions: {
+      margin: '0 20px 20px 20px',
+      justifyContent: 'center'
+    }
+  };
+};
+
+const DialogTitle =
+/* istanbul ignore next */
+(cov_1studkk2ni.s[2]++,
+/* istanbul ignore next */
+(0,
+/* istanbul ignore next */
+_styles.
+/* istanbul ignore next */
+withStyles)(styles)(props => {
+  /* istanbul ignore next */
+  cov_1studkk2ni.f[1]++;
+
+  const _ref = (cov_1studkk2ni.s[3]++, props),
+        children = _ref.children,
+        classes = _ref.classes,
+        onClose = _ref.onClose;
+
+  /* istanbul ignore next */
+  cov_1studkk2ni.s[4]++;
+  return (
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _DialogTitle.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      disableTypography:
+      /* istanbul ignore next */
+      true,
+      className: classes.title,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 92
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _Typography.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      variant: "h6",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 93
+      },
+      __self: void 0
+    }, children),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _IconButton.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      /* istanbul ignore next */
+      "aria-label": "Close",
+      className: classes.closeButton,
+      onClick: onClose,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 94
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        fontSize: '14px',
+        color: '#fff'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 99
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "x")))
+  );
+}));
+
+/* istanbul ignore next */
+cov_1studkk2ni.s[5]++;
+
+const ChangePassword = props => {
+  /* istanbul ignore next */
+  cov_1studkk2ni.f[2]++;
+
+  const _ref2 = (cov_1studkk2ni.s[6]++, props),
+        classes = _ref2.classes;
+
+  /* istanbul ignore next */
+  cov_1studkk2ni.s[7]++;
+  return (
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _MuiThemeProvider.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      theme:
+      /* istanbul ignore next */
+      _theme.
+      /* istanbul ignore next */
+      PageTheme,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 108
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _Dialog.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      open: props.open,
+      onClose: props.handleClose,
+
+      /* istanbul ignore next */
+      "aria-labelledby": "alert-dialog-title",
+
+      /* istanbul ignore next */
+      "aria-describedby": "alert-dialog-description",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 109
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(DialogTitle,
+    /* istanbul ignore next */
+    {
+      onClose: props.handleClose,
+      id: "alert-dialog-title",
+      className: classes.title,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 115
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        display: 'flex',
+        padding: '3px',
+        paddingLeft: '10px',
+        color: '#fff',
+        fontSize: '14px',
+        fontWeight: 500,
+        alignItems: 'center'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 120
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Change Password")),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _DialogContent.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 134
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _DialogContentText.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      id: "alert-dialog-description",
+      className: classes.dialogContent,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 135
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      container:
+      /* istanbul ignore next */
+      true,
+      justify: "center",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 139
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      item:
+      /* istanbul ignore next */
+      true,
+      xs: 12,
+      container:
+      /* istanbul ignore next */
+      true,
+      justify: "center",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 140
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    TextField,
+    /* istanbul ignore next */
+    {
+      className: classes.textField,
+      required:
+      /* istanbul ignore next */
+      true,
+      margin: "none",
+      value: props.oldPassword,
+      name: "oldPassword",
+      type: "password",
+      label: "Old Password",
+      placeholder: "Enter Old Password",
+      onChange: props.OnHandleChange,
+      onKeyDown: e => {
+        /* istanbul ignore next */
+        cov_1studkk2ni.f[3]++;
+        cov_1studkk2ni.s[8]++;
+        return (
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[0][0]++, /[+-,#, ,]$/.test(e.key)) &&
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[0][1]++, e.preventDefault())
+        );
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 141
+      },
+      __self: void 0
+    })),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      item:
+      /* istanbul ignore next */
+      true,
+      xs: 12,
+      container:
+      /* istanbul ignore next */
+      true,
+      justify: "center",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 153
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    TextField,
+    /* istanbul ignore next */
+    {
+      className: classes.textField,
+      required:
+      /* istanbul ignore next */
+      true,
+      margin: "none",
+      value: props.newPassword,
+      name: "newPassword",
+      type: "password",
+      label: "New Password",
+      placeholder: "Enter New Password",
+      onChange: props.OnHandleChange,
+      onKeyDown: e => {
+        /* istanbul ignore next */
+        cov_1studkk2ni.f[4]++;
+        cov_1studkk2ni.s[9]++;
+        return (
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[1][0]++, /[+-,#, ,]$/.test(e.key)) &&
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[1][1]++, e.preventDefault())
+        );
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 154
+      },
+      __self: void 0
+    })),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      item:
+      /* istanbul ignore next */
+      true,
+      xs: 12,
+      container:
+      /* istanbul ignore next */
+      true,
+      justify: "center",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 166
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    TextField,
+    /* istanbul ignore next */
+    {
+      className: classes.textField,
+      required:
+      /* istanbul ignore next */
+      true,
+      margin: "none",
+      name: "confirmPassword",
+      value: props.confirmPassword,
+      type: "password",
+      label: "Confirm Password",
+      placeholder: "Confirm New Password",
+      onChange: props.OnHandleChange,
+      onKeyDown: e => {
+        /* istanbul ignore next */
+        cov_1studkk2ni.f[5]++;
+        cov_1studkk2ni.s[10]++;
+        return (
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[2][0]++, /[+-,#, ,]$/.test(e.key)) &&
+          /* istanbul ignore next */
+          (cov_1studkk2ni.b[2][1]++, e.preventDefault())
+        );
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 167
+      },
+      __self: void 0
+    }))))),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _DialogActions.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      className: classes.actions,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 183
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _Button.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      color: "primary",
+      variant: "contained",
+      onClick: props.handleClose,
+      className: classes.submit,
+      autoFocus:
+      /* istanbul ignore next */
+      true,
+      id: "change-pwd-cancel",
+
+      /* istanbul ignore next */
+      "data-testid": "change-pwd-cancel",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 184
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Cancel"),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _Button.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      color: "primary",
+      variant: "contained",
+      className: classes.submit,
+      onClick: props.onConfirm,
+      id: "change-pwd-submit",
+
+      /* istanbul ignore next */
+      "data-testid": "change-pwd-submit",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 195
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Submit"))))
+  );
+};
+
+/* istanbul ignore next */
+var _default =
+/* istanbul ignore next */
+(0,
+/* istanbul ignore next */
+_styles.
+/* istanbul ignore next */
+withStyles)(styles)(ChangePassword);
+
+/* istanbul ignore next */
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbInN0eWxlcyIsInRoZW1lIiwidGl0bGUiLCJiYWNrZ3JvdW5kQ29sb3IiLCJjb2xvciIsInBhbGV0dGUiLCJjb21tb24iLCJ3aGl0ZSIsInBhZGRpbmciLCJkaWFsb2dDb250ZW50IiwiZGlzcGxheSIsImFsaWduSXRlbXMiLCJzdWJtaXQiLCJoZWlnaHQiLCJmb250U2l6ZSIsInRleHRUcmFuc2Zvcm0iLCJtaW5XaWR0aCIsIndpZHRoIiwiY2xvc2VCdXR0b24iLCJwb3NpdGlvbiIsInJpZ2h0Iiwic3BhY2luZyIsInRvcCIsImdyZXkiLCJidXR0b25TdHlsZSIsImJhY2tncm91bmQiLCJ0ZXh0QWxpZ24iLCJjdXJzb3IiLCJtYXJnaW4iLCJib3JkZXIiLCJqdXN0aWZ5Q29udGVudCIsImFsaWduIiwidGV4dEZpZWxkIiwiYWN0aW9ucyIsIkRpYWxvZ1RpdGxlIiwid2l0aFN0eWxlcyIsInByb3BzIiwiY2hpbGRyZW4iLCJjbGFzc2VzIiwib25DbG9zZSIsIkNoYW5nZVBhc3N3b3JkIiwiUGFnZVRoZW1lIiwib3BlbiIsImhhbmRsZUNsb3NlIiwicGFkZGluZ0xlZnQiLCJmb250V2VpZ2h0Iiwib2xkUGFzc3dvcmQiLCJPbkhhbmRsZUNoYW5nZSIsImUiLCJ0ZXN0Iiwia2V5IiwicHJldmVudERlZmF1bHQiLCJuZXdQYXNzd29yZCIsImNvbmZpcm1QYXNzd29yZCIsIm9uQ29uZmlybSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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QixNQUh2QjtBQUlJLE1BQUEsT0FBTyxFQUFFd0IsS0FBSyxDQUFDa0IsU0FKbkI7QUFLSSxNQUFBLEVBQUUsRUFBQyxtQkFMUDs7QUFNSTtBQUFBLHFCQUFZLG1CQU5oQjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFaSixDQTFFSixDQURKO0FBREo7QUFzR0gsQ0F4R0Q7Ozs7QUEwR2U7QUFBQTtBQUFBbkI7QUFBQUE7QUFBQUE7QUFBQUEsWUFBV25DLE1BQVgsRUFBbUJ3QyxjQUFuQixDIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cblxuREVTQ1JJUFRJT046IDxGaWxlIGRlc2NyaXB0aW9uPiAqXG5ATkFNRSA6IGluZGV4LmpzXG5AQVVUSE9SUzogSmF5IEhpdGVzaCBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMDYvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgRGlhbG9nIGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0RpYWxvZyc7XG5pbXBvcnQgRGlhbG9nQWN0aW9ucyBmcm9tICdAbWF0ZXJpYWwtdWkvY29yZS9EaWFsb2dBY3Rpb25zJztcbmltcG9ydCBEaWFsb2dDb250ZW50IGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0RpYWxvZ0NvbnRlbnQnO1xuaW1wb3J0IERpYWxvZ0NvbnRlbnRUZXh0IGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0RpYWxvZ0NvbnRlbnRUZXh0JztcbmltcG9ydCB7IHdpdGhTdHlsZXMgfSBmcm9tICdAbWF0ZXJpYWwtdWkvY29yZS9zdHlsZXMnO1xuaW1wb3J0IE11aURpYWxvZ1RpdGxlIGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0RpYWxvZ1RpdGxlJztcbmltcG9ydCBJY29uQnV0dG9uIGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0ljb25CdXR0b24nO1xuaW1wb3J0IFR5cG9ncmFwaHkgZnJvbSAnQG1hdGVyaWFsLXVpL2NvcmUvVHlwb2dyYXBoeSc7XG5pbXBvcnQgQnV0dG9uIGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlL0J1dHRvbic7XG5pbXBvcnQgVGhlbWVQcm92aWRlciBmcm9tICdAbWF0ZXJpYWwtdWkvY29yZS9zdHlsZXMvTXVpVGhlbWVQcm92aWRlcic7XG5pbXBvcnQgeyBHcmlkLCBUZXh0RmllbGQgfSBmcm9tICdAbWF0ZXJpYWwtdWkvY29yZSc7XG5pbXBvcnQgeyBQYWdlVGhlbWUgfSBmcm9tICcuLi8uLi90aGVtZSc7XG5cbmNvbnN0IHN0eWxlcyA9IHRoZW1lID0+ICh7XG4gIHRpdGxlOiB7XG4gICAgYmFja2dyb3VuZENvbG9yOiAnIzQyNDg1MCcsXG4gICAgY29sb3I6IHRoZW1lLnBhbGV0dGUuY29tbW9uLndoaXRlLFxuICAgIHBhZGRpbmc6ICc1cHgnLFxuICB9LFxuICBkaWFsb2dDb250ZW50OiB7XG4gICAgZGlzcGxheTogJ2ZsZXgnLFxuICAgIGFsaWduSXRlbXM6ICdjZW50ZXInLFxuICB9LFxuXG4gIHN1Ym1pdDoge1xuICAgIC8vIGJhY2tncm91bmQ6ICcjMDA3YmZmJyxcbiAgICBoZWlnaHQ6ICcxLjhyZW0nLFxuICAgIGZvbnRTaXplOiAnMTJweCcsXG4gICAgdGV4dFRyYW5zZm9ybTogJ25vbmUnLFxuICAgIG1pbldpZHRoOiAnMHB4JyxcbiAgICB3aWR0aDogJzYwcHgnLFxuICB9LFxuXG4gIGNsb3NlQnV0dG9uOiB7XG4gICAgcG9zaXRpb246ICdhYnNvbHV0ZScsXG4gICAgcmlnaHQ6IHRoZW1lLnNwYWNpbmcoKSxcbiAgICB0b3A6ICcwcHgnLFxuICAgIGNvbG9yOiB0aGVtZS5wYWxldHRlLmdyZXlbNTAwXSxcbiAgfSxcbiAgYnV0dG9uU3R5bGU6IHtcbiAgICBoZWlnaHQ6ICcyMnB4JyxcbiAgICBiYWNrZ3JvdW5kOiAnIzFhNGQ5MScsXG4gICAgcGFkZGluZzogJzJweCAxNnB4JyxcbiAgICB0ZXh0QWxpZ246ICdjZW50ZXInLFxuICAgIGN1cnNvcjogJ3BvaW50ZXInLFxuICAgIGNvbG9yOiAnd2hpdGUnLFxuICAgIG1hcmdpbjogJzAgNXB4JyxcbiAgICBib3JkZXI6ICdub25lJyxcbiAgICBkaXNwbGF5OiAnZmxleCcsXG4gICAganVzdGlmeUNvbnRlbnQ6ICdjZW50ZXInLFxuICAgIGFsaWduOiAnY2VudGVyJyxcbiAgfSxcbiAgdGV4dEZpZWxkOiB7XG4gICAgd2lkdGg6ICc3MCUnXG4gIH0sXG4gIGFjdGlvbnM6IHtcbiAgICBtYXJnaW46ICcwIDIwcHggMjBweCAyMHB4JyxcbiAgICBqdXN0aWZ5Q29udGVudDogJ2NlbnRlcicsXG4gIH0sXG59KTtcblxuY29uc3QgRGlhbG9nVGl0bGUgPSB3aXRoU3R5bGVzKHN0eWxlcykocHJvcHMgPT4ge1xuICBjb25zdCB7IGNoaWxkcmVuLCBjbGFzc2VzLCBvbkNsb3NlIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8TXVpRGlhbG9nVGl0bGUgZGlzYWJsZVR5cG9ncmFwaHkgY2xhc3NOYW1lPXtjbGFzc2VzLnRpdGxlfT5cbiAgICAgIDxUeXBvZ3JhcGh5IHZhcmlhbnQ9XCJoNlwiPntjaGlsZHJlbn08L1R5cG9ncmFwaHk+XG4gICAgICA8SWNvbkJ1dHRvblxuICAgICAgICBhcmlhLWxhYmVsPVwiQ2xvc2VcIlxuICAgICAgICBjbGFzc05hbWU9e2NsYXNzZXMuY2xvc2VCdXR0b259XG4gICAgICAgIG9uQ2xpY2s9e29uQ2xvc2V9XG4gICAgICA+XG4gICAgICAgIDxzcGFuIHN0eWxlPXt7IGZvbnRTaXplOiAnMTRweCcsIGNvbG9yOiAnI2ZmZicgfX0+eDwvc3Bhbj5cbiAgICAgIDwvSWNvbkJ1dHRvbj5cbiAgICA8L011aURpYWxvZ1RpdGxlPlxuICApO1xufSk7XG5cbmNvbnN0IENoYW5nZVBhc3N3b3JkID0gKHByb3BzKSA9PiB7XG4gICAgY29uc3QgeyBjbGFzc2VzIH0gPSBwcm9wcztcbiAgICByZXR1cm4gKFxuICAgICAgICA8VGhlbWVQcm92aWRlciB0aGVtZT17UGFnZVRoZW1lfT5cbiAgICAgICAgICAgIDxEaWFsb2dcbiAgICAgICAgICAgICAgICBvcGVuPXtwcm9wcy5vcGVufVxuICAgICAgICAgICAgICAgIG9uQ2xvc2U9e3Byb3BzLmhhbmRsZUNsb3NlfVxuICAgICAgICAgICAgICAgIGFyaWEtbGFiZWxsZWRieT1cImFsZXJ0LWRpYWxvZy10aXRsZVwiXG4gICAgICAgICAgICAgICAgYXJpYS1kZXNjcmliZWRieT1cImFsZXJ0LWRpYWxvZy1kZXNjcmlwdGlvblwiXG4gICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgPERpYWxvZ1RpdGxlXG4gICAgICAgICAgICAgICAgICAgIG9uQ2xvc2U9e3Byb3BzLmhhbmRsZUNsb3NlfVxuICAgICAgICAgICAgICAgICAgICBpZD1cImFsZXJ0LWRpYWxvZy10aXRsZVwiXG4gICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT17Y2xhc3Nlcy50aXRsZX1cbiAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuXG4gICAgICAgICAgICAgICAgICAgICAgICBzdHlsZT17e1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRpc3BsYXk6ICdmbGV4JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYWRkaW5nOiAnM3B4JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYWRkaW5nTGVmdDogJzEwcHgnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnI2ZmZicsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgZm9udFNpemU6ICcxNHB4JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBmb250V2VpZ2h0OiA1MDAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYWxpZ25JdGVtczogJ2NlbnRlcicsXG4gICAgICAgICAgICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgICAgICBDaGFuZ2UgUGFzc3dvcmRcbiAgICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgIDwvRGlhbG9nVGl0bGU+XG4gICAgICAgICAgICAgICAgPERpYWxvZ0NvbnRlbnQ+XG4gICAgICAgICAgICAgICAgICAgIDxEaWFsb2dDb250ZW50VGV4dFxuICAgICAgICAgICAgICAgICAgICAgICAgaWQ9XCJhbGVydC1kaWFsb2ctZGVzY3JpcHRpb25cIlxuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtjbGFzc2VzLmRpYWxvZ0NvbnRlbnR9XG4gICAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxHcmlkIGNvbnRhaW5lciBqdXN0aWZ5PVwiY2VudGVyXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPEdyaWQgaXRlbSB4cz17MTJ9IGNvbnRhaW5lciBqdXN0aWZ5PVwiY2VudGVyXCI+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxUZXh0RmllbGQgY2xhc3NOYW1lPXtjbGFzc2VzLnRleHRGaWVsZH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcXVpcmVkXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYXJnaW49XCJub25lXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbHVlPXtwcm9wcy5vbGRQYXNzd29yZH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWU9XCJvbGRQYXNzd29yZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlPVwicGFzc3dvcmRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWw9XCJPbGQgUGFzc3dvcmRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJFbnRlciBPbGQgUGFzc3dvcmRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb25DaGFuZ2U9e3Byb3BzLk9uSGFuZGxlQ2hhbmdlfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb25LZXlEb3duPXtlID0+IC9bKy0sIywgLF0kLy50ZXN0KGUua2V5KSAmJiBlLnByZXZlbnREZWZhdWx0KCl9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9HcmlkPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxHcmlkIGl0ZW0geHM9ezEyfSBjb250YWluZXIganVzdGlmeT1cImNlbnRlclwiPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8VGV4dEZpZWxkIGNsYXNzTmFtZT17Y2xhc3Nlcy50ZXh0RmllbGR9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXF1aXJlZFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWFyZ2luPVwibm9uZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWx1ZT17cHJvcHMubmV3UGFzc3dvcmR9XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lPVwibmV3UGFzc3dvcmRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZT1cInBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVsPVwiTmV3IFBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwiRW50ZXIgTmV3IFBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXtwcm9wcy5PbkhhbmRsZUNoYW5nZX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uS2V5RG93bj17ZSA9PiAvWystLCMsICxdJC8udGVzdChlLmtleSkgJiYgZS5wcmV2ZW50RGVmYXVsdCgpfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvR3JpZD5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8R3JpZCBpdGVtIHhzPXsxMn0gY29udGFpbmVyIGp1c3RpZnk9XCJjZW50ZXJcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPFRleHRGaWVsZCBjbGFzc05hbWU9e2NsYXNzZXMudGV4dEZpZWxkfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVxdWlyZWRcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1hcmdpbj1cIm5vbmVcIlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZT1cImNvbmZpcm1QYXNzd29yZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWx1ZT17cHJvcHMuY29uZmlybVBhc3N3b3JkfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZT1cInBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVsPVwiQ29uZmlybSBQYXNzd29yZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwbGFjZWhvbGRlcj1cIkNvbmZpcm0gTmV3IFBhc3N3b3JkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXtwcm9wcy5PbkhhbmRsZUNoYW5nZX1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9uS2V5RG93bj17ZSA9PiAvWystLCMsICxdJC8udGVzdChlLmtleSkgJiYgZS5wcmV2ZW50RGVmYXVsdCgpfVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvR3JpZD5cbiAgICAgICAgICAgICAgICAgICAgICAgIDwvR3JpZD5cbiAgICAgICAgICAgICAgICAgICAgPC9EaWFsb2dDb250ZW50VGV4dD5cbiAgICAgICAgICAgICAgICA8L0RpYWxvZ0NvbnRlbnQ+XG5cbiAgICAgICAgICAgICAgICA8RGlhbG9nQWN0aW9ucyBjbGFzc05hbWU9e2NsYXNzZXMuYWN0aW9uc30+XG4gICAgICAgICAgICAgICAgICAgIDxCdXR0b25cbiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yPVwicHJpbWFyeVwiXG4gICAgICAgICAgICAgICAgICAgICAgICB2YXJpYW50PVwiY29udGFpbmVkXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9e3Byb3BzLmhhbmRsZUNsb3NlfVxuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtjbGFzc2VzLnN1Ym1pdH1cbiAgICAgICAgICAgICAgICAgICAgICAgIGF1dG9Gb2N1c1xuICAgICAgICAgICAgICAgICAgICAgICAgaWQ9XCJjaGFuZ2UtcHdkLWNhbmNlbFwiXG4gICAgICAgICAgICAgICAgICAgICAgICBkYXRhLXRlc3RpZD1cImNoYW5nZS1wd2QtY2FuY2VsXCJcbiAgICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICAgICAgQ2FuY2VsXG4gICAgICAgICAgICAgICAgICAgIDwvQnV0dG9uPlxuICAgICAgICAgICAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICAgICAgICAgICAgICBjb2xvcj1cInByaW1hcnlcIlxuICAgICAgICAgICAgICAgICAgICAgICAgdmFyaWFudD1cImNvbnRhaW5lZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2NsYXNzZXMuc3VibWl0fVxuICAgICAgICAgICAgICAgICAgICAgICAgb25DbGljaz17cHJvcHMub25Db25maXJtfVxuICAgICAgICAgICAgICAgICAgICAgICAgaWQ9XCJjaGFuZ2UtcHdkLXN1Ym1pdFwiXG4gICAgICAgICAgICAgICAgICAgICAgICBkYXRhLXRlc3RpZD1cImNoYW5nZS1wd2Qtc3VibWl0XCJcbiAgICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICAgICAgU3VibWl0XG4gICAgICAgICAgICAgICAgICAgIDwvQnV0dG9uPlxuICAgICAgICAgICAgICAgIDwvRGlhbG9nQWN0aW9ucz5cbiAgICAgICAgICAgIDwvRGlhbG9nPlxuICAgICAgICA8L1RoZW1lUHJvdmlkZXI+XG4gICAgKTtcbn1cblxuZXhwb3J0IGRlZmF1bHQgd2l0aFN0eWxlcyhzdHlsZXMpKENoYW5nZVBhc3N3b3JkKTtcbiJdfQ==

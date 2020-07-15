@@ -1,0 +1,41 @@
+.Tooltip {
+  z-index: 10;
+}
+
+.Tooltip .Tooltip-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #fff;
+  empty-cells: show;
+  box-shadow: 7px 7px 12px -9px #777;
+  opacity: 0.9;
+}
+
+.Tooltip tr {
+  border: 1px solid #ccc;
+}
+
+.Tooltip th {
+  background-color: #aaa;
+  font-size: 14px;
+  padding: 2px 5px;
+  text-align: left;
+  color: #fff;
+}
+
+.Tooltip td {
+  padding: 3px 6px;
+  background-color: #fff;
+  border-left: 1px dotted #999;
+}
+
+.Tooltip td > span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+}
+
+.Tooltip td.value {
+  text-align: right;
+}

@@ -1,0 +1,64 @@
+9c7276b16786af9c3546fe4e55e26013
+"use strict";
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchTemperatureSensorInfo = exports.fetchFanSensorInfo = exports.fetchPowerSensorInfo = void 0;
+
+var actionTypes = _interopRequireWildcard(require("./actionTypes"));
+
+/* -------------------------------------------------------------------------------------/
+                                                                                    /
+/               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
+/                          ALL RIGHTS RESERVED                                        /
+/                                                                                     /
+/   Permission is hereby granted to licensees of Samsung Electronics Co., Ltd.        /
+/   products to use or abstract this computer program for the sole purpose of         /
+/   implementing a product based on Samsung Electronics Co., Ltd. products.           /
+/   No other rights to reproduce, use, or disseminate this computer program,          /
+/   whether in part or in whole, are granted.                                         / 
+/                                                                                     /
+/   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
+/   respect to the performance of this computer program, and specifically disclaims   /
+/   any responsibility for any damages, special or consequential, connected           /
+/   with the use of this program.                                                     /
+/                                                                                     /
+/-------------------------------------------------------------------------------------/
+
+DESCRIPTION: <Contains actions for hardware container> *
+@NAME : hardwareSensorActions.js
+@AUTHORS: Jay Sanghavi 
+@Version : 1.0 *
+@REVISION HISTORY
+[03/11/2019] [Jay] : Prototyping..........////////////////////
+*/
+const fetchPowerSensorInfo = serverinfo => {
+  return {
+    type: actionTypes.HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION,
+    serverinfo
+  };
+};
+
+exports.fetchPowerSensorInfo = fetchPowerSensorInfo;
+
+const fetchFanSensorInfo = serverinfo => {
+  return {
+    type: actionTypes.HARDWARE_SENSORS_FETCH_FAN_SENSOR_INFORMATION,
+    serverinfo
+  };
+};
+
+exports.fetchFanSensorInfo = fetchFanSensorInfo;
+
+const fetchTemperatureSensorInfo = serverinfo => {
+  return {
+    type: actionTypes.HARDWARE_SENSORS_FETCH_TEMPERATURE_SENSOR_INFORMATION,
+    serverinfo
+  };
+};
+
+exports.fetchTemperatureSensorInfo = fetchTemperatureSensorInfo;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImhhcmR3YXJlU2Vuc29yQWN0aW9ucy5qcyJdLCJuYW1lcyI6WyJmZXRjaFBvd2VyU2Vuc29ySW5mbyIsInNlcnZlcmluZm8iLCJ0eXBlIiwiYWN0aW9uVHlwZXMiLCJIQVJEV0FSRV9TRU5TT1JTX0ZFVENIX1BPV0VSX1NFTlNPUl9JTkZPUk1BVElPTiIsImZldGNoRmFuU2Vuc29ySW5mbyIsIkhBUkRXQVJFX1NFTlNPUlNfRkVUQ0hfRkFOX1NFTlNPUl9JTkZPUk1BVElPTiIsImZldGNoVGVtcGVyYXR1cmVTZW5zb3JJbmZvIiwiSEFSRFdBUkVfU0VOU09SU19GRVRDSF9URU1QRVJBVFVSRV9TRU5TT1JfSU5GT1JNQVRJT04iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQTBCQTs7QUExQkE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUE0Qk8sTUFBTUEsb0JBQW9CLEdBQUdDLFVBQVUsSUFBSTtBQUM5QyxTQUFPO0FBQ0hDLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDQywrQ0FEZjtBQUVISCxJQUFBQTtBQUZHLEdBQVA7QUFJSCxDQUxNOzs7O0FBT0EsTUFBTUksa0JBQWtCLEdBQUdKLFVBQVUsSUFBSTtBQUM1QyxTQUFPO0FBQ0hDLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDRyw2Q0FEZjtBQUVITCxJQUFBQTtBQUZHLEdBQVA7QUFJSCxDQUxNOzs7O0FBT0EsTUFBTU0sMEJBQTBCLEdBQUdOLFVBQVUsSUFBSTtBQUNwRCxTQUFPO0FBQ0hDLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDSyxxREFEZjtBQUVIUCxJQUFBQTtBQUZHLEdBQVA7QUFJSCxDQUxNIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cbkRFU0NSSVBUSU9OOiA8Q29udGFpbnMgYWN0aW9ucyBmb3IgaGFyZHdhcmUgY29udGFpbmVyPiAqXG5ATkFNRSA6IGhhcmR3YXJlU2Vuc29yQWN0aW9ucy5qc1xuQEFVVEhPUlM6IEpheSBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMTEvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cblxuaW1wb3J0ICogYXMgYWN0aW9uVHlwZXMgZnJvbSAnLi9hY3Rpb25UeXBlcyc7XG5cbmV4cG9ydCBjb25zdCBmZXRjaFBvd2VyU2Vuc29ySW5mbyA9IHNlcnZlcmluZm8gPT4ge1xuICAgIHJldHVybiB7XG4gICAgICAgIHR5cGU6IGFjdGlvblR5cGVzLkhBUkRXQVJFX1NFTlNPUlNfRkVUQ0hfUE9XRVJfU0VOU09SX0lORk9STUFUSU9OLFxuICAgICAgICBzZXJ2ZXJpbmZvLFxuICAgIH07XG59O1xuXG5leHBvcnQgY29uc3QgZmV0Y2hGYW5TZW5zb3JJbmZvID0gc2VydmVyaW5mbyA9PiB7XG4gICAgcmV0dXJuIHtcbiAgICAgICAgdHlwZTogYWN0aW9uVHlwZXMuSEFSRFdBUkVfU0VOU09SU19GRVRDSF9GQU5fU0VOU09SX0lORk9STUFUSU9OLFxuICAgICAgICBzZXJ2ZXJpbmZvLFxuICAgIH07XG59O1xuXG5leHBvcnQgY29uc3QgZmV0Y2hUZW1wZXJhdHVyZVNlbnNvckluZm8gPSBzZXJ2ZXJpbmZvID0+IHtcbiAgICByZXR1cm4ge1xuICAgICAgICB0eXBlOiBhY3Rpb25UeXBlcy5IQVJEV0FSRV9TRU5TT1JTX0ZFVENIX1RFTVBFUkFUVVJFX1NFTlNPUl9JTkZPUk1BVElPTixcbiAgICAgICAgc2VydmVyaW5mbyxcbiAgICB9O1xufTtcbiJdfQ==

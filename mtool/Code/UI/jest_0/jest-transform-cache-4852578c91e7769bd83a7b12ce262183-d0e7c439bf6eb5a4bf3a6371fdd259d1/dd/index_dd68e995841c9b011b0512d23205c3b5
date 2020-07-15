@@ -1,0 +1,277 @@
+fe3628b9778187730ca785fc328e00cc
+/* istanbul ignore next */
+"use strict";
+
+var cov_geh49ttig = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/PrivateRoute/index.js";
+  var hash = "5ad5d95297605ddcce5c888247f9a2105f692623";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/PrivateRoute/index.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 31,
+          column: 21
+        },
+        end: {
+          line: 47,
+          column: 1
+        }
+      },
+      "1": {
+        start: {
+          line: 32,
+          column: 2
+        },
+        end: {
+          line: 46,
+          column: 4
+        }
+      },
+      "2": {
+        start: {
+          line: 35,
+          column: 6
+        },
+        end: {
+          line: 44,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 49,
+          column: 0
+        },
+        end: {
+          line: 52,
+          column: 1
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 31,
+            column: 21
+          },
+          end: {
+            line: 31,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 2
+          },
+          end: {
+            line: 46,
+            column: 4
+          }
+        },
+        line: 32
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 34,
+            column: 12
+          },
+          end: {
+            line: 34,
+            column: 13
+          }
+        },
+        loc: {
+          start: {
+            line: 35,
+            column: 6
+          },
+          end: {
+            line: 44,
+            column: 7
+          }
+        },
+        line: 35
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 35,
+            column: 6
+          },
+          end: {
+            line: 44,
+            column: 7
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 36,
+            column: 8
+          },
+          end: {
+            line: 36,
+            column: 32
+          }
+        }, {
+          start: {
+            line: 38,
+            column: 8
+          },
+          end: {
+            line: 43,
+            column: 10
+          }
+        }],
+        line: 35
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "5ad5d95297605ddcce5c888247f9a2105f692623"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/objectWithoutProperties"));
+
+var
+/* istanbul ignore next */
+_react = _interopRequireDefault(require("react"));
+
+var
+/* istanbul ignore next */
+_reactRouterDom = require("react-router-dom");
+
+var
+/* istanbul ignore next */
+_propTypes = _interopRequireDefault(require("prop-types"));
+
+/* istanbul ignore next */
+var _jsxFileName = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/PrivateRoute/index.js";
+cov_geh49ttig.s[0]++;
+
+const PrivateRoute = (
+/* istanbul ignore next */
+_ref) => {
+  /* istanbul ignore next */
+  let Component = _ref.component,
+      rest = (0, _objectWithoutProperties2.default)(_ref, ["component"]);
+
+  /* istanbul ignore next */
+  cov_geh49ttig.f[0]++;
+  cov_geh49ttig.s[1]++;
+  return (
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _reactRouterDom.
+    /* istanbul ignore next */
+    Route,
+    /* istanbul ignore next */
+    Object.assign({}, rest, {
+      render: props => {
+        /* istanbul ignore next */
+        cov_geh49ttig.f[1]++;
+        cov_geh49ttig.s[2]++;
+        return localStorage.getItem('isLoggedIn') ?
+        /* istanbul ignore next */
+        (cov_geh49ttig.b[0][0]++,
+        /* istanbul ignore next */
+        _react.default.createElement(Component,
+        /* istanbul ignore next */
+        Object.assign({}, props, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 36
+          },
+          __self: void 0
+        }))) :
+        /* istanbul ignore next */
+        (cov_geh49ttig.b[0][1]++,
+        /* istanbul ignore next */
+        _react.default.createElement(
+        /* istanbul ignore next */
+        _reactRouterDom.
+        /* istanbul ignore next */
+        Redirect,
+        /* istanbul ignore next */
+        {
+          to: {
+            pathname: '/',
+            state: {
+              from: props.location
+            }
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 38
+          },
+          __self: void 0
+        }));
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 32
+      },
+      __self: void 0
+    }))
+  );
+};
+
+/* istanbul ignore next */
+cov_geh49ttig.s[3]++;
+PrivateRoute.propTypes = {
+  component:
+  /* istanbul ignore next */
+  _propTypes.
+  /* istanbul ignore next */
+  default.elementType.isRequired,
+  location:
+  /* istanbul ignore next */
+  _propTypes.
+  /* istanbul ignore next */
+  default.string.isRequired
+};
+
+/* istanbul ignore next */
+var _default = PrivateRoute;
+
+/* istanbul ignore next */
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIlByaXZhdGVSb3V0ZSIsIkNvbXBvbmVudCIsImNvbXBvbmVudCIsInJlc3QiLCJwcm9wcyIsImxvY2FsU3RvcmFnZSIsImdldEl0ZW0iLCJwYXRobmFtZSIsInN0YXRlIiwiZnJvbSIsImxvY2F0aW9uIiwicHJvcFR5cGVzIiwiUHJvcFR5cGVzIiwiZWxlbWVudFR5cGUiLCJpc1JlcXVpcmVkIiwic3RyaW5nIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUEwQkE7QUFBQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7QUFDQTtBQUFBO0FBQUE7Ozs7OztBQUVBLE1BQU1BLFlBQVksR0FBRztBQUFBO0FBQUEsU0FDbkI7QUFBQTtBQUFBLE1BRGlDQyxTQUNqQyxRQURzQkMsU0FDdEI7QUFBQSxNQUQrQ0MsSUFDL0M7O0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUM7QUFBQTtBQUFBO0FBQUEsU0FBRDtBQUFBO0FBQUEsc0JBQ01BLElBRE47QUFFRSxNQUFBLE1BQU0sRUFBRUMsS0FBSyxJQUNYO0FBQUE7QUFBQTtBQUFBO0FBQUEsZUFBQUMsWUFBWSxDQUFDQyxPQUFiLENBQXFCLFlBQXJCO0FBQUE7QUFBQTtBQUNFO0FBQUEscUNBQUMsU0FBRDtBQUFBO0FBQUEsMEJBQWVGLEtBQWY7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FERjtBQUFBO0FBQUE7QUFHRTtBQUFBO0FBQUM7QUFBQTtBQUFBO0FBQUEsZ0JBQUQ7QUFBQTtBQUFBO0FBQ0UsVUFBQSxFQUFFLEVBQUU7QUFDRkcsWUFBQUEsUUFBUSxFQUFFLEdBRFI7QUFFRkMsWUFBQUEsS0FBSyxFQUFFO0FBQUVDLGNBQUFBLElBQUksRUFBRUwsS0FBSyxDQUFDTTtBQUFkO0FBRkwsV0FETjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxVQUhGO0FBU0MsT0FaTDtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBY0UsQ0FmSjs7OztBQWtCQVYsWUFBWSxDQUFDVyxTQUFiLEdBQXlCO0FBQ3ZCVCxFQUFBQSxTQUFTO0FBQUVVO0FBQUFBO0FBQUFBO0FBQUFBLFVBQVVDLFdBQVYsQ0FBc0JDLFVBRFY7QUFFdkJKLEVBQUFBLFFBQVE7QUFBRUU7QUFBQUE7QUFBQUE7QUFBQUEsVUFBVUcsTUFBVixDQUFpQkQ7QUFGSixDQUF6Qjs7O2VBS2VkLFkiLCJzb3VyY2VzQ29udGVudCI6WyIvKiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgIENPUFlSSUdIVCAoYykgMjAxOSBTQU1TVU5HIEVMRUNUUk9OSUNTIENPLiwgTFRELiAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICBBTEwgUklHSFRTIFJFU0VSVkVEICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQgdG8gbGljZW5zZWVzIG9mIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuICAgICAgICAvXG4vICAgcHJvZHVjdHMgdG8gdXNlIG9yIGFic3RyYWN0IHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSBmb3IgdGhlIHNvbGUgcHVycG9zZSBvZiAgICAgICAgIC9cbi8gICBpbXBsZW1lbnRpbmcgYSBwcm9kdWN0IGJhc2VkIG9uIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuIHByb2R1Y3RzLiAgICAgICAgICAgL1xuLyAgIE5vIG90aGVyIHJpZ2h0cyB0byByZXByb2R1Y2UsIHVzZSwgb3IgZGlzc2VtaW5hdGUgdGhpcyBjb21wdXRlciBwcm9ncmFtLCAgICAgICAgICAvXG4vICAgd2hldGhlciBpbiBwYXJ0IG9yIGluIHdob2xlLCBhcmUgZ3JhbnRlZC4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8gXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBtYWtlcyBubyByZXByZXNlbnRhdGlvbiBvciB3YXJyYW50aWVzIHdpdGggICAgICAgICAgL1xuLyAgIHJlc3BlY3QgdG8gdGhlIHBlcmZvcm1hbmNlIG9mIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgYW5kIHNwZWNpZmljYWxseSBkaXNjbGFpbXMgICAvXG4vICAgYW55IHJlc3BvbnNpYmlsaXR5IGZvciBhbnkgZGFtYWdlcywgc3BlY2lhbCBvciBjb25zZXF1ZW50aWFsLCBjb25uZWN0ZWQgICAgICAgICAgIC9cbi8gICB3aXRoIHRoZSB1c2Ugb2YgdGhpcyBwcm9ncmFtLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cblxuXG5ERVNDUklQVElPTjogPEZpbGUgZGVzY3JpcHRpb24+ICpcbkBOQU1FIDogaW5kZXguanNcbkBBVVRIT1JTOiBKYXkgSGl0ZXNoIFNhbmdoYXZpIFxuQFZlcnNpb24gOiAxLjAgKlxuQFJFVklTSU9OIEhJU1RPUllcblswMy8wNi8yMDE5XSBbSmF5XSA6IFByb3RvdHlwaW5nLi4uLi4uLi4uLi8vLy8vLy8vLy8vLy8vLy8vLy8vXG4qL1xuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IFJvdXRlLCBSZWRpcmVjdCB9IGZyb20gJ3JlYWN0LXJvdXRlci1kb20nO1xuaW1wb3J0IFByb3BUeXBlcyBmcm9tICdwcm9wLXR5cGVzJztcblxuY29uc3QgUHJpdmF0ZVJvdXRlID0gKHsgY29tcG9uZW50OiBDb21wb25lbnQsIC4uLnJlc3QgfSkgPT4gKFxuICA8Um91dGVcbiAgICB7Li4ucmVzdH1cbiAgICByZW5kZXI9e3Byb3BzID0+XG4gICAgICBsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgnaXNMb2dnZWRJbicpID8gKFxuICAgICAgICA8Q29tcG9uZW50IHsuLi5wcm9wc30gLz5cbiAgICAgICkgOiAoXG4gICAgICAgIDxSZWRpcmVjdFxuICAgICAgICAgIHRvPXt7XG4gICAgICAgICAgICBwYXRobmFtZTogJy8nLFxuICAgICAgICAgICAgc3RhdGU6IHsgZnJvbTogcHJvcHMubG9jYXRpb24gfSxcbiAgICAgICAgICB9fVxuICAgICAgICAvPlxuICAgICAgKVxuICAgIH1cbiAgLz5cbik7XG5cblByaXZhdGVSb3V0ZS5wcm9wVHlwZXMgPSB7XG4gIGNvbXBvbmVudDogUHJvcFR5cGVzLmVsZW1lbnRUeXBlLmlzUmVxdWlyZWQsXG4gIGxvY2F0aW9uOiBQcm9wVHlwZXMuc3RyaW5nLmlzUmVxdWlyZWRcbn1cblxuZXhwb3J0IGRlZmF1bHQgUHJpdmF0ZVJvdXRlO1xuIl19

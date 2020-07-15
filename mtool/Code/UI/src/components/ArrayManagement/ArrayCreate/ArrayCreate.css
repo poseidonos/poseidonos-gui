@@ -1,0 +1,132 @@
+.Dropdown-control {
+  padding: 5px 9px 5px 5px;
+  text-align: left;
+}
+.array-raid-dropdown {
+  float: right;
+  width: 250px;
+  margin-top: 10px;
+  margin-right: 40px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+span.Labels.ArrayCreate-inner-label {
+  margin-top: 9px;
+}
+
+.Labels {
+  text-align: left;
+  width: 12%;
+  float: left;
+  margin-top: 5px;
+  padding-top: 3px;
+}
+.textbox_style {
+  float: left;
+  width: 20.36%;
+  height: 18px;
+  margin-left: 0%;
+  margin-top: 5px;
+  border-width: 2px;
+}
+
+.textbox_style.textbox {
+  width: calc(20% - 6px);
+  background: white;
+  color: #333333;
+  padding-left: 5px;
+}
+
+.legend {
+  list-style: none;
+  float: left;
+  clear: left;
+  display: block;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+}
+.legend li {
+  float: left;
+  margin-right: 10px;
+}
+.legend span {
+  border: 1px solid #ccc;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin: -3px 2px 0 0;
+}
+/* your colors */
+.legend .selected {
+  background-color: #51ce46;
+}
+.legend .spare {
+  background-color: #339eff;
+}
+.legend .not-selected {
+  background-color: white;
+}
+.legend .empty-slot {
+  background-color: #e2e1e1;
+}
+.legend .part-of-array {
+  background-color: rgb(236, 219, 87);
+}
+.legend .not-selected-show {
+  background-color: rgb(137, 163, 196);
+}
+.legend .corrupted {
+  background-color: rgb(232, 114, 114);
+}
+
+.ButtonPlace {
+  float: right;
+}
+
+.formClass {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.flex-container {
+  display: flex;
+  clear: both;
+  flex-wrap: nowrap;
+  margin: 15px 0 15px 0;
+  width: 100%;
+  float: left;
+  background-color: #fff;
+  justify-content: center;
+}
+
+.flex-container > div {
+  background-color: white;
+  width: 5%;
+  border: 2px solid lightgray;
+  text-align: center;
+  line-height: 110px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.flex-container .disabled-disk {
+  pointer-events: none;
+  background: #e2e1e1;
+}
+.flex-container .disabled-disk {
+  pointer-events: none;
+  background: #e2e1e1;
+}
+
+.ArrayCreate-inner-label {
+  margin-left: 5%;
+}
+
+.Dropdown-option {
+  text-align: left;
+}
+.Volume-chart-card .Dropdown-menu {
+  margin-top: 8px;
+}

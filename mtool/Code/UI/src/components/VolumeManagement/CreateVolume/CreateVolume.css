@@ -1,0 +1,32 @@
+.volume_textbox_label {
+  float: left;
+  font-size: 1em;
+  margin-left: 2%;
+}
+
+.volume-text-input-box {
+  float: left;
+  width: 78%;
+  height: 18px;
+  margin-left: 2%;
+  margin-top: 4px;
+}
+
+input {
+  background: white;
+}
+
+.volume-input {
+  width: 48%;
+  float: left;
+  margin-left: 1%;
+  margin-bottom: 6px;
+  margin-top: 5px;
+}
+
+.memory-dropdown {
+  float: left;
+  height: 23px;
+  margin-left: 2px;
+  margin-top: 3px;
+}

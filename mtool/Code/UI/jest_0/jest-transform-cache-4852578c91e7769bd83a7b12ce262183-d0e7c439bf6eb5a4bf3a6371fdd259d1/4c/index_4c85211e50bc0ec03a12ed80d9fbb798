@@ -1,0 +1,538 @@
+cafc1f61594bf7343150c63dd97a4a10
+/* istanbul ignore next */
+"use strict";
+
+var cov_1m8kavs9ud = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/AlertManagementComponents/AlertFields/index.js";
+  var hash = "2e3f53935d04786f33421099878fa32a45a7f6a6";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/AlertManagementComponents/AlertFields/index.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 32,
+          column: 16
+        },
+        end: {
+          line: 63,
+          column: 1
+        }
+      },
+      "1": {
+        start: {
+          line: 33,
+          column: 2
+        },
+        end: {
+          line: 62,
+          column: 4
+        }
+      },
+      "2": {
+        start: {
+          line: 65,
+          column: 20
+        },
+        end: {
+          line: 104,
+          column: 1
+        }
+      },
+      "3": {
+        start: {
+          line: 66,
+          column: 22
+        },
+        end: {
+          line: 66,
+          column: 27
+        }
+      },
+      "4": {
+        start: {
+          line: 67,
+          column: 2
+        },
+        end: {
+          line: 103,
+          column: 4
+        }
+      },
+      "5": {
+        start: {
+          line: 83,
+          column: 18
+        },
+        end: {
+          line: 95,
+          column: 36
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 32,
+            column: 16
+          },
+          end: {
+            line: 32,
+            column: 17
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 25
+          },
+          end: {
+            line: 63,
+            column: 1
+          }
+        },
+        line: 32
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 65,
+            column: 20
+          },
+          end: {
+            line: 65,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 65,
+            column: 29
+          },
+          end: {
+            line: 104,
+            column: 1
+          }
+        },
+        line: 65
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 82,
+            column: 16
+          },
+          end: {
+            line: 82,
+            column: 17
+          }
+        },
+        loc: {
+          start: {
+            line: 82,
+            column: 32
+          },
+          end: {
+            line: 96,
+            column: 17
+          }
+        },
+        line: 82
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 77,
+            column: 13
+          },
+          end: {
+            line: 98,
+            column: 20
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 81,
+            column: 16
+          },
+          end: {
+            line: 97,
+            column: 15
+          }
+        }, {
+          start: {
+            line: 98,
+            column: 16
+          },
+          end: {
+            line: 98,
+            column: 20
+          }
+        }],
+        line: 77
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 77,
+            column: 13
+          },
+          end: {
+            line: 80,
+            column: 29
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 77,
+            column: 13
+          },
+          end: {
+            line: 77,
+            column: 65
+          }
+        }, {
+          start: {
+            line: 78,
+            column: 14
+          },
+          end: {
+            line: 78,
+            column: 36
+          }
+        }, {
+          start: {
+            line: 79,
+            column: 14
+          },
+          end: {
+            line: 79,
+            column: 43
+          }
+        }, {
+          start: {
+            line: 80,
+            column: 14
+          },
+          end: {
+            line: 80,
+            column: 29
+          }
+        }],
+        line: 77
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 84,
+            column: 20
+          },
+          end: {
+            line: 95,
+            column: 34
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 86,
+            column: 24
+          },
+          end: {
+            line: 93,
+            column: 26
+          }
+        }, {
+          start: {
+            line: 95,
+            column: 24
+          },
+          end: {
+            line: 95,
+            column: 34
+          }
+        }],
+        line: 84
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0, 0, 0],
+      "2": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "2e3f53935d04786f33421099878fa32a45a7f6a6"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var
+/* istanbul ignore next */
+_react = _interopRequireDefault(require("react"));
+
+var
+/* istanbul ignore next */
+_core = require("@material-ui/core");
+
+/* istanbul ignore next */
+require("./AlertFields.css");
+
+/* istanbul ignore next */
+var _jsxFileName = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/AlertManagementComponents/AlertFields/index.js";
+cov_1m8kavs9ud.s[0]++;
+
+const styles = theme => {
+  /* istanbul ignore next */
+  cov_1m8kavs9ud.f[0]++;
+  cov_1m8kavs9ud.s[1]++;
+  return {
+    radioGroup: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginLeft: theme.spacing(1)
+    },
+    alertTypesOuterGrid: {
+      border: '1px solid gray',
+      maxWidth: '100%',
+      minHeight: '130px',
+      maxHeight: '130px',
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      background: '#fff'
+    },
+    alertTypesInnerGrid: {
+      maxWidth: '100%'
+    },
+    alertTypesHeader: {
+      backgroundColor: '#788595',
+      color: 'white',
+      paddingLeft: '5px',
+      paddingTop: '3px',
+      fontSize: '14px',
+      height: '25px'
+    },
+    radioButtonClass: {
+      margin: theme.spacing(1, 0)
+    }
+  };
+};
+
+/* istanbul ignore next */
+cov_1m8kavs9ud.s[2]++;
+
+const AlertFields = props => {
+  /* istanbul ignore next */
+  cov_1m8kavs9ud.f[1]++;
+
+  const _ref = (cov_1m8kavs9ud.s[3]++, props),
+        classes = _ref.classes;
+
+  /* istanbul ignore next */
+  cov_1m8kavs9ud.s[4]++;
+  return (
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      sm: 6,
+      xs: 12,
+      item:
+      /* istanbul ignore next */
+      true,
+      container:
+      /* istanbul ignore next */
+      true,
+
+      /* istanbul ignore next */
+      "data-testid": "AlertFieldsTag",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 68
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      xs: 12,
+      item:
+      /* istanbul ignore next */
+      true,
+      className: classes.alertTypesOuterGrid,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 69
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Typography,
+    /* istanbul ignore next */
+    {
+      className: classes.alertTypesHeader,
+      variant: "h6",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 70
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Alert Fields"),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Grid,
+    /* istanbul ignore next */
+    {
+      sm: 6,
+      xs: 12,
+      item:
+      /* istanbul ignore next */
+      true,
+      className: classes.alertTypesInnerGrid,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 71
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    RadioGroup,
+    /* istanbul ignore next */
+    {
+      name: "alertRadioButton",
+      className: classes.radioGroup,
+      onChange: props.onHandleChange,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 72
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[1][0]++, props.alertClusterList[props.radioindex].alertFields) &&
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[1][1]++, props.alertClusterName) &&
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[1][2]++, props.selectedAlertSubCluster) &&
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[1][3]++, props.alertType) ?
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[0][0]++, props.alertClusterList[props.radioindex].alertFields.map(alertField => {
+      /* istanbul ignore next */
+      cov_1m8kavs9ud.f[2]++;
+      cov_1m8kavs9ud.s[5]++;
+      return alertField !== 'NA' ?
+      /* istanbul ignore next */
+      (cov_1m8kavs9ud.b[2][0]++,
+      /* istanbul ignore next */
+      _react.default.createElement(
+      /* istanbul ignore next */
+      _core.
+      /* istanbul ignore next */
+      FormControlLabel,
+      /* istanbul ignore next */
+      {
+        key: alertField,
+        control:
+        /* istanbul ignore next */
+        _react.default.createElement(
+        /* istanbul ignore next */
+        _core.
+        /* istanbul ignore next */
+        Radio,
+        /* istanbul ignore next */
+        {
+          /* istanbul ignore next */
+          "data-testid": "alertFieldRadioTag",
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 88
+          },
+          __self: void 0
+        }),
+        checked: props.alertRadioButton === alertField,
+        value: alertField,
+        label: alertField,
+        labelPlacement: "end",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 86
+        },
+        __self: void 0
+      })) :
+      /* istanbul ignore next */
+      (cov_1m8kavs9ud.b[2][1]++, alertField);
+    })) :
+    /* istanbul ignore next */
+    (cov_1m8kavs9ud.b[0][1]++, null)))))
+  );
+};
+
+/* istanbul ignore next */
+var _default =
+/* istanbul ignore next */
+(0,
+/* istanbul ignore next */
+_core.
+/* istanbul ignore next */
+withStyles)(styles)(AlertFields);
+
+/* istanbul ignore next */
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbInN0eWxlcyIsInRoZW1lIiwicmFkaW9Hcm91cCIsImRpc3BsYXkiLCJmbGV4RGlyZWN0aW9uIiwibWFyZ2luTGVmdCIsInNwYWNpbmciLCJhbGVydFR5cGVzT3V0ZXJHcmlkIiwiYm9yZGVyIiwibWF4V2lkdGgiLCJtaW5IZWlnaHQiLCJtYXhIZWlnaHQiLCJvdmVyZmxvd1kiLCJvdmVyZmxvd1giLCJiYWNrZ3JvdW5kIiwiYWxlcnRUeXBlc0lubmVyR3JpZCIsImFsZXJ0VHlwZXNIZWFkZXIiLCJiYWNrZ3JvdW5kQ29sb3IiLCJjb2xvciIsInBhZGRpbmdMZWZ0IiwicGFkZGluZ1RvcCIsImZvbnRTaXplIiwiaGVpZ2h0IiwicmFkaW9CdXR0b25DbGFzcyIsIm1hcmdpbiIsIkFsZXJ0RmllbGRzIiwicHJvcHMiLCJjbGFzc2VzIiwib25IYW5kbGVDaGFuZ2UiLCJhbGVydENsdXN0ZXJMaXN0IiwicmFkaW9pbmRleCIsImFsZXJ0RmllbGRzIiwiYWxlcnRDbHVzdGVyTmFtZSIsInNlbGVjdGVkQWxlcnRTdWJDbHVzdGVyIiwiYWxlcnRUeXBlIiwibWFwIiwiYWxlcnRGaWVsZCIsImFsZXJ0UmFkaW9CdXR0b24iLCJ3aXRoU3R5bGVzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQTBCQTtBQUFBO0FB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bUJ5QixXQUFuQixDIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cblxuREVTQ1JJUFRJT046IEFsZXJ0IE1hbmFnZW1lbnQgQ29tcG9uZW50IGZvciBzZWxlY3RpbmcgQWxlcnQgRmllbGRzXG5ATkFNRSA6IGluZGV4LmpzXG5AQVVUSE9SUzogSmF5IEhpdGVzaCBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMDYvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBGb3JtQ29udHJvbExhYmVsLCBSYWRpbywgUmFkaW9Hcm91cCwgR3JpZCwgVHlwb2dyYXBoeSwgd2l0aFN0eWxlcyB9IGZyb20gJ0BtYXRlcmlhbC11aS9jb3JlJztcbmltcG9ydCAnLi9BbGVydEZpZWxkcy5jc3MnO1xuXG5cbmNvbnN0IHN0eWxlcyA9ICh0aGVtZSA9PiB7XG4gIHJldHVybiAoe1xuICAgIHJhZGlvR3JvdXA6e1xuICAgICAgZGlzcGxheTonZmxleCcsXG4gICAgICBmbGV4RGlyZWN0aW9uOidjb2x1bW4nLFxuICAgICAgbWFyZ2luTGVmdDp0aGVtZS5zcGFjaW5nKDEpXG4gICAgfSxcbiAgICBhbGVydFR5cGVzT3V0ZXJHcmlkOiB7XG4gICAgICBib3JkZXI6ICcxcHggc29saWQgZ3JheScsXG4gICAgICBtYXhXaWR0aDogJzEwMCUnLFxuICAgICAgbWluSGVpZ2h0OiAnMTMwcHgnLFxuICAgICAgbWF4SGVpZ2h0OiAnMTMwcHgnLFxuICAgICAgb3ZlcmZsb3dZOiAnYXV0bycsXG4gICAgICBvdmVyZmxvd1g6ICdoaWRkZW4nLFxuICAgICAgYmFja2dyb3VuZDogJyNmZmYnXG4gICAgfSxcbiAgICBhbGVydFR5cGVzSW5uZXJHcmlkOiB7XG4gICAgICBtYXhXaWR0aDogJzEwMCUnLFxuICAgIH0sXG4gICAgYWxlcnRUeXBlc0hlYWRlcjoge1xuICAgICAgYmFja2dyb3VuZENvbG9yOiAnIzc4ODU5NScsXG4gICAgICBjb2xvcjogJ3doaXRlJyxcbiAgICAgIHBhZGRpbmdMZWZ0OiAnNXB4JyxcbiAgICAgIHBhZGRpbmdUb3A6ICczcHgnLFxuICAgICAgZm9udFNpemU6ICcxNHB4JyxcbiAgICAgIGhlaWdodDogJzI1cHgnLFxuICAgIH0sXG4gICAgcmFkaW9CdXR0b25DbGFzczoge1xuICAgICAgbWFyZ2luOiB0aGVtZS5zcGFjaW5nKDEsIDApLFxuICAgIH1cbiAgfSlcbn0pO1xuXG5jb25zdCBBbGVydEZpZWxkcyA9IHByb3BzID0+IHtcbiAgY29uc3QgeyBjbGFzc2VzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8R3JpZCBzbT17Nn0geHM9ezEyfSBpdGVtIGNvbnRhaW5lciBkYXRhLXRlc3RpZCA9IFwiQWxlcnRGaWVsZHNUYWdcIj5cbiAgICAgIDxHcmlkIHhzPXsxMn0gaXRlbSBjbGFzc05hbWU9e2NsYXNzZXMuYWxlcnRUeXBlc091dGVyR3JpZH0+XG4gICAgICAgIDxUeXBvZ3JhcGh5IGNsYXNzTmFtZT17Y2xhc3Nlcy5hbGVydFR5cGVzSGVhZGVyfSB2YXJpYW50PVwiaDZcIj5BbGVydCBGaWVsZHM8L1R5cG9ncmFwaHk+XG4gICAgICAgIDxHcmlkIHNtPXs2fSB4cz17MTJ9IGl0ZW0gY2xhc3NOYW1lPXtjbGFzc2VzLmFsZXJ0VHlwZXNJbm5lckdyaWR9PlxuICAgICAgICAgIDxSYWRpb0dyb3VwXG4gICAgICAgICAgICBuYW1lPVwiYWxlcnRSYWRpb0J1dHRvblwiXG4gICAgICAgICAgICBjbGFzc05hbWU9e2NsYXNzZXMucmFkaW9Hcm91cH1cbiAgICAgICAgICAgIG9uQ2hhbmdlPXtwcm9wcy5vbkhhbmRsZUNoYW5nZX1cbiAgICAgICAgICA+XG4gICAgICAgICAgICB7cHJvcHMuYWxlcnRDbHVzdGVyTGlzdFtwcm9wcy5yYWRpb2luZGV4XS5hbGVydEZpZWxkcyAmJlxuICAgICAgICAgICAgICBwcm9wcy5hbGVydENsdXN0ZXJOYW1lICYmXG4gICAgICAgICAgICAgIHByb3BzLnNlbGVjdGVkQWxlcnRTdWJDbHVzdGVyICYmXG4gICAgICAgICAgICAgIHByb3BzLmFsZXJ0VHlwZVxuICAgICAgICAgICAgICA/IHByb3BzLmFsZXJ0Q2x1c3Rlckxpc3RbcHJvcHMucmFkaW9pbmRleF0uYWxlcnRGaWVsZHMubWFwKFxuICAgICAgICAgICAgICAgIChhbGVydEZpZWxkKSA9PiB7XG4gICAgICAgICAgICAgICAgICByZXR1cm4gKFxuICAgICAgICAgICAgICAgICAgICBhbGVydEZpZWxkICE9PSAnTkEnID9cbiAgICAgICAgICAgICAgICAgICAgICAoXG4gICAgICAgICAgICAgICAgICAgICAgICA8Rm9ybUNvbnRyb2xMYWJlbFxuICAgICAgICAgICAgICAgICAgICAgICAgICBrZXkgPSB7YWxlcnRGaWVsZH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgY29udHJvbD17PFJhZGlvIGRhdGEtdGVzdGlkID0gXCJhbGVydEZpZWxkUmFkaW9UYWdcIiAvPn1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgY2hlY2tlZD17cHJvcHMuYWxlcnRSYWRpb0J1dHRvbiA9PT0gYWxlcnRGaWVsZH1cbiAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsdWU9e2FsZXJ0RmllbGR9XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVsPXthbGVydEZpZWxkfVxuICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbFBsYWNlbWVudD1cImVuZFwiXG4gICAgICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICAgIClcbiAgICAgICAgICAgICAgICAgICAgICA6IGFsZXJ0RmllbGQpO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgKVxuICAgICAgICAgICAgICA6IG51bGx9XG4gICAgICAgICAgPC9SYWRpb0dyb3VwPlxuICAgICAgICA8L0dyaWQ+XG4gICAgICA8L0dyaWQ+XG4gICAgPC9HcmlkPlxuICApO1xufTtcblxuZXhwb3J0IGRlZmF1bHQgd2l0aFN0eWxlcyhzdHlsZXMpKEFsZXJ0RmllbGRzKTtcbiJdfQ==

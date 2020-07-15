@@ -1,0 +1,357 @@
+b10ad2b7ec411a514f04c12aa0608368
+/* istanbul ignore next */
+"use strict";
+
+var cov_ymz6x3oxr = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/utils/bytes-to-tb/index.js";
+  var hash = "5ee77c16e6ede92e638eecb0f669c83498c46ce3";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/utils/bytes-to-tb/index.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 28,
+          column: 18
+        },
+        end: {
+          line: 38,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 29,
+          column: 4
+        },
+        end: {
+          line: 29,
+          column: 45
+        }
+      },
+      "2": {
+        start: {
+          line: 29,
+          column: 31
+        },
+        end: {
+          line: 29,
+          column: 45
+        }
+      },
+      "3": {
+        start: {
+          line: 31,
+          column: 14
+        },
+        end: {
+          line: 31,
+          column: 18
+        }
+      },
+      "4": {
+        start: {
+          line: 32,
+          column: 15
+        },
+        end: {
+          line: 32,
+          column: 42
+        }
+      },
+      "5": {
+        start: {
+          line: 33,
+          column: 18
+        },
+        end: {
+          line: 33,
+          column: 75
+        }
+      },
+      "6": {
+        start: {
+          line: 35,
+          column: 14
+        },
+        end: {
+          line: 35,
+          column: 15
+        }
+      },
+      "7": {
+        start: {
+          line: 37,
+          column: 4
+        },
+        end: {
+          line: 37,
+          column: 69
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 28,
+            column: 18
+          },
+          end: {
+            line: 28,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 28,
+            column: 43
+          },
+          end: {
+            line: 38,
+            column: 3
+          }
+        },
+        line: 28
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 28,
+            column: 26
+          },
+          end: {
+            line: 28,
+            column: 38
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 28,
+            column: 37
+          },
+          end: {
+            line: 28,
+            column: 38
+          }
+        }],
+        line: 28
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 29,
+            column: 4
+          },
+          end: {
+            line: 29,
+            column: 45
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 29,
+            column: 4
+          },
+          end: {
+            line: 29,
+            column: 45
+          }
+        }, {
+          start: {
+            line: 29,
+            column: 4
+          },
+          end: {
+            line: 29,
+            column: 45
+          }
+        }],
+        line: 29
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 29,
+            column: 8
+          },
+          end: {
+            line: 29,
+            column: 29
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 29,
+            column: 8
+          },
+          end: {
+            line: 29,
+            column: 19
+          }
+        }, {
+          start: {
+            line: 29,
+            column: 23
+          },
+          end: {
+            line: 29,
+            column: 29
+          }
+        }],
+        line: 29
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 32,
+            column: 15
+          },
+          end: {
+            line: 32,
+            column: 42
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 32,
+            column: 30
+          },
+          end: {
+            line: 32,
+            column: 31
+          }
+        }, {
+          start: {
+            line: 32,
+            column: 34
+          },
+          end: {
+            line: 32,
+            column: 42
+          }
+        }],
+        line: 32
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "5ee77c16e6ede92e638eecb0f669c83498c46ce3"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+cov_ymz6x3oxr.s[0]++;
+
+/* -------------------------------------------------------------------------------------/
+                                                                                    /
+/               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
+/                          ALL RIGHTS RESERVED                                        /
+/                                                                                     /
+/   Permission is hereby granted to licensees of Samsung Electronics Co., Ltd.        /
+/   products to use or abstract this computer program for the sole purpose of         /
+/   implementing a product based on Samsung Electronics Co., Ltd. products.           /
+/   No other rights to reproduce, use, or disseminate this computer program,          /
+/   whether in part or in whole, are granted.                                         / 
+/                                                                                     /
+/   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
+/   respect to the performance of this computer program, and specifically disclaims   /
+/   any responsibility for any damages, special or consequential, connected           /
+/   with the use of this program.                                                     /
+/                                                                                     /
+/-------------------------------------------------------------------------------------/
+
+
+DESCRIPTION: <File description> *
+@NAME : index.js
+@AUTHORS: Jay Hitesh Sanghavi 
+@Version : 1.0 *
+@REVISION HISTORY
+[03/06/2019] [Jay] : Prototyping..........////////////////////
+*/
+const bytesToTB = (bytes, decimals =
+/* istanbul ignore next */
+(cov_ymz6x3oxr.b[0][0]++, 2)) => {
+  /* istanbul ignore next */
+  cov_ymz6x3oxr.f[0]++;
+  cov_ymz6x3oxr.s[1]++;
+
+  if (
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.b[2][0]++, bytes === 0) ||
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.b[2][1]++, !bytes)) {
+    /* istanbul ignore next */
+    cov_ymz6x3oxr.b[1][0]++;
+    cov_ymz6x3oxr.s[2]++;
+    return '0 TB';
+  } else
+  /* istanbul ignore next */
+  {
+    cov_ymz6x3oxr.b[1][1]++;
+  }
+
+  const k =
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.s[3]++, 1024);
+  const dm =
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.s[4]++, decimals < 0 ?
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.b[3][0]++, 0) :
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.b[3][1]++, decimals));
+  const sizes =
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.s[5]++, ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']);
+  const i =
+  /* istanbul ignore next */
+  (cov_ymz6x3oxr.s[6]++, 4);
+
+  /* istanbul ignore next */
+  cov_ymz6x3oxr.s[7]++;
+  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+};
+
+/* istanbul ignore next */
+var _default = bytesToTB;
+
+/* istanbul ignore next */
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbImJ5dGVzVG9UQiIsImJ5dGVzIiwiZGVjaW1hbHMiLCJrIiwiZG0iLCJzaXplcyIsImkiLCJwYXJzZUZsb2F0IiwidG9GaXhlZCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQTJCQSxNQUFNQSxTQUFTLEdBQUcsQ0FBQ0MsS0FBRCxFQUFRQyxRQUFRO0FBQUE7QUFBQSwwQkFBRyxDQUFILENBQWhCLEtBQXlCO0FBQUE7QUFBQTtBQUFBOztBQUN2QztBQUFJO0FBQUEsNEJBQUFELEtBQUssS0FBSyxDQUFWO0FBQUE7QUFBQSw0QkFBZSxDQUFDQSxLQUFoQixDQUFKLEVBQTJCO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FBTyxNQUFQO0FBQWMsR0FBekM7QUFBQTtBQUFBO0FBQUE7QUFBQTs7QUFFQSxRQUFNRSxDQUFDO0FBQUE7QUFBQSx5QkFBRyxJQUFILENBQVA7QUFDQSxRQUFNQyxFQUFFO0FBQUE7QUFBQSx5QkFBR0YsUUFBUSxHQUFHLENBQVg7QUFBQTtBQUFBLDRCQUFlLENBQWY7QUFBQTtBQUFBLDRCQUFtQkEsUUFBbkIsQ0FBSCxDQUFSO0FBQ0EsUUFBTUcsS0FBSztBQUFBO0FBQUEseUJBQUcsQ0FBQyxPQUFELEVBQVUsSUFBVixFQUFnQixJQUFoQixFQUFzQixJQUF0QixFQUE0QixJQUE1QixFQUFrQyxJQUFsQyxFQUF3QyxJQUF4QyxFQUE4QyxJQUE5QyxFQUFvRCxJQUFwRCxDQUFILENBQVg7QUFFQSxRQUFNQyxDQUFDO0FBQUE7QUFBQSx5QkFBRyxDQUFILENBQVA7O0FBUHVDO0FBQUE7QUFTdkMsU0FBUSxHQUFFQyxVQUFVLENBQUMsQ0FBQ04sS0FBSyxHQUFHRSxDQUFDLElBQUlHLENBQWQsRUFBaUJFLE9BQWpCLENBQXlCSixFQUF6QixDQUFELENBQStCLElBQUdDLEtBQUssQ0FBQ0MsQ0FBRCxDQUFJLEVBQS9EO0FBQ0QsQ0FWSDs7O2VBWWlCTixTIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cblxuREVTQ1JJUFRJT046IDxGaWxlIGRlc2NyaXB0aW9uPiAqXG5ATkFNRSA6IGluZGV4LmpzXG5AQVVUSE9SUzogSmF5IEhpdGVzaCBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMDYvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cblxuY29uc3QgYnl0ZXNUb1RCID0gKGJ5dGVzLCBkZWNpbWFscyA9IDIpID0+IHtcbiAgICBpZiAoYnl0ZXMgPT09IDAgfHwgIWJ5dGVzKSByZXR1cm4gJzAgVEInO1xuICBcbiAgICBjb25zdCBrID0gMTAyNDtcbiAgICBjb25zdCBkbSA9IGRlY2ltYWxzIDwgMCA/IDAgOiBkZWNpbWFscztcbiAgICBjb25zdCBzaXplcyA9IFsnQnl0ZXMnLCAnS0InLCAnTUInLCAnR0InLCAnVEInLCAnUEInLCAnRUInLCAnWkInLCAnWUInXTtcbiAgXG4gICAgY29uc3QgaSA9IDQ7XG4gIFxuICAgIHJldHVybiBgJHtwYXJzZUZsb2F0KChieXRlcyAvIGsgKiogaSkudG9GaXhlZChkbSkpfSAke3NpemVzW2ldfWA7XG4gIH07XG4gIFxuICBleHBvcnQgZGVmYXVsdCBieXRlc1RvVEI7XG4gICJdfQ==

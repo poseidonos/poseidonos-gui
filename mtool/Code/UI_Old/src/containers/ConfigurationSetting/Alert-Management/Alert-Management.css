@@ -1,0 +1,17 @@
+.AlertManagement {
+  display: block;
+  float: left;
+  width: calc(100% - 314px);
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.Dropdown-arrow {
+  top: 7px;
+}
+
+@media screen and (max-height: 540px) {
+  .AlertManagement {
+    overflow-y: scroll;
+  }
+}

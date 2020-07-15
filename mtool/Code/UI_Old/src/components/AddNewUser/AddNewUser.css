@@ -1,0 +1,131 @@
+.AddNewUser-Outer-Box {
+  border-top: 20px;
+  /* top:calc(100vh - 300px);
+    height:calc(100vh - 580px); */
+  overflow: hidden;
+  left: 0px;
+  color: black;
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
+  padding: 2px;
+  display: block;
+  float: left;
+  margin: 1.5% 0px 0px 20px;
+  width: 96.6%;
+  margin-left: 18px;
+  border: 1px solid gray;
+  background-color: #fff;
+  height: 25%;
+}
+
+.img_style {
+  width: 32px;
+  margin-top: 3px;
+  float: left;
+  margin-left: 3px;
+}
+.header_style {
+  color: #424850;
+  font-size: 14px;
+  text-align: left;
+  padding: 0px;
+  margin: 10px 0 0 8px;
+  position: relative;
+  float: left;
+}
+.AddNewUser-LabelClass {
+  margin-left: 5%;
+  text-align: left;
+  width: 10%;
+  float: left;
+  font-family: Arial;
+}
+.AddNewUser-textbox_style {
+  float: left;
+  width: 20%;
+  height: 20px;
+  margin-left: 2%;
+  margin-top: 0;
+  background: white;
+  box-sizing: border-box;
+}
+
+.AddNewUser-formClass > input#adduser-user-name.textbox_style {
+  margin-top: 15px;
+}
+
+.AddNewUser-formClass > select.textbox_style {
+  margin-top: 15px;
+}
+
+select.AddNewUser-textbox_style {
+  height: 24px;
+  background: white;
+}
+
+.AddNewUser-ButtonClass {
+  background-color: blue;
+  margin-right: 1%;
+  float: right;
+  color: white;
+  border: 1px solid black;
+  font-family: Arial;
+}
+
+.AddNewUser-Error {
+  margin: 25px;
+  margin-left: 10px;
+  color: red;
+  float: right;
+}
+.AddNewUser-Success {
+  margin: 25px;
+  margin-left: 10px;
+  color: green;
+  float: right;
+}
+
+.AddNewUser-formClass {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.AddNewUser-formClass > input {
+  background: white;
+}
+
+.AddNewUser-NewLine {
+  clear: both;
+}
+
+.AddNewUser-ButtonWrap {
+  width: 35%;
+  padding: 3px;
+  margin-left: 5%;
+  text-align: bottom;
+  align-content: center;
+  align-items: center;
+  float: left;
+  border: 1px solid black;
+  margin-top: 0;
+  color: white;
+  background: #1a4d91;
+}
+.AddNewUser-button {
+  padding: auto;
+  display: inline-block;
+  text-align: center;
+}
+
+.AddNewUser-add-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 35px;
+}
+
+.AddNewUser-btn-container {
+  width: 25%;
+}

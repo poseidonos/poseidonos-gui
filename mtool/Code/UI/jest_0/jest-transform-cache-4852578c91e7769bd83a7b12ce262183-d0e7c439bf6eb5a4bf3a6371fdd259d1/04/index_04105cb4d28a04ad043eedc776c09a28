@@ -1,0 +1,81 @@
+d588b37dd92bd33670c3564d458b1058
+"use strict";
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = LinearProgressBarComponent;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _LinearProgress = _interopRequireDefault(require("@material-ui/core/LinearProgress"));
+
+var _styles = require("@material-ui/core/styles");
+
+var _jsxFileName = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/IbofOsOperationComponents/LinearProgressBarComponent/index.js";
+const useStyles = (0, _styles.makeStyles)({
+  root: {
+    flexGrow: 1,
+    float: 'left',
+    marginLeft: '2%',
+    width: '20%'
+  },
+  bar: {
+    color: 'black',
+    backgroundColor: 'red',
+    borderRadius: 20
+  }
+});
+const BorderLinearProgress = (0, _styles.withStyles)({
+  root: {
+    height: 5,
+    backgroundColor: 'darkgray'
+  },
+  barColorPrimary: {
+    backgroundColor: 'white'
+  },
+  bar: {
+    borderRadius: 20,
+    backgroundColor: '#6fcd60'
+  }
+})(_LinearProgress.default);
+
+function LinearProgressBarComponent(props) {
+  const classes = useStyles(); //   const [completed, setCompleted] = [50,100]
+  //   React.useEffect(() => {
+  //     function progress() {
+  //       setCompleted(oldCompleted => {
+  //         if (oldCompleted === 100) {
+  //           return 0;
+  //         }
+  //         const diff = Math.random() * 10;
+  //         return Math.min(oldCompleted + diff, 100);
+  //       });
+  //     }
+  // const timer = setInterval(progress, 500);
+  //     return () => {
+  //       clearInterval(timer);
+  //     };
+  //   }, []);
+
+  return _react.default.createElement("div", {
+    className: classes.root,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 55
+    },
+    __self: this
+  }, _react.default.createElement(BorderLinearProgress, {
+    className: classes.bar,
+    variant: "determinate",
+    value: props.percent,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 56
+    },
+    __self: this
+  }));
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbInVzZVN0eWxlcyIsInJvb3QiLCJmbGV4R3JvdyIsImZsb2F0IiwibWFyZ2luTGVmdCIsIndpZHRoIiwiYmFyIiwiY29sb3IiLCJiYWNrZ3JvdW5kQ29sb3IiLCJib3JkZXJSYWRpdXMiLCJCb3JkZXJMaW5lYXJQcm9ncmVzcyIsImhlaWdodCIsImJhckNvbG9yUHJpbWFyeSIsIkxpbmVhclByb2dyZXNzIiwiTGluZWFyUHJvZ3Jlc3NCYXJDb21wb25lbnQiLCJwcm9wcyIsImNsYXNzZXMiLCJwZXJjZW50Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQTs7QUFDQTs7QUFDQTs7O0FBRUEsTUFBTUEsU0FBUyxHQUFHLHdCQUFXO0FBQzNCQyxFQUFBQSxJQUFJLEVBQUU7QUFDSkMsSUFBQUEsUUFBUSxFQUFFLENBRE47QUFFSkMsSUFBQUEsS0FBSyxFQUFFLE1BRkg7QUFHSkMsSUFBQUEsVUFBVSxFQUFFLElBSFI7QUFJSkMsSUFBQUEsS0FBSyxFQUFDO0FBSkYsR0FEcUI7QUFPM0JDLEVBQUFBLEdBQUcsRUFBQztBQUNGQyxJQUFBQSxLQUFLLEVBQUMsT0FESjtBQUVGQyxJQUFBQSxlQUFlLEVBQUMsS0FGZDtBQUdGQyxJQUFBQSxZQUFZLEVBQUU7QUFIWjtBQVB1QixDQUFYLENBQWxCO0FBY0EsTUFBTUMsb0JBQW9CLEdBQUcsd0JBQVc7QUFDdENULEVBQUFBLElBQUksRUFBRTtBQUNKVSxJQUFBQSxNQUFNLEVBQUUsQ0FESjtBQUVKSCxJQUFBQSxlQUFlLEVBQUU7QUFGYixHQURnQztBQUt0Q0ksRUFBQUEsZUFBZSxFQUFFO0FBQ2ZKLElBQUFBLGVBQWUsRUFBRTtBQURGLEdBTHFCO0FBUXRDRixFQUFBQSxHQUFHLEVBQUU7QUFDSEcsSUFBQUEsWUFBWSxFQUFFLEVBRFg7QUFFSEQsSUFBQUEsZUFBZSxFQUFFO0FBRmQ7QUFSaUMsQ0FBWCxFQVkxQkssdUJBWjBCLENBQTdCOztBQWNlLFNBQVNDLDBCQUFULENBQW9DQyxLQUFwQyxFQUEyQztBQUN4RCxRQUFNQyxPQUFPLEdBQUdoQixTQUFTLEVBQXpCLENBRHdELENBRXhEO0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBLFNBQ0U7QUFBSyxJQUFBLFNBQVMsRUFBRWdCLE9BQU8sQ0FBQ2YsSUFBeEI7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsS0FDRSw2QkFBQyxvQkFBRDtBQUFzQixJQUFBLFNBQVMsRUFBRWUsT0FBTyxDQUFDVixHQUF6QztBQUE4QyxJQUFBLE9BQU8sRUFBQyxhQUF0RDtBQUFvRSxJQUFBLEtBQUssRUFBRVMsS0FBSyxDQUFDRSxPQUFqRjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxJQURGLENBREY7QUFPRCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgTGluZWFyUHJvZ3Jlc3MgZnJvbSAnQG1hdGVyaWFsLXVpL2NvcmUvTGluZWFyUHJvZ3Jlc3MnO1xuaW1wb3J0IHsgbWFrZVN0eWxlcyx3aXRoU3R5bGVzIH0gZnJvbSAnQG1hdGVyaWFsLXVpL2NvcmUvc3R5bGVzJztcblxuY29uc3QgdXNlU3R5bGVzID0gbWFrZVN0eWxlcyh7XG4gIHJvb3Q6IHtcbiAgICBmbGV4R3JvdzogMSxcbiAgICBmbG9hdDogJ2xlZnQnLFxuICAgIG1hcmdpbkxlZnQ6ICcyJScsXG4gICAgd2lkdGg6JzIwJScsXG4gIH0sXG4gIGJhcjp7XG4gICAgY29sb3I6J2JsYWNrJyxcbiAgICBiYWNrZ3JvdW5kQ29sb3I6J3JlZCcsXG4gICAgYm9yZGVyUmFkaXVzOiAyMCxcbiAgfSxcbn0pO1xuXG5jb25zdCBCb3JkZXJMaW5lYXJQcm9ncmVzcyA9IHdpdGhTdHlsZXMoe1xuICByb290OiB7XG4gICAgaGVpZ2h0OiA1LFxuICAgIGJhY2tncm91bmRDb2xvcjogJ2RhcmtncmF5JyxcbiAgfSxcbiAgYmFyQ29sb3JQcmltYXJ5OiB7XG4gICAgYmFja2dyb3VuZENvbG9yOiAnd2hpdGUnLFxuICB9LFxuICBiYXI6IHtcbiAgICBib3JkZXJSYWRpdXM6IDIwLFxuICAgIGJhY2tncm91bmRDb2xvcjogJyM2ZmNkNjAnLFxuICB9LFxufSkoTGluZWFyUHJvZ3Jlc3MpO1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBMaW5lYXJQcm9ncmVzc0JhckNvbXBvbmVudChwcm9wcykge1xuICBjb25zdCBjbGFzc2VzID0gdXNlU3R5bGVzKCk7XG4gIC8vICAgY29uc3QgW2NvbXBsZXRlZCwgc2V0Q29tcGxldGVkXSA9IFs1MCwxMDBdXG5cbiAgLy8gICBSZWFjdC51c2VFZmZlY3QoKCkgPT4ge1xuICAvLyAgICAgZnVuY3Rpb24gcHJvZ3Jlc3MoKSB7XG4gIC8vICAgICAgIHNldENvbXBsZXRlZChvbGRDb21wbGV0ZWQgPT4ge1xuICAvLyAgICAgICAgIGlmIChvbGRDb21wbGV0ZWQgPT09IDEwMCkge1xuICAvLyAgICAgICAgICAgcmV0dXJuIDA7XG4gIC8vICAgICAgICAgfVxuICAvLyAgICAgICAgIGNvbnN0IGRpZmYgPSBNYXRoLnJhbmRvbSgpICogMTA7XG4gIC8vICAgICAgICAgcmV0dXJuIE1hdGgubWluKG9sZENvbXBsZXRlZCArIGRpZmYsIDEwMCk7XG4gIC8vICAgICAgIH0pO1xuICAvLyAgICAgfVxuXG4gIC8vIGNvbnN0IHRpbWVyID0gc2V0SW50ZXJ2YWwocHJvZ3Jlc3MsIDUwMCk7XG4gIC8vICAgICByZXR1cm4gKCkgPT4ge1xuICAvLyAgICAgICBjbGVhckludGVydmFsKHRpbWVyKTtcbiAgLy8gICAgIH07XG4gIC8vICAgfSwgW10pO1xuXG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9e2NsYXNzZXMucm9vdH0+XG4gICAgICA8Qm9yZGVyTGluZWFyUHJvZ3Jlc3MgY2xhc3NOYW1lPXtjbGFzc2VzLmJhcn0gdmFyaWFudD1cImRldGVybWluYXRlXCIgdmFsdWU9e3Byb3BzLnBlcmNlbnR9IC8+XG4gICAgICB7LyogPGJyIC8+XG4gICAgICA8TGluZWFyUHJvZ3Jlc3MgY29sb3I9XCJzZWNvbmRhcnlcIiB2YXJpYW50PVwiZGV0ZXJtaW5hdGVcIiB2YWx1ZT17Y29tcGxldGVkfSAvPiAqL31cbiAgICA8L2Rpdj5cbiAgKTtcbn1cbiJdfQ==

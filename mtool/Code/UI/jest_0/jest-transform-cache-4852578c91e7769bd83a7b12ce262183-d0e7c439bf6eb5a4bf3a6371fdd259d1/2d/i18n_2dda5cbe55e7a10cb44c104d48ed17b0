@@ -1,0 +1,73 @@
+1d6067d0b5804e9c19e10d9ab324eeb9
+"use strict";
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _i18next = _interopRequireDefault(require("i18next"));
+
+var _i18nextBrowserLanguagedetector = _interopRequireDefault(require("i18next-browser-languagedetector"));
+
+var _translation_eng = _interopRequireDefault(require("./locales/translation_eng.json"));
+
+var _translation_kor = _interopRequireDefault(require("./locales/translation_kor.json"));
+
+/* -------------------------------------------------------------------------------------/
+                                                                                    /
+/               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
+/                          ALL RIGHTS RESERVED                                        /
+/                                                                                     /
+/   Permission is hereby granted to licensees of Samsung Electronics Co., Ltd.        /
+/   products to use or abstract this computer program for the sole purpose of         /
+/   implementing a product based on Samsung Electronics Co., Ltd. products.           /
+/   No other rights to reproduce, use, or disseminate this computer program,          /
+/   whether in part or in whole, are granted.                                         / 
+/                                                                                     /
+/   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
+/   respect to the performance of this computer program, and specifically disclaims   /
+/   any responsibility for any damages, special or consequential, connected           /
+/   with the use of this program.                                                     /
+/                                                                                     /
+/-------------------------------------------------------------------------------------/
+
+
+DESCRIPTION: <initializing parameters for react-i18n> *
+@NAME : i18n.js
+@AUTHORS: Palak Kapoor
+@Version : 1.0 *
+@REVISION HISTORY
+[07/08/2019] [Palak] : Prototyping..........////////////////////
+*/
+_i18next.default.use(_i18nextBrowserLanguagedetector.default).init({
+  debug: true,
+
+  /* check production mode */
+  lng: "en",
+  fallbackLng: "en",
+  // use en if detected lng is not available
+  keySeparator: false,
+  // we do not use keys in form messages.welcome
+  interpolation: {
+    escapeValue: false // react already safe from xss
+
+  },
+  resources: {
+    en: {
+      translations: _translation_eng.default
+    },
+    ko: {
+      translations: _translation_kor.default
+    }
+  },
+  // have a common namespace used around the full app
+  ns: ["translations"],
+  defaultNS: "translations"
+});
+
+var _default = _i18next.default;
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImkxOG4uanMiXSwibmFtZXMiOlsiaTE4biIsInVzZSIsIkxhbmd1YWdlRGV0ZWN0b3IiLCJpbml0IiwiZGVidWciLCJsbmciLCJmYWxsYmFja0xuZyIsImtleVNlcGFyYXRvciIsImludGVycG9sYXRpb24iLCJlc2NhcGVWYWx1ZSIsInJlc291cmNlcyIsImVuIiwidHJhbnNsYXRpb25zIiwidHJhbnNsYXRpb25FbmciLCJrbyIsInRyYW5zbGF0aW9uS29yIiwibnMiLCJkZWZhdWx0TlMiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQTBCQTs7QUFDQTs7QUFDQTs7QUFDQTs7QUE3QkE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBK0JBQSxpQkFFR0MsR0FGSCxDQUVPQyx1Q0FGUCxFQUdHQyxJQUhILENBR1E7QUFDSkMsRUFBQUEsS0FBSyxFQUFFLElBREg7O0FBQ1M7QUFDYkMsRUFBQUEsR0FBRyxFQUFFLElBRkQ7QUFHSkMsRUFBQUEsV0FBVyxFQUFFLElBSFQ7QUFHZTtBQUVuQkMsRUFBQUEsWUFBWSxFQUFFLEtBTFY7QUFLaUI7QUFFckJDLEVBQUFBLGFBQWEsRUFBRTtBQUNiQyxJQUFBQSxXQUFXLEVBQUUsS0FEQSxDQUNNOztBQUROLEdBUFg7QUFXSkMsRUFBQUEsU0FBUyxFQUFFO0FBQ1RDLElBQUFBLEVBQUUsRUFBRTtBQUNGQyxNQUFBQSxZQUFZLEVBQUVDO0FBRFosS0FESztBQUtUQyxJQUFBQSxFQUFFLEVBQUU7QUFDRkYsTUFBQUEsWUFBWSxFQUFFRztBQURaO0FBTEssR0FYUDtBQXFCSjtBQUNBQyxFQUFBQSxFQUFFLEVBQUUsQ0FBQyxjQUFELENBdEJBO0FBdUJKQyxFQUFBQSxTQUFTLEVBQUU7QUF2QlAsQ0FIUjs7ZUE2QmVqQixnQiIsInNvdXJjZXNDb250ZW50IjpbIi8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgQ09QWVJJR0hUIChjKSAyMDE5IFNBTVNVTkcgRUxFQ1RST05JQ1MgQ08uLCBMVEQuICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgIEFMTCBSSUdIVFMgUkVTRVJWRUQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCB0byBsaWNlbnNlZXMgb2YgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gICAgICAgIC9cbi8gICBwcm9kdWN0cyB0byB1c2Ugb3IgYWJzdHJhY3QgdGhpcyBjb21wdXRlciBwcm9ncmFtIGZvciB0aGUgc29sZSBwdXJwb3NlIG9mICAgICAgICAgL1xuLyAgIGltcGxlbWVudGluZyBhIHByb2R1Y3QgYmFzZWQgb24gU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gcHJvZHVjdHMuICAgICAgICAgICAvXG4vICAgTm8gb3RoZXIgcmlnaHRzIHRvIHJlcHJvZHVjZSwgdXNlLCBvciBkaXNzZW1pbmF0ZSB0aGlzIGNvbXB1dGVyIHByb2dyYW0sICAgICAgICAgIC9cbi8gICB3aGV0aGVyIGluIHBhcnQgb3IgaW4gd2hvbGUsIGFyZSBncmFudGVkLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLyBcbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuIG1ha2VzIG5vIHJlcHJlc2VudGF0aW9uIG9yIHdhcnJhbnRpZXMgd2l0aCAgICAgICAgICAvXG4vICAgcmVzcGVjdCB0byB0aGUgcGVyZm9ybWFuY2Ugb2YgdGhpcyBjb21wdXRlciBwcm9ncmFtLCBhbmQgc3BlY2lmaWNhbGx5IGRpc2NsYWltcyAgIC9cbi8gICBhbnkgcmVzcG9uc2liaWxpdHkgZm9yIGFueSBkYW1hZ2VzLCBzcGVjaWFsIG9yIGNvbnNlcXVlbnRpYWwsIGNvbm5lY3RlZCAgICAgICAgICAgL1xuLyAgIHdpdGggdGhlIHVzZSBvZiB0aGlzIHByb2dyYW0uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL1xuXG5cbkRFU0NSSVBUSU9OOiA8aW5pdGlhbGl6aW5nIHBhcmFtZXRlcnMgZm9yIHJlYWN0LWkxOG4+ICpcbkBOQU1FIDogaTE4bi5qc1xuQEFVVEhPUlM6IFBhbGFrIEthcG9vclxuQFZlcnNpb24gOiAxLjAgKlxuQFJFVklTSU9OIEhJU1RPUllcblswNy8wOC8yMDE5XSBbUGFsYWtdIDogUHJvdG90eXBpbmcuLi4uLi4uLi4uLy8vLy8vLy8vLy8vLy8vLy8vLy9cbiovXG5pbXBvcnQgaTE4biBmcm9tIFwiaTE4bmV4dFwiO1xuaW1wb3J0IExhbmd1YWdlRGV0ZWN0b3IgZnJvbSBcImkxOG5leHQtYnJvd3Nlci1sYW5ndWFnZWRldGVjdG9yXCI7XG5pbXBvcnQgdHJhbnNsYXRpb25FbmcgZnJvbSBcIi4vbG9jYWxlcy90cmFuc2xhdGlvbl9lbmcuanNvblwiO1xuaW1wb3J0IHRyYW5zbGF0aW9uS29yIGZyb20gXCIuL2xvY2FsZXMvdHJhbnNsYXRpb25fa29yLmpzb25cIjtcblxuaTE4blxuIFxuICAudXNlKExhbmd1YWdlRGV0ZWN0b3IpXG4gIC5pbml0KHtcbiAgICBkZWJ1ZzogdHJ1ZSwgLyogY2hlY2sgcHJvZHVjdGlvbiBtb2RlICovXG4gICAgbG5nOiBcImVuXCIsXG4gICAgZmFsbGJhY2tMbmc6IFwiZW5cIiwgLy8gdXNlIGVuIGlmIGRldGVjdGVkIGxuZyBpcyBub3QgYXZhaWxhYmxlXG5cbiAgICBrZXlTZXBhcmF0b3I6IGZhbHNlLCAvLyB3ZSBkbyBub3QgdXNlIGtleXMgaW4gZm9ybSBtZXNzYWdlcy53ZWxjb21lXG5cbiAgICBpbnRlcnBvbGF0aW9uOiB7XG4gICAgICBlc2NhcGVWYWx1ZTogZmFsc2UgLy8gcmVhY3QgYWxyZWFkeSBzYWZlIGZyb20geHNzXG4gICAgfSxcblxuICAgIHJlc291cmNlczoge1xuICAgICAgZW46IHtcbiAgICAgICAgdHJhbnNsYXRpb25zOiB0cmFuc2xhdGlvbkVuZ1xuICAgICAgfSxcblxuICAgICAga286IHtcbiAgICAgICAgdHJhbnNsYXRpb25zOiB0cmFuc2xhdGlvbktvclxuICAgICAgfSxcbiAgICBcbiAgICB9LFxuICAgIC8vIGhhdmUgYSBjb21tb24gbmFtZXNwYWNlIHVzZWQgYXJvdW5kIHRoZSBmdWxsIGFwcFxuICAgIG5zOiBbXCJ0cmFuc2xhdGlvbnNcIl0sXG4gICAgZGVmYXVsdE5TOiBcInRyYW5zbGF0aW9uc1wiXG4gIH0pO1xuXG5leHBvcnQgZGVmYXVsdCBpMThuOyJdfQ==

@@ -1,0 +1,56 @@
+25f29757fc772a75566aedf4e0d3f5e1
+"use strict";
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setLiveLogs = exports.getIbofOsLogs = void 0;
+
+var actionTypes = _interopRequireWildcard(require("./actionTypes"));
+
+/* -------------------------------------------------------------------------------------/
+                                                                                    /
+/               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
+/                          ALL RIGHTS RESERVED                                        /
+/                                                                                     /
+/   Permission is hereby granted to licensees of Samsung Electronics Co., Ltd.        /
+/   products to use or abstract this computer program for the sole purpose of         /
+/   implementing a product based on Samsung Electronics Co., Ltd. products.           /
+/   No other rights to reproduce, use, or disseminate this computer program,          /
+/   whether in part or in whole, are granted.                                         / 
+/                                                                                     /
+/   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
+/   respect to the performance of this computer program, and specifically disclaims   /
+/   any responsibility for any damages, special or consequential, connected           /
+/   with the use of this program.                                                     /
+/                                                                                     /
+/-------------------------------------------------------------------------------------/
+
+
+DESCRIPTION: <Contains pure actions for Log Management Page> *
+@NAME : logManagementActions.js
+@AUTHORS: Palak Kapoor
+@Version : 1.0 *
+@REVISION HISTORY
+[08/22/2019] [Palak] : Prototyping..........////////////////////
+*/
+const getIbofOsLogs = logList => {
+  return {
+    type: actionTypes.GET_IBOFOS_LOGS,
+    logList
+  };
+};
+
+exports.getIbofOsLogs = getIbofOsLogs;
+
+const setLiveLogs = liveLogs => {
+  return {
+    type: actionTypes.SET_LIVE_LOGS,
+    setLiveLogs: liveLogs
+  };
+};
+
+exports.setLiveLogs = setLiveLogs;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxvZ01hbmFnZW1lbnRBY3Rpb25zLmpzIl0sIm5hbWVzIjpbImdldElib2ZPc0xvZ3MiLCJsb2dMaXN0IiwidHlwZSIsImFjdGlvblR5cGVzIiwiR0VUX0lCT0ZPU19MT0dTIiwic2V0TGl2ZUxvZ3MiLCJsaXZlTG9ncyIsIlNFVF9MSVZFX0xPR1MiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQTJCQTs7QUEzQkE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBNkJPLE1BQU1BLGFBQWEsR0FBR0MsT0FBTyxJQUFJO0FBQ3RDLFNBQU87QUFDTEMsSUFBQUEsSUFBSSxFQUFFQyxXQUFXLENBQUNDLGVBRGI7QUFFTEgsSUFBQUE7QUFGSyxHQUFQO0FBSUQsQ0FMTTs7OztBQU9BLE1BQU1JLFdBQVcsR0FBR0MsUUFBUSxJQUFJO0FBQ3JDLFNBQU87QUFDTEosSUFBQUEsSUFBSSxFQUFFQyxXQUFXLENBQUNJLGFBRGI7QUFFTEYsSUFBQUEsV0FBVyxFQUFDQztBQUZQLEdBQVA7QUFJRCxDQUxNIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cblxuREVTQ1JJUFRJT046IDxDb250YWlucyBwdXJlIGFjdGlvbnMgZm9yIExvZyBNYW5hZ2VtZW50IFBhZ2U+ICpcbkBOQU1FIDogbG9nTWFuYWdlbWVudEFjdGlvbnMuanNcbkBBVVRIT1JTOiBQYWxhayBLYXBvb3JcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDgvMjIvMjAxOV0gW1BhbGFrXSA6IFByb3RvdHlwaW5nLi4uLi4uLi4uLi8vLy8vLy8vLy8vLy8vLy8vLy8vXG4qL1xuXG5pbXBvcnQgKiBhcyBhY3Rpb25UeXBlcyBmcm9tICcuL2FjdGlvblR5cGVzJztcblxuZXhwb3J0IGNvbnN0IGdldElib2ZPc0xvZ3MgPSBsb2dMaXN0ID0+IHtcbiAgcmV0dXJuIHtcbiAgICB0eXBlOiBhY3Rpb25UeXBlcy5HRVRfSUJPRk9TX0xPR1MsXG4gICAgbG9nTGlzdCxcbiAgfTtcbn1cblxuZXhwb3J0IGNvbnN0IHNldExpdmVMb2dzID0gbGl2ZUxvZ3MgPT4ge1xuICByZXR1cm4ge1xuICAgIHR5cGU6IGFjdGlvblR5cGVzLlNFVF9MSVZFX0xPR1MsXG4gICAgc2V0TGl2ZUxvZ3M6bGl2ZUxvZ3MsXG4gIH07XG59XG5cblxuXG4iXX0=

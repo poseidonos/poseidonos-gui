@@ -1,0 +1,802 @@
+402b3a5624ae55296aad2bbe7f0fce21
+/* istanbul ignore next */
+"use strict";
+
+var cov_1ws9ppp3sm = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/IbofOsOperationComponents/RunIbofOs/index.js";
+  var hash = "27a9333f9bbfc0d964188a8655f58ff7128d21b1";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/IbofOsOperationComponents/RunIbofOs/index.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 34,
+          column: 18
+        },
+        end: {
+          line: 143,
+          column: 1
+        }
+      },
+      "1": {
+        start: {
+          line: 35,
+          column: 2
+        },
+        end: {
+          line: 142,
+          column: 4
+        }
+      },
+      "2": {
+        start: {
+          line: 64,
+          column: 20
+        },
+        end: {
+          line: 64,
+          column: 45
+        }
+      },
+      "3": {
+        start: {
+          line: 76,
+          column: 20
+        },
+        end: {
+          line: 76,
+          column: 44
+        }
+      },
+      "4": {
+        start: {
+          line: 110,
+          column: 20
+        },
+        end: {
+          line: 110,
+          column: 45
+        }
+      },
+      "5": {
+        start: {
+          line: 122,
+          column: 20
+        },
+        end: {
+          line: 122,
+          column: 44
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 34,
+            column: 18
+          },
+          end: {
+            line: 34,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 34,
+            column: 27
+          },
+          end: {
+            line: 143,
+            column: 1
+          }
+        },
+        line: 34
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 63,
+            column: 27
+          },
+          end: {
+            line: 63,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 63,
+            column: 33
+          },
+          end: {
+            line: 65,
+            column: 19
+          }
+        },
+        line: 63
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 75,
+            column: 27
+          },
+          end: {
+            line: 75,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 75,
+            column: 33
+          },
+          end: {
+            line: 77,
+            column: 19
+          }
+        },
+        line: 75
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 109,
+            column: 27
+          },
+          end: {
+            line: 109,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 109,
+            column: 33
+          },
+          end: {
+            line: 111,
+            column: 19
+          }
+        },
+        line: 109
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 121,
+            column: 27
+          },
+          end: {
+            line: 121,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 121,
+            column: 33
+          },
+          end: {
+            line: 123,
+            column: 19
+          }
+        },
+        line: 121
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 40,
+            column: 9
+          },
+          end: {
+            line: 129,
+            column: 11
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 41,
+            column: 10
+          },
+          end: {
+            line: 83,
+            column: 16
+          }
+        }, {
+          start: {
+            line: 85,
+            column: 12
+          },
+          end: {
+            line: 128,
+            column: 18
+          }
+        }],
+        line: 40
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 93,
+            column: 17
+          },
+          end: {
+            line: 97,
+            column: 24
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 94,
+            column: 18
+          },
+          end: {
+            line: 96,
+            column: 20
+          }
+        }, {
+          start: {
+            line: 97,
+            column: 20
+          },
+          end: {
+            line: 97,
+            column: 24
+          }
+        }],
+        line: 93
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "27a9333f9bbfc0d964188a8655f58ff7128d21b1"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var
+/* istanbul ignore next */
+_react = _interopRequireDefault(require("react"));
+
+var
+/* istanbul ignore next */
+_core = require("@material-ui/core");
+
+/* istanbul ignore next */
+require("./RunIbofOs.css");
+
+var
+/* istanbul ignore next */
+_LinearProgressBarComponent = _interopRequireDefault(require("../LinearProgressBarComponent"));
+
+/* istanbul ignore next */
+var _jsxFileName = "/home/ibof07/pk/ibofmgmt/Code/UI/src/components/IbofOsOperationComponents/RunIbofOs/index.js";
+cov_1ws9ppp3sm.s[0]++;
+
+const RunIbofOs = props => {
+  /* istanbul ignore next */
+  cov_1ws9ppp3sm.f[0]++;
+  cov_1ws9ppp3sm.s[1]++;
+  return (
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 36
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "h1",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOS-header_style",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 37
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Poseidon OS Operation"),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      className: "RunIbofOs-Outer-Box",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 38
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSMainHeader",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 39
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Run/Shutdown Poseidon OS"), props.status ?
+    /* istanbul ignore next */
+    (cov_1ws9ppp3sm.b[0][0]++,
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 41
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSNoteMessage",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 42
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left',
+        marginRight: '2px'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 43
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Status -", ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left',
+        color: 'green',
+        fontWeight: '600'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 46
+      },
+      __self: void 0
+    }, ' ',
+    /* istanbul ignore next */
+    "Running"), ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSStartLabel",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 53
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 54
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Click to Start/Stop Poseidon OS"), ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSButtonClass",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 58
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Button,
+    /* istanbul ignore next */
+    {
+      variant: "contained",
+      color: "primary",
+      title: "Force Start Poseidon OS",
+      onClick: () => {
+        /* istanbul ignore next */
+        cov_1ws9ppp3sm.f[1]++;
+        cov_1ws9ppp3sm.s[2]++;
+        props.openAlert('Start');
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 59
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Start")),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSButtonClass",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 70
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Button,
+    /* istanbul ignore next */
+    {
+      variant: "contained",
+      color: "primary",
+      title: "Force Stop Poseidon OS",
+      onClick: () => {
+        /* istanbul ignore next */
+        cov_1ws9ppp3sm.f[2]++;
+        cov_1ws9ppp3sm.s[3]++;
+        props.openAlert('Stop');
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 71
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Stop")))) :
+    /* istanbul ignore next */
+    (cov_1ws9ppp3sm.b[0][1]++,
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 85
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSNoteMessage",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 86
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left',
+        marginRight: '2px'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 87
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Status-", ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left',
+        color: 'red',
+        fontWeight: '600'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 90
+      },
+      __self: void 0
+    }, props.OS_Running_Status), props.OS_Running_Status !== 'Not Running' ?
+    /* istanbul ignore next */
+    (cov_1ws9ppp3sm.b[1][0]++,
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _LinearProgressBarComponent.
+    /* istanbul ignore next */
+    default,
+    /* istanbul ignore next */
+    {
+      percent: localStorage.getItem('Rebuilding_Value'),
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 94
+      },
+      __self: void 0
+    })) :
+    /* istanbul ignore next */
+    (cov_1ws9ppp3sm.b[1][1]++, null)),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSStartLabel",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 99
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      style: {
+        float: 'left'
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 100
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Click to Start/Stop Poseidon OS"), ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSButtonClass",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 104
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Button,
+    /* istanbul ignore next */
+    {
+      variant: "contained",
+      color: "primary",
+      title: "Force Start Poseidon OS",
+      onClick: () => {
+        /* istanbul ignore next */
+        cov_1ws9ppp3sm.f[3]++;
+        cov_1ws9ppp3sm.s[4]++;
+        props.openAlert('Start');
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 105
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Start")),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "div",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSButtonClass",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 116
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    _core.
+    /* istanbul ignore next */
+    Button,
+    /* istanbul ignore next */
+    {
+      variant: "contained",
+      color: "primary",
+      title: "Force Stop Poseidon OS",
+      onClick: () => {
+        /* istanbul ignore next */
+        cov_1ws9ppp3sm.f[4]++;
+        cov_1ws9ppp3sm.s[5]++;
+        props.openAlert('Stop');
+      },
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 117
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Stop")))),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSStatusLabel",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 130
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 131
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    "Response"), ' '),
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "span",
+    /* istanbul ignore next */
+    {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 133
+      },
+      __self: void 0
+    },
+    /* istanbul ignore next */
+    _react.default.createElement(
+    /* istanbul ignore next */
+    "input",
+    /* istanbul ignore next */
+    {
+      className: "IBOFOSInputField",
+      value: props.responsefromos,
+      readOnly:
+      /* istanbul ignore next */
+      true,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 134
+      },
+      __self: void 0
+    }))))
+  );
+};
+
+/* istanbul ignore next */
+var _default = RunIbofOs;
+
+/* istanbul ignore next */
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbIlJ1bklib2ZPcyIsInByb3BzIiwic3RhdHVzIiwiZmxvYXQiLCJtYXJnaW5SaWdodCIsImNvbG9yIiwiZm9udFdlaWdodCIsIm9wZW5BbGVydCIsIk9TX1J1bm5pbmdfU3RhdHVzIiwibG9jYWxTdG9yYWdlIiwiZ2V0SXRlbSIsInJlc3BvbnNlZnJvbW9zIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUE0QkE7QUFBQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7QUFDQTtBQUFBOztBQUNBO0FBQUE7QUFBQTs7Ozs7O0FBRUEsTUFBTUEsU0FBUyxHQUFHQyxLQUFLLElBQUk7QUFBQTtBQUFBO0FBQUE7QUFDekIsU0FDRTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNFO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFJLE1BQUEsU0FBUyxFQUFDLHFCQUFkO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSw0QkFERjtBQUVFO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFLLE1BQUEsU0FBUyxFQUFDLHFCQUFmO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ0U7QUFBQTtBQUFBO0FBQUE7QUFBQTtB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SFY7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsTUFERixDQS9GRixDQUZGO0FBREY7QUE0R0QsQ0E3R0Q7OztlQThHZVgsUyIsInNvdXJjZXNDb250ZW50IjpbIi8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgQ09QWVJJR0hUIChjKSAyMDE5IFNBTVNVTkcgRUxFQ1RST05JQ1MgQ08uLCBMVEQuICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgIEFMTCBSSUdIVFMgUkVTRVJWRUQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCB0byBsaWNlbnNlZXMgb2YgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gICAgICAgIC9cbi8gICBwcm9kdWN0cyB0byB1c2Ugb3IgYWJzdHJhY3QgdGhpcyBjb21wdXRlciBwcm9ncmFtIGZvciB0aGUgc29sZSBwdXJwb3NlIG9mICAgICAgICAgL1xuLyAgIGltcGxlbWVudGluZyBhIHByb2R1Y3QgYmFzZWQgb24gU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gcHJvZHVjdHMuICAgICAgICAgICAvXG4vICAgTm8gb3RoZXIgcmlnaHRzIHRvIHJlcHJvZHVjZSwgdXNlLCBvciBkaXNzZW1pbmF0ZSB0aGlzIGNvbXB1dGVyIHByb2dyYW0sICAgICAgICAgIC9cbi8gICB3aGV0aGVyIGluIHBhcnQgb3IgaW4gd2hvbGUsIGFyZSBncmFudGVkLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLyBcbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuIG1ha2VzIG5vIHJlcHJlc2VudGF0aW9uIG9yIHdhcnJhbnRpZXMgd2l0aCAgICAgICAgICAvXG4vICAgcmVzcGVjdCB0byB0aGUgcGVyZm9ybWFuY2Ugb2YgdGhpcyBjb21wdXRlciBwcm9ncmFtLCBhbmQgc3BlY2lmaWNhbGx5IGRpc2NsYWltcyAgIC9cbi8gICBhbnkgcmVzcG9uc2liaWxpdHkgZm9yIGFueSBkYW1hZ2VzLCBzcGVjaWFsIG9yIGNvbnNlcXVlbnRpYWwsIGNvbm5lY3RlZCAgICAgICAgICAgL1xuLyAgIHdpdGggdGhlIHVzZSBvZiB0aGlzIHByb2dyYW0uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL1xuXG5cbkRFU0NSSVBUSU9OOiBDb21wb25lbnQgY29ycmVzcG9uZGluZyBmb3IgcnVubmluZy9zaHV0dGluZyBkb3duIFBvc2VpZG9uIE9TXG5ATkFNRSA6IGluZGV4LmpzXG5AQVVUSE9SUzogSmF5IEhpdGVzaCBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMDYvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuWzA0LzA2LzIwMTldIFtBc3dpbl0gOiBBZGRlZCBJZHMsIHJlbW92ZWQgY29tbWVudGVkIGNvZGVcbiovXG5cbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBCdXR0b24gfSBmcm9tICdAbWF0ZXJpYWwtdWkvY29yZSc7XG5pbXBvcnQgJy4vUnVuSWJvZk9zLmNzcyc7XG5pbXBvcnQgTGluZWFyUHJvZ3Jlc3NCYXJDb21wb25lbnQgZnJvbSAnLi4vTGluZWFyUHJvZ3Jlc3NCYXJDb21wb25lbnQnO1xuXG5jb25zdCBSdW5JYm9mT3MgPSBwcm9wcyA9PiB7XG4gIHJldHVybiAoXG4gICAgPGRpdj5cbiAgICAgIDxoMSBjbGFzc05hbWU9XCJJQk9GT1MtaGVhZGVyX3N0eWxlXCI+UG9zZWlkb24gT1MgT3BlcmF0aW9uPC9oMT5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiUnVuSWJvZk9zLU91dGVyLUJveFwiPlxuICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJJQk9GT1NNYWluSGVhZGVyXCI+UnVuL1NodXRkb3duIFBvc2VpZG9uIE9TPC9zcGFuPlxuICAgICAgICB7cHJvcHMuc3RhdHVzID8gKFxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJJQk9GT1NOb3RlTWVzc2FnZVwiPlxuICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmbG9hdDogJ2xlZnQnLCBtYXJnaW5SaWdodDogJzJweCcgfX0+XG4gICAgICAgICAgICAgICAgU3RhdHVzIC17JyAnfVxuICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgIDxzcGFuXG4gICAgICAgICAgICAgICAgc3R5bGU9e3sgZmxvYXQ6ICdsZWZ0JywgY29sb3I6ICdncmVlbicsIGZvbnRXZWlnaHQ6ICc2MDAnIH19XG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICB7JyAnfVxuICAgICAgICAgICAgICAgIFJ1bm5pbmdcbiAgICAgICAgICAgICAgPC9zcGFuPnsnICd9XG4gICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJJQk9GT1NTdGFydExhYmVsXCI+XG4gICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGZsb2F0OiAnbGVmdCcgfX0+XG4gICAgICAgICAgICAgICAgQ2xpY2sgdG8gU3RhcnQvU3RvcCBQb3NlaWRvbiBPU1xuICAgICAgICAgICAgICA8L3NwYW4+eycgJ31cbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJJQk9GT1NCdXR0b25DbGFzc1wiPlxuICAgICAgICAgICAgICAgIDxCdXR0b25cbiAgICAgICAgICAgICAgICAgIHZhcmlhbnQ9XCJjb250YWluZWRcIlxuICAgICAgICAgICAgICAgICAgY29sb3I9XCJwcmltYXJ5XCJcbiAgICAgICAgICAgICAgICAgIHRpdGxlPVwiRm9yY2UgU3RhcnQgUG9zZWlkb24gT1NcIlxuICAgICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4ge1xuICAgICAgICAgICAgICAgICAgICBwcm9wcy5vcGVuQWxlcnQoJ1N0YXJ0Jyk7XG4gICAgICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgIFN0YXJ0XG4gICAgICAgICAgICAgICAgPC9CdXR0b24+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIklCT0ZPU0J1dHRvbkNsYXNzXCI+XG4gICAgICAgICAgICAgICAgPEJ1dHRvblxuICAgICAgICAgICAgICAgICAgdmFyaWFudD1cImNvbnRhaW5lZFwiXG4gICAgICAgICAgICAgICAgICBjb2xvcj1cInByaW1hcnlcIlxuICAgICAgICAgICAgICAgICAgdGl0bGU9XCJGb3JjZSBTdG9wIFBvc2VpZG9uIE9TXCJcbiAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHtcbiAgICAgICAgICAgICAgICAgICAgcHJvcHMub3BlbkFsZXJ0KCdTdG9wJyk7XG4gICAgICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgIFN0b3BcbiAgICAgICAgICAgICAgICA8L0J1dHRvbj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICBcbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKSA6IChcbiAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cIklCT0ZPU05vdGVNZXNzYWdlXCI+XG4gICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZmxvYXQ6ICdsZWZ0JywgbWFyZ2luUmlnaHQ6ICcycHgnIH19PlxuICAgICAgICAgICAgICAgICAgU3RhdHVzLXsnICd9XG4gICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGZsb2F0OiAnbGVmdCcsIGNvbG9yOiAncmVkJywgZm9udFdlaWdodDogJzYwMCcgfX0+XG4gICAgICAgICAgICAgICAgICB7cHJvcHMuT1NfUnVubmluZ19TdGF0dXN9XG4gICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgIHtwcm9wcy5PU19SdW5uaW5nX1N0YXR1cyAhPT0gJ05vdCBSdW5uaW5nJyA/IChcbiAgICAgICAgICAgICAgICAgIDxMaW5lYXJQcm9ncmVzc0JhckNvbXBvbmVudFxuICAgICAgICAgICAgICAgICAgICBwZXJjZW50PXtsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgnUmVidWlsZGluZ19WYWx1ZScpfVxuICAgICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICApIDogbnVsbH1cbiAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJJQk9GT1NTdGFydExhYmVsXCI+XG4gICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZmxvYXQ6ICdsZWZ0JyB9fT5cbiAgICAgICAgICAgICAgICAgIENsaWNrIHRvIFN0YXJ0L1N0b3AgUG9zZWlkb24gT1NcbiAgICAgICAgICAgICAgICA8L3NwYW4+eycgJ31cbiAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIklCT0ZPU0J1dHRvbkNsYXNzXCI+XG4gICAgICAgICAgICAgIDxCdXR0b25cbiAgICAgICAgICAgICAgICAgIHZhcmlhbnQ9XCJjb250YWluZWRcIlxuICAgICAgICAgICAgICAgICAgY29sb3I9XCJwcmltYXJ5XCJcbiAgICAgICAgICAgICAgICAgIHRpdGxlPVwiRm9yY2UgU3RhcnQgUG9zZWlkb24gT1NcIlxuICAgICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4ge1xuICAgICAgICAgICAgICAgICAgICBwcm9wcy5vcGVuQWxlcnQoJ1N0YXJ0Jyk7XG4gICAgICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICBTdGFydFxuICAgICAgICAgICAgICA8L0J1dHRvbj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiSUJPRk9TQnV0dG9uQ2xhc3NcIj5cbiAgICAgICAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICAgICAgICB2YXJpYW50PVwiY29udGFpbmVkXCJcbiAgICAgICAgICAgICAgICAgIGNvbG9yPVwicHJpbWFyeVwiXG4gICAgICAgICAgICAgICAgICB0aXRsZT1cIkZvcmNlIFN0b3AgUG9zZWlkb24gT1NcIlxuICAgICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4ge1xuICAgICAgICAgICAgICAgICAgICBwcm9wcy5vcGVuQWxlcnQoJ1N0b3AnKTtcbiAgICAgICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgU3RvcFxuICAgICAgICAgICAgICAgIDwvQnV0dG9uPlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICl9XG4gICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cIklCT0ZPU1N0YXR1c0xhYmVsXCI+XG4gICAgICAgICAgPHNwYW4+UmVzcG9uc2U8L3NwYW4+eycgJ31cbiAgICAgICAgPC9zcGFuPlxuICAgICAgICA8c3Bhbj5cbiAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cIklCT0ZPU0lucHV0RmllbGRcIlxuICAgICAgICAgICAgdmFsdWU9e3Byb3BzLnJlc3BvbnNlZnJvbW9zfVxuICAgICAgICAgICAgcmVhZE9ubHlcbiAgICAgICAgICAvPlxuICAgICAgICA8L3NwYW4+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5leHBvcnQgZGVmYXVsdCBSdW5JYm9mT3M7XG4iXX0=

@@ -1,0 +1,917 @@
+659292d94448fe9914d9227fa299e487
+/* istanbul ignore next */
+"use strict";
+
+var cov_1xl62rdnlk = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/hardwareSensorSaga.js";
+  var hash = "4856ffa700cd43ea45f385e1ecd644de9bc2d089";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/sagas/hardwareSensorSaga.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 33,
+          column: 4
+        },
+        end: {
+          line: 53,
+          column: 5
+        }
+      },
+      "1": {
+        start: {
+          line: 35,
+          column: 25
+        },
+        end: {
+          line: 41,
+          column: 10
+        }
+      },
+      "2": {
+        start: {
+          line: 42,
+          column: 8
+        },
+        end: {
+          line: 42,
+          column: 47
+        }
+      },
+      "3": {
+        start: {
+          line: 43,
+          column: 23
+        },
+        end: {
+          line: 43,
+          column: 36
+        }
+      },
+      "4": {
+        start: {
+          line: 44,
+          column: 8
+        },
+        end: {
+          line: 46,
+          column: 9
+        }
+      },
+      "5": {
+        start: {
+          line: 45,
+          column: 12
+        },
+        end: {
+          line: 45,
+          column: 85
+        }
+      },
+      "6": {
+        start: {
+          line: 48,
+          column: 8
+        },
+        end: {
+          line: 48,
+          column: 47
+        }
+      },
+      "7": {
+        start: {
+          line: 49,
+          column: 8
+        },
+        end: {
+          line: 49,
+          column: 59
+        }
+      },
+      "8": {
+        start: {
+          line: 58,
+          column: 4
+        },
+        end: {
+          line: 78,
+          column: 5
+        }
+      },
+      "9": {
+        start: {
+          line: 59,
+          column: 8
+        },
+        end: {
+          line: 59,
+          column: 74
+        }
+      },
+      "10": {
+        start: {
+          line: 60,
+          column: 25
+        },
+        end: {
+          line: 66,
+          column: 10
+        }
+      },
+      "11": {
+        start: {
+          line: 67,
+          column: 8
+        },
+        end: {
+          line: 67,
+          column: 47
+        }
+      },
+      "12": {
+        start: {
+          line: 68,
+          column: 23
+        },
+        end: {
+          line: 68,
+          column: 36
+        }
+      },
+      "13": {
+        start: {
+          line: 69,
+          column: 8
+        },
+        end: {
+          line: 71,
+          column: 9
+        }
+      },
+      "14": {
+        start: {
+          line: 70,
+          column: 12
+        },
+        end: {
+          line: 70,
+          column: 81
+        }
+      },
+      "15": {
+        start: {
+          line: 73,
+          column: 8
+        },
+        end: {
+          line: 73,
+          column: 47
+        }
+      },
+      "16": {
+        start: {
+          line: 74,
+          column: 8
+        },
+        end: {
+          line: 74,
+          column: 57
+        }
+      },
+      "17": {
+        start: {
+          line: 82,
+          column: 4
+        },
+        end: {
+          line: 102,
+          column: 5
+        }
+      },
+      "18": {
+        start: {
+          line: 83,
+          column: 8
+        },
+        end: {
+          line: 83,
+          column: 74
+        }
+      },
+      "19": {
+        start: {
+          line: 84,
+          column: 25
+        },
+        end: {
+          line: 90,
+          column: 10
+        }
+      },
+      "20": {
+        start: {
+          line: 91,
+          column: 8
+        },
+        end: {
+          line: 91,
+          column: 47
+        }
+      },
+      "21": {
+        start: {
+          line: 92,
+          column: 23
+        },
+        end: {
+          line: 92,
+          column: 36
+        }
+      },
+      "22": {
+        start: {
+          line: 93,
+          column: 8
+        },
+        end: {
+          line: 95,
+          column: 9
+        }
+      },
+      "23": {
+        start: {
+          line: 94,
+          column: 12
+        },
+        end: {
+          line: 94,
+          column: 97
+        }
+      },
+      "24": {
+        start: {
+          line: 97,
+          column: 8
+        },
+        end: {
+          line: 97,
+          column: 47
+        }
+      },
+      "25": {
+        start: {
+          line: 98,
+          column: 8
+        },
+        end: {
+          line: 98,
+          column: 65
+        }
+      },
+      "26": {
+        start: {
+          line: 106,
+          column: 4
+        },
+        end: {
+          line: 106,
+          column: 108
+        }
+      },
+      "27": {
+        start: {
+          line: 107,
+          column: 4
+        },
+        end: {
+          line: 107,
+          column: 104
+        }
+      },
+      "28": {
+        start: {
+          line: 108,
+          column: 4
+        },
+        end: {
+          line: 108,
+          column: 120
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "fetchPowerSensorInfo",
+        decl: {
+          start: {
+            line: 32,
+            column: 17
+          },
+          end: {
+            line: 32,
+            column: 37
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 40
+          },
+          end: {
+            line: 54,
+            column: 1
+          }
+        },
+        line: 32
+      },
+      "1": {
+        name: "fetchFanSensorInfo",
+        decl: {
+          start: {
+            line: 56,
+            column: 17
+          },
+          end: {
+            line: 56,
+            column: 35
+          }
+        },
+        loc: {
+          start: {
+            line: 56,
+            column: 38
+          },
+          end: {
+            line: 79,
+            column: 1
+          }
+        },
+        line: 56
+      },
+      "2": {
+        name: "fetchTemperatureSensorInfo",
+        decl: {
+          start: {
+            line: 81,
+            column: 17
+          },
+          end: {
+            line: 81,
+            column: 43
+          }
+        },
+        loc: {
+          start: {
+            line: 81,
+            column: 46
+          },
+          end: {
+            line: 103,
+            column: 1
+          }
+        },
+        line: 81
+      },
+      "3": {
+        name: "hardwareSensorWatcher",
+        decl: {
+          start: {
+            line: 105,
+            column: 17
+          },
+          end: {
+            line: 105,
+            column: 38
+          }
+        },
+        loc: {
+          start: {
+            line: 105,
+            column: 41
+          },
+          end: {
+            line: 110,
+            column: 1
+          }
+        },
+        line: 105
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 44,
+            column: 8
+          },
+          end: {
+            line: 46,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 44,
+            column: 8
+          },
+          end: {
+            line: 46,
+            column: 9
+          }
+        }, {
+          start: {
+            line: 44,
+            column: 8
+          },
+          end: {
+            line: 46,
+            column: 9
+          }
+        }],
+        line: 44
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 69,
+            column: 8
+          },
+          end: {
+            line: 71,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 69,
+            column: 8
+          },
+          end: {
+            line: 71,
+            column: 9
+          }
+        }, {
+          start: {
+            line: 69,
+            column: 8
+          },
+          end: {
+            line: 71,
+            column: 9
+          }
+        }],
+        line: 69
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 93,
+            column: 8
+          },
+          end: {
+            line: 95,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 93,
+            column: 8
+          },
+          end: {
+            line: 95,
+            column: 9
+          }
+        }, {
+          start: {
+            line: 93,
+            column: 8
+          },
+          end: {
+            line: 95,
+            column: 9
+          }
+        }],
+        line: 93
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0]
+    },
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "4856ffa700cd43ea45f385e1ecd644de9bc2d089"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchPowerSensorInfo = fetchPowerSensorInfo;
+exports.fetchFanSensorInfo = fetchFanSensorInfo;
+exports.fetchTemperatureSensorInfo = fetchTemperatureSensorInfo;
+exports.hardwareSensorWatcher = hardwareSensorWatcher;
+
+var
+/* istanbul ignore next */
+_axios = _interopRequireDefault(require("axios"));
+
+var
+/* istanbul ignore next */
+_effects = require("redux-saga/effects");
+
+var
+/* istanbul ignore next */
+actionTypes = _interopRequireWildcard(require("../store/actions/actionTypes"));
+
+var
+/* istanbul ignore next */
+actionCreators = _interopRequireWildcard(require("../store/actions/exportActionCreators"));
+
+function* fetchPowerSensorInfo() {
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.f[0]++;
+  cov_1xl62rdnlk.s[0]++;
+
+  try {
+    // yield put(actionCreators.startLoader('Fetching BMC Information'));
+    const response =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[1]++, yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      call)([
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default,
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default.get], '/api/v1.0/get_power_sensor_info/', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
+    ));
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[2]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+    const result =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[3]++, response.data);
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[4]++;
+
+    if (result) {
+      /* istanbul ignore next */
+      cov_1xl62rdnlk.b[0][0]++;
+      cov_1xl62rdnlk.s[5]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _effects.
+        /* istanbul ignore next */
+        put)(actionCreators.fetchPowerSensorInfo(result.power_sensor_info))
+      );
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1xl62rdnlk.b[0][1]++;
+    }
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[6]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[7]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.fetchPowerSensorInfo([]))
+    );
+  } finally {
+    ;
+  }
+}
+
+function* fetchFanSensorInfo() {
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.f[1]++;
+  cov_1xl62rdnlk.s[8]++;
+
+  try {
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[9]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.startLoader('Fetching BMC Information'))
+    );
+    const response =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[10]++, yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      call)([
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default,
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default.get], '/api/v1.0/get_fan_sensor_info/', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
+    ));
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[11]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+    const result =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[12]++, response.data);
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[13]++;
+
+    if (result) {
+      /* istanbul ignore next */
+      cov_1xl62rdnlk.b[1][0]++;
+      cov_1xl62rdnlk.s[14]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _effects.
+        /* istanbul ignore next */
+        put)(actionCreators.fetchFanSensorInfo(result.fan_sensor_info))
+      );
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1xl62rdnlk.b[1][1]++;
+    }
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[15]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[16]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.fetchFanSensorInfo([]))
+    );
+  } finally {
+    ;
+  }
+}
+
+function* fetchTemperatureSensorInfo() {
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.f[2]++;
+  cov_1xl62rdnlk.s[17]++;
+
+  try {
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[18]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.startLoader('Fetching BMC Information'))
+    );
+    const response =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[19]++, yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      call)([
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default,
+      /* istanbul ignore next */
+      _axios.
+      /* istanbul ignore next */
+      default.get], '/api/v1.0/get_temperature_sensor_info/', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
+    ));
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[20]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+    const result =
+    /* istanbul ignore next */
+    (cov_1xl62rdnlk.s[21]++, response.data);
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[22]++;
+
+    if (result) {
+      /* istanbul ignore next */
+      cov_1xl62rdnlk.b[2][0]++;
+      cov_1xl62rdnlk.s[23]++;
+      yield (
+        /* istanbul ignore next */
+        (0,
+        /* istanbul ignore next */
+        _effects.
+        /* istanbul ignore next */
+        put)(actionCreators.fetchTemperatureSensorInfo(result.temperature_sensor_info))
+      );
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1xl62rdnlk.b[2][1]++;
+    }
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[24]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.stopLoader())
+    );
+
+    /* istanbul ignore next */
+    cov_1xl62rdnlk.s[25]++;
+    yield (
+      /* istanbul ignore next */
+      (0,
+      /* istanbul ignore next */
+      _effects.
+      /* istanbul ignore next */
+      put)(actionCreators.fetchTemperatureSensorInfo([]))
+    );
+  } finally {
+    ;
+  }
+}
+
+function* hardwareSensorWatcher() {
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.f[3]++;
+  cov_1xl62rdnlk.s[26]++;
+  yield (
+    /* istanbul ignore next */
+    (0,
+    /* istanbul ignore next */
+    _effects.
+    /* istanbul ignore next */
+    takeEvery)(actionTypes.SAGA_HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION, fetchPowerSensorInfo)
+  );
+
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.s[27]++;
+  yield (
+    /* istanbul ignore next */
+    (0,
+    /* istanbul ignore next */
+    _effects.
+    /* istanbul ignore next */
+    takeEvery)(actionTypes.SAGA_HARDWARE_SENSORS_FETCH_FAN_SENSOR_INFORMATION, fetchFanSensorInfo)
+  );
+
+  /* istanbul ignore next */
+  cov_1xl62rdnlk.s[28]++;
+  yield (
+    /* istanbul ignore next */
+    (0,
+    /* istanbul ignore next */
+    _effects.
+    /* istanbul ignore next */
+    takeEvery)(actionTypes.SAGA_HARDWARE_SENSORS_FETCH_TEMPERATURE_SENSOR_INFORMATION, fetchTemperatureSensorInfo)
+  );
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImhhcmR3YXJlU2Vuc29yU2FnYS5qcyJdLCJuYW1lcyI6WyJmZXRjaFBvd2VyU2Vuc29ySW5mbyIsInJlc3BvbnNlIiwiY2FsbCIsImF4aW9zIiwiZ2V0IiwiaGVhZGVycyIsIkFjY2VwdCIsImxvY2FsU3RvcmFnZSIsImdldEl0ZW0iLCJwdXQiLCJhY3Rpb25DcmVhdG9ycyIsInN0b3BMb2FkZXIiLCJyZXN1bHQiLCJkYXRhIiwicG93ZXJfc2Vuc29yX2luZm8iLCJlcnJvciIsImZldGNoRmFuU2Vuc29ySW5mbyIsInN0YXJ0TG9hZGVyIiwiZmFuX3NlbnNvcl9pbmZvIiwiZmV0Y2hUZW1wZXJhdHVyZVNlbnNvckluZm8iLCJ0ZW1wZXJhdHVyZV9zZW5zb3JfaW5mbyIsImhhcmR3YXJlU2Vuc29yV2F0Y2hlciIsInRha2VFdmVyeSIsImFjdGlvblR5cGVzIiwiU0FHQV9IQVJEV0FSRV9TRU5TT1JTX0ZFVENIX1BPV0VSX1NFTlNPUl9JTkZPUk1BVElPTiIsIlNBR0FfSEFSRFdBUkVfU0VOU09SU19GRVRDSF9GQU5fU0VOU09SX0lORk9STUFUSU9OIiwiU0FHQV9IQVJEV0FSRV9TRU5TT1JTX0ZFVENIX1RFTVBFUkFUVVJFX1NFTlNPUl9JTkZPUk1BVElPTiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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QXRCLEVBQWtGUCwwQkFBbEY7QUFBTjtBQUVIIiwic291cmNlc0NvbnRlbnQiOlsiLyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS9cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICBDT1BZUklHSFQgKGMpIDIwMTkgU0FNU1VORyBFTEVDVFJPTklDUyBDTy4sIExURC4gICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgQUxMIFJJR0hUUyBSRVNFUlZFRCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkIHRvIGxpY2Vuc2VlcyBvZiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiAgICAgICAgL1xuLyAgIHByb2R1Y3RzIHRvIHVzZSBvciBhYnN0cmFjdCB0aGlzIGNvbXB1dGVyIHByb2dyYW0gZm9yIHRoZSBzb2xlIHB1cnBvc2Ugb2YgICAgICAgICAvXG4vICAgaW1wbGVtZW50aW5nIGEgcHJvZHVjdCBiYXNlZCBvbiBTYW1zdW5nIEVsZWN0cm9uaWNzIENvLiwgTHRkLiBwcm9kdWN0cy4gICAgICAgICAgIC9cbi8gICBObyBvdGhlciByaWdodHMgdG8gcmVwcm9kdWNlLCB1c2UsIG9yIGRpc3NlbWluYXRlIHRoaXMgY29tcHV0ZXIgcHJvZ3JhbSwgICAgICAgICAgL1xuLyAgIHdoZXRoZXIgaW4gcGFydCBvciBpbiB3aG9sZSwgYXJlIGdyYW50ZWQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvIFxuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gbWFrZXMgbm8gcmVwcmVzZW50YXRpb24gb3Igd2FycmFudGllcyB3aXRoICAgICAgICAgIC9cbi8gICByZXNwZWN0IHRvIHRoZSBwZXJmb3JtYW5jZSBvZiB0aGlzIGNvbXB1dGVyIHByb2dyYW0sIGFuZCBzcGVjaWZpY2FsbHkgZGlzY2xhaW1zICAgL1xuLyAgIGFueSByZXNwb25zaWJpbGl0eSBmb3IgYW55IGRhbWFnZXMsIHNwZWNpYWwgb3IgY29uc2VxdWVudGlhbCwgY29ubmVjdGVkICAgICAgICAgICAvXG4vICAgd2l0aCB0aGUgdXNlIG9mIHRoaXMgcHJvZ3JhbS4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG5cbkRFU0NSSVBUSU9OOiA8Q29udGFpbnMgR2VuZXJhdG9yIEZ1bmN0aW9ucyBmb3IgaGFyZHdhcmUgY29udGFpbmVyPiAqXG5ATkFNRSA6IGhhcmR3YXJlU2Vuc29yU2FnYS5qc1xuQEFVVEhPUlM6IEpheSBTYW5naGF2aSBcbkBWZXJzaW9uIDogMS4wICpcbkBSRVZJU0lPTiBISVNUT1JZXG5bMDMvMTEvMjAxOV0gW0pheV0gOiBQcm90b3R5cGluZy4uLi4uLi4uLi4vLy8vLy8vLy8vLy8vLy8vLy8vL1xuKi9cblxuaW1wb3J0IGF4aW9zIGZyb20gJ2F4aW9zJztcbmltcG9ydCB7IGNhbGwsIHRha2VFdmVyeSwgcHV0IH0gZnJvbSAncmVkdXgtc2FnYS9lZmZlY3RzJztcbmltcG9ydCAqIGFzIGFjdGlvblR5cGVzIGZyb20gJy4uL3N0b3JlL2FjdGlvbnMvYWN0aW9uVHlwZXMnO1xuaW1wb3J0ICogYXMgYWN0aW9uQ3JlYXRvcnMgZnJvbSAnLi4vc3RvcmUvYWN0aW9ucy9leHBvcnRBY3Rpb25DcmVhdG9ycyc7XG5cbmV4cG9ydCBmdW5jdGlvbiogZmV0Y2hQb3dlclNlbnNvckluZm8oKSB7XG4gICAgdHJ5IHtcbiAgICAgICAgLy8geWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLnN0YXJ0TG9hZGVyKCdGZXRjaGluZyBCTUMgSW5mb3JtYXRpb24nKSk7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0geWllbGQgY2FsbChbYXhpb3MsIGF4aW9zLmdldF0sICcvYXBpL3YxLjAvZ2V0X3Bvd2VyX3NlbnNvcl9pbmZvLycsIHtcbiAgICAgICAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgICAgICAgICBBY2NlcHQ6ICdhcHBsaWNhdGlvbi9qc29uJyxcbiAgICAgICAgICAgICAgICAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nLFxuICAgICAgICAgICAgICAgICd4LWFjY2Vzcy10b2tlbic6IGxvY2FsU3RvcmFnZS5nZXRJdGVtKCd0b2tlbicpLFxuICAgICAgICAgICAgfVxuICAgICAgICB9KTtcbiAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLnN0b3BMb2FkZXIoKSk7XG4gICAgICAgIGNvbnN0IHJlc3VsdCA9IHJlc3BvbnNlLmRhdGE7XG4gICAgICAgIGlmIChyZXN1bHQpIHtcbiAgICAgICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5mZXRjaFBvd2VyU2Vuc29ySW5mbyhyZXN1bHQucG93ZXJfc2Vuc29yX2luZm8pKTtcbiAgICAgICAgfVxuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5zdG9wTG9hZGVyKCkpO1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuZmV0Y2hQb3dlclNlbnNvckluZm8oW10pKTtcbiAgICB9XG4gICAgZmluYWxseSB7XG4gICAgICAgIDtcbiAgICB9XG59XG5cbmV4cG9ydCBmdW5jdGlvbiogZmV0Y2hGYW5TZW5zb3JJbmZvKCkge1xuICAgIFxuICAgIHRyeSB7XG4gICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5zdGFydExvYWRlcignRmV0Y2hpbmcgQk1DIEluZm9ybWF0aW9uJykpO1xuICAgICAgICBjb25zdCByZXNwb25zZSA9IHlpZWxkIGNhbGwoW2F4aW9zLCBheGlvcy5nZXRdLCAnL2FwaS92MS4wL2dldF9mYW5fc2Vuc29yX2luZm8vJywge1xuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIEFjY2VwdDogJ2FwcGxpY2F0aW9uL2pzb24nLFxuICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicsXG4gICAgICAgICAgICAgICAgJ3gtYWNjZXNzLXRva2VuJzogbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3Rva2VuJyksXG4gICAgICAgICAgICB9XG4gICAgICAgIH0pO1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuc3RvcExvYWRlcigpKTtcbiAgICAgICAgY29uc3QgcmVzdWx0ID0gcmVzcG9uc2UuZGF0YTtcbiAgICAgICAgaWYgKHJlc3VsdCkge1xuICAgICAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLmZldGNoRmFuU2Vuc29ySW5mbyhyZXN1bHQuZmFuX3NlbnNvcl9pbmZvKSk7XG4gICAgICAgIH1cbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuc3RvcExvYWRlcigpKTtcbiAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLmZldGNoRmFuU2Vuc29ySW5mbyhbXSkpO1xuICAgIH1cbiAgICBmaW5hbGx5IHtcbiAgICAgICAgO1xuICAgIH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uKiBmZXRjaFRlbXBlcmF0dXJlU2Vuc29ySW5mbygpIHtcbiAgICB0cnkge1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuc3RhcnRMb2FkZXIoJ0ZldGNoaW5nIEJNQyBJbmZvcm1hdGlvbicpKTtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSB5aWVsZCBjYWxsKFtheGlvcywgYXhpb3MuZ2V0XSwgJy9hcGkvdjEuMC9nZXRfdGVtcGVyYXR1cmVfc2Vuc29yX2luZm8vJywge1xuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIEFjY2VwdDogJ2FwcGxpY2F0aW9uL2pzb24nLFxuICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicsXG4gICAgICAgICAgICAgICAgJ3gtYWNjZXNzLXRva2VuJzogbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3Rva2VuJyksXG4gICAgICAgICAgICB9XG4gICAgICAgIH0pO1xuICAgICAgICB5aWVsZCBwdXQoYWN0aW9uQ3JlYXRvcnMuc3RvcExvYWRlcigpKTtcbiAgICAgICAgY29uc3QgcmVzdWx0ID0gcmVzcG9uc2UuZGF0YTtcbiAgICAgICAgaWYgKHJlc3VsdCkge1xuICAgICAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLmZldGNoVGVtcGVyYXR1cmVTZW5zb3JJbmZvKHJlc3VsdC50ZW1wZXJhdHVyZV9zZW5zb3JfaW5mbykpO1xuICAgICAgICB9XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgICAgeWllbGQgcHV0KGFjdGlvbkNyZWF0b3JzLnN0b3BMb2FkZXIoKSk7XG4gICAgICAgIHlpZWxkIHB1dChhY3Rpb25DcmVhdG9ycy5mZXRjaFRlbXBlcmF0dXJlU2Vuc29ySW5mbyhbXSkpO1xuICAgIH1cbiAgICBmaW5hbGx5IHtcbiAgICAgICAgO1xuICAgIH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uKiBoYXJkd2FyZVNlbnNvcldhdGNoZXIoKSB7XG4gICAgeWllbGQgdGFrZUV2ZXJ5KGFjdGlvblR5cGVzLlNBR0FfSEFSRFdBUkVfU0VOU09SU19GRVRDSF9QT1dFUl9TRU5TT1JfSU5GT1JNQVRJT04sIGZldGNoUG93ZXJTZW5zb3JJbmZvKTtcbiAgICB5aWVsZCB0YWtlRXZlcnkoYWN0aW9uVHlwZXMuU0FHQV9IQVJEV0FSRV9TRU5TT1JTX0ZFVENIX0ZBTl9TRU5TT1JfSU5GT1JNQVRJT04sIGZldGNoRmFuU2Vuc29ySW5mbyk7XG4gICAgeWllbGQgdGFrZUV2ZXJ5KGFjdGlvblR5cGVzLlNBR0FfSEFSRFdBUkVfU0VOU09SU19GRVRDSF9URU1QRVJBVFVSRV9TRU5TT1JfSU5GT1JNQVRJT04sIGZldGNoVGVtcGVyYXR1cmVTZW5zb3JJbmZvKTtcblxufVxuIl19

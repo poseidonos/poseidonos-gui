@@ -1,0 +1,8 @@
+chronograf_1.7.9
+influxdb_1.7.5
+kapacitor_1.5.2
+libcurl4_7.58.0-2ubuntu3
+libnginx-mod-http-echo_1.14.0-0ubuntu1
+nginx-common_1.14.0-0ubuntu1_all
+nginx-light_1.14.0-0ubuntu1
+nginx_1.14.2-2_all

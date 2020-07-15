@@ -1,0 +1,79 @@
+.AlertFields {
+  width: 45%;
+  height: 28%;
+  margin-top: 1%;
+  margin-right: 18px;
+  position: relative;
+  border: 1px solid gray;
+  float: right;
+  overflow: auto;
+  overflow-x: hidden;
+  font-size: 12px;
+}
+
+.AlertFields-header {
+  width: 100%;
+  height: 31px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  background-color: #788595;
+  color: white;
+  padding-left: 5px;
+  font-size: 14px;
+}
+.AlertFields-group {
+  margin-left: 5px;
+}
+.AlertFields-body {
+  text-align: left;
+}
+
+.AddNewAlerts-ip {
+  margin-left: 50px;
+  height: 0;
+  transition: height 600ms ease-out;
+  display: block;
+  overflow: hidden;
+}
+
+.AddNewAlerts-ip.expanded {
+  height: auto;
+  overflow: visible;
+}
+
+.AddNewAlerts-expand {
+  transition: ease-in 300ms;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.AddNewAlerts-expand.expanded {
+  transform: rotate(90deg);
+}
+
+.AddNewAlerts-title {
+  background-color: aliceblue;
+  margin-top: 5px;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.AddNewAlerts-title.active {
+  background-color: aqua;
+}
+
+@media screen and (max-width: 1345px) {
+  .AlertFields {
+    overflow-x: scroll;
+    width: 45%;
+  }
+}
+
+@media screen and (max-height: 720px) {
+  .AlertFields {
+    height: 20%;
+  }
+}

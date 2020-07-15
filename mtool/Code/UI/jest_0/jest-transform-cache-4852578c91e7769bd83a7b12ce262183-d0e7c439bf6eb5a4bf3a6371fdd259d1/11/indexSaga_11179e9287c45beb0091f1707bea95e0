@@ -1,0 +1,78 @@
+808c5a9495b4dc6da416f06df846ae53
+"use strict";
+
+var _interopRequireDefault = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = rootSaga;
+
+var _effects = require("redux-saga/effects");
+
+var _headerSaga = _interopRequireDefault(require("./headerSaga"));
+
+var _dashboardSaga = require("./dashboardSaga");
+
+var _configurationsettingSaga = require("./configurationsettingSaga");
+
+var _logManagementSaga = require("./logManagementSaga");
+
+var _alertManagementSaga = require("./alertManagementSaga");
+
+var _alertManagementAlertTableSaga = require("./alertManagementAlertTableSaga");
+
+var _alertManagementAddNewAlertsSaga = require("./alertManagementAddNewAlertsSaga");
+
+var _authenticationSaga = require("./authenticationSaga");
+
+var _userManagementSaga = require("./userManagementSaga");
+
+var _userManagementUserTableSaga = require("./userManagementUserTableSaga");
+
+var _userManagementAddNewUsersSaga = require("./userManagementAddNewUsersSaga");
+
+var _storageSaga = _interopRequireDefault(require("./storageSaga"));
+
+var _performanceSaga = _interopRequireDefault(require("./performanceSaga"));
+
+var _hardwareOverviewSaga = require("./hardwareOverviewSaga");
+
+var _hardwareSensorSaga = require("./hardwareSensorSaga");
+
+var _hardwareHealthSaga = require("./hardwareHealthSaga");
+
+var _hardwarePowerManagementSaga = require("./hardwarePowerManagementSaga");
+
+var _BMCAuthenticationSaga = require("./BMCAuthenticationSaga");
+
+/* -------------------------------------------------------------------------------------/
+                                                                                    /
+/               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
+/                          ALL RIGHTS RESERVED                                        /
+/                                                                                     /
+/   Permission is hereby granted to licensees of Samsung Electronics Co., Ltd.        /
+/   products to use or abstract this computer program for the sole purpose of         /
+/   implementing a product based on Samsung Electronics Co., Ltd. products.           /
+/   No other rights to reproduce, use, or disseminate this computer program,          /
+/   whether in part or in whole, are granted.                                         / 
+/                                                                                     /
+/   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
+/   respect to the performance of this computer program, and specifically disclaims   /
+/   any responsibility for any damages, special or consequential, connected           /
+/   with the use of this program.                                                     /
+/                                                                                     /
+/-------------------------------------------------------------------------------------/
+
+
+DESCRIPTION: <Root Index file for running Sagas> *
+@NAME : indexSaga.js
+@AUTHORS: Jay Hitesh Sanghavi 
+@Version : 1.0 *
+@REVISION HISTORY
+[03/06/2019] [Jay] : Prototyping..........////////////////////
+*/
+function* rootSaga() {
+  yield (0, _effects.all)([(0, _headerSaga.default)(), (0, _dashboardSaga.dashboardWatcher)(), (0, _configurationsettingSaga.configurationsettingWatcher)(), (0, _logManagementSaga.logManagementWatcher)(), (0, _alertManagementSaga.alertManagementContainerWatcher)(), (0, _alertManagementAlertTableSaga.alertManagementAlertTableWatcher)(), (0, _alertManagementAddNewAlertsSaga.alertManagementAddNewAlertsWatcher)(), (0, _storageSaga.default)(), (0, _performanceSaga.default)(), (0, _authenticationSaga.authenticationWatcher)(), (0, _userManagementSaga.userManagementContainerWatcher)(), (0, _userManagementUserTableSaga.userManagementUserTableWatcher)(), (0, _userManagementAddNewUsersSaga.userManagementAddNewUsersWatcher)(), (0, _hardwareOverviewSaga.hardwareOverviewWatcher)(), (0, _hardwareSensorSaga.hardwareSensorWatcher)(), (0, _hardwareHealthSaga.hardwareHealthWatcher)(), (0, _hardwarePowerManagementSaga.hardwarePowerManagementWatcher)(), (0, _BMCAuthenticationSaga.BMCAuthenticationWatcher)()]);
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4U2FnYS5qcyJdLCJuYW1lcyI6WyJyb290U2FnYSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBMkJBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQUNBOztBQTdDQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUErQ2UsVUFBVUEsUUFBVixHQUFxQjtBQUNoQyxRQUFNLGtCQUFJLENBQ04sMEJBRE0sRUFFTixzQ0FGTSxFQUdOLDREQUhNLEVBSU4sOENBSk0sRUFLTiwyREFMTSxFQU1OLHNFQU5NLEVBT04sMEVBUE0sRUFRTiwyQkFSTSxFQVNOLCtCQVRNLEVBVU4sZ0RBVk0sRUFXTix5REFYTSxFQVlOLGtFQVpNLEVBYU4sc0VBYk0sRUFjTixvREFkTSxFQWVOLGdEQWZNLEVBZ0JOLGdEQWhCTSxFQWlCTixrRUFqQk0sRUFrQk4sc0RBbEJNLENBQUosQ0FBTjtBQW9CSCIsInNvdXJjZXNDb250ZW50IjpbIi8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0vXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgQ09QWVJJR0hUIChjKSAyMDE5IFNBTVNVTkcgRUxFQ1RST05JQ1MgQ08uLCBMVEQuICAgICAgICAgICAgICAgICAgICAgIC9cbi8gICAgICAgICAgICAgICAgICAgICAgICAgIEFMTCBSSUdIVFMgUkVTRVJWRUQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCB0byBsaWNlbnNlZXMgb2YgU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gICAgICAgIC9cbi8gICBwcm9kdWN0cyB0byB1c2Ugb3IgYWJzdHJhY3QgdGhpcyBjb21wdXRlciBwcm9ncmFtIGZvciB0aGUgc29sZSBwdXJwb3NlIG9mICAgICAgICAgL1xuLyAgIGltcGxlbWVudGluZyBhIHByb2R1Y3QgYmFzZWQgb24gU2Ftc3VuZyBFbGVjdHJvbmljcyBDby4sIEx0ZC4gcHJvZHVjdHMuICAgICAgICAgICAvXG4vICAgTm8gb3RoZXIgcmlnaHRzIHRvIHJlcHJvZHVjZSwgdXNlLCBvciBkaXNzZW1pbmF0ZSB0aGlzIGNvbXB1dGVyIHByb2dyYW0sICAgICAgICAgIC9cbi8gICB3aGV0aGVyIGluIHBhcnQgb3IgaW4gd2hvbGUsIGFyZSBncmFudGVkLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLyBcbi8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL1xuLyAgIFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28uLCBMdGQuIG1ha2VzIG5vIHJlcHJlc2VudGF0aW9uIG9yIHdhcnJhbnRpZXMgd2l0aCAgICAgICAgICAvXG4vICAgcmVzcGVjdCB0byB0aGUgcGVyZm9ybWFuY2Ugb2YgdGhpcyBjb21wdXRlciBwcm9ncmFtLCBhbmQgc3BlY2lmaWNhbGx5IGRpc2NsYWltcyAgIC9cbi8gICBhbnkgcmVzcG9uc2liaWxpdHkgZm9yIGFueSBkYW1hZ2VzLCBzcGVjaWFsIG9yIGNvbnNlcXVlbnRpYWwsIGNvbm5lY3RlZCAgICAgICAgICAgL1xuLyAgIHdpdGggdGhlIHVzZSBvZiB0aGlzIHByb2dyYW0uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvXG4vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC9cbi8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL1xuXG5cbkRFU0NSSVBUSU9OOiA8Um9vdCBJbmRleCBmaWxlIGZvciBydW5uaW5nIFNhZ2FzPiAqXG5ATkFNRSA6IGluZGV4U2FnYS5qc1xuQEFVVEhPUlM6IEpheSBIaXRlc2ggU2FuZ2hhdmkgXG5AVmVyc2lvbiA6IDEuMCAqXG5AUkVWSVNJT04gSElTVE9SWVxuWzAzLzA2LzIwMTldIFtKYXldIDogUHJvdG90eXBpbmcuLi4uLi4uLi4uLy8vLy8vLy8vLy8vLy8vLy8vLy9cbiovXG5cbmltcG9ydCB7IGFsbCB9IGZyb20gJ3JlZHV4LXNhZ2EvZWZmZWN0cyc7XG5pbXBvcnQgaGVhZGVyV2F0Y2hlciBmcm9tIFwiLi9oZWFkZXJTYWdhXCJcbmltcG9ydCB7ZGFzaGJvYXJkV2F0Y2hlcn0gZnJvbSBcIi4vZGFzaGJvYXJkU2FnYVwiXG5pbXBvcnQge2NvbmZpZ3VyYXRpb25zZXR0aW5nV2F0Y2hlcn0gZnJvbSBcIi4vY29uZmlndXJhdGlvbnNldHRpbmdTYWdhXCJcbmltcG9ydCB7bG9nTWFuYWdlbWVudFdhdGNoZXJ9IGZyb20gXCIuL2xvZ01hbmFnZW1lbnRTYWdhXCJcbmltcG9ydCB7YWxlcnRNYW5hZ2VtZW50Q29udGFpbmVyV2F0Y2hlcn0gZnJvbSBcIi4vYWxlcnRNYW5hZ2VtZW50U2FnYVwiXG5pbXBvcnQge2FsZXJ0TWFuYWdlbWVudEFsZXJ0VGFibGVXYXRjaGVyfSBmcm9tIFwiLi9hbGVydE1hbmFnZW1lbnRBbGVydFRhYmxlU2FnYVwiXG5pbXBvcnQge2FsZXJ0TWFuYWdlbWVudEFkZE5ld0FsZXJ0c1dhdGNoZXJ9IGZyb20gXCIuL2FsZXJ0TWFuYWdlbWVudEFkZE5ld0FsZXJ0c1NhZ2FcIlxuaW1wb3J0IHthdXRoZW50aWNhdGlvbldhdGNoZXJ9IGZyb20gXCIuL2F1dGhlbnRpY2F0aW9uU2FnYVwiXG5pbXBvcnQge3VzZXJNYW5hZ2VtZW50Q29udGFpbmVyV2F0Y2hlcn0gZnJvbSBcIi4vdXNlck1hbmFnZW1lbnRTYWdhXCJcbmltcG9ydCB7dXNlck1hbmFnZW1lbnRVc2VyVGFibGVXYXRjaGVyfSBmcm9tIFwiLi91c2VyTWFuYWdlbWVudFVzZXJUYWJsZVNhZ2FcIlxuaW1wb3J0IHt1c2VyTWFuYWdlbWVudEFkZE5ld1VzZXJzV2F0Y2hlcn0gZnJvbSBcIi4vdXNlck1hbmFnZW1lbnRBZGROZXdVc2Vyc1NhZ2FcIlxuaW1wb3J0IHN0b3JhZ2VXYXRjaGVyIGZyb20gXCIuL3N0b3JhZ2VTYWdhXCI7XG5pbXBvcnQgcGVyZm9ybWFuY2VXYXRjaGVyIGZyb20gJy4vcGVyZm9ybWFuY2VTYWdhJztcbmltcG9ydCB7aGFyZHdhcmVPdmVydmlld1dhdGNoZXJ9IGZyb20gJy4vaGFyZHdhcmVPdmVydmlld1NhZ2EnXG5pbXBvcnQge2hhcmR3YXJlU2Vuc29yV2F0Y2hlcn0gZnJvbSAnLi9oYXJkd2FyZVNlbnNvclNhZ2EnXG5pbXBvcnQge2hhcmR3YXJlSGVhbHRoV2F0Y2hlcn0gZnJvbSAnLi9oYXJkd2FyZUhlYWx0aFNhZ2EnXG5pbXBvcnQge2hhcmR3YXJlUG93ZXJNYW5hZ2VtZW50V2F0Y2hlcn0gZnJvbSAnLi9oYXJkd2FyZVBvd2VyTWFuYWdlbWVudFNhZ2EnXG5pbXBvcnQge0JNQ0F1dGhlbnRpY2F0aW9uV2F0Y2hlcn0gZnJvbSAnLi9CTUNBdXRoZW50aWNhdGlvblNhZ2EnXG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uKiByb290U2FnYSgpIHtcbiAgICB5aWVsZCBhbGwoW1xuICAgICAgICBoZWFkZXJXYXRjaGVyKCksXG4gICAgICAgIGRhc2hib2FyZFdhdGNoZXIoKSxcbiAgICAgICAgY29uZmlndXJhdGlvbnNldHRpbmdXYXRjaGVyKCksXG4gICAgICAgIGxvZ01hbmFnZW1lbnRXYXRjaGVyKCksXG4gICAgICAgIGFsZXJ0TWFuYWdlbWVudENvbnRhaW5lcldhdGNoZXIoKSxcbiAgICAgICAgYWxlcnRNYW5hZ2VtZW50QWxlcnRUYWJsZVdhdGNoZXIoKSxcbiAgICAgICAgYWxlcnRNYW5hZ2VtZW50QWRkTmV3QWxlcnRzV2F0Y2hlcigpLFxuICAgICAgICBzdG9yYWdlV2F0Y2hlcigpLFxuICAgICAgICBwZXJmb3JtYW5jZVdhdGNoZXIoKSxcbiAgICAgICAgYXV0aGVudGljYXRpb25XYXRjaGVyKCksXG4gICAgICAgIHVzZXJNYW5hZ2VtZW50Q29udGFpbmVyV2F0Y2hlcigpLFxuICAgICAgICB1c2VyTWFuYWdlbWVudFVzZXJUYWJsZVdhdGNoZXIoKSxcbiAgICAgICAgdXNlck1hbmFnZW1lbnRBZGROZXdVc2Vyc1dhdGNoZXIoKSxcbiAgICAgICAgaGFyZHdhcmVPdmVydmlld1dhdGNoZXIoKSxcbiAgICAgICAgaGFyZHdhcmVTZW5zb3JXYXRjaGVyKCksXG4gICAgICAgIGhhcmR3YXJlSGVhbHRoV2F0Y2hlcigpLFxuICAgICAgICBoYXJkd2FyZVBvd2VyTWFuYWdlbWVudFdhdGNoZXIoKSxcbiAgICAgICAgQk1DQXV0aGVudGljYXRpb25XYXRjaGVyKCksXG4gICAgXSk7XG59Il19

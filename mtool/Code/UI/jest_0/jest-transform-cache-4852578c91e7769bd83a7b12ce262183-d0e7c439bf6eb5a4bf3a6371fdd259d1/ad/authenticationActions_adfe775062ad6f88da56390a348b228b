@@ -1,0 +1,287 @@
+9c4b57be30d97f77fac88d9c66d3e031
+/* istanbul ignore next */
+"use strict";
+
+var cov_21lp30s63l = function () {
+  var path = "/home/ibof07/pk/ibofmgmt/Code/UI/src/store/actions/authenticationActions.js";
+  var hash = "779e21f6e3cad63aa7f0f2289c2717227395da53";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/ibof07/pk/ibofmgmt/Code/UI/src/store/actions/authenticationActions.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 33
+        },
+        end: {
+          line: 8,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 4
+        },
+        end: {
+          line: 7,
+          column: 6
+        }
+      },
+      "2": {
+        start: {
+          line: 10,
+          column: 31
+        },
+        end: {
+          line: 14,
+          column: 3
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 4
+        },
+        end: {
+          line: 13,
+          column: 6
+        }
+      },
+      "4": {
+        start: {
+          line: 16,
+          column: 33
+        },
+        end: {
+          line: 20,
+          column: 3
+        }
+      },
+      "5": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 6
+        }
+      },
+      "6": {
+        start: {
+          line: 22,
+          column: 32
+        },
+        end: {
+          line: 26,
+          column: 3
+        }
+      },
+      "7": {
+        start: {
+          line: 23,
+          column: 4
+        },
+        end: {
+          line: 25,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 3,
+            column: 33
+          },
+          end: {
+            line: 3,
+            column: 34
+          }
+        },
+        loc: {
+          start: {
+            line: 3,
+            column: 44
+          },
+          end: {
+            line: 8,
+            column: 3
+          }
+        },
+        line: 3
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 10,
+            column: 31
+          },
+          end: {
+            line: 10,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 10,
+            column: 37
+          },
+          end: {
+            line: 14,
+            column: 3
+          }
+        },
+        line: 10
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 16,
+            column: 33
+          },
+          end: {
+            line: 16,
+            column: 34
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 3
+          }
+        },
+        line: 16
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 22,
+            column: 32
+          },
+          end: {
+            line: 22,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 22,
+            column: 38
+          },
+          end: {
+            line: 26,
+            column: 3
+          }
+        },
+        line: 22
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {},
+    _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    hash: "779e21f6e3cad63aa7f0f2289c2717227395da53"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+
+  if (coverage[path] && coverage[path].hash === hash) {
+    return coverage[path];
+  }
+
+  return coverage[path] = coverageData;
+}();
+
+var _interopRequireWildcard = require("/home/ibof07/pk/ibofmgmt/Code/UI/node_modules/@babel/runtime/helpers/interopRequireWildcard");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setLoginFailed = exports.resetIsLoggedIn = exports.setIsLoggedIn = exports.changeCredentials = void 0;
+
+var
+/* istanbul ignore next */
+actionTypes = _interopRequireWildcard(require("./actionTypes"));
+
+/* istanbul ignore next */
+cov_21lp30s63l.s[0]++;
+
+const changeCredentials = payload => {
+  /* istanbul ignore next */
+  cov_21lp30s63l.f[0]++;
+  cov_21lp30s63l.s[1]++;
+  return {
+    type: actionTypes.CHANGE_CREDENTIALS,
+    payload
+  };
+};
+
+/* istanbul ignore next */
+exports.changeCredentials = changeCredentials;
+cov_21lp30s63l.s[2]++;
+
+const setIsLoggedIn = () => {
+  /* istanbul ignore next */
+  cov_21lp30s63l.f[1]++;
+  cov_21lp30s63l.s[3]++;
+  return {
+    type: actionTypes.SET_IS_LOGGED_IN
+  };
+};
+
+/* istanbul ignore next */
+exports.setIsLoggedIn = setIsLoggedIn;
+cov_21lp30s63l.s[4]++;
+
+const resetIsLoggedIn = () => {
+  /* istanbul ignore next */
+  cov_21lp30s63l.f[2]++;
+  cov_21lp30s63l.s[5]++;
+  return {
+    type: actionTypes.RESET_IS_LOGGED_IN
+  };
+};
+
+/* istanbul ignore next */
+exports.resetIsLoggedIn = resetIsLoggedIn;
+cov_21lp30s63l.s[6]++;
+
+const setLoginFailed = () => {
+  /* istanbul ignore next */
+  cov_21lp30s63l.f[3]++;
+  cov_21lp30s63l.s[7]++;
+  return {
+    type: actionTypes.SET_LOGIN_FAILED
+  };
+};
+
+/* istanbul ignore next */
+exports.setLoginFailed = setLoginFailed;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF1dGhlbnRpY2F0aW9uQWN0aW9ucy5qcyJdLCJuYW1lcyI6WyJjaGFuZ2VDcmVkZW50aWFscyIsInBheWxvYWQiLCJ0eXBlIiwiYWN0aW9uVHlwZXMiLCJDSEFOR0VfQ1JFREVOVElBTFMiLCJzZXRJc0xvZ2dlZEluIiwiU0VUX0lTX0xPR0dFRF9JTiIsInJlc2V0SXNMb2dnZWRJbiIsIlJFU0VUX0lTX0xPR0dFRF9JTiIsInNldExvZ2luRmFpbGVkIiwiU0VUX0xPR0lOX0ZBSUxFRCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtBQUFBO0FBQUE7Ozs7O0FBRU8sTUFBTUEsaUJBQWlCLEdBQUdDLE9BQU8sSUFBSTtBQUFBO0FBQUE7QUFBQTtBQUN4QyxTQUFPO0FBQ0xDLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDQyxrQkFEYjtBQUVMSCxJQUFBQTtBQUZLLEdBQVA7QUFJRCxDQUxJOzs7Ozs7QUFPRSxNQUFNSSxhQUFhLEdBQUcsTUFBTTtBQUFBO0FBQUE7QUFBQTtBQUNqQyxTQUFPO0FBQ0xILElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDRztBQURiLEdBQVA7QUFHRCxDQUpNOzs7Ozs7QUFNQSxNQUFNQyxlQUFlLEdBQUcsTUFBTTtBQUFBO0FBQUE7QUFBQTtBQUNuQyxTQUFPO0FBQ0xMLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDSztBQURiLEdBQVA7QUFHRCxDQUpNOzs7Ozs7QUFNQSxNQUFNQyxjQUFjLEdBQUcsTUFBTTtBQUFBO0FBQUE7QUFBQTtBQUNsQyxTQUFPO0FBQ0xQLElBQUFBLElBQUksRUFBRUMsV0FBVyxDQUFDTztBQURiLEdBQVA7QUFHRCxDQUpNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0ICogYXMgYWN0aW9uVHlwZXMgZnJvbSAnLi9hY3Rpb25UeXBlcyc7XG5cbmV4cG9ydCBjb25zdCBjaGFuZ2VDcmVkZW50aWFscyA9IHBheWxvYWQgPT4ge1xuICAgIHJldHVybiB7XG4gICAgICB0eXBlOiBhY3Rpb25UeXBlcy5DSEFOR0VfQ1JFREVOVElBTFMsXG4gICAgICBwYXlsb2FkLFxuICAgIH07XG4gIH07XG5cbiAgZXhwb3J0IGNvbnN0IHNldElzTG9nZ2VkSW4gPSAoKSA9PiB7XG4gICAgcmV0dXJuIHtcbiAgICAgIHR5cGU6IGFjdGlvblR5cGVzLlNFVF9JU19MT0dHRURfSU4sXG4gICAgfTtcbiAgfTtcblxuICBleHBvcnQgY29uc3QgcmVzZXRJc0xvZ2dlZEluID0gKCkgPT4ge1xuICAgIHJldHVybiB7XG4gICAgICB0eXBlOiBhY3Rpb25UeXBlcy5SRVNFVF9JU19MT0dHRURfSU4sXG4gICAgfTtcbiAgfTtcblxuICBleHBvcnQgY29uc3Qgc2V0TG9naW5GYWlsZWQgPSAoKSA9PiB7XG4gICAgcmV0dXJuIHtcbiAgICAgIHR5cGU6IGFjdGlvblR5cGVzLlNFVF9MT0dJTl9GQUlMRUQsXG4gICAgfTtcbiAgfTsiXX0=

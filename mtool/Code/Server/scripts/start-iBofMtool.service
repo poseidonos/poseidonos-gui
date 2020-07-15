@@ -1,0 +1,11 @@
+[Unit]
+Description=Testing mTool startup
+
+[Service]
+WorkingDirectory=/usr/local/m9k/mtool
+ExecStart=/usr/local/m9k/mtool/scripts/server_run.sh
+StandardOutput=file:/var/log/logmtool1.log
+StandardError=file:/var/log/logmtool2.log
+
+[Install]
+WantedBy=default.target
