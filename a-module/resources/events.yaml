@@ -1153,9 +1153,9 @@ modules:
         solution: try again after a while
       - code: 9003
         level: ERROR
-        message: failed to mount ibofos
+        message: The request cannot be executed since ibofos is mounted
         problem: ibofos already has been mounted
-        solution:
+        solution: try again after unmount ibofos
   - name: "Management Stack(M9K)"
     count: 10000
     idStart: 10000
