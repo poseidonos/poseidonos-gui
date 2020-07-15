@@ -89,7 +89,7 @@ describe("Authentication", () => {
     const { asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();
   });
-
+/*
   it("Language select displays English and Korean", () => {
     const { getByTestId, getAllByText } = wrapper;
     const selectButton = getByTestId("selectDropdown");
@@ -114,7 +114,7 @@ describe("Authentication", () => {
     fireEvent.click(koreanButton);
     expect(getByTestId("submit")).toHaveTextContent("로그인");
   });
-
+*/
   it("Changes Password Visibility", () => {
     const { getByTestId } = wrapper;
     const visibilityButton = getByTestId("visibilityButton");

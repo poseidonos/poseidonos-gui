@@ -221,6 +221,7 @@ describe("ConfigurationSetting", () => {
     const readOnlyField = getByTestId("readOnlyField").querySelector("input");
     expect(readOnlyField.value).toBe("smtp.samsung.net:25");
     fireEvent.click(getByText("OK"));
+/*
     const testEmailElement = await waitForElement(() =>
       getByTitle("Test Email")
     );
@@ -230,6 +231,7 @@ describe("ConfigurationSetting", () => {
     );
     expect(errorDescription.innerHTML).toBe("Email sent successfully");
     fireEvent.click(getByTestId("alertCloseButton"));
+*/
   });
 
   it("toggles the active status of the entry in the email list table", async () => {
@@ -276,6 +278,7 @@ describe("ConfigurationSetting", () => {
         }
       }
     );
+/*
     const testEmailElement = await waitForElement(() =>
       getByTitle("Test Email")
     );
@@ -286,8 +289,9 @@ describe("ConfigurationSetting", () => {
     expect(errorDescription.innerHTML).toBe(
       "Please select an email id to send"
     );
+*/
   });
-
+/*
   it("throws error while trying to send an email when smtp server is not configured", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet("/api/v1.0/get_email_ids/").reply(200, [
@@ -309,7 +313,7 @@ describe("ConfigurationSetting", () => {
     );
     expect(errorDescription.innerHTML).toBe("Please configure smtp server");
   });
-
+*/
   it("throws an error if a duplicate entry is added in the email list", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet("/api/v1.0/get_email_ids/").reply(200, [
@@ -577,6 +581,7 @@ describe("ConfigurationSetting", () => {
     const readOnlyField = getByTestId("readOnlyField").querySelector("input");
     expect(readOnlyField.value).toBe("smtp.samsung.net:25");
     fireEvent.click(getByText("OK"));
+/*
     const testEmailElement = await waitForElement(() =>
       getByTitle("Test Email")
     );
@@ -586,5 +591,6 @@ describe("ConfigurationSetting", () => {
       getByTestId("alertDescription")
     );
     expect(errorDescription.innerHTML).toBe("Email sending failed");
+*/
   });
 });

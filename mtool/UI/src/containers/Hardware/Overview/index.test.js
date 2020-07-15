@@ -96,7 +96,7 @@ describe("OverviewTab", () => {
         );
         expect(container).toBeDefined();
     });
-
+/*
     it("should not power on the server", async () => {
         const mock = new MockAdapter(axios);
         mock.onPost('/*').reply(200, [])
@@ -114,4 +114,5 @@ describe("OverviewTab", () => {
         expect(noBtn).toBeDefined();
         fireEvent.click(noBtn);
     });
+*/
 });
