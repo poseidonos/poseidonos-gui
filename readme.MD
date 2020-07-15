@@ -1,21 +1,19 @@
 # Management Stack
 
-### Projects (Go)
+### Project (Go)
 
 Folder Structure
 ```
 /bin*           -Excutable Binaray
 /src*           -Source files
 /tool           -Build related tool
-/script*        -The scripts such as install and run
-/dependency     -The dependency binary or config
+/script*        -The scripts such as build or and run
+/dependency     -The dependency binary ro config
 /vendor         -GoLang Vendor
 readme.MD       -The project readme file
 go.mod*
 go.sum*
 main.go*        -main.go or one of main package file
-build_xxx.sh*   -Build script, It will move to script folder soon
-run.sh*         -Run script, It will move to script folder soon
 
 *Required
 ```
@@ -36,10 +34,15 @@ The Text-Based User interface to control or monitor POS
 The Go module for communicating between app and POS
 
 ***
+### Project (Web)
+#### M-Tool
+The Management Web to control or monitor POS
 
-### Projects (Others)
+***
+
+### Project (Others)
 #### Dependency
-The installation dep and config of management stack 
+The installation binaray and config of management stack 
 
 #### Plugin
 The plugins for communicating between POS info and 3rd party management tool
