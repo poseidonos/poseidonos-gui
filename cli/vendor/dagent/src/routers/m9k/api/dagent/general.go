@@ -3,6 +3,7 @@ package dagent
 import (
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"errors"
 	"syscall"
 	"time"
@@ -22,12 +23,10 @@ func HeartBeat(xrId string) (model.Response, error) {
 
 	if successTime <= 0 {
 		err = errors.New("one of iBoF service is dead")
-		res.Result.Status.Code = 12010
-		res.Result.Status.Description = err.Error()
+		res.Result.Status, _ = util.GetStatusInfo(12010)
 	} else {
 		LastSuccessTime = successTime
-		res.Result.Status.Code = 0
-		res.Result.Status.Description = "alive"
+		res.Result.Status, _ = util.GetStatusInfo(0)
 	}
 
 	res.LastSuccessTime = LastSuccessTime
