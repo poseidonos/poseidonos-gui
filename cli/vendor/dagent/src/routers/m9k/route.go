@@ -17,7 +17,7 @@ func Route(router *gin.Engine) {
 	uri := router.Group("/api")
 
 	// Doc Static
-	uri.StaticFS("/dagent/v1/doc", http.Dir("../doc"))
+	uri.StaticFS("/dagent/v1/doc", http.Dir("/root/workspace/m9k/dagent/doc"))
 
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())

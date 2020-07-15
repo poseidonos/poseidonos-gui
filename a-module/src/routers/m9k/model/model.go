@@ -34,9 +34,9 @@ type Status struct {
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress uint32 `json:"rebulidingProgress"`
-	Capacity           uint64 `json:"capacity"`
-	Used               uint64 `json:"used"`
+	RebuildingProgress string `json:"rebuilding_progress"`
+	Capacity           string `json:"capacity"`
+	Used               string `json:"used"`
 }
 
 type Device struct {
