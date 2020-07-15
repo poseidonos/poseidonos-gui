@@ -34,16 +34,6 @@ MTool exposes REST APIs with JWT authentication for secured communication with P
    - Start and STOP of Poseidon OS 
    - Run command to run and bash files  
 
-8. Trace
-   - Logging feature and Progress Bar for Poseidon OS recovery and rebuild status 
-
-9. Hardware
-   - Overview Tab - Consists of openbmc details including chassis front view, drive information, server information and power details. Reboot and Shutdown functionality is available only if the power status is on.
-   - Health Tab - Consists of openbmc details including chassis front view, drive information, Software health, hardware health and network health
-   - Drive Tab - Consists of openbmc details including chassis front view, drive information and health status of nvme drives
-   - Sensors Tab - Consists of openbmc details including power, fan and temperature health information
-   - Power Management Tab - Used for Configuring power states in each nvme drive.
-
 # System Requirements: 
 - Ubuntu 18.04 with python 3.5+. 
 - SMTP port access for triggering emails. 
@@ -57,29 +47,39 @@ MTool exposes REST APIs with JWT authentication for secured communication with P
 
 ## Setting up and running the iBOF management tool
 
-### 1. Extract the ibofmgmt.tar.gz
+### 1. Install System Level Packages
 
-`
-tar -zxvf ibofmgmt.tar.gz
-`
+These packages are required for proper working of the Management tool.
 
-### 2. Navigate to `ibofmtool/ibofmgmt/`
+Move to m9k folder
+
+Execute install.sh script in m9k/dependency. It will install required packages such as influxdb, telegraf, chronograf, kapacitor on the host
+
+For offline installation (It will install packages from NAS)
+
+`./dependency/install.sh nas`
+
+For online installation (It will install packages from apt)
+
+`./dependency/install.sh apt`
+
+### 2. Navigate to `m9k/mtool`
 
 M-Tool dependency Packages should be installed as one time activity.
 M-Tool dependency Packages can be installed either on-line or off-line
 
 ### 3. On-Line Package Installation
-Run ` ./scripts/download_pkg.sh apt ` to setup influxdb, telegraf, chronograf, kapacitor, mongodb  on the host.
+Run ` ./dependency/install.sh apt ` to setup required python libraries  on the host.
 
 ### 4. Off-Line Package Installation
-Run ` ./scripts/download_pkg.sh nas ` to setup influxdb, telegraf, chronograf, kapacitor, mongodb  on the host.
+Run ` ./dependency/install.sh nas ` to setup required python libraries on the host.
 It will copy the required packages from  NAS location -  'http://10.1.5.22/mtool.packages/ibofmgmt_package.tar.gz
 
 After the packages are installed , run 'run_mtool.sh' file to start the service. 
 A M-Tool service will be started on every boot of Ubuntu system. 
 
 ## Setup db and agent for getting usage statistics
-### Navigate to `ibofmtool/ibofmgmt/`
+### Navigate to `m9k/mtool`
 `
 ./scripts/run_mtool.sh
 `
@@ -89,9 +89,3 @@ The server will run on localhost and will be accessible from the browser
 `
 http://localhost
 `
-
-### run './remove_mgmt_server.sh' to remove the M-Tool setup
-`
-./scripts/remove_mgmt_server.sh
-`
-
