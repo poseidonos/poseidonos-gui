@@ -1162,6 +1162,9 @@ modules:
     idEnd:   20000
     info:
       - code: 10010
+        level: ERROR
+        message: Json Body Error
+      - code: 10050
         level: INFO
         message: Request Pending
         problem: The D-Agent is creating multi volumes
@@ -1181,3 +1184,6 @@ modules:
         message: Connection error
         problem: connection problem between POS and Management Stack
         solution: restart POS
+      - code: 12010
+        level: ERROR
+        message: one of iBoF service is dead
