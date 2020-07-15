@@ -1,6 +1,0 @@
-{
-    "Username" :"아이디 또는 이메일 아이디",
-    "Password" : "암호",
-    "Login" : "로그인",
-    "Login failed! Invalid id or password" : "로그인 실패! ID나 비밀번호가 잘못되었습니다."
-}
