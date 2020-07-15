@@ -242,7 +242,7 @@
 					"response": []
 				},
 				{
-					"name": "STATUS CODE",
+					"name": "EVENT CODE",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -288,7 +288,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/dagent/v1/statuscode",
+							"raw": "http://{{host}}/api/dagent/v1/doc/events.yaml",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -297,7 +297,8 @@
 								"api",
 								"dagent",
 								"v1",
-								"statuscode"
+								"doc",
+								"events.yaml"
 							]
 						},
 						"description": "It will return all POS syste status code and description"
@@ -8219,32 +8220,32 @@
 	],
 	"variable": [
 		{
-			"id": "0822f91d-9321-4339-a9ca-e19638f1ed11",
+			"id": "b08f10d1-7188-4f95-bad7-b4dcf24d63b4",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "756b4006-e2bb-4d8e-a863-cab458463780",
+			"id": "77968f19-dcec-4041-83eb-e1720a66f6e9",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "61098945-8efa-4cd2-bebb-ea9cdfeb2dde",
+			"id": "3ca6d0d6-d541-424e-ba7e-6cebc20fc9ce",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "c5e2aa2d-6c5c-4c27-9c04-b4b718870141",
+			"id": "eff70383-d859-4cfc-80de-51352ff306b3",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "ffa1bb87-0835-4152-9822-55cf52f1f357",
+			"id": "78f454b8-5507-4e96-b499-a73e6d202f64",
 			"key": "volid01",
 			"value": "vol01"
 		},
 		{
-			"id": "80f04449-b47c-44b0-ae29-ec3b2d278a21",
+			"id": "30899b01-aabd-4028-8197-598c07fc8b73",
 			"key": "volid02",
 			"value": "vol02"
 		}
