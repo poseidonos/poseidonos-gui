@@ -24,7 +24,7 @@ else
 	sleep 8s
 	echo "Checking Status..."
 
-	x=`systemctl is-active magent.service`
+	x=`systemctl is-active dagent.service`
 	if [ $x = "active" ]
 	then
   	echo DAgent Service Started Succesfully
@@ -34,7 +34,7 @@ else
 		then
 			echo DAgent Service Started Successfully
 		else
-      DAgent MAgent Service Failed to Start!
+                        echo DAgent Service Failed to Start!
 		fi
 	fi
 fi

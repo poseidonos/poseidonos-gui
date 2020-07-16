@@ -14,8 +14,10 @@ else
 	sudo service influxdb start
 	echo "Starting InfuxDB.."
 	sleep 8s
-	touch /tmp/air_result.json
-	touch /etc/ibofos/log/report.log
+	[ ! -d "/tmp/air_result.json" ] && touch /tmp/air_result.json
+	[ ! -d "/etc/ibofos" ] && mkdir /etc/ibofos
+	[ ! -d "/etc/ibofos/report" ] && mkdir /etc/ibofos/report
+	touch /etc/ibofos/report/report.log
 	sudo python3 ./create_retention_policy.py
 	sudo chown -R influxdb:influxdb /var/lib/influxdb
 	sudo rm /usr/local/magent
