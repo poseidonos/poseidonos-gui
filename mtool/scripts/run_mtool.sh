@@ -1,3 +1,8 @@
+
+ROOT_DIR=$(readlink -f $(dirname $0))
+cd $ROOT_DIR
+cd ..
+
 sudo service kapacitor stop
 sudo service influxdb stop
 #Set Influx ENV Variable
