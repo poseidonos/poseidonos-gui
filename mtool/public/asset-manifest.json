@@ -1,27 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.bcd2e97f.chunk.css",
-    "main.js": "/static/js/main.ad0aa707.chunk.js",
-    "main.js.map": "/static/js/main.ad0aa707.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.0f00f85f.js",
-    "runtime-main.js.map": "/static/js/runtime-main.0f00f85f.js.map",
-    "static/css/2.ea51fd1b.chunk.css": "/static/css/2.ea51fd1b.chunk.css",
-    "static/js/2.75dc4dd6.chunk.js": "/static/js/2.75dc4dd6.chunk.js",
-    "static/js/2.75dc4dd6.chunk.js.map": "/static/js/2.75dc4dd6.chunk.js.map",
+    "main.css": "/static/css/main.248fce68.chunk.css",
+    "main.js": "/static/js/main.eb32ef8f.chunk.js",
+    "main.js.map": "/static/js/main.eb32ef8f.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.7c22c6fd.js",
+    "runtime~main.js.map": "/static/js/runtime~main.7c22c6fd.js.map",
+    "static/css/2.7b58ffc0.chunk.css": "/static/css/2.7b58ffc0.chunk.css",
+    "static/js/2.2b612c05.chunk.js": "/static/js/2.2b612c05.chunk.js",
+    "static/js/2.2b612c05.chunk.js.map": "/static/js/2.2b612c05.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.179175c2939e4ca2d28477bcd5bda3a3.js": "/precache-manifest.179175c2939e4ca2d28477bcd5bda3a3.js",
+    "precache-manifest.59d0e48626943e93feac893b899a5905.js": "/precache-manifest.59d0e48626943e93feac893b899a5905.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.ea51fd1b.chunk.css.map": "/static/css/2.ea51fd1b.chunk.css.map",
-    "static/css/main.bcd2e97f.chunk.css.map": "/static/css/main.bcd2e97f.chunk.css.map",
-    "static/js/2.75dc4dd6.chunk.js.LICENSE.txt": "/static/js/2.75dc4dd6.chunk.js.LICENSE.txt",
+    "static/css/2.7b58ffc0.chunk.css.map": "/static/css/2.7b58ffc0.chunk.css.map",
+    "static/css/main.248fce68.chunk.css.map": "/static/css/main.248fce68.chunk.css.map",
     "static/media/Header-logo.png": "/static/media/Header-logo.1e52dde6.png",
-    "static/media/Samsung_iBOF_Management_Tool_User_Manual.pdf": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.3f8a31ff.pdf"
-  },
-  "entrypoints": [
-    "static/js/runtime-main.0f00f85f.js",
-    "static/css/2.ea51fd1b.chunk.css",
-    "static/js/2.75dc4dd6.chunk.js",
-    "static/css/main.bcd2e97f.chunk.css",
-    "static/js/main.ad0aa707.chunk.js"
-  ]
+    "static/media/Samsung_iBOF_Management_Tool_User_Manual.pdf": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.43d2962e.pdf"
+  }
 }
