@@ -20,18 +20,6 @@ then
   else
           sudo dpkg -i ubuntu-packages/influxdb_1.7.5_amd64.deb
   fi
-  dpkg -s python3 &>/dev/null
-  if [ $? -eq 0 ]; then
-          echo "python3 is already Present"
-  else
-          cd ubuntu-packages
-          tar -xzvf Python-3.8.3.tgz
-          cd Python-3.8.3
-          ./configure --enable-optimizations
-          sudo make install
-          cd ../..
-  fi
-  sudo dpkg -i ubuntu-packages/python3-pip_1.5.6-5_all.deb
   cd python-packages/
   sudo pip3 install msgpack==0.6.1 -f ./ --no-index
   sudo pip3 install influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
@@ -52,13 +40,6 @@ then
           sudo apt-get update
           sudo apt-get install influxdb
   fi
-  dpkg -s python3 &>/dev/null
-  if [ $? -eq 0 ]; then
-          echo "python3 is already Present"
-  else
-          sudo apt-get install python3
-  fi
-  sudo apt-get install python3-pip
   sudo pip3 install influxdb-client
   sudo pip3 install requests
 else
