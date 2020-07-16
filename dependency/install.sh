@@ -14,6 +14,8 @@ then
   cd ibofmgmt_package/
   chmod 666 -R *
   echo "DONE"
+  echo $PWD
+  ls
   sudo ./scripts/install.sh
   rm /tmp/ibofmgmt_package.tar.gz
   rm -r /tmp/ibofmgmt_package
@@ -41,6 +43,8 @@ else
   echo "Provide nas/apt as argument for installation source"
   exit 0
 fi
+
+cd $ROOT_DIR
 
 ./setup_nginx.sh
 
