@@ -12,7 +12,7 @@ then
   chmod 666 ibofmgmt_package.tar.gz
   tar -xzvf ibofmgmt_package.tar.gz
   cd ibofmgmt_package/
-  chmod 666 -R *
+  chmod 777 -R *
   echo "DONE"
   echo $PWD
   ls
