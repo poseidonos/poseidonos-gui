@@ -26,6 +26,8 @@ yarn-error.log*
 venv/
 *.zip
 *.db
+log/*
+public/log/*
 Code/Server/*/__pycache__/
 Code/Server/*/*/__pycache__/
 Code/Server/*/*/*/__pycache__/
