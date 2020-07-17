@@ -1,19 +1,18 @@
-#install docker-compose.
+## install docker-compose.
 https://docs.docker.com/compose/install/
+### docker-compose uses docker-compose.yaml by default. if you want to set specific file, use -f option.
 
-#docker-compose uses docker-compose.yaml by default. if you want to set specific file, use -f option.
-
-#make containers using docker-compose.
+## make containers using docker-compose.
 docker-compose up
 
-#run containers in daemon mode.
+## run containers in daemon mode.
 docker-compose up -d
 
-#use below command to attach container.
+## use below command to attach container.
 docker attach <container_name>
 
-#remove containers.
+## remove containers.
 docker-compose down
 
-#remove images.
+## remove images.
 docker-compose down --rmi all
