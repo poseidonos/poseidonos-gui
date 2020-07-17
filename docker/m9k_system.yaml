@@ -1,7 +1,0 @@
-version: ‘3’
-services:
-  pos:
-    build: 
-      context: ./pos
-      dockerfile: Dockerfile
-    image: pos:1.0.0
