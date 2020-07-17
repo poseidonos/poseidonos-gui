@@ -10400,85 +10400,6 @@
 				}
 			],
 			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Redfish",
-			"item": [
-				{
-					"name": "Cahsssis",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "7d50326b-c46b-4d6e-ac16-809e13e35f5c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "972dcc06-2d42-496b-b632-7c42ec9a36c3",
-								"exec": [
-									"pm.test(\"Cahsssis\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Basic cm9vdDowcGVuQm1j",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://{{host}}/redfish/v1/Chassis",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"redfish",
-								"v1",
-								"Chassis"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Currently, D-Agent does not support Redfish.",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "55b6eb9e-c02d-4181-908c-aaa1f7cb94ac",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "93e64816-3e70-4636-8cd6-c6edaee19e15",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -10505,37 +10426,37 @@
 	],
 	"variable": [
 		{
-			"id": "6e06048f-7239-42ea-b3f6-8316fa7a8539",
+			"id": "ec1b2c3d-7a97-44ca-b425-a4547acbb126",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "e83f9233-b086-48ed-b84c-15b63c3333cc",
+			"id": "b411ca32-c79c-4153-895b-47065cc56eb9",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "d6efb86f-4c08-41cc-9c1b-78cbf3d8f6b6",
+			"id": "c34d4e0f-b510-4a38-ba99-9b80efa90e1c",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "43ec2797-dc82-4fab-9ab2-77a44a3aae2b",
+			"id": "a714ba9c-ccae-44ea-b7e8-6a6fcc6255ef",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "1c429cc2-a4a9-4fde-8337-31f6e1d4d219",
+			"id": "5e2cd9df-5bcf-4d12-850a-4e7768bfc51a",
 			"key": "volid01",
 			"value": "vol01"
 		},
 		{
-			"id": "df74d948-bb2e-468e-91a0-de9e985abf2a",
+			"id": "1c38d4e2-12ca-4cc1-b377-ee83d994dd4b",
 			"key": "volid02",
 			"value": "vol02"
 		},
 		{
-			"id": "203c4f11-e972-45df-a974-b7b1c895846f",
+			"id": "30b2554f-4791-4a31-8811-dc6a5e01bd1f",
 			"key": "period",
 			"value": "5m"
 		}

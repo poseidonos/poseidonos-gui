@@ -76,10 +76,6 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [UNMOUNT VOLUME](#20-unmount-volume)
   * [DELETE VOLUME](#21-delete-volume)
 
-* [Redfish](#redfish)
-
-  * [Cahsssis](#1-cahsssis)
-
 
 --------
 
@@ -6318,32 +6314,6 @@ Status: Success | Code: 200
 
 
 
-## Redfish
-Currently, D-Agent does not support Redfish.
-
-
-
-### 1. Cahsssis
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/redfish/v1/Chassis
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| Authorization | Basic cm9vdDowcGVuQm1j |  |
-
-
-
 ***Available Variables:***
 
 | Key | Value | Type |
@@ -6360,4 +6330,4 @@ URL: http://{{host}}/redfish/v1/Chassis
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-07-17 16:46:43 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-07-17 16:50:13 by [docgen](https://github.com/thedevsaddam/docgen)
