@@ -19,6 +19,8 @@ var spare []string
 var name string
 var newName string
 var level string
+var array string
+var subnqn string
 
 var fttype int
 var size string
@@ -168,6 +170,7 @@ func init() {
 	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
+	commandCmd.PersistentFlags().StringVarP(&level, "array", "a", "", "set array name")
 }
 
 func Send(cmd *cobra.Command, args []string) (model.Response, error) {
@@ -194,6 +197,11 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.ArrayParam{}
 		param.FtType = fttype
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+
 		for _, v := range buffer {
 			device := model.Device{}
 			device.DeviceName = v
@@ -262,6 +270,14 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			return res, err
 		}
 		param.Size = uint64(v)
+		
+		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
+			param.ArrayName = array
+		}
+		
+		if cmd.PersistentFlags().Changed("subnqn") && len(subnqn) > 0 {
+			param.SubNQN = subnqn
+		}
 
 		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
 			param.Maxiops = maxiops

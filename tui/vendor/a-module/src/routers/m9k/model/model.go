@@ -52,9 +52,12 @@ type SystemParam struct {
 
 type ArrayParam struct {
 	FtType int      `json:"fttype,omitempty"`
+	Name   string   `json:"name,omitempty"`
+	RaidType  string   `json:"raidtype,omitempty"`
 	Buffer []Device `json:"buffer,omitempty"`
 	Data   []Device `json:"data,omitempty"`
 	Spare  []Device `json:"spare,omitempty"`
+
 }
 type MAgentParam struct {
 	Time  string
@@ -67,6 +70,8 @@ type DeviceParam struct {
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`
 	NewName     string `json:"newname,omitempty"`
+	ArrayName   string `json:"arrayname,omitempty"`
+	SubNQN      string `json:"subnqn,omitempty"`
 	Size        uint64 `json:"size,omitempty"`
 	Maxiops     uint64 `json:"maxiops,omitempty"`
 	Maxbw       uint64 `json:"maxbw,omitempty"`
