@@ -65,15 +65,16 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_vol": iBoFOS.CreateVolume,
-	//	"update_vol":  iBoFOS.UpdateVolume,
 	"mount_vol":      iBoFOS.MountVolume,
 	"unmount_vol":    iBoFOS.UnmountVolume,
 	"delete_vol":     iBoFOS.DeleteVolume,
 	"list_vol":       iBoFOS.ListVolume,
 	"update_vol_qos": iBoFOS.UpdateVolumeQoS,
 	"rename_vol":     iBoFOS.RenameVolume,
+	"get_max_vol_cnt":iBoFOS.GetMaxVolumeCount,
+	"get_host_nqn":   iBoFOS.GetHostNQN,
+	//	"update_vol":  iBoFOS.UpdateVolume,
 	//"resize_vol":     iBoFOS.ResizeVolume,
-	"get_max_vol_cnt": iBoFOS.GetMaxVolumeCount,
 }
 
 var commandCmd = &cobra.Command{
@@ -271,15 +272,19 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.VolumeParam{}
 
-		param.Name = name
-
-		var v datasize.ByteSize
-		err := v.UnmarshalText([]byte(size))
-		if err != nil {
-			fmt.Println("invalid data metric ", err)
-			return res, err
+		if cmd.PersistentFlags().Changed("size") && len(size) > 0 {
+			var v datasize.ByteSize
+			err := v.UnmarshalText([]byte(size))
+			if err != nil {
+				fmt.Println("invalid data metric ", err)
+				return res, err
+			}
+			param.Size = uint64(v)
 		}
-		param.Size = uint64(v)
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
 		
 		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
 			param.ArrayName = arrayName
@@ -292,9 +297,11 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
 			param.Maxiops = maxiops
 		}
+
 		if cmd.PersistentFlags().Changed("maxbw") && maxbw > 0 {
 			param.Maxbw = maxbw
 		}
+
 		if cmd.PersistentFlags().Changed("newname") && len(newName) > 0 {
 			param.NewName = newName
 		}
