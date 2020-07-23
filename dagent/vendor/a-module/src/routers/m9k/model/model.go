@@ -34,7 +34,7 @@ type Status struct {
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress uint32 `json:"rebulidingProgress"`
+	RebuildingProgress uint32 `json:"rebuildingProgress"`
 	Capacity           uint64 `json:"capacity"`
 	Used               uint64 `json:"used"`
 }
@@ -65,6 +65,7 @@ type MAgentParam struct {
 }
 type DeviceParam struct {
 	Name  string `json:"name,omitempty"`
+	ArrayName   string `json:"arrayname,omitempty"`
 	Spare string `json:"spare,omitempty"`
 }
 type VolumeParam struct {

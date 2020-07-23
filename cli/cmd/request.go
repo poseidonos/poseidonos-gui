@@ -19,8 +19,9 @@ var spare []string
 var name string
 var newName string
 var level string
-var array string
-var subnqn string
+var arrayName string
+var raidType string
+var subNQN string
 
 var fttype int
 var size string
@@ -170,7 +171,9 @@ func init() {
 	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
-	commandCmd.PersistentFlags().StringVarP(&level, "array", "a", "", "set array name")
+	commandCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
+	commandCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
+	commandCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
 }
 
 func Send(cmd *cobra.Command, args []string) (model.Response, error) {
@@ -201,6 +204,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
 		}
+		
+		if cmd.PersistentFlags().Changed("raidtype") && len(raidType) > 0 {
+			param.RaidType = raidType
+		}
 
 		for _, v := range buffer {
 			device := model.Device{}
@@ -228,6 +235,9 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
 			param.Spare = spare[0]
+		}
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
 		}
 
 		if param != (model.DeviceParam{}) {
@@ -271,12 +281,12 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 		param.Size = uint64(v)
 		
-		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
-			param.ArrayName = array
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
 		}
 		
-		if cmd.PersistentFlags().Changed("subnqn") && len(subnqn) > 0 {
-			param.SubNQN = subnqn
+		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {
+			param.SubNQN = subNQN
 		}
 
 		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
