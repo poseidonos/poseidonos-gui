@@ -115,6 +115,7 @@ volume     : create_vol       : Create a new volume in unit of bytes.           
            : update_vol_qos   : Update volumes QoS properties.                                   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
            : rename_vol       : Update volume name.                                              : --name [vol name] --newname [new vol name]
            : get_max_vol_cnt  : Get max volume count.                                            : not needed
+           : get_host_nqn     : Get host nqn.                                                    : not needed
 
 internal   : detach_dev       : Detach device from the system.                                   : -n [dev name]
            : start_monitoring : Start monitoring daemon manually.                                : not needed
