@@ -70,9 +70,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
 		})
-		iBoFOSPath.GET("/devices/scan", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
-		})
+		//iBoFOSPath.GET("/devices/scan", func(ctx *gin.Context) {
+		//	ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
+		//})
 		iBoFOSPath.POST("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.AddDevice)
 		})
@@ -81,15 +81,10 @@ func Route(router *gin.Engine) {
 			param := model.DeviceParam{Name: deviceName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
 		})
-		iBoFOSPath.GET("/devices/:deviceName/*action", func(ctx *gin.Context) {
+		iBoFOSPath.GET("/devices/:deviceName/smart", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
-			action := ctx.Param("action")
-			if action == "smart" {
-				param := model.DeviceParam{Name: deviceName}
-				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.GetSMART, param)
-			} else {
-				//return 404
-			}
+			param := model.DeviceParam{Name: deviceName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.GetSMART, param)
 		})
 	}
 
@@ -136,7 +131,7 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
 		})
 
-		//iBoFOSPath.POST("/volumes/:volumeName/*action", func(ctx *gin.Context) {
+		//iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 		//	volumeName := ctx.Param("volumeName")
 		//	if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 		//		dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
@@ -145,15 +140,10 @@ func Route(router *gin.Engine) {
 		//	}
 		//})
 
-		iBoFOSPath.DELETE("/volumes/:volumeName/*action", func(ctx *gin.Context) {
+		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
-			action := ctx.Param("action")
-			if action == "mount" {
-				param := model.VolumeParam{Name: volumeName}
-				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UnmountVolume, param)
-			} else {
-				// return 404
-			}
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UnmountVolume, param)
 		})
 	}
 
