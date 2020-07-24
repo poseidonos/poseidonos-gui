@@ -136,14 +136,14 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
 		})
 
-		iBoFOSPath.POST("/volumes/:volumeName/*action", func(ctx *gin.Context) {
-			volumeName := ctx.Param("volumeName")
-			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
-				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
-			} else {
-				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
-			}
-		})
+		//iBoFOSPath.POST("/volumes/:volumeName/*action", func(ctx *gin.Context) {
+		//	volumeName := ctx.Param("volumeName")
+		//	if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
+		//		dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
+		//	} else {
+		//		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
+		//	}
+		//})
 
 		iBoFOSPath.DELETE("/volumes/:volumeName/*action", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
