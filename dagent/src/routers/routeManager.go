@@ -14,7 +14,7 @@ func InitRouter() *gin.Engine {
 
 	bmc.Route(router)
 	m9k.Route(router)
-	m9k.RouteLegacy(router)
+	//m9k.RouteLegacy(router)
 
 	return router
 }
