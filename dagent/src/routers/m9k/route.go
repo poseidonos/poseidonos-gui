@@ -70,9 +70,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
 		})
-		//iBoFOSPath.GET("/devices/scan", func(ctx *gin.Context) {
-		//	ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
-		//})
+		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
+		})
 		iBoFOSPath.POST("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.AddDevice)
 		})
@@ -117,10 +117,13 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListVolume)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RenameVolume)
+		})
+		iBoFOSPath.PATCH("/volumes/:volumeName/qos", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
-			param := model.VolumeParam{NewName: volumeName}
-			ibofos.CalliBoFOSVolume(ctx, amoduleIBoFOS.RenameVolume, param)
-			//ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RenameVolume, param)
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSVolume(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
+			//ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateVolumeQoS)
 		})
 		iBoFOSPath.DELETE("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
@@ -131,14 +134,14 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
 		})
 
-		//iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
-		//	volumeName := ctx.Param("volumeName")
-		//	if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
-		//		dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
-		//	} else {
-		//		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
-		//	}
-		//})
+		iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
+			//volumeName := ctx.Param("volumeName")
+			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
+				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
+			} else {
+				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
+			}
+		})
 
 		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")

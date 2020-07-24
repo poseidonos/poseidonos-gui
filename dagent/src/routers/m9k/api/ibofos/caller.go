@@ -2,11 +2,13 @@ package ibofos
 
 import (
 	"a-module/src/routers/m9k/model"
+	"bytes"
 	"dagent/src/routers/m9k/api"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"log"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
@@ -35,11 +37,21 @@ func CalliBoFOSVolume(ctx *gin.Context, f func(string, interface{}) (model.Reque
 func merge(src interface{}, tar interface{}) interface{} {
 	var m map[string]string
 
-	ja, _ := json.Marshal(tar)
-	json.Unmarshal(ja, &m)
 	jb, _ := json.Marshal(src)
 	json.Unmarshal(jb, &m)
+	ja, _ := json.Marshal(tar)
+	json.Unmarshal(ja, &m)
 
 	jm, _ := json.Marshal(m)
-	return jm
+
+	var param interface{}
+
+	d := json.NewDecoder(bytes.NewBuffer(jm))
+	d.UseNumber()
+
+	if err := d.Decode(&param); err != nil {
+		log.Fatal(err)
+	}
+
+	return param
 }
