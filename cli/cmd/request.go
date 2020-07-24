@@ -103,8 +103,8 @@ system     : run_ibofos       : Run iBoFOS.                                     
            : info             : Show current state of IbofOS.                                    : not needed
            : mount_ibofos     : Mount iBoFOS.                                                    : not needed
            : unmount_ibofos   : Unmount iBoFOS.                                                  : not needed
-           : set_log_level"   : Set filtering level to logger.                                   : --level [log level]
-           : get_log_level"   : Get filtering level to logger.                                   : not needed
+           : set_log_level    : Set filtering level to logger.                                   : --level [log level]
+           : get_log_level    : Get filtering level to logger.                                   : not needed
            : apply_log_filter : Apply filtering policy to logger.                                : not needed
 
 volume     : create_vol       : Create a new volume in unit of bytes.                            : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] (maxiops, maxbw are optional and default value is 0.)
