@@ -1,0 +1,30 @@
+# github.com/go-bindata/go-bindata v3.1.2+incompatible
+## explicit
+# github.com/google/uuid v1.1.1
+## explicit
+github.com/google/uuid
+# github.com/influxdata/influxdb v1.8.0
+## explicit
+github.com/influxdata/influxdb/client/v2
+github.com/influxdata/influxdb/models
+github.com/influxdata/influxdb/pkg/escape
+# github.com/juju/errors v0.0.0-20200330140219-3fe23663418f
+## explicit
+github.com/juju/errors
+# github.com/juju/testing v0.0.0-20200510222523-6c8c298c77a0
+## explicit
+# github.com/konsorten/go-windows-terminal-sequences v1.0.1
+github.com/konsorten/go-windows-terminal-sequences
+# github.com/sirupsen/logrus v1.5.0
+## explicit
+github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.4.0
+## explicit
+# golang.org/x/sys v0.0.0-20200515095857-1151b9dac4a9
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+# gopkg.in/yaml.v2 v2.2.8
+## explicit
+gopkg.in/yaml.v2
+# gotest.tools/gotestsum v0.5.1
+## explicit
