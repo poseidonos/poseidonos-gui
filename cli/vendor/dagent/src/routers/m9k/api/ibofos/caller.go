@@ -27,12 +27,12 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}) (model.Re
 func CalliBoFOSVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param model.VolumeParam) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	mergedParam := merge(param,req.Param)
+	mergedParam := merge(param, req.Param)
 	_, res, err := f(header.XrId(ctx), mergedParam)
 	api.HttpResponse(ctx, res, err)
 }
 
-func merge(src interface{}, tar interface{}) interface{}{
+func merge(src interface{}, tar interface{}) interface{} {
 	var m map[string]string
 
 	ja, _ := json.Marshal(tar)
