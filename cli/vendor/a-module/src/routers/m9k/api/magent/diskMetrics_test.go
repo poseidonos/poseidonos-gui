@@ -44,7 +44,7 @@ func TestGetDiskData(t *testing.T) {
 
 	IDBClient = mocks.MockInfluxClient{}
 	for _, test := range tests {
-		result, err := GetDiskData(test.input)
+		result, err := GetDeviceData(test.input)
 		output := result.Result.Data
 		if !reflect.DeepEqual(output, test.expected) || err != test.err {
 			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
@@ -77,7 +77,7 @@ func TestGetDiskDataError(t *testing.T) {
 
 	IDBClient = mocks.MockInfluxClient{}
 	for _, test := range tests {
-		result, err := GetDiskData(test.input)
+		result, err := GetDeviceData(test.input)
 		output := result.Result.Status.Code
 		if !reflect.DeepEqual(output, test.expected) || err != test.err {
 			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)

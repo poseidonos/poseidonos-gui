@@ -14,7 +14,7 @@ type DiskField struct {
 type DiskFields []DiskField
 
 // Getting Disk data based time parameter and retuning JSON resonse
-func GetDiskData(param interface{}) (model.Response, error) {
+func GetDeviceData(param interface{}) (model.Response, error) {
 	var res model.Response
 	var query string
 	fieldsList := make(DiskFields, 0)
