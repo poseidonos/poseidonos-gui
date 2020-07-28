@@ -99,6 +99,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.POST("/array", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateArray)
 		})
+		iBoFOSPath.GET("/array", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
+		})
 		iBoFOSPath.DELETE("/array", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.DeleteArray)
 		})
@@ -122,8 +125,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.PATCH("/volumes/:volumeName/qos", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos.CalliBoFOSVolume(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
-			//ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateVolumeQoS)
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
 		})
 		iBoFOSPath.DELETE("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
@@ -135,11 +137,12 @@ func Route(router *gin.Engine) {
 		})
 
 		iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
-			//volumeName := ctx.Param("volumeName")
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
 			} else {
-				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
+				volumeName := ctx.Param("volumeName")
+				param := model.VolumeParam{Name: volumeName}
+				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolume, param)
 			}
 		})
 
