@@ -5669,6 +5669,143 @@
 					"body": "{\n    \"rid\": \"9cee863a-9e31-4a9e-8bf4-afa04783f95c\",\n    \"lastSuccessTime\": 1588929626,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Exit iBoFOS Done\"\n        }\n    },\n    \"info\": {\n        \"state\": \"NORMAL\",\n        \"situation\": \"NORMAL\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 120795955200,\n        \"used\": 0\n    }\n}"
 				}
 			]
+		},
+		{
+			"name": "KILLDAGENT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d903872f-7fca-4e94-a92c-70f6c722b86b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "76dbfc81-1a2e-4514-96d0-9dc01fdfe0ab",
+						"exec": [
+							"pm.test(\"KILLDAGENT\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "ts",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/api/dagent/v1/dagent",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"dagent",
+						"v1",
+						"dagent"
+					]
+				},
+				"description": "It just run command \"run_ibof.sh\" and does not gurantee to run."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/mtool/api/dagent/v1/dagent",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"mtool",
+								"api",
+								"dagent",
+								"v1",
+								"dagent"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "41872401-0604-4ced-b2a9-d722a7b465c7"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 08 May 2020 10:14:44 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "179"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+				}
+			]
 		}
 	],
 	"event": [
@@ -5695,42 +5832,42 @@
 	],
 	"variable": [
 		{
-			"id": "daddf2b5-51c0-4935-b5ea-5ca9464d0183",
+			"id": "63395223-c613-48b3-b7dd-fb11b392e6f8",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "ff5db323-3988-4256-9a0a-9b38dab9ee77",
+			"id": "16f683d8-3ab1-45b5-b4c5-2897c2bc30b0",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "46d26533-fe3d-4fba-bc1a-26fe4f7698b6",
+			"id": "d2e0a51f-61ea-4480-a85e-3d07be07819d",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "a440b577-5e21-4c38-812a-2c52d6eddb88",
+			"id": "afd03139-de47-4d09-b757-0c5bbe9e374d",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "b4598e66-22f0-41e7-bcda-03a87425af40",
+			"id": "3a490bad-8b3f-4ae1-bfd0-b2a7ffedf5f8",
 			"key": "volumeName1",
 			"value": "vol01"
 		},
 		{
-			"id": "b3d0c181-f8d8-4d74-be93-8206923769d7",
+			"id": "9bbad7c8-18b2-419c-bf69-9ee9bd474409",
 			"key": "volumeName2",
 			"value": "vol02"
 		},
 		{
-			"id": "49e27236-d528-464e-b8f8-ee7ea123928a",
+			"id": "346ed216-811a-426a-8b91-c1ee03ba4e4e",
 			"key": "volumeNameNew1",
 			"value": "volNew01"
 		},
 		{
-			"id": "ba0c1fef-8548-4141-9129-20ed60bc7a9e",
+			"id": "70785d65-3a9b-46ff-b36e-b307ecb86679",
 			"key": "period",
 			"value": "5m"
 		}
