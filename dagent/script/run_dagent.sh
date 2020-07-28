@@ -1,16 +1,16 @@
 #!/bin/bash
-currdir=$(readlink -f $(dirname $0))
-cd $currdir
-parentdir="$(dirname "$currdir")"
+
+SCRIPT_PATH=$(readlink -f $(dirname $0))
+PARENT_SCRIPT_PATH="$(dirname "$SCRIPT_PATH")"
 
 sudo systemctl stop dagent
 
 #create a soft link of the directory, to get the absolute path for starting the service
 sudo rm /usr/local/dagent
-sudo ln -s $parentdir /usr/local
+sudo ln -s $PARENT_SCRIPT_PATH /usr/local
 
 #move the service file  to the /etc/systemd/system/
-sudo cp $PWD/dagent.service /etc/systemd/system
+sudo cp $SCRIPT_PATH/dagent.service /etc/systemd/system
 sudo chmod 664 /etc/systemd/system/dagent.service
 
 sudo systemctl daemon-reload

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(readlink -f $(dirname $0))/
+SCRIPT_PATH=$(readlink -f $(dirname $0))
 
 $SCRIPT_PATH/a-module/script/build_resource.sh
 $SCRIPT_PATH/cli/script/build_cli.sh
