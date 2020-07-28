@@ -25,13 +25,13 @@ x=`systemctl is-active dagent.service`
 
 if [ $x = "active" ]
 then
-  echo DAgent Service Started Succesfully
+  echo "DAgent Service Started Succesfully"
 else
   sleep 90s
   if [ $x = "active" ]
   then
-    echo DAgent Service Started Successfully
+    echo "DAgent Service Started Successfully"
   else
-    echo DAgent Service Failed to Start!
+    echo "DAgent Service Failed to Start"
   fi
 fi

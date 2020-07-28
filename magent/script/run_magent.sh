@@ -38,13 +38,13 @@ echo "Checking Status..."
 x=`systemctl is-active magent.service`
 if [ $x = "active" ]
 then
-  echo MAgent Service Started Succesfully
+  echo "MAgent Service Started Succesfully"
 else
   sleep 90s
   if [ $x = "active" ]
   then
-    echo MAgent Service Started Successfully
+    echo "MAgent Service Started Successfully"
   else
-          echo MAgent Service Failed to Start!
+    echo "MAgent Service Failed to Start"
   fi
 fi
