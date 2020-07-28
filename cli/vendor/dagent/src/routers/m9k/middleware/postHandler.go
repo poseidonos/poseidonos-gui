@@ -3,6 +3,7 @@ package middleware
 import (
 	"a-module/src/log"
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"bytes"
 	"dagent/src/routers/m9k/api/dagent"
 	"encoding/json"
@@ -21,16 +22,16 @@ func (w responseBody) Write(b []byte) (int, error) {
 
 func PostHandler(ctx *gin.Context) {
 	// Gin does not save rb, so we write rb rb manually
-	rb := &responseBody{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
-	ctx.Writer = rb
+	responseBody := &responseBody{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
+	ctx.Writer = responseBody
 
 	ctx.Next()
-	log.Debugf("Response Status Code : %d", rb.Status())
-	log.Debugf("Response Header  : %v", rb.Header())
-	log.Debugf("Response Body  : %s", rb.body.String())
+	log.Debugf("Response Status Code : %d", responseBody.Status())
+	log.Debugf("Response Header  : %v", responseBody.Header())
+	log.Debugf("Response Body  : %v", util.PrettyJson(responseBody.body.String()))
 
 	response := model.Response{}
-	_ = json.Unmarshal(rb.body.Bytes(), &response)
+	_ = json.Unmarshal(responseBody.body.Bytes(), &response)
 	updateHeartBeat(response.LastSuccessTime)
 }
 
