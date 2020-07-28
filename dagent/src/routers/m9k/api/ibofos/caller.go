@@ -37,6 +37,12 @@ func merge(src interface{}, tar interface{}) interface{} {
 
 	jm, _ := json.Marshal(m)
 
+	log.Println("aaaaaaaaaa src", src)
+	log.Println("aaaaaaaaaa ja", ja)
+	log.Println("aaaaaaaaaa tar", tar)
+	log.Println("aaaaaaaaaa jb", jb)
+	log.Println("aaaaaaaaaa jb", m)
+
 	var param interface{}
 
 	d := json.NewDecoder(bytes.NewBuffer(jm))

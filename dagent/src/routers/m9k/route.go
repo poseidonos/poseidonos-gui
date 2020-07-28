@@ -82,6 +82,8 @@ func Route(router *gin.Engine) {
 			deviceName := ctx.Param("deviceName")
 			if deviceName == "all" {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
+			} else {
+				// 404 return
 			}
 		})
 		iBoFOSPath.GET("/devices/:deviceName/smart", func(ctx *gin.Context) {
@@ -123,7 +125,9 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListVolume)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RenameVolume)
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RenameVolume, param)
 		})
 		iBoFOSPath.GET("/volumes/maxcount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
