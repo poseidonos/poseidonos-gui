@@ -21,14 +21,12 @@ func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, mo
 
 func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
 	req := model.Request{}
-	err := ctx.ShouldBindBodyWith(&req, binding.JSON)
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
 
-	if err == io.EOF {
-		req = model.Request{}
+	if req.Param != nil {
+		param = merge(param, req.Param)
 	}
-
-	mergedParam := merge(param, req.Param)
-	_, res, err := f(header.XrId(ctx), mergedParam)
+	_, res, err := f(header.XrId(ctx), param)
 	api.HttpResponse(ctx, res, err)
 }
 
