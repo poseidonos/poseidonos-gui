@@ -52,29 +52,40 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [VOL LATENCY with PERIOD](#26-vol-latency-with-period)
   * [REBUILD LOG](#27-rebuild-log)
 
-* [POS](#pos)
+* [POS/Volume](#posvolume)
+
+  * [CREATE VOLUME](#1-create-volume)
+  * [CREATE VOLUME (Multi)](#2-create-volume-(multi))
+  * [UPDATE VOLUME QOS](#3-update-volume-qos)
+  * [RENAME VOLUME](#4-rename-volume)
+  * [LIST VOLUME](#5-list-volume)
+  * [MOUNT VOLUME](#6-mount-volume)
+  * [UNMOUNT VOLUME](#7-unmount-volume)
+  * [DELETE VOLUME](#8-delete-volume)
+  * [MAX VOLUME COUNT](#9-max-volume-count)
+
+* [POS/Array](#posarray)
+
+  * [CREATE ARRAY](#1-create-array)
+  * [LIST ARRAY DEVICE](#2-list-array-device)
+  * [ARRAY INFO](#3-array-info)
+  * [DELETE ARRAY](#4-delete-array)
+  * [LOAD ARRAY](#5-load-array)
+
+* [POS/Devices](#posdevices)
+
+  * [SCAN DEVICE](#1-scan-device)
+  * [ADD DEVICE](#2-add-device)
+  * [REMOVE DEVICE](#3-remove-device)
+  * [SMART](#4-smart)
+  * [LIST DEVICE](#5-list-device)
+
+* [POS/System](#possystem)
 
   * [RUNIBOFOS](#1-runibofos)
-  * [EXITIBOFOS](#2-exitibofos)
-  * [iBOFOSINFO](#3-ibofosinfo)
-  * [SCAN DEVICE](#4-scan-device)
-  * [SMART](#5-smart)
-  * [ADD DEVICE](#6-add-device)
-  * [REMOVE DEVICE](#7-remove-device)
-  * [LIST DEVICE](#8-list-device)
-  * [CREATE ARRAY](#9-create-array)
-  * [MOUNTIBOFOS](#10-mountibofos)
-  * [UNMOUNTIBOFOS](#11-unmountibofos)
-  * [LIST ARRAY DEVICE](#12-list-array-device)
-  * [DELETE ARRAY](#13-delete-array)
-  * [LOAD ARRAY](#14-load-array)
-  * [CREATE VOLUME](#15-create-volume)
-  * [CREATE VOLUME (Multi)](#16-create-volume-(multi))
-  * [UPDATE VOLUME](#17-update-volume)
-  * [LIST VOLUME](#18-list-volume)
-  * [MOUNT VOLUME](#19-mount-volume)
-  * [UNMOUNT VOLUME](#20-unmount-volume)
-  * [DELETE VOLUME](#21-delete-volume)
+  * [iBOFOSINFO](#2-ibofosinfo)
+  * [MOUNTIBOFOS](#3-mountibofos)
+  * [UNMOUNTIBOFOS](#4-unmountibofos)
 
 
 --------
@@ -1080,6 +1091,48 @@ URL: http://{{host}}/api/metric/v1/memory
 ***Responses:***
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Success | Code: 200
 
 
@@ -1109,48 +1162,6 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
         }
     },
     "info": {
@@ -1192,6 +1203,48 @@ URL: http://{{host}}/api/metric/v1/memory/{{period}}
 ***Responses:***
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Success | Code: 200
 
 
@@ -1221,48 +1274,6 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
         }
     },
     "info": {
@@ -1304,6 +1315,48 @@ URL: http://{{host}}/api/metric/v1/network
 ***Responses:***
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Success | Code: 200
 
 
@@ -1333,48 +1386,6 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
         }
     },
     "info": {
@@ -1528,48 +1539,6 @@ URL: http://{{host}}/api/metric/v1/readbw
 ***Responses:***
 
 
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
 Status: Success | Code: 200
 
 
@@ -1599,6 +1568,48 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
         }
     },
     "info": {
@@ -1734,7 +1745,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/readbw
+URL: http://{{host}}/api/metric/v1//volumes/{{volid01}}/readbw
 ```
 
 
@@ -1750,48 +1761,6 @@ URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/readbw
 
 
 ***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
 
 
 Status: Success | Code: 200
@@ -1837,6 +1806,48 @@ Status: Success | Code: 200
 
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 ### 10. VOL READ BW with PERIOD
 
 
@@ -1846,7 +1857,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/readbw/{{period}}
+URL: http://{{host}}/api/metric/v1//volumes/{{volid01}}/readbw/{{period}}
 ```
 
 
@@ -2182,7 +2193,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/writebw
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw
 ```
 
 
@@ -2198,6 +2209,48 @@ URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/writebw
 
 
 ***Responses:***
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
 
 
 Status: Success | Code: 200
@@ -2243,48 +2296,6 @@ Status: Success | Code: 200
 
 
 
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
 ### 14. VOL WRITE BW with PERIOD
 
 
@@ -2294,7 +2305,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/writebw/{{period}}
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}
 ```
 
 
@@ -2424,6 +2435,48 @@ URL: http://{{host}}/api/metric/v1/readiops
 ***Responses:***
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Success | Code: 200
 
 
@@ -2453,48 +2506,6 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
         }
     },
     "info": {
@@ -2630,7 +2641,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/readiops
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops
 ```
 
 
@@ -2742,7 +2753,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/readiops/{{period}}
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}
 ```
 
 
@@ -2984,6 +2995,48 @@ URL: http://{{host}}/api/metric/v1/writeiops/{{period}}
 ***Responses:***
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Success | Code: 200
 
 
@@ -3013,48 +3066,6 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
         }
     },
     "info": {
@@ -3078,7 +3089,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/writeiops
+URL: http://{{host}}/api/metric/v1//volumes/{{volid01}}/writeiops
 ```
 
 
@@ -3094,48 +3105,6 @@ URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/writeiops
 
 
 ***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
 
 
 Status: Success | Code: 200
@@ -3167,6 +3136,48 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
         }
     },
     "info": {
@@ -3190,7 +3201,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/writeiops/{{period}}
+URL: http://{{host}}/api/metric/v1//volumes/{{volid01}}/writeiops/{{period}}
 ```
 
 
@@ -3206,48 +3217,6 @@ URL: http://{{host}}/api/metric/v1//vol/{{volid01}}/writeiops/{{period}}
 
 
 ***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
 
 
 Status: Success | Code: 200
@@ -3279,6 +3248,48 @@ Status: Success | Code: 200
         "data": {
             "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
             "build_time": "1591338851"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
         }
     },
     "info": {
@@ -3526,7 +3537,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/latency
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency
 ```
 
 
@@ -3542,48 +3553,6 @@ URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/latency
 
 
 ***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
-| Date | Fri, 05 Jun 2020 06:32:42 GMT |
-| Content-Length | 223 |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 12020,
-            "description": "not defined"
-        },
-        "data": {
-            "githash": "",
-            "build_time": ""
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
 
 
 Status: Success | Code: 200
@@ -3629,6 +3598,48 @@ Status: Success | Code: 200
 
 
 
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c950f121-dd24-4f31-822e-69c70f1c432a |
+| Date | Fri, 05 Jun 2020 06:32:42 GMT |
+| Content-Length | 223 |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 12020,
+            "description": "not defined"
+        },
+        "data": {
+            "githash": "",
+            "build_time": ""
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
 ### 26. VOL LATENCY with PERIOD
 
 
@@ -3638,7 +3649,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/vol/{{volid01}}/latency/{{period}}
+URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}
 ```
 
 
@@ -3750,7 +3761,7 @@ Status: Success | Code: 200
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/rebuild_logs/{{period}}
+URL: http://{{host}}/api/metric/v1/rebuildlogs/{{period}}
 ```
 
 
@@ -3853,442 +3864,11 @@ Status: Fail | Code: 400
 
 
 
-## POS
-The biz-logic execute in both D-Agent and iBoFOS module
+## POS/Volume
 
 
 
-### 1. RUNIBOFOS
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/ibofos
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 603c7ae6-252c-4832-9384-fdf1dc61aeef |
-| Date | Mon, 04 May 2020 08:02:24 GMT |
-| Content-Length | 176 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 1588579344,
-    "result": {
-        "status": {
-            "code": 0,
-            "description": "Success"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 992167b4-5e3b-4067-94b9-56adddf00bda |
-| Date | Fri, 08 May 2020 10:16:19 GMT |
-| Content-Length | 194 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 11000,
-            "description": "Exec command error"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 2. EXITIBOFOS
-
-
-
-***Endpoint:***
-
-```bash
-Method: DELETE
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/ibofos
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | bccc8e71-0cc0-4371-83b1-f09dc7ee776d |
-| Date | Fri, 08 May 2020 10:16:39 GMT |
-| Content-Length | 197 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 11020,
-            "description": "iBoF Connection Error"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 9cee863a-9e31-4a9e-8bf4-afa04783f95c |
-| Date | Fri, 08 May 2020 09:20:26 GMT |
-| Content-Length | 256 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "9cee863a-9e31-4a9e-8bf4-afa04783f95c",
-    "lastSuccessTime": 1588929626,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Exit iBoFOS Done"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 3. iBOFOSINFO
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/system
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | e36d87a7-bf2d-4232-9b09-a6654fca1353 |
-| Date | Fri, 08 May 2020 06:49:57 GMT |
-| Content-Length | 235 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "e36d87a7-bf2d-4232-9b09-a6654fca1353",
-    "lastSuccessTime": 1588920597,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 4. SCAN DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/device/scan
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 64ebd37c-80fe-42ee-96a3-8545b6fd8199 |
-| Date | Fri, 08 May 2020 06:50:29 GMT |
-| Content-Length | 247 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "64ebd37c-80fe-42ee-96a3-8545b6fd8199",
-    "lastSuccessTime": 1588920629,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Scan Device Done"
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 5. SMART
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/device/smart/{{deviceName1}}
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 5fc25342-a46f-4567-8e2b-a748a5ffb09a |
-| Date | Tue, 09 Jun 2020 00:25:17 GMT |
-| Content-Length | 935 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "5fc25342-a46f-4567-8e2b-a748a5ffb09a",
-    "lastSuccessTime": 1591662317,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "available_spare": "1%",
-            "available_spare_space": "OK",
-            "available_spare_threshold": "100%",
-            "contoller_busy_time": "0x50000000000000000m",
-            "critical_temperature_time": "0m",
-            "current_temperature": "11759C",
-            "data_units_read": "0x60000000000000000",
-            "data_units_written": "0x50000000000000000",
-            "device_reliability": "OK",
-            "host_read_commands": "0x17700000000000000000",
-            "host_write_commands": "0x13880000000000000000",
-            "life_percentage_used": "0%",
-            "lifetime_error_log_entries": "0",
-            "power_cycles": "0xA0000000000000000",
-            "power_on_hours": "0x3C0000000000000000h",
-            "read_only": "No",
-            "temperature": "OK",
-            "unrecoverable_media_errors": "0",
-            "unsafe_shutdowns": "0",
-            "volatile_memory_backup": "OK",
-            "warning_temperature_time": "0m"
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 6. ADD DEVICE
+### 1. CREATE VOLUME
 
 
 
@@ -4297,7 +3877,7 @@ Status: Success | Code: 200
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/device/attach
+URL: http://{{host}}/api/ibofos/v1/volumes
 ```
 
 
@@ -4317,799 +3897,7 @@ URL: http://{{host}}/api/ibofos/v1/device/attach
 ```js        
 {
     "param": {
-        "name": "intel-unvmens-0"
-    }
-}
-```
-
-
-
-### 7. REMOVE DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/device
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "intel-unvmens-0"
-    }
-}
-```
-
-
-
-***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 06cdfc9f-bceb-41ef-8324-468696b14763 |
-| Date | Fri, 08 May 2020 10:22:47 GMT |
-| Content-Length | 280 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "06cdfc9f-bceb-41ef-8324-468696b14763",
-    "lastSuccessTime": 1588933367,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2417,
-            "description": "an error occurred during DETACHDEVICE"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 8. LIST DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/device
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 7ec6e965-dc86-4a95-8a3a-353dc36478a1 |
-| Date | Fri, 08 May 2020 06:50:42 GMT |
-| Content-Length | 942 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "7ec6e965-dc86-4a95-8a3a-353dc36478a1",
-    "lastSuccessTime": 1588920642,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "addr": "0000:04:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-0",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0002",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:0c:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-1",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0003",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:13:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-2",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0000",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:1b:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-3",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0001",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "",
-                    "class": "SYSTEM",
-                    "mn": "uram0",
-                    "name": "uram0",
-                    "size": 262144,
-                    "sn": "uram0",
-                    "type": "NVRAM"
-                }
-            ]
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 9. CREATE ARRAY
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "buffer": [
-            {
-                "deviceName": "uram0"
-            }
-        ],
-        "data": [
-            {
-                "deviceName": "{{deviceName1}}"
-            },
-            {
-                "deviceName": "{{deviceName2}}"
-            },
-            {
-                "deviceName": "{{deviceName3}}"
-            }
-        ],
-        "spare": [
-            {
-                "deviceName": "{{deviceName4}}"
-            }
-        ]
-    }
-}
-```
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 2c79e5c2-d14c-4a30-a79a-e3af4a440da2 |
-| Date | Fri, 08 May 2020 06:51:04 GMT |
-| Content-Length | 235 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "2c79e5c2-d14c-4a30-a79a-e3af4a440da2",
-    "lastSuccessTime": 1588920664,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Done"
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 10. MOUNTIBOFOS
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/mount
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Fail - Timeout / Mounting | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 85b04f05-e5d7-46c8-aa75-192f35a58a21 |
-| Date | Fri, 08 May 2020 06:51:43 GMT |
-| Content-Length | 258 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "85b04f05-e5d7-46c8-aa75-192f35a58a21",
-    "lastSuccessTime": 1588920703,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 1022,
-            "description": "TIMED OUT"
-        }
-    },
-    "info": {
-        "state": "DIAGNOSIS",
-        "situation": "TRY_MOUNT",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 11. UNMOUNTIBOFOS
-
-
-
-***Endpoint:***
-
-```bash
-Method: DELETE
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/mount
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | ebed102c-17c9-4f80-9063-d2e66f60f50a |
-| Date | Fri, 08 May 2020 09:03:14 GMT |
-| Content-Length | 244 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "ebed102c-17c9-4f80-9063-d2e66f60f50a",
-    "lastSuccessTime": 1588928594,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 12. LIST ARRAY DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/device
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 6e787e27-1964-44da-bcdf-b5f44ffbd1a3 |
-| Date | Fri, 08 May 2020 06:51:22 GMT |
-| Content-Length | 437 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 13. DELETE ARRAY
-
-
-
-***Endpoint:***
-
-```bash
-Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "fttype": 1,
-        "buffer": [
-            {
-                "deviceName": "uram0"
-            }
-        ],
-        "data": [
-            {
-                "deviceName": "unvme-ns-0"
-            },
-            {
-                "deviceName": "unvme-ns-1"
-            },
-            {
-                "deviceName": "unvme-ns-2"
-            }
-        ],
-        "spare": [
-            {
-                "deviceName": "unvme-ns-3"
-            }
-        ]
-    }
-}
-```
-
-
-
-***Responses:***
-
-
-Status: Fail - Array is not created | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 8f97c091-fd8f-4d6f-92bb-c27935c54d65 |
-| Date | Fri, 08 May 2020 10:38:50 GMT |
-| Content-Length | 240 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "8f97c091-fd8f-4d6f-92bb-c27935c54d65",
-    "lastSuccessTime": 1588934330,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 500000,
-            "description": "2503"
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 2dbe3cab-2045-466d-9a87-64b8f01f6b78 |
-| Date | Fri, 08 May 2020 09:04:28 GMT |
-| Content-Length | 244 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "2dbe3cab-2045-466d-9a87-64b8f01f6b78",
-    "lastSuccessTime": 1588928668,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Done"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail - iBoF is mounted | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | fea9d5f8-9e7e-4360-9a58-f09898b5af90 |
-| Date | Fri, 08 May 2020 10:37:16 GMT |
-| Content-Length | 255 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "fea9d5f8-9e7e-4360-9a58-f09898b5af90",
-    "lastSuccessTime": 1588934236,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 500000,
-            "description": "2500"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 8388608
-    }
-}
-```
-
-
-
-### 14. LOAD ARRAY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Responses:***
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | b2b3a577-4579-40c7-8d7c-f67363ce6936 |
-| Date | Fri, 08 May 2020 09:11:17 GMT |
-| Content-Length | 249 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "b2b3a577-4579-40c7-8d7c-f67363ce6936",
-    "lastSuccessTime": 1588929077,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 500000,
-            "description": "2509"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 15. CREATE VOLUME
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "vol",
+        "name": "vol01",
         "size": 4194304,
         "maxbw": 0,
         "maxiops": 0
@@ -5162,6 +3950,84 @@ Status: Fail - Volume Name Special Character | Code: 400
 
 
 
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 2ed41e67-7c0d-4888-8b40-76d2c2edbf0a |
+| Date | Fri, 08 May 2020 10:19:39 GMT |
+| Content-Length | 250 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "2ed41e67-7c0d-4888-8b40-76d2c2edbf0a",
+    "lastSuccessTime": 1588933179,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
+Status: Fail - Volume Size 0 | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 11a54435-e59d-4348-ad93-4fb2197c5467 |
+| Date | Fri, 08 May 2020 10:26:14 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "11a54435-e59d-4348-ad93-4fb2197c5467",
+    "lastSuccessTime": 1588933574,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2032,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
 Status: Fail - Volume size Empty | Code: 400
 
 
@@ -5278,6 +4144,130 @@ Status: Fail - Volume Name Duplicated | Code: 400
 
 
 
+Status: Fail - Volume Name Empty | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | a08ce0f5-851c-47f4-9611-ad105850517f |
+| Date | Fri, 08 May 2020 10:25:14 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "a08ce0f5-851c-47f4-9611-ad105850517f",
+    "lastSuccessTime": 1588933514,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2020,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+### 2. CREATE VOLUME (Multi)
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/volumes
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "volmul",
+        "size": 10737418,
+        "maxbw": 0,
+        "maxiops": 0,
+        "totalcount": 2,
+        "stoponerror": false,
+        "namesuffix": 0,
+        "mountall": true
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Fail - Volume Name Duplicated | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | aeb62d7c-dda7-43e0-b3c4-ff27849063bf |
+| Date | Fri, 08 May 2020 10:29:05 GMT |
+| Content-Length | 255 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "aeb62d7c-dda7-43e0-b3c4-ff27849063bf",
+    "lastSuccessTime": 1588933745,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2022,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
 Status: Fail - Volume Size 0 | Code: 400
 
 
@@ -5317,7 +4307,7 @@ Status: Fail - Volume Size 0 | Code: 400
 
 
 
-Status: Fail - Volume Name Empty | Code: 400
+Status: Fail - Volume size Empty | Code: 400
 
 
 
@@ -5326,8 +4316,46 @@ Status: Fail - Volume Name Empty | Code: 400
 | Key | Value |
 | --- | ------|
 | Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | a08ce0f5-851c-47f4-9611-ad105850517f |
-| Date | Fri, 08 May 2020 10:25:14 GMT |
+| Date | Fri, 08 May 2020 10:25:49 GMT |
+| Content-Length | 199 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 10310,
+            "description": "Body Error : Json Error"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5 |
+| Date | Fri, 08 May 2020 09:11:45 GMT |
 | Content-Length | 249 |
 | Connection | keep-alive |
 
@@ -5335,12 +4363,12 @@ Status: Fail - Volume Name Empty | Code: 400
 
 ```js
 {
-    "rid": "a08ce0f5-851c-47f4-9611-ad105850517f",
-    "lastSuccessTime": 1588933514,
+    "rid": "eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5",
+    "lastSuccessTime": 1588929105,
     "result": {
         "status": {
             "module": "",
-            "code": 2020,
+            "code": 2060,
             "description": "FAILED"
         }
     },
@@ -5393,52 +4421,6 @@ Status: Success | Code: 200
 }
 ```
 
-
-
-### 16. CREATE VOLUME (Multi)
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "volmul",
-        "size": 10737418,
-        "maxbw": 0,
-        "maxiops": 0,
-        "totalcount": 2,
-        "stoponerror": false,
-        "namesuffix": 0,
-        "mountall": true
-    }
-}
-```
-
-
-
-***Responses:***
 
 
 Status: Fail - Volume Name Special Character | Code: 400
@@ -5480,123 +4462,6 @@ Status: Fail - Volume Name Special Character | Code: 400
 
 
 
-Status: Success | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 2ed41e67-7c0d-4888-8b40-76d2c2edbf0a |
-| Date | Fri, 08 May 2020 10:19:39 GMT |
-| Content-Length | 250 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "2ed41e67-7c0d-4888-8b40-76d2c2edbf0a",
-    "lastSuccessTime": 1588933179,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 4194304
-    }
-}
-```
-
-
-
-Status: Fail - Volume Size 0 | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 11a54435-e59d-4348-ad93-4fb2197c5467 |
-| Date | Fri, 08 May 2020 10:26:14 GMT |
-| Content-Length | 249 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "11a54435-e59d-4348-ad93-4fb2197c5467",
-    "lastSuccessTime": 1588933574,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2032,
-            "description": "FAILED"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-Status: Fail | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5 |
-| Date | Fri, 08 May 2020 09:11:45 GMT |
-| Content-Length | 249 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5",
-    "lastSuccessTime": 1588929105,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2060,
-            "description": "FAILED"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
 Status: Fail - Volume Name Empty | Code: 400
 
 
@@ -5636,93 +4501,16 @@ Status: Fail - Volume Name Empty | Code: 400
 
 
 
-Status: Fail - Volume Name Duplicated | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | aeb62d7c-dda7-43e0-b3c4-ff27849063bf |
-| Date | Fri, 08 May 2020 10:29:05 GMT |
-| Content-Length | 255 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "aeb62d7c-dda7-43e0-b3c4-ff27849063bf",
-    "lastSuccessTime": 1588933745,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2022,
-            "description": "FAILED"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 4194304
-    }
-}
-```
-
-
-
-Status: Fail - Volume size Empty | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| Date | Fri, 08 May 2020 10:25:49 GMT |
-| Content-Length | 199 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 10310,
-            "description": "Body Error : Json Error"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-
-### 17. UPDATE VOLUME
+### 3. UPDATE VOLUME QOS
 
 
 
 ***Endpoint:***
 
 ```bash
-Method: PUT
+Method: PATCH
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/qos
 ```
 
 
@@ -5793,7 +4581,86 @@ Status: Fail | Code: 400
 
 
 
-### 18. LIST VOLUME
+### 4. RENAME VOLUME
+
+
+
+***Endpoint:***
+
+```bash
+Method: PATCH
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "vol01",
+        "newname": "newvol01"
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 3c37afde-0dcc-49aa-8b4e-1f35fff01312 |
+| Date | Fri, 08 May 2020 09:12:16 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "3c37afde-0dcc-49aa-8b4e-1f35fff01312",
+    "lastSuccessTime": 1588929136,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2010,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+### 5. LIST VOLUME
 
 
 
@@ -5802,7 +4669,7 @@ Status: Fail | Code: 400
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volumes
 ```
 
 
@@ -5818,6 +4685,45 @@ URL: http://{{host}}/api/ibofos/v1/volume
 
 
 ***Responses:***
+
+
+Status: Success - No Volume | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 83c92a03-b2b0-4c83-923c-13a398629c6d |
+| Date | Fri, 08 May 2020 09:12:29 GMT |
+| Content-Length | 255 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "83c92a03-b2b0-4c83-923c-13a398629c6d",
+    "lastSuccessTime": 1588929149,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "NO VOLUME EXIST"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
 
 
 Status: Success - Unmounted | Code: 200
@@ -5924,46 +4830,7 @@ Status: Success - Mounted | Code: 200
 
 
 
-Status: Success - No Volume | Code: 200
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | 83c92a03-b2b0-4c83-923c-13a398629c6d |
-| Date | Fri, 08 May 2020 09:12:29 GMT |
-| Content-Length | 255 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "83c92a03-b2b0-4c83-923c-13a398629c6d",
-    "lastSuccessTime": 1588929149,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "NO VOLUME EXIST"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
-
-
-### 19. MOUNT VOLUME
+### 6. MOUNT VOLUME
 
 
 
@@ -5972,7 +4839,7 @@ Status: Success - No Volume | Code: 200
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume/mount
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount
 ```
 
 
@@ -6080,7 +4947,7 @@ Status: Fail - invalid volume name | Code: 400
 
 
 
-### 20. UNMOUNT VOLUME
+### 7. UNMOUNT VOLUME
 
 
 
@@ -6089,7 +4956,7 @@ Status: Fail - invalid volume name | Code: 400
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume/mount
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount
 ```
 
 
@@ -6197,7 +5064,7 @@ Status: Success | Code: 200
 
 
 
-### 21. DELETE VOLUME
+### 8. DELETE VOLUME
 
 
 
@@ -6206,7 +5073,7 @@ Status: Success | Code: 200
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}
 ```
 
 
@@ -6234,45 +5101,6 @@ URL: http://{{host}}/api/ibofos/v1/volume
 
 
 ***Responses:***
-
-
-Status: Fail - Does not exist name | Code: 400
-
-
-
-***Response Headers:***
-
-| Key | Value |
-| --- | ------|
-| Content-Type | application/json; charset=utf-8 |
-| X-Request-Id | c67e8be1-30f6-4c49-afe4-f2ae7c4f322e |
-| Date | Fri, 08 May 2020 09:14:25 GMT |
-| Content-Length | 249 |
-| Connection | keep-alive |
-
-
-
-```js
-{
-    "rid": "c67e8be1-30f6-4c49-afe4-f2ae7c4f322e",
-    "lastSuccessTime": 1588929265,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 2010,
-            "description": "FAILED"
-        }
-    },
-    "info": {
-        "state": "NORMAL",
-        "situation": "NORMAL",
-        "rebuliding_progress": 0,
-        "capacity": 120795955200,
-        "used": 0
-    }
-}
-```
-
 
 
 Status: Success | Code: 200
@@ -6314,6 +5142,1571 @@ Status: Success | Code: 200
 
 
 
+Status: Fail - Does not exist name | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c67e8be1-30f6-4c49-afe4-f2ae7c4f322e |
+| Date | Fri, 08 May 2020 09:14:25 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c67e8be1-30f6-4c49-afe4-f2ae7c4f322e",
+    "lastSuccessTime": 1588929265,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2010,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+### 9. MAX VOLUME COUNT
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/volumes/maxcount
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Fail - Volume Name Special Character | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | c5d59f2b-54ea-431c-b264-a62e7467e129 |
+| Date | Fri, 08 May 2020 10:32:19 GMT |
+| Content-Length | 256 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "c5d59f2b-54ea-431c-b264-a62e7467e129",
+    "lastSuccessTime": 1588933939,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2023,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 12582912
+    }
+}
+```
+
+
+
+Status: Fail - Volume Size 0 | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 11a54435-e59d-4348-ad93-4fb2197c5467 |
+| Date | Fri, 08 May 2020 10:26:14 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "11a54435-e59d-4348-ad93-4fb2197c5467",
+    "lastSuccessTime": 1588933574,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2032,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5 |
+| Date | Fri, 08 May 2020 09:11:45 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "eba2377b-6da5-48e0-ad1b-ed4ee4b7f6a5",
+    "lastSuccessTime": 1588929105,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2060,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail - Volume Name Duplicated | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | aeb62d7c-dda7-43e0-b3c4-ff27849063bf |
+| Date | Fri, 08 May 2020 10:29:05 GMT |
+| Content-Length | 255 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "aeb62d7c-dda7-43e0-b3c4-ff27849063bf",
+    "lastSuccessTime": 1588933745,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2022,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
+Status: Fail - Volume size Empty | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| Date | Fri, 08 May 2020 10:25:49 GMT |
+| Content-Length | 199 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 10310,
+            "description": "Body Error : Json Error"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail - Volume Name Empty | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | a08ce0f5-851c-47f4-9611-ad105850517f |
+| Date | Fri, 08 May 2020 10:25:14 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "a08ce0f5-851c-47f4-9611-ad105850517f",
+    "lastSuccessTime": 1588933514,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2020,
+            "description": "FAILED"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 2ed41e67-7c0d-4888-8b40-76d2c2edbf0a |
+| Date | Fri, 08 May 2020 10:19:39 GMT |
+| Content-Length | 250 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "2ed41e67-7c0d-4888-8b40-76d2c2edbf0a",
+    "lastSuccessTime": 1588933179,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 4194304
+    }
+}
+```
+
+
+
+## POS/Array
+
+
+
+### 1. CREATE ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "{{deviceName1}}"
+            },
+            {
+                "deviceName": "{{deviceName2}}"
+            },
+            {
+                "deviceName": "{{deviceName3}}"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "{{deviceName4}}"
+            }
+        ]
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 2c79e5c2-d14c-4a30-a79a-e3af4a440da2 |
+| Date | Fri, 08 May 2020 06:51:04 GMT |
+| Content-Length | 235 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "2c79e5c2-d14c-4a30-a79a-e3af4a440da2",
+    "lastSuccessTime": 1588920664,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "Done"
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 2. LIST ARRAY DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array/devices
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 6e787e27-1964-44da-bcdf-b5f44ffbd1a3 |
+| Date | Fri, 08 May 2020 06:51:22 GMT |
+| Content-Length | 437 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
+    "lastSuccessTime": 1588920682,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "name": "uram0",
+                    "type": "BUFFER"
+                },
+                {
+                    "name": "unvme-ns-0",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-1",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-2",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-3",
+                    "type": "SPARE"
+                }
+            ]
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 3. ARRAY INFO
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 6e787e27-1964-44da-bcdf-b5f44ffbd1a3 |
+| Date | Fri, 08 May 2020 06:51:22 GMT |
+| Content-Length | 437 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
+    "lastSuccessTime": 1588920682,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "name": "uram0",
+                    "type": "BUFFER"
+                },
+                {
+                    "name": "unvme-ns-0",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-1",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-2",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-3",
+                    "type": "SPARE"
+                }
+            ]
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 4. DELETE ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "fttype": 1,
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "unvme-ns-0"
+            },
+            {
+                "deviceName": "unvme-ns-1"
+            },
+            {
+                "deviceName": "unvme-ns-2"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "unvme-ns-3"
+            }
+        ]
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 2dbe3cab-2045-466d-9a87-64b8f01f6b78 |
+| Date | Fri, 08 May 2020 09:04:28 GMT |
+| Content-Length | 244 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "2dbe3cab-2045-466d-9a87-64b8f01f6b78",
+    "lastSuccessTime": 1588928668,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "Done"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail - Array is not created | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 8f97c091-fd8f-4d6f-92bb-c27935c54d65 |
+| Date | Fri, 08 May 2020 10:38:50 GMT |
+| Content-Length | 240 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "8f97c091-fd8f-4d6f-92bb-c27935c54d65",
+    "lastSuccessTime": 1588934330,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 500000,
+            "description": "2503"
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail - iBoF is mounted | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | fea9d5f8-9e7e-4360-9a58-f09898b5af90 |
+| Date | Fri, 08 May 2020 10:37:16 GMT |
+| Content-Length | 255 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "fea9d5f8-9e7e-4360-9a58-f09898b5af90",
+    "lastSuccessTime": 1588934236,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 500000,
+            "description": "2500"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 8388608
+    }
+}
+```
+
+
+
+### 5. LOAD ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array/load
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | b2b3a577-4579-40c7-8d7c-f67363ce6936 |
+| Date | Fri, 08 May 2020 09:11:17 GMT |
+| Content-Length | 249 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "b2b3a577-4579-40c7-8d7c-f67363ce6936",
+    "lastSuccessTime": 1588929077,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 500000,
+            "description": "2509"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+## POS/Devices
+
+
+
+### 1. SCAN DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/ibofos/v1/devices/all/scan
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 64ebd37c-80fe-42ee-96a3-8545b6fd8199 |
+| Date | Fri, 08 May 2020 06:50:29 GMT |
+| Content-Length | 247 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "64ebd37c-80fe-42ee-96a3-8545b6fd8199",
+    "lastSuccessTime": 1588920629,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "Scan Device Done"
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 2. ADD DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/devices
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "intel-unvmens-0"
+    }
+}
+```
+
+
+
+### 3. REMOVE DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/devices/:deviceName 
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***URL variables:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| deviceName  |  |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "intel-unvmens-0"
+    }
+}
+```
+
+
+
+***Responses:***
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 06cdfc9f-bceb-41ef-8324-468696b14763 |
+| Date | Fri, 08 May 2020 10:22:47 GMT |
+| Content-Length | 280 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "06cdfc9f-bceb-41ef-8324-468696b14763",
+    "lastSuccessTime": 1588933367,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2417,
+            "description": "an error occurred during DETACHDEVICE"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+### 4. SMART
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/ibofos/v1/devices/{{deviceName1}}/smart
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 5fc25342-a46f-4567-8e2b-a748a5ffb09a |
+| Date | Tue, 09 Jun 2020 00:25:17 GMT |
+| Content-Length | 935 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "5fc25342-a46f-4567-8e2b-a748a5ffb09a",
+    "lastSuccessTime": 1591662317,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "available_spare": "1%",
+            "available_spare_space": "OK",
+            "available_spare_threshold": "100%",
+            "contoller_busy_time": "0x50000000000000000m",
+            "critical_temperature_time": "0m",
+            "current_temperature": "11759C",
+            "data_units_read": "0x60000000000000000",
+            "data_units_written": "0x50000000000000000",
+            "device_reliability": "OK",
+            "host_read_commands": "0x17700000000000000000",
+            "host_write_commands": "0x13880000000000000000",
+            "life_percentage_used": "0%",
+            "lifetime_error_log_entries": "0",
+            "power_cycles": "0xA0000000000000000",
+            "power_on_hours": "0x3C0000000000000000h",
+            "read_only": "No",
+            "temperature": "OK",
+            "unrecoverable_media_errors": "0",
+            "unsafe_shutdowns": "0",
+            "volatile_memory_backup": "OK",
+            "warning_temperature_time": "0m"
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 5. LIST DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/ibofos/v1/devices
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 7ec6e965-dc86-4a95-8a3a-353dc36478a1 |
+| Date | Fri, 08 May 2020 06:50:42 GMT |
+| Content-Length | 942 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "7ec6e965-dc86-4a95-8a3a-353dc36478a1",
+    "lastSuccessTime": 1588920642,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "addr": "0000:04:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-0",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0002",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:0c:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-1",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0003",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:13:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-2",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0000",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:1b:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-3",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0001",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "",
+                    "class": "SYSTEM",
+                    "mn": "uram0",
+                    "name": "uram0",
+                    "size": 262144,
+                    "sn": "uram0",
+                    "type": "NVRAM"
+                }
+            ]
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+## POS/System
+
+
+
+### 1. RUNIBOFOS
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: 
+URL: http://{{host}}/api/ibofos/v1/system
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 603c7ae6-252c-4832-9384-fdf1dc61aeef |
+| Date | Mon, 04 May 2020 08:02:24 GMT |
+| Content-Length | 176 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 1588579344,
+    "result": {
+        "status": {
+            "code": 0,
+            "description": "Success"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+Status: Fail | Code: 400
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 992167b4-5e3b-4067-94b9-56adddf00bda |
+| Date | Fri, 08 May 2020 10:16:19 GMT |
+| Content-Length | 194 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 11000,
+            "description": "Exec command error"
+        }
+    },
+    "info": {
+        "state": "",
+        "situation": "",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 2. iBOFOSINFO
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/system
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | e36d87a7-bf2d-4232-9b09-a6654fca1353 |
+| Date | Fri, 08 May 2020 06:49:57 GMT |
+| Content-Length | 235 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "e36d87a7-bf2d-4232-9b09-a6654fca1353",
+    "lastSuccessTime": 1588920597,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+
+### 3. MOUNTIBOFOS
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: 
+URL: http://{{host}}/api/ibofos/v1/system/mount
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Fail - Timeout / Mounting | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | 85b04f05-e5d7-46c8-aa75-192f35a58a21 |
+| Date | Fri, 08 May 2020 06:51:43 GMT |
+| Content-Length | 258 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "85b04f05-e5d7-46c8-aa75-192f35a58a21",
+    "lastSuccessTime": 1588920703,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 1022,
+            "description": "TIMED OUT"
+        }
+    },
+    "info": {
+        "state": "DIAGNOSIS",
+        "situation": "TRY_MOUNT",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
+### 4. UNMOUNTIBOFOS
+
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: 
+URL: http://{{host}}/api/ibofos/v1/system/mount
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Responses:***
+
+
+Status: Success | Code: 200
+
+
+
+***Response Headers:***
+
+| Key | Value |
+| --- | ------|
+| Content-Type | application/json; charset=utf-8 |
+| X-Request-Id | ebed102c-17c9-4f80-9063-d2e66f60f50a |
+| Date | Fri, 08 May 2020 09:03:14 GMT |
+| Content-Length | 244 |
+| Connection | keep-alive |
+
+
+
+```js
+{
+    "rid": "ebed102c-17c9-4f80-9063-d2e66f60f50a",
+    "lastSuccessTime": 1588928594,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        }
+    },
+    "info": {
+        "state": "NORMAL",
+        "situation": "NORMAL",
+        "rebuliding_progress": 0,
+        "capacity": 120795955200,
+        "used": 0
+    }
+}
+```
+
+
+
 ***Available Variables:***
 
 | Key | Value | Type |
@@ -6322,12 +6715,12 @@ Status: Success | Code: 200
 | deviceName2 | unvme-ns-1 |  |
 | deviceName3 | unvme-ns-2 |  |
 | deviceName4 | unvme-ns-3 |  |
-| volid01 | vol01 |  |
-| volid02 | vol02 |  |
+| volumeName1 | vol01 |  |
+| volumeName2 | vol02 |  |
 | period | 5m |  |
 
 
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-07-17 16:50:13 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-07-29 10:43:48 by [docgen](https://github.com/thedevsaddam/docgen)
