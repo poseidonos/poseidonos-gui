@@ -68,6 +68,10 @@ func ApplyLogFilter(xrId string, param interface{}) (model.Request, model.Respon
 	return Requester{xrId, param}.Put("APPLYLOGFILTER")
 }
 
+func LoggerInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("LOGGERINFO")
+}
+
 func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Put("WBT")
 }

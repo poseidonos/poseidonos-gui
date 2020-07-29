@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"a-module/src/errors"
+	"a-module/src/log"
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
 	"a-module/src/util"
-	"a-module/src/log"
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"
@@ -58,21 +58,22 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"set_log_level":    iBoFOS.SetLogLevel,
 	"get_log_level":    iBoFOS.GetLogLevel,
 	"apply_log_filter": iBoFOS.ApplyLogFilter,
+	"logger_info":      iBoFOS.LoggerInfo,
 	//"wbt":              iBoFOS.WBT,
 	//"list_wbt":         iBoFOS.ListWBT,
 	//"do_gc":            iBoFOS.DoGC,
 }
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
-	"create_vol": iBoFOS.CreateVolume,
-	"mount_vol":      iBoFOS.MountVolume,
-	"unmount_vol":    iBoFOS.UnmountVolume,
-	"delete_vol":     iBoFOS.DeleteVolume,
-	"list_vol":       iBoFOS.ListVolume,
-	"update_vol_qos": iBoFOS.UpdateVolumeQoS,
-	"rename_vol":     iBoFOS.RenameVolume,
-	"get_max_vol_cnt":iBoFOS.GetMaxVolumeCount,
-	"get_host_nqn":   iBoFOS.GetHostNQN,
+	"create_vol":      iBoFOS.CreateVolume,
+	"mount_vol":       iBoFOS.MountVolume,
+	"unmount_vol":     iBoFOS.UnmountVolume,
+	"delete_vol":      iBoFOS.DeleteVolume,
+	"list_vol":        iBoFOS.ListVolume,
+	"update_vol_qos":  iBoFOS.UpdateVolumeQoS,
+	"rename_vol":      iBoFOS.RenameVolume,
+	"get_max_vol_cnt": iBoFOS.GetMaxVolumeCount,
+	"get_host_nqn":    iBoFOS.GetHostNQN,
 	//	"update_vol":  iBoFOS.UpdateVolume,
 	//"resize_vol":     iBoFOS.ResizeVolume,
 }
@@ -103,9 +104,10 @@ system     : run_ibofos       : Run iBoFOS.                                     
            : info             : Show current state of IbofOS.                                    : not needed
            : mount_ibofos     : Mount iBoFOS.                                                    : not needed
            : unmount_ibofos   : Unmount iBoFOS.                                                  : not needed
-           : set_log_level    : Set filtering level to logger.                                   : --level [log level]
-           : get_log_level    : Get filtering level to logger.                                   : not needed
+           : set_log_level"   : Set filtering level to logger.                                   : --level [log level]
+           : get_log_level"   : Get filtering level to logger.                                   : not needed
            : apply_log_filter : Apply filtering policy to logger.                                : not needed
+           : logger_info      : Get current logger settings.                                     : not needed
 
 volume     : create_vol       : Create a new volume in unit of bytes.                            : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] (maxiops, maxbw are optional and default value is 0.)
            : mount_vol        : Mount a volume.                                                  : --name [vol name]
@@ -206,7 +208,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
 		}
-		
+
 		if cmd.PersistentFlags().Changed("raidtype") && len(raidType) > 0 {
 			param.RaidType = raidType
 		}
@@ -286,11 +288,11 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
 		}
-		
+
 		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
 			param.ArrayName = arrayName
 		}
-		
+
 		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {
 			param.SubNQN = subNQN
 		}
@@ -347,7 +349,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		fmt.Println("\n\nResponse from Poseidon OS")
 		result, err := util.GetStatusInfo(res.Result.Status.Code)
-		
+
 		if err == nil {
 			fmt.Println("    Code         : ", result.Code)
 			fmt.Println("    Level        : ", result.Level)
@@ -355,7 +357,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 			fmt.Println("    Problem      : ", result.Problem)
 			fmt.Println("    Solution     : ", result.Solution)
 		} else {
-			
+
 			fmt.Println("    Code        : ", res.Result.Status.Code)
 			fmt.Println("    Description : ", res.Result.Status.Description)
 			log.Infof("%v\n", err)

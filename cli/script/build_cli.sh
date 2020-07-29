@@ -4,8 +4,8 @@ ROOT_DIR=$(readlink -f $(dirname $0))/
 cd $ROOT_DIR/../
 
 if [ -d "../../tool" ]; then
-	export GOROOT="$ROOT_DIR../../lib/go"
-	export GOPATH="$ROOT_DIR../"
+	export GOROOT="$ROOT_DIR../../../lib/go"
+	export GOPATH="$ROOT_DIR../../"
 	export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 fi
 
