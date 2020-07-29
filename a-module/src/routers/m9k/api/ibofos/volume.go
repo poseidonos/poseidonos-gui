@@ -43,3 +43,7 @@ func ResizeVolume(xrId string, param interface{}) (model.Request, model.Response
 func GetMaxVolumeCount(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("GETMAXVOLUMECOUNT")
 }
+
+func GetHostNQN(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("GETHOSTNQN")
+}

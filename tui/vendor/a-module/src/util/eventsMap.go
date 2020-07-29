@@ -43,17 +43,6 @@ func LoadEvents() {
 		if err != nil {
 			log.Fatalf("loadevents Error : %v", err)
 		}
-		/*
-			else {
-				var temp model.Status
-				temp.Code = 2010
-				ReturnEventsDets(&temp)
-				fmt.Printf("Name : %s, Level : %s, Desc : %s, Problem : %s, Solution = %s \n", temp.Module, temp.Level, temp.Description, temp.Problem, temp.Solution)
-				fmt.Printf("Total Modules : %+v\n", len(eventsmap.Modules))
-				//fmt.Println("Loaded Config Info : %+v", eventsmap)
-				fmt.Printf("start index : %d end index : %d\n", eventsmap.Modules[0].Idstart, eventsmap.Modules[0].Idend)
-			}
-		*/
 	}
 }
 

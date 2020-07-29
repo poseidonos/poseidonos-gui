@@ -19,6 +19,9 @@ var spare []string
 var name string
 var newName string
 var level string
+var arrayName string
+var raidType string
+var subNQN string
 
 var fttype int
 var size string
@@ -62,15 +65,16 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 
 var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_vol": iBoFOS.CreateVolume,
-	//	"update_vol":  iBoFOS.UpdateVolume,
 	"mount_vol":      iBoFOS.MountVolume,
 	"unmount_vol":    iBoFOS.UnmountVolume,
 	"delete_vol":     iBoFOS.DeleteVolume,
 	"list_vol":       iBoFOS.ListVolume,
 	"update_vol_qos": iBoFOS.UpdateVolumeQoS,
 	"rename_vol":     iBoFOS.RenameVolume,
+	"get_max_vol_cnt":iBoFOS.GetMaxVolumeCount,
+	"get_host_nqn":   iBoFOS.GetHostNQN,
+	//	"update_vol":  iBoFOS.UpdateVolume,
 	//"resize_vol":     iBoFOS.ResizeVolume,
-	"get_max_vol_cnt": iBoFOS.GetMaxVolumeCount,
 }
 
 var commandCmd = &cobra.Command{
@@ -99,8 +103,8 @@ system     : run_ibofos       : Run iBoFOS.                                     
            : info             : Show current state of IbofOS.                                    : not needed
            : mount_ibofos     : Mount iBoFOS.                                                    : not needed
            : unmount_ibofos   : Unmount iBoFOS.                                                  : not needed
-           : set_log_level"   : Set filtering level to logger.                                   : --level [log level]
-           : get_log_level"   : Get filtering level to logger.                                   : not needed
+           : set_log_level    : Set filtering level to logger.                                   : --level [log level]
+           : get_log_level    : Get filtering level to logger.                                   : not needed
            : apply_log_filter : Apply filtering policy to logger.                                : not needed
 
 volume     : create_vol       : Create a new volume in unit of bytes.                            : --name [vol name] --size [vol size] --maxiops [max iops] --maxbw [max bw] (maxiops, maxbw are optional and default value is 0.)
@@ -111,6 +115,7 @@ volume     : create_vol       : Create a new volume in unit of bytes.           
            : update_vol_qos   : Update volumes QoS properties.                                   : --name [vol name] --maxiops [max iops] --maxbw [max bw] 
            : rename_vol       : Update volume name.                                              : --name [vol name] --newname [new vol name]
            : get_max_vol_cnt  : Get max volume count.                                            : not needed
+           : get_host_nqn     : Get host nqn.                                                    : not needed
 
 internal   : detach_dev       : Detach device from the system.                                   : -n [dev name]
            : start_monitoring : Start monitoring daemon manually.                                : not needed
@@ -168,6 +173,9 @@ func init() {
 	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
+	commandCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
+	commandCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
+	commandCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
 }
 
 func Send(cmd *cobra.Command, args []string) (model.Response, error) {
@@ -194,6 +202,15 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.ArrayParam{}
 		param.FtType = fttype
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+		
+		if cmd.PersistentFlags().Changed("raidtype") && len(raidType) > 0 {
+			param.RaidType = raidType
+		}
+
 		for _, v := range buffer {
 			device := model.Device{}
 			device.DeviceName = v
@@ -220,6 +237,9 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
 			param.Spare = spare[0]
+		}
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
 		}
 
 		if param != (model.DeviceParam{}) {
@@ -253,22 +273,36 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		param := model.VolumeParam{}
 
-		param.Name = name
-
-		var v datasize.ByteSize
-		err := v.UnmarshalText([]byte(size))
-		if err != nil {
-			fmt.Println("invalid data metric ", err)
-			return res, err
+		if cmd.PersistentFlags().Changed("size") && len(size) > 0 {
+			var v datasize.ByteSize
+			err := v.UnmarshalText([]byte(size))
+			if err != nil {
+				fmt.Println("invalid data metric ", err)
+				return res, err
+			}
+			param.Size = uint64(v)
 		}
-		param.Size = uint64(v)
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+		
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
+		}
+		
+		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {
+			param.SubNQN = subNQN
+		}
 
 		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
 			param.Maxiops = maxiops
 		}
+
 		if cmd.PersistentFlags().Changed("maxbw") && maxbw > 0 {
 			param.Maxbw = maxbw
 		}
+
 		if cmd.PersistentFlags().Changed("newname") && len(newName) > 0 {
 			param.NewName = newName
 		}

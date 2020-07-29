@@ -48,42 +48,45 @@ func Route(router *gin.Engine) {
 
 	// System
 	{
-		iBoFOSPath.POST("/system/ibofos", func(ctx *gin.Context) {
+		iBoFOSPath.POST("/system", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RuniBoFOS)
 		})
-		iBoFOSPath.DELETE("/system/ibofos", func(ctx *gin.Context) {
+		iBoFOSPath.DELETE("/system", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ExitiBoFOS)
-		})
-		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.IBoFOSInfo)
 		})
 		iBoFOSPath.POST("/system/mount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountiBoFOS)
 		})
+		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.IBoFOSInfo)
+		})
 		iBoFOSPath.DELETE("/system/mount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UnmountiBoFOS)
-		})
-		iBoFOSPath.DELETE("/system/disk/", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.DetachDevice)
 		})
 	}
 
 	// Device
 	{
-		iBoFOSPath.GET("/device", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
-		})
-		iBoFOSPath.GET("/device/scan", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
-		})
-		iBoFOSPath.POST("/device", func(ctx *gin.Context) {
+		iBoFOSPath.POST("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.AddDevice)
 		})
-		iBoFOSPath.DELETE("/device", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RemoveDevice)
+		iBoFOSPath.GET("/devices", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
 		})
-		iBoFOSPath.GET("/device/smart/:deviceName", func(ctx *gin.Context) {
-			// GET Method does not support payload
+		iBoFOSPath.DELETE("/devices/:deviceName", func(ctx *gin.Context) {
+			deviceName := ctx.Param("deviceName")
+			param := model.DeviceParam{Name: deviceName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
+		})
+		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {
+			deviceName := ctx.Param("deviceName")
+			if deviceName == "all" {
+				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ScanDevice)
+			} else {
+				// 404 return
+			}
+		})
+		iBoFOSPath.GET("/devices/:deviceName/smart", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
 			param := model.DeviceParam{Name: deviceName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.GetSMART, param)
@@ -92,50 +95,66 @@ func Route(router *gin.Engine) {
 
 	// Array
 	{
-		iBoFOSPath.GET("/array/device", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListArrayDevice)
-		})
-		iBoFOSPath.GET("/array", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.LoadArray)
-		})
 		iBoFOSPath.POST("/array", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateArray)
 		})
+		iBoFOSPath.GET("/array", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ArrayInfo)
+		})
 		iBoFOSPath.DELETE("/array", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.DeleteArray)
+		})
+		iBoFOSPath.GET("/array/devices", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListArrayDevice)
+		})
+		iBoFOSPath.GET("/array/load", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.LoadArray)
 		})
 	}
 
 	// Volume
 	{
-		iBoFOSPath.POST("/volume", func(ctx *gin.Context) {
+		iBoFOSPath.POST("/volumes", func(ctx *gin.Context) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateVolume)
 			}
 		})
-		iBoFOSPath.GET("/volume", func(ctx *gin.Context) {
+		iBoFOSPath.GET("/volumes", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListVolume)
 		})
-		iBoFOSPath.PUT("/volume", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateVolume)
+		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RenameVolume, param)
 		})
-		iBoFOSPath.DELETE("/volume", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.DeleteVolume)
-		})
-		iBoFOSPath.GET("/volume/maxcount", func(ctx *gin.Context) {
+		iBoFOSPath.GET("/volumes/maxcount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
 		})
-		iBoFOSPath.POST("/volume/mount", func(ctx *gin.Context) {
+		iBoFOSPath.DELETE("/volumes/:volumeName", func(ctx *gin.Context) {
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.DeleteVolume, param)
+		})
+		iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
 			} else {
-				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.MountVolume)
+				volumeName := ctx.Param("volumeName")
+				param := model.VolumeParam{Name: volumeName}
+				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolume, param)
 			}
 		})
-		iBoFOSPath.DELETE("/volume/mount", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UnmountVolume)
+		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UnmountVolume, param)
+		})
+		iBoFOSPath.PATCH("/volumes/:volumeName/qos", func(ctx *gin.Context) {
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
 		})
 	}
 
@@ -151,15 +170,15 @@ func Route(router *gin.Engine) {
 			param := model.MAgentParam{Time: time}
 			magent.CallMagent(ctx, amoduleMagent.GetCPUData, param)
 		})
-		mAgentPath.GET("/disk/", func(ctx *gin.Context) {
+		mAgentPath.GET("/devices", func(ctx *gin.Context) {
 			param := model.MAgentParam{}
-			magent.CallMagent(ctx, amoduleMagent.GetDiskData, param)
+			magent.CallMagent(ctx, amoduleMagent.GetDeviceData, param)
 		})
 
-		mAgentPath.GET("/disk/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/devices/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			param := model.MAgentParam{Time: time}
-			magent.CallMagent(ctx, amoduleMagent.GetDiskData, param)
+			magent.CallMagent(ctx, amoduleMagent.GetDeviceData, param)
 		})
 
 		mAgentPath.GET("/memory/", func(ctx *gin.Context) {
@@ -203,14 +222,14 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/readbw/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/readbw/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Time: time, Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/readbw/", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/readbw/", func(ctx *gin.Context) {
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
@@ -227,14 +246,14 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/writebw/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/writebw/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Time: time, Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/writebw/", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/writebw/", func(ctx *gin.Context) {
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
@@ -251,14 +270,14 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/readiops/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/readiops/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Time: time, Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/readiops/", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/readiops/", func(ctx *gin.Context) {
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
@@ -275,14 +294,14 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/writeiops/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/writeiops/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Time: time, Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/writeiops/", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/writeiops/", func(ctx *gin.Context) {
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
@@ -299,14 +318,14 @@ func Route(router *gin.Engine) {
 			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/latency/:time", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/latency/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Time: time, Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
 		})
 
-		mAgentPath.GET("/vol/:volid/latency/", func(ctx *gin.Context) {
+		mAgentPath.GET("/volumes/:volid/latency/", func(ctx *gin.Context) {
 			volid := ctx.Param("volid")
 			param := model.MAgentParam{Level: volid}
 			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)

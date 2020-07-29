@@ -34,9 +34,9 @@ type Status struct {
 type Info struct {
 	State              string `json:"state"`
 	Situation          string `json:"situation"`
-	RebuildingProgress uint32 `json:"rebulidingProgress"`
-	Capacity           uint64 `json:"capacity"`
-	Used               uint64 `json:"used"`
+	RebuildingProgress string `json:"rebuildingProgress"`
+	Capacity           string `json:"capacity"`
+	Used               string `json:"used"`
 }
 
 type Device struct {
@@ -51,22 +51,27 @@ type SystemParam struct {
 }
 
 type ArrayParam struct {
-	FtType int      `json:"fttype,omitempty"`
-	Buffer []Device `json:"buffer,omitempty"`
-	Data   []Device `json:"data,omitempty"`
-	Spare  []Device `json:"spare,omitempty"`
+	FtType   int      `json:"fttype,omitempty"`
+	Name     string   `json:"name,omitempty"`
+	RaidType string   `json:"raidtype,omitempty"`
+	Buffer   []Device `json:"buffer,omitempty"`
+	Data     []Device `json:"data,omitempty"`
+	Spare    []Device `json:"spare,omitempty"`
 }
 type MAgentParam struct {
 	Time  string
 	Level string
 }
 type DeviceParam struct {
-	Name  string `json:"name,omitempty"`
-	Spare string `json:"spare,omitempty"`
+	Name      string `json:"name,omitempty"`
+	ArrayName string `json:"arrayname,omitempty"`
+	Spare     string `json:"spare,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`
 	NewName     string `json:"newname,omitempty"`
+	ArrayName   string `json:"arrayname,omitempty"`
+	SubNQN      string `json:"subnqn,omitempty"`
 	Size        uint64 `json:"size,omitempty"`
 	Maxiops     uint64 `json:"maxiops,omitempty"`
 	Maxbw       uint64 `json:"maxbw,omitempty"`

@@ -1,5 +1,8 @@
 #!/bin/bash
-./dependency/install.sh nas
-#./dagent/dependency/install.sh
-./magent/dependency/install.sh nas
-./mtool/dependency/install.sh nas
+
+SCRIPT_PATH=$(readlink -f $(dirname $0))
+
+$SCRIPT_PATH/dependency/install.sh nas
+#$SCRIPT_PATH/dagent/dependency/install.sh
+$SCRIPT_PATH/magent/dependency/install.sh nas
+$SCRIPT_PATH/mtool/dependency/install.sh nas

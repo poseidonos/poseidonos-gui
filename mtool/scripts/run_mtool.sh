@@ -1,3 +1,8 @@
+
+ROOT_DIR=$(readlink -f $(dirname $0))
+cd $ROOT_DIR
+cd ..
+
 sudo service kapacitor stop
 sudo service influxdb stop
 #Set Influx ENV Variable
@@ -15,12 +20,15 @@ if [ -d "/usr/share/nginx/html/static" ]
 then 
 sudo rm -r /usr/share/nginx/html/static
 fi
+if [ -d "/usr/share/nginx/html" ]
+then
 sudo cp -r ./public/* /usr/share/nginx/html/
-python3 scripts/nginx_form_conf.py
-sudo cp virtual.conf /etc/nginx/conf.d/
+fi
+#python3 scripts/nginx_form_conf.py
+#sudo cp virtual.conf /etc/nginx/conf.d/
 
-sudo nginx -t
-sudo systemctl restart nginx
+#sudo nginx -t
+#sudo systemctl restart nginx
 
 #create log files for the service
 sudo touch /var/log/logmtool1.log
