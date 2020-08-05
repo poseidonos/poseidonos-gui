@@ -1,3 +1,5 @@
+//+build !pos_06
+
 package model
 
 type Request struct {
