@@ -5,47 +5,45 @@ cd $SCRIPT_PATH
 
 if [ $1 ]
 then
-if [ $1 = "nas" ]
-then
-  wget -O /tmp/ibofmgmt_package.tar.gz  http://10.1.5.22/mtool.packages/ibofmgmt_package.tar.gz
-  cd /tmp
-  chmod 666 ibofmgmt_package.tar.gz
-  tar -xzvf ibofmgmt_package.tar.gz
-  cd ibofmgmt_package
-  chmod 666 -R *
-  echo "DONE"
-  sudo ./scripts/install.sh
+  if [ $1 = "nas" ]
+  then
+    wget -O /tmp/ibofmgmt_package.tar.gz  http://10.1.5.22/mtool.packages/ibofmgmt_package.tar.gz
+    cd /tmp
+    tar -xzvf ibofmgmt_package.tar.gz
+    cd ibofmgmt_package
+    chmod +x -R *
+    echo "DONE"
+    sudo ./scripts/install.sh
 
-  cd ..
-  cd python-packages/
-  sudo pip3 install msgpack==0.6.1 -f ./ --no-index
-  sudo pip3 install influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
-  sudo pip3 install requests-2.21.0.tar.gz -f ./ --no-index
+    cd python-packages
+    sudo pip3 install msgpack==0.6.1 -f ./ --no-index
+    sudo pip3 install influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
+    sudo pip3 install requests-2.21.0.tar.gz -f ./ --no-index
 
-  rm /tmp/ibofmgmt_package.tar.gz
-  rm -r /tmp/ibofmgmt_package
-elif [ $1 = "apt" ]
-then
-  wget --no-check-certificate -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
-  source /etc/lsb-release
-  echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-  sudo dpkg --configure -a
-  sudo apt-get update
-  sudo apt-get install python3-pip
-  sudo apt-get install influxdb
-  sudo apt-get install chronograf
-  sudo apt-get install kapacitor
-  sudo service influxdb start
-  sudo service chronograf start
-  sudo service kapacitor start
-  sudo apt-get install nginx
+    rm /tmp/ibofmgmt_package.tar.gz
+    rm -r /tmp/ibofmgmt_package
+  elif [ $1 = "apt" ]
+  then
+    wget --no-check-certificate -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+    source /etc/lsb-release
+    echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+    sudo dpkg --configure -a
+    sudo apt-get update
+    sudo apt-get install python3-pip
+    sudo apt-get install influxdb
+    sudo apt-get install chronograf
+    sudo apt-get install kapacitor
+    sudo service influxdb start
+    sudo service chronograf start
+    sudo service kapacitor start
+    sudo apt-get install nginx
 
-  sudo pip3 install influxdb-client
-  sudo pip3 install requests
-else
-  echo "Provide nas/apt as argument for installation source"
-  exit 0
-fi
+    sudo pip3 install influxdb-client
+    sudo pip3 install requests
+  else
+    echo "Provide nas/apt as argument for installation source"
+    exit 0
+  fi
 else
   echo "Provide nas/apt as argument for installation source"
   exit 0
