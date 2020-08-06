@@ -17,7 +17,6 @@ influxdb_port = 8086
 client = InfluxDBClient(host=influxdb_host, port=influxdb_port, use_udp=True)
 #client = None
 
-
 air_cq_name = 'air_cq'
 air_cq_select_clause = r'select mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) into "poseidon"."agg_rp"."mean_air" from air group by time(1h)'
 
@@ -26,7 +25,6 @@ cpu_cq_select_clause = 'select mean("usage_user") as "usage_user" into "poseidon
 
 power_cq_name = 'power_cq'
 power_cq_select_clause = 'select mean("value"), mean("count") into "poseidon"."agg_rp"."mean_power" from power group by input_power, time(1h)'
-
 
 def database_existence(dbs):
     """
@@ -42,7 +40,6 @@ def database_existence(dbs):
         if(name == db_name):
             return True
     return False
-
 
 def retention_policy_existence(rps):
     """
@@ -66,7 +63,6 @@ def retention_policy_existence(rps):
 
     return True
 
-
 def continuous_queries_existence(cqs):
     """
     tests CQs creation in db
@@ -85,7 +81,6 @@ def continuous_queries_existence(cqs):
         return False
 
     return True
-
 
 def create_mtool_db1(
         cli=client,
@@ -141,10 +136,8 @@ def create_mtool_db1(
         client.close()
         return result
 
-
 def main():
     create_mtool_db1()
-
 
 if __name__ == "__main__":
     main()

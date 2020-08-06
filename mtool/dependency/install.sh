@@ -29,12 +29,11 @@ else
   exit 0
 fi
 
-cd $ROOT_DIR
+#cd $ROOT_DIR
 #Changing retention Policy
-
-service influxd stop
-. ../scripts/change_influx_conf.sh
-service influxd start
-sleep 8s
-sudo python3 ../scripts/create_retention_policy.py
-sudo chown -R influxdb:influxdb /var/lib/influxdb
+#service influxd stop
+#. ../scripts/change_influx_conf.sh
+#service influxd start
+#sleep 8s
+#sudo python3 ../scripts/create_retention_policy.py
+#sudo chown -R influxdb:influxdb /var/lib/influxdb

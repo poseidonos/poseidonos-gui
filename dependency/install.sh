@@ -1,22 +1,27 @@
 #!/bin/bash
 
-ROOT_DIR=$(readlink -f $(dirname $0))
-cd $ROOT_DIR
+SCRIPT_PATH=$(readlink -f $(dirname $0))
+cd $SCRIPT_PATH
 
 if [ $1 ]
 then
 if [ $1 = "nas" ]
 then
   wget -O /tmp/ibofmgmt_package.tar.gz  http://10.1.5.22/mtool.packages/ibofmgmt_package.tar.gz
-  cd /tmp/
+  cd /tmp
   chmod 666 ibofmgmt_package.tar.gz
   tar -xzvf ibofmgmt_package.tar.gz
-  cd ibofmgmt_package/
-  chmod 777 -R *
+  cd ibofmgmt_package
+  chmod 666 -R *
   echo "DONE"
-  echo $PWD
-  ls
   sudo ./scripts/install.sh
+
+  cd ..
+  cd python-packages/
+  sudo pip3 install msgpack==0.6.1 -f ./ --no-index
+  sudo pip3 install influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
+  sudo pip3 install requests-2.21.0.tar.gz -f ./ --no-index
+
   rm /tmp/ibofmgmt_package.tar.gz
   rm -r /tmp/ibofmgmt_package
 elif [ $1 = "apt" ]
@@ -34,7 +39,9 @@ then
   sudo service chronograf start
   sudo service kapacitor start
   sudo apt-get install nginx
-  echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
+
+  sudo pip3 install influxdb-client
+  sudo pip3 install requests
 else
   echo "Provide nas/apt as argument for installation source"
   exit 0
@@ -44,9 +51,12 @@ else
   exit 0
 fi
 
-cd $ROOT_DIR
+sudo chown -R influxdb:influxdb /var/lib/influxdb
 
-./setup_nginx.sh
+$SCRIPT_PATH/setup_nginx.sh
+$SCRIPT_PATH/change_influx_conf.sh
+echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
+sudo python3 $SCRIPT_PATH/create_retention_policy.py
 
 # For uninstalling, comment out the above lines and uncomment below lines
 # sudo apt-get purge influxdb

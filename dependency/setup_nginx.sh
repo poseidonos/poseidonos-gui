@@ -5,4 +5,3 @@ sudo mv virtual.conf /etc/nginx/conf.d/
 
 sudo nginx -t
 sudo systemctl restart nginx
-
