@@ -7,21 +7,17 @@ if [ $1 ]
 then
   if [ $1 = "nas" ]
   then
-    wget -O /tmp/ibofmgmt_package.tar.gz  http://10.1.5.22/mtool.packages/ibofmgmt_package.tar.gz
-    cd /tmp
-    tar -xzvf ibofmgmt_package.tar.gz
-    cd ibofmgmt_package
-    chmod +x -R *
-    echo "DONE"
-    sudo ./scripts/install.sh
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libcurl4_7.58.0-2ubuntu3_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/influxdb_1.7.5_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/kapacitor_1.5.2_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/chronograf_1.7.9_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-common_1.14.0-0ubuntu1_all.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libnginx-mod-http-echo_1.14.0-0ubuntu1_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-light_1.14.0-0ubuntu1_amd64.deb
 
-    cd python-packages
-    sudo pip3 install msgpack==0.6.1 -f ./ --no-index
-    sudo pip3 install influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
-    sudo pip3 install requests-2.21.0.tar.gz -f ./ --no-index
-
-    rm /tmp/ibofmgmt_package.tar.gz
-    rm -r /tmp/ibofmgmt_package
+    sudo pip3 install $SCRIPT_PATH/python-packages/msgpack==0.6.1 -f ./ --no-index
+    sudo pip3 install $SCRIPT_PATH/python-packages/influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
+    sudo pip3 install $SCRIPT_PATH/python-packages/requests-2.21.0.tar.gz -f ./ --no-index
   elif [ $1 = "apt" ]
   then
     wget --no-check-certificate -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
@@ -29,10 +25,9 @@ then
     echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
     sudo dpkg --configure -a
     sudo apt-get update
-    sudo apt-get install python3-pip
     sudo apt-get install influxdb
-    sudo apt-get install chronograf
     sudo apt-get install kapacitor
+    sudo apt-get install chronograf
     sudo service influxdb start
     sudo service chronograf start
     sudo service kapacitor start
