@@ -14,8 +14,7 @@ then
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-common_1.14.0-0ubuntu1_all.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libnginx-mod-http-echo_1.14.0-0ubuntu1_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-light_1.14.0-0ubuntu1_amd64.deb
-
-    sudo pip3 install $SCRIPT_PATH/python-packages/msgpack==0.6.1 -f ./ --no-index
+    sudo pip3 install --src $SCRIPT_PATH/python-packages msgpack==0.6.1 -f ./ --no-index
     sudo pip3 install $SCRIPT_PATH/python-packages/influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
     sudo pip3 install $SCRIPT_PATH/python-packages/requests-2.21.0.tar.gz -f ./ --no-index
   elif [ $1 = "apt" ]
@@ -32,7 +31,6 @@ then
     sudo service chronograf start
     sudo service kapacitor start
     sudo apt-get install nginx
-
     sudo pip3 install influxdb-client
     sudo pip3 install requests
   else
@@ -46,9 +44,9 @@ fi
 
 sudo chown -R influxdb:influxdb /var/lib/influxdb
 
-$SCRIPT_PATH/setup_nginx.sh
-$SCRIPT_PATH/change_influx_conf.sh
-echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
+sudo $SCRIPT_PATH/setup_nginx.sh
+sudo $SCRIPT_PATH/change_influx_conf.sh
+sudo echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
 sudo python3 $SCRIPT_PATH/create_retention_policy.py
 
 # For uninstalling, comment out the above lines and uncomment below lines
