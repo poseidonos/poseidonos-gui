@@ -2,33 +2,15 @@ package cmd
 
 import (
 	"a-module/src/errors"
-	"a-module/src/log"
 	iBoFOS "a-module/src/routers/m9k/api/ibofos"
 	"a-module/src/routers/m9k/model"
-	"a-module/src/util"
-	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
 
-var buffer []string
-var data []string
-var spare []string
-var name string
-var newName string
-var level string
-var arrayName string
-var raidType string
-var subNQN string
-
-var fttype int
-var size string
-var maxiops uint64
-var maxbw uint64
-
-var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
+var RequestArrayCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_array":      iBoFOS.CreateArray,
 	"delete_array":      iBoFOS.DeleteArray,
 	"list_array_device": iBoFOS.ListArrayDevice,
@@ -36,7 +18,7 @@ var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Re
 	"array_info":        iBoFOS.ArrayInfo,
 }
 
-var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
+var RequestDeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"scan_dev":         iBoFOS.ScanDevice,
 	"list_dev":         iBoFOS.ListDevice,
 	"add_dev":          iBoFOS.AddDevice,
@@ -48,7 +30,7 @@ var DeviceCommand = map[string]func(string, interface{}) (model.Request, model.R
 	"smart":            iBoFOS.GetSMART,
 }
 
-var SystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
+var RequestSystemCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"exit_ibofos":      iBoFOS.ExitiBoFOS,
 	"run_ibofos":       iBoFOS.RuniBoFOS,
 	"info":             iBoFOS.IBoFOSInfo,
@@ -64,7 +46,7 @@ var SystemCommand = map[string]func(string, interface{}) (model.Request, model.R
 	//"do_gc":            iBoFOS.DoGC,
 }
 
-var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
+var RequestVolumeCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"create_vol":      iBoFOS.CreateVolume,
 	"mount_vol":       iBoFOS.MountVolume,
 	"unmount_vol":     iBoFOS.UnmountVolume,
@@ -78,9 +60,9 @@ var VolumeCommand = map[string]func(string, interface{}) (model.Request, model.R
 	//"resize_vol":     iBoFOS.ResizeVolume,
 }
 
-var commandCmd = &cobra.Command{
+var requestCmd = &cobra.Command{
 	Use:   "request [msg]",
-	Short: "Request for msg to Poseidon OS",
+	Short: "** this will be deprecated **",
 	Long: `Request for msg to Poseidon OS and get a response fommated by JSON.
 
 Available msg list :
@@ -144,10 +126,10 @@ Port : 18716
 			return errors.New("need an one msg !!!")
 		}
 
-		_, arrayExists := ArrayCommand[args[0]]
-		_, deviceExists := DeviceCommand[args[0]]
-		_, systemExists := SystemCommand[args[0]]
-		_, volumeExists := VolumeCommand[args[0]]
+		_, arrayExists := RequestArrayCommand[args[0]]
+		_, deviceExists := RequestDeviceCommand[args[0]]
+		_, systemExists := RequestSystemCommand[args[0]]
+		_, volumeExists := RequestVolumeCommand[args[0]]
 
 		if !arrayExists && !deviceExists && !systemExists && !volumeExists {
 			return errors.New("not available msg !!!")
@@ -157,30 +139,30 @@ Port : 18716
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		Send(cmd, args)
+		RequestSend(cmd, args)
 	},
 }
 
 func init() {
 
-	rootCmd.AddCommand(commandCmd)
+	rootCmd.AddCommand(requestCmd)
 
-	commandCmd.PersistentFlags().IntVarP(&fttype, "fttype", "f", 0, "set fttype \"-f 4194304\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
-	commandCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-s unvme-ns-3\"")
-	commandCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
-	commandCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
-	commandCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"--size 4194304\"")
-	commandCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
-	commandCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
-	commandCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
-	commandCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
-	commandCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
-	commandCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
+	requestCmd.PersistentFlags().IntVarP(&fttype, "fttype", "f", 0, "set fttype \"-f 4194304\"")
+	requestCmd.PersistentFlags().StringSliceVarP(&buffer, "buffer", "b", []string{}, "set buffer name \"-b uram0\"")
+	requestCmd.PersistentFlags().StringSliceVarP(&data, "data", "d", []string{}, "set data name \"-d unvme-ns-0,unvme-ns-1,unvme-ns-2\"")
+	requestCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-s unvme-ns-3\"")
+	requestCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
+	requestCmd.PersistentFlags().StringVar(&newName, "newname", "", "set new name \"--newname vol01\"")
+	requestCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"--size 4194304\"")
+	requestCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
+	requestCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
+	requestCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
+	requestCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
+	requestCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
+	requestCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
 }
 
-func Send(cmd *cobra.Command, args []string) (model.Response, error) {
+func RequestSend(cmd *cobra.Command, args []string) (model.Response, error) {
 
 	var req model.Request
 	var res model.Response
@@ -195,10 +177,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 	InitConnect()
 
-	_, arrayExists := ArrayCommand[command]
-	_, deviceExists := DeviceCommand[command]
-	_, systemExists := SystemCommand[command]
-	_, volumeExists := VolumeCommand[command]
+	_, arrayExists := RequestArrayCommand[command]
+	_, deviceExists := RequestDeviceCommand[command]
+	_, systemExists := RequestSystemCommand[command]
+	_, volumeExists := RequestVolumeCommand[command]
 
 	if arrayExists {
 
@@ -229,7 +211,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Spare = append(param.Spare, device)
 		}
 
-		req, res, err = ArrayCommand[command](xrId, param)
+		req, res, err = RequestArrayCommand[command](xrId, param)
 	} else if deviceExists {
 
 		param := model.DeviceParam{}
@@ -245,31 +227,18 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 
 		if param != (model.DeviceParam{}) {
-			req, res, err = DeviceCommand[command](xrId, param)
+			req, res, err = RequestDeviceCommand[command](xrId, param)
 		} else {
-			req, res, err = DeviceCommand[command](xrId, nil)
+			req, res, err = RequestDeviceCommand[command](xrId, nil)
 		}
 	} else if systemExists {
 
-		if command == "wbt" {
+		if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
 			param := model.SystemParam{}
-			param.Name = args[1]
-			param.Argc = len(args) - 1
-
-			for i, v := range args {
-				if i > 1 {
-					param.Argv += v + " "
-				}
-			}
-			req, res, err = SystemCommand[command](xrId, param)
+			param.Level = level
+			req, res, err = RequestSystemCommand[command](xrId, param)
 		} else {
-			if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
-				param := model.SystemParam{}
-				param.Level = level
-				req, res, err = SystemCommand[command](xrId, param)
-			} else {
-				req, res, err = SystemCommand[command](xrId, nil)
-			}
+			req, res, err = RequestSystemCommand[command](xrId, nil)
 		}
 	} else if volumeExists {
 
@@ -310,9 +279,9 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 
 		if param == (model.VolumeParam{}) {
-			req, res, err = VolumeCommand[command](xrId, nil)
+			req, res, err = RequestVolumeCommand[command](xrId, nil)
 		} else {
-			req, res, err = VolumeCommand[command](xrId, param)
+			req, res, err = RequestVolumeCommand[command](xrId, param)
 		}
 	}
 
@@ -322,52 +291,4 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		PrintReqRes(req, res)
 	}
 	return res, err
-}
-
-func PrintReqRes(req model.Request, res model.Response) {
-
-	if isQuiet {
-		return
-	}
-
-	if isJson {
-		b, _ := json.Marshal(req)
-		fmt.Print("{\n \"Request\":", string(b), ", \n")
-		b, _ = json.Marshal(res)
-		fmt.Print(" \"Response\":", string(b), "\n}\n")
-	} else {
-		b, _ := json.MarshalIndent(req.Param, "", "    ")
-
-		fmt.Println("\n\nRequest to Poseidon OS")
-		fmt.Println("    xrId        : ", req.Rid)
-		fmt.Println("    command     : ", req.Command)
-
-		if string(b) != "null" {
-			fmt.Println("    Param       :")
-			fmt.Println(string(b))
-		}
-
-		fmt.Println("\n\nResponse from Poseidon OS")
-		result, err := util.GetStatusInfo(res.Result.Status.Code)
-
-		if err == nil {
-			fmt.Println("    Code         : ", result.Code)
-			fmt.Println("    Level        : ", result.Level)
-			fmt.Println("    Description  : ", result.Description)
-			fmt.Println("    Problem      : ", result.Problem)
-			fmt.Println("    Solution     : ", result.Solution)
-		} else {
-
-			fmt.Println("    Code        : ", res.Result.Status.Code)
-			fmt.Println("    Description : ", res.Result.Status.Description)
-			log.Infof("%v\n", err)
-		}
-
-		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
-
-		if string(b) != "null" {
-			fmt.Println("    command       : ", string(b))
-		}
-		fmt.Print("\n\n")
-	}
 }

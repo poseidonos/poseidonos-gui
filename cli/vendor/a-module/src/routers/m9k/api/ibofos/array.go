@@ -23,3 +23,11 @@ func DeleteArray(xrId string, param interface{}) (model.Request, model.Response,
 func ArrayInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Get("ARRAYINFO")
 }
+
+func AddDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("ADDDEVICE")
+}
+
+func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Post("REMOVEDEVICE")
+}

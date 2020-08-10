@@ -1,5 +1,6 @@
 ---
 Goal: Events Unification
+Version: "v.72"
 modules:
   - name: "COMMON"
     count: 999
@@ -12,73 +13,118 @@ modules:
         problem: ""
         solution: ""
   - name: "CLI"
-    count: 99
+    count: 100
     idStart: 1000
-    idEnd:   1098
+    idEnd:   1099
     info:
       - code: 1000
-        level: "INFO"
-        message: "cli server initialized"
-        problem: ""
-        solution: ""
+        level: INFO
+        message: ibofos is started
+        problem: 
+        solution: 
       - code: 1001
-        level: "INFO"
-        message: "new client"
-        problem: ""
-        solution: ""
+        level: INFO
+        message: ibofos is terminated
+        problem: 
+        solution: 
       - code: 1002
         level: INFO
-        message: client disconnected
+        message: cli server is initialized
         problem:
         solution:
       - code: 1003
         level: INFO
-        message: request msg recv
+        message: new client is connected
         problem:
         solution:
       - code: 1004
         level: INFO
-        message: response msg sent
+        message: client is disconnected
         problem:
         solution:
       - code: 1005
         level: INFO
-        message: enable keep-alive
+        message: request msg is received
         problem:
         solution:
       - code: 1006
-        level: WARN
-        message: enable keep-alive failed
-        problem:
-        solution:
-      - code: 1007
         level: INFO
-        message: enable reuse-addr
-        problem:
-        solution:
-      - code: 1008
-        level: WARN
-        message: enable reuse-addr failed
+        message: response msg is sent
         problem:
         solution:
       - code: 1010
-        level: WARN
-        message: exception on command processing
+        level: INFO
+        message: cli server preparing exit
         problem:
         solution:
       - code: 1011
-        level: ERROR
-        message: failed to send
+        level: INFO
+        message: cli server thread joined
         problem:
         solution:
       - code: 1012
         level: INFO
-        message: EXIT
+        message: enable reuse-addr 
         problem:
         solution:
       - code: 1013
         level: WARN
-        message: EXIT ERROR
+        message: enable reuse-addr failed 	
+        problem:
+        solution:
+      - code: 1014
+        level: ERROR
+        message: socket creation failed	
+        problem:
+        solution:
+      - code: 1015
+        level: ERROR
+        message: socket binding failed	
+        problem:
+        solution:
+      - code: 1016
+        level: ERROR
+        message: socket listen failed	
+        problem:
+        solution:
+      - code: 1017
+        level: ERROR
+        message: epoll creation failed	
+        problem:
+        solution:
+      - code: 1018
+        level: ERROR
+        message: socket accept failed	
+        problem:
+        solution:
+      - code: 1019
+        level: ERROR
+        message: max client error	
+        problem:
+        solution:
+      - code: 1020
+        level: ERROR
+        message: message sending failed	
+        problem:
+        solution:
+      - code: 1021
+        level: ERROR
+        message: message receiving failed	
+        problem:
+        solution:
+      - code: 1022
+        level: WARN
+        message: TIMED OUT
+        problem:
+        solution:
+      - code: 1023
+        level: ERROR
+        message: INVALID PARAM
+        problem:
+        solution:
+      - code: 1030
+        level: INFO
+        message: POS IS BUSY
         problem:
         solution:
   - name: "IBoFOS State Manager"
@@ -86,44 +132,14 @@ modules:
     idStart: 1100
     idEnd:   1299
     info:
-      - code: 1100
-        level: DEBUG
-        message: state_publisher
-        problem:
-        solution:
       - code: 1101
-        level: INFO
+        level: DEBUG
         message: state context added
         problem:
         solution:
       - code: 1102
         level: INFO
-        message: state context removed
-        problem:
-        solution:
-      - code: 1103
-        level: INFO
-        message: state context updated
-        problem:
-        solution:
-      - code: 1104
-        level: INFO
         message: state changed
-        problem:
-        solution:
-      - code: 1110
-        level: INFO
-        message: TBD
-        problem:
-        solution:
-      - code: 1200
-        level: REPORT_TRACE
-        message: TBD
-        problem:
-        solution:
-      - code:
-        level:
-        message: TBD
         problem:
         solution:
       - code: 1234
@@ -1161,14 +1177,18 @@ modules:
     idStart: 10000
     idEnd:   20000
     info:
-      - code: 10010
+      - code: 10110
         level: ERROR
-        message: Json Body Error
-      - code: 10050
-        level: INFO
-        message: Request Pending
-        problem: The D-Agent is creating multi volumes
-        solution: Wait call back
+        message: Unauthorized User
+        problem: Check Authorization Header	 
+      - code: 10120
+        level: ERROR
+        message: Body Json Error	
+        problem: Check Body Payload format	
+      - code: 10130
+        level: ERROR
+        message: X-request-Id Header Error	
+        problem: Check X-request-Id (uuid) Value	
       - code: 11000
         level: ERROR
         message: Sending error
@@ -1187,3 +1207,9 @@ modules:
       - code: 12010
         level: ERROR
         message: one of iBoF service is dead
+      - code: 12020
+        level: ERROR
+        message: could not find build info
+      - code: 13000
+        level: ERROR
+        message: Response timeout	

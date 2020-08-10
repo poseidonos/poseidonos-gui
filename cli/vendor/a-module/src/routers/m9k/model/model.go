@@ -47,9 +47,10 @@ type Device struct {
 
 type SystemParam struct {
 	Level string `json:"level,omitempty"`
-	Name  string `json:"testname,omitempty"`
-	Argc  int    `json:"argc"`
-	Argv  string `json:"argv"`
+}
+
+type LoggerParam struct {
+	Level string `json:"level,omitempty"`
 }
 
 type ArrayParam struct {

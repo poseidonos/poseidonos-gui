@@ -2,7 +2,13 @@ package cmd
 
 import (
 	"a-module/src/log"
+	"a-module/src/routers/m9k/model"
 	"a-module/src/setting"
+	"a-module/src/util"
+	"encoding/json"
+	"fmt"
+	"github.com/c2h5oh/datasize"
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
@@ -16,6 +22,21 @@ var isQuiet bool
 
 var ip string
 var port string
+
+var buffer []string
+var data []string
+var spare []string
+var name string
+var newName string
+var level string
+var arrayName string
+var raidType string
+var subNQN string
+
+var fttype int
+var size string
+var maxiops uint64
+var maxbw uint64
 
 var GitCommit string
 var BuildTime string
@@ -78,4 +99,229 @@ func InitConnect() {
 	log.Info("Git commit: "+GitCommit+"  Build Time: ", time.Unix(unixIntValue, 0))
 
 	log.Info("ip, port :", setting.Config.Server.IBoF.IP, setting.Config.Server.IBoF.Port)
+}
+
+func Send(cmd *cobra.Command, args []string) (model.Response, error) {
+
+	var req model.Request
+	var res model.Response
+	var err error
+	var xrId string
+	newUUID, err := uuid.NewUUID()
+	command := args[0]
+
+	if err == nil {
+		xrId = newUUID.String()
+	}
+
+	InitConnect()
+
+	_, arrayExists := ArrayCommand[command]
+	_, deviceExists := DeviceCommand[command]
+	_, systemExists := SystemCommand[command]
+	_, volumeExists := VolumeCommand[command]
+	_, internalExists := InternalCommand[command]
+	_, loggerExists := LoggerCommand[command]
+
+	if cmd.Name() == "array" && arrayExists {
+
+		param := model.ArrayParam{}
+		param.FtType = fttype
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+
+		if cmd.PersistentFlags().Changed("raidtype") && len(raidType) > 0 {
+			param.RaidType = raidType
+		}
+
+		for _, v := range buffer {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Buffer = append(param.Buffer, device)
+		}
+		for _, v := range data {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Data = append(param.Data, device)
+		}
+		for _, v := range spare {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Spare = append(param.Spare, device)
+		}
+
+		req, res, err = ArrayCommand[command](xrId, param)
+	} else if cmd.Name() == "device" && deviceExists {
+
+		param := model.DeviceParam{}
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
+		}
+
+		if param != (model.DeviceParam{}) {
+			req, res, err = DeviceCommand[command](xrId, param)
+		} else {
+			req, res, err = DeviceCommand[command](xrId, nil)
+		}
+	} else if cmd.Name() == "volume" && volumeExists {
+
+		param := model.VolumeParam{}
+
+		if cmd.PersistentFlags().Changed("size") && len(size) > 0 {
+
+			/*
+			_, err := strconv.ParseUint(size, 10, 64)
+
+			if err == nil {
+				size += "MB"
+			}
+			*/
+
+			var v datasize.ByteSize
+			err = v.UnmarshalText([]byte(size))
+
+			if err != nil {
+				fmt.Println("invalid data metric ", err)
+				return res, err
+			}
+
+			param.Size = uint64(v)
+		}
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
+		}
+
+		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {
+			param.SubNQN = subNQN
+		}
+
+		if cmd.PersistentFlags().Changed("maxiops") && maxiops > 0 {
+			param.Maxiops = maxiops
+		}
+
+		if cmd.PersistentFlags().Changed("maxbw") && maxbw > 0 {
+			param.Maxbw = maxbw
+		}
+
+		if cmd.PersistentFlags().Changed("newname") && len(newName) > 0 {
+			param.NewName = newName
+		}
+
+		if param == (model.VolumeParam{}) {
+			req, res, err = VolumeCommand[command](xrId, nil)
+		} else {
+			req, res, err = VolumeCommand[command](xrId, param)
+		}
+	} else if cmd.Name() == "logger" && loggerExists {
+
+		if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
+			param := model.LoggerParam{}
+			param.Level = level
+			req, res, err = LoggerCommand[command](xrId, param)
+		} else {
+			req, res, err = LoggerCommand[command](xrId, nil)
+		}
+	} else if systemExists || internalExists {
+
+		req, res, err = SystemCommand[command](xrId, nil)
+	}
+	
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		PrintReqRes(req, res)
+	}
+
+	return res, err
+}
+
+func PrintReqRes(req model.Request, res model.Response) {
+
+	if isQuiet {
+		return
+	}
+
+	if isJson {
+		b, _ := json.Marshal(req)
+		fmt.Print("{\n \"Request\":", string(b), ", \n")
+		b, _ = json.Marshal(res)
+		fmt.Print(" \"Response\":", string(b), "\n}\n")
+	} else {
+		b, _ := json.MarshalIndent(req.Param, "", "    ")
+
+		fmt.Println("\n\nRequest to Poseidon OS")
+		fmt.Println("    xrId        : ", req.Rid)
+		fmt.Println("    command     : ", req.Command)
+
+		if string(b) != "null" {
+			fmt.Println("    Param       :")
+			fmt.Println(string(b))
+		}
+
+		fmt.Println("\n\nResponse from Poseidon OS")
+		result, err := util.GetStatusInfo(res.Result.Status.Code)
+
+		if err == nil {
+			fmt.Println("    Code         : ", result.Code)
+			fmt.Println("    Level        : ", result.Level)
+			fmt.Println("    Description  : ", result.Description)
+			fmt.Println("    Problem      : ", result.Problem)
+			fmt.Println("    Solution     : ", result.Solution)
+		} else {
+
+			fmt.Println("    Code        : ", res.Result.Status.Code)
+			fmt.Println("    Description : ", res.Result.Status.Description)
+			log.Infof("%v\n", err)
+		}
+
+		b, _ = json.MarshalIndent(res.Result.Data, "", "    ")
+
+		obj := map[string]interface{}{}
+
+		json.Unmarshal([]byte(b), &obj)
+
+		volumes := obj["volumes"]
+		if volumes != nil {
+			for _, b := range(volumes.([]interface{})) {
+				b.(map[string]interface{})["remain"]  = ChangeDataHumanReadable((b.(map[string]interface{})["remain"]).(string))
+				b.(map[string]interface{})["total"]  = ChangeDataHumanReadable((b.(map[string]interface{})["total"]).(string))
+			}
+		}
+		if obj["capacity"] != nil {
+			obj["capacity"] = ChangeDataHumanReadable((obj["capacity"]).(string))
+		}
+		if obj["used"] != nil {
+			obj["used"] = ChangeDataHumanReadable((obj["used"]).(string))
+		}
+
+		if string(b) != "null" {
+			str, _ := json.MarshalIndent(obj, "", "    ")
+			fmt.Println("    Data         : \n", string(str))
+		}
+
+		fmt.Print("\n\n")
+	}
+}
+
+func ChangeDataHumanReadable(size string) string {
+	var v datasize.ByteSize
+	err := v.UnmarshalText([]byte(size))
+
+	if err != nil {
+		fmt.Println("invalid data metric ", err)
+		return err.Error()
+	}
+
+	return v.HR() + " (" + size + " B)"
 }

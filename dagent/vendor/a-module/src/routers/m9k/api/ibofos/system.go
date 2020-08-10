@@ -44,32 +44,16 @@ func IBoFOSInfo(xrId string, param interface{}) (model.Request, model.Response, 
 	return Requester{xrId, param}.Get("GETIBOFOSINFO")
 }
 
+func IBoFOSVersion(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return Requester{xrId, param}.Get("GETVERSION")
+}
+
 func MountiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Post("MOUNTIBOFOS")
 }
 
 func UnmountiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param}.Delete("UNMOUNTIBOFOS")
-}
-
-func StopRebuilding(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Put("STOPREBUILDING")
-}
-
-func SetLogLevel(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Put("SETLOGLEVEL")
-}
-
-func GetLogLevel(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("GETLOGLEVEL")
-}
-
-func ApplyLogFilter(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Put("APPLYLOGFILTER")
-}
-
-func LoggerInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("LOGGERINFO")
 }
 
 func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {
