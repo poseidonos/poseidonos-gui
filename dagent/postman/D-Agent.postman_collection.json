@@ -6832,7 +6832,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":\"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/devices",
@@ -7035,7 +7035,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":\"{{arrayName}}\"\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
@@ -7440,10 +7440,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n         \"name\":\"POSArray\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}",
+									"raw": "http://{{host}}/api/ibofos/v1/array",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7452,8 +7452,7 @@
 										"api",
 										"ibofos",
 										"v1",
-										"array",
-										"{{arrayName}}"
+										"array"
 									]
 								}
 							},
@@ -8424,7 +8423,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n         \"array\":{{arrayName}},\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}\n"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes",
@@ -8970,7 +8969,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}},\n        \"name\": \"volmul\",\n        \"size\": 10737418,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"totalcount\": 2,\n        \"stoponerror\": false,\n        \"namesuffix\": 0,\n        \"mountall\": true\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n        \"name\": \"volmul\",\n        \"size\": 10737418,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"totalcount\": 2,\n        \"stoponerror\": false,\n        \"namesuffix\": 0,\n        \"mountall\": true\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes",
@@ -9518,7 +9517,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}},\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/qos",
@@ -9660,7 +9659,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}},\n        \"newname\": \"newvol01\"\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
@@ -10064,7 +10063,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}}\n    }\n}\n"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
@@ -10273,7 +10272,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}}\n    }\n}\n"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
@@ -10482,7 +10481,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\":{{arrayName}}\n    }\n}\n"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
@@ -11245,47 +11244,47 @@
 	],
 	"variable": [
 		{
-			"id": "c12b354e-bad0-4cf0-a799-7021b5381f91",
+			"id": "8c72549e-c32c-4472-8471-a475e141fe61",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "45c0df90-f8b9-4915-97e7-64729286df9a",
+			"id": "80e9a5dc-da50-4094-b2b7-7f02fc168c89",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "98d05a76-03e3-48eb-b4de-5f3ec64cad89",
+			"id": "dea41815-2aec-4f82-9517-9a9c48c4e8e1",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "b3965786-4897-4c47-84b8-e18f6158d309",
+			"id": "1f442e2d-0e1b-4d0a-b88a-3ab41d34d861",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "03558ed0-3017-496c-a126-a40173973908",
+			"id": "6e1d8f69-42b0-48df-89a7-446b356bfbec",
 			"key": "volumeName1",
 			"value": "vol01"
 		},
 		{
-			"id": "78289b78-037d-41cd-bd13-6889c552e2f2",
+			"id": "6db6aa77-210f-4b4c-abda-bdad2f2d1c04",
 			"key": "volumeName2",
 			"value": "vol02"
 		},
 		{
-			"id": "0a8b3b61-e3ac-4739-97d6-677b6cef77b2",
+			"id": "14cec18c-236c-4680-b16b-8b4b8ae2540a",
 			"key": "volumeNameNew1",
 			"value": "volNew01"
 		},
 		{
-			"id": "9c5d759c-ec67-467e-9a15-4555a4ec7686",
+			"id": "6ba23f13-5d3c-42a1-aafb-bd9b33379a87",
 			"key": "period",
 			"value": "5m"
 		},
 		{
-			"id": "7c2c6385-9e79-47c6-9adc-cffb0a67fdc6",
+			"id": "c89de704-17c3-4df5-b932-26251c8ac47d",
 			"key": "arrayName",
 			"value": "POSArray"
 		}
