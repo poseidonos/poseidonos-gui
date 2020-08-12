@@ -14,7 +14,7 @@ pkill -9 ibofos
 sleep 2
 
 if [ ! -f "$ibofos" ]; then
-        echo "fail to find $ibofos. run make prior to run run_ibofos.sh"
+        echo "fail to find $ibofos. run make prior to run run_os.sh"
 else
        ${root_dir}/script/setup_env.sh
         \rm -rf /dev/shm/ibof_nvmf_trace*
