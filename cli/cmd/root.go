@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/c2h5oh/datasize"
 	"github.com/google/uuid"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
@@ -176,11 +177,11 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("size") && len(size) > 0 {
 
 			/*
-			_, err := strconv.ParseUint(size, 10, 64)
+				_, err := strconv.ParseUint(size, 10, 64)
 
-			if err == nil {
-				size += "MB"
-			}
+				if err == nil {
+					size += "MB"
+				}
 			*/
 
 			var v datasize.ByteSize
@@ -236,7 +237,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		req, res, err = SystemCommand[command](xrId, nil)
 	}
-	
+
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -293,9 +294,9 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		volumes := obj["volumes"]
 		if volumes != nil {
-			for _, b := range(volumes.([]interface{})) {
-				b.(map[string]interface{})["remain"]  = ChangeDataHumanReadable((b.(map[string]interface{})["remain"]).(string))
-				b.(map[string]interface{})["total"]  = ChangeDataHumanReadable((b.(map[string]interface{})["total"]).(string))
+			for _, b := range volumes.([]interface{}) {
+				b.(map[string]interface{})["remain"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["remain"]))
+				b.(map[strng]interface{})["total"] = ChangeDataHumanReadable((b.(map[string]interface{})["total"]).(string))
 			}
 		}
 		if obj["capacity"] != nil {
