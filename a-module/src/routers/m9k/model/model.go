@@ -12,7 +12,7 @@ type Response struct {
 	Rid             string `json:"rid"`
 	LastSuccessTime int64  `json:"lastSuccessTime"`
 	Result          Result `json:"result"`
-	Info            Info   `json:"info"`
+	Info            interface{}   `json:"info,omitempty"`
 }
 
 type Result struct {
@@ -27,18 +27,6 @@ type Status struct {
 	Description string `json:"description"`
 	Problem     string `json:"problem,omitempty"`
 	Solution    string `json:"solution,omitempty"`
-}
-
-//type StatusList struct {
-//	StatusList []Status `json:"StatusList"`
-//}
-
-type Info struct {
-	State              string `json:"state"`
-	Situation          string `json:"situation"`
-	RebuildingProgress string `json:"rebuildingProgress"`
-	Capacity           string `json:"capacity"`
-	Used               string `json:"used"`
 }
 
 type Device struct {

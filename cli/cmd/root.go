@@ -296,14 +296,14 @@ func PrintReqRes(req model.Request, res model.Response) {
 		if volumes != nil {
 			for _, b := range volumes.([]interface{}) {
 				b.(map[string]interface{})["remain"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["remain"]))
-				b.(map[strng]interface{})["total"] = ChangeDataHumanReadable((b.(map[string]interface{})["total"]).(string))
+				b.(map[string]interface{})["total"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["total"]))
 			}
 		}
 		if obj["capacity"] != nil {
-			obj["capacity"] = ChangeDataHumanReadable((obj["capacity"]).(string))
+			obj["capacity"] = ChangeDataHumanReadable(cast.ToString(obj["capacity"]))
 		}
 		if obj["used"] != nil {
-			obj["used"] = ChangeDataHumanReadable((obj["used"]).(string))
+			obj["used"] = ChangeDataHumanReadable(cast.ToString(obj["used"]))
 		}
 
 		if string(b) != "null" {
