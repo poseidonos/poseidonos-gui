@@ -2,6 +2,7 @@ package magent
 
 import (
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"encoding/json"
 	"fmt"
 )
@@ -30,8 +31,7 @@ func GetNetData(param interface{}) (model.Response, error) {
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			res.Result.Status.Description = errEndPoint.Error()
-			res.Result.Status.Code = 500
+			res.Result.Status, _ = util.GetStatusInfo(errEndPointCode)
 			res.Result.Data = make([]string, 0)
 			return res, nil
 		}
@@ -46,15 +46,13 @@ func GetNetData(param interface{}) (model.Response, error) {
 	result, err := ExecuteQuery(query)
 
 	if err != nil {
-		res.Result.Status.Description = err.Error()
-		res.Result.Status.Code = 500
+		res.Result.Status, _ = util.GetStatusInfo(errQueryCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = errData.Error()
-		res.Result.Status.Code = 500
+		res.Result.Status, _ = util.GetStatusInfo(errDataCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
@@ -64,8 +62,7 @@ func GetNetData(param interface{}) (model.Response, error) {
 			fieldsList = append(fieldsList, NetField{values[0].(json.Number), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
 		}
 	}
-	res.Result.Status.Description = "DONE"
-	res.Result.Status.Code = 0
+	res.Result.Status, _ = util.GetStatusInfo(0)
 	res.Result.Data = fieldsList
 
 	return res, nil

@@ -2,6 +2,7 @@ package magent
 
 import (
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"fmt"
 )
 
@@ -19,15 +20,13 @@ func GetNetAddress(param interface{}) (model.Response, error) {
 	result, err := ExecuteQuery(fmt.Sprintf(netAddQ, DBName))
 
 	if err != nil {
-		res.Result.Status.Description = err.Error()
-		res.Result.Status.Code = 0
+		res.Result.Status, _ = util.GetStatusInfo(errQueryCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = errData.Error()
-		res.Result.Status.Code = 500
+		res.Result.Status, _ = util.GetStatusInfo(errDataCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
@@ -38,8 +37,7 @@ func GetNetAddress(param interface{}) (model.Response, error) {
 		}
 	}
 
-	res.Result.Status.Code = 0
-	res.Result.Status.Description = "DONE"
+	res.Result.Status, _ = util.GetStatusInfo(0)
 	res.Result.Data = fieldsList
 
 	return res, nil
