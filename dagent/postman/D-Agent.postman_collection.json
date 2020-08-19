@@ -968,17 +968,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/cpu",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"cpu"
 									]
 								}
 							},
@@ -1008,68 +1007,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734721044941113,\r\n                \"usageUser\": 9.188034187863039\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -1158,17 +1096,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/cpu/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"cpu",
+										"{{period}}"
 									]
 								}
 							},
@@ -1198,7 +1136,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734494000000000,\r\n                \"usageUser\": 8.904109589275766\r\n            },\r\n            {\r\n                \"time\": 1597734496000000000,\r\n                \"usageUser\": 8.932369203964832\r\n            },\r\n            {\r\n                \"time\": 1597734498000000000,\r\n                \"usageUser\": 9.071550256103384\r\n            },\r\n            {\r\n                \"time\": 1597734500000000000,\r\n                \"usageUser\": 9.211087419587525\r\n            },\r\n            {\r\n                \"time\": 1597734502000000000,\r\n                \"usageUser\": 9.00554844300112\r\n            }\r\n        ]\r\n    }\r\n}"
 						},
 						{
 							"name": "Fail",
@@ -1223,17 +1161,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/cpu/20",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"cpu",
+										"20"
 									]
 								}
 							},
@@ -1259,7 +1197,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"\",\r\n            \"code\": 500,\r\n            \"description\": \"\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -1325,67 +1263,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -1408,17 +1285,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/memory",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"memory"
 									]
 								}
 							},
@@ -1448,7 +1324,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734867980046613,\r\n                \"usageUser\": 58.26696813592269\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -1515,67 +1391,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -1598,17 +1413,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/memory/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"memory",
+										"{{period}}"
 									]
 								}
 							},
@@ -1638,7 +1453,68 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734590000000000,\r\n                \"usageUser\": 58.280068777146624\r\n            },\r\n            {\r\n                \"time\": 1597734591000000000,\r\n                \"usageUser\": 58.27984921332723\r\n            },\r\n            {\r\n                \"time\": 1597734592000000000,\r\n                \"usageUser\": 58.27962964950783\r\n            },\r\n            {\r\n                \"time\": 1597734593000000000,\r\n                \"usageUser\": 58.282093643481055\r\n            },\r\n            {\r\n                \"time\": 1597734594000000000,\r\n                \"usageUser\": 58.281190992223536\r\n            },\r\n            {\r\n                \"time\": 1597734595000000000,\r\n                \"usageUser\": 58.28163011986233\r\n            },\r\n            {\r\n                \"time\": 1597734596000000000,\r\n                \"usageUser\": 58.281386160063\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory",
+										"20"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
 						}
 					]
 				},
@@ -1704,67 +1580,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -1787,17 +1602,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/network",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"network"
 									]
 								}
 							},
@@ -1827,7 +1641,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 0,\r\n                \"bytesRecv\": 83131870,\r\n                \"bytesSent\": 32235833,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 303382,\r\n                \"packetsSent\": 187262\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -1894,6 +1708,67 @@
 					},
 					"response": [
 						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/network/100",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"network",
+										"100"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"\",\r\n            \"code\": 500,\r\n            \"description\": \"\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
+						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -1916,17 +1791,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/network/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"network",
+										"{{period}}"
 									]
 								}
 							},
@@ -1956,68 +1831,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597738402000000000,\r\n                \"bytesRecv\": 41148503,\r\n                \"bytesSent\": 16558355.75,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 147997.75,\r\n                \"packetsSent\": 97631.75\r\n            },\r\n            {\r\n                \"time\": 1597738403000000000,\r\n                \"bytesRecv\": 41148503,\r\n                \"bytesSent\": 16558355.75,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 147997.75,\r\n                \"packetsSent\": 97631.75\r\n            },\r\n            {\r\n                \"time\": 1597738404000000000,\r\n                \"bytesRecv\": 41148708,\r\n                \"bytesSent\": 16558355.75,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 147998.75,\r\n                \"packetsSent\": 97631.75\r\n            },\r\n            {\r\n                \"time\": 1597738405000000000,\r\n                \"bytesRecv\": 41149103.5,\r\n                \"bytesSent\": 16558355.75,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 148000.25,\r\n                \"packetsSent\": 97631.75\r\n            },\r\n            {\r\n                \"time\": 1597738406000000000,\r\n                \"bytesRecv\": 41149308.5,\r\n                \"bytesSent\": 16558355.75,\r\n                \"dropIn\": 0,\r\n                \"dropOut\": 0,\r\n                \"packetsRecv\": 148001.25,\r\n                \"packetsSent\": 97631.75\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -2083,71 +1897,6 @@
 					},
 					"response": [
 						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "267"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Fail",
 							"originalRequest": {
 								"method": "GET",
@@ -2207,6 +1956,70 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 22313472,\r\n                \"time\": 1597735688784524383\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -2273,6 +2086,67 @@
 					},
 					"response": [
 						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw",
+										"20hours"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "1293204d-6196-45ec-b886-0eb4738b9f3a"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:55:20 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+						},
+						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -2295,17 +2169,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/readbw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"readbw",
+										"{{period}}"
 									]
 								}
 							},
@@ -2335,68 +2209,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739252000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739253000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739254000000000\r\n            },\r\n            {\r\n                \"bw\": 35348480,\r\n                \"time\": 1597739255000000000\r\n            },\r\n            {\r\n                \"bw\": 45733376,\r\n                \"time\": 1597739256000000000\r\n            },\r\n            {\r\n                \"bw\": 23500288,\r\n                \"time\": 1597739257000000000\r\n            },\r\n            {\r\n                \"bw\": 11842048,\r\n                \"time\": 1597739258000000000\r\n            },\r\n            {\r\n                \"bw\": 14945280,\r\n                \"time\": 1597739259000000000\r\n            },\r\n            {\r\n                \"bw\": 15092224,\r\n                \"time\": 1597739260000000000\r\n            },\r\n            {\r\n                \"bw\": 23834624,\r\n                \"time\": 1597739261000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -2447,7 +2260,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//volumes/{{volid01}}/readbw",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2456,7 +2269,6 @@
 								"api",
 								"metric",
 								"v1",
-								"",
 								"volumes",
 								"{{volid01}}",
 								"readbw"
@@ -2487,17 +2299,18 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"readbw"
 									]
 								}
 							},
@@ -2527,68 +2340,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735928875564783\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -2639,7 +2391,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//volumes/{{volid01}}/readbw/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -2648,7 +2400,6 @@
 								"api",
 								"metric",
 								"v1",
-								"",
 								"volumes",
 								"{{volid01}}",
 								"readbw",
@@ -2658,7 +2409,7 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
+							"name": "Fail - 0 invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -2680,22 +2431,24 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"readbw",
+										"20hours"
 									]
 								}
 							},
-							"status": "Bad Request",
-							"code": 400,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -2704,19 +2457,19 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+									"value": "4360d852-cd5e-4dd5-a4c8-cb0015bd6a36"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+									"value": "Wed, 19 Aug 2020 06:54:35 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "223"
+									"value": "128"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						},
 						{
 							"name": "Success",
@@ -2741,17 +2494,19 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/0/readbw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"0",
+										"readbw",
+										"{{period}}"
 									]
 								}
 							},
@@ -2781,7 +2536,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735678000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735679000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735680000000000\r\n            },\r\n            {\r\n                \"bw\": 28773888,\r\n                \"time\": 1597735681000000000\r\n            },\r\n            {\r\n                \"bw\": 53703680,\r\n                \"time\": 1597735682000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -2869,17 +2624,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/writebw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"writebw"
 									]
 								}
 							},
@@ -2909,68 +2663,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 53438976,\r\n                \"time\": 1597735948079139123\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -3037,6 +2730,67 @@
 					},
 					"response": [
 						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writebw",
+										"20hours"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "08484908-859d-48d0-8d76-25f09b68216d"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:53:56 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+						},
+						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -3059,17 +2813,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/writebw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"writebw",
+										"{{period}}"
 									]
 								}
 							},
@@ -3099,68 +2853,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735793000000000\r\n            },\r\n            {\r\n                \"bw\": 29779968,\r\n                \"time\": 1597735794000000000\r\n            },\r\n            {\r\n                \"bw\": 26093568,\r\n                \"time\": 1597735795000000000\r\n            },\r\n            {\r\n                \"bw\": 28407808,\r\n                \"time\": 1597735796000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735797000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735798000000000\r\n            },\r\n            {\r\n                \"bw\": 6858752,\r\n                \"time\": 1597735799000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735800000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735801000000000\r\n            },\r\n            {\r\n                \"bw\": 17127936,\r\n                \"time\": 1597735802000000000\r\n            },\r\n            {\r\n                \"bw\": 21874688,\r\n                \"time\": 1597735803000000000\r\n            },\r\n            {\r\n                \"bw\": 21850112,\r\n                \"time\": 1597735804000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -3228,67 +2921,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -3311,17 +2943,18 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"writebw"
 									]
 								}
 							},
@@ -3420,6 +3053,69 @@
 					},
 					"response": [
 						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"20hours"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "cb3df3ea-4063-49ef-9d1a-b3514c3e9c5c"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:53:10 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+						},
+						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -3442,17 +3138,19 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"{{period}}"
 									]
 								}
 							},
@@ -3482,68 +3180,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"bw\": 7731712,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"bw\": 26097664,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"bw\": 24965632,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"bw\": 26224128,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"bw\": 19838464,\r\n                \"time\": 1597736244000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736245000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736246000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -3609,67 +3246,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -3692,17 +3268,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/readiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"readiops"
 									]
 								}
 							},
@@ -3732,7 +3307,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 1633,\r\n                \"time\": 1597736262767388762\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -3821,17 +3396,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/readiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"readiops",
+										"{{period}}"
 									]
 								}
 							},
@@ -3861,10 +3436,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"iops\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"iops\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"iops\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"iops\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						},
 						{
-							"name": "Fail",
+							"name": "Fail - 0 invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -3886,22 +3461,22 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/readiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"readiops",
+										"20hours"
 									]
 								}
 							},
-							"status": "Bad Request",
-							"code": 400,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -3910,19 +3485,19 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+									"value": "934dda29-1780-40f8-8461-97afbe4bbd70"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+									"value": "Wed, 19 Aug 2020 06:51:38 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "223"
+									"value": "128"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						}
 					]
 				},
@@ -4012,17 +3587,18 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"readiops"
 									]
 								}
 							},
@@ -4052,68 +3628,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -4182,67 +3697,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -4265,17 +3719,19 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"readiops",
+										"{{period}}"
 									]
 								}
 							},
@@ -4305,7 +3761,70 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 406,\r\n                \"time\": 1597737213000000000\r\n            },\r\n            {\r\n                \"iops\": 394,\r\n                \"time\": 1597737214000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737215000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737216000000000\r\n            },\r\n            {\r\n                \"iops\": 1645,\r\n                \"time\": 1597737217000000000\r\n            },\r\n            {\r\n                \"iops\": 1635,\r\n                \"time\": 1597737218000000000\r\n            },\r\n            {\r\n                \"iops\": 1504,\r\n                \"time\": 1597737219000000000\r\n            },\r\n            {\r\n                \"iops\": 129,\r\n                \"time\": 1597737220000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readiops",
+										"20hours"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "37f02223-409f-497e-b61e-ef27ffc2fd9f"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:50:29 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						}
 					]
 				},
@@ -4393,17 +3912,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/writeiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"writeiops"
 									]
 								}
 							},
@@ -4433,68 +3951,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -4561,7 +4018,7 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
+							"name": "Fail - 0 invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -4583,22 +4040,22 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/writeiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"writeiops",
+										"20hours"
 									]
 								}
 							},
-							"status": "Bad Request",
-							"code": 400,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -4607,19 +4064,19 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+									"value": "9a2404a5-c123-45a6-8bc0-8e9ae4706539"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+									"value": "Wed, 19 Aug 2020 06:48:51 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "223"
+									"value": "128"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						},
 						{
 							"name": "Success",
@@ -4644,17 +4101,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/writeiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"writeiops",
+										"{{period}}"
 									]
 								}
 							},
@@ -4684,7 +4141,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737381000000000\r\n            },\r\n            {\r\n                \"iops\": 47193,\r\n                \"time\": 1597737382000000000\r\n            },\r\n            {\r\n                \"iops\": 33480,\r\n                \"time\": 1597737383000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737384000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737385000000000\r\n            },\r\n            {\r\n                \"iops\": 20450,\r\n                \"time\": 1597737386000000000\r\n            },\r\n            {\r\n                \"iops\": 31656,\r\n                \"time\": 1597737387000000000\r\n            },\r\n            {\r\n                \"iops\": 27805,\r\n                \"time\": 1597737388000000000\r\n            },\r\n            {\r\n                \"iops\": 22408,\r\n                \"time\": 1597737389000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -4735,7 +4192,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//volumes/{{volid01}}/writeiops",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -4744,7 +4201,6 @@
 								"api",
 								"metric",
 								"v1",
-								"",
 								"volumes",
 								"{{volid01}}",
 								"writeiops"
@@ -4775,17 +4231,18 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"writeiops"
 									]
 								}
 							},
@@ -4815,68 +4272,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -4927,7 +4323,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1//volumes/{{volid01}}/writeiops/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -4936,7 +4332,6 @@
 								"api",
 								"metric",
 								"v1",
-								"",
 								"volumes",
 								"{{volid01}}",
 								"writeiops",
@@ -4968,17 +4363,19 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"writeiops",
+										"{{period}}"
 									]
 								}
 							},
@@ -5008,10 +4405,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 28927,\r\n                \"time\": 1597737831000000000\r\n            },\r\n            {\r\n                \"iops\": 9124,\r\n                \"time\": 1597737832000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737833000000000\r\n            },\r\n            {\r\n                \"iops\": 25600,\r\n                \"time\": 1597737834000000000\r\n            },\r\n            {\r\n                \"iops\": 25600,\r\n                \"time\": 1597737835000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737836000000000\r\n            },\r\n            {\r\n                \"iops\": 12800,\r\n                \"time\": 1597737837000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737838000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737839000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						},
 						{
-							"name": "Fail",
+							"name": "Fail - 0 invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -5033,22 +4430,24 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"writeiops",
+										"20hours"
 									]
 								}
 							},
-							"status": "Bad Request",
-							"code": 400,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -5057,19 +4456,19 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+									"value": "a6584a59-ba43-4b3d-a5da-ef470df60a3d"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+									"value": "Wed, 19 Aug 2020 06:48:17 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "223"
+									"value": "128"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						}
 					]
 				},
@@ -5157,17 +4556,16 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/latency",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"latency"
 									]
 								}
 							},
@@ -5197,68 +4595,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -5325,67 +4662,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
@@ -5408,17 +4684,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/latency/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"latency",
+										"{{period}}"
 									]
 								}
 							},
@@ -5449,6 +4725,67 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						}
 					]
 				},
@@ -5538,17 +4875,18 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"latency"
 									]
 								}
 							},
@@ -5578,68 +4916,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -5708,7 +4985,7 @@
 					},
 					"response": [
 						{
-							"name": "Fail",
+							"name": "Fail - invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -5730,22 +5007,24 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
 									]
 								}
 							},
-							"status": "Bad Request",
-							"code": 400,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -5754,19 +5033,19 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
 								},
 								{
 									"key": "Content-Length",
-									"value": "223"
+									"value": "128"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						},
 						{
 							"name": "Success",
@@ -5791,17 +5070,19 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"{{period}}"
 									]
 								}
 							},
@@ -5831,7 +5112,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"latency\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"latency\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"latency\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"latency\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				},
@@ -5960,10 +5241,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"Time\": 1597743919603338213,\r\n                \"Value\": \"[1596194025][1234][trace] progress report: [100]\"\r\n            }\r\n        ]\r\n    }\r\n}"
 						},
 						{
-							"name": "Fail",
+							"name": "Fail - 0 invalid time interval, empty response",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -5985,17 +5266,17 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"raw": "http://{{host}}/api/metric/v1/rebuildlogs/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"mtool",
 										"api",
-										"dagent",
+										"metric",
 										"v1",
-										"version"
+										"rebuildlogs",
+										"20hours"
 									]
 								}
 							},
@@ -6021,7 +5302,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				}
@@ -11287,6 +10568,12 @@
 			"id": "c89de704-17c3-4df5-b932-26251c8ac47d",
 			"key": "arrayName",
 			"value": "POSArray"
+		},
+		{
+			"id": "5ea844bd-56a2-443d-9a54-c15b5a318c29",
+			"key": "volid01",
+			"value": "0",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}
