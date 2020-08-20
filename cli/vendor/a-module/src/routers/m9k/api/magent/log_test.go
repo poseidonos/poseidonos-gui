@@ -26,6 +26,20 @@ func TestGetRebuildLogs(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			input: model.MAgentParam{
+				Time: "2h",
+			},
+			expected: []string{},
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
+				Time: "1d",
+			},
+			expected: []string{},
+			err:      nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}

@@ -23,8 +23,11 @@ var TimeGroupsDefault = map[string]string{
 var (
 	errConnInfluxDB = errors.New("could not connect to Influxdb")
 	errQuery        = errors.New("could not query to database")
+	errQueryCode    = 21000
 	errData         = errors.New("no data available")
+	errDataCode     = 20313
 	errEndPoint     = errors.New("use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d")
+	errEndPointCode = 21010
 )
 
 var netAggRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM %s.%s.mean_net WHERE time > now() - %s"

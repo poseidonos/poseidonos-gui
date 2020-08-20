@@ -48,23 +48,37 @@ var MemoryLastQuery = "SELECT last(used_percent) AS mean_used_percent FROM posei
 
 var MemoryDefaultQuery = "SELECT mean(used_percent) AS mean_used_percent FROM poseidon.default_rp.mem WHERE time > now() - 15m GROUP BY time(1m)"
 
+var MemoryNoDataQuery = "SELECT mean(used_percent) AS mean_used_percent FROM poseidon.default_rp.mem WHERE time > now() - 60d GROUP BY time(60d)"
+
 var CPULastQuery = "SELECT last(usage_user) AS mean_usage_user FROM poseidon.default_rp.cpu LIMIT 1"
 
 var CPUDefaultQuery = "SELECT mean(usage_user) AS mean_usage_user FROM poseidon.default_rp.cpu WHERE time > now() - 15m GROUP BY time(1m)"
+
+var CPUNoDataQuery = "SELECT mean(usage_user) AS mean_usage_user FROM poseidon.default_rp.cpu WHERE time > now() - 60d GROUP BY time(60d)"
 
 var DiskLastQuery = "SELECT last(used) AS mean_used_bytes FROM poseidon.default_rp.disk LIMIT 1"
 
 var DiskDefaultQuery = "SELECT mean(used) AS mean_used_bytes FROM poseidon.default_rp.disk WHERE time > now() - 15m GROUP BY time(1m)"
 
+var DiskNoDataQuery = "SELECT mean(used) AS mean_used_bytes FROM poseidon.default_rp.disk WHERE time > now() - 60d GROUP BY time(60d)"
+
 var NetLastQuery = "SELECT last(bytes_recv), last(bytes_sent), last(drop_in), last(drop_out), last(err_in), last(err_out), last(packets_recv), last(packets_sent)  FROM poseidon.default_rp.net LIMIT 1"
 
 var NetDefaultQuery = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM poseidon.default_rp.net WHERE time > now() - 15m GROUP BY time(1m)"
 
+var NetNoDataQuery = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM poseidon.default_rp.net WHERE time > now() - 60d GROUP BY time(60d)"
+
 var NetDriverQuery = `SELECT time, "name", driver FROM poseidon.autogen.ethernet`
+
+var NetDriverNoDataQ = `SELECT time, "name", driver FROM poseidonDataNil.autogen.ethernet`
 
 var NetAddressQuery = `SELECT time, "name", address FROM poseidon.autogen.ethernet`
 
+var NetAddressNoDataQ = `SELECT time, "name", address FROM poseidonNoData.autogen.ethernet`
+
 var RebuildLogQ = `SELECT "value" FROM "poseidon"."autogen"."rebuilding_status" WHERE time > now() - 1h`
+
+var RebuildLogNoDataQ = `SELECT "value" FROM "poseidon"."autogen"."rebuilding_status" WHERE time > now() - 1d`
 
 func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 	//series := models.Row{}
@@ -392,7 +406,8 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-
+	case CPUNoDataQuery, DiskNoDataQuery, MemoryNoDataQuery,
+		NetNoDataQuery, NetDriverNoDataQ, NetAddressNoDataQ, RebuildLogNoDataQ:
 	default:
 		return nil, errors.New("could not query to database")
 	}

@@ -16,6 +16,7 @@ package magent
 
 import (
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"encoding/json"
 	"fmt"
 )
@@ -37,12 +38,12 @@ func GetRebuildLogs(param interface{}) (model.Response, error) {
 	query := fmt.Sprintf(RebuildingLogQ, DBName, timeInterval)
 	result, err := ExecuteQuery(query)
 	if err != nil {
-		res.Result.Status.Description = err.Error()
+		res.Result.Status, _ = util.GetStatusInfo(errQueryCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status.Description = errData.Error()
+		res.Result.Status, _ = util.GetStatusInfo(errDataCode)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 
@@ -52,8 +53,7 @@ func GetRebuildLogs(param interface{}) (model.Response, error) {
 			fieldsList = append(fieldsList, LogsField{Values[0].(json.Number), Values[1].(string)})
 		}
 	}
-	res.Result.Status.Code = 0
-	res.Result.Status.Description = "DONE"
+	res.Result.Status, _ = util.GetStatusInfo(0)
 	res.Result.Data = fieldsList
 
 	return res, nil

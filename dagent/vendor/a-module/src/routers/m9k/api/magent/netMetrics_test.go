@@ -84,14 +84,14 @@ func TestGetNetDataError(t *testing.T) {
 			input: model.MAgentParam{
 				Time: "115m", //incorrect param
 			},
-			expected: 500,
+			expected: 21010,
 			err:      nil,
 		},
 		{
 			input: model.MAgentParam{
 				Time: "60d", //no data
 			},
-			expected: 500,
+			expected: 20313,
 			err:      nil,
 		},
 	}

@@ -28,6 +28,7 @@ func ExecuteQuery(query string) ([]client.Result, error) {
 
 	} else {
 		err = errQuery
+		return result, err
 	}
 	return result, err
 }

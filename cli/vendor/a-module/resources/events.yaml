@@ -1212,4 +1212,24 @@ modules:
         message: could not find build info
       - code: 13000
         level: ERROR
-        message: Response timeout	
+        message: Response timeout
+  - name: "MAgent"
+    count: 10000
+    idStart: 20000
+    idEnd:   30000
+    info:
+      - code: 20313
+        level: WARN
+        message: Data not found
+        problem: requested data is not present
+        solution: check if the data is requested for an existing entity
+      - code: 21000
+        level: ERROR
+        message: Querying error
+        problem: connection problem between InfluxDB and Agent
+        solution: restart InfluxDB
+      - code: 21010
+        level: ERROR
+        message: Time parameter error
+        problem: Invalid time period specified
+        solution: use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d

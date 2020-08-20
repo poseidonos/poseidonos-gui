@@ -15,6 +15,7 @@ package magent
 
 import (
 	"a-module/src/routers/m9k/model"
+	"a-module/src/util"
 	"encoding/json"
 	"fmt"
 	"regexp"
@@ -22,13 +23,13 @@ import (
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
-func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]interface{}, []string, error) {
+func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]interface{}, []string, int) {
 	var query string
 	paramStruct := param.(model.MAgentParam)
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
-			return nil, nil, errEndPoint
+			return nil, nil, errEndPointCode
 		}
 		if Contains(AggTime, timeInterval) {
 			query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval)
@@ -41,13 +42,13 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]
 	}
 	result, err := ExecuteQuery(query)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errQueryCode
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		return nil, nil, errData
+		return nil, nil, errDataCode
 	}
-	return result[0].Series[0].Values, result[0].Series[0].Columns, nil
+	return result[0].Series[0].Values, result[0].Series[0].Columns, 0
 }
 
 // extractValues contains the parsing logic for extracting array level and volume level data
@@ -112,15 +113,13 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, err := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ)
-	if err != nil {
-		result.Result.Status.Description = err.Error()
+	values, columns, statusCode := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ)
+	result.Result.Status, _ = util.GetStatusInfo(statusCode)
+	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
 	res := extractValues(values, columns, "bw", "bw", "bw_read", level)
-	result.Result.Status.Code = 0
-	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
 	return result, nil
 }
@@ -129,15 +128,13 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, err := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ)
-	if err != nil {
-		result.Result.Status.Description = err.Error()
+	values, columns, statusCode := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ)
+	result.Result.Status, _ = util.GetStatusInfo(statusCode)
+	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
 	res := extractValues(values, columns, "bw", "bw", "bw_write", level)
-	result.Result.Status.Code = 0
-	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
 	return result, nil
 }
@@ -146,15 +143,13 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 func GetReadIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, err := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ)
-	if err != nil {
-		result.Result.Status.Description = err.Error()
+	values, columns, statusCode := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ)
+	result.Result.Status, _ = util.GetStatusInfo(statusCode)
+	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
 	res := extractValues(values, columns, "iops", "iops", "iops_read", level)
-	result.Result.Status.Code = 0
-	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
 	return result, nil
 }
@@ -163,15 +158,14 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, err := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ)
-	if err != nil {
-		result.Result.Status.Description = err.Error()
+	values, columns, statusCode := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ)
+	result.Result.Status, _ = util.GetStatusInfo(statusCode)
+	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
+		result.Result.Status, _ = util.GetStatusInfo(statusCode)
 		return result, nil
 	}
 	res := extractValues(values, columns, "iops", "iops", "iops_write", level)
-	result.Result.Status.Code = 0
-	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
 	return result, nil
 }
@@ -180,15 +174,13 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 func GetLatency(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, err := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ)
-	if err != nil {
-		result.Result.Status.Description = err.Error()
+	values, columns, statusCode := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ)
+	result.Result.Status, _ = util.GetStatusInfo(statusCode)
+	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
 	res := extractValues(values, columns, "latency", "latency", "timelag_arr_0_mean", level)
-	result.Result.Status.Code = 0
-	result.Result.Status.Description = "DONE"
 	result.Result.Data = res
 	return result, nil
 }
