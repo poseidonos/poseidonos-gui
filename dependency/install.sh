@@ -15,6 +15,10 @@ then
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libnginx-mod-http-echo_1.14.0-0ubuntu1_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-light_1.14.0-0ubuntu1_amd64.deb
 
+    sudo service influxdb start
+    sudo service chronograf start
+    sudo service kapacitor start
+
     # It should use requirements.txt
     sudo pip3 install --src $SCRIPT_PATH/python-packages msgpack==0.6.1 -f ./ --no-index
     sudo pip3 install $SCRIPT_PATH/python-packages/influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
@@ -29,10 +33,12 @@ then
     sudo apt-get install influxdb
     sudo apt-get install kapacitor
     sudo apt-get install chronograf
+    sudo apt-get install nginx
+
     sudo service influxdb start
     sudo service chronograf start
     sudo service kapacitor start
-    sudo apt-get install nginx
+
     sudo pip3 install influxdb-client
     sudo pip3 install requests
   else
