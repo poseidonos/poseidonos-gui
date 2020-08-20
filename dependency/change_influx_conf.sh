@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 if [[ -z "${INFLUXDB_RETENTION_ENABLED}" ]]; then
     export INFLUXDB_RETENTION_ENABLED=true
     echo 'export INFLUXDB_RETENTION_ENABLED=true' >> ~/.bashrc
