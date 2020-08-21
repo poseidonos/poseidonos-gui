@@ -5209,7 +5209,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "26e032b1-8478-4786-823f-124103806812",
+								"id": "5ca50cca-57a7-4710-b8d9-83af8868e7ab",
 								"exec": [
 									""
 								],
@@ -5219,7 +5219,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0a08f19c-ff87-462b-8dbd-d076db5f6415",
+								"id": "59b5251d-a2b6-4866-95ff-18e9fd3578a4",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -5336,7 +5336,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "66ba6ed3-9b8d-4479-8f22-9a3657605063",
+								"id": "40172df9-9c37-4d6f-8495-75e9d1f4f393",
 								"exec": [
 									""
 								],
@@ -5346,7 +5346,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "00ae591a-e762-4474-a429-2fbe55ee7713",
+								"id": "78a52f16-63d8-4410-aaf6-dc6ff9ce337c",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -5392,67 +5392,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/cpu/20",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"cpu",
-										"20"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"\",\r\n            \"code\": 500,\r\n            \"description\": \"\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -5517,6 +5456,67 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734494000000000,\r\n                \"usageUser\": 8.904109589275766\r\n            },\r\n            {\r\n                \"time\": 1597734496000000000,\r\n                \"usageUser\": 8.932369203964832\r\n            },\r\n            {\r\n                \"time\": 1597734498000000000,\r\n                \"usageUser\": 9.071550256103384\r\n            },\r\n            {\r\n                \"time\": 1597734500000000000,\r\n                \"usageUser\": 9.211087419587525\r\n            },\r\n            {\r\n                \"time\": 1597734502000000000,\r\n                \"usageUser\": 9.00554844300112\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/cpu/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"cpu",
+										"20"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -5526,7 +5526,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ce4144e9-6fdb-4cfa-b6f8-373b437d1d05",
+								"id": "b6a9b60b-b614-46d6-9716-c7462b6cc12c",
 								"exec": [
 									""
 								],
@@ -5536,7 +5536,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e1a559f0-d245-4fc4-a55e-c33ea257db5f",
+								"id": "31a52bb4-8e39-414e-b1ba-ac373b1ab18e",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -5653,7 +5653,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3e1fc879-281b-428d-89ab-b6a3dd3a906e",
+								"id": "b81fbc70-f60d-4110-babc-ecb315414a91",
 								"exec": [
 									""
 								],
@@ -5663,7 +5663,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f8630bd3-9e65-4d5d-bf1f-addee5ba5d85",
+								"id": "6638b973-171b-4f2d-a88d-629a1d4653de",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -5709,67 +5709,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/memory/20",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"memory",
-										"20"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -5834,6 +5773,67 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734590000000000,\r\n                \"usageUser\": 58.280068777146624\r\n            },\r\n            {\r\n                \"time\": 1597734591000000000,\r\n                \"usageUser\": 58.27984921332723\r\n            },\r\n            {\r\n                \"time\": 1597734592000000000,\r\n                \"usageUser\": 58.27962964950783\r\n            },\r\n            {\r\n                \"time\": 1597734593000000000,\r\n                \"usageUser\": 58.282093643481055\r\n            },\r\n            {\r\n                \"time\": 1597734594000000000,\r\n                \"usageUser\": 58.281190992223536\r\n            },\r\n            {\r\n                \"time\": 1597734595000000000,\r\n                \"usageUser\": 58.28163011986233\r\n            },\r\n            {\r\n                \"time\": 1597734596000000000,\r\n                \"usageUser\": 58.281386160063\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory",
+										"20"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -5843,7 +5843,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "99e66b72-a5ae-4557-a86a-285b0411c53a",
+								"id": "a00f06ac-35ea-40cf-a4b6-4cac48b1501b",
 								"exec": [
 									""
 								],
@@ -5853,7 +5853,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c0dcc139-5f83-4035-852b-7b360e2d9195",
+								"id": "aaac69d4-1447-46c9-ae3a-6f32f72a784d",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -5970,7 +5970,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2634e98b-d0f0-417c-9102-467d8994904a",
+								"id": "2f14fd85-ef74-4ff2-85f6-d1727e966dda",
 								"exec": [
 									""
 								],
@@ -5980,7 +5980,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "877a9e36-85c5-4b02-bb2e-59b8980ea258",
+								"id": "d888007c-53b9-4816-bd25-d45a0cb1419d",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6150,7 +6150,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"\",\r\n            \"code\": 500,\r\n            \"description\": \"\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -6160,7 +6160,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "5f448471-737c-40bb-a235-230a5e0db22e",
+								"id": "56e95fc8-c65a-4f90-af9f-a9f06a0272e1",
 								"exec": [
 									""
 								],
@@ -6170,7 +6170,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "55612c44-c39f-4b9c-ad51-f0d0be8f824e",
+								"id": "8fc21fff-457e-41ae-b891-6b722b98bcea",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6215,67 +6215,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 12020,\n            \"description\": \"not defined\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -6348,7 +6287,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f108fb30-8266-40a9-bfc2-adcc0f34f8b7",
+								"id": "6115b480-b374-4ee8-9666-e3f9eec1ff46",
 								"exec": [
 									""
 								],
@@ -6358,7 +6297,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "be22d10c-c5e7-422a-a0d1-4eaa4be54637",
+								"id": "876291c7-9bd9-4d38-8b6e-d3dcbab3510e",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6404,67 +6343,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/readbw/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"readbw",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "1293204d-6196-45ec-b886-0eb4738b9f3a"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:55:20 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -6529,6 +6407,67 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739252000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739253000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597739254000000000\r\n            },\r\n            {\r\n                \"bw\": 35348480,\r\n                \"time\": 1597739255000000000\r\n            },\r\n            {\r\n                \"bw\": 45733376,\r\n                \"time\": 1597739256000000000\r\n            },\r\n            {\r\n                \"bw\": 23500288,\r\n                \"time\": 1597739257000000000\r\n            },\r\n            {\r\n                \"bw\": 11842048,\r\n                \"time\": 1597739258000000000\r\n            },\r\n            {\r\n                \"bw\": 14945280,\r\n                \"time\": 1597739259000000000\r\n            },\r\n            {\r\n                \"bw\": 15092224,\r\n                \"time\": 1597739260000000000\r\n            },\r\n            {\r\n                \"bw\": 23834624,\r\n                \"time\": 1597739261000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "1293204d-6196-45ec-b886-0eb4738b9f3a"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:55:20 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -6538,7 +6477,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "25679c8d-a1ed-4d32-92b1-354f9844bed9",
+								"id": "c57d0dd7-348b-4045-a01f-40675474cc03",
 								"exec": [
 									""
 								],
@@ -6548,7 +6487,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "57c59f9a-28ca-4ec0-a354-972c76614142",
+								"id": "32e2a283-1a8d-4652-bd25-87653b1e3a9d",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6669,7 +6608,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "698a0300-a18c-48c3-a340-d21ae3618fe1",
+								"id": "e45dc38a-310f-4032-9188-875b89ce2f45",
 								"exec": [
 									""
 								],
@@ -6679,7 +6618,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d8b50c59-446d-4148-aac1-57bf805ccc72",
+								"id": "bb082c71-92b5-4824-aaac-16b7473a2919",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6727,69 +6666,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"readbw",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "4360d852-cd5e-4dd5-a4c8-cb0015bd6a36"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:54:35 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -6856,6 +6732,69 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735678000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735679000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735680000000000\r\n            },\r\n            {\r\n                \"bw\": 28773888,\r\n                \"time\": 1597735681000000000\r\n            },\r\n            {\r\n                \"bw\": 53703680,\r\n                \"time\": 1597735682000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readbw",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "4360d852-cd5e-4dd5-a4c8-cb0015bd6a36"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:54:35 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -6865,7 +6804,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "07fc243b-9254-48ef-a7fc-40387a5ed7ea",
+								"id": "665c090f-406d-45c4-b12d-4df56bea953a",
 								"exec": [
 									""
 								],
@@ -6875,7 +6814,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7da0ea41-ec82-46dc-8987-c3048c994721",
+								"id": "fc906d1d-035e-4f46-a269-884771939f35",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6992,7 +6931,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "501db783-dc4d-417e-b517-75daf8e3b982",
+								"id": "84e96e52-510a-4df2-8e10-2a81a55c7e61",
 								"exec": [
 									""
 								],
@@ -7002,7 +6941,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "38b3434f-cbc9-41f6-850c-10a0dbed501f",
+								"id": "74b34438-5f19-4021-871e-06999975677a",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7150,8 +7089,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Bad Request",
+							"code": 400,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -7172,7 +7111,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -7182,7 +7121,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a54a1733-e4b2-429d-96a6-5151125a390b",
+								"id": "b4ec6945-0c10-422f-a0c2-0598d8511dd0",
 								"exec": [
 									""
 								],
@@ -7192,7 +7131,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "af735382-c912-40ab-95d1-534ff9abdea6",
+								"id": "c4046862-bdbf-48d4-a76e-7c808d31711a",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7313,7 +7252,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "32866103-6519-48bb-93db-786f3b3f8d6f",
+								"id": "3187fa07-1061-438e-ae0c-d2092338712e",
 								"exec": [
 									""
 								],
@@ -7323,7 +7262,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b7df3e02-437e-411a-9c41-f1e88df49c1b",
+								"id": "f7716db4-a99b-4386-ac49-81b8af7f59c6",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7371,69 +7310,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"writebw",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "cb3df3ea-4063-49ef-9d1a-b3514c3e9c5c"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:53:10 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -7500,6 +7376,69 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"bw\": 7731712,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"bw\": 26097664,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"bw\": 24965632,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"bw\": 26224128,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"bw\": 19838464,\r\n                \"time\": 1597736244000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736245000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736246000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "cb3df3ea-4063-49ef-9d1a-b3514c3e9c5c"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:53:10 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -7509,7 +7448,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2a7fffa9-7d54-4f4a-ab13-eda186ff9eb1",
+								"id": "98d2477f-7eb2-48c1-86f8-c7dc36d248a5",
 								"exec": [
 									""
 								],
@@ -7519,7 +7458,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "51477cdd-3b6f-4a75-83da-2fb51904d89b",
+								"id": "cc711550-4117-417c-a752-5b3176d20bbc",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7636,7 +7575,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "85474187-5366-42a0-ada5-3c3f55d10fda",
+								"id": "251484ed-d0b0-4102-a573-393f8aef05e7",
 								"exec": [
 									""
 								],
@@ -7646,7 +7585,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9c1bd963-1d78-4c3c-8e3f-8138d66315ac",
+								"id": "75d5ac1d-d870-4894-a024-5e8ebee0c96b",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7794,8 +7733,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Bad Request",
+							"code": 400,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -7816,7 +7755,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -7826,7 +7765,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "19abe746-ae7e-46c4-b7bc-a847b6b83873",
+								"id": "761a3d48-4e3a-449d-96a4-4ea7422c173d",
 								"exec": [
 									""
 								],
@@ -7836,7 +7775,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "301610a0-132d-4687-9e93-f1b847d65b9c",
+								"id": "2d5a0daa-3e2b-4ee6-a726-6a987e62d2f0",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7957,7 +7896,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "c9efcc4d-d20b-4d48-a07a-015571c099f0",
+								"id": "007a566c-ff46-43a9-beae-fac7925852e4",
 								"exec": [
 									""
 								],
@@ -7967,7 +7906,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "356c6f12-7bd1-43b0-9bb1-b86fce8a9115",
+								"id": "5afe7d17-fa56-482f-b883-416f797025ef",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8143,7 +8082,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -8153,7 +8092,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "582e72d5-0377-453c-a949-254e1f17bb65",
+								"id": "39d4320f-7ae2-40af-954b-faed1d48372d",
 								"exec": [
 									""
 								],
@@ -8163,7 +8102,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "754563d8-2320-43c2-a376-6040614108da",
+								"id": "b2144cb1-fb4d-4fb7-b454-4f89e8f72ce7",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8280,7 +8219,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a5c1b958-ecd2-48a9-a51f-5b3a9db26a95",
+								"id": "e0e2c495-8ff8-460e-9fb5-06902eee96d4",
 								"exec": [
 									""
 								],
@@ -8290,7 +8229,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "01006ca8-d604-4765-8ff2-8e57f97e8e2c",
+								"id": "ddd7bcd5-719c-44d3-93fb-9742fc42f198",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8438,8 +8377,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Bad Request",
+							"code": 400,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -8460,7 +8399,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -8470,7 +8409,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "4e2dcde8-abcf-4ed3-a775-21c921a1001a",
+								"id": "9516abb6-c4c8-4b4f-a7be-e724b18c7d6c",
 								"exec": [
 									""
 								],
@@ -8480,7 +8419,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f6d4a618-27cd-4bd9-97e1-51ded18720ff",
+								"id": "44bb72b7-19fb-47e3-a15b-1c66a1ef4eaa",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8601,7 +8540,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1d67ef3e-0240-47b1-bda5-e004f3370a1d",
+								"id": "39d32006-329f-4b29-9a40-984dbaae88ff",
 								"exec": [
 									""
 								],
@@ -8611,7 +8550,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f4dfe729-d911-4d74-93e2-b880edabffa8",
+								"id": "14fab8f2-5377-4444-9393-e457ae7b2abc",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8659,69 +8598,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"writeiops",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "a6584a59-ba43-4b3d-a5da-ef470df60a3d"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:48:17 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -8788,6 +8664,69 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 28927,\r\n                \"time\": 1597737831000000000\r\n            },\r\n            {\r\n                \"iops\": 9124,\r\n                \"time\": 1597737832000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737833000000000\r\n            },\r\n            {\r\n                \"iops\": 25600,\r\n                \"time\": 1597737834000000000\r\n            },\r\n            {\r\n                \"iops\": 25600,\r\n                \"time\": 1597737835000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597737836000000000\r\n            },\r\n            {\r\n                \"iops\": 12800,\r\n                \"time\": 1597737837000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737838000000000\r\n            },\r\n            {\r\n                \"iops\": 800,\r\n                \"time\": 1597737839000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writeiops",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "a6584a59-ba43-4b3d-a5da-ef470df60a3d"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:48:17 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -8797,7 +8736,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "48d7c106-6bbb-464d-9ed1-6777d4a1953a",
+								"id": "2ae4f130-3d49-40bd-85c5-5c4afbe97a9e",
 								"exec": [
 									""
 								],
@@ -8807,7 +8746,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "55a13544-960b-4962-8cfd-0d9408dfa0ce",
+								"id": "eddda0ad-5563-4429-a600-4a72059feb1e",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8924,7 +8863,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a9b96659-f699-41f4-a104-9a79a417b896",
+								"id": "a34920dd-6d8a-4d25-a2d9-71730befd5e1",
 								"exec": [
 									""
 								],
@@ -8934,7 +8873,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "58a4239b-7614-48ef-ae26-a49bb390acd0",
+								"id": "af3d051d-02ea-499b-99cb-740a3180b3a7",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8980,67 +8919,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"latency",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -9105,6 +8983,67 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -9114,7 +9053,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7fbce844-44f7-4751-aa21-9383b397517f",
+								"id": "97343ec2-6a3f-42fe-880c-ad40b73dede2",
 								"exec": [
 									""
 								],
@@ -9124,7 +9063,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "39bfa7ce-e128-4d86-b866-d01a2021dc72",
+								"id": "fc96b5ca-38b7-4e5b-ab23-dfd878b756cb",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9245,7 +9184,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b831f56c-cbe9-4256-9dfe-7dd1803bf4b6",
+								"id": "9c627256-8d7d-43f0-b724-7b84bff58f24",
 								"exec": [
 									""
 								],
@@ -9255,7 +9194,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "503e298c-ea23-4bf9-a418-f11d43112e91",
+								"id": "c827f4a8-fa71-4f17-afb6-f4d77e618bee",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9303,6 +9242,69 @@
 						}
 					},
 					"response": [
+						{
+							"name": "Fail - invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -9369,69 +9371,6 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"latency\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"latency\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"latency\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"latency\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
-						},
-						{
-							"name": "Fail - invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"latency",
-										"20hours"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": []\n    }\n}"
 						}
 					]
 				},
@@ -9441,7 +9380,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "733dece0-9f17-4eec-8025-63aab21c98eb",
+								"id": "5a935ad9-d4cb-422f-9c0b-d6c11b2a2581",
 								"exec": [
 									""
 								],
@@ -9451,7 +9390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e9439aaf-3218-4709-827e-f536b7166204",
+								"id": "08e79234-a86a-4a06-a1e1-5216becb0263",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9563,7 +9502,7 @@
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"Time\": 1597743919603338213,\r\n                \"Value\": \"[1596194025][1234][trace] progress report: [100]\"\r\n            }\r\n        ]\r\n    }\r\n}"
 						},
 						{
-							"name": "Fail - 0 invalid time interval, empty response",
+							"name": "Fail - 0 data not present",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -9621,7 +9560,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 20313,\r\n            \"level\": \"WARN\",\r\n            \"description\": \"Data not found\",\r\n            \"problem\": \"requested data is not present\",\r\n            \"solution\": \"check if the data is requested for an existing entity\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				}
@@ -9630,7 +9569,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "dc8a48ff-e51d-4ef4-9484-e9aa3cf4ec0c",
+						"id": "c7318818-ecd0-469f-8c7a-45660082f0ea",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -9640,7 +9579,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bb6ce4ae-ea7e-421a-a342-db62920f368f",
+						"id": "55ff5a38-95ca-4656-8c38-caa8919463a1",
 						"type": "text/javascript",
 						"exec": [
 							""
