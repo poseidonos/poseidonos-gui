@@ -55,33 +55,33 @@ func TestSend(t *testing.T) {
 			if test[0] == "create_array" {
 
 				cmd.PersistentFlags().StringSliceVar(&buffer, "buffer", []string{"uram0"}, "")
-                                cmd.PersistentFlags().Lookup("buffer").Changed = true
+				cmd.PersistentFlags().Lookup("buffer").Changed = true
 				cmd.PersistentFlags().StringSliceVar(&data, "data", []string{"unvme-ns-0", "unvme-ns-1", "unvme-ns-2"}, "")
-                                cmd.PersistentFlags().Lookup("data").Changed = true
+				cmd.PersistentFlags().Lookup("data").Changed = true
 				cmd.PersistentFlags().StringSliceVar(&spare, "spare", []string{"unvme-ns-3"}, "")
-                                cmd.PersistentFlags().Lookup("spare").Changed = true
+				cmd.PersistentFlags().Lookup("spare").Changed = true
 			} else if test[0] == "create_vol" {
 
-                                cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
-                                cmd.PersistentFlags().Lookup("name").Changed = true
+				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
+				cmd.PersistentFlags().Lookup("name").Changed = true
 				cmd.PersistentFlags().StringVar(&size, "size", "4194304", "")
-                                cmd.PersistentFlags().Lookup("size").Changed = true
-				
+				cmd.PersistentFlags().Lookup("size").Changed = true
+
 			} else if test[0] == "mount_vol" {
 
 				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
-                                cmd.PersistentFlags().Lookup("name").Changed = true
+				cmd.PersistentFlags().Lookup("name").Changed = true
 			} else if test[0] == "unmount_vol" {
 
 				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
-                                cmd.PersistentFlags().Lookup("name").Changed = true
+				cmd.PersistentFlags().Lookup("name").Changed = true
 			} else if test[0] == "delete_vol" {
 
 				cmd.PersistentFlags().StringVar(&name, "name", "vol01", "")
-                                cmd.PersistentFlags().Lookup("name").Changed = true
+				cmd.PersistentFlags().Lookup("name").Changed = true
 			}
 
-			res, err := Send(&cmd, test)
+			res, err := RequestSend(&cmd, test)
 
 			time.Sleep(5 * time.Second)
 
