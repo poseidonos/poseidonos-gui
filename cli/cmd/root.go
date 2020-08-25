@@ -147,10 +147,16 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			device.DeviceName = v
 			param.Data = append(param.Data, device)
 		}
-		for _, v := range spare {
-			device := model.Device{}
-			device.DeviceName = v
-			param.Spare = append(param.Spare, device)
+
+		if (command == "add" || command == "remove") && len(spare) != 0 {
+			param.SpareDevice = spare[0]
+
+		} else {
+			for _, v := range spare {
+				device := model.Device{}
+				device.DeviceName = v
+				param.Spare = append(param.Spare, device)
+			}
 		}
 
 		req, res, err = ArrayCommand[command](xrId, param)
@@ -233,9 +239,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		} else {
 			req, res, err = LoggerCommand[command](xrId, nil)
 		}
-	} else if systemExists || internalExists {
-
+	} else if cmd.Name() == "system" && systemExists {
 		req, res, err = SystemCommand[command](xrId, nil)
+	} else if cmd.Name() == "internal" && internalExists {
+		req, res, err = InternalCommand[command](xrId, nil)
 	}
 
 	if err != nil {

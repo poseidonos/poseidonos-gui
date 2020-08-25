@@ -48,6 +48,7 @@ type ArrayParam struct {
 	Buffer   []Device `json:"buffer,omitempty"`
 	Data     []Device `json:"data,omitempty"`
 	Spare    []Device `json:"spare,omitempty"`
+        SpareDevice string `json:"sparedevice,omitempty"`
 }
 type MAgentParam struct {
 	Time  string
@@ -56,7 +57,7 @@ type MAgentParam struct {
 type DeviceParam struct {
 	Name      string `json:"name,omitempty"`
 	ArrayName string `json:"arrayname,omitempty"`
-	Spare     string `json:"spare,omitempty"`
+        SpareDevice string `json:"sparedevice,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`

@@ -220,7 +220,7 @@ func RequestSend(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Name = name
 		}
 		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
-			param.Spare = spare[0]
+			param.SpareDevice = spare[0]
 		}
 		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
 			param.ArrayName = arrayName

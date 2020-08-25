@@ -64,5 +64,4 @@ func init() {
 	rootCmd.AddCommand(deviceCmd)
 
 	deviceCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
-	deviceCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
 }
