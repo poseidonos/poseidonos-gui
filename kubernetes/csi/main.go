@@ -1,7 +1,7 @@
 package csi
 
 import (
-	_ "csi/driver"
+	"csi/driver"
 	"fmt"
 )
 
