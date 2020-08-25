@@ -16,7 +16,7 @@ sleep 2
 if [ ! -f "$ibofos" ]; then
         echo "fail to find $ibofos. run make prior to run run_os.sh"
 else
-       ${root_dir}/script/setup_env.sh
+#       ${root_dir}/script/setup_env.sh
         \rm -rf /dev/shm/ibof_nvmf_trace*
 #       ${root_dir}/script/m9k/cpumode.sh max
         nohup $ibofos primary &>> ${logfile} &
