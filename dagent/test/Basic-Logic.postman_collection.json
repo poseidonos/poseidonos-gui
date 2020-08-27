@@ -23,7 +23,7 @@
 					"script": {
 						"id": "53fabcf8-f8a1-4640-94d2-8c61d702c88c",
 						"exec": [
-							"pm.test(\"EXITIBOFOS\", function () {\r",
+							"pm.test(\"RUNIBOFOS\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -349,7 +349,7 @@
 					"script": {
 						"id": "b874fa4e-c426-4dd2-b5fa-3bde6c6f53fb",
 						"exec": [
-							"pm.test(\"SCAN DEVICE\", function () {\r",
+							"pm.test(\"SMART\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -464,7 +464,7 @@
 			]
 		},
 		{
-			"name": "CREATE ARRAY",
+			"name": "CREATE ARRAY w/o spare",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -511,7 +511,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+					"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}/api/ibofos/v1/array",
@@ -755,7 +755,7 @@
 					"script": {
 						"id": "49456933-596d-4384-aacc-3e9c1bf9d025",
 						"exec": [
-							"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
+							"pm.test(\"ARRAY INFO\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -1167,8 +1167,8 @@
 					"script": {
 						"id": "3db3005d-5c61-4dfb-a036-d6474c11a351",
 						"exec": [
-							"pm.test(\"STATE ARRAY\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"pm.test(\"LOAD ARRAY\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1309,7 +1309,7 @@
 						"id": "bcd84095-a859-4ebb-8511-ae4af14be726",
 						"exec": [
 							"pm.test(\"CREATE ARRAY\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status(400);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1444,7 +1444,7 @@
 					"script": {
 						"id": "390d7538-3f23-4aec-9d91-585c11075cdd",
 						"exec": [
-							"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
+							"pm.test(\"ARRAY INFO\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -1581,7 +1581,7 @@
 					"script": {
 						"id": "6a4ca7c7-dbde-49ef-a7de-77695cb47d61",
 						"exec": [
-							"pm.test(\"STATE ARRAY\", function () {\r",
+							"pm.test(\"LOAD ARRAY\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -1980,7 +1980,7 @@
 					"script": {
 						"id": "f486685b-a830-435b-98a3-1ec2ac0e7bf4",
 						"exec": [
-							"pm.test(\"DETACH DEVICE\", function () {\r",
+							"pm.test(\"REMOVE DEVICE\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -2118,7 +2118,7 @@
 					"script": {
 						"id": "0f7eb233-0665-4f80-847e-de1de2a63658",
 						"exec": [
-							"pm.test(\"ATTACH DEVICE\", function () {\r",
+							"pm.test(\"ADD DEVICE\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -4075,7 +4075,7 @@
 					"script": {
 						"id": "cd900c22-b786-4fc1-aa00-a75710ecad69",
 						"exec": [
-							"pm.test(\"UPDATE VOLUME\", function () {\r",
+							"pm.test(\"RENAME VOLUME\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],

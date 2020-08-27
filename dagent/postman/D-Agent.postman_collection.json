@@ -507,6 +507,143 @@
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "KILLDAGENT",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cca8791d-c47b-4099-89ad-19f07b3ad18a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2dc04233-00e0-4d83-bebe-653151ce3507",
+								"exec": [
+									"pm.test(\"KILLDAGENT\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/dagent",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"dagent"
+							]
+						},
+						"description": "It just run command \"run_ibof.sh\" and does not gurantee to run."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/dagent",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"dagent"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "41872401-0604-4ced-b2a9-d722a7b465c7"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 May 2020 10:14:44 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "179"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						}
+					]
 				}
 			],
 			"description": "Internal is only for POS developer and QA.  \nInternal APIs will not provide to 3rd party",
@@ -969,7 +1106,7 @@
 									"script": {
 										"id": "eec0d612-829d-4f32-8e6b-fa81b77469bc",
 										"exec": [
-											"pm.test(\"EXITIBOFOS\", function () {\r",
+											"pm.test(\"RUNIBOFOS\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -2083,7 +2220,7 @@
 									"script": {
 										"id": "91e03f19-b883-49d9-a000-8c0f087e4fe6",
 										"exec": [
-											"pm.test(\"ATTACH DEVICE\", function () {\r",
+											"pm.test(\"ADD DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -2286,7 +2423,7 @@
 									"script": {
 										"id": "83d6f995-4b76-4b44-b943-2e75d536015b",
 										"exec": [
-											"pm.test(\"DETACH DEVICE\", function () {\r",
+											"pm.test(\"REMOVE DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -2492,7 +2629,7 @@
 									"script": {
 										"id": "dfab8159-545a-477a-90c0-44339952840d",
 										"exec": [
-											"pm.test(\"SCAN DEVICE\", function () {\r",
+											"pm.test(\"SMART\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -3099,7 +3236,7 @@
 									"script": {
 										"id": "952f6295-f3b5-4943-9cf0-2828f650600c",
 										"exec": [
-											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
+											"pm.test(\"ARRAY INFO\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -3442,7 +3579,7 @@
 									"script": {
 										"id": "99810ecd-64f4-4a86-acbe-81526d787937",
 										"exec": [
-											"pm.test(\"STATE ARRAY\", function () {\r",
+											"pm.test(\"LOAD ARRAY\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
@@ -4074,7 +4211,7 @@
 									"script": {
 										"id": "54abfd74-ed43-49e4-a449-8a45d4204ad4",
 										"exec": [
-											"pm.test(\"UPDATE VOLUME\", function () {\r",
+											"pm.test(\"RENAME VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
 										],
