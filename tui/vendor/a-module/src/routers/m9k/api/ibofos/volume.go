@@ -2,9 +2,13 @@ package ibofos
 
 import (
 	"a-module/src/routers/m9k/model"
+	"a-module/src/influxdb"
 )
 
 func CreateVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
+	
+	influxdb.CreateVolume()
+	
 	return Requester{xrId, param}.Post("CREATEVOLUME")
 }
 
@@ -21,6 +25,9 @@ func UnmountVolume(xrId string, param interface{}) (model.Request, model.Respons
 }
 
 func DeleteVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
+	
+	influxdb.DeleteVolume()
+	
 	return Requester{xrId, param}.Delete("DELETEVOLUME")
 }
 

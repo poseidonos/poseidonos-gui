@@ -32,3 +32,11 @@ func Test() {
 	line := fmt.Sprintf("stat,unit=temperature avg=%f,max=%f", 23.5, 45.0)
 	writeAPI.WriteRecord(context.Background(), line)
 }
+
+func CreateVolume() {
+	fmt.Println("Create Volume!!!!")
+}
+
+func DeleteVolume() {
+	fmt.Println("Delete Volume!!!!")
+}
