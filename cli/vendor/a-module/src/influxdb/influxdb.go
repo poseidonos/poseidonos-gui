@@ -4,8 +4,13 @@ import (
 	"context"
 	"fmt"
 	"time"
-
+	"a-module/src/errors"
 	"github.com/influxdata/influxdb-client-go/v2"
+)
+
+var (
+	CreateErr   = errors.New("Influx Create fail")
+	DeleteErr   = errors.New("Influx Delete fail")
 )
 
 func Test() {
@@ -33,10 +38,14 @@ func Test() {
 	writeAPI.WriteRecord(context.Background(), line)
 }
 
-func CreateVolume() {
-	fmt.Println("Create Volume!!!!")
+func CreateVolume() error {
+	fmt.Println("Create Volume !!!!")
+
+	return CreateErr
 }
 
-func DeleteVolume() {
-	fmt.Println("Delete Volume!!!!")
+func DeleteVolume() error {
+	fmt.Println("Delete Volume !!!!")
+
+	return DeleteErr
 }
