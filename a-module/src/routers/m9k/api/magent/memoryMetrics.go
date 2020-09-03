@@ -9,7 +9,7 @@ import (
 
 type MemoryField struct {
 	Time      json.Number `json:"time"`
-	UsageUser json.Number `json:"usageUser"`
+	UsageUser json.Number `json:"memoryUsagePercent"`
 }
 
 type MemoryFields []MemoryField

@@ -21,6 +21,17 @@ var TimeGroupsDefault = map[string]string{
 }
 
 var (
+	LatencyField = "sid_arr_0_mean"
+	BWReadField = "bw_read"
+	BWWriteField = "bw_write"
+	IOPSReadField = "iops_read"
+	IOPSWriteField = "iops_write"
+	MeanFieldKey = "mean"
+	PerfFieldKey = "perf"
+	LatFieldKey = "lat_"
+)
+
+var (
 	errConnInfluxDB = errors.New("could not connect to Influxdb")
 	errQuery        = errors.New("could not query to database")
 	errQueryCode    = 21000
@@ -46,23 +57,23 @@ var memoryDefaultRPQ = "SELECT mean(used_percent) AS mean_used_percent FROM %s.%
 var memoryLastRecordQ = "SELECT last(used_percent) AS mean_used_percent FROM %s.%s.mem LIMIT 1"
 
 var ReadBandwidthAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
-var ReadBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
-var ReadBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "%s"."%s"."air" order by time desc limit 1`
+var ReadBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var ReadBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw", timestamp FROM "%s"."%s"."air" order by time desc limit 1`
 
 var WriteBandwidthAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
-var WriteBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
-var WriteBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "%s"."%s"."air" order by time desc limit 1`
+var WriteBandwidthDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var WriteBandwidthLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw", timestamp FROM "%s"."%s"."air" order by time desc limit 1`
 
 var ReadIOPSAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
-var ReadIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
-var ReadIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "%s"."%s"."air" order by time desc limit 1`
+var ReadIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var ReadIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops", timestamp FROM "%s"."%s"."air" order by time desc limit 1`
 
 var WriteIOPSAggRPQ = `SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
-var WriteIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
-var WriteIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "%s"."%s"."air" order by time desc limit 1`
+var WriteIOPSDefaultRPQ = `SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var WriteIOPSLastRecordQ = `SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops", timestamp FROM "%s"."%s"."air" order by time desc limit 1`
 
-var LatencyAggRPQ = `SELECT /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
-var LatencyDefaultRPQ = `SELECT mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "latency" FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
-var LatencyLastRecordQ = `SELECT /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "%s"."%s"."air" order by time desc limit 1`
+var LatencyAggRPQ = `SELECT /^mean_lat_data_[\S]_aid_arr_[\S]_sid_arr_0_mean$/, /^mean_lat_data_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "%s"."%s"."mean_air" WHERE time > now() - %s FILL(null)`
+var LatencyDefaultRPQ = `SELECT mean(/^lat_data_[\S]_aid_arr_[\S]_sid_arr_0_mean$/), mean(/^lat_data_[\S]_aid_arr_[\S]_aid$/) as "latency", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s GROUP BY time(%s) FILL(null)`
+var LatencyLastRecordQ = `SELECT /^lat_data_[\S]_aid_arr_[\S]_sid_arr_0_mean$/, /^lat_data_[\S]_aid_arr_[\S]_aid$/ as "latency", timestamp FROM "%s"."%s"."air" order by time desc limit 1`
 
 var RebuildingLogQ = `SELECT "value" FROM "%s"."autogen"."rebuilding_status" WHERE time > now() - %s`

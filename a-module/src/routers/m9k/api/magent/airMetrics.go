@@ -57,7 +57,7 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 	valueIndexes := []int{}
 	if level == "array" {
 		for index, col := range columns {
-			if match, _ := regexp.MatchString(".*aid$", col); !match && col != "time" {
+			if match, _ := regexp.MatchString(".*aid$", col); !match && col != "time" && col != "timestamp" {
 				valueIndexes = append(valueIndexes, index)
 			}
 		}
@@ -94,7 +94,10 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 			for _, aid := range aidArr {
 				if _, ok := indexMap[aid]; ok && val[indexMap[aid]] != nil {
 					if idx, err := val[indexMap[aid]].(json.Number).Int64(); err == nil && idx == int64(volID) {
-						fieldKey := "mean" + aid[len(metrics):(len(aid)-len("aid"))] + metricOps
+						fieldKey := aid[:(len(aid)-len("aid"))] + metricOps
+						if len(aid) > 4 && aid[:4] != MeanFieldKey && aid[:4] != PerfFieldKey && aid[:4] != LatFieldKey {
+							fieldKey = MeanFieldKey + aid[len(metrics):(len(aid)-len("aid"))] + metricOps
+						}
 						if _, ok = indexMap[fieldKey]; ok && val[indexMap[fieldKey]] != nil {
 							v, _ := val[indexMap[fieldKey]].(json.Number).Float64()
 							sum += v
@@ -119,7 +122,7 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", "bw_read", level)
+	res := extractValues(values, columns, "bw", "bw", BWReadField, level)
 	result.Result.Data = res
 	return result, nil
 }
@@ -134,7 +137,7 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", "bw_write", level)
+	res := extractValues(values, columns, "bw", "bw", BWWriteField, level)
 	result.Result.Data = res
 	return result, nil
 }
@@ -149,7 +152,7 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", "iops_read", level)
+	res := extractValues(values, columns, "iops", "iops", IOPSReadField, level)
 	result.Result.Data = res
 	return result, nil
 }
@@ -165,7 +168,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 		result.Result.Status, _ = util.GetStatusInfo(statusCode)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", "iops_write", level)
+	res := extractValues(values, columns, "iops", "iops", IOPSWriteField, level)
 	result.Result.Data = res
 	return result, nil
 }
@@ -180,7 +183,7 @@ func GetLatency(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "latency", "latency", "timelag_arr_0_mean", level)
+	res := extractValues(values, columns, "latency", "latency", LatencyField, level)
 	result.Result.Data = res
 	return result, nil
 }

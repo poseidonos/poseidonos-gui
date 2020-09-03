@@ -6655,7 +6655,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -6665,7 +6665,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"readbw"
 							]
 						}
@@ -6694,7 +6694,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -6704,7 +6704,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"readbw"
 									]
 								}
@@ -6786,7 +6786,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -6796,7 +6796,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"readbw",
 								"{{period}}"
 							]
@@ -6893,7 +6893,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -6903,7 +6903,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"readbw",
 										"20hours"
 									]
@@ -7299,7 +7299,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7309,7 +7309,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"writebw"
 							]
 						}
@@ -7338,7 +7338,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7348,7 +7348,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writebw"
 									]
 								}
@@ -7430,7 +7430,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7440,7 +7440,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"writebw",
 								"{{period}}"
 							]
@@ -7470,7 +7470,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7480,7 +7480,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writebw",
 										"20hours"
 									]
@@ -7533,7 +7533,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7543,7 +7543,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writebw",
 										"{{period}}"
 									]
@@ -7943,7 +7943,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7953,7 +7953,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"readiops"
 							]
 						}
@@ -7982,7 +7982,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7992,7 +7992,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"readiops"
 									]
 								}
@@ -8074,7 +8074,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8084,7 +8084,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"readiops",
 								"{{period}}"
 							]
@@ -8114,7 +8114,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8124,7 +8124,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"readiops",
 										"{{period}}"
 									]
@@ -8181,7 +8181,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8191,7 +8191,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"readiops",
 										"20hours"
 									]
@@ -8587,7 +8587,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8597,7 +8597,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"writeiops"
 							]
 						}
@@ -8626,7 +8626,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8636,7 +8636,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writeiops"
 									]
 								}
@@ -8718,7 +8718,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8728,7 +8728,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"writeiops",
 								"{{period}}"
 							]
@@ -8758,7 +8758,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8768,7 +8768,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writeiops",
 										"20hours"
 									]
@@ -8821,7 +8821,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8831,7 +8831,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"writeiops",
 										"{{period}}"
 									]
@@ -9231,7 +9231,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -9241,7 +9241,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"latency"
 							]
 						}
@@ -9270,7 +9270,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9280,7 +9280,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"latency"
 									]
 								}
@@ -9362,7 +9362,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -9372,7 +9372,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volid01}}",
+								"{{volume_id}}",
 								"latency",
 								"{{period}}"
 							]
@@ -9402,7 +9402,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9412,7 +9412,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"latency",
 										"{{period}}"
 									]
@@ -9469,7 +9469,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9479,7 +9479,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volid01}}",
+										"{{volume_id}}",
 										"latency",
 										"20hours"
 									]
