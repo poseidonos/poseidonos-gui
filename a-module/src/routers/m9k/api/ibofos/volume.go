@@ -1,20 +1,21 @@
 package ibofos
 
 import (
-	"a-module/src/routers/m9k/model"
 	"a-module/src/influxdb"
-	"a-module/src/errors"
+	"a-module/src/routers/m9k/model"
 )
 
 func CreateVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
-
 	var resErr error
 
 	err1 := influxdb.CreateVolume()
+
 	req, res, err2 := Requester{xrId, param}.Post("CREATEVOLUME")
 
-	if err1 != nil  || err2 != nil {
-		resErr = errors.New("Influx Error : " + err1.Error() + " Send Error : " + err2.Error())
+	if err1 != nil || err2 != nil {
+		//resErr = errors.New("Influx Error : " + err1.Error() + " Send Error : " + err2.Error())
+		// Temp workaround
+		resErr = err2
 	}
 
 	return req, res, resErr
@@ -33,14 +34,15 @@ func UnmountVolume(xrId string, param interface{}) (model.Request, model.Respons
 }
 
 func DeleteVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
-
 	var resErr error
 
 	err1 := influxdb.DeleteVolume()
 	req, res, err2 := Requester{xrId, param}.Delete("DELETEVOLUME")
 
-	if err1 != nil  || err2 != nil {
-		resErr = errors.New("Influx Error : " + err1.Error() + " Send Error : " + err2.Error())
+	if err1 != nil || err2 != nil {
+		//resErr = errors.New("Influx Error : " + err1.Error() + " Send Error : " + err2.Error())
+		// Temp workaround
+		resErr = err2
 	}
 
 	return req, res, resErr
