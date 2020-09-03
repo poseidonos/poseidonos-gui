@@ -17,7 +17,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable dagent.service
 sudo systemctl start dagent
 
-echo "Starting DAgent...."
+echo "Starting DAgent..."
 sleep 8s
 echo "Checking Status..."
 

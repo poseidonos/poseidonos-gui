@@ -12,7 +12,7 @@ sudo service influxdb stop
 #$SCRIPT_PATH/change_influx_conf.sh
 sudo service influxdb start
 
-echo "Starting InfluxDB.."
+echo "Starting InfluxDB..."
 sleep 8s
 [ ! -d "/tmp/air_result.json" ] && touch /tmp/air_result.json
 [ ! -d "/etc/ibofos" ] && mkdir /etc/ibofos
@@ -31,7 +31,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable magent.service
 sudo systemctl start magent
 
-echo "Starting MAgent...."
+echo "Starting MAgent..."
 sleep 8s
 echo "Checking Status..."
 
