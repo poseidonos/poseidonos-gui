@@ -39,6 +39,9 @@ var size string
 var maxiops uint64
 var maxbw uint64
 
+var prio uint
+var weight uint
+
 var GitCommit string
 var BuildTime string
 
@@ -123,6 +126,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 	_, volumeExists := VolumeCommand[command]
 	_, internalExists := InternalCommand[command]
 	_, loggerExists := LoggerCommand[command]
+	_, rebuildExists := RebuildCommand[command]
 
 	if cmd.Name() == "array" && arrayExists {
 
@@ -160,6 +164,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 
 		req, res, err = ArrayCommand[command](xrId, param)
+
 	} else if cmd.Name() == "device" && deviceExists {
 
 		param := model.DeviceParam{}
@@ -181,15 +186,6 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		param := model.VolumeParam{}
 
 		if cmd.PersistentFlags().Changed("size") && len(size) > 0 {
-
-			/*
-				_, err := strconv.ParseUint(size, 10, 64)
-
-				if err == nil {
-					size += "MB"
-				}
-			*/
-
 			var v datasize.ByteSize
 			err = v.UnmarshalText([]byte(size))
 
@@ -225,16 +221,20 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.NewName = newName
 		}
 
-		if param == (model.VolumeParam{}) {
-			req, res, err = VolumeCommand[command](xrId, nil)
-		} else {
+		if param != (model.VolumeParam{}) {
 			req, res, err = VolumeCommand[command](xrId, param)
+		} else {
+			req, res, err = VolumeCommand[command](xrId, nil)
 		}
 	} else if cmd.Name() == "logger" && loggerExists {
 
+		param := model.LoggerParam{}
+
 		if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
-			param := model.LoggerParam{}
 			param.Level = level
+		}
+
+		if param != (model.LoggerParam{}) {
 			req, res, err = LoggerCommand[command](xrId, param)
 		} else {
 			req, res, err = LoggerCommand[command](xrId, nil)
@@ -242,7 +242,39 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 	} else if cmd.Name() == "system" && systemExists {
 		req, res, err = SystemCommand[command](xrId, nil)
 	} else if cmd.Name() == "internal" && internalExists {
-		req, res, err = InternalCommand[command](xrId, nil)
+
+		param := model.InternalParam{}
+
+		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
+			param.Name = name
+		}
+
+		if cmd.PersistentFlags().Changed("prio") && prio >= 0 {
+			param.Prio = prio
+		}
+
+		if cmd.PersistentFlags().Changed("weight") && weight >= 0 {
+			param.Weight = weight
+		}
+
+		if param != (model.InternalParam{}) {
+			req, res, err = InternalCommand[command](xrId, param)
+		} else {
+			req, res, err = InternalCommand[command](xrId, nil)
+		}
+	} else if cmd.Name() == "rebuild" && rebuildExists {
+
+		param := model.RebuildParam{}
+
+		if cmd.PersistentFlags().Changed("level") && len(level) > 0 {
+			param.Level = level
+		}
+
+		if param != (model.RebuildParam{}) {
+			req, res, err = RebuildCommand[command](xrId, param)
+		} else {
+			req, res, err = RebuildCommand[command](xrId, nil)
+		}
 	}
 
 	if err != nil {

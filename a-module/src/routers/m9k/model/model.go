@@ -48,7 +48,7 @@ type ArrayParam struct {
 	Buffer   []Device `json:"buffer,omitempty"`
 	Data     []Device `json:"data,omitempty"`
 	Spare    []Device `json:"spare,omitempty"`
-        SpareDevice string `json:"sparedevice,omitempty"`
+	SpareDevice     string `json:"sparedevice,omitempty"`
 }
 type MAgentParam struct {
 	Time  string
@@ -57,7 +57,7 @@ type MAgentParam struct {
 type DeviceParam struct {
 	Name      string `json:"name,omitempty"`
 	ArrayName string `json:"arrayname,omitempty"`
-        SpareDevice string `json:"sparedevice,omitempty"`
+	SpareDevice string `json:"sparedevice,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`
@@ -83,6 +83,16 @@ type CallbackMultiVol struct {
 type WBTParam struct {
 	TestName string  `json:"testname,omitempty"`
 	Argv     WBTArgv `json:"argv"`
+}
+
+type InternalParam struct {
+	Name   string  `json:"name,omitempty"`
+	Prio   uint  `json:"prio,omitempty"`
+	Weight uint  `json:"weight,omitempty"`
+}
+
+type RebuildParam struct {
+	Level   string  `json:"level,omitempty"`
 }
 
 type WBTArgv struct {

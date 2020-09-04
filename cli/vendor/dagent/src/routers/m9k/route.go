@@ -11,13 +11,18 @@ import (
 	"dagent/src/routers/m9k/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func Route(router *gin.Engine) {
 	uri := router.Group("/api")
 
 	// Doc Static
-	uri.StaticFS("/dagent/v1/doc", http.Dir("/root/workspace/m9k/dagent/doc"))
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	dir = strings.ReplaceAll(dir, "/bin", "/doc")
+	uri.StaticFS("/dagent/v1/doc", http.Dir(dir))
 
 	//uri.Use(middleware.CheckBasicAuth())
 	//uri.Use(middleware.CheckAPIActivate())

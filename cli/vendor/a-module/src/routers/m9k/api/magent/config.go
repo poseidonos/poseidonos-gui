@@ -30,7 +30,7 @@ var (
 	errEndPointCode = 21010
 )
 
-var netAggRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM %s.%s.mean_net WHERE time > now() - %s"
+var netAggRPQ = "SELECT bytes_recv AS mean_bytes_recv , bytes_sent AS mean_bytes_sent, drop_in AS mean_drop_in, drop_out AS mean_drop_out, err_in AS mean_err_in, err_out AS mean_err_out, packets_recv AS mean_packets_recv, packets_sent AS mean_packets_sent  FROM %s.%s.mean_net WHERE time > now() - %s"
 var netDefaultRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM %s.%s.net WHERE time > now() - %s GROUP BY time(%s)"
 var netLastRecordQ = "SELECT last(bytes_recv), last(bytes_sent), last(drop_in), last(drop_out), last(err_in), last(err_out), last(packets_recv), last(packets_sent)  FROM %s.%s.net LIMIT 1"
 var netAddQ = "SELECT time, \"name\", address FROM %s.autogen.ethernet"
