@@ -30,7 +30,7 @@ var spare []string
 var name string
 var newName string
 var level string
-var arrayName string
+var array string
 var raidType string
 var subNQN string
 
@@ -162,9 +162,9 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 				param.Spare = append(param.Spare, device)
 			}
 		}
-		
-		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.ArrayName = arrayName
+
+		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
+			param.Array = array
 		}
 
 		req, res, err = ArrayCommand[command](xrId, param)
@@ -175,9 +175,6 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
-		}
-		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.Array = arrayName
 		}
 
 		if param != (model.DeviceParam{}) {
@@ -205,8 +202,8 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Name = name
 		}
 
-		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.Array = arrayName
+		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
+			param.Array = array
 		}
 
 		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {

@@ -80,6 +80,6 @@ func init() {
 	volumeCmd.PersistentFlags().StringVar(&size, "size", "", "set size \"--size 4194304\" or \"--size 10MB\"")
 	volumeCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	volumeCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
-	volumeCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
+	volumeCmd.PersistentFlags().StringVarP(&array, "array", "a", "", "set array name")
 	volumeCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
 }

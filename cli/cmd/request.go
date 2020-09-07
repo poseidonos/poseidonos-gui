@@ -157,7 +157,7 @@ func init() {
 	requestCmd.PersistentFlags().Uint64Var(&maxiops, "maxiops", 0, "set maxiops \"--maxiops 4194304\"")
 	requestCmd.PersistentFlags().Uint64Var(&maxbw, "maxbw", 0, "set maxbw \"--maxbw 4194304\"")
 	requestCmd.PersistentFlags().StringVarP(&level, "level", "l", "", "set level")
-	requestCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
+	requestCmd.PersistentFlags().StringVarP(&array, "array", "a", "", "set array name")
 	requestCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
 	requestCmd.PersistentFlags().StringVar(&subNQN, "subnqn", "", "set sub system NVMe qualified name")
 }
@@ -222,8 +222,8 @@ func RequestSend(cmd *cobra.Command, args []string) (model.Response, error) {
 		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
 			param.SpareDevice = spare[0]
 		}
-		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.Array = arrayName
+		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
+			param.Array = array
 		}
 
 		if param != (model.DeviceParam{}) {
@@ -258,8 +258,8 @@ func RequestSend(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Name = name
 		}
 
-		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.Array = arrayName
+		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
+			param.Array = array
 		}
 
 		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {

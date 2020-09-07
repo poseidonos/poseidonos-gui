@@ -19,4 +19,3 @@ func GetSMART(xrId string, param interface{}) (model.Request, model.Response, er
 func deviceSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.DeviceParam{}}.Send(command)
 }
-

@@ -75,4 +75,3 @@ func DetachDevice(xrId string, param interface{}) (model.Request, model.Response
 func systemSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.SystemParam{}}.Send(command)
 }
-
