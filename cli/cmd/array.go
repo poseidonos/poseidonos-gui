@@ -77,4 +77,5 @@ func init() {
 	arrayCmd.PersistentFlags().StringSliceVarP(&spare, "spare", "s", []string{}, "set spare name \"-s unvme-ns-3\"")
 	arrayCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "set name \"-n vol01\"")
 	arrayCmd.PersistentFlags().StringVarP(&raidType, "raidtype", "r", "", "set raid type")
+	arrayCmd.PersistentFlags().StringVarP(&arrayName, "array", "a", "", "set array name")
 }

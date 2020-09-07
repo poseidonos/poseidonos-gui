@@ -162,6 +162,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 				param.Spare = append(param.Spare, device)
 			}
 		}
+		
+		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
+			param.ArrayName = arrayName
+		}
 
 		req, res, err = ArrayCommand[command](xrId, param)
 

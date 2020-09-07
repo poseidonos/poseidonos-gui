@@ -49,6 +49,7 @@ type ArrayParam struct {
 	Data     []Device `json:"data,omitempty"`
 	Spare    []Device `json:"spare,omitempty"`
 	SpareDevice     string `json:"sparedevice,omitempty"`
+	ArrayName string `json:"array,omitempty"`
 }
 type MAgentParam struct {
 	Time  string
