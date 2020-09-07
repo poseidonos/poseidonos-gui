@@ -32,8 +32,10 @@ func Unauthorized(ctx *gin.Context, res model.Response, code int) {
 }
 
 func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err error) {
-	if err != nil || res.Result.Status.Code != 0 {
+	if res.Result.Status.Code != 0 {
 		BadRequest(ctx, res, res.Result.Status.Code)
+	} else if err != nil {
+		BadRequest(ctx, res, 10004)
 	} else {
 		Success(ctx, res, res.Result.Status.Code)
 	}

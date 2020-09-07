@@ -177,7 +177,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Name = name
 		}
 		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.ArrayName = arrayName
+			param.Array = arrayName
 		}
 
 		if param != (model.DeviceParam{}) {
@@ -206,7 +206,7 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 		}
 
 		if cmd.PersistentFlags().Changed("array") && len(arrayName) > 0 {
-			param.ArrayName = arrayName
+			param.Array = arrayName
 		}
 
 		if cmd.PersistentFlags().Changed("subnqn") && len(subNQN) > 0 {

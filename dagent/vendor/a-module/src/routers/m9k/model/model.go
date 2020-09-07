@@ -57,13 +57,13 @@ type MAgentParam struct {
 }
 type DeviceParam struct {
 	Name      string `json:"name,omitempty"`
-	ArrayName string `json:"arrayname,omitempty"`
+	Array string `json:"array,omitempty"`
 	SpareDevice string `json:"sparedevice,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`
 	NewName     string `json:"newname,omitempty"`
-	ArrayName   string `json:"arrayname,omitempty"`
+	Array       string `json:"array,omitempty"`
 	SubNQN      string `json:"subnqn,omitempty"`
 	Size        uint64 `json:"size,omitempty"`
 	Maxiops     uint64 `json:"maxiops,omitempty"`

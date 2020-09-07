@@ -156,7 +156,7 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 	volParam := model.VolumeParam{}
 	err := json.Unmarshal(marshalled, &volParam)
 	if err != nil {
-		log.Fatalf("Unmarshalling Error in Implement Async multi volume function: %v", err)
+		log.Info("Unmarshalling Error in Implement Async multi volume function: %v", err)
 	}
 	if volParam.TotalCount > SINGLE_VOLUME_COUNT {
 		return volParam, true
