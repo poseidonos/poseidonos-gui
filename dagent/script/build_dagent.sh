@@ -19,7 +19,3 @@ rm -rf ./bin
 mkdir bin
 mv dagent ./bin
 cp config.yaml ./bin
-
-# Temp
-go build -mod vendor -tags="ssloff pos_06" -ldflags "-X dagent/src/routers/m9k/api/dagent.GitCommit=$GIT_COMMIT_DAGENT -X dagent/src/routers/m9k/api/dagent.BuildTime=$BUILD_TIME_DAGENT"
-mv dagent ./bin/dagent_pos0.6

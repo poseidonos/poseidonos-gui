@@ -12,7 +12,7 @@ import (
 )
 
 func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Delete("EXITIBOFOS")
+	return systemSender(xrId, param, "EXITIBOFOS")
 }
 
 func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -41,33 +41,38 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 }
 
 func IBoFOSInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("GETIBOFOSINFO")
+	return systemSender(xrId, param, "GETIBOFOSINFO")
 }
 
 func IBoFOSVersion(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("GETVERSION")
+	return systemSender(xrId, param, "GETVERSION")
 }
 
 func MountiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Post("MOUNTIBOFOS")
+	return systemSender(xrId, param, "MOUNTIBOFOS")
 }
 
 func UnmountiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Delete("UNMOUNTIBOFOS")
+	return systemSender(xrId, param, "UNMOUNTIBOFOS")
 }
 
 func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Put("WBT")
+	return systemSender(xrId, param, "WBT")
 }
 
 func ListWBT(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("LISTWBT")
+	return systemSender(xrId, param, "LISTWBT")
 }
 
 func DoGC(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("DOGC")
+	return systemSender(xrId, param, "DOGC")
 }
 
 func DetachDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Delete("DETACHDEVICE")
+	return systemSender(xrId, param, "DETACHDEVICE")
 }
+
+func systemSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
+	return Requester{xrId, param, model.SystemParam{}}.Send(command)
+}
+

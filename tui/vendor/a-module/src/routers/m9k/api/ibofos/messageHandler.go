@@ -11,13 +11,7 @@ import (
 	"time"
 )
 
-const (
-	stateUnlocked uint32 = iota
-	stateLocked
-)
-
 var (
-	locker       = stateUnlocked
 	errLocked    = errors.New("Locked out buddy")
 	ErrSending   = errors.New("Sending error")
 	ErrReceiving = errors.New("Receiving error")
@@ -28,58 +22,55 @@ var (
 )
 
 type Requester struct {
-	xrId  string
-	param interface{}
+	xrId      string
+	param     interface{}
+	paramType interface{}
 }
 
-func (rq Requester) Wbt(command string) (model.Request, model.Response, error) {
+func (rq Requester) Send(command string) (model.Request, model.Response, error) {
 	iBoFRequest := model.Request{
 		Command: command,
 		Rid:     rq.xrId,
 	}
-	iBoFRequest.Param = rq.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
+
+	err := typeChecker(rq.param, rq.paramType)
+	if err != nil {
+		return iBoFRequest, model.Response{}, err
+	} else {
+		iBoFRequest.Param = rq.param
+		res, err := sendIBoF(iBoFRequest)
+		return iBoFRequest, res, err
+	}
 }
 
-func (rq Requester) Post(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rq.xrId,
-	}
-	iBoFRequest.Param = rq.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
+func typeChecker(srcParam interface{}, paramType interface{}) error {
+	var err error
+	marshalled, _ := json.Marshal(srcParam)
 
-func (rq Requester) Put(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rq.xrId,
+	switch param := paramType.(type) {
+	case model.ArrayParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.DeviceParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.VolumeParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.InternalParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.SystemParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.RebuildParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.LoggerParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.WBTParam:
+		err = json.Unmarshal(marshalled, &param)
 	}
-	iBoFRequest.Param = rq.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
 
-func (rq Requester) Delete(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rq.xrId,
+	if err != nil {
+		log.Debugf("Unmarshal : ", err)
 	}
-	iBoFRequest.Param = rq.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
-}
 
-func (rq Requester) Get(command string) (model.Request, model.Response, error) {
-	iBoFRequest := model.Request{
-		Command: command,
-		Rid:     rq.xrId,
-	}
-	iBoFRequest.Param = rq.param
-	res, err := sendIBoF(iBoFRequest)
-	return iBoFRequest, res, err
+	return err
 }
 
 func sendIBoF(iBoFRequest model.Request) (model.Response, error) {

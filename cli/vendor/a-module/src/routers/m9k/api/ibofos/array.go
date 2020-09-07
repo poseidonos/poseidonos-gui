@@ -5,29 +5,33 @@ import (
 )
 
 func ListArrayDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("LISTARRAYDEVICE")
+	return arraySender(xrId, param, "LISTARRAYDEVICE")
 }
 
 func LoadArray(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("LOADARRAY")
+	return arraySender(xrId, param, "LOADARRAY")
 }
 
 func CreateArray(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Post("CREATEARRAY")
+	return arraySender(xrId, param, "CREATEARRAY")
 }
 
 func DeleteArray(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Delete("DELETEARRAY")
+	return arraySender(xrId, param, "DELETEARRAY")
 }
 
 func ArrayInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Get("ARRAYINFO")
+	return arraySender(xrId, param, "ARRAYINFO")
 }
 
 func AddDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Post("ADDDEVICE")
+	return arraySender(xrId, param, "ADDDEVICE")
 }
 
 func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return Requester{xrId, param}.Post("REMOVEDEVICE")
+	return arraySender(xrId, param, "REMOVEDEVICE")
+}
+
+func arraySender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
+	return Requester{xrId, param, model.ArrayParam{}}.Send(command)
 }

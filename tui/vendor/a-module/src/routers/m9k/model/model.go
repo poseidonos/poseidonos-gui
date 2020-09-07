@@ -1,5 +1,3 @@
-//+build !pos_06
-
 package model
 
 type Request struct {
@@ -9,10 +7,10 @@ type Request struct {
 }
 
 type Response struct {
-	Rid             string `json:"rid"`
-	LastSuccessTime int64  `json:"lastSuccessTime"`
-	Result          Result `json:"result"`
-	Info            interface{}   `json:"info,omitempty"`
+	Rid             string      `json:"rid"`
+	LastSuccessTime int64       `json:"lastSuccessTime"`
+	Result          Result      `json:"result"`
+	Info            interface{} `json:"info,omitempty"`
 }
 
 type Result struct {
@@ -42,13 +40,13 @@ type LoggerParam struct {
 }
 
 type ArrayParam struct {
-	FtType   int      `json:"fttype,omitempty"`
-	Name     string   `json:"name,omitempty"`
-	RaidType string   `json:"raidtype,omitempty"`
-	Buffer   []Device `json:"buffer,omitempty"`
-	Data     []Device `json:"data,omitempty"`
-	Spare    []Device `json:"spare,omitempty"`
-	SpareDevice     string `json:"sparedevice,omitempty"`
+	FtType      int      `json:"fttype,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	RaidType    string   `json:"raidtype,omitempty"`
+	Buffer      []Device `json:"buffer,omitempty"`
+	Data        []Device `json:"data,omitempty"`
+	Spare       []Device `json:"spare,omitempty"`
+	SpareDevice string   `json:"sparedevice,omitempty"`
 	ArrayName string `json:"array,omitempty"`
 }
 type MAgentParam struct {
@@ -56,8 +54,8 @@ type MAgentParam struct {
 	Level string
 }
 type DeviceParam struct {
-	Name      string `json:"name,omitempty"`
-	Array string `json:"array,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Array       string `json:"array,omitempty"`
 	SpareDevice string `json:"sparedevice,omitempty"`
 }
 type VolumeParam struct {
@@ -87,13 +85,13 @@ type WBTParam struct {
 }
 
 type InternalParam struct {
-	Name   string  `json:"name,omitempty"`
-	Prio   uint  `json:"prio,omitempty"`
-	Weight uint  `json:"weight,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Prio   uint   `json:"prio,omitempty"`
+	Weight uint   `json:"weight,omitempty"`
 }
 
 type RebuildParam struct {
-	Level   string  `json:"level,omitempty"`
+	Level string `json:"level,omitempty"`
 }
 
 type WBTArgv struct {
