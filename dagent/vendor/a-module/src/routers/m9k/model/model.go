@@ -59,7 +59,6 @@ type DeviceParam struct {
 	Name        string `json:"name,omitempty"`
 	SpareDevice string `json:"sparedevice,omitempty"`
 	Array       string `json:"array,omitempty"`
-
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`

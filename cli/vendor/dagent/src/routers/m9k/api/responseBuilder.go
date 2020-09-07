@@ -20,6 +20,8 @@ func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 		BadRequest(ctx, res, 11020)
 	case iBoFOS.ErrReceiving:
 		BadRequest(ctx, res, 10050)
+	case iBoFOS.ErrJsonType:
+		BadRequest(ctx, res, 10005)
 	case iBoFOS.ErrRes:
 		BadRequest(ctx, res, res.Result.Status.Code)
 	default:

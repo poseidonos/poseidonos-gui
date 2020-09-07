@@ -18,6 +18,7 @@ var (
 	ErrJson      = errors.New("Json error")
 	ErrRes       = errors.New("Response error")
 	ErrConn      = errors.New("iBoF Connection Error")
+	ErrJsonType  = errors.New("Json Type Validation Error")
 	mutex        = &sync.Mutex{}
 )
 
@@ -33,7 +34,7 @@ func (rq Requester) Send(command string) (model.Request, model.Response, error) 
 		Rid:     rq.xrId,
 	}
 
-	err := typeChecker(rq.param, rq.paramType)
+	err := checkJsonType(rq.param, rq.paramType)
 	if err != nil {
 		return iBoFRequest, model.Response{}, err
 	} else {
@@ -43,7 +44,7 @@ func (rq Requester) Send(command string) (model.Request, model.Response, error) 
 	}
 }
 
-func typeChecker(srcParam interface{}, paramType interface{}) error {
+func checkJsonType(srcParam interface{}, paramType interface{}) error {
 	var err error
 	marshalled, _ := json.Marshal(srcParam)
 
@@ -67,7 +68,8 @@ func typeChecker(srcParam interface{}, paramType interface{}) error {
 	}
 
 	if err != nil {
-		log.Debugf("Unmarshal : ", err)
+		log.Debugf("checkJsonType : ", ErrJsonType.Error())
+		err = ErrJsonType
 	}
 
 	return err

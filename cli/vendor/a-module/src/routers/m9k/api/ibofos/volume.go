@@ -7,24 +7,18 @@ import (
 )
 
 func CreateVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
-	var resErr string
+	req, res, err := Requester{xrId, param, model.VolumeParam{}}.Send("CREATEVOLUME")
 
-	err1 := influxdb.CreateVolume()
-	req, res, err2 := Requester{xrId, param, model.VolumeParam{}}.Send("CREATEVOLUME")
-
-	if err1 != nil {
-		resErr = "Influx Error : " + err1.Error()
+	if err != nil {
+		return req, res, err
 	}
 
-	if err2 != nil {
-		resErr += " Send Error : " + err2.Error()
-	}
+	err = influxdb.CreateVolume()
 
-	if len(resErr) == 0 {
-		return req, res, nil
-	} else {
-		return req, res, errors.New(resErr)
+	if err != nil {
+		err = errors.New("Request Success, but Influx Error : " + err.Error())
 	}
+	return req, res, err
 }
 
 func UpdateVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -40,24 +34,18 @@ func UnmountVolume(xrId string, param interface{}) (model.Request, model.Respons
 }
 
 func DeleteVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
-	var resErr string
+	req, res, err := Requester{xrId, param, model.VolumeParam{}}.Send("DELETEVOLUME")
 
-	err1 := influxdb.DeleteVolume()
-	req, res, err2 := Requester{xrId, param, model.VolumeParam{}}.Send("DELETEVOLUME")
-
-	if err1 != nil {
-		resErr = "Influx Error : " + err1.Error()
+	if err != nil {
+		return req, res, err
 	}
 
-	if err2 != nil {
-		resErr += " Send Error : " + err2.Error()
-	}
+	err = influxdb.CreateVolume()
 
-	if len(resErr) == 0 {
-		return req, res, nil
-	} else {
-		return req, res, errors.New(resErr)
+	if err != nil {
+		err = errors.New("Request Success, but Influx Error : " + err.Error())
 	}
+	return req, res, err
 }
 
 func ListVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
