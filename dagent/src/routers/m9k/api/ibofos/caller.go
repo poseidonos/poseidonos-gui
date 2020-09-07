@@ -1,6 +1,7 @@
 package ibofos
 
 import (
+	"a-module/src/log"
 	"a-module/src/routers/m9k/model"
 	"bytes"
 	"dagent/src/routers/m9k/api"
@@ -8,7 +9,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"log"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {

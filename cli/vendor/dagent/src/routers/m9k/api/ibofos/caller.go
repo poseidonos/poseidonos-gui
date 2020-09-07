@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"log"
+	"a-module/src/log"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
