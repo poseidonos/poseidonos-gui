@@ -1168,7 +1168,7 @@
 						"id": "3db3005d-5c61-4dfb-a036-d6474c11a351",
 						"exec": [
 							"pm.test(\"LOAD ARRAY\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status(400);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1309,7 +1309,7 @@
 						"id": "bcd84095-a859-4ebb-8511-ae4af14be726",
 						"exec": [
 							"pm.test(\"CREATE ARRAY\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -2871,7 +2871,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
+					"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol0122\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}/api/ibofos/v1/volumes",
