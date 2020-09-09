@@ -9,7 +9,9 @@ import (
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/api/magent"
 	"dagent/src/routers/m9k/middleware"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -74,8 +76,12 @@ func Route(router *gin.Engine) {
 	{
 		iBoFOSPath.POST("/devices", func(ctx *gin.Context) {
 			// Temp workaround
-			deviceName := ctx.Param("deviceName")
-			param := model.DeviceParam{SpareDevice: deviceName}
+			req := model.Request{}
+			ctx.ShouldBindBodyWith(&req, binding.JSON)
+			marshalled, _ := json.Marshal(req.Param)
+			param := model.DeviceParam{}
+			_ = json.Unmarshal(marshalled, &param)
+			param.SpareDevice = param.Spare
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddDevice, param)
 
 			//ibofos.CalliBoFOS(ctx, amoduleIBoFOS.AddDevice)
