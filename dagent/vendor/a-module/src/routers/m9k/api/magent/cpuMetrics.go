@@ -20,7 +20,7 @@ func Contains(arr []string, element string) bool {
 // CPUField stores the cpu response structure
 type CPUField struct {
 	Time      json.Number `json:"time"`
-	UsageUser json.Number `json:"usageUser"`
+	UsageUser json.Number `json:"cpuUsagePercent"`
 }
 
 // CPUFields is an array of CPUField

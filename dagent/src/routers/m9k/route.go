@@ -81,7 +81,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.DELETE("/devices/:deviceName", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
 			// Name is legacy, SpareName is new
-			param := model.DeviceParam{Name: deviceName, SpareDevice: deviceName}
+			param := model.DeviceParam{Name: deviceName, Spare: deviceName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
 		})
 		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {

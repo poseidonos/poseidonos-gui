@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"sync"
 	"time"
 )
 
@@ -19,7 +18,7 @@ var (
 	ErrRes       = errors.New("Response error")
 	ErrConn      = errors.New("iBoF Connection Error")
 	ErrJsonType  = errors.New("Json Type Validation Error")
-	mutex        = &sync.Mutex{}
+	//mutex        = &sync.Mutex{}
 )
 
 type Requester struct {

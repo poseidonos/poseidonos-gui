@@ -16,6 +16,14 @@ func GetSMART(xrId string, param interface{}) (model.Request, model.Response, er
 	return deviceSender(xrId, param, "SMART")
 }
 
+func AddDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return deviceSender(xrId, param, "ADDDEVICE")
+}
+
+func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return deviceSender(xrId, param, "REMOVEDEVICE")
+}
+
 func deviceSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.DeviceParam{}}.Send(command)
 }

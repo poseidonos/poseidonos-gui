@@ -57,7 +57,7 @@ type MAgentParam struct {
 
 type DeviceParam struct {
 	Name        string `json:"name,omitempty"`
-	SpareDevice string `json:"sparedevice,omitempty"`
+	Spare string `json:"spare,omitempty"`
 	Array       string `json:"array,omitempty"`
 }
 type VolumeParam struct {
