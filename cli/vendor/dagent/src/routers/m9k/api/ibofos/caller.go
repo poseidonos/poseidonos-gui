@@ -25,6 +25,7 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}) (model.Re
 	if req.Param != nil {
 		param = merge(param, req.Param)
 	}
+
 	_, res, err := f(header.XrId(ctx), param)
 	api.HttpResponse(ctx, res, err)
 }

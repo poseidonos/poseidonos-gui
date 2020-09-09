@@ -2,6 +2,7 @@ package influxdb
 
 import (
 	"a-module/src/errors"
+	"a-module/src/log"
 	"context"
 	"fmt"
 	"github.com/influxdata/influxdb-client-go/v2"
@@ -39,14 +40,14 @@ func Test() {
 }
 
 func CreateVolume() error {
-	fmt.Println("Create Volume !!!!")
+	log.Info("Create Volume !!!!")
 
 	//return CreateErr
 	return nil
 }
 
 func DeleteVolume() error {
-	fmt.Println("Delete Volume !!!!")
+	log.Info("Delete Volume !!!!")
 
 	//return DeleteErr
 	return nil
