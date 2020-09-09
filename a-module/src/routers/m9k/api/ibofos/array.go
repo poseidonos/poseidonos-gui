@@ -24,14 +24,6 @@ func ArrayInfo(xrId string, param interface{}) (model.Request, model.Response, e
 	return arraySender(xrId, param, "ARRAYINFO")
 }
 
-func AddDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return arraySender(xrId, param, "ADDDEVICE")
-}
-
-func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return arraySender(xrId, param, "REMOVEDEVICE")
-}
-
 func arraySender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.ArrayParam{}}.Send(command)
 }
