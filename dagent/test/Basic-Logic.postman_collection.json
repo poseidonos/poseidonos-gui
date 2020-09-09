@@ -2871,7 +2871,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol0122\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
+					"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}/api/ibofos/v1/volumes",
