@@ -89,7 +89,7 @@ type WBTParam struct {
 
 type InternalParam struct {
 	Name   string `json:"name,omitempty"`
-	Prio   uint   `json:"prio,omitempty"`
+	Prio   uint   `json:"prio"`
 	Weight uint   `json:"weight,omitempty"`
 }
 
