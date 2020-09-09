@@ -56,9 +56,10 @@ type MAgentParam struct {
 }
 
 type DeviceParam struct {
-	Name        string `json:"name,omitempty"`
+	Name  string `json:"name,omitempty"`
 	Spare string `json:"spare,omitempty"`
-	Array       string `json:"array,omitempty"`
+	SpareDevice string `json:"sparedevice,omitempty"` // temp, it must removed after fixing cli_server
+	Array string `json:"array,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`
