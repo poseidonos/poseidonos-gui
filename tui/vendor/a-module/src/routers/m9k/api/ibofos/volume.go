@@ -13,11 +13,12 @@ func CreateVolume(xrId string, param interface{}) (model.Request, model.Response
 		return req, res, err
 	}
 
-	err = influxdb.CreateVolume()
+	// Calling a go routine to mark the creation time of a volume in influxdb
+	// The creation time is used in querying the influxdb for volume level data
+	// This is currently a workaround for the issue that POS is crating duplicate volume Ids
+	// The function is made as a go routine so that it does not cause much sde effects to the Create Volume API
+	go influxdb.CreateVolume(ListVolume, param, res)
 
-	if err != nil {
-		err = errors.New("Request Success, but Influx Error : " + err.Error())
-	}
 	return req, res, err
 }
 
@@ -40,7 +41,7 @@ func DeleteVolume(xrId string, param interface{}) (model.Request, model.Response
 		return req, res, err
 	}
 
-	err = influxdb.CreateVolume()
+	err = influxdb.DeleteVolume()
 
 	if err != nil {
 		err = errors.New("Request Success, but Influx Error : " + err.Error())

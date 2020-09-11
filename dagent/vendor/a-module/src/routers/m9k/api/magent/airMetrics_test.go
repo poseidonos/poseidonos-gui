@@ -66,6 +66,22 @@ func TestGetReadBandwidth(t *testing.T) {
 		},
 		{
 			input: model.MAgentParam{
+				Time:  "24h",
+				Level: "101",
+			},
+			expected: make([]string, 0),
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
+				Time:  "24h",
+				Level: "1",
+			},
+			expected: make([]string, 0),
+			err:      nil,
+		},
+		{
+			input: model.MAgentParam{
 				Time:  "20m",
 				Level: "0",
 			},

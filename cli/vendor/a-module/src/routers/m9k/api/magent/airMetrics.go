@@ -23,7 +23,7 @@ import (
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
-func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]interface{}, []string, int) {
+func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime string) ([][]interface{}, []string, int) {
 	var query string
 	paramStruct := param.(model.MAgentParam)
 	if paramStruct.Time != "" {
@@ -32,9 +32,9 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ string) ([][]
 			return nil, nil, errEndPointCode
 		}
 		if Contains(AggTime, timeInterval) {
-			query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval)
+			query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime)
 		} else {
-			query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, startingTime, TimeGroupsDefault[timeInterval])
 		}
 
 	} else {
@@ -112,11 +112,26 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 	return result
 }
 
+func getVolumeCreationTime(level string) string {
+	volQuery := fmt.Sprintf(VolumeQuery, DBName, DefaultRP, level)
+	result, err := ExecuteQuery(volQuery)
+	if err != nil || len(result) == 0 || len(result[0].Series) == 0 {
+		return "0"
+	}
+	for index, column := range result[0].Series[0].Columns {
+		if column == "time" {
+			return string(result[0].Series[0].Values[index][0].(json.Number))
+		}
+	}
+	return "0"
+}
+
 // GetReadBandwidth returns metrics related to Read Bandwidth
 func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, statusCode := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ)
+	startingTime := getVolumeCreationTime(level)
+	values, columns, statusCode := GetAIRData(param, ReadBandwidthAggRPQ, ReadBandwidthDefaultRPQ, ReadBandwidthLastRecordQ, startingTime)
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
@@ -131,7 +146,8 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, statusCode := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ)
+	startingTime := getVolumeCreationTime(level)
+	values, columns, statusCode := GetAIRData(param, WriteBandwidthAggRPQ, WriteBandwidthDefaultRPQ, WriteBandwidthLastRecordQ, startingTime)
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
@@ -146,7 +162,8 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 func GetReadIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, statusCode := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ)
+	startingTime := getVolumeCreationTime(level)
+	values, columns, statusCode := GetAIRData(param, ReadIOPSAggRPQ, ReadIOPSDefaultRPQ, ReadIOPSLastRecordQ, startingTime)
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
@@ -161,7 +178,8 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, statusCode := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ)
+	startingTime := getVolumeCreationTime(level)
+	values, columns, statusCode := GetAIRData(param, WriteIOPSAggRPQ, WriteIOPSDefaultRPQ, WriteIOPSLastRecordQ, startingTime)
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
@@ -177,7 +195,8 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 func GetLatency(param interface{}) (model.Response, error) {
 	var result model.Response
 	level := param.(model.MAgentParam).Level
-	values, columns, statusCode := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ)
+	startingTime := getVolumeCreationTime(level)
+	values, columns, statusCode := GetAIRData(param, LatencyAggRPQ, LatencyDefaultRPQ, LatencyLastRecordQ, startingTime)
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
