@@ -330,7 +330,7 @@ class VolumeList extends Component {
           </ThemeProvider>
           <AlertDialog
             title="Delete Volumes"
-            description="Are you sure you want to delete the selected Volumes?"
+            description="Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
             open={this.state.open}
             handleClose={this.handleClose}
             onConfirm={() => {

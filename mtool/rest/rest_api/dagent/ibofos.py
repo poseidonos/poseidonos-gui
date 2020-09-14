@@ -688,6 +688,16 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     request_body = json.dumps(request_body)
     
     try:
+        send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/volumes/' + name + '/mount',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL +
