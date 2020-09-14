@@ -30,7 +30,7 @@ DESCRIPTION: <File description> *
 #from socketclient.socketclient import get_devices, scan_devices, get_device_details
 
 # from dagent.ibofos import *
-from rest.rest_api.dagent.ibofos import scan_devices, get_devices
+from rest.rest_api.dagent.ibofos import scan_devices, get_devices, get_smart_info
 
 
 def list_devices():
@@ -56,7 +56,6 @@ def list_devices():
         'devices': [],
         'metadevices': []
     }
-    device_dict = {}
     for device in devices["result"]["data"]["devicelist"]:
         if device["type"] == 'NVRAM':  # and device["class"] !=  'SYSTEM':
             res['metadevices'].append(device["name"])
@@ -101,5 +100,5 @@ def list_meta_devices():
 """
 
 def get_disk_details(name):
-    details = get_device_details(name)
+    details = get_smart_info(name)
     return details

@@ -31,6 +31,7 @@ import { Box, Grid, Typography, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { connect } from 'react-redux';
+import io from 'socket.io-client';
 import 'react-dropdown/style.css';
 import 'react-table/react-table.css';
 import Header from '../../components/Header';
@@ -42,21 +43,26 @@ import VolumeList from '../../components/VolumeManagement/VolumeList';
 import MToolLoader from '../../components/MToolLoader';
 import AlertDialog from '../../components/Dialog';
 import './Volume.css';
-import { customTheme, PageTheme } from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
 import Legend from '../../components/Legend';
 import * as actionTypes from "../../store/actions/actionTypes";
-import bytesToTB from '../../utils/bytes-to-tb';
+// import bytesToTB from '../../utils/bytes-to-tb';
+import formatBytes from '../../utils/format-bytes';
 
 const styles = (theme) => ({
   dashboardContainer: {
     display: 'flex'
   },
-  container: {
+  statsWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
     width: '100%',
     boxSizing: 'border-box',
-    marginTop: theme.spacing(3),
+    zIndex: 100,
+    position: 'absolute',
+    flexBasis: '100%',
+    height: '100%',
+    alignContent: 'center',
     padding: theme.spacing(0, 3),
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(0, 1),
@@ -69,7 +75,7 @@ const styles = (theme) => ({
     paddingTop: "10px",
     paddingLeft: "35px",
     paddingRight: "24px",
-    width: '100%',
+    width: 'calc(100% - 256px)',
     boxSizing: 'border-box'
   },
   statsContainer: {
@@ -85,9 +91,15 @@ const styles = (theme) => ({
     marginTop: theme.spacing(1)
   },
   volumeStatsPaper: {
-    height: 330,
+    height: 350,
+    display: 'flex',
+    position: 'relative',
+    flexDirection: 'column',
+    [theme.breakpoints.down('md')]: {
+      height: 400
+    },
     [theme.breakpoints.down('xs')]: {
-      height: 170
+      height: 220
     }
   },
   pageHeader: customTheme.page.title,
@@ -97,11 +109,21 @@ const styles = (theme) => ({
   }
 });
 
+
+// namespace to connect to the websocket for multi-volume creation
+const createVolSocketEndPoint = ":5000/create_vol";
+
 class Volume extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
+      createVolSocket: io(createVolSocketEndPoint, {
+        transports: ['websocket'],
+        query: {
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
     };
     this.deleteVolumes = this.deleteVolumes.bind(this);
     this.fetchVolumes = this.fetchVolumes.bind(this);
@@ -133,13 +155,14 @@ class Volume extends Component {
       size: volume.volume_size,
       description: volume.volume_description,
       unit: volume.volume_units,
-      arrayname: "",
+      arrayname: "POSArray",
       maxbw: volume.maxbw,
       maxiops: volume.maxiops,
       count: volume.volume_count,
       suffix: volume.volume_suffix,
       stop_on_error: volume.stop_on_error_checkbox,
       mount_vol: volume.mount_vol,
+      max_available_size:  this.props.arraySize - this.props.totalVolSize
     });
   }
 
@@ -182,7 +205,7 @@ class Volume extends Component {
   render() {
     const volumeFilledStyle = {
       width: `${this.props.arraySize !== 0 ?
-        (100 * (this.props.totalVolSize * 1024 * 1024 * 1024 * 1024)) /
+        (100 * (this.props.totalVolSize)) /
         (this.props.arraySize) : 0}%`,
       height: '100%',
       backgroundColor: 'rgba(51, 158, 255,0.6)',
@@ -194,7 +217,7 @@ class Volume extends Component {
     };
     const volumeFreeStyle = {
       width: `${this.props.arraySize !== 0 ? 100 -
-        (100 * (this.props.totalVolSize * 1024 * 1024 * 1024 * 1024)) /
+        (100 * (this.props.totalVolSize)) /
         (this.props.arraySize) : 100}%`,
       height: '100%',
       color: 'white',
@@ -208,7 +231,7 @@ class Volume extends Component {
     const { classes } = this.props;
 
     return (
-      <ThemeProvider theme={PageTheme}>
+      <ThemeProvider theme={MToolTheme}>
         <Box display="flex">
           <Header toggleDrawer={this.handleDrawerToggle} />
           <Sidebar mobileOpen={this.state.mobileOpen} toggleDrawer={this.handleDrawerToggle} />
@@ -243,8 +266,8 @@ class Volume extends Component {
                           deleteArray={this.deleteArray}
                           diskDetails={this.props.diskDetails}
                           getDiskDetails={this.props.Get_Disk_Details}
-                          detachDisk={this.props.Detach_Disk}
-                          attachDisk={this.props.Attach_Disk}
+                          // detachDisk={this.props.Detach_Disk}
+                          // attachDisk={this.props.Attach_Disk}
                           addSpareDisk={this.props.Add_Spare_Disk}
                           removeSpareDisk={this.props.Remove_Spare_Disk}
                         />
@@ -266,7 +289,14 @@ class Volume extends Component {
                 <React.Fragment>
                   <Grid container xs={12} spacing={1} className={classes.card}>
                     <Grid item xs={12} md={6} className={classes.spaced}>
-                      <CreateVolume data-testid="createvolume" createVolume={this.createVolume} maxVolumeCount={this.props.maxVolumeCount} volCount={this.props.volumes.length} />
+                      <CreateVolume
+                        data-testid="createvolume"
+                        createVolume={this.createVolume}
+                        maxVolumeCount={this.props.maxVolumeCount}
+                        volCount={this.props.volumes.length}
+                        maxAvailableSize = {this.props.arraySize - this.props.totalVolSize}
+                        createVolSocket={this.state.createVolSocket}
+                      />
                     </Grid>
 
                     <Grid item xs={12} md={6}>
@@ -276,7 +306,7 @@ class Volume extends Component {
                             Volume Statistics
                           </Typography>
                         </Grid>
-                        <div className={classes.container}>
+                        <div className={classes.statsWrapper}>
                           <Grid item xs={12}>
                             <Typography variant="span" color="secondary">
                               Number of volumes: {this.props.volumes.length}
@@ -284,25 +314,16 @@ class Volume extends Component {
                           </Grid>
                           <Grid item xs={12} className={classes.statsContainer}>
                             <Box className={classes.volumeStats}>
-                              <div style={volumeFilledStyle}>
-                                <Typography variant="span">
-                                  {bytesToTB(this.props.totalVolSize * 1024 * 1024 * 1024 * 1024)}
-                                </Typography>
-                              </div>
-                              <div style={volumeFreeStyle}>
-                                <Typography variant="span">
-                                  {bytesToTB(this.props.arraySize -
-                                    this.props.totalVolSize * 1024 * 1024 * 1024 * 1024)}
-                                </Typography>
-                              </div>
+                              <div style={volumeFilledStyle} />
+                              <div style={volumeFreeStyle} />
                             </Box>
                             <Grid item container xs={12} wrap="wrap" className={classes.legendContainer}>
                               <Legend
                                 bgColor="rgba(51, 158, 255,0.6)"
                                 title={`
                           Used Space :
-                          ${bytesToTB(
-                                  this.props.totalVolSize * 1024 * 1024 * 1024 * 1024
+                          ${formatBytes(
+                                  this.props.totalVolSize
                                 )}
                         `}
                               />
@@ -310,9 +331,9 @@ class Volume extends Component {
                                 bgColor="rgba(0, 186, 0, 0.6)"
                                 title={`
                           Available for Volume Creation :
-                          ${bytesToTB(
+                          ${formatBytes(
                                   this.props.arraySize -
-                                  this.props.totalVolSize * 1024 * 1024 * 1024 * 1024
+                                  this.props.totalVolSize
                                 )}
                         `}
                               />
@@ -334,6 +355,7 @@ class Volume extends Component {
                         changeField={this.props.Change_Volume_Field}
                         fetchVolumes={this.fetchVolumes}
                         saveVolume={this.props.Update_Volume}
+                        changeMountStatus={this.props.Change_Mount_Status}
                       />
                     </Grid>
                   </Grid>
@@ -389,18 +411,18 @@ const mapDispatchToProps = dispatch => {
     Get_Devices: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
     Create_Volume: (payload) => dispatch({ type: actionTypes.SAGA_SAVE_VOLUME, payload }),
     Get_Array_Size: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY_SIZE }),
-    // To be used when Delete Array functionalitiy is implemented by Poseidon OS
-    // Delete_Array: (payload) => dispatch({type: actionTypes.SAGA_DELETE_ARRAY, payload}),
+    Delete_Array: (payload) => dispatch({type: actionTypes.SAGA_DELETE_ARRAY, payload}),
     Get_Volumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
     Delete_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
     Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),
     Get_Disk_Details: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
     Edit_Volume: (payload) => dispatch({ type: actionTypes.EDIT_VOLUME, payload }),
+    Change_Mount_Status: (payload) => dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
     Change_Volume_Field: (payload) => dispatch({ type: actionTypes.CHANGE_VOLUME_FIELD, payload }),
     Update_Volume: (payload) => dispatch({ type: actionTypes.SAGA_UPDATE_VOLUME, payload }),
-    Detach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_DETACH_DISK, payload }),
-    Attach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ATTACH_DISK, payload }),
+    // Detach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_DETACH_DISK, payload }),
+    // Attach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ATTACH_DISK, payload }),
     Add_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
     Remove_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_REMOVE_SPARE_DISK, payload }),
     Get_Max_Volume_Count: () => dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),

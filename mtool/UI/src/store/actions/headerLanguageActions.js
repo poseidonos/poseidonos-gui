@@ -24,13 +24,13 @@ DESCRIPTION: <Contains pure actions for Authentication Container> *
 @REVISION HISTORY
 [07/08/2019] [Palak] : Prototyping..........////////////////////
 */
-import * as actionTypes from "./actionTypes";
+// import * as actionTypes from "./actionTypes";
 
-export const changeLanguage = (language) => {
-    return {
-        type: actionTypes.CHANGE_LANGUAGE,
-        val: language
-    };
-}
+// export const changeLanguage = (language) => {
+//     return {
+//         type: actionTypes.CHANGE_LANGUAGE,
+//         val: language
+//     };
+// }
 
-export default changeLanguage;
+// export default changeLanguage;

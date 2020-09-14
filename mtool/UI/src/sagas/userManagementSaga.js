@@ -46,6 +46,7 @@ export function* fetchUsersInfo() {
        yield put(actionCreators.fetchUsersInfo([]));
     }
     finally {
+        /* istanbul ignore if */
         if(yield cancelled())
         {
             yield put(actionCreators.fetchUsersInfo([]));

@@ -27,12 +27,10 @@ DESCRIPTION: <File description> *
 */
 '''
 
-import time
-import re
 import socket
 
 
-
+"""
 def check_ip_policy(ip=None):
     if not isinstance(ip, str):
         return -1
@@ -47,22 +45,22 @@ def check_ip_policy(ip=None):
         return 0
     else:
         return -3
-
-
+"""
+"""
 def get_localtime():
     ts = time.strftime('%Y-%m-%d %H:%M:%S',
                        time.localtime(time.time()))
     return ts
-
+"""
 
 def get_hostname():
     print('here', socket.gethostname())
     return socket.gethostname()
 
-
+"""
 def get_ip_by_name():
     return socket.gethostbyname(socket.gethostname())
-
+"""
 
 def get_ip_address():
     try:

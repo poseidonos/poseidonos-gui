@@ -36,6 +36,9 @@ sudo touch /var/log/logmtool2.log
 sudo chmod 777 /var/log/logmtool1.log
 sudo chmod 777 /var/log/logmtool2.log
 
+#give permission to sqlite db
+sudo chmod 777 $PWD/ibof.db
+
 #create a soft link for the folder , to get absolute path for starting service
 sudo rm /usr/local/m9k
 parentdir="$(dirname "$currdir")"
@@ -63,6 +66,7 @@ else
         echo Mtool  failed to start
 
 fi
+#python3 PreConfiguredAlerts.py #Set Kapacitor Pre-Configured Alerts...Kapacitor takes sometime to load its resources.. Adding this statement at the end...
 #Run sudo -s at the end always
 sudo -s
 . ~/.bashrc

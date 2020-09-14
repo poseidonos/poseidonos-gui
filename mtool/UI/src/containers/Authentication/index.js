@@ -223,14 +223,15 @@ class Authentication extends Component {
     // }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    // this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
     this.state = {
       showPassword: false,
     }
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.props.i18n.changeLanguage(this.props.lang);
   }
 
@@ -238,10 +239,10 @@ class Authentication extends Component {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
-  handleLanguageChange = event => {
-    this.props.changeLanguage(event.target.value);
-    this.props.i18n.changeLanguage(event.target.value);
-  };
+  // handleLanguageChange = event => {
+  //   this.props.changeLanguage(event.target.value);
+  //   this.props.i18n.changeLanguage(event.target.value);
+  // };
 
   handleSubmit(event) {
     event.preventDefault();
@@ -410,7 +411,7 @@ class Authentication extends Component {
 
 const mapStateToProps = state => {
   return {
-    lang: state.headerLanguageReducer.lang,
+    // lang: state.headerLanguageReducer.lang,
     username: state.authenticationReducer.username,
     password: state.authenticationReducer.password,
     loginFailed: state.authenticationReducer.loginFailed,
@@ -420,7 +421,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeLanguage: val => dispatch(actionCreators.changeLanguage(val)),
+    // changeLanguage: val => dispatch(actionCreators.changeLanguage(val)),
     changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
     login: (data, fn) =>
 

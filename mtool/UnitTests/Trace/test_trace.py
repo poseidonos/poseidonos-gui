@@ -45,8 +45,7 @@ def test_get_live_logs(mock_get_live_logs_from_db, global_data):
         },
         content_type='application/json',
     )
-
-    data = (response.get_data(as_text=True))
+    
     assert response.status_code == 200
 
 

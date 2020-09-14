@@ -40,18 +40,21 @@ export function* addNewUsersInfo(action) {
             },
         });
         const { status } = response;
+        
+         /* istanbul ignore else */
         if (status === 200) {
             yield fetchUsersInfo();
             yield put(actionCreators.openAlertBox({
                 alertOpen: true,
                 istypealert: true,
                 alerttype: 'info',
-                // alerttitle: "Success",
                 alerttitle: 'Add New User',
                 alertdescription: 'User added successfully',
             }));
         }
-        else if (response === 400)
+    }
+    catch (error) {
+        if (error.response.status === 400) {
             yield put(actionCreators.openAlertBox({
                 alertOpen: true,
                 istypealert: true,
@@ -59,18 +62,15 @@ export function* addNewUsersInfo(action) {
                 alerttitle: 'Add New User',
                 alertdescription: 'User already exists',
             }));
+        }
         else
-            yield put(actionCreators.openAlertBox({
-                alertOpen: true,
-                istypealert: true,
-                alerttype: 'alert',
-                // alerttitle: "Failure",
-                alerttitle: 'Add New User',
-                alertdescription: 'Error in adding User',
-            }));
-    }
-    catch (error) {
-       ;
+        yield put(actionCreators.openAlertBox({
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'alert',
+            alerttitle: 'Add New User',
+            alertdescription: 'Error in adding User',
+        }));
     }
 }
 

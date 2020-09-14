@@ -26,19 +26,19 @@ DESCRIPTION: <Contains pure actions for Performance Container> *
 */
 import * as actionTypes from "./actionTypes";
 
-export const fetchDiskUsed = (diskUsed) => {
-    return {
-        type: actionTypes.FETCH_DISK_USED,
-        diskUsed
-    }
-}
+// export const fetchDiskUsed = (diskUsed) => {
+//     return {
+//         type: actionTypes.FETCH_DISK_USED,
+//         diskUsed
+//     }
+// }
 
-export const fetchDiskWrite = (diskWrite) => {
-    return {
-        type: actionTypes.FETCH_DISK_WRITE,
-        diskWrite
-    }
-}
+// export const fetchDiskWrite = (diskWrite) => {
+//     return {
+//         type: actionTypes.FETCH_DISK_WRITE,
+//         diskWrite
+//     }
+// }
 
 export const fetchCpuUsage = (cpuUsage) => {
     return {
@@ -82,12 +82,12 @@ export const fetchLatency = (latency) => {
     }
 }
 
-export const fetchInputPowerVariation = (watts) => {
-    return {
-        type: actionTypes.FETCH_INPUT_POWER_VARIATION,
-        watts
-    }
-}
+// export const fetchInputPowerVariation = (watts) => {
+//     return {
+//         type: actionTypes.FETCH_INPUT_POWER_VARIATION,
+//         watts
+//     }
+// }
 
 export const fetchVolReadBandwidth = (payload) => {
     return {

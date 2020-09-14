@@ -61,8 +61,6 @@ DESCRIPTION: <File description> *
 
 import configparser
 import os
-import sys
-import traceback
 
 SCHEDULER_PERF_DICT = {'volume_info_collections_msec': 0.2,
                        'volume_info_collections_sec': 1,
@@ -169,7 +167,7 @@ class Configuration(object):
             return sect_dict
     """
 
-    
+    """
     def get_option_content(self, section, option):
         value = None
         try:
@@ -178,7 +176,7 @@ class Configuration(object):
             print("There is no section: such section")
         finally:
             return value
-    
+    """ 
     """
     def get_valid_metrics(self):
         metrics_dict = {}

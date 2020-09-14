@@ -27,13 +27,6 @@ DESCRIPTION: <Contains pure actions for Storage Management Page> *
 
 import * as actionTypes from "./actionTypes";
 
-export const fetchVolumeDetails = (volumes) => {
-    return {
-        type:actionTypes.FETCH_VOLUME_INFO,
-        volumes,
-    };
-}
-
 export const clearVolumes = () => {
     return {
         type: actionTypes.CLEAR_VOLUMES

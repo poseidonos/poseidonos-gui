@@ -7,7 +7,7 @@
 /   products to use or abstract this computer program for the sole purpose of         /
 /   implementing a product based on Samsung Electronics Co., Ltd. products.           /
 /   No other rights to reproduce, use, or disseminate this computer program,          /
-/   whether in part or in whole, are granted.                                         / 
+/   whether in part or in whole, are granted.                                         /
 /                                                                                     /
 /   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
 /   respect to the performance of this computer program, and specifically disclaims   /
@@ -19,7 +19,7 @@
 
 DESCRIPTION: <File description> *
 @NAME : index.js
-@AUTHORS: Jay Hitesh Sanghavi 
+@AUTHORS: Jay Hitesh Sanghavi
 @Version : 1.0 *
 @REVISION HISTORY
 [03/06/2019] [Jay] : Prototyping..........////////////////////
@@ -141,53 +141,24 @@ const DiskDetails = props => {
             id="alert-dialog-description"
             className={classes.alertDialogText}
           >
+	    <div className="DiskDetails-value-wrap">
+              <span className="DiskDetails-value">
+                <span className="Diskdetails-value-label">Name:</span>
+                <span>{props.details.name}</span>
+              </span>
+     </div>
             <div className="DiskDetails-value-wrap">
               <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Serial No: </span>
-                <span>{props.details.SerialNumber}</span>
-              </span>
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Model: </span>
-                <span>{props.details.Model}</span>
+                <span className="Diskdetails-value-label">Serial No:</span>
+                <span>{props.details.sn}</span>
               </span>
             </div>
-            <div className="DiskDetails-value-wrap">
+	    <div className="DiskDetails-value-wrap">
               <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Build Date: </span>
-                <span>{props.details.BuildDate}</span>
+                <span className="Diskdetails-value-label">Model:</span>
+                <span>{props.details.mn}</span>
               </span>
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Manufacturer: </span>
-                <span>{props.details.Manufacturer}</span>
-              </span>
-            </div>
-            <div className="DiskDetails-value-wrap">
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Part Number: </span>
-                <span>{props.details.PartNumber}</span>
-              </span>
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Total Size: </span>
-                <span>{props.details.PhysicalSize}</span>
-              </span>
-            </div>
-            <div className="DiskDetails-value-wrap">
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Used Size: </span>
-                <span>{props.details.UsedBytes}</span>
-              </span>
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Firmware: </span>
-                <span>{props.details.Firmware}</span>
-              </span>
-            </div>
-            <div className="DiskDetails-value-wrap">
-            <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Predicted Life (%): </span>
-                <span>{props.details.PredictedMediaLifeLeftPercent}</span>
-            </span>
-            </div>
-
+     </div>
             <div style={{ fontSize: '12px' }}>
               <b>SMART Values</b>
             </div>
@@ -210,42 +181,64 @@ const DiskDetails = props => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow className={classes.row}>
-                    <CustomTableCell align="left">
-                      Critical Warning
-                    </CustomTableCell>
-                    <CustomTableCell align="center">
-                      {props.details.critical_warning}
-                    </CustomTableCell>
-                  </TableRow>
-                  <TableRow className={classes.row}>
-                    <CustomTableCell align="left">Temperature</CustomTableCell>
-                    <CustomTableCell align="center">
-                      {props.details.temperature}
-                    </CustomTableCell>
-                  </TableRow>
+                  {/*
+                  This code is commented so that in future, if we decide to use dynamic values, we can uncomment this
+                  {
+                    Object.keys(props.details).map((key) => (
+                      <TableRow className={classes.row}>
+                        <CustomTableCell align="left">
+                          {key.charAt(0).toUpperCase() + (key.replace(/([A-Z])/g, " $1")).slice(1)}
+                        </CustomTableCell>
+                        <CustomTableCell align="center">
+                          {props.details[key]}
+                        </CustomTableCell>
+                      </TableRow>
+                    ))
+                  } */}
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">
                       Available Spare
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.avail_spare}
+                      {props.details.availableSpare}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">Available Spare Space</CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.availableSpareSpace}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">
-                      Spare Threshold
+                      Available Spare Threshold
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.spare_thresh}
+                      {props.details.availableSpareThreshold}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">
-                      Percentage Used
+                      Controller Busy Time
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.percent_used}
+                      {props.details.contollerBusyTime}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Critical Temperature Time
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.criticalTemperatureTime}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Current Temperature
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.currentTemperature}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -253,7 +246,7 @@ const DiskDetails = props => {
                       Data Units Read
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.data_units_read}
+                      {props.details.dataUnitsRead}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -261,15 +254,127 @@ const DiskDetails = props => {
                       Data Units Written
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.data_units_written}
+                      {props.details.dataUnitsWritten}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">
-                      Critical Composite Temperature Time
+                      Device Reliability
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.critical_comp_time}
+                      {props.details.deviceReliability}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Host Read Commands
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.hostReadCommands}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Host Write Commands
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.hostWriteCommands}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Life Percentage Used
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.lifePercentageUsed}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Lifetime Error Log Entries
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.lifetimeErrorLogEntries}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Power Cycles
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.powerCycles}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Power On Hours
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.powerOnHours}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Read Only
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.readOnly}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Temperature
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.temperature}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Temperature Sensor 1
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.temperatureSensor1}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Temperature Sensor 2
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.temperatureSensor2}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Temperature Sensor 3
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.temperatureSensor3}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Unrecoverable Media Errors
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.unrecoverableMediaErrors}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Unsafe Shutdowns
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.unsafeShutdowns}
+                    </CustomTableCell>
+                  </TableRow>
+                  <TableRow className={classes.row}>
+                    <CustomTableCell align="left">
+                      Volatile Memory Backup
+                    </CustomTableCell>
+                    <CustomTableCell align="center">
+                      {props.details.volatileMemoryBackup}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -277,7 +382,7 @@ const DiskDetails = props => {
                       Warning Temperature Time
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.warning_temp_time}
+                      {props.details.warningTemperatureTime}
                     </CustomTableCell>
                   </TableRow>
                 </TableBody>
@@ -294,3 +399,4 @@ const DiskDetails = props => {
 };
 
 export default withStyles(styles)(DiskDetails);
+

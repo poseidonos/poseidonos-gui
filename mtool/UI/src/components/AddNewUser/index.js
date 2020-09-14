@@ -70,17 +70,14 @@ const styles = (theme => {
             maxHeight: '70%',
         },
         textField: {
-            marginLeft: theme.spacing(3),
             width: '70%',
             [theme.breakpoints.down('xs')]: {
               marginLeft: 0
             }
         },
         fieldContainer: {
-            [theme.breakpoints.down('xs')]: {
-                display: 'flex',
-                justifyContent: 'center'
-            }
+            display: 'flex',
+            justifyContent: 'center'
         },
         formWrapper: {
             paddingTop: theme.spacing(2)
@@ -91,7 +88,6 @@ const styles = (theme => {
             marginTop: theme.spacing(1)
         },
         selectFieldItem: {
-            marginLeft: theme.spacing(3),
             marginTop: theme.spacing(2),
             color: 'black',
             width: '70%',
@@ -106,9 +102,7 @@ const styles = (theme => {
         },
         button: {
             margin: theme.spacing(1),
-            textTransform: 'none',
             paddingTop: '1px',
-            maxHeight: '25px',
             color: 'white',
             marginBottom: 0,
             '&:hover': {
@@ -121,9 +115,7 @@ const styles = (theme => {
             alignItems: 'flex-end'
         },
         buttonContainer: {
-            [theme.breakpoints.down('xs')]: {
-                justifyContent: 'center'
-            }
+            justifyContent: 'center'
         }
     })
 });
@@ -146,7 +138,7 @@ class AddNewUser extends Component {
                         <Grid xs={12} item className={classes.gridTypography}>
                             <Typography className={classes.addNewUserTypography} variant="h3">Add New User</Typography>
                         </Grid>
-                        <Grid sm={8} md={10} xs={12} item container className={classes.formWrapper}>
+                        <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
                             <Grid sm={6} xs={12} className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
@@ -243,7 +235,7 @@ class AddNewUser extends Component {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid sm={4} md={2} xs={12} item container className={classes.buttonContainer}>
+                        <Grid sm={12} md={12} xs={12} item container className={classes.buttonContainer}>
                             <ButtonGroup size="small" color="primary" className={classes.buttonGroup}>
                                 <Button color="primary" variant="contained" onClick={() => { this.props.openAlert("Cancel") }} className={classes.button}>Cancel</Button>
                                 <Button color="primary" variant="contained" onClick={() => { this.props.openAlert("Submit") }} className={classes.button}>Submit</Button>

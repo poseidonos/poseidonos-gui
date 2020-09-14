@@ -40,19 +40,20 @@ export function* updateUsersInfo(action) {
             },
         });
         const { status } = response;
+       
+        /* istanbul ignore else */
         if (status === 200) {
             yield fetchUsersInfo();
         }
-        else yield actionCreators.openAlertBox({
+    }
+    catch (error) {
+        yield actionCreators.openAlertBox({
             alerttitle: 'Update User',
             alertOpen: true,
             alertdescription: 'User updation failed',
             alerttype: 'alert',
             istypealert: false,
         });
-    }
-    catch (error) {
-        ;
     }
 }
 
@@ -66,52 +67,51 @@ export function* deleteUsersInfo(action) {
             },
         });
         const { status } = response;
-        if (status !== 200) {
-            yield actionCreators.openAlertBox({
-                alerttitle: 'Delete User',
-                alertOpen: true,
-                alertdescription: 'User deletion failed',
-                alerttype: 'alert',
-                istypealert: false,
-            });
-        }
-        else if (status === 200)
-            yield fetchUsersInfo();
-    }
-    catch (error) {
-        ;
-    }
-}
-
-
-export function* toggleUsersInfo(action) {
-    try {
-        const response = yield call([axios, axios.post], '/api/v1.0/toggle_status/', action.toggleUsers, {
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
-        const { status } = response;
+        /* istanbul ignore else */
         if (status === 200) {
             yield fetchUsersInfo();
         }
-        else yield actionCreators.openAlertBox({
-            alerttitle: 'Toggle User',
+    }
+    catch (error) {
+        yield actionCreators.openAlertBox({
+            alerttitle: 'Delete User',
             alertOpen: true,
-            alertdescription: 'Admin Cannot be Deactivated',
+            alertdescription: 'User deletion failed',
             alerttype: 'alert',
             istypealert: false,
         });
     }
-    catch (error) {
-        ;
-    }
 }
+
+
+// export function* toggleUsersInfo(action) {
+//     try {
+//         const response = yield call([axios, axios.post], '/api/v1.0/toggle_status/', action.toggleUsers, {
+//             headers: {
+//                 Accept: 'application/json',
+//                 'Content-Type': 'application/json',
+//                 'x-access-token': localStorage.getItem('token'),
+//             },
+//         });
+//         const { status } = response;
+//         if (status === 200) {
+//             yield fetchUsersInfo();
+//         }
+//         else yield actionCreators.openAlertBox({
+//             alerttitle: 'Toggle User',
+//             alertOpen: true,
+//             alertdescription: 'Admin Cannot be Deactivated',
+//             alerttype: 'alert',
+//             istypealert: false,
+//         });
+//     }
+//     catch (error) {
+//         ;
+//     }
+// }
 
 export function* userManagementUserTableWatcher() {
     yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_UPDATE_USERS, updateUsersInfo);
     yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_DELETE_USERS, deleteUsersInfo);
-    yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsersInfo);
+    // yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsersInfo);
 }

@@ -1,27 +1,23 @@
+from datetime import date
 from zipfile import ZipFile
-from datetime import date, datetime
-import requests
 import os
 from flask import send_file
 import re
-from util.db.influx import get_connection
-from util.com.time_groups import time_groups, time_groups_default
-from util.macros.influxdb import mtool_db, infinite_rp, default_rp, agg_rp, agg_time
 
 
 def zipFilesInDir(dirName, zipFileName, mode, startdate, enddate):
     # create a ZipFile object
     with ZipFile(zipFileName, mode) as zipObj:
         # Iterate over all the files in directory
-        for folderName, subfolders, filenames in os.walk(dirName):
+        for folderName, _, filenames in os.walk(dirName):
             for filename in filenames:
                    # filenamesplit = re.split('-|\.', filename)
                    # filedate = date(int(filenamesplit[3]), int(filenamesplit[2]), int(filenamesplit[1]))
                    # if filedate >= startdate and filedate <= enddate:
                    # create complete filepath of file in directory
-                   filePath = os.path.join(folderName, filename)
-                   # Add file to zip
-                   zipObj.write(filePath, filePath.split("/")[-1])
+                filePath = os.path.join(folderName, filename)
+                # Add file to zip
+                zipObj.write(filePath, filePath.split("/")[-1])
 
 
 def download_logs(startdate, enddate):
@@ -33,7 +29,7 @@ def download_logs(startdate, enddate):
     zipFilesInDir('/etc/ibofos/log', 'log.zip', 'a', startdate, enddate)
     return send_file('../log.zip')
 
-
+"""
 def get_ibofos_logs():
     connection = get_connection()
     # query = 'SELECT mean("usage_idle") AS "mean_usage_idle" FROM "telegraf"."autogen"."cpu" WHERE time > now()-15m AND  GROUP BY time(1285ms)'
@@ -45,7 +41,7 @@ def get_ibofos_logs():
     count = connection.query(query)
     connection.close()
     return res, count
-
+"""
 """
 def get_bmc_logs(page, per_page, filterSubQuery):
     offset = int(page, 10) * int(per_page, 10)

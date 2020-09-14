@@ -95,7 +95,7 @@ describe("Performance", () => {
       composeEnhancers(applyMiddleware(sagaMiddleware))
     );
     sagaMiddleware.run(rootSaga);
-    const route = "/";
+    const route = "/performance";
     history = createMemoryHistory({ initialEntries: [route] });
     mock = new MockAdapter(axios);
   });
@@ -245,6 +245,551 @@ describe("Performance", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
+  it("renders volume level read bandwidth graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/bw_read/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/bw_read/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    expect(asFragment()).toMatchSnapshot();
+    const volReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
+    expect(volReadBw).toBeDefined();
+  });
+
+  it("renders volume level, all volume and array level graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/bw_read/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/bw_read/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/bw_read/1m/array`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      });
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    const volumeInput = await waitForElement(() => getByTestId("volumeInput"));
+    fireEvent.change(volumeInput, {target: {value: 'vol2'}});
+    const volumeSelect = await waitForElement(() => getByTestId("volumeSelect"));
+    fireEvent.click(volumeSelect);
+    const volume1 = await waitForElement(() => getByTestId("vol2"));
+    fireEvent.click(volume1);
+    const volReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
+    expect(volReadBw).toBeDefined();
+    fireEvent.change(volumeInput, {target: {value: 'all-volumes'}});
+    fireEvent.click(volumeSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("all-volume")));
+    const allVolReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
+    expect(allVolReadBw).toBeDefined();
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("arrayMenuItem")));
+    fireEvent.change(levelInput, { target: { value: 'array' } });
+    const arrayReadBw = await waitForElement(() => getByTestId("readBandwidth"));
+    expect(arrayReadBw).toBeDefined();
+  });
+
+
+  it("renders volume level write bandwidth graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/bw_write/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/bw_write/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+    fireEvent.change(measurementInput, {target: {value: 'write_bw'}});
+    const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
+    fireEvent.click(measurementSelect);
+    expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(await waitForElement(() => getByTestId("write_bw")));
+    
+    const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
+    expect(volWriteBw).toBeDefined();
+  });
+
+  it("renders volume level read iops graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/iops_read/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/iops_read/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+    fireEvent.change(measurementInput, {target: {value: 'read_iops'}});
+    const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
+    fireEvent.click(measurementSelect);
+    expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(await waitForElement(() => getByTestId("read_iops")));
+    
+    const volReadIOPS = await waitForElement(() => getByTestId("readIOPS-vol"));
+    expect(volReadIOPS).toBeDefined();
+  });
+
+  it("renders volume level write iops graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/iops_write/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/iops_write/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+    fireEvent.change(measurementInput, {target: {value: 'write_iops'}});
+    const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
+    fireEvent.click(measurementSelect);
+    expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(await waitForElement(() => getByTestId("write_iops")));
+    
+    const volWriteIOPS = await waitForElement(() => getByTestId("writeIOPS-vol"));
+    expect(volWriteIOPS).toBeDefined();
+  });
+
+  it("renders volume level latency graphs for last 1m", async () => {
+    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+      Members: [{
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+      }]
+    })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
+        Name: "vol1",
+        Id: "0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/).reply(200, {
+        Name: "vol2",
+        Id: "1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10
+          }
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted"
+          }
+        }
+      })
+      .onGet(`/api/v1.0/latency/1m/0`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+      .onGet(`/api/v1.0/latency/1m/1`)
+      .reply(200, {
+        res: [
+          {
+            time: 123456,
+            value: 0
+          }
+        ]
+      })
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+    fireEvent.change(measurementInput, {target: {value: 'latency'}});
+    const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
+    fireEvent.click(measurementSelect);
+    expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(await waitForElement(() => getByTestId("latency")));
+    
+    const volLatency = await waitForElement(() => getByTestId("latency-vol"));
+    expect(volLatency).toBeDefined();
+  });
+
+  it("renders system level cpu graphs for last 1m", async () => {
+    mock.onGet('/api/v1.0/usage_user/1m')
+      .reply(200, [
+          {
+            time: 123456,
+            mean_usage_user: 0
+          },
+          {
+            time: 123457,
+            mean_usage_user: 10
+          }
+        ]);
+
+    renderComponent();
+    jest.setTimeout(30000);
+    const { asFragment, getByTestId } = wrapper;
+
+    const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
+    fireEvent.click(levelSelect);
+    fireEvent.click(await waitForElement(() => getByTestId("systemMenuItem")));
+    const levelInput = await waitForElement(() => getByTestId("levelInput"));
+    fireEvent.change(levelInput, { target: { value: 'system' } });
+    expect(asFragment()).toMatchSnapshot();
+    
+    const cpuGraph = await waitForElement(() => getByTestId("cpuusage"));
+    expect(cpuGraph).toBeDefined();
+  });
+
   it("displays array level details for last 7 days", async () => {
     mock
       .onGet(`/api/v1.0/iops_read/7d/array`)
@@ -339,12 +884,12 @@ describe("Performance", () => {
         getByTestId("intervalSelect")
       );
       fireEvent.click(intervalSelect);
-      // const lastSevenDay = await waitForElement(() => getByTestId("7d"));
-      // fireEvent.click(lastSevenDay);
-      // const intervalInput = await waitForElement(() =>
-      //   getByTestId("timeInput")
-      // );
-      // expect(intervalInput.value).toBe("7d");
+      const lastSevenDay = await waitForElement(() => getByTestId("7d"));
+      fireEvent.click(lastSevenDay);
+      const intervalInput = await waitForElement(() =>
+        getByTestId("timeInput")
+      );
+      expect(intervalInput.value).toBe("7d");
     });
   });
 
@@ -682,5 +1227,15 @@ describe("Performance", () => {
     expect(getByTestId("sidebar-toggle")).toBeDefined();
     fireEvent.click(getByTestId("sidebar-toggle"));
     expect(getByTestId("help-link")).toHaveTextContent("Help");
+  });
+
+  it("should display the storage page with path", async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { href: "http://localhost/performance" };
+    renderComponent();
+    const { getByText } = wrapper;
+    expect(await waitForElement(() => getByText("Performance"))).toBeDefined();
+    window.location = location;
   });
 });

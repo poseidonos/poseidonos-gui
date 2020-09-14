@@ -60,11 +60,11 @@ class AlertManagement extends Component {
     super(props);
     this.toggleAlertStatus = this.toggleAlertStatus.bind(this);
     this.selectalerts = this.selectalerts.bind(this);
-    this.editalerts = this.editalerts.bind(this);
+    // this.editalerts = this.editalerts.bind(this);
     this.deletealerts = this.deletealerts.bind(this);
     this.updateAlerts = this.updateAlerts.bind(this);
-    this.cancelChange = this.cancelChange.bind(this);
-    this.selectAllalerts = this.selectAllalerts.bind(this);
+    // this.cancelChange = this.cancelChange.bind(this);
+    // this.selectAllalerts = this.selectAllalerts.bind(this);
     // this.onconditionchange = this.onconditionchange.bind(this);
     this.selectAlertCluster = this.selectAlertCluster.bind(this);
     this.selectAlertSubCluster = this.selectAlertSubCluster.bind(this);
@@ -75,7 +75,7 @@ class AlertManagement extends Component {
     this.openAlert = this.openAlert.bind(this);
     this.handleAlertClose = this.handleAlertClose.bind(this);
     this.triggerCommand = this.triggerCommand.bind(this);
-    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    // this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.updateAlertsState = this.updateAlertsState.bind(this);
     this.state = {
       conditions: [
@@ -166,31 +166,31 @@ class AlertManagement extends Component {
     });
   }
 
-  // Edit Alert Condition, Alert Range and Description
-  editalerts(i) {
-    const alerts = [...this.props.alerts];
-    alerts[i].edit = !alerts[i].edit;
-    this.setState({
-      ...this.state,
-      alerts,
-    });
-  }
+  // // Edit Alert Condition, Alert Range and Description
+  // editalerts(i) {
+  //   const alerts = [...this.props.alerts];
+  //   alerts[i].edit = !alerts[i].edit;
+  //   this.setState({
+  //     ...this.state,
+  //     alerts,
+  //   });
+  // }
 
   // Select all Alerts from the table
-  selectAllalerts(event) {
-    const { checked } = event.target;
-    const alerts = [];
-    this.props.alerts.forEach(alert => {
-      alerts.push({
-        ...alert,
-        selected: checked,
-      });
-    });
-    this.setState({
-      ...this.state,
-      alerts,
-    });
-  }
+  // selectAllalerts(event) {
+  //   const { checked } = event.target;
+  //   const alerts = [];
+  //   this.props.alerts.forEach(alert => {
+  //     alerts.push({
+  //       ...alert,
+  //       selected: checked,
+  //     });
+  //   });
+  //   this.setState({
+  //     ...this.state,
+  //     alerts,
+  //   });
+  // }
 
   updateAlertsState(alertsData) {
     this.setState({
@@ -207,15 +207,15 @@ class AlertManagement extends Component {
     this.props.updateAlertsInfo(newalerts);
   }
 
-  // Cancel all the changes made
-  cancelChange(i) {
-    const alerts = [...this.props.alerts];
-    alerts[i].edit = !alerts[i].edit;
-    this.setState({
-      ...this.state,
-      alerts,
-    });
-  }
+  // // Cancel all the changes made
+  // cancelChange(i) {
+  //   const alerts = [...this.props.alerts];
+  //   alerts[i].edit = !alerts[i].edit;
+  //   this.setState({
+  //     ...this.state,
+  //     alerts,
+  //   });
+  // }
 
   // Delete selected alerts from backend
   deletealerts() {
@@ -293,7 +293,7 @@ class AlertManagement extends Component {
     // if (this.state.alertCondition == "Inside Range" || this.state.alertCondition == "Outside Range")
     //     var regex = /^[0-9-]+$/
     // else
-    const regex = /\b(0?[1-9]|[1-9][0-9]|100)\b/; // /^[0-9]+$/
+    const regex = /\b(^[0-9]*$)\b/; // /\b(0?[1-9]|[1-9][0-9]^[0-9]*$)\b/; // /^[0-9]+$/   /\b(^[0-9]*$)\b/; //
     // Validate TextBox value against the Regex.
     const isValid = regex.test(this.state.alertRange);
     if (!isValid) {
@@ -310,8 +310,7 @@ class AlertManagement extends Component {
       this.state.alertName === '' ||
       this.state.alertRadioButton === '' ||
       this.state.alertCondition === '' ||
-      this.state.alertRange === '' ||
-      this.state.alertType === ''
+      this.state.alertRange === ''
     ) {
       // alert("Please specify a valid input");
       this.props.openAlertBox({
@@ -324,6 +323,7 @@ class AlertManagement extends Component {
       });
       return;
     }
+
     let alertType = '';
     this.props.alertClusters.map(cluster => {
       return {
@@ -345,8 +345,10 @@ class AlertManagement extends Component {
       ...this.state,
       alertType,
     });
-	let subClusterName= this.state.selectedAlertSubCluster.name;
-	if (subClusterName === "cpu ")
+    let subClusterName = ""
+    if (this.state.selectedAlertSubCluster != null)
+      subClusterName= this.state.selectedAlertSubCluster.name;
+  if (subClusterName === "cpu ")
 	  subClusterName = "cpu"
     const addNewAlert = {
       alertName: this.state.alertName,
@@ -396,11 +398,11 @@ class AlertManagement extends Component {
     }
   }
 
-  handleDrawerToggle() {
-    this.setState({
-      mobileOpen: !this.state.mobileOpen
-    });
-  }
+  // handleDrawerToggle() {
+  //   this.setState({
+  //     mobileOpen: !this.state.mobileOpen
+  //   });
+  // }
 
   render() {
     const { classes } = this.props;
@@ -415,12 +417,12 @@ class AlertManagement extends Component {
               <AlertTable
                 selectalerts={this.selectalerts}
                 togglealertstatus={this.toggleAlertStatus}
-                editalerts={this.editalerts}
-                cancelChange={this.cancelChange}
+                // editalerts={this.editalerts}
+                // cancelChange={this.cancelChange}
                 saveChange={this.updateAlerts}
                 updateAlertsState={this.updateAlertsState}
                 deletealerts={this.deletealerts}
-                selectAllalerts={this.selectAllalerts}
+                // selectAllalerts={this.selectAllalerts}
                 alerts={this.props.alerts}
                 dropdownCondition={this.state.conditions}
                 alertOpen={this.state.alertOpen_alertTable}

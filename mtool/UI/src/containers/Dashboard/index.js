@@ -38,7 +38,6 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import 'react-table/react-table.css';
 import 'core-js/es/number';
 import 'core-js/es/array';
-import Loader from 'react-loader-spinner';
 import { Paper, Grid, Typography } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { customTheme, PageTheme } from '../../theme';
@@ -54,6 +53,10 @@ const styles = (theme) => {
   return ({
   dashboardContainer: {
     display: 'flex',
+  },
+  storageDetailsPaper: {
+    height: 250,
+    position: "relative",
   },
   content: {
     flexGrow: 1,
@@ -79,6 +82,12 @@ const styles = (theme) => {
   metricContainer: {
     marginBottom: theme.spacing(1)
   },
+  volumeSummary: {
+    minHeight: 413,
+    [theme.breakpoints.down('md')]: {
+      minHeight: 460
+    }
+  },
   metricBox: {
     display: 'flex',
     alignItems: 'center',
@@ -86,6 +95,11 @@ const styles = (theme) => {
     height: '110px',
     justifyContent: 'center',
     borderRadius: '4px'
+  },
+  storageGraph: {
+    position: 'absolute',
+    height: '100%',
+    top: 0
   },
   metricTxt: {
     color: '#fff'
@@ -120,6 +134,7 @@ const styles = (theme) => {
 })
 };
 
+/* eslint-disable react/no-multi-comp */
 const icons = {
   FirstPage: () => <FirstPage id="Dashboard-icon-vol-firstpage" /> ,
   LastPage: () => <LastPage id="Dashboard-icon-vol-lastpage" />,
@@ -130,14 +145,19 @@ const icons = {
   SortArrow: ArrowUpward
 };
 
-const alertIcons = {
-  ...icons,
-  FirstPage: () => <FirstPage id="Dashboard-alert-vol-firstpage" /> ,
-  LastPage: () => <LastPage id="Dashboard-alert-vol-lastpage" />,
-  NextPage: () => <ChevronRight id="Dashboard-alert-vol-nextpage" />,
-  PreviousPage: () => <ChevronLeft id="Dashboard-alert-vol-previouspage" />,
-};
+/* eslint-enable react/no-multi-comp */
 
+// Disabling for PoC1
+// const alertIcons = {
+//   ...icons,
+//   FirstPage: () => <FirstPage id="Dashboard-alert-vol-firstpage" /> ,
+//   LastPage: () => <LastPage id="Dashboard-alert-vol-lastpage" />,
+//   NextPage: () => <ChevronRight id="Dashboard-alert-vol-nextpage" />,
+//   PreviousPage: () => <ChevronLeft id="Dashboard-alert-vol-previouspage" />,
+// };
+
+
+// eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -181,8 +201,8 @@ class Dashboard extends Component {
   render() {
     let volUsedSpace = 0; let volSpace = 0;
     this.props.volumes.forEach((vol) => {
-      volUsedSpace += vol.usedspace;
-      volSpace += vol.total;
+      volUsedSpace += Number(vol.total) - Number(vol.remain);
+      volSpace += Number(vol.total);
     });
     const volFilledStyle = {
       width: `${(volSpace * 100/this.props.arraySize)}%`,
@@ -211,7 +231,6 @@ class Dashboard extends Component {
     const storageDangerStyle = {
       width: '10%',
       right: '0px',
-      backgroundColor: 	'#fff',
       height: '100%',
       float: 'right',
       position: 'absolute',
@@ -219,47 +238,48 @@ class Dashboard extends Component {
       borderLeft: '2px solid rgb(255, 173, 173)'
     };
 
-    const alertColumns = [
-      {
-        title: 'Alert Name',
-        field: 'alertName',
-        sorting: false,
-      },
-      {
-        title: 'Time Stamp',
-        field: 'time',
-        defaultSort: 'desc',
-        sorting: false,
-      },
-      {
-        title: 'Status',
-        field: 'level',
-        width: 100,
-        sorting: false,
-        render: row => {
-          if (row.level === 'CRITICAL') {
-            return <span style={{ color: 'red' }}>{row.level}</span>;
-          }
-          return <span style={{ color: 'green' }}>{row.level}</span>;
-        },
-      },
-      {
-        title: 'Description',
-        field: 'message',
-        sorting: false,
-      },
-      {
-        title: 'Duration(sec)',
-        field: 'duration',
-        width: 150,
-        sorting: false,
-      },
-     // {
-      //  title: 'Node',
-       // field: 'host',
-        // sorting: false,
-     // },
-    ];
+    // Disabling for PoC1
+    // const alertColumns = [
+    //   {
+    //     title: 'Alert Name',
+    //     field: 'alertName',
+    //     sorting: false,
+    //   },
+    //   {
+    //     title: 'Time Stamp',
+    //     field: 'time',
+    //     defaultSort: 'desc',
+    //     sorting: false,
+    //   },
+    //   {
+    //     title: 'Status',
+    //     field: 'level',
+    //     width: 100,
+    //     sorting: false,
+    //     render: row => {
+    //       if (row.level === 'CRITICAL') {
+    //         return <span style={{ color: 'red' }}>{row.level}</span>;
+    //       }
+    //       return <span style={{ color: 'green' }}>{row.level}</span>;
+    //     },
+    //   },
+    //   {
+    //     title: 'Description',
+    //     field: 'message',
+    //     sorting: false,
+    //   },
+    //   {
+    //     title: 'Duration(sec)',
+    //     field: 'duration',
+    //     width: 150,
+    //     sorting: false,
+    //   },
+    //  // {
+    //   //  title: 'Node',
+    //    // field: 'host',
+    //     // sorting: false,
+    //  // },
+    // ];
     const volumeTableColumns = [
       {
         title: 'Name',
@@ -331,13 +351,13 @@ class Dashboard extends Component {
                      </Grid>
                 </Grid>
               </Paper>
-              <Paper spacing={3} style={{height: "203px"}} className={classes.spaced}>
+              <Paper spacing={3} className={`${classes.spaced} ${classes.storageDetailsPaper}`}>
                 <Grid container justify="space-between">
                   <Typography className={classes.cardHeader} style={{marginLeft: "24px"}}>
                     Storage Details
                   </Typography>
                 </Grid>
-                <Grid container justify="center" alignContent="center">
+                <Grid container justify="center" alignContent="center" className={classes.storageGraph}>
                 {this.props.arraySize === 0 ? (
                   <Typography data-testid="dashboard-no-array"color="secondary">No Array Created</Typography>
                 ) : (
@@ -352,17 +372,16 @@ class Dashboard extends Component {
                       <div style={volFilledStyle}>
                         <div style={volUsedStyle} />
                       </div>
-                      <div style={storageFreeStyle}>
-                        <div style={storageDangerStyle}>
+                      <div style={storageFreeStyle} />
+                      <div style={storageDangerStyle}>
                           <div className="dashboard-threshold-label">80%</div>
-                        </div>
                       </div>
                     </div>
                     <div
                       style={{
                         width: '94%',
                         margin: '5px auto auto',
-                        height: '38px',
+                        height: 'auto',
                         position: 'relative',
                       }}
                     >
@@ -402,7 +421,7 @@ class Dashboard extends Component {
             </Grid>
 
             <Grid xs={12} md={6} item>
-              <Paper spacing={3} style={{minHeight: "413px"}}>
+              <Paper spacing={3} className={classes.volumeSummary}>
                 <MaterialTable
                   title={(
                     <Typography className={classes.cardHeader}>Volume Summary</Typography>
@@ -414,18 +433,17 @@ class Dashboard extends Component {
                       backgroundColor: '#788595',
                       color: '#FFF'
                     },
-                    maxBodyHeight: 297,
+                    minBodyHeight: 342,
+                    maxBodyHeight: 342,
                     search: false
                   }}
-                  style={{
-                    minHeight: '413px'
-                  }}
+                  style={{height: '100%'}}
                   icons={icons}
                 />
               </Paper>
             </Grid>
           </Grid>
-          <Grid container spacing={1} className={classes.spaced}>
+          {/* <Grid container spacing={1} className={classes.spaced}>
             <Grid xs={12} item>
             <Paper>
               {this.props.alerts.length > 0 ||
@@ -458,7 +476,7 @@ class Dashboard extends Component {
               )}
             </Paper>
             </Grid>
-          </Grid>
+          </Grid> */}
           </Grid>
         </main>
       </div>

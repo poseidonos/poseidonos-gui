@@ -108,7 +108,7 @@ class Performance extends Component {
   componentDidMount() {
     this.fetchDetails();
     this.fetchVolumeNames();
-    this.props.fetchPowerSensorInfo();
+    // this.props.fetchPowerSensorInfo();
     this.interval = setInterval(() => {
       this.fetchDetails();
     }, 2000);
@@ -153,9 +153,9 @@ class Performance extends Component {
     this.props.Get_Cpu_Usage({ time: t });
   }
 
-  fetchInputPower(t) {
-    this.props.fetchInputPower({ time: t });
-  }
+  // fetchInputPower(t) {
+  //   this.props.fetchInputPower({ time: t });
+  // }
 
   fetchReadBandwidth(t) {
     for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
@@ -207,8 +207,8 @@ class Performance extends Component {
     if (this.state.level === 'system') {
       this.fetchCpuUsage(this.state.intervalTime);
     }
-    else if (this.state.level === 'power')
-      this.fetchInputPower(this.state.intervalTime);
+    // else if (this.state.level === 'power')
+    //   this.fetchInputPower(this.state.intervalTime);
     else {
       this.fetchReadIOPS(this.state.intervalTime);
       this.fetchWriteIOPS(this.state.intervalTime);
@@ -267,16 +267,16 @@ class Performance extends Component {
         this.fetchDetails();
       });
     }
-    else if (event.target.value === 'power') {
-      this.setState({
-        ...this.state,
-        level: 'power',
-      });
-      setTimeout(() => {
-        this.fetchDetails();
-      });
-      this.props.fetchPowerSensorInfo();
-    }
+    // else if (event.target.value === 'power') {
+    //   this.setState({
+    //     ...this.state,
+    //     level: 'power',
+    //   });
+    //   setTimeout(() => {
+    //     this.fetchDetails();
+    //   });
+      // this.props.fetchPowerSensorInfo();
+    // }
   }
 
   fetchVolumeNames() {
@@ -306,6 +306,7 @@ class Performance extends Component {
       });
     } else {
       for (let i = 0; i < this.props.volumes.length; i += 1 ) {
+        /* istanbul ignore else */
         if (event.target.value === this.props.volumes[i].id) {
           vol = this.props.volumes[i];
         }
@@ -447,7 +448,10 @@ class Performance extends Component {
                         inputProps={{
                           name: 'Time',
                           id: 'time',
-                          'data-testid': "timeInput"
+                          'data-testid': "measurementInput"
+                        }}
+                        SelectDisplayProps={{
+                          'data-testid': 'measurementSelect'
                         }}
                       >
                         {measurements.map((measurement) => (
@@ -485,7 +489,7 @@ class Performance extends Component {
                   </FormControl>
                 </Grid>
               </Grid>
-              {this.state.level === "power" ? (
+              {/* {this.state.level === "power" ? (
                 this.props.power_sensor_info.map((power) => (
                   power.PowerInputWatts ? (
                     <React.Fragment>
@@ -504,7 +508,7 @@ class Performance extends Component {
                         </Grid>
                       ):null}
                     </React.Fragment>
-                  ) : null))) : null}
+                  ) : null))) : null} */}
               {this.state.level === 'array' ? (
                 <Grid container spacing={1} className={classes.wrapper}>
                   <Grid item xs={12} md={6} id="graph-grid-1">
@@ -518,6 +522,7 @@ class Performance extends Component {
                       interval={this.state.intervalTime}
                       constValue={this.state.maxBw}
                       style={style}
+                      field="bw"
                       datatestid="readBandwidth"
                       scatterId="readBandwidthScatter"
                     />
@@ -534,6 +539,7 @@ class Performance extends Component {
                       interval={this.state.intervalTime}
                       constValue={this.state.maxBw}
                       style={style}
+                      field="bw"
                       datatestid="writeBandwidth"
                       scatterId="writeBandwidthScatter"
                     />
@@ -550,6 +556,7 @@ class Performance extends Component {
                       interval={this.state.intervalTime}
                       constValue={this.state.maxIops}
                       style={style}
+                      field="iops"
                       datatestid="readIOPS"
                       scatterId="readIOPSScatter"
                     />
@@ -566,6 +573,7 @@ class Performance extends Component {
                       interval={this.state.intervalTime}
                       constValue={this.state.maxIops}
                       style={style}
+                      field="iops"
                       datatestid="writeIOPS"
                       scatterId="writeIOPSScatter"
                     />
@@ -581,6 +589,7 @@ class Performance extends Component {
                       interval={this.state.intervalTime}
                       constValue={this.state.maxLatency}
                       style={style}
+                      field="latency"
                       datatestid="latency"
                       scatterId="latencyScatter"
                     />
@@ -600,6 +609,8 @@ class Performance extends Component {
                       maxValue={100}
                       interval={this.state.intervalTime}
                       style={style}
+                      field="value"
+                      datatestid="cpuusage"
                     />
                   </Grid>
 
@@ -635,7 +646,7 @@ class Performance extends Component {
                 this.state.chartContent.map((content) => (
                   this.props.vols[content] ? (
                     <React.Fragment>
-                      {this.props.vols[content].readBandwidth ? (
+                      {this.props.vols[content].readBandwidth && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_BANDWIDTH)) ? (
                         <Grid item xs={12} md={6} id="graph-grid-1">
                           <Chart
                             id="chart-1"
@@ -647,13 +658,14 @@ class Performance extends Component {
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].readBandwidth.maxbw}
                             style={style}
-                            datatestid="readBandwidth"
+                            field="bw"
+                            datatestid="readBandwidth-vol"
                             scatterId="readBandwidthScatter"
                           />
                         </Grid>
                       ) : null}
 
-                      {this.props.vols[content].writeBandwidth ? (
+                      {this.props.vols[content].writeBandwidth && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_BANDWIDTH)) ? (
                         <Grid item xs={12} md={6}>
                           <Chart
                             id="chart-2"
@@ -665,12 +677,13 @@ class Performance extends Component {
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].writeBandwidth.maxbw}
                             style={style}
-                            datatestid="writeBandwidth"
+                            field="bw"
+                            datatestid="writeBandwidth-vol"
                             scatterId="writeBandwidthScatter"
                           />
                         </Grid>
                       ) : null}
-                      {this.props.vols[content].readIOPS ? (
+                      {this.props.vols[content].readIOPS && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_IOPS)) ? (
                         <Grid item xs={12} md={6}>
                           <Chart
                             id="chart-3"
@@ -682,12 +695,13 @@ class Performance extends Component {
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].readIOPS.maxiops}
                             style={style}
-                            datatestid="readIOPS"
+                            field="iops"
+                            datatestid="readIOPS-vol"
                             scatterId="readIOPSScatter"
                           />
                         </Grid>
                       ) : null}
-                      {this.props.vols[content].writeIOPS ? (
+                      {this.props.vols[content].writeIOPS && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_IOPS)) ? (
                         <Grid item xs={12} md={6}>
                           <Chart
                             id="chart-4"
@@ -699,13 +713,14 @@ class Performance extends Component {
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].writeIOPS.maxiops}
                             style={style}
-                            datatestid="writeIOPS"
+                            field="iops"
+                            datatestid="writeIOPS-vol"
                             scatterId="writeIOPSScatter"
                           />
                         </Grid>
                       ) : null}
 
-                      {this.props.vols[content].latency ? (
+                      {this.props.vols[content].latency && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(LATENCY)) ? (
                         <Grid item xs={12} md={6}>
                           <Chart
                             id="chart-5"
@@ -717,7 +732,8 @@ class Performance extends Component {
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].latency.maxLatency}
                             style={style}
-                            datatestid="latency"
+                            field="latency"
+                            datatestid="latency-vol"
                             scatterId="latencyScatter"
                           />
                         </Grid>
@@ -727,7 +743,7 @@ class Performance extends Component {
                   ) : null
                 ))
               ) : null}
-              {this.state.level === "volume" && this.state.chartContent.length === 0 ? (
+              {/* istanbul ignore next */this.state.level === "volume" && this.state.chartContent.length === 0 ? (
                 <Container className={classes.noVols}>
                   <Typography variant="h1" align="center">No Volumes Created</Typography>
                 </Container>
@@ -766,10 +782,10 @@ const mapDispatchToProps = dispatch => {
     Get_Read_IOPS: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_READ_IOPS, payload }),
     Get_Write_IOPS: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_WRITE_IOPS, payload }),
     Get_Latency: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_LATENCY, payload }),
-    fetchInputPower: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION,payload }),
+    // fetchInputPower: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION,payload }),
     Get_Volumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
     Reset_State: () => dispatch({ type: actionTypes.RESET_PERF_STATE }),
-    fetchPowerSensorInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION, }),
+    // fetchPowerSensorInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION, }),
   }
 }
 

@@ -28,7 +28,7 @@ DESCRIPTION: Configuration Page Container for rendering Configuration Page
 import React, { Component } from 'react';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MToolTheme , { customTheme } from '../../theme';
@@ -77,7 +77,7 @@ class ConfigurationSetting extends Component {
     this.editEmail = this.editEmail.bind(this);
     this.deleteEmails = this.deleteEmails.bind(this);
     this.saveEmail = this.saveEmail.bind(this);
-    this.sendEmail = this.sendEmail.bind(this);
+    // this.sendEmail = this.sendEmail.bind(this);
     this.testserver = this.testserver.bind(this);
     this.deleteConfiguredSmtpServer = this.deleteConfiguredSmtpServer.bind(this);
     this.toggleEmailStatus = this.toggleEmailStatus.bind(this);
@@ -100,18 +100,18 @@ class ConfigurationSetting extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.fetchEmailList();
+    this.setState({
+      ibofostimeinterval: this.props.timeinterval
+    });
+  }
+
   OnHandleChange(event) {
     const { name, value } = event.target;
     this.setState({
       ...this.state,
       [name]: value
-    });
-  }
-
-  componentDidMount() {
-    this.props.fetchEmailList();
-    this.setState({
-      ibofostimeinterval: this.props.timeinterval
     });
   }
 
@@ -209,47 +209,47 @@ class ConfigurationSetting extends Component {
   }
 
   // Send email to all the active email ids
-  sendEmail() {
-    const ids = [];
-    this.props.emaillist.forEach((email, index) => {
-      if (email.selected && email.active) {
-        const emaillist = [...this.props.emaillist];
-        emaillist[index].selected = false;
-        this.props.changeEmailList(emaillist);
-        ids.push(email.email);
-      }
-    });
-    if (ids.length <= 0) {
-      const payload = {
-        alertOpen: true,
-        istypealert: true,
-        alerttype: 'alert',
-        alerttitle: 'Send Email',
-        alertdescription: 'Please select an email id to send',
-      };
-      this.props.setAlertBox(payload);
-      return;
-    }
-    if (this.props.configuredsmtpserver === '') {
-      const payload = {
-        alertOpen: true,
-        istypealert: true,
-        alerttype: 'alert',
-        alerttitle: 'Send Email',
-        alertdescription: 'Please configure smtp server',
-      };
-      this.props.setAlertBox(payload);
-      return;
-    }
-    const arr = this.props.configuredsmtpserver.split(':');
-    const data = {
-      smtpserverip: arr[0],
-      smtpserverport: arr[1],
-      ids,
-    };
-    document.getElementsByTagName('body')[0].style.cursor = 'wait';
-    this.props.sendEmail(data);
-  }
+  // sendEmail() {
+  //   const ids = [];
+  //   this.props.emaillist.forEach((email, index) => {
+  //     if (email.selected && email.active) {
+  //       const emaillist = [...this.props.emaillist];
+  //       emaillist[index].selected = false;
+  //       this.props.changeEmailList(emaillist);
+  //       ids.push(email.email);
+  //     }
+  //   });
+  //   if (ids.length <= 0) {
+  //     const payload = {
+  //       alertOpen: true,
+  //       istypealert: true,
+  //       alerttype: 'alert',
+  //       alerttitle: 'Send Email',
+  //       alertdescription: 'Please select an email id to send',
+  //     };
+  //     this.props.setAlertBox(payload);
+  //     return;
+  //   }
+  //   if (this.props.configuredsmtpserver === '') {
+  //     const payload = {
+  //       alertOpen: true,
+  //       istypealert: true,
+  //       alerttype: 'alert',
+  //       alerttitle: 'Send Email',
+  //       alertdescription: 'Please configure smtp server',
+  //     };
+  //     this.props.setAlertBox(payload);
+  //     return;
+  //   }
+  //   const arr = this.props.configuredsmtpserver.split(':');
+  //   const data = {
+  //     smtpserverip: arr[0],
+  //     smtpserverport: arr[1],
+  //     ids,
+  //   };
+  //   document.getElementsByTagName('body')[0].style.cursor = 'wait';
+  //   this.props.sendEmail(data);
+  // }
 
   // Test whether smtp server is working as expected
   testserver(event) {
@@ -358,7 +358,7 @@ class ConfigurationSetting extends Component {
           />
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <AppBar position="static" color="default">
+            {/* <AppBar position="static" color="default">
               <Tabs
                 value={this.state.value}
                 onChange={this.handleTabChange}
@@ -367,7 +367,7 @@ class ConfigurationSetting extends Component {
                 <Tab label="Alert" key="alert" value="alert" className={(window.location.href.indexOf('alert') > 0 ? classes.selectedTab : null)} />
                 <Tab label="User" key="user" value="user" className={(window.location.href.indexOf('user') > 0 ? classes.selectedTab : null)} />
               </Tabs>
-            </AppBar>
+            </AppBar> */}
             <Switch>
                 <Route exact path="/ConfigurationSetting/general">
                   <Grid container spacing={1} className={classes.GeneralContainer}>
@@ -382,7 +382,7 @@ class ConfigurationSetting extends Component {
                         selectEmail={this.selectEmail}
                         saveChange={this.saveEmail}
                         deleteEmails={this.deleteEmails}
-                        sendEmail={this.sendEmail}
+                        // sendEmail={this.sendEmail}
                         configuredsmtpserver={this.props.configuredsmtpserver}
                         deleteConfiguredSmtpServer={this.deleteConfiguredSmtpServer}
                         testserver={this.testserver}
@@ -458,8 +458,8 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SAGA_UPDATE_EMAIL, payload: newemail }),
     toggleActiveStatus: email =>
       dispatch({ type: actionTypes.SAGA_TOGGLE_ACTIVE_STATUS, payload: email }),
-    sendEmail: data =>
-      dispatch({ type: actionTypes.SAGA_SEND_EMAIL, payload: data }),
+    // sendEmail: data =>
+    //   dispatch({ type: actionTypes.SAGA_SEND_EMAIL, payload: data }),
     testEmail: data =>
       dispatch({ type: actionTypes.SAGA_TEST_EMAIL, payload: data }),
     setSmtpServer: payload => dispatch(actionCreators.setSmtpServer(payload)),

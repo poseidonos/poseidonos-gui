@@ -29,7 +29,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from "@material-ui/lab/TreeItem";
-import { FormControlLabel, Checkbox, FormGroup, Grid, Typography, withStyles } from '@material-ui/core';
+import { Grid, Typography, withStyles } from '@material-ui/core';
 import './AlertTypes.css';
 
 const styles = (() => {
@@ -53,6 +53,9 @@ const styles = (() => {
       paddingTop: '3px',
       fontSize: '14px',
       height: '25px',
+    },
+    alertSpacing: {
+      marginLeft:"7px",
     }
   })
 });
@@ -72,17 +75,17 @@ const AlertTypes = props => {
                   defaultExpandIcon={<ChevronRightIcon />}
                   data-testid="ClusterTag"
                 >
-                  <TreeItem nodeId={cluster.name} label={cluster.name}
+                  <TreeItem className={classes.alertSpacing} nodeId={cluster.name} label={cluster.name}
                     role="treeitem"
                     onClick={() => {
                       props.selectAlertCluster(cluster, i)
                     }
                     }
                   >
-                    {cluster.alertSubCluster
+                    {/* {cluster.alertSubCluster
                       ? cluster.alertSubCluster.map((subcluster, j) => {
                         return (
-                          <TreeItem key={subcluster.name} nodeId={subcluster.name} label={subcluster.name} role="subtreeitem" onClick={() => {
+                           <TreeItem key={subcluster.name} nodeId={subcluster.name} label={subcluster.name} data-testid={`subtreeitem-${i}-${j}`} role="subtreeitem" onClick={() => {
                             props.selectAlertSubCluster(cluster.name, subcluster, i);
                           }}
                           >
@@ -104,7 +107,7 @@ const AlertTypes = props => {
                             </FormGroup>
                           </TreeItem>
                         );
-                      }) : null}
+                      }) : null} */}
                   </TreeItem>
                 </TreeView>
               );

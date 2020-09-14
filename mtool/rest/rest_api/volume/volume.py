@@ -33,6 +33,7 @@ import rest.rest_api.dagent.ibofos as dagent
 
 def create_volume(
         vol_name,
+        arr_name,
         size,
         count,
         suffix,
@@ -42,6 +43,7 @@ def create_volume(
         maxiops=0):
     create_vol_response = dagent.create_volume(
         vol_name,
+        arr_name,
         size,
         count,
         suffix,
@@ -51,7 +53,7 @@ def create_volume(
         maxiops)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
-            mount_vol_response = dagent.mount_volume(vol_name)
+            dagent.mount_volume(vol_name, arr_name)
     return create_vol_response
 
 
@@ -59,13 +61,20 @@ def update_volume(data):
     update_vol_response = dagent.update_volume(data)
     return update_vol_response
 
+def rename_volume(data):
+    rename_vol_response = dagent.rename_volume(data)
+    return rename_vol_response
 
-def mount_volume(vol_name):
-    return dagent.mount_volume(vol_name)
+def mount_volume(vol_name, array_name = dagent.DEFAULT_ARRAY):
+    return dagent.mount_volume(vol_name, array_name)
 
 
-def delete_volume(vol_name):
-    return dagent.delete_volume(vol_name)
+def unmount_volume(vol_name, array_name = dagent.DEFAULT_ARRAY):
+    return dagent.unmount_volume(vol_name, array_name)
+
+
+def delete_volume(vol_name, array_name):
+    return dagent.delete_volume(vol_name, array_name)
 
 
 def list_volume():

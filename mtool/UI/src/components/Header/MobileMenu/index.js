@@ -68,9 +68,11 @@ const MobileMenu = (props) => {
           open={props.isMobileMenuOpen}
           onClose={props.handleMobileMenuClose}
         >
+          <MenuItem className={classes.menuItem}><NavLink to="/IbofOsOperations">Poseidon Operations</NavLink></MenuItem>
+          <Divider />
           <a href={PDF} target="_blank" rel="noopener noreferrer">
             <MenuItem className={classes.menuItem}>
-            <p data-testid="help-link">Help</p>
+            <span data-testid="help-link">Help</span>
             </MenuItem>
           </a>          
           <Divider />
@@ -81,19 +83,19 @@ const MobileMenu = (props) => {
           <Divider />
           <Collapse in={open} timeout="auto" unmountOnExit>
             <MenuList disablePadding>
-              <NavLink to="/user">
+              <NavLink to="/ConfigurationSetting/user">
                 <MenuItem className={classes.nestedMenuItem}>User Management</MenuItem>
               </NavLink>
               <Divider />
-              <MenuItem className={classes.nestedMenuItem} onClick={props.renderPopup}>Change Password</MenuItem>
-              <Divider />
+              {/* <MenuItem className={classes.nestedMenuItem} onClick={props.renderPopup}>Change Password</MenuItem>
+              <Divider /> */}
               <MenuItem className={classes.nestedMenuItem} onClick={props.userLogout}>Logout</MenuItem>
               <Divider />
             </MenuList>
           </Collapse>
-          <MenuItem className={classes.menuItem}>
+          {/* <MenuItem className={classes.menuItem}>
             <p>Support</p>
-          </MenuItem>
+          </MenuItem> */}
         </StyledMenu>
     )
 }

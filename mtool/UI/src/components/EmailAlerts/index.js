@@ -35,7 +35,7 @@ import Card from "@material-ui/core/Card";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { createMuiTheme , TablePagination } from "@material-ui/core";
+import { createMuiTheme, TablePagination } from "@material-ui/core";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import Search from "@material-ui/icons/Search";
 import SaveAlt from "@material-ui/icons/SaveAlt";
@@ -288,7 +288,7 @@ class EmailAlerts extends Component {
           render: rowData => {
             const { data } = this.state;
             const index = data.indexOf(rowData);
-            const id = rowData ? `EmailAlerts-togglebtn-${ rowData.email}` : "";
+            const id = rowData ? `EmailAlerts-togglebtn-${rowData.email}` : "";
             return (
               <Switch
                 size="small"
@@ -321,7 +321,8 @@ class EmailAlerts extends Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(newProps) {
     this.setState({ data: newProps.emailids });
   }
 
@@ -442,43 +443,43 @@ class EmailAlerts extends Component {
                   Pagination: props => (
                     <TablePagination
                       {...props}
-                      // labelRowsPerPage={<div style={{fontSize: 12}}>{props.labelRowsPerPage}</div>}
-                      // labelDisplayedRows={row => <div style={{fontSize: 12}}>{props.labelDisplayedRows(row)}</div>}
-                      // SelectProps={{
-                      //   style:{
-                      //     fontSize: 12,
-                      //   }
-                      // }}
+                    // labelRowsPerPage={<div style={{fontSize: 12}}>{props.labelRowsPerPage}</div>}
+                    // labelDisplayedRows={row => <div style={{fontSize: 12}}>{props.labelDisplayedRows(row)}</div>}
+                    // SelectProps={{
+                    //   style:{
+                    //     fontSize: 12,
+                    //   }
+                    // }}
                     />
                   )
                 }}
                 title={(
-<div>
+                  <div>
                     <Typography
                       variant="caption"
                       className={classes.SendEmailAlerts}
                     >
                       Send Email Alerts through the following Email List
                     </Typography>
-</div>
-)}
+                  </div>
+                )}
                 actions={[
-                 /* {
-                    icon: EmailIcon,
-                    iconProps: {
-                      color: "secondary",
-                      id: "EmailAlerts-icon-testemail"
-                    },
-                    tooltip: "Test Email",
-                    onClick: (event, rowData) => {
-                      const { data } = this.state;
-                      const index = data.indexOf(rowData);
-                      this.props.selectEmail(index);
-                      this.props.sendEmail();
-                    },
-                    "data-testid": "action"
-                  },
-		  */
+                  /* {
+                     icon: EmailIcon,
+                     iconProps: {
+                       color: "secondary",
+                       id: "EmailAlerts-icon-testemail"
+                     },
+                     tooltip: "Test Email",
+                     onClick: (event, rowData) => {
+                       const { data } = this.state;
+                       const index = data.indexOf(rowData);
+                       this.props.selectEmail(index);
+                       this.props.sendEmail();
+                     },
+                     "data-testid": "action"
+                   },
+       */
                   {
                     icon: TrashIcon,
                     iconProps: {

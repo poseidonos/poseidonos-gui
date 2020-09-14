@@ -31,52 +31,53 @@ DESCRIPTION: <File description> *
 #!/usr/bin/python
 from rest.swordfish.handler import swordfish_api
 # Update_KapacitorList,Delete_From_KapacitorList
-from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
-from rest.rest_api.alerts.system_alerts import get_alert_categories_new, create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
+#from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
+#from rest.rest_api.alerts.system_alerts import get_alert_categories_new, create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
 from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
-from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, update_volume, get_max_vol_count
+from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
 from rest.rest_api.logmanager.logmanager import download_logs
-from rest.rest_api.array.array import create_arr, list_arr, get_arr_status
+from rest.rest_api.array.array import create_arr, list_arr, get_arr_status, check_arr_exists
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
-from rest.rest_api.logmanager.logmanager import get_ibofos_logs
+#from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_available, get_user_cpu_usage, get_diskio_mbps, get_total_processes,  \
-    get_total_disk_used_percent, get_alerts_from_influx, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_diskio_mbps, get_total_processes,  \
+    get_total_disk_used_percent, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
     get_disk_current_perf
-from flask_socketio import SocketIO, emit, disconnect
+from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
-from util.com.status_codes import statusList
 import time
 from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from dateutil import parser
-import smtplib
+#from email.mime.text import MIMEText
+#from email.mime.multipart import MIMEMultipart
+#from dateutil import parser
+#import smtplib
 import datetime
 import jwt
 from werkzeug.security import generate_password_hash
-from util.db.dummy_data import ibofs
 import uuid
 from base64 import b64encode
 import re
 from functools import wraps
 from bson import json_util
 import traceback
-import requests
+#import requests
 import json
 #import threading
 import os
 import eventlet
+import math
 eventlet.monkey_patch()
+
+BLOCK_SIZE = 1024 * 1024
 
 # Connect to MongoDB first. PyMODM supports all URI options supported by
 # PyMongo. Make sure also to specify a database in the connection string:
@@ -118,13 +119,13 @@ def toJson(data):
   #  print("tojson :",json_util.dumps(data))
     return json_util.dumps(data)
 
-
+"""
 alerts = [
     'CPU Utilization',
     'Temperature Threshold',
     'Memory Utilization',
     'Critical Warning']
-
+"""
 
 # Serve React App
 @app.route('/', defaults={'path': ''})
@@ -193,18 +194,6 @@ def token_required(f):
     return decorated
 
 
-@app.route('/api/v1.0/get_ibofs_info/', methods=['GET'])
-@token_required
-def get_ibofs_info(current_user):
-    return jsonify({'ibofs': ibofs})
-
-
-@app.route('/api/v1.0/retrieve_alerts_info/', methods=['GET'])
-@token_required
-def retrieve_alerts_info(current_user):
-    return jsonify({'alerts': alerts})
-
-
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
 @token_required
 def start_ibofos(current_user):
@@ -216,7 +205,6 @@ def start_ibofos(current_user):
     #body_unicode = request.data.decode('utf-8')
     #body = json.loads(body_unicode)
     #script_path = body['path']
-    print('start ibofos.............')
     if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag):
         return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
@@ -237,6 +225,25 @@ def start_ibofos(current_user):
     return jsonify({"response": "unable to start POS"})
 
 
+#Delete Array
+@app.route('/api/v1.0/delete_array/<name>', methods=['POST'])
+@token_required
+def delete_array(current_user, name):
+    print("in delete array")
+    res = dagent.delete_array(name)
+    return_msg = {}
+    if res.status_code == 200:
+        res = res.json()
+        if res["result"]["status"]["code"] == 0:
+            return toJson(res)
+    else:
+        res = res.json()
+        if ("result" in res and "status" in res["result"]):
+            return_msg["result"] = res["result"]["status"]
+            return_msg["return"] = -1
+            return toJson(return_msg)
+    res = "unable to delete array"
+    return make_response(res, 500)
 @app.route('/api/v1.0/stop_ibofos', methods=['GET'])
 @token_required
 def stop_ibofos(current_user):
@@ -327,21 +334,11 @@ def is_ibofos_running(current_user):
         #col = db['iBOFOS_Timestamp']
         response = fetch_system_state()
         response = response.json()
-        if('result' in response and 'status' in response['result'] and 'description' in response['result']['status'] and response['result']['status']['code'] == 0):
-            timestamp = connection_factory.get_prev_time_stamp()
-            lastRunningTime = strftime("%a, %d %b %Y %I:%M:%S %p %Z")
-            if not timestamp:
-                connection_factory.insert_time_stamp(lastRunningTime)
-            else:
-                connection_factory.update_time_stamp(lastRunningTime)
+        if 'lastSuccessTime' in response and response['lastSuccessTime'] != 0:
+            lastRunningTime = datetime.datetime.fromtimestamp(response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
+        if('result' in response and 'status' in response['result'] and 'code' in response['result']['status'] and response['result']['status']['code'] == 0):
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = True
-            response = {"result": {"data": {"type": "NORMAL"}}}
         else:
-            timestampvalue = connection_factory.get_prev_time_stamp()
-            if not timestampvalue:
-                lastRunningTime = ""
-            else:
-                lastRunningTime = timestampvalue
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = False
     except BaseException:
         return toJson({"RESULT": response,
@@ -350,21 +347,16 @@ def is_ibofos_running(current_user):
                        "code": code,
                        "level": level,
                        "value": value})
-    finally:
-        return toJson({"RESULT": response,
+    return toJson({"RESULT": response,
                        "lastRunningTime": lastRunningTime,
                        "timestamp": timestamp,
                        "code": code,
                        "level": level,
                        "value": value})
 
-
+"""
 @app.route('/api/v1.0/get_Ibof_OS_Logs/')
 def ibofos_logs():
-    """
-    Gets ibofos logs
-    :return:
-    """
     #print("Palak: get logs")
     data = []
     try:
@@ -413,7 +405,7 @@ def ibofos_logs():
         return toJson(data)
         # return toJson([{"timestamp": timestamp, "code":code, "level":level,
         # "value":value}])
-
+"""
 
 """
 @app.route('/api/v1.0/get_Bmc_Logs/')
@@ -486,7 +478,7 @@ def bmc_logs():
         return toJson(result)
 """
 
-
+"""
 @app.route('/api/v1.0/get_alert_info', methods=['GET'])
 def get_alert_info():
     try:
@@ -507,9 +499,8 @@ def get_alert_info():
 @app.route('/api/v1.0/get_alert_types/', methods=['GET'])
 @token_required
 def get_alert_categories(current_user):
-    alertCategories, fields = get_alert_categories_new()
+    alertCategories = get_alert_categories_new()
     return jsonify({'alert_types': alertCategories})
-
 
 @app.route('/api/v1.0/available_memory', methods=['GET'])
 def get_available_mem():
@@ -517,22 +508,27 @@ def get_available_mem():
     val = list(res.get_points())
     print(val)
     return jsonify(val)
-
+"""
 
 @app.route('/api/v1.0/available_storage/', methods=['GET'])
-def get_storage_details():
+@token_required
+def get_storage_details(current_user):
     # array = db['array'].find_one({})
+
     res = get_arr_status()
     val = [{}]
     if res.status_code == 200:
         res = res.json()
         if res["info"]["state"] and res["info"]["state"].upper(
         ) != MACRO_OFFLINE_STATE:
-            val[0]["arraySize"] = res["info"]["capacity"]
+            val[0]["arraySize"] = int(res["info"]["capacity"])
+            val[0]["usedSpace"] = int(res["info"]["used"])
         else:
             val[0]['arraySize'] = 0
+            val[0]['usedSpace'] = 0
     else:
         val[0]['arraySize'] = 0
+        val[0]['usedSpace'] = 0
     print(val)
     return jsonify(val)
 
@@ -550,10 +546,12 @@ def get_user_cpu_use(time_interval):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_user_cpu_usage(time_interval)
-    val = list(res.get_points())
-    # print(val)
-    return jsonify(val)
+    try:
+        res = get_user_cpu_usage(time_interval)
+        return jsonify(res["result"]["data"])
+    except Exception as e:
+        print(e)
+        return jsonify([])
 
 
 @app.route('/api/v1.0/disk_write_mbps/<time_interval>/<level>',
@@ -598,8 +596,12 @@ def get_read_iops(time_interval, level):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_disk_read_iops(time_interval, level)
-    return jsonify(res)
+    try:
+        res = get_disk_read_iops(time_interval, level)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
 
 
 @app.route('/api/v1.0/iops_write/<time_interval>/<level>', methods=['GET'])
@@ -608,8 +610,12 @@ def get_write_iops(time_interval, level):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_disk_write_iops(time_interval, level)
-    return jsonify(res)
+    try:
+        res = get_disk_write_iops(time_interval, level)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
 
 
 @app.route('/api/v1.0/latency/<time_interval>/<level>', methods=['GET'])
@@ -618,8 +624,12 @@ def get_latency(time_interval, level):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_disk_latency(time_interval, level)
-    return jsonify(res)
+    try:
+        res = get_disk_latency(time_interval, level)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
 
 
 @app.route('/api/v1.0/perf/all', methods=['GET'])
@@ -634,8 +644,12 @@ def get_read_bw(time_interval, level):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_disk_read_bw(time_interval, level)
-    return jsonify(res)
+    try:
+        res = get_disk_read_bw(time_interval, level)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
 
 
 @app.route('/api/v1.0/bw_write/<time_interval>/<level>', methods=['GET'])
@@ -644,10 +658,14 @@ def get_write_bw(time_interval, level):
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
-    res = get_disk_write_bw(time_interval, level)
-    return jsonify(res)
+    try:
+        res = get_disk_write_bw(time_interval, level)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
 
-
+"""
 def trigger_email(serverip, serverport, emailid):
     print("Inside Trigger")
     if(("@samsung.com" in emailid) == False):
@@ -785,7 +803,7 @@ def toggle_email_status():
     else:
         Delete_MultipleID_From_KapacitorList(email_id, True)
     return 'Updated'
-
+"""
 
 # Get Devices
 @app.route('/api/v1.0/get_devices/', methods=['GET'])
@@ -807,7 +825,8 @@ def addSpareDisk(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     name = body['name']
-    res = dagent.add_spare_disk(name)
+    arrayname = body.get('array')
+    res = dagent.add_spare_disk(name, arrayname)
     return_msg = {}
 
     if res.status_code == 200:
@@ -833,14 +852,15 @@ def removeSpareDisk(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     name = body['name']
+    arrayname = body.get('array')
     return_msg = {}
-    res = dagent.remove_spare_disk(name)
+    res = dagent.remove_spare_disk(name, arrayname)
     if res.status_code == 200:
         res = res.json()
         if res["result"]["status"]["code"] == 0:
             return toJson(res)
     else:
-        print("spare error", res.json)
+        print("spare error", res.json())
         res = res.json()
         if ("result" in res and "status" in res["result"]):
             return_msg["result"] = res["result"]["status"]
@@ -852,13 +872,15 @@ def removeSpareDisk(current_user):
 
 
 # Get Device Details
-@app.route('/api/v1.0/get_device_details/', methods=['POST'])
-def getDeviceDetails():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body['name']
+@app.route('/api/v1.0/device/smart/<name>', methods=['GET'])
+@token_required
+def getDeviceDetails(current_user, name):
     device_details = get_disk_details(name)
-    return toJson(device_details)
+    try:
+        return toJson(device_details.json())
+    except BaseException:
+        res = "Unable to get SMART info"
+        return make_response(res, 500)
 
 # Create Array
 
@@ -869,35 +891,35 @@ def create_arrays(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     #_id = body['_id']
-    #arrayname = 'ibofArray'
+    arrayname = body.get('arrayname')
     # print(arrayname)
-    #RAIDLevel = body['RAIDLevel']
+    raidtype = body['raidtype']
     spareDisks = body['spareDisks']
     # print('spareDisks',spareDisks)
     #writeBufferDisk = body['writeBufferDisk']
     metaDisk = body["metaDisk"]
     storageDisks = body['storageDisks']
     totalsize = len(storageDisks)
-    if totalsize < 3 or len(spareDisks) < 1:
+
+    if totalsize < 3:
         return abort(404)
+    if arrayname == None:
+        arrayname = dagent.DEFAULT_ARRAY
+
+    
     print('storageDisks: ', storageDisks)
     print('metaDisk: ', metaDisk)
 
     # check if array exists
     found = False
-    res = get_arr_status()
-    # check if array is mounted
+    res = check_arr_exists()
+    #print("res from get array",res)
 
-    if res.status_code == 200:
-        res = res.json()
-        if res["info"]["state"].upper() != MACRO_OFFLINE_STATE:
-            found = True
-
-#   found = col.find_one({"_id": arrayname})
-    print('after found statement', found)
+    if res == True:
+        found = True
 
     if not found:
-        array_create = create_arr(1, spareDisks, storageDisks, [
+        array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
                                   {"deviceName": metaDisk}])
         array_create = array_create.json()
         #   col.insert_one({ "_id": arrayname,"RAIDLevel": RAIDLevel,"storagedisks":storageDisks,"sparedisks":spareDisks,"writebufferdisks":writeBufferDisk,"metadiskpath":metaDisk,"totalsize":arraySize,"usedspace":0})
@@ -932,27 +954,24 @@ def get_mod_array(array):
 
 
 @app.route('/api/v1.0/get_arrays/', methods=['GET'])
-# @token_required
-# def get_arrays('''current_user'''):
-def get_arrays():
-    print("GETTTTTTTTTTTTTTT ARRRRRRRRRRRRRRRRRRAYSSSSSS")
-    res = get_arr_status()
-    # check if array is mounted
-    if res.status_code == 200:
-        res = res.json()
-        print("resssssssssssssssssin get_rrays", res)
-        if res["info"]["state"].upper() != MACRO_OFFLINE_STATE:
+@token_required
+def get_arrays(current_user):
+    res = check_arr_exists()
+    #print("result from get array",res)
 
-            # if res["result"]["data"]["state"].upper() != MACRO_OFFLINE_STATE:
-            array_list = list_arr()
-            if array_list.status_code == 200:
-                array = array_list.json()
-                # convert to format expected by UI
-                array = get_mod_array(array)
-                array['totalsize'] = res["info"]["capacity"]
-                array['usedspace'] = res["info"]["used"]
-                return jsonify([array])
 
+    array_list = list_arr()
+    #print("array list is", array_list.json())
+        
+    if array_list.status_code == 200:
+        array = array_list.json()
+        res = array
+        # convert to format expected by UI
+        array = get_mod_array(array)
+        array['totalsize'] = int( res["info"]["capacity"])
+        array['usedspace'] = int(res["info"]["used"])
+        return jsonify([array])
+        
     return toJson([])
 
 
@@ -968,7 +987,7 @@ def add_new_user(current_user):
     mobilenumber = body['mobilenumber']
     email = body['emailid']
     print('username', username, '\n', 'password', hashed_password)
-    connection_factory.add_new_user_in_db(
+    result = connection_factory.add_new_user_in_db(
         username,
         password,
         email,
@@ -978,7 +997,11 @@ def add_new_user(current_user):
         "Create,Edit,View",
         4,
         True)
-    return jsonify({"message": "NEW USER CREATED"})
+    if result == True:
+        return jsonify({"message": "NEW USER CREATED"})
+    else:
+        message = "User Already Exists"
+        return make_response(message, 400)
 # To Do - 1. Check if username exists in DB. If yes, return failure.
 # 2. Hash the password using bcrypt library
 # 3. Add all the user values in DB
@@ -1030,11 +1053,11 @@ def get_users(current_user):
 def toggle_status():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    id = body['userid']
+    user_id = body['userid']
     status = body['status']
-    print(" in app.py toggle_status() ", id, status)
-    if id != "admin":
-        if connection_factory.toggle_status_from_db(id, status):
+    print(" in app.py toggle_status() ", user_id, status)
+    if user_id != "admin":
+        if connection_factory.toggle_status_from_db(user_id, status):
             return jsonify({"message": "User status changed"})
         else:
             return jsonify({"message": "User status could not changed"})
@@ -1172,6 +1195,20 @@ def getIpAndMac():
         return make_response('Could not get ip and mac', 500)
 
 
+#POS expects the volume size to be block aligned
+def make_block_aligned(size):
+    """
+    Example:
+    size = 8.13 GB
+    size = floor( 8.13 * 1024 * 1024 * 1024) =  floor(8729521029.12) = 8729521029
+    floor(8729521029 / (1024 * 1024)) * (1024 * 1024) = 8325* (1024 * 1024) = 8729395200 → Pass to POS
+    """
+
+    size = math.floor(size)
+    aligned_size = (math.floor(size/BLOCK_SIZE) * BLOCK_SIZE)
+    return aligned_size
+    
+
 @app.route('/api/v1.0/save-volume/', methods=['POST'])
 def saveVolume():
     body_unicode = request.data.decode('utf-8')
@@ -1180,23 +1217,37 @@ def saveVolume():
     # ifOldName=body['old']
     print('----------body---', body)
     volume_name = body['name']
-    vol_size = body['size']
+    vol_size = float( body['size'])
     maxbw = body['maxbw']
+    array_name = body.get('array')
     maxiops = body['maxiops']
-    description = body['description']
-    unit = body['unit']
-    arrayname = 'ibofArray'
+    unit = body['unit'].upper()
     mount_vol = body['mount_vol']
     stop_on_error = body['stop_on_error']
     count = body['count']
     suffix = body['suffix']
+    max_available_size = body['max_available_size']
+    
+    if array_name == None:
+        array_name = dagent.DEFAULT_ARRAY
 
-    if unit == "GB":
-        size = int(vol_size) * 1024 * 1024 * 1024
+    if (vol_size == 0):
+        size = int(max_available_size)
     else:
-        size = int(vol_size) * 1024 * 1024 * 1024 * 1024
+        if unit == "GB":
+            size = vol_size * 1024 * 1024 * 1024
+        elif unit == 'TB':
+            size = vol_size * 1024 * 1024 * 1024 * 1024
+        elif unit == 'PB':
+            size = vol_size * 1024 * 1024 * 1024 * 1024 * 1024
+        else:
+            # default case assuming the unit is TB
+            size = vol_size * 1024 * 1024 * 1024 * 1024
+        size = make_block_aligned(size)    
+
     create_vol_res = create_volume(
         volume_name,
+        array_name,
         int(size),
         int(count),
         int(suffix),
@@ -1217,7 +1268,7 @@ def saveVolume():
     body = json.loads(body_unicode)
     print("save volumeeeeeeeeeeeeeeee")
     #ifOldName=body['old']
-    print('----------body---', body)
+    print('----------vol body---', body)
     volume_name = body['name']
     vol_size = body['size']
     maxbw = body['maxbw']
@@ -1227,12 +1278,12 @@ def saveVolume():
     arrayname = 'ibofArray'
     mount_vol = body['mount_vol']
     stop_on_error = body['stop_on_error_checkbox']
-
-    print("mount vol is",mount_vol)
-
-
-
-    if unit== "GB":
+    max_available_size = body['max_available_size']
+    print("vol size",int(vol_size))
+    if (int(vol_size) == 0):
+        print("size is", int(max_available_size))
+        size = int(max_available_size)
+    elif unit== "GB":
         size=int(vol_size) * 1024 * 1024 * 1024
     else:
         size=int(vol_size)* 1024 * 1024 * 1024 * 1024
@@ -1292,33 +1343,80 @@ def updateVolume(current_user):
     update_vol_res = update_volume(body)
     return toJson(update_vol_res.json())
 
+@app.route('/api/v1.0/volumes/<volume_name>', methods=['PATCH'])
+@token_required
+def renameVolume(current_user, volume_name):
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        if volume_name != body["param"]["name"]:
+            return make_response('URL param not matching with body param', 500)
+    except BaseException:
+        return make_response('Invalid Parameters received', 500)
+    rename_vol_res = rename_volume(body)
+    return toJson(rename_vol_res.json())
+
+@app.route('/api/v1.0/volume/mount', methods=['POST'])
+def mountVolume():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        mount_vol_res = mount_volume(body["name"], body.get("array"))
+        return toJson(mount_vol_res.json())
+    except Exception as e:
+        return make_response('Could not mount Volume: '+e, 500)
+@app.route('/api/v1.0/volume/mount', methods=['DELETE'])
+def unmountVolume():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        unmount_vol_res = unmount_volume(body["name"], body.get("array"))
+        return toJson(unmount_vol_res.json())
+    except Exception as e:
+        return make_response('Could not Unmount Volume: '+e, 500) 
 
 @app.route('/api/v1.0/delete_volumes', methods=['POST'])
 def deleteVolumes():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     vols = list(body['volumes'])
+    total = len(vols)
+    passed = 0
+    fail = 0
+    description = ""
     # arrays=db.array.find()
     # arrayname=arrays[0]['_id']
     # print(arrayname)
+    arrayname = dagent.DEFAULT_ARRAY
     deleted_vols = []
     return_msg = {"result": "Success"}
     for vol in vols:
-        del_vol_cmd = delete_volume(vol)
+        del_vol_cmd = delete_volume(vol, arrayname)
         if del_vol_cmd.status_code == 200:
+            passed = passed + 1
             deleted_vols.append(vol)
             return_msg["result"] = del_vol_cmd.json(
             )["result"]["status"]["description"]
-            return_msg["return"] = 0
+    
         elif del_vol_cmd.status_code == 500:
+            fail = fail + 1
             return_msg["result"] = del_vol_cmd.json()["error"]
-            return_msg["return"] = -1
+            description += vol + ": "
+            description += del_vol_cmd.json()["error"]
+            description += "\n"
+
         else:
+            fail = fail + 1
             del_vol_cmd = del_vol_cmd.json()
             if ("result" in del_vol_cmd and "status" in del_vol_cmd["result"]):
+                description += vol + ":"
+                description += del_vol_cmd["result"]["status"]["description"]
+                description += ", Error code: "
+                description += str(del_vol_cmd["result"]["status"]["code"])
+                description+= "\n"
+    
                 return_msg["result"] = del_vol_cmd["result"]["status"]
                 return_msg["vol_name"] = vol
-                return_msg["return"] = -1
     # try:
     #    col = db['volume']
     #    col.delete_many({'name':{'$in':deleted_vols}})
@@ -1334,6 +1432,15 @@ def deleteVolumes():
     #   db.array.update_one({"_id": arrayname}, {"$set": {"usedspace": usedspace}})
     # except pymongo.error.OperationFailure as e:
     #    print("Operation could not be performed by the db error", e)
+    if fail == 0:
+        return_msg["return"] = 0
+    else:
+        return_msg["return"] = -1
+
+    return_msg["total"] = total
+    return_msg["passed"] = passed
+    return_msg["failed"] = fail
+    return_msg["description"] = description
     return toJson(return_msg)
 
 
@@ -1380,8 +1487,8 @@ def getVolumes():
         vol['subnqn'] = 'NA'
         vol['description'] = ''
         vol['unit'] = 'GB'
-        vol['size'] = vol['total'] / (1024 * 1024 * 1024)
-        vol['usedspace'] = (vol['total'] - vol['remain']) / \
+        vol['size'] = float(vol['total']) / (1024 * 1024 * 1024)
+        vol['usedspace'] = (float(vol['total']) - float(vol['remain'])) / \
             (1024 * 1024 * 1024)
     # print(vols)
     return toJson(volumes)
@@ -1392,7 +1499,7 @@ def getVolumes():
 </pre>
 '''
 
-
+'''
 @app.route('/api/v1.0/add_alert/', methods=['POST'])
 @token_required
 def addAlert(current_user):
@@ -1442,7 +1549,7 @@ def addAlert(current_user):
     else:
         return abort(400)
 
-    return jsonify({"message": "NEW ALERT CREATED"})
+    #return jsonify({"message": "NEW ALERT CREATED"})
 
 
 @app.route('/api/v1.0/get_alerts/', methods=['GET'])
@@ -1480,14 +1587,11 @@ def delete_alerts(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     ids = body['ids']
-    print(ids)
-    # make_response('Could not verify', 401)
-    for id in ids:
+    for alert_id in ids:
         try:
-            res = delete_alert_from_kapacitor(id)
-            print(res.status_code, type(res.status_code))
+            res = delete_alert_from_kapacitor(alert_id)
             if res.status_code == 204:
-                connection_factory.delete_alerts_in_db(id)
+                connection_factory.delete_alerts_in_db(alert_id)
         except BaseException:
             return make_response('Could not delete in db', 500)
 
@@ -1559,7 +1663,7 @@ def toggle_alert_status(current_user):
     else:
         print(res.json(), res.content)
         return abort(404)
-
+'''
 
 @app.route('/api/v1.0/download_logs', methods=['GET'])
 def downloadLogs():
@@ -1568,10 +1672,6 @@ def downloadLogs():
     enddate = request.args.get('end_date')
     return download_logs(startdate, enddate)
 
-
-@app.route('/api/v1.0/get_volume_names', methods=['GET'])
-def getVolumeNames():
-    return jsonify(['sda1', 'sda2', 'sda3'])
 
 
 @app.route('/api/v1.0/set_live_logs/', methods=['POST'])
@@ -1952,11 +2052,9 @@ def handleCreateVolConn():
         token = request.args['x-access-token']
     if not token:
         raise ConnectionRefusedError('unauthorized')
-        return False
     res = check_authentication()
     if not res:
         raise ConnectionRefusedError('unauthorized user!')
-        return False
 
 # callback function for multi-volume creation response from DAgent
 
@@ -1965,19 +2063,15 @@ def handleCreateVolConn():
 def createMultiVolumeCallback():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    print("Response from dagenttttttttttttt multi", body)
     description = ""
-
+    
     for entry in body['MultiVolArray']:
         if entry["result"]["status"]["code"] != 0:
-            description = "Description: " + \
-                entry["result"]["status"]["description"]
-            description += ", Error Code:"
-            description += str(entry["result"]["status"]["code"])
-            break
+            description += entry["result"]["status"]["description"]
+            description+= "\n" 
+    
     passed = body['Pass']
     total_count = body['TotalCount']
-    print("emitting")
     socketIo.emit('create_multi_volume',
                   {'pass': passed,
                    'total_count': total_count,

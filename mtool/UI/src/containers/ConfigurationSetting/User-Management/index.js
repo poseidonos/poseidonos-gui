@@ -51,7 +51,7 @@ const styles = (theme) => ({
 class UserManagement extends Component {
   constructor(props) {
     super(props);
-    this.toggleUserStatus = this.toggleUserStatus.bind(this);
+    // this.toggleUserStatus = this.toggleUserStatus.bind(this);
     this.selectUser = this.selectUser.bind(this);
     this.deleteUsers = this.deleteUsers.bind(this);
     this.saveUser = this.saveUser.bind(this);
@@ -90,13 +90,13 @@ class UserManagement extends Component {
     });
   }
 
-  toggleUserStatus(i) {
-    const user = {
-      userid: this.props.users[i]._id,
-      status: !this.props.users[i].active,
-    };
-    this.props.toggleUsersInfo(user);
-  }
+  // toggleUserStatus(i) {
+  //   const user = {
+  //     userid: this.props.users[i]._id,
+  //     status: !this.props.users[i].active,
+  //   };
+  //   this.props.toggleUsersInfo(user);
+  // }
 
   selectUser(event, i) {
     const users = [...this.props.users];
@@ -121,7 +121,10 @@ class UserManagement extends Component {
     this.props.users.forEach(user => {
       if (user.selected && user._id !== currentUser) {
         ids.push(user._id);
-      } else if (user.selected && user._id === currentUser) {
+        // Uncomment below line when multiple user selection is enabled
+        // } else if (user.selected && user._id === currentUser) {
+      }
+      if (user.selected && user._id === currentUser) {
         this.props.openAlertBox({
           istypealert: true,
           alerttype: 'alert',
@@ -131,15 +134,15 @@ class UserManagement extends Component {
         });
       }
     });
-    if (ids.length === 0) {
-      this.setState({
-        istypealert: true,
-        alerttype: 'alert',
-        alertOpen: true,
-        alerttitle: 'Delete User',
-        alertdescription: 'Select the users to be deleted'
-      });
-    }
+    // if (ids.length === 0) {
+    //   this.setState({
+    //     istypealert: true,
+    //     alerttype: 'alert',
+    //     alertOpen: true,
+    //     alerttitle: 'Delete User',
+    //     alertdescription: 'Select the users to be deleted'
+    //   });
+    // }
     const data = {
       ids,
     };
@@ -199,7 +202,7 @@ class UserManagement extends Component {
     if (this.props.addDeleteSend === 'Submit') {
       this.OnHandleSubmit();
       this.handleAlertClose();
-    } else if (this.props.addDeleteSend === 'Cancel') {
+    } else {
       this.onCancel();
       this.handleAlertClose();
     }
@@ -235,7 +238,7 @@ class UserManagement extends Component {
             <Grid container spacing={3}>
               <UserTable
                 selectUser={this.selectUser}
-                toggleUserStatus={this.toggleUserStatus}
+                // toggleUserStatus={this.toggleUserStatus}
                 saveChange={this.saveUser}
                 deleteUsers={this.deleteUsers}
                 users={this.props.users}
@@ -283,12 +286,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUsersInfo: (updatedUsers) => dispatch(actionCreators.setUsersInfo(updatedUsers)),
+    // setUsersInfo: (updatedUsers) => dispatch(actionCreators.setUsersInfo(updatedUsers)),
     openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
     fetchUsersInfo: () => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_FETCH_USERS }),
     updateUsersInfo: (newUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_UPDATE_USERS, newUsers, }),
     deleteUsersInfo: (deleteUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_DELETE_USERS, deleteUsers, }),
-    toggleUsersInfo: (toggleUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsers, }),
+    // toggleUsersInfo: (toggleUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsers, }),
     addNewUserInfo: (addNewUser) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_ADD_NEW_USERS, addNewUser, }),
   };
 }

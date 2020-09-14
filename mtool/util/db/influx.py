@@ -29,13 +29,12 @@ DESCRIPTION: <File description> *
 
 from influxdb import InfluxDBClient
 import os
-from util.com.common import get_hostname
 
-from conf.configure import config
 MTOOL_DB='poseidon'
 IP='0.0.0.0'
 PORT=8086
 
+"""
 def get_db_name():
     db_name = config.get_option_content('database', 'db')
 
@@ -43,7 +42,7 @@ def get_db_name():
         db_name = get_hostname()
 
     return db_name
-
+"""
 
 def get_connection(db=MTOOL_DB,
                    ip=IP,
@@ -53,7 +52,7 @@ def get_connection(db=MTOOL_DB,
         #print('IP',ip)
         client = InfluxDBClient(host=ip, port=port, database=db , use_udp=True)
         return client
-    except:
+    except BaseException:
         print("Error in Influx.py get_connection()")
 
 

@@ -111,8 +111,8 @@ class Volume():
                     self.volume["Name"] = vol["name"]
                     self.volume["Id"] = vol["id"]
                     self.volume["Status"]["Oem"]["VolumeStatus"] = vol["status"]
-                    self.volume["Capacity"]["Data"]["ConsumedBytes"] = vol["total"] - vol["remain"]
-                    self.volume["Capacity"]["Data"]["AllocatedBytes"] = vol["total"]
+                    self.volume["Capacity"]["Data"]["ConsumedBytes"] = float(vol["total"]) - float(vol["remain"])
+                    self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
                     self.volume["@odata.id"] = "/redfish/v1/StorageServices/1/Volumes/" + \

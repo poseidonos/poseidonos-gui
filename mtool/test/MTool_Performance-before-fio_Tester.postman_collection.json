@@ -1,0 +1,1296 @@
+{
+	"info": {
+		"_postman_id": "daefe0ad-c214-43bd-a87d-1a01a9f8efed",
+		"name": "MTool_Performance-before-fio_Tester",
+		"description": "MTool simple workflow - from login, start pos, create array, create vol, perf charts and stop pos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5bcf7ece-a822-4e84-a553-015287c70d3f",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Stop ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f365490-d9c6-4342-931e-d241c9336cb7",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    console.log(\" in if \")\r",
+							"    setTimeout(function () {\r",
+							"        console.log(\" in timeout \")\r",
+							"    }, 18000);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9fd295f8-bb63-4eef-ac29-7139d063668b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"stop_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "23156771-52ed-41ab-b4b0-451034d6ed5c",
+						"exec": [
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    setTimeout(function () {\r",
+							"        console.log(\"after timeout\")\r",
+							"    }, 10000);\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Successful POST request\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/start_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"start_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IsPOS-Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3889c093-72a3-4c4c-934c-4f1fd3a4da86",
+						"exec": [
+							"pm.test(\"POS is Running...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"Success\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5a9278bb-f847-4044-95ab-64be84c037e9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_Is_Ibof_OS_Running",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "12edadc0-be67-4e5b-835b-38ac1cc2ebc7",
+						"exec": [
+							"pm.test(\"Deleted Array, if any...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrayname\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/POSArray",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_array",
+						"POSArray"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4c00e10a-4650-49d3-b7ef-10479a0dd8bc",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"size\":\"01600321314816160032131481616003213148161600321314816\",\"arrayname\":\"POSArray\",\"raidtype\":\"raid5\",\"storageDisks\":[{\"deviceName\":\"unvme-ns-0\"},{\"deviceName\":\"unvme-ns-1\"},{\"deviceName\":\"unvme-ns-2\"}],\"spareDisks\":[{\"deviceName\":\"unvme-ns-3\"}],\"writeBufferDisk\":[],\"metaDisk\":\"uram0\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Volume",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74c2655d-fd72-4e20-bd44-6231c2ffa808",
+						"exec": [
+							"pm.test(\"Volume created...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"volpk\",\"size\":\"10\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"POSArray\",\"maxbw\":0,\"maxiops\":0,\"count\":3,\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\": \"POSArray\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"save-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dashboard_values_TC-198",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be31d8fe-0362-46e2-bc76-ba2f9ac803a6",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"bw_read = jsonData.bw_read\r",
+							"bw_total = jsonData.bw_total\r",
+							"bw_write = jsonData.bw_write\r",
+							"iops_read = jsonData.iops_read\r",
+							"iops_total = jsonData.iops_total\r",
+							"iops_write = jsonData.iops_write\r",
+							"latency = jsonData.latency\r",
+							"\r",
+							"pm.globals.set('bw_read', bw_read);\r",
+							"pm.globals.set('bw_total', bw_total);\r",
+							"pm.globals.set('bw_write', bw_write);\r",
+							"pm.globals.set('iops_read', iops_read);\r",
+							"pm.globals.set('iops_total', iops_total);\r",
+							"pm.globals.set('iops_write', iops_write);\r",
+							"pm.globals.set('latency', latency);\r",
+							"\r",
+							"setTimeout(function () {\r",
+							"    }, 8000);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d25eb7-e39d-4b3c-95ac-83be731c1448",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/perf/all",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"perf",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dashboard_values_should_be_0-TC-199",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7fe1af4-4242-4bf8-aa50-cf0affa74e20",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"bw_read = jsonData.bw_read\r",
+							"bw_total = jsonData.bw_total\r",
+							"bw_write = jsonData.bw_write\r",
+							"iops_read = jsonData.iops_read\r",
+							"iops_total = jsonData.iops_total\r",
+							"iops_write = jsonData.iops_write\r",
+							"latency = jsonData.latency\r",
+							"\r",
+							"if (bw_read == 0 && bw_total == 0 && bw_write == 0 && iops_read == 0 && iops_total == 0 && iops_write == 0 && latency == 0)\r",
+							"{\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"All values are not 0, Please stop fio\") });\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ed0dcbf6-6091-434a-a1bf-3456cf1a8696",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/perf/all",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"perf",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cpu_graph",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f531c31-74a7-423f-9f9b-0d28c4811950",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    if (!\"time\" in jsonData[0])\r",
+							"    {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"No Data\") });\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b594b6ac-ec5c-4df2-8e9e-9f82ab3032cd",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/usage_user/1m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"usage_user",
+						"1m"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf147e19-efee-41b9-bc56-3dea9c6179d3",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_write",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "872be941-ef6e-448e-acb9-124bc970331b",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_write",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_iops_read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7127c8bf-e30a-4423-985a-a23fa567caf7",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_write",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_iops_write",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e9808c13-fe43-4dce-b9b6-4b449e885aaa",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_write",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_latency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aae4443f-ab4c-421f-905f-f28139e5f89b",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_read_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "30b5092f-3df1-4d66-a78a-5583553d3965",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_read_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9d81b0af-426b-48b9-8999-2f77090b53bc",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_write_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e06d995a-3c56-4026-8369-4718be7ab40d",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_write_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "11126486-8833-4a77-b8ab-c5648b6960a1",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_write",
+						"1m",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_read_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a15c1bc-d771-4a0c-bd95-c2b3296ae589",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_read",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_read_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8ec26443-9be2-474b-a15b-b04ca1af79b8",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_read",
+						"1m",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_write_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "78009a3b-eddf-4827-8dda-49ddd7478bff",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_write",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_write_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a189e12-a475-4325-8eff-1848ea7e95bb",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_write",
+						"1m",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_latency_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8ebf76a-14b1-479b-8439-48aa13ddba1f",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_latency_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a21f495c-0f54-443e-b53d-67ff9fc85d94",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5a756e83-ae3b-4492-8e02-ef60db1d7724",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "239d7d1f-06f3-4649-9908-54fb7b702af4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b0317c7a-8a04-4185-a7a5-4295f275e8f6",
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

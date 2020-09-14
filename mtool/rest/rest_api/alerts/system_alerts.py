@@ -27,9 +27,10 @@ DESCRIPTION: <File description> *
 */
 '''
 
+'''
 from util.db.influx import get_connection
 import requests
-from util.macros.influxdb import mtool_db, infinite_rp, default_rp
+from util.macros.influxdb_config import mtool_db, infinite_rp, default_rp
 chronograf = 'chronograf'
 
 KAPACITOR_URL = 'http://localhost:9092/kapacitor/v1'
@@ -62,9 +63,7 @@ def get_alert_categories_new():
     # print(points)
     # print(points[0],type(points[0]))
     categories = {}
-    tagKeys = {}
     clusterId = 1
-    fields_dict = {}
     subId = 0
     for item in points:
         field = item['key']
@@ -82,16 +81,14 @@ def get_alert_categories_new():
             fields_key = list(keyFields.get_points())
             # print('fieldsKey,',type(fields_key))
             fieldsDictToList = []
-            for item in fields_key:
-                fieldsDictToList.append(item['fieldKey'])
-            # fields_dict[series[0]] =  fieldsDictToList
+            for field_item in fields_key:
+                fieldsDictToList.append(field_item['fieldKey'])
             aDict['alertFields'] = fieldsDictToList
             aDict['_id'] = clusterId
             clusterId = clusterId + 1
             aDict['alertSubCluster'] = []
             categories[series[0]] = 1
             # categories['subcluster'] = []
-            lis = []
             subId = 1
             for tag in series[1:]:
                 subDict = {}
@@ -129,7 +126,7 @@ def get_alert_categories_new():
 
                                     subEntry['alertTypes'].append(newField)
 
-    return final, fields_dict
+    return final
 
 
 def get_alert_fields():
@@ -178,7 +175,7 @@ def create_kapacitor_alert(
         "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
         "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
         "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
-        "       .measurement(measurement)\n        .groupBy(groupBy)\n        .where(whereFilter)\n   "
+        "       .measurement(measurement)\n        .groupBy(groupBy)\n   "
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
@@ -188,7 +185,7 @@ def create_kapacitor_alert(
         "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
             mtool_db,
             default_rp,
-            alertCluster,
+            alertCluster,#1,1,
             alertSubCluster,
             alertType,
             alertName,
@@ -228,13 +225,55 @@ def update_in_kapacitor(
     kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alertName)
 
     payload = {
+        "id": '{}'.format(alertName),
+        "type": "stream",
+        "dbrps": [
+            {
+                "db": mtool_db,
+                "rp": default_rp}],
+        "status": "disabled",
         "script": "var db = '{}'\nvar rp = '{}'\nvar measurement = '{}'\nvar groupBy = []\nvar whereFilter = "
         "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = '{}'\n\nvar"
         " idTag = 'alertID'\n\nvar levelTag = 'level'\n\nvar messageField = 'message'\n\n"
         "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
         "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
         "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
-        "       .measurement(measurement)\n        .groupBy(groupBy)\n        .where(whereFilter)\n   "
+        "       .measurement(measurement)\n        .groupBy(groupBy)\n   "
+        " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
+        "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
+        "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
+        " .durationField(durationField)\n        .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
+        "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
+        "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
+        "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
+            mtool_db,
+            default_rp,
+            alertCluster,
+            alertSubCluster,
+            alertType,
+            alertName,
+            description,
+            chronograf,
+            infinite_rp,
+            alertRange,
+            alertField,
+            opertorMAP[alertCondition])}
+    res = requests.patch(kapacitorUrl, json=payload)
+    payload = {
+        "id": '{}'.format(alertName),
+        "type": "stream",
+        "dbrps": [
+            {
+                "db": mtool_db,
+                "rp": default_rp}],
+        "status": "enabled",
+        "script": "var db = '{}'\nvar rp = '{}'\nvar measurement = '{}'\nvar groupBy = []\nvar whereFilter = "
+        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = '{}'\n\nvar"
+        " idTag = 'alertID'\n\nvar levelTag = 'level'\n\nvar messageField = 'message'\n\n"
+        "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
+        "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
+        "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
+        "       .measurement(measurement)\n        .groupBy(groupBy)\n   "
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
@@ -259,13 +298,13 @@ def update_in_kapacitor(
     return res
 
 
-def delete_alert_from_kapacitor(id):
-    kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(id)
+def delete_alert_from_kapacitor(alert_id):
+    kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alert_id)
     r = requests.delete(kapacitorUrl)
     return r
 
 
-def toggle_in_kapacitor(id, status):
+def toggle_in_kapacitor(alert_id, status):
     """
     Sets the status of the given alert in kapacitor
     :param id: unique id of the alert
@@ -273,7 +312,7 @@ def toggle_in_kapacitor(id, status):
     :return: http response as given by kapacitor
     """
     print(status, type(status))
-    kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(id)
+    kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alert_id)
     if status:
         alertStatus = "enabled"
     elif status == False:
@@ -300,3 +339,5 @@ def get_alert():
     r = requests.get(kapacitorUrl)
     for task in r.json()['tasks']:
         print(task.keys())
+'''
+

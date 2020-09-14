@@ -28,24 +28,21 @@ DESCRIPTION: <File description> *
 '''
 
 #from socketclient.socketclient import scan_devices, create_array, list_array
-from rest.rest_api.dagent.ibofos import create_array, array_status, list_array, delete_array
+from rest.rest_api.dagent.ibofos import DEFAULT_ARRAY, create_array, array_status, list_array, array_exists
 
 
-def create_arr(level, spare, devices, metadevice):
-    return create_array(level, spare, devices, metadevice)
-
-
-def delete_arr():
-    return delete_array()
-
+def create_arr(name, raidtype, spare, devices, metadevice):
+    return create_array(name, raidtype, spare, devices, metadevice)
 
 def get_arr_status():
     return array_status()
 
+def check_arr_exists():
+    return array_exists()
 
-def list_arr():
+def list_arr(name = DEFAULT_ARRAY):
     # scan_devices()
-    arrays = list_array()
+    arrays = list_array(name)
     return arrays
     # if arrays["num_arr"] > 0:
     #     get_array_stats()

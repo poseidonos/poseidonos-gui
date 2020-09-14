@@ -147,7 +147,7 @@ const ChangePassword = (props) => {
                                     label="Old Password"
                                     placeholder="Enter Old Password"
                                     onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
+                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
                                 />
                             </Grid>
                             <Grid item xs={12} container justify="center">
@@ -160,7 +160,7 @@ const ChangePassword = (props) => {
                                     label="New Password"
                                     placeholder="Enter New Password"
                                     onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
+                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
                                 />
                             </Grid>
                             <Grid item xs={12} container justify="center">
@@ -173,7 +173,7 @@ const ChangePassword = (props) => {
                                     label="Confirm Password"
                                     placeholder="Confirm New Password"
                                     onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
+                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
                                 />
                             </Grid>
                         </Grid>

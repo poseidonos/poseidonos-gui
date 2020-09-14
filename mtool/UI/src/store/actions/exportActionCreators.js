@@ -45,9 +45,9 @@ export {
     fetchAlertsType,
 } from "./alertManagementActions";
 
-export { 
-    changeLanguage
- } from "./headerLanguageActions";
+// export { 
+//     changeLanguage
+//  } from "./headerLanguageActions";
 
 export { 
     changeEmailList,
@@ -66,7 +66,6 @@ export {
 
 export {
     fetchDevices,
-    fetchVolumeDetails,
     fetchDeviceDetails,
     fetchArray,
     fetchArraySize,
@@ -95,7 +94,7 @@ export {
     fetchVolWriteIops,
     fetchLatency,
     fetchVolLatency,
-    fetchInputPowerVariation
+    // fetchInputPowerVariation
 } from "./performanceActions";
 
 export {
@@ -106,7 +105,7 @@ export {
 } from "./authenticationActions";
 
 export {
-    setUsersInfo,
+    // setUsersInfo,
     fetchUsersInfo,
 } from "./userManagementActions";
 

@@ -36,6 +36,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '../../assets/images/Delete-ICON.png';
 import ErrorIcon from '../../assets/images/ERROR-ICON.png';
+import AlertIcon from '../../assets/images/ERROR-ICON_old.png';
 import InfoIcon from '../../assets/images/INFO-ICON.png';
 
 const styles = theme => ({
@@ -113,7 +114,7 @@ class AlertDialog extends React.Component {
   render() {
     const { classes } = this.props;
     const actions =
-      this.props.type !== 'alert' && this.props.type !== 'info' ? (
+      this.props.type !== 'alert' && this.props.type !== 'info' && this.props.type !== 'partialError' ? (
         <DialogActions className={classes.actions}>
           <Button
             color="primary"
@@ -121,6 +122,7 @@ class AlertDialog extends React.Component {
             onClick={this.props.handleClose}
             className={classes.submit}
             autoFocus
+            data-testid="alertbox-no"
           >
             No
           </Button>
@@ -129,6 +131,7 @@ class AlertDialog extends React.Component {
             variant="contained"
             onClick={this.props.onConfirm}
             className={classes.submit}
+            data-testid="alertbox-yes"
           >
             Yes
           </Button>
@@ -141,6 +144,7 @@ class AlertDialog extends React.Component {
             onClick={this.props.handleClose}
             className={classes.submit}
             autoFocus
+            data-testid="alertbox-ok"
           >
             OK
           </Button>
@@ -151,6 +155,8 @@ class AlertDialog extends React.Component {
           return ErrorIcon;
         if (type === 'info')
           return InfoIcon;
+        if (type === 'partialError')
+          return AlertIcon;
         return DeleteIcon;
       };
     return (
@@ -224,6 +230,7 @@ class AlertDialog extends React.Component {
                 color: '#000',
                 fontSize: '12px',
                 padding: '0px 0px 0px 61px',
+                whiteSpace: 'pre',
                 display: 'block',
                 marginTop: '0px',
               }}

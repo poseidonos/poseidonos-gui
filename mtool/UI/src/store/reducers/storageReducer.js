@@ -26,6 +26,7 @@ DESCRIPTION: <Contains reducer function for Storage Management Component> *
 */
 
 import * as actionTypes from "../actions/actionTypes";
+import formatBytes from '../../utils/format-bytes';
 
 export const initialState = {
     ssds: [],
@@ -39,6 +40,7 @@ export const initialState = {
     errorCode: '',
     arraySize: 0,
     maxVolumeCount: 256,
+    volumeMap: {},
     createVolumeButton: false,
     totalVolSize: 0,
     storagedisks: [],
@@ -69,9 +71,9 @@ export const initialState = {
     }
 }
 
-const bytesToGB = (size) => {
-    return parseInt(size/(1024 * 1024 * 1024), 10)
-}
+// const bytesToGB = (size) => {
+//     return parseFloat(size / (1024 * 1024 * 1024), 10)
+// }
 
 const storageReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -90,7 +92,8 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_ARRAY_SIZE:
             return {
                 ...state,
-                arraySize: action.payload
+                arraySize: action.payload.totalsize,
+                totalVolSize: action.payload.usedspace
             }
         case actionTypes.FETCH_MAX_VOLUME_COUNT:
             return {
@@ -106,7 +109,9 @@ const storageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload,
-                arrayExists: true
+                arrayExists: true,
+                arraySize: action.payload.totalsize,
+                totalVolSize: action.payload.usedspace
             }
         case actionTypes.SET_NO_ARRAY:
             return {
@@ -122,48 +127,56 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.CLEAR_VOLUMES: {
             return {
                 ...state,
-                volumes: []
+                volumes: [],
+                volumeMap: {}
             }
         }
         case actionTypes.ADD_VOLUME: {
+            if (Object.prototype.hasOwnProperty.call(state.volumeMap, action.volume.Id)) {
+                const index = state.volumeMap[action.volume.Id];
+                return {
+                    ...state,
+                    volumes: [
+                        ...state.volumes.slice(0, index),
+                        {
+                            name: action.volume.Name,
+                            id: action.volume.Id,
+                            newName: action.volume.Name,
+                            size: formatBytes(action.volume.Capacity.Data.AllocatedBytes),
+                            usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
+                            maxiops: action.volume.Oem.MaxIOPS,
+                            maxbw: action.volume.Oem.MaxBandwidth,
+                            status: action.volume.Status.Oem.VolumeStatus,
+                            url: action.volume["@odata.id"],
+                            edit: false
+                        },
+                        ...state.volumes.slice(index + 1)
+                    ]
+                }
+            }
+            const totalVolumes = state.volumes.length;
             return {
                 ...state,
                 volumes: [
                     ...state.volumes,
                     {
                         name: action.volume.Name,
+                        newName: action.volume.Name,
                         id: action.volume.Id,
-                        size: bytesToGB(action.volume.Capacity.Data.AllocatedBytes),
-                        usedspace: bytesToGB(action.volume.Capacity.Data.ConsumedBytes),
+                        size: formatBytes(action.volume.Capacity.Data.AllocatedBytes),
+                        usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
                         maxiops: action.volume.Oem.MaxIOPS,
                         maxbw: action.volume.Oem.MaxBandwidth,
-                        status: action.volume.Status.Oem.VolumeStatus
+                        status: action.volume.Status.Oem.VolumeStatus,
+                        url: action.volume["@odata.id"]
                     }
-                ]
+                ],
+                volumeMap: {
+                    ...state.volumeMap,
+                    [action.volume.Id]: totalVolumes
+                }
             }
         }
-        case actionTypes.SELECT_VOLUME:
-            return {
-                ...state,
-                volumes: [
-                    ...state.volumes.slice(0, action.payload.index),
-                    {
-                        ...state.volumes[action.payload.index],
-                        selected: action.payload.value
-                    },
-                    ...state.volumes.slice(action.payload.index + 1)
-                ]
-            }
-        case actionTypes.SELECT_ALL_VOLUMES:
-            return {
-                ...state,
-                volumes: state.volumes.map(vol => {
-                    return {
-                        ...vol,
-                        selected: action.payload.value
-                    }
-                })
-            }
         case actionTypes.STORAGE_CLOSE_ALERT:
             return {
                 ...state,
@@ -189,7 +202,7 @@ const storageReducer = (state = initialState, action) => {
                 return vol.id === action.payload.id ? {
                     ...vol,
                     [action.payload.name]: action.payload.value
-                } : {
+                } /* istanbul ignore next */: {
                         ...vol,
                     };
             });
@@ -209,11 +222,24 @@ const storageReducer = (state = initialState, action) => {
                 ...state,
                 loading: false
             }
-        case actionTypes.FETCH_DEVICE_DETAILS:
+        case actionTypes.FETCH_DEVICE_DETAILS: {
+            let details = {};
+            for (let i = 0; i < state.ssds.length; i += 1) {
+                /* istanbul ignore else */
+                if (state.ssds[i].name === action.payload.name) {
+                    details = state.ssds[i];
+                    break;
+                }
+            }
+
             return {
                 ...state,
-                diskDetails: action.payload
+                diskDetails: {
+                    ...action.payload,
+                    ...details
+                }
             }
+        }
         default:
             return state;
     }

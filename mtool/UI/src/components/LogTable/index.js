@@ -230,7 +230,8 @@ class LogTable extends Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(newProps) {
     this.setState({ data: newProps.logList });
   }
 

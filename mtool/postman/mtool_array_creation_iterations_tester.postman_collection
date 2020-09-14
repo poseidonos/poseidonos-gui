@@ -1,0 +1,425 @@
+{
+	"info": {
+		"_postman_id": "a5a368a5-bff2-4cf2-a09b-27e0b7b3ccf2",
+		"name": "MTool_Login_Tester",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aa9691bb-5867-4394-92c5-d8f2ce9c26f6",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "967bb34c-1f37-4553-8886-92100d81a86e",
+						"exec": [
+							"pm.test(\"Deleted Array, if any...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrayname\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/POSArray",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_array",
+						"POSArray"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 3 storage 1 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d6054a0c-6eda-4036-9d6c-732d6082f031",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"size\":\"01600321314816160032131481616003213148161600321314816\",\"arrayname\":\"POSArray\",\"raidtype\":\"raid5\",\"storageDisks\":[{\"deviceName\":\"unvme-ns-0\"},{\"deviceName\":\"unvme-ns-1\"},{\"deviceName\":\"unvme-ns-2\"}],\"spareDisks\":[{\"deviceName\":\"unvme-ns-3\"}],\"writeBufferDisk\":[],\"metaDisk\":\"uram0\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 6 storage 0 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "072f8e6c-f58d-4464-a3b3-a615dc0588da",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"size\": \"9601927888896\",\r\n    \"arrayname\": \"POSArray\",\r\n    \"raidtype\": \"raid5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-0\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-1\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-2\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-3\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-6\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-7\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"uram0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 3 storage 3 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4bf9b5e-8e7c-4855-863a-ef663ca31903",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"size\": \"01600321314816160032131481616003213148161600321314816\",\r\n    \"arrayname\": \"POSArray\",\r\n    \"raidtype\": \"raid5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-0\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-1\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-2\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-3\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-4\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-5\"\r\n        }\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"uram0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 2 storage 4 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7e0550d5-a48b-47fd-bf6c-f182b5d6d2df",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"size\": \"01600321314816160032131481616003213148161600321314816\",\r\n    \"arrayname\": \"POSArray\",\r\n    \"raidtype\": \"raid5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-0\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-1\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-2\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-3\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-4\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-5\"\r\n        }\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"uram0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 32 storage 0 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dd78e4b1-4193-434b-9529-996ffc02ef33",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"size\": \"01600321314816160032131481616003213148161600321314816\",\r\n    \"arrayname\": \"POSArray\",\r\n    \"raidtype\": \"raid5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-0\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-1\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-2\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-3\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-4\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-5\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-6\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-7\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-8\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-9\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-10\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-11\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-12\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-13\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-14\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-15\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-16\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-17\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-18\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-19\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-20\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-21\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-22\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-23\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-24\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-25\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-26\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-27\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-28\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-29\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-30\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-31\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"uram0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array 29 storage 3 spare",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5ae57e0c-59d0-4961-8d8f-51904aa7aec7",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"size\": \"01600321314816160032131481616003213148161600321314816\",\r\n    \"arrayname\": \"POSArray\",\r\n    \"raidtype\": \"raid5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-0\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-1\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-2\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-3\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-4\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-5\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-6\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-7\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-8\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-9\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-10\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-11\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-12\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-13\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-14\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-15\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-16\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-17\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-18\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-19\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-20\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-21\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-22\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-23\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-24\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-25\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-26\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-27\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-28\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n        {\r\n            \"deviceName\": \"unvme-ns-29\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-30\"\r\n        },\r\n        {\r\n            \"deviceName\": \"unvme-ns-31\"\r\n        }\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"uram0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

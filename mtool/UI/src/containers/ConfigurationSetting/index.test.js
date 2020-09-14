@@ -45,6 +45,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
+import alertManagementReducer from "../../store/reducers/alertManagementReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import ConfigurationSetting from "./index";
 import i18n from "../../i18n";
@@ -60,6 +61,7 @@ describe("ConfigurationSetting", () => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
       // headerLanguageReducer,
+      alertManagementReducer,
       headerReducer,
       configurationsettingReducer,
       BMCAuthenticationReducer
@@ -109,7 +111,7 @@ describe("ConfigurationSetting", () => {
 
   it("throws error on providing invalid smtp server details", async () => {
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
       "input"
     );
@@ -124,6 +126,7 @@ describe("ConfigurationSetting", () => {
       getByTestId("alertDescription")
     );
     expect(alertDescription.innerHTML).toBe("SMTP server is not working");
+    fireEvent.click(getByText("OK"));
   });
 
   it("deletes configured smtp server", async () => {
@@ -593,4 +596,64 @@ describe("ConfigurationSetting", () => {
     expect(errorDescription.innerHTML).toBe("Email sending failed");
 */
   });
+  it("should download the logs", async () => {
+    renderComponent();
+    const { getByTestId } = wrapper;
+    fireEvent.click(getByTestId("downloadLogsBtn"));
+  });
+  it("should set ibofos time interval", async () => {
+    
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
+      "input"
+    );
+    fireEvent.change(ibofosTimeIntervalField, {
+      target: { value: "4" }
+    });
+    fireEvent.click(getByTestId("setTimeIntervalButton"));
+    fireEvent.change(ibofosTimeIntervalField, {
+      target: { value: "-1" }
+    });
+    fireEvent.click(getByTestId("setTimeIntervalButton"));
+    const okBtn = getByText("OK");
+    expect(okBtn).toBeDefined();
+    fireEvent.click(okBtn);
+  });
+
+  it("should set default ibofos time interval if the API fails", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onPost('/api/v1.0/set_ibofos_time_interval').reply(500, null)
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
+      "input"
+    );
+    fireEvent.change(ibofosTimeIntervalField, {
+      target: { value: "4" }
+    });
+    fireEvent.click(getByTestId("setTimeIntervalButton"));
+    fireEvent.change(ibofosTimeIntervalField, {
+      target: { value: "-1" }
+    });
+    fireEvent.click(getByTestId("setTimeIntervalButton"));
+    const okBtn = getByText("OK");
+    expect(okBtn).toBeDefined();
+    fireEvent.click(okBtn);
+  });
+
+  it("should delete ibofos time interval", async () => {
+    renderComponent();
+    const { getByTestId } = wrapper;
+    fireEvent.click(getByTestId("deleteTimeIntervalButton"));
+  });
+
+  //Disabling for PoC1
+
+  // it("should switch tabs", async () => {
+  //   renderComponent();
+  //   const { getByText } = wrapper;
+  //   fireEvent.click(getByText("Alert"));
+  //   fireEvent.click(getByText("General"));
+  // });
 });

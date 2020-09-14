@@ -187,8 +187,9 @@ const alertManagementReducer = (state = initialState, action) => {
                             }
                         }
                         alertTypesArray.push(action.alertTypes[i]);
-                     } 
-                    // else if (action.alertTypes[i].name === 'disk') {
+                     }           
+                     else if (action.alertTypes[i].name === 'mem' || action.alertTypes[i].name === 'net' || action.alertTypes[i].name === 'disk' || action.alertTypes[i].name === 'air' || action.alertTypes[i].name === 'ethernet') {
+                        alertTypesArray.push(action.alertTypes[i]);
                     //     for (
                     //         let j = 0;
                     //         j < action.alertTypes[i].alertSubCluster.length;
@@ -215,7 +216,7 @@ const alertManagementReducer = (state = initialState, action) => {
                     //     }
                     //     action.alertTypes[i].alertFields = ['NA'];
                     //     alertTypesArray.push(action.alertTypes[i]);
-                    // }
+                    }
                 }
                 return {
                     ...state,

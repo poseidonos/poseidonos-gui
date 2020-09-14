@@ -1,0 +1,1068 @@
+{
+	"info": {
+		"_postman_id": "dfff6fc9-4add-4f9e-8aca-8eca3a4d3920",
+		"name": "mtool_tc198_208_dashboard_page_after_fio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "33f19fa2-9e9c-4a0b-a44f-1760e2fa2dd9",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token = response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"postman.setEnvironmentVariable(\"token\", token);\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify_prev_dashboard_values_TC-198",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a6f75080-e728-4ada-b726-d81eb8d91fe7",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"bw_read = jsonData.bw_read\r",
+							"bw_total = jsonData.bw_total\r",
+							"bw_write = jsonData.bw_write\r",
+							"iops_read = jsonData.iops_read\r",
+							"iops_total = jsonData.iops_total\r",
+							"iops_write = jsonData.iops_write\r",
+							"latency = jsonData.latency\r",
+							"console.log(bw_read,bw_total,bw_write,iops_read,iops_total,iops_write,latency)\r",
+							"\r",
+							"console.log(globals.bw_read,globals.bw_total,globals.bw_write,globals.iops_read,globals.iops_total,globals.iops_write,globals.latency)\r",
+							"pm.globals.get(\"variable_key\");\r",
+							"pm.globals.get(\"variable_key\");\r",
+							"if (bw_read == globals.bw_read && bw_total == globals.bw_total && bw_write == globals.bw_write && iops_read == globals.iops_read && iops_total == globals.iops_total && iops_write == globals.iops_write && latency == globals.latency)\r",
+							"{\r",
+							"   pm.test(\"FAIL: \", () => { throw new Error(\"All values are same, Please run fio\") });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4553a775-ed1f-4c1f-b687-7d57e838b1bb",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/perf/all",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"perf",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify vol used space > 0 after fio TC_200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4601a4de-616b-439a-b53f-1b02810e0a53",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    usedSpace = jsonData.Capacity.Data.ConsumedBytes\r",
+							"    allocatedBytes = jsonData.Capacity.Data.AllocatedBytes\r",
+							"}\r",
+							"catch (err){\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Volume does not exist\") });\r",
+							"}\r",
+							"if (!(usedSpace>0 && usedSpace<allocatedBytes)){ \r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Volume used space is 0, Please run fio\") });\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2ca4c616-784c-4ada-a5ca-5f1784d836f0",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "50e65aaa-d9b7-4379-bb3f-f6a302196973",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"if (responseCode.code === 200) {\r",
+							"    // Delay for 12 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    },4000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrayname\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/POSArray",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_array",
+						"POSArray"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Array details should not available TC_201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "15bfb1c9-f3d7-4b99-b3ec-a8d7dec72b88",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"console.log(\"jsonData \",jsonData,jsonData[0],\"jsonData\")\r",
+							"if (jsonData.length!=0){\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response array is not empty\") });    \r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "870cf028-446c-4c56-add9-84d767a42022",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Volumes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e684f4ff-4d97-4727-9d18-baf9fa1fd820",
+						"exec": [
+							"pm.test(\"Delete volume successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"volumes\": [\"{{volName}}0\",\"{{volName}}1\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vol0 details should not available TC_202",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cf6a5165-6843-485d-a04c-ce7d42c24954",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.length!=undefined){\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response json is not empty\") });    \r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ea2e2e72-65d3-408b-9472-0a9e3dffeeea",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vol1 details should not available TC_202",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "87b7a916-27c3-44e4-883e-6258279815c0",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.length != undefined) {\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response json is not empty\") });\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "306a15d4-a762-4d20-be62-52c2770073ce",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bce8c671-71cf-40ad-a0ba-72f2f40247b3",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"size\":\"01600321314816160032131481616003213148161600321314816\",\"arrayname\":\"{{arrayName}}\",\"raidtype\":\"raid5\",\"storageDisks\":[{\"deviceName\":\"{{storageDisk1}}\"},{\"deviceName\":\"{{storageDisk2}}\"},{\"deviceName\":\"{{storageDisk3}}\"}],\"spareDisks\":[{\"deviceName\":\"{{spareDisk1}}\"}],\"writeBufferDisk\":[],\"metaDisk\":\"uram0\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Volume",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "106d5918-3aa1-4ebd-a27f-695c0efc2e06",
+						"exec": [
+							"pm.test(\"Volume created...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{volName}}\",\"size\":\"10\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"{{volCount}}\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"save-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Volumes(10)_TC_204_205_206",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7437066a-d84c-44e9-9c8c-d8bbd7251f03",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"console.log('device is....', environment.device);\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"volArr = jsonData.Members\r",
+							"\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(volArr.length).is.to.equal(10);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "23d3a557-41a4-4d39-b8e4-5ee6dd0b5649",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_array_size_TC_206",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "49faa673-4772-4463-b254-3384b73b76c1",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"arraySize = jsonData[0].arraySize\r",
+							"console.log(\"arraySize: \",jsonData[0].arraySize)\r",
+							"\r",
+							"if (arraySize <= 0) {\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Array size is not greater than 0 \") });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "883d5e94-f326-482e-8bbd-32a76fed71e2",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/available_storage/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"available_storage",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3650d71-3dc4-4844-9739-930714c26c3d",
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.response).is.to.equal(\"Success\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not stop POS\") });\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 12 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    },30000);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ea7191e4-7852-41b1-819b-1055dc998e94",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"stop_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "651aba6b-d1dc-4c0b-8436-a0522b8f3cd6",
+						"exec": [
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    setTimeout(function () {\r",
+							"    }, 10000);\r",
+							"}\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
+							"\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/start_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"start_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IsPOS-Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f21079af-9363-46b1-88d6-0c9f95f47ddb",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.RESULT.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2ae4f982-372b-4123-b0b4-3a82fd7b6b0b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_Is_Ibof_OS_Running",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_array_size_TC_208-part1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1071124f-6d16-4195-8e85-7b422b928b01",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"arraySize = jsonData[0].arraySize\r",
+							"console.log(\"arraySize: \", jsonData[0].arraySize)\r",
+							"\r",
+							"if (arraySize != 0) {\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Array size is not 0 \") });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "67ce0ff3-3370-4c6a-8a92-f57ec0d31a46",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/available_storage/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"available_storage",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Volumes_TC_208-part2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f7bd0b1-7e47-42f1-9528-34bea5905194",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"if (jsonData.length != 0) {\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response json is not empty\") });\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "56e89dcf-cd8a-4ac0-a755-d9695f6fbe64",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

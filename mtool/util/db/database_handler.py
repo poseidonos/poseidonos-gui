@@ -301,6 +301,8 @@ class SQLiteConnection:
                  ibofostimeinterval,
                  livedata))
             DB_CONNECTION.commit()
+        else:
+            return False
         return True
 
     def get_ibofos_time_interval_from_db(self, username):

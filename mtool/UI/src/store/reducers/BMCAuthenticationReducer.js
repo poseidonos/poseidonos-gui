@@ -37,12 +37,10 @@ export const initialState = {
 const BMCAuthenticationReducer = (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.BMC_CHANGE_CREDENTIALS: {
-        console.log("asda",action.payload);
         return {
           ...state,
         [action.payload.name] : action.payload.value,
         };
-        console.log(state.bmc_username);
       }
 
       case actionTypes.BMC_SET_IS_LOGGED_IN: {

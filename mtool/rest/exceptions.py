@@ -27,7 +27,6 @@ DESCRIPTION: <File description> *
 */
 '''
 
-from flask import jsonify
 
 
 class InvalidUsage(Exception):

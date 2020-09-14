@@ -31,17 +31,23 @@ import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 
 function extractValues(data) {
-  if (data.length === 0) {
-    data.push({
-      value: 0,
-      time: new Date()
-    });
-    data.push({
-        value: 0,
-        time: new Date(Date.now() - 10000)
-    });
-  }
-  return data;
+    if (data.length === 0) {
+        data.push({
+            value: 0,
+            bw: 0,
+            iops: 0,
+            latency: 0,
+            time: (new Date()).getTime() * 1e6
+        });
+        data.push({
+            value: 0,
+            bw: 0,
+            iops: 0,
+            latency: 0,
+            time: (new Date(Date.now() - 10000)) * 1e6
+        });
+    }
+    return data;
 }
 
 // function* fetchDiskUsed(action) {
@@ -104,91 +110,97 @@ function extractValues(data) {
 //     }
 // }
 
-export function* fetchInputPowerVariation(action) {
-    try {
-      const response = yield call(
-        [axios, axios.get],
-        `/api/v1.0/get_input_power_variation/${action.payload.time}`
-      );
-      const result = response.data;
-      if (result && !result.message) {
-        yield put(actionCreators.fetchInputPowerVariation(extractValues(result.res)));
-      } else {
-        yield put(actionCreators.fetchInputPowerVariation([]));
-      }
-    } catch (error) {
-      yield put(actionCreators.fetchInputPowerVariation([]));
-    } finally {
-      if (yield cancelled()) {
-        yield put(actionCreators.fetchInputPowerVariation([]));
-      }
-    }
-  }
+// export function* fetchInputPowerVariation(action) {
+//     try {
+//       const response = yield call(
+//         [axios, axios.get],
+//         `/api/v1.0/get_input_power_variation/${action.payload.time}`
+//       );
+//       const result = response.data;
+//       if (result && !result.message) {
+//         yield put(actionCreators.fetchInputPowerVariation(extractValues(result.res)));
+//       } else {
+//         yield put(actionCreators.fetchInputPowerVariation([]));
+//       }
+//     } catch (error) {
+//       yield put(actionCreators.fetchInputPowerVariation([]));
+//     } finally {
+//       if (yield cancelled()) {
+//         yield put(actionCreators.fetchInputPowerVariation([]));
+//       }
+//     }
+//   }
 
 export function* fetchCpuUsage(action) {
-  // console.log("fetchCpuUsage")
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/usage_user/${action.payload.time}`
-    );
-    const result = response.data;
-    if (result && !result.message) {
-      const values = [];
-      result.forEach(r => {
-        if (r.mean_usage_user !== null) {
-          values.push({
-            value: r.mean_usage_user,
-            time: r.time
-          });
+    // console.log("fetchCpuUsage")
+    try {
+        const response = yield call(
+            [axios, axios.get],
+            `/api/v1.0/usage_user/${action.payload.time}`
+        );
+        const result = response.data;
+
+        /* istanbul ignore else */
+        if (result && !result.message) {
+            const values = [];
+            result.forEach(r => {
+                /* istanbul ignore else */
+                if (r.cpuUsagePercent !== null) {
+                    values.push({
+                        value: r.cpuUsagePercent,
+                        time: r.time
+                    });
+                }
+            });
+            yield put(actionCreators.fetchCpuUsage(values));
+        } else {
+            yield put(actionCreators.fetchCpuUsage([]));
         }
-      });
-      yield put(actionCreators.fetchCpuUsage(values));
-    } else {
-      yield put(actionCreators.fetchCpuUsage([]));
+    } catch (error) {
+        yield put(actionCreators.fetchCpuUsage([]));
+    } finally {
+        /* istanbul ignore if */
+        if (yield cancelled()) {
+            yield put(actionCreators.fetchCpuUsage([]));
+        }
     }
-  } catch (error) {
-    yield put(actionCreators.fetchCpuUsage([]));
-  } finally {
-    if (yield cancelled()) {
-      yield put(actionCreators.fetchCpuUsage([]));
-    }
-  }
 }
 
 export function* fetchReadBandwidth(action) {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/bw_read/${action.payload.time}/${action.payload.level}`
-    );
+    try {
+        const response = yield call(
+            [axios, axios.get],
+            `/api/v1.0/bw_read/${action.payload.time}/${action.payload.level}`
+        );
 
         const result = response.data;
+        /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadBandwidth(extractValues(result.res)));
             } else {
-                yield put(actionCreators.fetchVolReadBandwidth({values: extractValues(result.res), ...action.payload}));
+                yield put(actionCreators.fetchVolReadBandwidth({ values: extractValues(result.res), ...action.payload }));
             }
-        } else if(action.payload.level === "array") {
-                yield put(actionCreators.fetchReadBandwidth([]));
-            } else {
-                yield put(actionCreators.fetchVolReadBandwidth({values: [], ...action.payload}));
-            }
-    }
-    catch (error) {
-        if(action.payload.level === "array") {
+        } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchReadBandwidth([]));
         } else {
-            yield put(actionCreators.fetchVolReadBandwidth({values: [], ...action.payload}));
+            yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchReadBandwidth([]));
+        } else {
+            yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
         }
     }
     finally {
+         /* istanbul ignore if */
         if (yield cancelled()) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadBandwidth([]));
             } else {
-                yield put(actionCreators.fetchVolReadBandwidth({values: [], ...action.payload}));
+                yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
             }
         }
     }
@@ -199,108 +211,114 @@ function* fetchWriteBandwidth(action) {
         const response = yield call([axios, axios.get], `/api/v1.0/bw_write/${action.payload.time}/${action.payload.level}`);
 
         const result = response.data;
+        /* istanbul ignore else */
         if (result && !result.message) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteBandwidth(extractValues(result.res)));
             } else {
-                yield put(actionCreators.fetchVolWriteBandwidth({values: extractValues(result.res), ...action.payload}));
+                yield put(actionCreators.fetchVolWriteBandwidth({ values: extractValues(result.res), ...action.payload }));
             }
-        } else if(action.payload.level === "array") {
-                yield put(actionCreators.fetchWriteBandwidth([]));
-            } else {
-                yield put(actionCreators.fetchVolWriteBandwidth({values: [], ...action.payload}))
-            }
-    }
-    catch (error) {
-        if(action.payload.level === "array") {
+        }
+        else if (action.payload.level === "array") {
             yield put(actionCreators.fetchWriteBandwidth([]));
         } else {
-            yield put(actionCreators.fetchVolWriteBandwidth({values: [], ...action.payload}))
+            yield put(actionCreators.fetchVolWriteBandwidth({ values: [], ...action.payload }))
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchWriteBandwidth([]));
+        } else {
+            yield put(actionCreators.fetchVolWriteBandwidth({ values: [], ...action.payload }))
         }
     }
     finally {
-        // console.log("finally")
+         /* istanbul ignore if */
         if (yield cancelled()) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteBandwidth([]));
             } else {
-                yield put(actionCreators.fetchVolWriteBandwidth({values: [], ...action.payload}))
+                yield put(actionCreators.fetchVolWriteBandwidth({ values: [], ...action.payload }))
             }
         }
     }
 }
 
 export function* fetchReadIops(action) {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/iops_read/${action.payload.time}/${action.payload.level}`
-    );
+    try {
+        const response = yield call(
+            [axios, axios.get],
+            `/api/v1.0/iops_read/${action.payload.time}/${action.payload.level}`
+        );
 
         const result = response.data;
+        /* istanbul ignore else */
         if (result && !result.message) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadIops(extractValues(result.res)));
             } else {
-                yield put(actionCreators.fetchVolReadIops({values: extractValues(result.res), ...action.payload}));
+                yield put(actionCreators.fetchVolReadIops({ values: extractValues(result.res), ...action.payload }));
             }
-        } else if(action.payload.level === "array") {
-                yield put(actionCreators.fetchReadIops([]));
-            } else {
-                yield put(actionCreators.fetchVolReadIops({values: [], ...action.payload}))
-            }
-    }
-    catch (error) {
-        if(action.payload.level === "array") {
+        } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchReadIops([]));
         } else {
-            yield put(actionCreators.fetchVolReadIops({values: [], ...action.payload}))
+            yield put(actionCreators.fetchVolReadIops({ values: [], ...action.payload }))
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchReadIops([]));
+        } else {
+            yield put(actionCreators.fetchVolReadIops({ values: [], ...action.payload }))
         }
     }
     finally {
+         /* istanbul ignore if */
         if (yield cancelled()) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadIops([]));
             } else {
-                yield put(actionCreators.fetchVolReadIops({values: [], ...action.payload}))
+                yield put(actionCreators.fetchVolReadIops({ values: [], ...action.payload }))
             }
         }
     }
 }
 
 export function* fetchWriteIops(action) {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/iops_write/${action.payload.time}/${action.payload.level}`
-    );
+    try {
+        const response = yield call(
+            [axios, axios.get],
+            `/api/v1.0/iops_write/${action.payload.time}/${action.payload.level}`
+        );
 
         const result = response.data;
+        /* istanbul ignore else */
         if (result && !result.message) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteIops(extractValues(result.res)));
             } else {
-                yield put(actionCreators.fetchVolWriteIops({values: extractValues(result.res), ...action.payload}));
+                yield put(actionCreators.fetchVolWriteIops({ values: extractValues(result.res), ...action.payload }));
             }
-        } else if(action.payload.level === "array") {
-                yield put(actionCreators.fetchWriteIops([]));
-            } else {
-                yield put(actionCreators.fetchVolWriteIops({values: [], ...action.payload}))
-            }
-    }
-    catch (error) {
-        if(action.payload.level === "array") {
+        } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchWriteIops([]));
         } else {
-            yield put(actionCreators.fetchVolWriteIops({values: [], ...action.payload}))
+            yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchWriteIops([]));
+        } else {
+            yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
         }
     }
     finally {
+         /* istanbul ignore if */
         if (yield cancelled()) {
-            if(action.payload.level === "array") {
+            if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteIops([]));
             } else {
-                yield put(actionCreators.fetchVolWriteIops({values: [], ...action.payload}))
+                yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
             }
         }
     }
@@ -309,51 +327,54 @@ export function* fetchWriteIops(action) {
 
 export function* fetchLatency(action) {
     try {
-      const response = yield call(
-        [axios, axios.get],
-        `/api/v1.0/latency/${action.payload.time}/${action.payload.level}`
-      );
-  
-          const result = response.data;
-          if (result && !result.message) {
-              if(action.payload.level === "array") {
-                  yield put(actionCreators.fetchLatency(extractValues(result.res)));
-              } else {
-                  yield put(actionCreators.fetchVolLatency({values: extractValues(result.res), ...action.payload}));
-              }
-          } else if(action.payload.level === "array") {
-                  yield put(actionCreators.fetchLatency([]));
-              } else {
-                  yield put(actionCreators.fetchVolLatency({values: [], ...action.payload}))
-              }
-      }
-      catch (error) {
-          if(action.payload.level === "array") {
-              yield put(actionCreators.fetchLatency([]));
-          } else {
-              yield put(actionCreators.fetchVolLatency({values: [], ...action.payload}))
-          }
-      }
-      finally {
-          if (yield cancelled()) {
-              if(action.payload.level === "array") {
-                  yield put(actionCreators.fetchLatency([]));
-              } else {
-                  yield put(actionCreators.fetchVolLatency({values: [], ...action.payload}))
-              }
-          }
-      }
-  }
-  
+        const response = yield call(
+            [axios, axios.get],
+            `/api/v1.0/latency/${action.payload.time}/${action.payload.level}`
+        );
+
+        const result = response.data;
+        /* istanbul ignore else */
+        if (result && !result.message) {
+            if (action.payload.level === "array") {
+                yield put(actionCreators.fetchLatency(extractValues(result.res)));
+            } else {
+                yield put(actionCreators.fetchVolLatency({ values: extractValues(result.res), ...action.payload }));
+            }
+        }
+        else if (action.payload.level === "array") {
+            yield put(actionCreators.fetchLatency([]));
+        } else {
+            yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchLatency([]));
+        } else {
+            yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+        }
+    }
+    finally {
+         /* istanbul ignore if */
+        if (yield cancelled()) {
+            if (action.payload.level === "array") {
+                yield put(actionCreators.fetchLatency([]));
+            } else {
+                yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+            }
+        }
+    }
+}
+
 
 export default function* performanceWatcher() {
-  // yield takeEvery(actionTypes.SAGA_FETCH_DISK_USED, fetchDiskUsed);
-  // yield takeEvery(actionTypes.SAGA_FETCH_DISK_WRITE, fetchDiskWrite);
-  yield takeEvery(actionTypes.SAGA_FETCH_CPU_USAGE, fetchCpuUsage);
-  yield takeEvery(actionTypes.SAGA_FETCH_READ_BANDWIDTH, fetchReadBandwidth);
-  yield takeEvery(actionTypes.SAGA_FETCH_WRITE_BANDWIDTH, fetchWriteBandwidth);
-  yield takeEvery(actionTypes.SAGA_FETCH_READ_IOPS, fetchReadIops);
-  yield takeEvery(actionTypes.SAGA_FETCH_WRITE_IOPS, fetchWriteIops);
-  yield takeEvery(actionTypes.SAGA_FETCH_LATENCY, fetchLatency);
-  yield takeEvery(actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION, fetchInputPowerVariation);
+    // yield takeEvery(actionTypes.SAGA_FETCH_DISK_USED, fetchDiskUsed);
+    // yield takeEvery(actionTypes.SAGA_FETCH_DISK_WRITE, fetchDiskWrite);
+    yield takeEvery(actionTypes.SAGA_FETCH_CPU_USAGE, fetchCpuUsage);
+    yield takeEvery(actionTypes.SAGA_FETCH_READ_BANDWIDTH, fetchReadBandwidth);
+    yield takeEvery(actionTypes.SAGA_FETCH_WRITE_BANDWIDTH, fetchWriteBandwidth);
+    yield takeEvery(actionTypes.SAGA_FETCH_READ_IOPS, fetchReadIops);
+    yield takeEvery(actionTypes.SAGA_FETCH_WRITE_IOPS, fetchWriteIops);
+    yield takeEvery(actionTypes.SAGA_FETCH_LATENCY, fetchLatency);
+    //   yield takeEvery(actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION, fetchInputPowerVariation);
 }

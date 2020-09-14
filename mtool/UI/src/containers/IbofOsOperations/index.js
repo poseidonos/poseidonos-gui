@@ -28,11 +28,14 @@ import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import RunIbofOs from '../../components/IbofOsOperationComponents/RunIbofOs/index';
 import './IbofOsOperations.css';
 import AlertDialog from "../../components/Dialog";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
+import * as actionTypes from "../../store/actions/actionTypes";
+import * as actionCreators from '../../store/actions/exportActionCreators';
 
 import MToolTheme from '../../theme';
 
@@ -52,13 +55,14 @@ class IbofOsOperations extends Component {
             alerttitle: "",
             alertdescription: "",
         };
+        this.IsIbofOSRunning = this.IsIbofOSRunning.bind(this);
         this.triggerCommand = this.triggerCommand.bind(this);
         this.OnHandleStart = this.OnHandleStart.bind(this);
         this.OnHandleShutdown = this.OnHandleShutdown.bind(this);
-        this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
-        this.OnHandleChange = this.OnHandleChange.bind(this);
-        this.validate = this.validate.bind(this);
-        this.onClickRunCommand = this.onClickRunCommand.bind(this);
+        // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
+        // this.OnHandleChange = this.OnHandleChange.bind(this);
+        // this.validate = this.validate.bind(this);
+        // this.onClickRunCommand = this.onClickRunCommand.bind(this);
         this.openAlert = this.openAlert.bind(this);
         this.handleAlertClose = this.handleAlertClose.bind(this);
         this.interval = null;
@@ -69,68 +73,72 @@ class IbofOsOperations extends Component {
         clearInterval(this.interval);
     }
 
-    onClickRunCommand() {
-        const isValid = this.validate();
-        if (isValid) {
-            this.handleAlertClose("YES");
-            const filepath = {
-                path: this.state.filepath
-            };
-            fetch('/api/v1.0/run_ibof_os_command/', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-access-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify(filepath)
-            }).then((res) => {
-                if (res.status === 200) {
-                    return res.json();
-                }
-                return [];
-            })
-                .then((result) => {
-                    this.setState({
-                        ...this.state,
-                        responseforRunCommand: result.response,
-                    });
-                });
-        }
-    }
+    // onClickRunCommand() {
+    //     const isValid = this.validate();
+    //     if (isValid) {
+    //         this.handleAlertClose("YES");
+    //         const filepath = {
+    //             path: this.state.filepath
+    //         };
+    //         fetch('/api/v1.0/run_ibof_os_command/', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json',
+    //                 'x-access-token': localStorage.getItem('token')
+    //             },
+    //             body: JSON.stringify(filepath)
+    //         }).then((res) => {
+    //             if (res.status === 200) {
+    //                 return res.json();
+    //             }
+    //             return [];
+    //         })
+    //             .then((result) => {
+    //                 this.setState({
+    //                     ...this.state,
+    //                     responseforRunCommand: result.response,
+    //                 });
+    //             });
+    //     }
+    // }
 
-    onHandleExitIbofOS() {
-        this.setState({
-            ...this.state,
-            isButtonDisabled: true
-        });
-        fetch('/api/v1.0/exit_ibofos', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
-            },
-        }).then((res) => {
-            if (res.status === 200) {
-                return res.json();
-            }
-            return [];
-        })
-            .then((result) => {
-                if (result && result.result && result.result.status && result.result.status.description)
-                    this.setState({
-                        ...this.state,
-                        responseforIbofOS: result.result.status.description,// result.response
-                        isButtonDisabled: false
-                    });
-                else
-                    this.setState({
-                        ...this.state,
-                        // responseforIbofOS: result.result.status.description,// result.response
-                        isButtonDisabled: false
-                    });
-            });
+    // onHandleExitIbofOS() {
+    //     this.setState({
+    //         ...this.state,
+    //         isButtonDisabled: true
+    //     });
+    //     fetch('/api/v1.0/exit_ibofos', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'x-access-token': localStorage.getItem('token')
+    //         },
+    //     }).then((res) => {
+    //         if (res.status === 200) {
+    //             return res.json();
+    //         }
+    //         return [];
+    //     })
+    //         .then((result) => {
+    //             if (result && result.result && result.result.status && result.result.status.description)
+    //                 this.setState({
+    //                     ...this.state,
+    //                     responseforIbofOS: result.result.status.description,// result.response
+    //                     isButtonDisabled: false
+    //                 });
+    //             else
+    //                 this.setState({
+    //                     ...this.state,
+    //                     // responseforIbofOS: result.result.status.description,// result.response
+    //                     isButtonDisabled: false
+    //                 });
+    //         });
+    // }
+
+    IsIbofOSRunning() {
+        this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
     }
 
     OnHandleStart() {
@@ -142,6 +150,7 @@ class IbofOsOperations extends Component {
                 'x-access-token': localStorage.getItem('token')
             },
         }).then((res) => {
+            this.IsIbofOSRunning();
             if (res.status === 200) {
                 return res.json();
             }
@@ -157,10 +166,10 @@ class IbofOsOperations extends Component {
     }
 
 
-    OnHandleChange(event) {
-        const { name, value } = event.target
-        this.setState({ [name]: value });
-    }
+    // OnHandleChange(event) {
+    //     const { name, value } = event.target
+    //     this.setState({ [name]: value });
+    // }
 
     OnHandleShutdown() {
         this.setState({
@@ -175,6 +184,7 @@ class IbofOsOperations extends Component {
                 'x-access-token': localStorage.getItem('token')
             },
         }).then((res) => {
+            this.IsIbofOSRunning();
             if (res.status === 200) {
                 return res.json();
             }
@@ -189,29 +199,30 @@ class IbofOsOperations extends Component {
             });
     }
 
-    validate() {
-        if (this.state.filepath === "") {
-            this.setState({
-                alertOpen: true,
-                istypealert: true,
-                alerttype: "alert",
-                alerttitle: "Run Command on iBoF OS",
-                alertdescription: "Please enter a valid file path"
-            });
-        }
-        else {
-            this.setState({ ...this.state, error: "" });
-            return true;
-        }
-        return false;
-    }
+    // validate() {
+    //     if (this.state.filepath === "") {
+    //         this.setState({
+    //             alertOpen: true,
+    //             istypealert: true,
+    //             alerttype: "alert",
+    //             alerttitle: "Run Command on iBoF OS",
+    //             alertdescription: "Please enter a valid file path"
+    //         });
+    //     }
+    //     else {
+    //         this.setState({ ...this.state, error: "" });
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     openAlert(operationType) {
         let message = "";
-        if (operationType === "Run")
-            message = " Command";
-        else if (operationType === "Start" || operationType === "Stop" || operationType === "Exit")
-            message = "Poseidon OS";
+        // if (operationType === "Run")
+        //     message = " Command";
+        // if (operationType === "Start" || operationType === "Stop" || operationType === "Exit")
+        // if (operationType === "Start" || operationType === "Stop")
+        message = "Poseidon OS";
         this.setState({
             ...this.state,
             alertOpen: true,
@@ -223,7 +234,7 @@ class IbofOsOperations extends Component {
         });
     }
 
-    handleAlertClose(value = "") {
+    handleAlertClose(value = /* istanbul ignore next */ "") {
         if (value !== "YES") {
             this.setState({
                 ...this.state,
@@ -231,19 +242,20 @@ class IbofOsOperations extends Component {
             });
             return;
         }
-        if (this.state.add_delete_send === "Run")
-            this.setState({
-                ...this.state,
-                alertOpen: false,
-            });
-        else if (this.state.add_delete_send === "Start")
+        // if (this.state.add_delete_send === "Run")
+        //     this.setState({
+        //         ...this.state,
+        //         alertOpen: false,
+        //     });
+        if (this.state.add_delete_send === "Start") {
             this.setState({
                 ...this.setState,
                 alertOpen: false,
                 isButtonDisabled: true,
                 responseforIbofOS: "Initializing..."
             });
-        else if (this.state.add_delete_send === "Stop") {
+        // else if (this.state.add_delete_send === "Stop") {
+        } else {
             this.setState({
                 ...this.setState,
                 alertOpen: false,
@@ -257,31 +269,31 @@ class IbofOsOperations extends Component {
                 responseforIbofOS: "Stopping..."
             });
         }
-        else if (this.state.add_delete_send === "Exit")
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Exiting..."
-            });
+        // else if (this.state.add_delete_send === "Exit")
+        //     this.setState({
+        //         ...this.setState,
+        //         alertOpen: false,
+        //         isButtonDisabled: true,
+        //         responseforIbofOS: "Exiting..."
+        //     });
     }
 
     triggerCommand() {
-        if (this.state.add_delete_send === "Run") {
-            this.onClickRunCommand();
-        }
-        else if (this.state.add_delete_send === "Start") {
+        // if (this.state.add_delete_send === "Run") {
+        //     this.onClickRunCommand();
+        // }
+        if (this.state.add_delete_send === "Start") {
             this.OnHandleStart();
             this.handleAlertClose("YES");
-        }
-        else if (this.state.add_delete_send === "Stop") {
+        } else {
+        // else if (this.state.add_delete_send === "Stop") {
             this.OnHandleShutdown();
             this.handleAlertClose("YES");
         }
-        else if (this.state.add_delete_send === "Exit") {
-            this.onHandleExitIbofOS();
-            this.handleAlertClose("YES");
-        }
+        // else if (this.state.add_delete_send === "Exit") {
+        //     this.onHandleExitIbofOS();
+        //     this.handleAlertClose("YES");
+        // }
     }
 
     render() {
@@ -318,5 +330,11 @@ const mapStateToProps = state => {
         bool_status: state.headerReducer.status
     };
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
+        resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),
+    };
+}
+export default ((connect(mapStateToProps, mapDispatchToProps))(withRouter(IbofOsOperations)));
 
-export default connect(mapStateToProps)(IbofOsOperations);

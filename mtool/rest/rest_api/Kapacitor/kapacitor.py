@@ -27,9 +27,10 @@ DESCRIPTION: <File description> *
 */
 '''
 
+'''
 import requests
 from bson import json_util
-from flask import Flask, abort
+from flask import  abort
 
 
 def toJson(data):
@@ -90,7 +91,9 @@ def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
     r = requests.post(
         url="http://localhost:9092/kapacitor/v1/config/smtp/",
         data=toJson(tasks))
-    abc = Get_Kapacitor_Entries()
+    Get_Kapacitor_Entries()
     if(r.status_code != 204 and r.status_code != 200):
         return abort(404)
     return 'Success'
+
+'''

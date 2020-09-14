@@ -28,7 +28,7 @@ DESCRIPTION: <Rebuilding iBOFOS status> *
 '''
 
 from util.db.influx import get_connection
-from util.macros.influxdb import mtool_db, infinite_rp
+from util.macros.influxdb_config import mtool_db, infinite_rp
 
 
 def get_rebuilding_status():
@@ -39,5 +39,5 @@ def get_rebuilding_status():
         res = connection.query(query)
         connection.close()
         return res
-    finally:
+    except BaseException:
         return "error"

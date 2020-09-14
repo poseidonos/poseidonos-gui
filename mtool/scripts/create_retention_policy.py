@@ -133,13 +133,11 @@ def create_mtool_db1(
         if(res == False):
             result = "Continuous Queries Creation Failed"
             raise Exception("M-Tool Continuous Queries couldn't be created")
-
-    except Exception as e:
-        print("exception", e)
-
-    finally:
         client.close()
         return result
+    except Exception as e:
+        print("exception", e)
+    return result
 
 
 def main():

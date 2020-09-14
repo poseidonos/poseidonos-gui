@@ -27,22 +27,22 @@ DESCRIPTION: <Contains reducer function for Authentication Container> *
 
 
 
-import * as actionTypes from "../actions/actionTypes"
+// import * as actionTypes from "../actions/actionTypes"
 
-export const initialState = {
-    lang: "en"
-};
+// export const initialState = {
+//     lang: "en"
+// };
 
-const headerLanguageReducer = ( state = initialState, action )=> {
-    switch ( action.type ) {
-        case actionTypes.CHANGE_LANGUAGE:
-            return {
-                ...state,
-                lang: action.val
-            };
-        default: 
-            return state;
-    }
-};
+// const headerLanguageReducer = ( state = initialState, action )=> {
+//     switch ( action.type ) {
+//         case actionTypes.CHANGE_LANGUAGE:
+//             return {
+//                 ...state,
+//                 lang: action.val
+//             };
+//         default: 
+//             return state;
+//     }
+// };
 
-export default headerLanguageReducer;
+// export default headerLanguageReducer;

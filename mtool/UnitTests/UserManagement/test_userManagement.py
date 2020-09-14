@@ -102,5 +102,69 @@ def test_delete_users(mock_delete_users_in_db, global_data):
     print("DATAAA", data)
 
 
+
+@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+            return_value=True, autospec=True)
+def test_toggle_user_status(mock_toggle_status_from_db, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/toggle_status/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"userid": "xyz@gmail.com", 'status':False}),
+        content_type='application/json',
+    )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 200
+    print("DATAAA", data)
+
+
+
+@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+            return_value=False, autospec=True)
+def test_toggle_user_status_failure(mock_toggle_status_from_db, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/toggle_status/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"userid": "xyz@gmail.com", 'status':False}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
+
+
+@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+            return_value=False, autospec=True)
+def test_toggle_admin_status_failure(mock_toggle_status_from_db, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/toggle_status/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"userid": "admin", 'status':False}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
+
+
+@mock.patch("rest.app.connection_factory.update_password_in_db",
+            return_value=True, autospec=True)
+def test_update_password(mock_update_password_in_db, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/update_password/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"userid": "admin", 'oldPassword':'sss', 'newPassword':'hhh'}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
+
+
+@mock.patch("rest.app.connection_factory.update_password_in_db",
+            return_value=False, autospec=True)
+def test_update_password_failure(mock_update_password_in_db, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/update_password/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"userid": "admin", 'oldPassword':'sss', 'newPassword':'hhh'}),
+        content_type='application/json',
+    )
+    assert response.status_code == 500
+
+
 if __name__ == '__main__':
     print("main")

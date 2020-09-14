@@ -9,4 +9,5 @@ echo #PWD
 . ./scripts/ProcessorAffinitySet.sh
 #echo "Selected Core"
 #echo $CoresSel
+#python3 PreConfiguredAlerts.py
 taskset -c $CoresSel python3 rest/app.py

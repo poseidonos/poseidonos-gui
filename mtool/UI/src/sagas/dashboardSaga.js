@@ -41,6 +41,7 @@ export function* fetchVolumeInfo() {
         });
 
         const result = response.data;
+         /* istanbul ignore else */
         if (result && !result.message) {
             yield put(actionCreators.fetchVolumes(result));
         }
@@ -72,6 +73,7 @@ export function* fetchAlertsInfo() {
         });
 
         const result = response.data;
+         /* istanbul ignore else */
         if (result) {
             yield put(actionCreators.fetchAlerts(result.alerts));
         }
@@ -92,6 +94,7 @@ function* fetchStorageInfo() {
         });
 
         const result = response.data;
+         /* istanbul ignore else */
         if (result) {
             yield put(actionCreators.fetchStorage(
                 result[0] ? ((result[0].avail_size / result[0].total_size) * 100) : 0,
@@ -117,6 +120,7 @@ function* fetchPerformanceInfo() {
         });
 
         const result = response.data;
+         /* istanbul ignore else */
         if (result) {
             yield put(actionCreators.fetchPerformance(
                 Math.round(result.iops_read),
@@ -142,6 +146,7 @@ function* fetchIpAndMacInfo() {
         });
 
         const result = response.data;
+         /* istanbul ignore else */
         if (result) {
             yield put(actionCreators.fetchIpAndMac(
                 result.ip, result.mac, result.host

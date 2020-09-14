@@ -31,5 +31,5 @@ def test_login_failure(mock_match_username_from_db, mock_match_email_from_db):
     assert response.status_code == 401
 
 
-if __name__ == '__main__':
-    test_login()
+#if __name__ == '__main__':
+#    test_login()

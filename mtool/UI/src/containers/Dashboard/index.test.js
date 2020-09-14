@@ -40,7 +40,7 @@ describe("Dashboard", () => {
       const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
       store = createStore(rootReducers,composeEnhancers(applyMiddleware(sagaMiddleware)))
       sagaMiddleware.run(rootSaga);
-      const route = '/';
+      const route = '/dashboard';
       history = createMemoryHistory({ initialEntries: [route] })
   
 
@@ -147,7 +147,23 @@ describe("Dashboard", () => {
             unit:	'GB',
             size:	'10',
             usedspace:0
-            }
+            },
+            {
+              id:	'2',
+              maxbw	:0,
+              maxiops:	0,
+              name:	'vol3',
+              remain:	10737418240,
+              status:	'Mounted',
+              total:	10737418240,
+              ip:	'10.1.11.91',
+              port:	'NA',
+              subnqn:	'NA',
+              description : "",
+              unit:	'GB',
+              size:	'10',
+              usedspace:5
+              }
           ]
           );
         renderComponent();
@@ -156,34 +172,35 @@ describe("Dashboard", () => {
         expect(hostElement).toBeDefined();
       });
 
-      it("should display alerts", async () => {
-        const mock = new MockAdapter(axios);
-        mock.onGet(`/api/v1.0/get_alert_info`)
-          .reply(200,{
-            alerts: [
-              {
-                time: 104256782,
-                level: 'CRITICAL',
-                message: 'CPU Alert',
-                duration: 10,
-                host: 'iBoF'
-              },
-              {
-                time: 104256783,
-                level: 'NORMAL',
-                message: 'iBoF Alert',
-                duration: 10,
-                host: 'iBoF'
-              }
-            ]
-          });
-        renderComponent();
-        const { getByText } = wrapper;
-        const hostElement1 = await waitForElement(() => getByText("CPU Alert"));
-        expect(hostElement1).toBeDefined();
-        const hostElement2 = await waitForElement(() => getByText("iBoF Alert"));
-        expect(hostElement2).toBeDefined();
-      });
+      //Disabling for PoC1
+      // it("should display alerts", async () => {
+      //   const mock = new MockAdapter(axios);
+      //   mock.onGet(`/api/v1.0/get_alert_info`)
+      //     .reply(200,{
+      //       alerts: [
+      //         {
+      //           time: 104256782,
+      //           level: 'CRITICAL',
+      //           message: 'CPU Alert',
+      //           duration: 10,
+      //           host: 'iBoF'
+      //         },
+      //         {
+      //           time: 104256783,
+      //           level: 'NORMAL',
+      //           message: 'iBoF Alert',
+      //           duration: 10,
+      //           host: 'iBoF'
+      //         }
+      //       ]
+      //     });
+      //   renderComponent();
+      //   const { getByText } = wrapper;
+      //   const hostElement1 = await waitForElement(() => getByText("CPU Alert"));
+      //   expect(hostElement1).toBeDefined();
+      //   const hostElement2 = await waitForElement(() => getByText("iBoF Alert"));
+      //   expect(hostElement2).toBeDefined();
+      // });
 
       it('should render button on resize', () => {
         // Change the viewport to 500px.
@@ -218,6 +235,16 @@ describe("Dashboard", () => {
         const {getByTestId} = wrapper;
         const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
         expect(readIopsElement.innerHTML).toBe("0");
+      });
+
+      it("should display the dashboard page with path", async () => {
+        const { location } = window;
+        delete window.location;
+        window.location = { href: "http://localhost/dashboard" };
+        renderComponent();
+        const { getByText } = wrapper;
+        expect(await waitForElement(() => getByText("Dashboard"))).toBeDefined();
+        window.location = location;
       });
   
 });

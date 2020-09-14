@@ -1,0 +1,687 @@
+{
+	"info": {
+		"_postman_id": "0525ea5e-b364-4054-9934-2e11a45b3fba",
+		"name": "MTool_Performance-after-fio_Tester",
+		"description": "MTool simple workflow - from login, start pos, create array, create vol, perf charts and stop pos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d362f7e-74b0-49af-958e-7eb781e8e7d1",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token = response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"postman.setEnvironmentVariable(\"token\", token);\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "cpu_graph",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ecb0e87e-92f9-41d3-ada1-1ec3b08c2967",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ebeafda8-f841-47e9-ae6f-e6d1dc85b571",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/usage_user/1m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"usage_user",
+						"1m"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7fcaf48f-9492-4bd9-8cfb-500d91300861",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_write",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a87e18cb-2527-4ebd-b4a5-220a7b749409",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_write",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_iops_read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7cab76af-f7d8-45c7-81ac-d0cc5013f012",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"iops_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    iops_sum = iops_sum + data[i].iops\r",
+							"}\r",
+							"console.log(\"iops_sum  \",iops_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(iops_sum).to.be.above(0); \r",
+							"});\r",
+							"pm.environment.unset(\"variable_key\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_read",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_iops_write",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e1617043-f8d1-456c-94df-03e5545aa896",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"iops_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    iops_sum = iops_sum + data[i].iops\r",
+							"}\r",
+							"console.log(\"iops_sum  \",iops_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(iops_sum).to.be.above(0); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_write",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_latency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "308da822-c94f-41ae-84c2-7b79f763a14f",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_read_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "adb46be5-fd52-4ef3-b539-343a59efab0e",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_bw_write_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd676341-fda9-4aa4-9a8a-b5d314effc29",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_write",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_read_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "62594646-9401-4e1f-bb4d-006aaddbc513",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"iops_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    iops_sum = iops_sum + data[i].iops\r",
+							"}\r",
+							"console.log(\"iops_sum  \",iops_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(iops_sum).to.be.above(0); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_read",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_iops_write_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4c86696-6ff2-4a13-a529-91d6595d8197",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"iops_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    iops_sum = iops_sum + data[i].iops\r",
+							"}\r",
+							"console.log(\"iops_sum  \",iops_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(iops_sum).to.be.above(0); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"iops_write",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vol_latency_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "453290b2-3af5-4e99-af7f-cb479a4dbc78",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f8844c00-4a15-4350-bd63-462e27c5081d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0d5372f7-477a-4465-884b-097770187365",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b0317c7a-8a04-4185-a7a5-4295f275e8f6",
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

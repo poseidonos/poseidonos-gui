@@ -42,7 +42,6 @@
   margin-right: 25px;
   float: left;
   font-family: Arial;
-  margin-top: 20px;
   margin-left: 2.8%;
   
 }
@@ -74,7 +73,14 @@
 }
 .IBOFOSButtonClass {
   float: left;
-  width: 7%;
+  margin: 8px;
+}
+
+.IBOFOSCommandWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
 }
 /* @media screen and (max-width: 1450px) {
   .IBOFOSStartLabel {

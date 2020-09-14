@@ -21,3 +21,11 @@
     overflow: scroll;
   }
 }
+
+@media screen and (max-width: 959px) {
+  .IbofOsOperations {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+

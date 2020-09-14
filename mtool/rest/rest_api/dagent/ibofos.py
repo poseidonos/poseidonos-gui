@@ -3,21 +3,24 @@ import requests
 import uuid
 import time
 import json
-from requests.exceptions import HTTPError, Timeout
+from flask import make_response
+from requests.exceptions import HTTPError
 import logging
 from logging.handlers import RotatingFileHandler
 
 ip = os.environ.get('DAGENT_HOST', 'localhost')
+port = '3000'
 
-
-DAGENT_URL = 'http://' + ip + ':3000'
+DEFAULT_ARRAY = 'POSArray'
+DAGENT_URL = 'http://' + ip + ':' + port
+BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 
 connect_timeout = 5
 read_timeout = 5
 
 
 def get_headers(
-        auth='Basic YWRtaW46YWRtaW4=',
+        auth=BASIC_AUTH_TOKEN,
         content_type="application/json"):
     return {"X-Request-Id": str(uuid.uuid4()),
             "Accept": content_type,
@@ -26,12 +29,7 @@ def get_headers(
 
 
 def make_failure_response(desc='unable to perform the task', code=500):
-    the_response = requests.models.Response()
-    the_response.code = "failed"
-    the_response.error_type = "failed"
-    the_response.status_code = code
-    the_response._content = json.dumps({"error": desc})
-    return the_response
+    return make_response(json.dumps({"error": desc}), code)
 
 
 def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
@@ -51,6 +49,9 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
             elif(req_type == "PUT"):
                 response = requests.put(
                     url=url, headers=headers, timeout=timeout, data=data)
+            elif(req_type == "PATCH"):
+                response = requests.patch(
+                    url=url, headers=headers, timeout=timeout, data=data)
             retry_count = retry_count + 1
             if((response.status_code == 200 and response['result'] and response['result']['status'] and response['result']['status']['code'] and response['result']['status']['code'] != '12000')):
                 return response
@@ -59,11 +60,11 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
             if(retry_count >= 5):
                 return response
             time.sleep(1)
-    except Exception as err:
+    except BaseException:
         return response
 
 
-def get_system_state(auth='Basic YWRtaW46YWRtaW4='):
+def get_system_state(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Get system state...')
     try:
@@ -89,7 +90,7 @@ def get_system_state(auth='Basic YWRtaW46YWRtaW4='):
     return {"result": "could not get the system state", "return": -1}
 
 
-def get_dagent_state(auth='Basic YWRtaW46YWRtaW4='):
+def get_dagent_state(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
@@ -111,7 +112,7 @@ def get_dagent_state(auth='Basic YWRtaW46YWRtaW4='):
         print(f'Other error occurred: {err}')
 
 
-def start_ibofos(auth='Basic YWRtaW46YWRtaW4='):
+def start_ibofos(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to start ibofos...')
     req_headers = get_headers(auth)
@@ -119,15 +120,14 @@ def start_ibofos(auth='Basic YWRtaW46YWRtaW4='):
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
-            '/api/ibofos/v1/system/ibofos',
+            '/api/ibofos/v1/system',
             headers=req_headers,
             timeout=(
                 8,
                 10))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
-        # Call Load Array and return
-        load_array()
+        array_exists()
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -137,7 +137,7 @@ def start_ibofos(auth='Basic YWRtaW46YWRtaW4='):
     return make_failure_response('Could not get ibofos to start...', 500)
 
 
-def stop_ibofos(auth='Basic YWRtaW46YWRtaW4='):
+def stop_ibofos(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to stop ibofos...')
     req_headers = get_headers(auth)
@@ -145,7 +145,16 @@ def stop_ibofos(auth='Basic YWRtaW46YWRtaW4='):
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL +
-            '/api/ibofos/v1/system/ibofos',
+            '/api/ibofos/v1/system/mount',
+            headers=req_headers,
+            timeout=(
+                10,
+                10))
+
+        response = send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -161,8 +170,8 @@ def stop_ibofos(auth='Basic YWRtaW46YWRtaW4='):
         # return 'Could not get ibofos to stop... 500'
     return make_failure_response('Could not get ibofos to stop...', 500)
 
-
-def exit_system(auth='Basic YWRtaW46YWRtaW4='):
+"""
+def exit_system(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to exit ibofos...')
     req_headers = get_headers(auth)
@@ -185,9 +194,9 @@ def exit_system(auth='Basic YWRtaW46YWRtaW4='):
     # finally:
         # return 'Could not get ibofos to stop... 500'
     return make_failure_response('Could not get ibofos to exit...', 500)
+"""
 
-
-def scan_devices(auth='Basic YWRtaW46YWRtaW4='):
+def scan_devices(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to scan devices...')
     req_headers = get_headers(auth)
@@ -195,7 +204,7 @@ def scan_devices(auth='Basic YWRtaW46YWRtaW4='):
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/device/scan',
+            '/api/ibofos/v1/devices/all/scan',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -211,7 +220,7 @@ def scan_devices(auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to scan devices...', 500)
 
 
-def get_devices(auth='Basic YWRtaW46YWRtaW4='):
+def get_devices(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to list devices ...')
     req_headers = get_headers(auth)
@@ -219,7 +228,30 @@ def get_devices(auth='Basic YWRtaW46YWRtaW4='):
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/device',
+            '/api/ibofos/v1/devices',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        print("---------------RESPONSE---------------")
+        print(response.status_code, response.json())
+        return response
+    except HTTPError as http_err:
+        print('HTTP error occurred: ', http_err)
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to scan devices...', 500)
+
+def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to list devices ...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/devices/' + name + '/smart',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -235,7 +267,7 @@ def get_devices(auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to scan devices...', 500)
 
 
-def delete_array(auth='Basic YWRtaW46YWRtaW4='):
+def delete_array(name, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to delete array...')
     req_headers = get_headers(auth)
@@ -248,11 +280,11 @@ def delete_array(auth='Basic YWRtaW46YWRtaW4='):
             timeout=(
                 10,
                 10))
-        if (response.status_code == 200):
-            response = send_command_to_dagent(
+
+        response = send_command_to_dagent(
                 "DELETE",
                 url=DAGENT_URL +
-                '/api/ibofos/v1/array',
+                '/api/ibofos/v1/array/' + name,
                 headers=req_headers,
                 timeout=(
                     10,
@@ -268,7 +300,7 @@ def delete_array(auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to get array status...', 500)
 
 
-def array_status(auth='Basic YWRtaW46YWRtaW4='):
+def array_status(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get array status...')
     req_headers = get_headers(auth)
@@ -292,14 +324,14 @@ def array_status(auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to get array status...', 500)
 
 
-def load_array(auth='Basic YWRtaW46YWRtaW4='):
+def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         print("LOAD ARRAY")
         req_headers = get_headers(auth)
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/array',
+            '/api/ibofos/v1/array/' + arrayname + 'load',
             headers=req_headers,
             timeout=(
                 8,
@@ -313,12 +345,54 @@ def load_array(auth='Basic YWRtaW46YWRtaW4='):
         return False
 
 
+
+def array_exists(auth=BASIC_AUTH_TOKEN,arrayname=DEFAULT_ARRAY):
+    print("in array exists")
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to get array status...')
+    req_headers = get_headers(auth)
+    try:
+        scan_devices()
+
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/array/' + arrayname + '/load',
+            headers=req_headers,
+            timeout=(
+                8,
+                10))
+        print("Load array response status", response.status_code)
+        print(response.json())
+        
+    
+        if (response.status_code == 200):
+            response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/system/mount',
+            headers=req_headers,
+            timeout=(
+                180,
+                180)
+            )
+    
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print("exception in exists: " + str(e))
+        return False
+
+
 def create_array(
-        level,
+        name,
+        raidtype,
         spare_devices,
         data_devices,
         meta_devices,
-        auth='Basic YWRtaW46YWRtaW4='):
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info(
         '%s',
@@ -326,7 +400,8 @@ def create_array(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "fttype": level,
+            "name": name,
+            "raidtype": raidtype,
             "buffer": meta_devices,
             "data": data_devices,
             "spare": spare_devices}}
@@ -363,7 +438,7 @@ def create_array(
         'Could not get ibofos to scan devices...', 500)
 
 
-def list_array(auth='Basic YWRtaW46YWRtaW4='):
+def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get list array...')
     req_headers = get_headers(auth)
@@ -371,7 +446,7 @@ def list_array(auth='Basic YWRtaW46YWRtaW4='):
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/array/device',
+            '/api/ibofos/v1/array/' + arrayname + '/devices',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -392,7 +467,7 @@ def mount_array(
         meta_devices,
         data_devices,
         spare_devices,
-        auth='Basic YWRtaW46YWRtaW4='):
+        auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
         "param": {
@@ -424,6 +499,7 @@ def mount_array(
 
 def create_volume(
         name,
+        arrayname,
         size,
         count,
         suffix,
@@ -431,11 +507,12 @@ def create_volume(
         stop_on_error,
         maxbw=0,
         maxiops=0,
-        auth='Basic YWRtaW46YWRtaW4='):
+        auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
         "param": {
             "name": name,
+            "array": arrayname,
             "size": size,
             "maxbw": maxbw,
             "maxiops": maxiops,
@@ -445,12 +522,12 @@ def create_volume(
             "mountall": mount_all}}
 
     request_body = json.dumps(request_body)
-    # print(request_body)
+    print("volume bodyyyy",request_body)
     try:
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume',
+            '/api/ibofos/v1/volumes',
             headers=req_headers,
             timeout=(
                 8,
@@ -466,16 +543,16 @@ def create_volume(
         'Could not get ibofos to scan devices...', 500)
 
 
-def update_volume(params, auth='Basic YWRtaW46YWRtaW4='):
+def update_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {"param": params}
     request_body = json.dumps(request_body)
     print(request_body)
     try:
         response = send_command_to_dagent(
-            "PUT",
+            "PATCH",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume',
+            '/api/ibofos/v1/volumes/' + params["name"] + '/qos',
             headers=req_headers,
             timeout=(
                 8,
@@ -492,16 +569,45 @@ def update_volume(params, auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to scan devices...', 500)
 
 
-def mount_volume(name, auth='Basic YWRtaW46YWRtaW4='):
+def rename_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {"param": {"name": name}}
+    request_body = json.dumps(params)
+    try:
+        response = send_command_to_dagent(
+            "PATCH",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/volumes/' + params["param"]["name"],
+            headers=req_headers,
+            timeout=(
+                8,
+                8),
+            data=request_body)
+        print("---------------RESPONSE---------------")
+        print(response.status_code, response.json())
+        return response
+    except HTTPError as http_err:
+        print('HTTP error occurred: ', http_err)
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Error response from Agent while renaming volume...', 500)
+
+
+def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = {
+            "param": {
+                "name": name,
+                "array": arrayname
+            }
+    }
     request_body = json.dumps(request_body)
     print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume/mount',
+            '/api/ibofos/v1/volumes/' + name + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -518,16 +624,21 @@ def mount_volume(name, auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to scan devices...', 500)
 
 
-def unmount_volume(name, auth='Basic YWRtaW46YWRtaW4='):
+def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {"param": {"name": name}}
+    request_body = {
+            "param": {
+                "name": name,
+                "array": arrayname
+            }
+    }
     request_body = json.dumps(request_body)
     print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume/mount',
+            '/api/ibofos/v1/volumes/' + name + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -544,13 +655,13 @@ def unmount_volume(name, auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to unmount volumes...', 500)
 
 
-def list_volumes(auth='Basic YWRtaW46YWRtaW4='):
+def list_volumes(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume',
+            '/api/ibofos/v1/volumes',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -566,17 +677,21 @@ def list_volumes(auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to list volumes...', 500)
 
 
-def delete_volume(name, auth='Basic YWRtaW46YWRtaW4='):
+def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {"param": {"name": name}}
+    request_body = {
+            "param": {
+                "name": name,
+                "array": arrayname
+            }
+    }
     request_body = json.dumps(request_body)
-    print(request_body)
-    unmount_res = unmount_volume(name, auth)
+    
     try:
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume',
+            '/api/ibofos/v1/volumes/' + name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -593,13 +708,13 @@ def delete_volume(name, auth='Basic YWRtaW46YWRtaW4='):
         'Could not get ibofos to delete volumes...', 500)
 
 
-def max_vol_count(auth='Basic YWRtaW46YWRtaW4='):
+def max_vol_count(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volume/maxcount',
+            '/api/ibofos/v1/volumes/maxcount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -618,16 +733,21 @@ def max_vol_count(auth='Basic YWRtaW46YWRtaW4='):
 
 
 
-def add_spare_disk(name, auth='Basic YWRtaW46YWRtaW4='):
+def add_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {"param": {"spare": name}}
+    request_body = {
+            "param": {
+                "spare": name,
+                "array": arrayname
+            }
+    }
     request_body = json.dumps(request_body)
     print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
-            '/api/ibofos/v1/device',
+            '/api/ibofos/v1/devices',
             headers=req_headers,
             timeout=(
                 10,
@@ -644,16 +764,21 @@ def add_spare_disk(name, auth='Basic YWRtaW46YWRtaW4='):
         'Could not get POS to add a spare disk...', 500)
 
 
-def remove_spare_disk(name, auth='Basic YWRtaW46YWRtaW4='):
+def remove_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {"param": {"name": name}}
+    request_body = {
+            "param": {
+                "name": name,
+                "array": arrayname
+            }
+    }
     request_body = json.dumps(request_body)
     print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL +
-            '/api/ibofos/v1/device',
+            '/api/ibofos/v1/devices/' + name,
             headers=req_headers,
             timeout=(
                 10,
@@ -669,8 +794,8 @@ def remove_spare_disk(name, auth='Basic YWRtaW46YWRtaW4='):
     return make_failure_response(
         'Could not get POS to remove spare disk...', 500)
 
-
-def report_test(auth='Basic YWRtaW46YWRtaW4='):
+"""
+def report_test(auth=BASIC_AUTH_TOKEN):
     # •Report file directory : /etc/ibofos/report
     req_headers = get_headers(auth)
     try:
@@ -688,12 +813,12 @@ def report_test(auth='Basic YWRtaW46YWRtaW4='):
         print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
-
+"""
 
 handler = RotatingFileHandler(
     'log/ibof.log',
     maxBytes=1024 * 1024,
     backupCount=3)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
+log_handler = logging.getLogger(__name__)
+log_handler.setLevel(logging.INFO)
+log_handler.addHandler(handler)

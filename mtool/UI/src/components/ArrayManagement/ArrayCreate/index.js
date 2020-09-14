@@ -62,8 +62,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: '100%',
-    padding: theme.spacing(0, 3),
+    width: `calc(100% - ${theme.spacing(4)}px)`,
+    padding: theme.spacing(0, 2),
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(0, 1)
     }
@@ -179,20 +179,20 @@ class ArrayCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      arrayname: '',
+      arrayname: 'POSArray',
       raids: [
         {
           label: 'RAID-5',
           minStorage: 3,
           minSpare: 1,
           minWriteBUffer: 1,
-          value: '5',
+          value: 'raid5',
         }
       ],
       minStorage: 3,
       minSpare: 1,
       minWriteBUffer: 1,
-      raid: '5',
+      raid: 'raid5',
       slots: { 'Storage Disk': [], 'Write Buffer Disk': [], 'Spare Disk': [] },
       diskType: 'Storage Disk',
       metaDisk: '',
@@ -206,7 +206,7 @@ class ArrayCreate extends Component {
     };
     this.toggleRowSelect = this.toggleRowSelect.bind(this);
     this.createArray = this.createArray.bind(this);
-    this.onSelectRaid = this.onSelectRaid.bind(this);
+    // // this.onSelectRaid = this.onSelectRaid.bind(this);
     this.onSelectDiskType = this.onSelectDiskType.bind(this);
     this.onSelectWriteBuffer = this.onSelectWriteBuffer.bind(this);
     this.showPopup = this.showPopup.bind(this);
@@ -214,26 +214,26 @@ class ArrayCreate extends Component {
     this.getDiskDetails = this.getDiskDetails.bind(this);
   }
 
-  onSelectRaid(event) {
-    for (let i = 0; i < this.state.raids.length; i += 1) {
-      if (this.state.raids[i].value === event.target.value) {
-        this.setState({
-          ...this.state,
-          raid: event.target.value,
-          minStorage: this.state.raids[i].minStorage,
-          minSpare: this.state.raids[i].minSpare,
-          minWriteBUffer: this.state.raids[i].minWriteBUffer,
-        });
-        return;
-      }
-    }
-  }
+  // onSelectRaid(event) {
+  //   for (let i = 0; i < this.state.raids.length; i += 1) {
+  //     if (this.state.raids[i].value === event.target.value) {
+  //       this.setState({
+  //         ...this.state,
+  //         raid: event.target.value,
+  //         minStorage: this.state.raids[i].minStorage,
+  //         minSpare: this.state.raids[i].minSpare,
+  //         minWriteBUffer: this.state.raids[i].minWriteBUffer,
+  //       });
+  //       return;
+  //     }
+  //   }
+  // }
 
   onSelectDiskType(event) {
     this.setState({
       ...this.state,
       diskType: (event && event.target) ?
-        event.target.value : '',
+        event.target.value /* istanbul ignore next */: '',
     });
   }
 
@@ -275,15 +275,15 @@ class ArrayCreate extends Component {
       });
       return;
     }
-    if (this.state.minSpare > this.state.slots['Spare Disk'].length) {
-      this.setState({
-        ...this.state,
-        alertType: 'alert',
-        errorMsg: `Select at least ${this.state.minSpare} Spare disk`,
-        alertOpen: true,
-      });
-      return;
-    }
+    // if (this.state.minSpare > this.state.slots['Spare Disk'].length) {
+    //   this.setState({
+    //     ...this.state,
+    //     alertType: 'alert',
+    //     errorMsg: `Select at least ${this.state.minSpare} Spare disk`,
+    //     alertOpen: true,
+    //   });
+    //   return;
+    // }
     if (this.state.metaDisk === '') {
       this.setState({
         ...this.state,
@@ -301,7 +301,7 @@ class ArrayCreate extends Component {
     this.props.createArray({
         size: this.state.totalSize,
         arrayname: this.state.arrayname,
-        RAIDLevel: this.state.raid,
+        raidtype: this.state.raid,
         storageDisks: this.state.slots['Storage Disk'],
         spareDisks: this.state.slots['Spare Disk'],
         writeBufferDisk: this.state.slots['Write Buffer Disk'],
@@ -323,8 +323,7 @@ class ArrayCreate extends Component {
       this.state.diskType !== ''
     ) {
       if (
-        this.state.diskType === 'Spare Disk' &&
-        this.state.slots[this.state.diskType].length < 1
+        this.state.diskType === 'Spare Disk'
       ) {
         el.style.backgroundColor = diskColorMap[this.state.diskType];
         const spareSlots = [...this.state.slots[this.state.diskType]];
@@ -410,7 +409,7 @@ class ArrayCreate extends Component {
         <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
         <Select
           value={this.state.raid}
-          onChange={this.onSelectRaid}
+          // onChange={this.onSelectRaid}
           inputProps={{
             name: 'Fault Tolerance Type',
             id: 'raid',
@@ -463,9 +462,9 @@ class ArrayCreate extends Component {
             'data-testid': 'disktype'
           }}
         >
-          {diskTypes ? diskTypes.map((type) => (
+          {diskTypes.map((type) => (
              <MenuItem value={type}><Typography color="secondary">{type}</Typography></MenuItem>
-          )): null}
+          ))}
         </Select>
       </FormControl>
       </Grid>
@@ -486,7 +485,7 @@ class ArrayCreate extends Component {
                           {disk.name}
                         </div>
                         <div style={{ margin: '10px' }}>
-                          Size: {formatBytes(disk.size * 4 * 1024)}
+                          Size: {formatBytes(disk.size)}
                         </div>
                         <div
                           onClick={() => this.showPopup(disk.name)}
@@ -540,7 +539,7 @@ class ArrayCreate extends Component {
             </Button>
           </Grid>
         </Grid>
-        {this.props.loading ? <MToolLoader /> : null}
+        {this.props.loading /* istanbul ignore next */? <MToolLoader /> : null}
         <AlertDialog
           type={this.state.alertType}
           title="Create Array"
@@ -555,7 +554,6 @@ class ArrayCreate extends Component {
           open={this.state.popupOpen}
           onConfirm={this.closePopup}
           handleClose={this.closePopup}
-          note_msg="Note: Currently SPDK NVME cli cannot retrieve disk details while Poseidon is running. Details will be displayed at a later stage."
         />
       </form>
       </ThemeProvider>

@@ -10,13 +10,13 @@ for r, d, f in os.walk(path):
             files.append(os.path.join(r, file))
 
 for f in files:
-	if(Path(f).name == '__init__.py'):
-		continue
-	if('.js' in f):
-		continue
-	src=open(f,"r+")
-	if('.js' in f):
-		firstline="""/*-------------------------------------------------------------------------------------/
+    if(Path(f).name == '__init__.py'):
+        continue
+    if('.js' in f):
+        continue
+    src=open(f,"r+")
+    if('.js' in f):
+        firstline="""/*-------------------------------------------------------------------------------------/
                                                                                     /
 /               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
 /                          ALL RIGHTS RESERVED                                        /
@@ -41,8 +41,8 @@ DESCRIPTION: <File description> *
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
 """
-	else:
-		firstline = """'''\n/*-------------------------------------------------------------------------------------/
+    else:
+        firstline = """'''\n/*-------------------------------------------------------------------------------------/
                                                                                     /
 /               COPYRIGHT (c) 2019 SAMSUNG ELECTRONICS CO., LTD.                      /
 /                          ALL RIGHTS RESERVED                                        /
@@ -70,14 +70,12 @@ DESCRIPTION: <File description> *
 '''\n\n"""
 
 
-	oline=src.readlines()
-	#Here, we prepend the string we want to on first line
-	oline.insert(0,firstline)
-	src.close()
- 
- 
-	#We again open the file in WRITE mode 
-	src=open(f,"w+")
-	src.writelines(oline)
-	src.close()
-	print(f)
+    oline=src.readlines()
+    #Here, we prepend the string we want to on first line
+    oline.insert(0,firstline)
+    src.close()
+    #We again open the file in WRITE mode 
+    src=open(f,"w+")
+    src.writelines(oline)
+    src.close()
+    print(f)

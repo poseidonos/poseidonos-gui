@@ -34,5 +34,5 @@ def main():
     alter_rp_mtool_db()
 
 if __name__== "__main__":
-  main()
+    main()
 

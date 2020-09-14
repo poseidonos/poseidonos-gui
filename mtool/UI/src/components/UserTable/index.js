@@ -30,7 +30,7 @@ import MaterialTable from 'material-table';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { withStyles } from '@material-ui/core/styles';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { Grid, Typography, Switch, createMuiTheme, } from '@material-ui/core';
+import { Grid, Typography, createMuiTheme, } from '@material-ui/core';
 import { Add, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search } from '@material-ui/icons';
 import TrashIcon from "@material-ui/icons/Delete"
 import './UserTable.css';
@@ -160,11 +160,11 @@ class UserTable extends Component {
           title: 'Email',
           field: 'email',
         },
-        {
-          title: 'Privilege',
-          field: 'privileges',
-          editable: 'never'
-        },
+        // {
+        //   title: 'Privilege',
+        //   field: 'privileges',
+        //   editable: 'never'
+        // },
       ]
     }
   }

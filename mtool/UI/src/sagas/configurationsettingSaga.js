@@ -41,6 +41,7 @@ export function* fetchEmailList() {
 
     const result = response.data;
     const emailList = [];
+    /* istanbul ignore else */
     if (result) {
       result.forEach(email => {
         emailList.push({
@@ -70,6 +71,7 @@ export function* updateEmail(action) {
     }
     );
     const { status } = response;
+     /* istanbul ignore else */
     if (status === 200) {
       yield fetchEmailList();
     }
@@ -111,6 +113,7 @@ export function* deleteEmailIds(action) {
     }
     );
     const { status } = response;
+     /* istanbul ignore else */
     if (status === 200) {
       const payload = {
         alertOpen: true,
@@ -134,44 +137,44 @@ export function* deleteEmailIds(action) {
   }
 }
 
-export function* sendEmail(action) {
-  try {
-    const response = yield call(
-      [axios, axios.post],
-      '/api/v1.0/send_email/',
-      action.payload, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-access-token': localStorage.getItem('token'),
-      }
-    }
-    );
-    const { status } = response;
-    document.getElementsByTagName('body')[0].style.cursor = 'default';
+// export function* sendEmail(action) {
+//   try {
+//     const response = yield call(
+//       [axios, axios.post],
+//       '/api/v1.0/send_email/',
+//       action.payload, {
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         'x-access-token': localStorage.getItem('token'),
+//       }
+//     }
+//     );
+//     const { status } = response;
+//     document.getElementsByTagName('body')[0].style.cursor = 'default';
 
-    if (status === 200) {
-      const payload = {
-        alertOpen: true,
-        istypealert: true,
-        alerttype: 'info',
-        alerttitle: 'Send Email',
-        alertdescription: 'Email sent successfully',
-      };
-      yield put(actionCreators.setAlertBox(payload));
-    }
-  } catch (error) {
-    document.getElementsByTagName('body')[0].style.cursor = 'default';
-    const payload = {
-      alertOpen: true,
-      istypealert: true,
-      alerttype: 'alert',
-      alerttitle: 'Send Email',
-      alertdescription: 'Email sending failed',
-    };
-    yield put(actionCreators.setAlertBox(payload));
-  }
-}
+//     if (status === 200) {
+//       const payload = {
+//         alertOpen: true,
+//         istypealert: true,
+//         alerttype: 'info',
+//         alerttitle: 'Send Email',
+//         alertdescription: 'Email sent successfully',
+//       };
+//       yield put(actionCreators.setAlertBox(payload));
+//     }
+//   } catch (error) {
+//     document.getElementsByTagName('body')[0].style.cursor = 'default';
+//     const payload = {
+//       alertOpen: true,
+//       istypealert: true,
+//       alerttype: 'alert',
+//       alerttitle: 'Send Email',
+//       alertdescription: 'Email sending failed',
+//     };
+//     yield put(actionCreators.setAlertBox(payload));
+//   }
+// }
 
 export function* testEmail(action) {
   try {
@@ -188,6 +191,7 @@ export function* testEmail(action) {
     );
     const { status } = response;
     document.getElementsByTagName('body')[0].style.cursor = 'default';
+     /* istanbul ignore else */
     if (status === 200) {
       yield put(actionCreators.changeSmtpServer());
       const payload = {
@@ -253,6 +257,7 @@ export function* getIbofOSTimeInterval() {
     });
 
     const result = response.data;
+      /* istanbul ignore else */
     if (result) {
       yield put(actionCreators.setIbofOSTimeInterval(result));
     }
@@ -285,7 +290,7 @@ export function* configurationsettingWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_EMAIL_LIST, fetchEmailList);
   yield takeEvery(actionTypes.SAGA_UPDATE_EMAIL, updateEmail);
   yield takeEvery(actionTypes.SAGA_TOGGLE_ACTIVE_STATUS, toggleActiveStatus);
-  yield takeEvery(actionTypes.SAGA_SEND_EMAIL, sendEmail);
+  // yield takeEvery(actionTypes.SAGA_SEND_EMAIL, sendEmail);
   yield takeEvery(actionTypes.SAGA_TEST_EMAIL, testEmail);
   yield takeEvery(actionTypes.SAGA_DELETE_EMAIL_IDS, deleteEmailIds);
   yield takeEvery(actionTypes.SAGA_DOWNLOAD_LOGS, downloadLogs);

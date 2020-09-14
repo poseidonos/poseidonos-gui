@@ -1,0 +1,1015 @@
+{
+	"info": {
+		"_postman_id": "9406cd99-e6d9-4790-864c-4a8f64f2b61e",
+		"name": "Mtool_End_To_End_Comprehensive",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c35b8253-8110-43de-8838-5829944da281",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Get devices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "93f345fd-48a9-438a-af9f-a913113d82cb",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"console.log(response);\r",
+							"let deviceCount = 0;\r",
+							"try {\r",
+							"    let devices = response.devices.map(d => d.name)\r",
+							"    deviceCount = devices.length;\r",
+							"    console.log(\"devices-> \",devices)\r",
+							"    // save the token value to variables so that it can used in subsequent APIs\r",
+							"    pm.variables.set('device', devices[0]);\r",
+							"    console.log('device is....', devices[0]);\r",
+							"    postman.setEnvironmentVariable(\"device\",  devices[0]);\r",
+							"}\r",
+							"catch (err) {\r",
+							"    console.log('err....', err);\r",
+							"}\r",
+							"pm.test(\"Get device info...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"if ( deviceCount > 0 ) {\r",
+							"    //Devices.. Create or use existing array\r",
+							"    console.log(deviceCount, ' device found.... Creating array or using existing array now...');\r",
+							"    postman.setNextRequest(\"Get Arrays\");    \r",
+							"\r",
+							"} else {\r",
+							"    //no devices.. logout \r",
+							"    console.log('No Device found...... Exiting now...');\r",
+							"    postman.setNextRequest(\"logout\");    \r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d4ea7ad4-c9e6-476f-86ab-b77180465dc7",
+						"exec": [
+							"//setTimeout( function() {}, 2000)\r",
+							"//pm.Wait(5000);\r",
+							"\r",
+							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_devices/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_devices",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Arrays",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a4eddbf-0576-4097-91a7-ed8e8fdaa0fb",
+						"exec": [
+							"\r",
+							"//pm.test(\"Array Info is retrieved...\", function () {\r",
+							"//    pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// console.log(\"jsonData \",jsonData,jsonData[0],\"jsonData\")\r",
+							"if (jsonData.length==0){\r",
+							"    // console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Array not found.. Creating one now.. \") });    \r",
+							"\r",
+							"    console.log( 'Creating new array....');\r",
+							"    \r",
+							"    // Create a new array\r",
+							"    postman.setNextRequest(\"Create Array\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log( 'Array exists.... Creating volume.');\r",
+							"\r",
+							"    // create volume \r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fe0da123-295c-4baf-ba87-648e922c4f52",
+						"exec": [
+							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65b371ee-bbb8-4728-9917-b9b4a1fb2e66",
+						"exec": [
+							"let res = pm.response.json();\r",
+							"\r",
+							"pm.test(\"DAgent reponse is... \" +  res[\"response\"], function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    console.log(\" in if \")\r",
+							"    setTimeout(function () {\r",
+							"        console.log(\" in timeout \")\r",
+							"    }, 20000);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d56f655e-959b-4c33-a69d-6c74968f1edc",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"stop_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f00ef6ec-e81a-4a92-9cf6-ad33e3cc8b6c",
+						"exec": [
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    setTimeout(function () {\r",
+							"    }, 10000);\r",
+							"}\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
+							"\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/start_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"start_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IsPOS-Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8599eff8-1d3b-46a8-a26d-e9e2129e39e5",
+						"exec": [
+							"pm.test(\"POS is Running...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"Success\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8880d4d1-8144-4f15-bc74-8193ea652708",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_Is_Ibof_OS_Running",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bccc042e-7daf-42b7-82dd-7f29ba95942e",
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							" //   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status , function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});\r",
+							"\r",
+							"if (status.toLowerCase() == \"success\"){\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log( 'Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if ( restartCount <= 3 ) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount+1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"size\":\"01600321314816160032131481616003213148161600321314816\",\"arrayname\":\"{{arrayName}}\",\"raidtype\":\"raid5\",\"storageDisks\":[{\"deviceName\":\"{{storageDisk1}}\"},{\"deviceName\":\"{{storageDisk2}}\"},{\"deviceName\":\"{{storageDisk3}}\"}],\"spareDisks\":[{\"deviceName\":\"{{spareDisk1}}\"}],\"writeBufferDisk\":[],\"metaDisk\":\"uram0\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Volume",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b6a25d9-5412-4de2-afaf-49433f1270b5",
+						"exec": [
+							"pm.test(\"Volume created...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"volpk\",\"size\":\"4\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName}}\",\"maxbw\":0,\"maxiops\":0,\"count\":1,\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"save-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIO 3 min",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2edf834c-5ce1-4127-90d8-86c06ce3a048",
+						"exec": [
+							"pm.test(\"FIO started for 3 min...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    setTimeout(function () {\r",
+							"        console.log(\" in timeout \")\r",
+							"    }, 10000);       // pause for 10 sec\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:3213/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "3213",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cpu_graph",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "208bc3ab-6e47-4b43-adf8-7422ffd6d2d7",
+						"exec": [
+							"pm.test(\"Data received \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fcc8c571-318d-4c53-b239-008ec85360b7",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/usage_user/1m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"usage_user",
+						"1m"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be2842f4-6468-4c6f-8d1e-497e5d6323df",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/array",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"bw_read",
+						"1m",
+						"array"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d03beaf6-8b22-415d-8e30-e2cbcd9d561e",
+						"exec": [
+							"pm.test(\"Added as custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 15 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 15000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Custom Admin user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3bd99a4-2785-4a8b-9c0b-e180384ff9a0",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"PKAdmin logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Array Based Perf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbcdbb2b-fc30-4a2e-8462-7bad84208dff",
+						"exec": [
+							"pm.test(\"Array Based Perf...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"latency",
+						"1m",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2241216-7780-4990-a73b-f6a81fcc29e4",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"volpk\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Volume",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "17e4903b-859f-40a0-8909-b1d36d84cfaf",
+						"exec": [
+							"pm.test(\"Delete volume successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"volumes\": [\"volpk\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c3bd87b-ae4b-4181-b0a6-d44bea2f22d5",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"pm.test(\"Logout complete...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

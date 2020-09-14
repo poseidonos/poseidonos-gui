@@ -127,7 +127,7 @@ const LogConfiguration = (props) => {
             <Grid xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid item container justify="center" className={classes.btnContainer}>
-                                <Button onClick={downloadLogs} className={classes.btn} color="primary" variant="contained">
+                                <Button onClick={downloadLogs} className={classes.btn} color="primary" variant="contained" data-testid= "downloadLogsBtn">
                                     Download log
                                 </Button>
                             </Grid>
@@ -140,7 +140,7 @@ const LogConfiguration = (props) => {
                     <TextField
                         type="number"
                         inputProps={{
-                            'data-testid': "ibofosSettingTextField",
+                            // 'data-testid': "ibofosSettingTextField",
                             min: 0,
                         }}
                         name="ibofostimeinterval"
@@ -151,6 +151,7 @@ const LogConfiguration = (props) => {
                         className={classes.textField}
                         label="In Sec"
                         margin="none"
+                        data-testid= "ibofosSettingTextField"
                     // onKeyDown={f => /[+-,.,#]$/.test(f.key) && f.preventDefault()}
                     />
                     <Button
@@ -167,7 +168,7 @@ const LogConfiguration = (props) => {
 
                     <TextField
                         inputProps={{
-                            'data-testid': "ibofosSettingTextField",
+                            'data-testid': "ibofosSettingTextFieldRO",
                             readOnly: true,
                             className: classes.inputText,
                         }}
@@ -182,7 +183,7 @@ const LogConfiguration = (props) => {
                         color="primary"
                         type="submit"
                         className={classes.ibofosSettingButton}
-                        data-testid="setTimeIntervalButton"
+                        data-testid="deleteTimeIntervalButton"
                         onClick={() => {
                             props.deleteIbofOSTimeInterval()
                         }}

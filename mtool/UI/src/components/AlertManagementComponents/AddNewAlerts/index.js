@@ -130,6 +130,7 @@ const AddNewAlerts = props => {
           label="Alert Name"
           placeholder="Enter Alert Name"
           onChange={props.onHandleChange}
+          inputProps={{'data-testid': "alert-create-name"}}
           onKeyDown={e => /[+-.,#, ,]$/.test(e.key) && e.preventDefault()}
         />
         <Typography className={classes.formLabel} variant="caption"> -Send Alert Where</Typography>
@@ -150,9 +151,12 @@ const AddNewAlerts = props => {
           onChange={props.onHandleDropdownChange}
           value={props.alertCondition}
           SelectDisplayProps={{ 'data-testid': "selectAddNewAlertsTag" }}
+          inputProps={{
+            'data-testid': "alert-add-select-condition"
+          }}
         >
           {props.dropdownCondition ? props.dropdownCondition.map((eachValue) => {
-            return (<MenuItem className={classes.selectMenuItem} key={eachValue} value={eachValue} data-testid="selectMenuItemAddNewAlertsTag">{eachValue}</MenuItem>)
+            return (<MenuItem className={classes.selectMenuItem} key={eachValue} value={eachValue} data-testid={eachValue}>{eachValue}</MenuItem>)
           }) : null
           }
         </Select>
@@ -185,10 +189,13 @@ const AddNewAlerts = props => {
           onChange={props.onHandleChange}
           placeholder="Enter your message here - This will be the subject of your email"
           value={props.description}
+          inputProps={{
+            'data-testid': "alert-add-new-description"
+          }}
           name="description"
         />
         <ButtonGroup data-testid="ButtonTag" size="small" color="primary" onClick={() => { props.openAlert('Add') }}>
-          <Button variant="contained" className={classes.button}>Add</Button>
+          <Button variant="contained" data-testid="alert-add-btn" className={classes.button}>Add</Button>
         </ButtonGroup>
 
       </Grid>

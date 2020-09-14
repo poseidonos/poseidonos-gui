@@ -1,0 +1,1507 @@
+{
+	"info": {
+		"_postman_id": "0ac4deab-ec18-406c-b94b-ca758115d182",
+		"name": "MTool_Storage_Tester",
+		"description": "MTool simple workflow - from login, start pos, create array, create vol, perf charts and stop pos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "83ddda32-902c-4334-8b59-8cd679e8efdb",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token = response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"postman.setEnvironmentVariable(\"token\", token);\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				},
+				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Stop ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a5da34c5-2bb8-4c92-8947-32e5b40ab86f",
+						"exec": [
+							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 12 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 18000);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "638e479e-29a0-40ab-b81f-ddd2df51b4e4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"stop_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start ibofos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "26ae82a2-6ce2-4e2f-a396-fdfe65d5c677",
+						"exec": [
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    console.log(\"before timeout\")\r",
+							"    setTimeout(function () {\r",
+							"        console.log(\"after timeout\")\r",
+							"    }, 10000);\r",
+							"}\r",
+							"\r",
+							"console.log(\"pm.response.code \", pm.response.code)\r",
+							"\r",
+							"pm.test(\"Successful POST request\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/start_ibofos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"start_ibofos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IsPOS-Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "81ca93fe-ae2e-4fdb-96a0-59821b8a250f",
+						"exec": [
+							"pm.test(\"POS is Running...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"Success\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ff38dac0-8400-4fee-91af-401011c433b6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_Is_Ibof_OS_Running",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get devices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2c18c624-ad6e-4d86-a23e-f106d0629526",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"console.log(response);\r",
+							"try {\r",
+							"    let devices = response.devices.map(d => d.name)\r",
+							"    console.log(\"devices-> \",devices)\r",
+							"    // save the token value to variables so that it can used in subsequent APIs\r",
+							"    pm.variables.set('device', devices[0]);\r",
+							"    console.log('device is....', devices[0]);\r",
+							"    postman.setEnvironmentVariable(\"device\",  devices[0]);\r",
+							"}\r",
+							"catch (err) {\r",
+							"    console.log('err....', err);\r",
+							"}\r",
+							"pm.test(\"Get device info...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2b28035d-9c6c-427b-a6cc-a27a5d1f4c2c",
+						"exec": [
+							"//setTimeout( function() {}, 2000)\r",
+							"//pm.Wait(5000);\r",
+							"\r",
+							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_devices/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_devices",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "85fa27cf-64e2-4c24-aea2-b5a83ef9158a",
+						"exec": [
+							"pm.test(\"Deleted Array, if any...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrayname\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/POSArray",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_array",
+						"POSArray"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6e156461-98d3-4ec2-b02f-df23ac641fba",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"size\":\"01600321314816160032131481616003213148161600321314816\",\"arrayname\":\"{{arrayName}}\",\"raidtype\":\"raid5\",\"storageDisks\":[{\"deviceName\":\"{{storageDisk1}}\"},{\"deviceName\":\"{{storageDisk2}}\"},{\"deviceName\":\"{{storageDisk3}}\"}],\"spareDisks\":[{\"deviceName\":\"{{spareDisk1}}\"}],\"writeBufferDisk\":[],\"metaDisk\":\"uram0\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"create_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Arrays",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2a4cb0a0-8ace-4903-9e0a-712f5a23714e",
+						"exec": [
+							"\r",
+							"pm.test(\"Get device info...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"console.log(\"jsonData \",jsonData,jsonData[0],\"jsonData\")\r",
+							"if (jsonData.length==0){\r",
+							"    console.log(\"Failed\")\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response array is empty\") });    \r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3525f167-3021-4c06-b73f-d97e5726a8a6",
+						"exec": [
+							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove spare disk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9aadcc9d-e76c-46a7-a0a9-b6bf2570d6ac",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{spareDisk1}}\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/remove_spare_device/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"remove_spare_device",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add spare disk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "439f659c-bc49-46cc-8a47-532db5b3bfd8",
+						"exec": [
+							"pm.test(\"Created an array...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{spareDisk1}}\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_spare_device",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Volume",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e40e41a7-2da4-4e94-ba61-f45fe1e100df",
+						"exec": [
+							"pm.test(\"Volume created...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{volName}}\",\"size\":\"10\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"{{volCount}}\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"save-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Volumes(10)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "16bfcbb4-02ba-4a3a-a8f0-01b89c1f49ac",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"console.log('device is....', environment.device);\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"volArr = jsonData.Members\r",
+							"\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(volArr.length).is.to.equal(10);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8ead5fa4-f1ca-48c6-86ed-9b898b0b341d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Smart Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e40a35d-869a-40a0-aeae-34e8ccb22b73",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b0c87f1a-5922-409d-bab6-d3958cd819d9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/device/smart/{{storageDisk1}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"device",
+						"smart",
+						"{{storageDisk1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update vol_test2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8298a497-6a1b-4087-b4f7-e0178c6836e1",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"maxiops\":10,\"maxbw\":0,\"name\":\"{{volName}}2\",\"array\":\"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rename vol_test3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec14cd6b-0d9c-4f8f-a040-bf2a1c03aa9e",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"param\": {\"name\": \"{{volName}}3\", \"newname\": \"vol_renamed\", \"array\": \"{{arrayName}}\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volName}}3",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volumes",
+						"{{volName}}3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3641927b-1a46-48b9-9a56-ee5419e59c51",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}5\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "40908a1b-a158-411a-af29-3142ffbb8c31",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}6\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Volumes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6ced4603-edc1-4ada-8e0b-de33cf925a2c",
+						"exec": [
+							"pm.test(\"Delete volume successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"volumes\": [\"{{volName}}5\",\"{{volName}}6\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "86edecd3-1925-4bd1-94ed-a86fdef67e50",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}0\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "78f9c994-e671-450a-b33e-14d4c5a9c304",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}1\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mount vol_test0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eb6f6fbf-e551-4882-9c0a-1f9ede2da011",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}0\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mount vol_test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "62e5d9d4-5439-45a6-8f3f-5a686b0140a5",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}1\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b8d4d58-1e66-421a-93d0-2d6787b4f658",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}0\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unmount vol_test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2cd64270-6915-4112-b207-4577740249ee",
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Volume updated...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"console.log(jsonData.result.status.description)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{volName}}1\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Volumes(8)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e5fcbca-25f8-4647-a8db-4145eedff0eb",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"volArr = jsonData.Members\r",
+							"\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(volArr.length).is.to.equal(8);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "04c4305b-e07f-4706-a8cd-0f92889e2673",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "82249d19-7b90-436f-9756-38f1d107e95c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "29df78c3-1186-4202-a691-4c25dfd73d36",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b0317c7a-8a04-4185-a7a5-4295f275e8f6",
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

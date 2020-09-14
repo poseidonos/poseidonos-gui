@@ -3,18 +3,61 @@ M-Tool is a Management tool for Posiedon. It gives the ability to configure avai
 
 MTool exposes REST APIs with JWT authentication for secured communication with Poseidon Management UI or any third party UI applications.
 
+
+Release Contents:
+1. API changes with respect to D-Agent API changes
+
+2. Unit changes (from int to string) with respect to the unit changes in POS
+
+3. D-Agent APIs used instead of influxDB queries for metrics
+
+4. Test cases refinement and adding new test cases based on new or updated requirements
+
+5. First version of MTool rest API automation using Postman
+
+6. Reviewed the poc design and poc code related to the Cli_server_decoupling_from_POS task
+
+7. Work with process team to setup Jenkins environment and configure a jenkins job for MTool FE code
+
+8. Manual TCs verification related to Login, Storage, Performance and Dashboard features
+
+9. Achieved 0 errors and warnings in MTool backend static code analysis
+
+10. Fixed the UI crash on screen inactivity.
+
+11. Changed the response structure in the UI for create/delete volume
+
+12. Changed the logic for delete volume. Now, the user has to manually unmount the volume first before deleting it
+
+13. Disabled some features for PoC1
+
+14. Created REST API workflow document for MTool
+
+15. Implemented load array feature in front end and backend. 
+
+
+Observations:
+1. In Dashboard page, IOPS, and Bandwidth is showing last non-zero value even if IOs are not running
+
+2. Latency graphs are showing zero values always. Need to change according to latest AIR schema
+
+3. POS is crashing when array creation and deletion is repeated multiple times
+
+4. If we stop POS without deleting the array and start POS again, the array doesn't show up. Issue with load array API
+
+ 
+
 ## Features
 1. Login Screen
    - Default Credentials - admin/admin
 
 2. User Management
    - User Addition, Deletion, Modification
-   - Change Password for logged in user
    - Logout   
 
 3. Performance Page
-   - Array - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS 
-   - Volume - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS
+   - Array - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS, Latency
+   - Volume - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS, Latency
    - System - CPU Usage
 
 4. Dashboard
@@ -25,12 +68,8 @@ MTool exposes REST APIs with JWT authentication for secured communication with P
    - Array Creation/Deletion after Poseidon OS is started
    - Volumes creation/deletion 
    - Array and Volume details are persistent even after Poseidon OS is stopped and started.
-
-6. Alert Management
-   - Alert Creation, Deletion, Enable/Disable and Modification 
-   - Displaying triggered alerts in the Dashboard
    
-7. Poseidon OS Operations
+6. Poseidon OS Operations
    - Start and STOP of Poseidon OS 
    - Run command to run and bash files  
 
@@ -89,3 +128,6 @@ The server will run on localhost and will be accessible from the browser
 `
 http://localhost
 `
+
+
+

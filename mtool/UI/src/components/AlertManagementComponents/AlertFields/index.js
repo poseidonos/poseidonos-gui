@@ -69,15 +69,15 @@ const AlertFields = props => {
       <Grid xs={12} item className={classes.alertTypesOuterGrid}>
         <Typography className={classes.alertTypesHeader} variant="h6">Alert Fields</Typography>
         <Grid sm={6} xs={12} item className={classes.alertTypesInnerGrid}>
+          <input name="alertRadioButton" onChange={props.onHandleChange} data-testid="alert-hidden-radio-button-group" style={{display: "none"}} />
           <RadioGroup
             name="alertRadioButton"
+            data-testid="alert-radio-btn-group"
             className={classes.radioGroup}
             onChange={props.onHandleChange}
           >
-            {props.alertClusterList[props.radioindex].alertFields &&
-              props.alertClusterName &&
-              props.selectedAlertSubCluster &&
-              props.alertType
+            {props.alertClusterList && props.alertClusterList[props.radioindex] && props.alertClusterList[props.radioindex].alertFields &&
+              props.alertClusterName 
               ? props.alertClusterList[props.radioindex].alertFields.map(
                 (alertField) => {
                   return (

@@ -54,8 +54,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: '100%',
-    padding: theme.spacing(0, 3),
+    width: `calc(100% - ${theme.spacing(4)}px)`,
+    padding: theme.spacing(0, 2),
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(0, 1)
     }
@@ -227,8 +227,8 @@ class ArrayShow extends Component {
     this.closePopup = this.closePopup.bind(this);
     this.deleteArray = this.deleteArray.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
-    this.attachDisk = this.attachDisk.bind(this);
-    this.detachDisk = this.detachDisk.bind(this);
+    // this.attachDisk = this.attachDisk.bind(this);
+    // this.detachDisk = this.detachDisk.bind(this);
     this.addSpareDisk = this.addSpareDisk.bind(this);
     this.removeSpareDisk = this.removeSpareDisk.bind(this);
   }
@@ -275,20 +275,20 @@ class ArrayShow extends Component {
     this.props.deleteArray();
   }
 
-  attachDisk(slot) {
-    this.setState({
-      selectedSlot: slot,
-      messageOpen: true,
-      messageDescription: 'Are you sure you want to Attach Disk?',
-      messageTitle: 'Attach Disk',
-      onConfirm: () => {
-        this.props.attachDisk(this.state.selectedSlot);
-        this.setState({
-          messageOpen: false
-        });
-      }
-    })
-  }
+  // attachDisk(slot) {
+  //   this.setState({
+  //     selectedSlot: slot,
+  //     messageOpen: true,
+  //     messageDescription: 'Are you sure you want to Attach Disk?',
+  //     messageTitle: 'Attach Disk',
+  //     onConfirm: () => {
+  //       this.props.attachDisk(this.state.selectedSlot);
+  //       this.setState({
+  //         messageOpen: false
+  //       });
+  //     }
+  //   })
+  // }
 
   addSpareDisk(slot) {
     this.setState({
@@ -305,20 +305,20 @@ class ArrayShow extends Component {
     })
   }
 
-  detachDisk(slot) {
-    this.setState({
-      selectedSlot: slot,
-      messageOpen: true,
-      messageDescription: 'Are you sure you want to Detach Disk?',
-      messageTitle: 'Detach Disk',
-      onConfirm: () => {
-        this.props.detachDisk(this.state.selectedSlot);
-        this.setState({
-          messageOpen: false
-        });
-      }
-    })
-  }
+  // detachDisk(slot) {
+  //   this.setState({
+  //     selectedSlot: slot,
+  //     messageOpen: true,
+  //     messageDescription: 'Are you sure you want to Detach Disk?',
+  //     messageTitle: 'Detach Disk',
+  //     onConfirm: () => {
+  //       this.props.detachDisk(this.state.selectedSlot);
+  //       this.setState({
+  //         messageOpen: false
+  //       });
+  //     }
+  //   })
+  // }
 
   removeSpareDisk(slot) {
     this.setState({
@@ -338,6 +338,7 @@ class ArrayShow extends Component {
   render() {
     const { classes } = this.props;
     const freeSlots = [];
+    /* istanbul ignore else */
     if (this.props.slots) {
       for (let i = this.props.slots.length; i < 32; i += 1) {
         freeSlots.push(
@@ -411,7 +412,7 @@ class ArrayShow extends Component {
                             </div>
                             <div>
                               Size:
-                            {formatBytes(slot.size * 4 * 1024)}
+                            {formatBytes(slot.size)}
                             </div>
                             <div
                               onClick={() => this.showPopup(slot.name)}
@@ -473,7 +474,7 @@ class ArrayShow extends Component {
                       </Tooltip>
                     );
                   })
-                  : null}
+                 /* istanbul ignore next */: null}
                 {freeSlots}
               </GridList>
             </Grid>
@@ -498,7 +499,7 @@ class ArrayShow extends Component {
           </Grid>
           <AlertDialog
             title="Delete Array"
-            description="Are you sure you want to delete?"
+            description="Are you sure you want to delete the array?"
             open={this.state.open}
             handleClose={this.handleClose}
             onConfirm={this.deleteArray}
@@ -515,7 +516,6 @@ class ArrayShow extends Component {
             details={this.props.diskDetails}
             open={this.state.popupOpen}
             onConfirm={this.closePopup}
-            note_msg="Note: Currently SPDK NVME cli cannot retrieve disk details while iBoF is running. Details will be displayed at a later stage."
           />
         </form>
       </ThemeProvider>

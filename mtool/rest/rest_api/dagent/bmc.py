@@ -11,7 +11,7 @@ import dateutil.parser as dp
 from logging.handlers import RotatingFileHandler
 from flask import jsonify
 from util.db.influx import get_connection
-from util.macros.influxdb import mtool_db
+from util.macros.influxdb_config import mtool_db
 DAGENT_BMC_URL = 'http://localhost:3000'
 CHASSIS_URL = '/redfish/v1/Chassis'
 SYSTEM_URL = '/redfish/v1/Systems'

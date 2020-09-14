@@ -32,31 +32,11 @@ DESCRIPTION: Files containing influxdb queries related to Performance data
 
 from util.db.influx import get_connection
 from util.com.time_groups import time_groups_default
-from util.macros.influxdb import mtool_db, infinite_rp, default_rp, agg_rp, agg_time
-import re
-
-
-def get_available():
-    connection = get_connection()
-    # query = 'SELECT mean("usage_idle") AS "mean_usage_idle" FROM "telegraf"."autogen"."cpu" WHERE time > now()-15m AND  GROUP BY time(1285ms)'
-    query = 'SELECT mean("active") AS "mean_active" FROM "telegraf"."autogen"."mem" WHERE time > now()-5m GROUP BY time(428ms)'
-    res = connection.query(query)
-    connection.close()
-    return res
+from rest.rest_api.dagent import metrics
 
 
 def get_user_cpu_usage(time):
-    connection = get_connection()
-    if time in agg_time:
-        query = 'SELECT "usage_user" AS "mean_usage_user" FROM "' + mtool_db + \
-            '"."' + agg_rp + '"."mean_cpu" WHERE time > now() - {}'.format(time)
-    else:
-        query = 'SELECT mean("usage_user") AS "mean_usage_user" FROM "' + mtool_db + '"."' + default_rp + \
-            '"."cpu" WHERE time > now() - {} GROUP BY time({})'.format(time, time_groups_default[time])
-    print(query)
-    res = connection.query(query)
-    connection.close()
-    return res
+    return metrics.get_cpu_usage(time)
 
 
 def get_diskio_mbps(time, level):
@@ -120,212 +100,36 @@ def get_input_power_variation(time):
         print(e)
 """
 
-def extract_values(res, level, time, metrics, metricOp, factor):
-    result = []
-    if level == 'array':
-        for data in list(res):
-            val = 0
-            try:
-                # Take sum of all values except aid and time in case of array
-                for key in data.keys():
-                    if key != 'time' and (
-                            re.match(
-                                r'.*aid$',
-                                key) is None) and (
-                            data[key] is not None):
-                        val = val + data[key]
-                result.append({
-                    'value': val / factor,
-                    'time': data['time']
-                })
-            except Exception as e:
-                print(e)
-    else:
-        for data in list(res):
-            val = 0
-
-            if (time == '1m' or (time in agg_time)):
-                # If time interval is 1m, aggregation is not there.
-                for key in data.keys():
-                    new_key = key[0:(len(key) - len(metricOp))] + 'aid'
-                    if new_key in data and data[new_key] == int(level):
-                        val = val + data[key]
-            else:
-                try:
-                    for key in data.keys():
-                        new_key = metrics + \
-                            key[4:len(key) - len(metricOp)] + 'aid'
-                        if (new_key in data) and (data[new_key] == int(level)):
-                            val = val + data[key]
-                except Exception as e:
-                    print(e)
-            result.append({
-                'value': val / factor,
-                'time': data['time']
-            })
-    return result
-
-
 def get_disk_latency(time, level):
-    try:
-        res_dict = {}
-        connection = get_connection()
-
-        if time in agg_time:
-            query = 'SELECT /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^mean_lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - {} FILL(null)'.format(
-                time)
-
-        elif(time == '1m'):
-            query = 'SELECT /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/, /^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "latency" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} FILL(null)'.format(
-                time)
-
-        else:
-            query = 'SELECT mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/), mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "latency" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} GROUP BY time({}) FILL(null)'.format(
-                time, time_groups_default[time])
-
-        res = connection.query(query)
-        res_dict['res'] = extract_values(
-            res.get_points(),
-            level,
-            time,
-            'latency',
-            'timelag_arr_0_mean',
-            1)
-        connection.close()
-        return res_dict
-    except Exception as e:
-        print(e)
-
+    if level == "array":
+        return metrics.get_latency(time)
+    else:
+        return metrics.get_vol_latency(time, level)
 
 def get_disk_read_iops(time, level):
-    try:
-        res_dict = {}
-        connection = get_connection()
-
-        if time in agg_time:
-            query = r'SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - {} FILL(null)'.format(time)
-
-        elif(time == '1m'):
-            query = r'SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} FILL(null)'.format(time)
-
-        else:
-            query = 'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} GROUP BY time({}) FILL(null)'.format(
-                time, time_groups_default[time])
-
-        res = connection.query(query)
-        res_dict['res'] = extract_values(
-            res.get_points(), level, time, 'iops', 'iops_read', 1000)
-        connection.close()
-        return res_dict
-    except Exception as e:
-        print(e)
-
+    if level == "array":
+        return metrics.get_read_iops(time)
+    else:
+        return metrics.get_vol_read_iops(time, level)
 
 def get_disk_write_iops(time, level):
-    res_dict = {}
-    connection = get_connection()
-
-    if time in agg_time:
-        query = r'SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - {} FILL(null)'.format(time)
-
-    elif(time == '1m'):
-        query = 'SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "iops" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} FILL(null)'.format(
-            time)
+    if level == "array":
+        return metrics.get_write_iops(time)
     else:
-        query = 'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "iops" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} GROUP BY time({}) FILL(null)'.format(
-            time, time_groups_default[time])
-
-    res = connection.query(query)
-    res_dict['res'] = extract_values(
-        res.get_points(),
-        level,
-        time,
-        'iops',
-        'iops_write',
-        1000)
-    connection.close()
-    return res_dict
-
+        return metrics.get_vol_write_iops(time, level)
 
 def get_disk_read_bw(time, level):
-    res_dict = {}
-    connection = get_connection()
-
-    if time in agg_time:
-        query = 'SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - {} FILL(null)'.format(
-            time)
-
-    elif(time == '1m'):
-        query = 'SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} FILL(null)'.format(
-            time)
+    if level == "array":
+        return metrics.get_read_bw(time)
     else:
-        query = 'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} GROUP BY time({}) FILL(null)'.format(
-            time, time_groups_default[time])
-
-    res = connection.query(query)
-    res_dict['res'] = extract_values(
-        res.get_points(),
-        level,
-        time,
-        'bw',
-        'bw_read',
-        1024 * 1024)
-    connection.close()
-    return res_dict
-
+        return metrics.get_vol_read_bw(time, level)
 
 def get_disk_write_bw(time, level):
-
-    res_dict = {}
-    connection = get_connection()
-
-    if time in agg_time:
-        query = 'SELECT /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^mean_perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - {} FILL(null)'.format(
-            time)
-
-    elif(time == '1m'):
-        query = 'SELECT /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/, /^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/ as "bw" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} FILL(null)'.format(
-            time)
+    if level == "array":
+        return metrics.get_write_bw(time)
     else:
-        query = 'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_aid$/) as "bw" FROM "poseidon"."default_rp"."air" WHERE time > now() - {} GROUP BY time({}) FILL(null)'.format(
-            time, time_groups_default[time])
-
-    res = connection.query(query)
-    res_dict['res'] = extract_values(
-        res.get_points(),
-        level,
-        time,
-        'bw',
-        'bw_write',
-        1024 * 1024)
-    connection.close()
-    return res_dict
-
+        return metrics.get_vol_write_bw(time, level)
 """
-def get_queue_depth(time):
-    connection = get_connection()
-    if time == "5m" or time == "1m":
-        query = 'SELECT "queue_data_0_depth_avg" as "depth" FROM "telegraf".""."air" WHERE time > now() - {} FILL(0)'.format(time)
-    else:
-        query = 'SELECT mean("queue_data_0_depth_avg") as "depth" FROM "telegraf".""."air" WHERE time > now() - {} GROUP BY time({}) FILL(0)'.format(
-            time, time_groups_default[time])
-    res = connection.query(query)
-    connection.close()
-    return res
-
-
-def get_queue_size(time):
-    connection = get_connection()
-    if time == "5m" or time == "1m":
-        query = 'SELECT "queue_data_0_size" as "queue_size" FROM "telegraf".""."air" WHERE time > now() - {} FILL(0)'.format(time)
-    else:
-        query = 'SELECT mean("queue_data_0_size") as "queue_size" FROM "telegraf".""."air" WHERE time > now() - {} GROUP BY time({}) FILL(0)'.format(
-            time, time_groups_default[time])
-    res = connection.query(query)
-    connection.close()
-    return res
-"""
-
 def get_perf_from_influx(query):
     connection = get_connection()
     res = connection.query(query)
@@ -337,35 +141,45 @@ def get_perf_from_influx(query):
             if key != "time" and value is not None:
                 val += value
     return val
-
+"""
 
 def get_disk_current_perf():
     res_dict = {}
-    connection = get_connection()
-    bw_total_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_total$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(bw_total_query)
-    res_dict['bw_total'] = res
-    iops_total_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_total$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(iops_total_query)
-    res_dict['iops_total'] = res
-    bw_read_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_read$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(bw_read_query)
-    res_dict['bw_read'] = res
-    iops_read_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_read$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(iops_read_query)
-    res_dict['iops_read'] = res
-    bw_write_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_bw_write$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(bw_write_query)
-    res_dict['bw_write'] = res
-    iops_write_query = r'SELECT mean(/^perf_data_0_tid_arr_[\S]_aid_arr_[\S]_iops_write$/) as "bw" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(iops_write_query)
-    res_dict['iops_write'] = res
-    latency_query = r'SELECT mean(/^lat_data_0_tid_arr_[\S]_aid_arr_[\S]_timelag_arr_0_mean$/) as "latency" FROM "poseidon".""."air" WHERE time > now() - 5s GROUP BY time(0s)'
-    res = get_perf_from_influx(latency_query)
-    res_dict['latency'] = res
+    read_bw = 0
+    write_bw = 0
+    read_bw_res = metrics.get_read_bw("")
+    if "result" in read_bw_res and "data" in read_bw_res["result"] and \
+        len(read_bw_res["result"]["data"]) > 0:
+        read_bw = read_bw_res["result"]["data"][0]["bw"]
+    write_bw_res = metrics.get_write_bw("")
+    if "result" in write_bw_res and "data" in write_bw_res["result"] and \
+        len(write_bw_res["result"]["data"]) > 0:
+        write_bw = write_bw_res["result"]["data"][0]["bw"]
+    res_dict['bw_total'] = read_bw + write_bw
+    res_dict['bw_read'] = read_bw
+    res_dict['bw_write'] = write_bw
+    read_iops = 0
+    write_iops = 0
+    read_iops_res = metrics.get_read_iops("")
+    if "result" in read_iops_res and "data" in read_iops_res["result"] and \
+        len(read_iops_res["result"]["data"]) > 0:
+        read_iops = read_iops_res["result"]["data"][0]["iops"]
+    write_iops_res = metrics.get_write_iops("")
+    if "result" in write_iops_res and "data" in write_iops_res["result"] and \
+        len(write_iops_res["result"]["data"]) > 0:
+        write_iops = write_iops_res["result"]["data"][0]["iops"]
+    res_dict['iops_total'] = read_iops + write_iops
+    res_dict['iops_read'] = read_iops
+    res_dict['iops_write'] = write_iops
+    latency = 0
+    latency_res = metrics.get_latency("")
+    if "result" in latency_res and "data" in latency_res["result"] and \
+        len(latency_res["result"]["data"]) > 0:
+        latency = latency_res["result"]["data"][0]["latency"]
+    res_dict['latency'] = latency
     return res_dict
 
-
+"""
 def get_alerts():
     connection = get_connection()
     query = 'SELECT * FROM "' + mtool_db + '"."' + infinite_rp + \
@@ -373,6 +187,7 @@ def get_alerts():
     res = connection.query(query)
     connection.close()
     return res
+"""
 
 """
 def get_series():
@@ -382,7 +197,7 @@ def get_series():
     res = connection.query(query)
     connection.close()
     return list(res.get_points())
-"""
+
 
 def get_alerts_from_influx():
     connection = get_connection('chronograf')
@@ -393,7 +208,7 @@ def get_alerts_from_influx():
     print(res)
     connection.close()
     return res
-
+"""
 
 '''
 

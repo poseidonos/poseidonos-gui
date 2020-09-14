@@ -26,19 +26,19 @@ DESCRIPTION: <Contains pure actions for User Management Container> *
 */
 import * as actionTypes from "./actionTypes"
 
-export const openUserBox = (userParam) => {
-    return {
-        type:actionTypes.USER_MANAGEMENT_OPEN_USER_BOX,
-        userParam,
-    };
-}
+// export const openUserBox = (userParam) => {
+//     return {
+//         type:actionTypes.USER_MANAGEMENT_OPEN_USER_BOX,
+//         userParam,
+//     };
+// }
 
-export const setUsersInfo = (updatedUsers) => {
-    return {
-        type:actionTypes.USER_MANAGEMENT_SET_USERS,
-        updatedUsers,
-    };
-}
+// export const setUsersInfo = (updatedUsers) => {
+//     return {
+//         type:actionTypes.USER_MANAGEMENT_SET_USERS,
+//         updatedUsers,
+//     };
+// }
 
 export const fetchUsersInfo = (users) => {
     return {
@@ -46,3 +46,5 @@ export const fetchUsersInfo = (users) => {
         users,
     };
 }
+
+export default fetchUsersInfo;

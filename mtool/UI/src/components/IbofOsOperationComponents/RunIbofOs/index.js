@@ -50,19 +50,19 @@ const RunIbofOs = props => {
                 Running
               </span>{' '}
             </span>
-            <span className="IBOFOSStartLabel">
-              <span style={{ float: 'left' }}>
-                Click to Start/Stop Poseidon OS
-              </span>{' '}
-            </span>
+            <div className="IBOFOSCommandWrapper">
+              <span className="IBOFOSStartLabel">
+                <span style={{ float: 'left' }}>
+                  Click to Start/Stop Poseidon OS
+                </span>{' '}
+              </span>
               <div className="IBOFOSButtonClass">
                 <Button
                   variant="contained"
                   color="primary"
                   title="Force Start Poseidon OS"
-                  onClick={() => {
-                    props.openAlert('Start');
-                  }}
+                  data-testid="startButtonRunning"
+                  disabled={props.status}
                 >
                   Start
                 </Button>
@@ -72,6 +72,8 @@ const RunIbofOs = props => {
                   variant="contained"
                   color="primary"
                   title="Force Stop Poseidon OS"
+                  data-testid="stopButtonRunning"
+                  disabled={!props.status}
                   onClick={() => {
                     props.openAlert('Stop');
                   }}
@@ -79,6 +81,7 @@ const RunIbofOs = props => {
                   Stop
                 </Button>
               </div>
+            </div>
           </div>
         ) : (
             <div>
@@ -95,34 +98,37 @@ const RunIbofOs = props => {
                   />
                 ) : null}
               </span>
-              <span className="IBOFOSStartLabel">
-                <span style={{ float: 'left' }}>
-                  Click to Start/Stop Poseidon OS
-                </span>{' '}
-              </span>
-              <div className="IBOFOSButtonClass">
-              <Button
-                  variant="contained"
-                  color="primary"
-                  title="Force Start Poseidon OS"
-                  onClick={() => {
-                    props.openAlert('Start');
-                  }}
-              >
-                  Start
-              </Button>
-              </div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  title="Force Stop Poseidon OS"
-                  onClick={() => {
-                    props.openAlert('Stop');
-                  }}
-                >
-                  Stop
-                </Button>
+              <div className="IBOFOSCommandWrapper">
+                <span className="IBOFOSStartLabel">
+                  <span style={{ float: 'left' }}>
+                    Click to Start/Stop Poseidon OS
+                  </span>{' '}
+                </span>
+                <div className="IBOFOSButtonClass">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    title="Force Start Poseidon OS"
+                    onClick={() => {
+                      props.openAlert('Start');
+                    }}
+                    data-testid="startButton"
+                    disabled={props.status}
+                  >
+                    Start
+                  </Button>
+                </div>
+                <div className="IBOFOSButtonClass">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    title="Force Stop Poseidon OS"
+                    data-testid="stopButton"
+                    disabled={!props.status}
+                  >
+                    Stop
+                  </Button>
+                </div>
               </div>
             </div>
           )}

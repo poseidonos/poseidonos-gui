@@ -18,7 +18,7 @@ def global_data(mock_match_username_from_db):
     login_data = json.loads(login_response.get_data(as_text=True))
     return {'token': login_data['token']}
 
-
+"""
 @mock.patch("rest.app.connection_factory.get_email_list",
             return_value=[], autospec=True)
 def test_get_email_ids(mock_get_email_list, global_data):
@@ -33,6 +33,115 @@ def test_get_email_ids(mock_get_email_list, global_data):
 
     #data = json.dumps(response.get_data(as_text=True))
     assert response.status_code == 200
+"""
+
+
+def test_getIpAndMac( global_data):
+    response = app.test_client().get(
+        '/api/v1.0/get_ip_and_mac',
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    #data = json.dumps(response.get_data(as_text=True))
+    assert response.status_code == 200
+
+"""
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.insert_smtp_ip",
+             autospec=True)
+@mock.patch("rest.app.smtplib.SMTP",
+             autospec=True)
+def test_smtpserver(mock_insert_smtp_ip,mock_SMTP, global_data, **kwargs):
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=204)
+    response = app.test_client().post(
+        '/api/v1.0/test_smtpserver/',
+        data=json.dumps({'smtpserverip': "10.10.10.10", 'smtpserverport': "6002"}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+
+
+@mock.patch("rest.app.smtplib.SMTP",
+             autospec=True)
+def test_send_email(mock_SMTP, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/send_email/',
+        data=json.dumps({'smtpserverip': "10.10.10.10", 'smtpserverport': "6002", 'ids':['palak.k@samsung.com']}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.delete_emailids_list",
+             return_value=True,
+             autospec=True)
+def test_delete_emailids(mock_SMTP, global_data, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={"options": {"to": ["xyz@gmail.com"]}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=200)
+    response = app.test_client().post(
+        '/api/v1.0/delete_emailids/',
+        data=json.dumps({'ids': ["xyz@gmail.com"]}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.toggle_email_update",
+             autospec=True)
+def test_toggle_email_status(mock_toggle_email_update, global_data, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={"options": {"to": ["xzk@gmail.com"]}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=200)
+    response = app.test_client().post(
+        '/api/v1.0/toggle_email_status/',
+        data=json.dumps({'emailid': "xzk@gmail.com", 'status':True}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.toggle_email_update",
+             autospec=True)
+def test_toggle_email_status_false(mock_toggle_email_update, global_data, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={"options": {"to": ["xzk@gmail.com"]}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=200)
+    response = app.test_client().post(
+        '/api/v1.0/toggle_email_status/',
+        data=json.dumps({'emailid': "xzk@gmail.com", 'status':False}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+"""
 
 
 @mock.patch("rest.app.connection_factory.get_ibofos_time_interval_from_db",
@@ -53,8 +162,35 @@ def test_get_ibofos_time_interval(
     assert response.status_code == 200
     assert data == '4'
 
-# @mock.patch("rest.app.connection_factory.get_ibofos_time_interval_from_db",return_value=4,autospec=True)
 
+@mock.patch("rest.app.connection_factory.set_ibofos_time_interval_in_db",
+            return_value=True, autospec=True)
+def test_set_ibofos_time_interval(mock_toggle_email_update, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/set_ibofos_time_interval',
+        data=json.dumps({'timeinterval':'4'}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    assert response.status_code == 200
+
+@mock.patch("rest.app.connection_factory.set_ibofos_time_interval_in_db",
+            return_value=False, autospec=True)
+def test_set_ibofos_time_interval_failure(mock_toggle_email_update, global_data):
+    response = app.test_client().post(
+        '/api/v1.0/set_ibofos_time_interval',
+        data=json.dumps({'timeinterval':'4'}),
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+    assert response.status_code == 500
 
 def test_downloadLogs(global_data):
     response = app.test_client().get(
@@ -65,12 +201,16 @@ def test_downloadLogs(global_data):
         },
         content_type='application/json',
     )
+    assert response.status_code == 200
 
-
+"""
+@requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.find_email",
             return_value=False, autospec=True)
 @mock.patch("rest.app.connection_factory.insert_email", autospec=True)
-def test_add_email(mock_find_email, mock_insert_email):
+def test_add_email(mock_find_email, mock_insert_email, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={"options": {"to": ["xyz@gmail.com"]}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=200)
     response = app.test_client().post(
         '/api/v1.0/update_email/',
         data=json.dumps({'email': "xyz@gmail.com", 'oldid': "xyz@gmail.com"}),
@@ -95,3 +235,4 @@ def test_update_email(
     )
     data = (response.get_data(as_text=True))
     assert data == 'Updated'
+"""

@@ -40,11 +40,11 @@ import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Loader from 'react-loader-spinner';
 import Heading from '../../assets/images/Header-logo.png';
 // import Dropdown from './Dropdown';
 import AlertDialog from '../Dialog';
 import './Header.css';
-import PDF from '../../assets/Samsung_iBOF_Management_Tool_User_Manual.pdf';
 import Dropdown from './Dropdown';
 import MobileMenu from './MobileMenu';
 import * as actionTypes from "../../store/actions/actionTypes";
@@ -75,6 +75,20 @@ const styles = theme => ({
       display: 'flex',
     },
     alignItems: 'center',
+  },
+  statusHeader: {
+    fontSize: 16,
+    padding: 5,
+    cursor: 'default',
+    height: 65
+  },
+  sectionNonTiny: {
+    display: 'flex',
+    [theme.breakpoints.down(500)]: {
+      fontSize: 12
+    },
+    alignItems: 'center',
+
   },
   sectionMobile: {
     display: 'flex',
@@ -131,15 +145,15 @@ class Header extends Component {
     this.renderDropDown = this.renderDropDown.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
     this.closeDropdown = this.closeDropdown.bind(this);
-    this.alertClose = this.alertClose.bind(this);
-    this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    // this.alertClose = this.alertClose.bind(this);
+    // this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.updateDropdown = this.updateDropdown.bind(this);
-    this.printLastTimestamp = this.printLastTimestamp.bind(this);
+    // this.printLastTimestamp = this.printLastTimestamp.bind(this);
     this.userLogout = this.userLogout.bind(this);
-    this.goHome = this.goHome.bind(this);
+    // this.goHome = this.goHome.bind(this);
     this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
-    this.OnHandleChange = this.OnHandleChange.bind(this);
+    // this.OnHandleChange = this.OnHandleChange.bind(this);
     this.state = {
       dropdown: false,
       popup: false,
@@ -165,6 +179,8 @@ class Header extends Component {
 
   componentDidMount() {
     this.props.getIbofOSTimeInterval();
+    window.addEventListener("resize", this.updateDropdown);
+    // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
     const val = this.props.timeintervalue;
     this.interval = setInterval(() => {
@@ -181,97 +197,101 @@ class Header extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    // document.removeEventListener('mousedown', this.handleClickOutside);
     window.removeEventListener('resize', this.updateDropdown);
     clearInterval(this.interval);
   }
 
-  onHandleSubmit() {
-    if (!this.state.oldPassword) {
-      this.setState({
-        ...this.state,
-        msg: 'Enter your old Password',
-        alertOpen: true,
-        // title: "Error",
-        title: 'Change Password',
-        alertType: 'alert',
-      });
-    } else if (!this.state.newPassword || !this.state.confirmPassword) {
-      this.setState({
-        ...this.state,
-        msg: 'Enter a valid Password',
-        alertOpen: true,
-        // title: "Error",
-        title: 'Change Password',
-        alertType: 'alert',
-      });
-    } else if (this.state.newPassword !== this.state.confirmPassword) {
-      this.setState({
-        ...this.state,
-        msg: 'Passwords do not match',
-        alertOpen: true,
-        // title: "Error",
-        title: 'Change Password',
-        alertType: 'alert',
-      });
-    } else {
-      fetch('/api/v1.0/update_password/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          oldPassword: this.state.oldPassword,
-          newPassword: this.state.newPassword,
-          confirmPassword: this.state.confirmPassword,
-          userid: this.state.userid
-        }),
-      }).then(result => {
-        if (result.status === 200) {
-          this.setState({
-            ...this.state,
-            msg: 'Password changed successfully',
-            alertOpen: true,
-            // title: "Success",
-            title: 'Change Password',
-            alertType: 'info',
-          });
-          this.setState({
-            dropdown: false,
-            popup: false,
-            oldPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-          });
-        } else if (result.status === 401) {
-          this.props.history.push('/');
-        } else {
-          this.setState({
-            ...this.state,
-            msg: 'Error in setting Password',
-            alertOpen: true,
-            alertType: 'alert',
-            // title: "Error"
-            title: 'Change Password',
-          });
-        }
-      });
-    }
-  }
+  // Disabling for PoC1
 
-  OnHandleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ 
-      ...this.state, 
-      [name]: value 
-    });
-  }
+  // onHandleSubmit() {
+  //   if (!this.state.oldPassword) {
+  //     this.setState({
+  //       ...this.state,
+  //       msg: 'Enter your old Password',
+  //       alertOpen: true,
+  //       // title: "Error",
+  //       title: 'Change Password',
+  //       alertType: 'alert',
+  //     });
+  //   } else if (!this.state.newPassword || !this.state.confirmPassword) {
+  //     this.setState({
+  //       ...this.state,
+  //       msg: 'Enter a valid Password',
+  //       alertOpen: true,
+  //       // title: "Error",
+  //       title: 'Change Password',
+  //       alertType: 'alert',
+  //     });
+  //   } else if (this.state.newPassword !== this.state.confirmPassword) {
+  //     this.setState({
+  //       ...this.state,
+  //       msg: 'Passwords do not match',
+  //       alertOpen: true,
+  //       // title: "Error",
+  //       title: 'Change Password',
+  //       alertType: 'alert',
+  //     });
+  //   } else {
+  //     fetch('/api/v1.0/update_password/', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         oldPassword: this.state.oldPassword,
+  //         newPassword: this.state.newPassword,
+  //         confirmPassword: this.state.confirmPassword,
+  //         userid: this.state.userid
+  //       }),
+  //     }).then(result => {
+  //       if (result.status === 200) {
+  //         this.setState({
+  //           ...this.state,
+  //           msg: 'Password changed successfully',
+  //           alertOpen: true,
+  //           // title: "Success",
+  //           title: 'Change Password',
+  //           alertType: 'info',
+  //         });
+  //         this.setState({
+  //           dropdown: false,
+  //           popup: false,
+  //           oldPassword: '',
+  //           newPassword: '',
+  //           confirmPassword: '',
+  //         });
+  //       } else if (result.status === 401) {
+  //         this.props.history.push('/');
+  //       } else {
+  //         this.setState({
+  //           ...this.state,
+  //           msg: 'Error in setting Password',
+  //           alertOpen: true,
+  //           alertType: 'alert',
+  //           // title: "Error"
+  //           title: 'Change Password',
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
+
+  // Disabling For PoC1
+  // OnHandleChange(event) {
+  //   const { name, value } = event.target;
+  //   this.setState({ 
+  //     ...this.state, 
+  //     [name]: value 
+  //   });
+  // }
 
   IsIbofOSRunning() {
-    this.props.Get_Is_iBOFOS_Running_Status(this.props.history);
+    this.props.Get_Is_iBOFOS_Running_Status({push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn});
   }
 
+  // istanbul ignore next
   closeDropdown() {
     this.setState({
       ...this.state,
@@ -291,23 +311,24 @@ class Header extends Component {
     });
   }
 
-  alertClose() {
-    this.setState({
-      ...this.state,
-      alertOpen: false,
-    });
-  }
+  // Disabling for PoC1
+  // alertClose() {
+  //   this.setState({
+  //     ...this.state,
+  //     alertOpen: false,
+  //   });
+  // }
 
-  goHome() {
-    this.props.history.push('/dashboard');
-  }
+  // goHome() {
+  //   this.props.history.push('/dashboard');
+  // }
 
-  printLastTimestamp(value) {
-    this.setState({
-      ...this.state,
-      timestamp: value,
-    });
-  }
+  // printLastTimestamp(value) {
+  //   this.setState({
+  //     ...this.state,
+  //     timestamp: value,
+  //   });
+  // }
 
   userLogout() {
     localStorage.setItem("user", null);
@@ -315,6 +336,7 @@ class Header extends Component {
     this.props.history.push('/');
   }
 
+  // istanbul ignore next
   handleMobileMenuClose() {
     this.setState({
       ...this.state,
@@ -332,6 +354,7 @@ class Header extends Component {
 
   }
 
+  // istanbul ignore next
   renderPopup() {
     const popup = !this.state.popup;
     this.setState({
@@ -374,26 +397,19 @@ class Header extends Component {
               style={{ cursor: 'default', marginBottom: '0.4rem' }}
               alt="Samsung iBOF Management Tool"
             />
-            <Typography className={classes.version} variant="caption" display="block">
+            {/* <Typography className={classes.version} variant="caption" display="block">
               Version 0.1, Release - a4c0bf15e06
-            </Typography>
+            </Typography> */}
             <div className={classes.grow} />
-            {this.props.timestamp !== '' ? (
               <span
-                className="IBOFOS_Status_Header"
+                className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
                 title="Poseidon OS last running timestamp"
               >
-                Poseidon OS Last Updated: {this.props.timestamp}
+                Last Updated: {this.props.timestamp === "" ?
+                  <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
               </span>
-            ) : (
-                <span
-                  className="IBOFOS_Status_Header"
-                  title="Poseidon OS last running timestamp"
-                />
-              )}
-            <div className={classes.sectionDesktop}>
-              <Typography className={classes.separator}>|</Typography>
-              <Typography className={classes.nextSeparator}> Poseidon OS status:</Typography>
+              <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
+              <Typography className={classes.nextSeparator}>Status:</Typography>
               <Typography className={classes.nextSeparator} />
               {this.props.status ? (
                 <Typography
@@ -407,9 +423,11 @@ class Header extends Component {
                     className={classes.notRunning}
                     style={{ color: 'rgb(243, 168, 55)'}}
                   >
-                    {this.props.OS_Running_Status}
+                    {this.props.OS_Running_Status === "..." ?
+                        <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.OS_Running_Status}
                   </Typography>
                 )}
+            <div className={classes.sectionDesktop}>
 
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
                 <LinearProgressBarComponent
@@ -418,16 +436,16 @@ class Header extends Component {
               ) : null}
 
 
-              <Typography className={classes.separator}>|</Typography>
+              {/* <Typography className={classes.separator}>|</Typography>
               <Typography>
                 <a href={PDF} target="_blank" rel="noopener noreferrer">
                   Help
                 </a>
-              </Typography>
+              </Typography> */}
               <Typography className={classes.separator}>|</Typography>
               <span
                 className={`${classes.userLink} ${
-                  window.location.href.indexOf('user') > 0 ? 'active' : ''
+                  window.location.href.indexOf('user') > 0 /* istanbul ignore next */ ? 'active' : ''
                   }`}
 	        aria-hidden="true"
                 id="user-link"
@@ -477,7 +495,7 @@ class Header extends Component {
             />
           </Toolbar>
         </AppBar>
-        {this.state.popup ? (
+        {/* istanbul ignore next */this.state.popup ? (
           <ChangePassword
             open={this.state.popup}
             oldPassword={this.state.oldPassword}

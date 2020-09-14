@@ -125,14 +125,15 @@ super(props);
     // console.log("nextProps.columns",nextProps.columns)
     // if (!nextProps.columns) return null;
     
-    const selectX = datum => new Date(datum.time);
-    const selectY = datum => datum.value;
+    const selectX = datum => new Date(datum.time/1e6);
+    const selectY = datum => datum[nextProps.field];
     const selectYConst = () => nextProps.constValue;
     
 
     // console.log("nextProps.columns.values",nextProps.columns.values)
     // const data = nextProps.columns.values || [];
-    const data = nextProps.columns && nextProps.columns.values ? nextProps.columns.values : [];
+    
+    const data = nextProps.columns && nextProps.columns.values ? nextProps.columns.values /* istanbul ignore next */ : [];
 
     const { width, maxValue } = nextProps;
     const { xScale, yScale } = prevState;
@@ -140,6 +141,7 @@ super(props);
     const timeDomain = d3ArrayExtent(data, selectX);
     let valMax = d3ArrayMax(data, selectY);
     if (nextProps.constValue) {
+      /* istanbul ignore if */
       if(valMax < nextProps.constValue) {
         valMax = nextProps.constValue;
       }
@@ -148,7 +150,7 @@ super(props);
     if (maxValue) {
       yScale.domain([0, 100]);
     } else {
-      yScale.domain([0, valMax !== 0 ? valMax * 1.25 : 10]);
+      yScale.domain([0, valMax !== 0 ? valMax * 1.25 /* istanbul ignore next */ : 10]);
     }
 
     const selectScaledX = datum => xScale(selectX(datum));
@@ -162,8 +164,8 @@ super(props);
     const circlePoints = data.map((datum) => ({
       x: selectScaledX(datum),
       y: selectScaledY(datum),
-      data: datum.value,
-      t: d3timeFormat('%m/%d %H:%M')(new Date(datum.time)),
+      data: datum[nextProps.field],
+      t: d3timeFormat('%m/%d %H:%M')(new Date(datum.time/1e6)),
     }));
     
     
@@ -192,7 +194,7 @@ super(props);
       .getBoundingClientRect();
     const x =
       boundingRectangle.left -
-      (bodyBound.right > boundingRectangle.left + 300 ? 50 : 160);
+      (bodyBound.right > boundingRectangle.left + 300 /* istanbul ignore next */? 50 : 160);
     const y = boundingRectangle.top - 50;
 
     this.setState({
@@ -304,7 +306,7 @@ super(props);
               )}
             <Tooltip
               containerStyle={this.state.tooltipStyle}
-              value={this.state.value}
+              value={d3Format('.2s')(this.state.value)}
               label={this.props.chartName}
               t={this.state.time}
             />
