@@ -26,7 +26,7 @@ DESCRIPTION: <Contains Generator Functions for Storage Management component> *
 */
 
 import axios from "axios";
-import { call, takeEvery, put, cancelled } from "redux-saga/effects";
+import { call, takeEvery, put } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 
@@ -58,10 +58,6 @@ function* fetchArraySize() {
     }
   } catch (e) {
     yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0 }));
-  } finally {
-    if (yield cancelled()) {
-      yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0 }));
-    }
   }
 }
 
@@ -114,12 +110,6 @@ function* fetchVolumes() {
     yield put(
       actionCreators.fetchStorageVolumes({ volumes: [], totalVolSize: 0 })
     );
-  } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.fetchStorageVolumes({ volumes: [], totalVolSize: 0 })
-      );
-    }
   }
 }
 
@@ -148,9 +138,6 @@ function* fetchArray(action) {
   } catch (e) {
     yield put(actionCreators.setNoArray());
   } finally {
-    if (yield cancelled()) {
-      yield put(actionCreators.setNoArray());
-    }
     yield put(actionCreators.stopStorageLoader());
     yield fetchVolumes();
   }
@@ -193,21 +180,25 @@ function* fetchDevices() {
       );
     } else if (result && typeof result !== "string" && result.return !== -1) {
       yield put(actionCreators.fetchDevices(result));
-    } else if (result.status === 401) {
-    /* istanbul ignore next */
-      // console.log('401 status');
     } else {
-      yield put(actionCreators.showStorageAlert(alertDetails));
+      yield put(actionCreators.showStorageAlert({
+        ...alertDetails,
+        errorCode: `Description: ${
+          response.data && response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            : "Agent Communication Error"
+        }`
+      }));
       yield put(actionCreators.fetchDevices(defaultResponse));
     }
   } catch (error) {
-    yield put(actionCreators.showStorageAlert(alertDetails));
+    console.log(error, error.message)
+    yield put(actionCreators.showStorageAlert({
+      ...alertDetails,
+      errorCode: `Agent Communication Error - ${error.message}`
+    }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
-    if (yield cancelled()) {
-      yield put(actionCreators.showStorageAlert(alertDetails));
-      yield put(actionCreators.fetchDevices(defaultResponse));
-    }
     yield fetchArray();
     yield put(actionCreators.stopStorageLoader());
   }
@@ -297,20 +288,10 @@ function* createVolume(action) {
         alertType: "alert",
         alertTitle: "Create Volume",
         errorMsg: "Volume(s) creation failed",
-        errorCode: ``,
+        errorCode: `Agent Communiication error ${error.message ? (`: - ${error.message}`) : ''}`,
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          alertTitle: "Create Volume",
-          errorMsg: "Volume(s) creation failed",
-          errorCode: ``,
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -489,38 +470,77 @@ function* renameVolume(action) {
         (response.data.result.status.code === 2000 ||
           response.data.result.status.code === 0)
       ) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "info",
-            alertTitle: "Update Volume",
-            errorMsg: "Volume Updated successfully",
-            errorCode: "",
-          })
-        );
+        if (action.payload.error == "") {
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "info",
+              alertTitle: "Update Volume",
+              errorMsg: "Volume Updated successfully",
+              errorCode: "",
+            })
+          );
+        } else {
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "partialError",
+              alertTitle: "Update Volume",
+              errorMsg: "Volume Updation Succeeded partially",
+              errorCode: action.payload.error,
+            })
+          );
+        }
       } else {
+        if (action.payload.error == "") {
+
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "partialError",
+              alertTitle: "Update Volume",
+              errorMsg: "Volume Updation Succeeded partially",
+              errorCode: `Error in Renaming volume: ${
+                response.data.result && response.data.result.status
+                  ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                  : ""
+              }`
+            })
+          );
+
+        } else {
         yield put(
           actionCreators.showStorageAlert({
-            alertType: "alert",
+            alertType: "partialError",
             alertTitle: "Update Volume",
-            errorMsg: "Volume Name Updation failed",
-            errorCode: `Description: ${
+            errorMsg: "Volume Updation failed",
+            errorCode: `${action.payload.error}\nError in updating Volume name: ${
               response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
             }`,
           })
         );
+        }
       }
     }
   } catch (error) {
+    if (action.payload.error == "") {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         alertTitle: "Update Volume Name",
         errorMsg: "Volume Name Updation failed",
-        errorCode: ``,
+        errorCode: `${action.payload.error}\nError in updating Volume name: ${error ? error.message : ''}`,
       })
     );
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Update Volume",
+          errorMsg: "Volume Updation failed",
+          errorCode: `${action.payload.error}\nError in updating Volume name: ${error ? error.message : ''}`,
+        })
+      );
+    }
   }
 }
 
@@ -575,6 +595,7 @@ function* updateVolume(action) {
               name: action.payload.name,
               newName: action.payload.newName,
               array: DEFAULT_ARRAY,
+              error: "Max IOPS and Bandwidth Updated successfully"
             },
           });
         } else {
@@ -588,52 +609,41 @@ function* updateVolume(action) {
           );
         }
       } else {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            alertTitle: "Update Volume",
-            errorMsg: "Volume Updation failed",
-            errorCode: `Description: ${
+        yield renameVolume({
+          payload: {
+            name: action.payload.name,
+            newName: action.payload.newName,
+            array: DEFAULT_ARRAY,
+            error: `Max IOPS and Bandwidth update failed: ${
               response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
-            }`,
-          })
-        );
+            }`
+          },
+        });
       }
       yield fetchVolumeDetails({ payload: action.payload.url });
     } else {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          alertTitle: "Update Volume",
-          errorMsg: "Volume Updation failed",
-          errorCode: `Message from server: ${
-            response.data ? response.data.result : ""
-          }`,
-        })
-      );
+      yield renameVolume({
+        payload: {
+          name: action.payload.name,
+          newName: action.payload.newName,
+          array: DEFAULT_ARRAY,
+          error: `Max IOPS and Bandwidth update failed: ${
+            response.data}, Error code:${response.status}\n`
+        },
+      });
     }
   } catch (error) {
-    yield put(
-      actionCreators.showStorageAlert({
-        alertType: "alert",
-        alertTitle: "Update Volume",
-        errorMsg: "Volume Updation failed",
-        errorCode: ``,
-      })
-    );
+    yield renameVolume({
+      payload: {
+        name: action.payload.name,
+        newName: action.payload.newName,
+        array: DEFAULT_ARRAY,
+        error: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
+      },
+    });
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          alertTitle: "Update Volume",
-          errorMsg: "Volume Updation failed",
-          errorCode: ``,
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -657,10 +667,6 @@ function* fetchMaxVolumeCount() {
     }
   } catch (e) {
     yield put(actionCreators.fetchMaxVolumeCount(256));
-  } finally {
-    if (yield cancelled()) {
-      yield put(actionCreators.fetchMaxVolumeCount(256));
-    }
   }
 }
 
@@ -716,26 +722,16 @@ function* deleteArray(action) {
       );
     }
     yield fetchArray();
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         errorMsg: "Array deletion failed",
         alertType: "alert",
         alertTitle: "Delete Array",
-        errorCode: "",
+        errorCode: `Agent Communication Error - ${error.message}`,
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          errorMsg: "Array deletion failed",
-          alertType: "alert",
-          alertTitle: "Delete Array",
-          errorCode: ``,
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -789,26 +785,16 @@ function* deleteVolumes(action) {
       );
     }
     yield fetchVolumes();
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         errorMsg: "Volume deletion failed",
         alertType: "alert",
         alertTitle: "Delete Volume",
-        errorCode: "",
+        errorCode: `Agent Communication Error - ${error.message}`,
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          errorMsg: "Volume deletion failed",
-          alertType: "alert",
-          alertTitle: "Delete Volume",
-          errorCode: "",
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -869,26 +855,16 @@ function* createArray(action) {
     }
     yield fetchArray();
     yield fetchMaxVolumeCount();
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         errorMsg: "Error in Array Creation",
         errorCode: "",
-        alertTitle: "Create Array",
+        alertTitle: `Agent Communication Error - ${error.message}`,
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          errorMsg: "Error in Array Creation",
-          errorCode: "",
-          alertTitle: "Create Array",
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -996,26 +972,16 @@ function* addSpareDisk(action) {
       );
     }
     yield fetchArray();
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         errorMsg: "Error while Adding Spare Device",
-        errorCode: "",
+        errorCode: `Agent Communication Error - ${error.message}`,
         alertTitle: "Add Spare Device",
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          errorMsg: "Error while Adding Spare Device",
-          errorCode: "",
-          alertTitle: "Add Spare Device",
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1123,26 +1089,16 @@ function* removeSpareDisk(action) {
       );
     }
     yield fetchArray();
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         errorMsg: "Error while Removing Spare Device",
-        errorCode: "",
+        errorCode: `Agent Communication Error - ${error.message}`,
         alertTitle: "Remove Spare Device",
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          errorMsg: "Error while Removing Spare Device",
-          errorCode: "",
-          alertTitle: "Remove Spare Device",
-        })
-      );
-    }
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1217,26 +1173,16 @@ function* changeVolumeMountStatus(action) {
         })
       );
     }
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         errorMsg: `Error while ${message}ing Volume`,
-        errorCode: "",
+        errorCode: `Agent Communication Error - ${error.message}`,
         alertTitle: `${message}ing Volume`,
       })
     );
   } finally {
-    if (yield cancelled()) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          errorMsg: `Error while ${message}ing Volume`,
-          errorCode: "",
-          alertTitle: `${message}ing Volume`,
-        })
-      );
-    }
     yield fetchVolumeDetails({ payload: action.payload.url });
     yield put(actionCreators.stopStorageLoader());
   }
@@ -1313,12 +1259,12 @@ function* fetchDeviceDetails(action) {
       );
       yield put(actionCreators.fetchDeviceDetails(defaultDiskDetails));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
         errorMsg: "Error while Fetching Device SMART info",
-        errorCode: "Connection Error",
+        errorCode: `Agent Communication Error - ${error.message}`,
         alertTitle: "Smart Info",
       })
     );

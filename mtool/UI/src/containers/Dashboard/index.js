@@ -40,6 +40,7 @@ import 'core-js/es/number';
 import 'core-js/es/array';
 import { Paper, Grid, Typography } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import formatBytes from '../../utils/format-bytes';
 import { customTheme, PageTheme } from '../../theme';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
@@ -287,13 +288,13 @@ class Dashboard extends Component {
       },
       {
         title: 'Used Space (GB)',
-        field: 'usedspace',
 	render: rowData => rowData.usedspace ?
-            Math.round(rowData.usedspace * 100) / 100 : 0
+            formatBytes(rowData.total - rowData.remain) : 0
       },
       {
-        title: 'Total Space (GB)',
-        field: 'size'
+        title: 'Total Space',
+        render: rowData => rowData.total ?
+            formatBytes(rowData.total) : 0
       },
     ];
     const { classes } = this.props;
