@@ -195,7 +195,7 @@ modules:
       - code: 2012
         level: WARN
         message: Exceed creatable volume size
-        problem: The requested volume size exceeds Array capacy
+        problem: The requested volume size exceeds Array capacity
         solution: Check the system capacity and try again
       - code: 2020
         level: WARN
