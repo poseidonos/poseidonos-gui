@@ -192,7 +192,7 @@ function* fetchDevices() {
       yield put(actionCreators.fetchDevices(defaultResponse));
     }
   } catch (error) {
-    console.log(error, error.message)
+    
     yield put(actionCreators.showStorageAlert({
       ...alertDetails,
       errorCode: `Agent Communication Error - ${error.message}`

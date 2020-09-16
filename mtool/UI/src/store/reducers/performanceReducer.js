@@ -47,25 +47,25 @@ export const initialState = {
         name: 'Host Storage Usage',
     },
     readIOPS: {
-        yLabel: 'KIOPS',
+        yLabel: 'IOPS',
         values: [],
         loaded: false,
         name: 'Read IOPS',
     },
     writeIOPS: {
-        yLabel: 'KIOPS',
+        yLabel: 'IOPS',
         values: [],
         loaded: false,
         name: 'Write IOPS',
     },
     readBandwidth: {
-        yLabel: 'Bandwidth (MB/s)',
+        yLabel: 'Bandwidth (Bytes/s)',
         values: [],
         loaded: false,
         name: 'Read Bandwidth',
     },
     writeBandwidth: {
-        yLabel: 'Bandwidth (MB/s)',
+        yLabel: 'Bandwidth (Bytes/s)',
         values: [],
         loaded: false,
         name: 'Write Bandwidth',
@@ -170,11 +170,11 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         readBandwidth: {
-                            yLabel: 'Bandwidth (MB/s)',
+                            yLabel: 'Bandwidth (Bytes/s)',
                             values: action.bw,
                             name: `Read Bandwidth ${action.name}`,
-                            maxiops: action.maxiops !== 0 ? action.maxiops /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw /* istanbul ignore next */: null
+                            maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
+                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -187,11 +187,11 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         writeBandwidth: {
-                            yLabel: 'Bandwidth (MB/s)',
+                            yLabel: 'Bandwidth (Bytes/s)',
                             values: action.bw,
                             name: `Write Bandwidth ${action.name}`,
-                            maxiops: action.maxiops !== 0 ? action.maxiops /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw /* istanbul ignore next */: null
+                            maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
+                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -204,11 +204,11 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         readIOPS: {
-                            yLabel: 'KIOPS',
+                            yLabel: 'IOPS',
                             values: action.iops,
                             name: `Read IOPS ${action.name}`,
-                            maxiops: action.maxiops !== 0 ? action.maxiops /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw /* istanbul ignore next */: null
+                            maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
+                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -222,11 +222,11 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         writeIOPS: {
-                            yLabel: 'KIOPS',
+                            yLabel: 'IOPS',
                             values: action.iops,
                             name: `Write IOPS ${action.name}`,
-                            maxiops: action.maxiops !== 0 ? action.maxiops /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw /* istanbul ignore next */: null
+                            maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
+                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
                         }
                     }
                 }
