@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
+	"github.com/zpatrick/go-bytesize"
 	"os"
 	"strconv"
 	"time"
@@ -334,16 +335,17 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		volumes := obj["volumes"]
 		if volumes != nil {
-			for _, b := range volumes.([]interface{}) {
+			/*for _, b := range volumes.([]interface{}) {
 				b.(map[string]interface{})["remain"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["remain"]))
 				b.(map[string]interface{})["total"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["total"]))
-			}
+			}*/
 		}
 		if obj["capacity"] != nil {
-			obj["capacity"] = ChangeDataHumanReadable(cast.ToString(obj["capacity"]))
+			//obj["capacity"] = ChangeDataHumanReadable(cast.ToString(obj["capacity"]))
+			ChangeDataHumanReadable(cast.ToUint64(obj["capacity"]))
 		}
 		if obj["used"] != nil {
-			obj["used"] = ChangeDataHumanReadable(cast.ToString(obj["used"]))
+			//obj["used"] = ChangeDataHumanReadable(cast.ToString(obj["used"]))
 		}
 
 		if string(b) != "null" {
@@ -355,14 +357,7 @@ func PrintReqRes(req model.Request, res model.Response) {
 	}
 }
 
-func ChangeDataHumanReadable(size string) string {
-	var v datasize.ByteSize
-	err := v.UnmarshalText([]byte(size))
-
-	if err != nil {
-		fmt.Println("invalid data metric ", err)
-		return err.Error()
-	}
-
-	return v.HR() + " (" + size + " B)"
+func ChangeDataHumanReadable(size uint64) {
+	b := bytesize.Bytesize(size)
+	fmt.Printf("%g bytes is: %g KB and %g MB\n", b, b.Kilobytes(), b.Megabytes())
 }

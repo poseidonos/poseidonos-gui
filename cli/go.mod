@@ -12,4 +12,5 @@ require (
 	github.com/spf13/cobra v0.0.6
 	github.com/tidwall/gjson v1.6.0
 	github.com/tidwall/pretty v1.0.1 // indirect
+	github.com/zpatrick/go-bytesize v0.0.0-20170214182126-40b68ac70b6a
 )
