@@ -32,6 +32,9 @@ import PDF from '../../../assets/Samsung_iBOF_Management_Tool_User_Manual.pdf';
 const useStyles = makeStyles(() => ({
     menuItem: {
       color: '#000'
+    },
+    optionItem: {
+      width: "100%"
     }
 })); 
 
@@ -59,7 +62,8 @@ const Dropdown = (props) => {
       <Divider />
       <MenuItem className={classes.menuItem}><NavLink to="/ConfigurationSetting/user">User Management</NavLink></MenuItem>
       <Divider />
-      <MenuItem className={classes.menuItem}><a href={PDF} target="_blank" rel="noopener noreferrer">Help</a></MenuItem>
+      <MenuItem className={classes.menuItem}>
+        <a href={PDF} target="_blank" className={classes.optionItem} rel="noopener noreferrer">Help</a></MenuItem>
       <Divider />
       {/* <MenuItem className={classes.menuItem} onClick={props.renderPopup}>Change Password</MenuItem>
       <Divider /> */}

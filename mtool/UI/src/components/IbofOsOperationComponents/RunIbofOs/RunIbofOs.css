@@ -11,7 +11,7 @@
   float: left;
   margin-left: 1.5%;
   background-color: #fff;
-  height: 240px;
+  overflow: visible;
 }
 
 .IBOFOS-header_style {
@@ -65,11 +65,10 @@
 }
 
 .IBOFOSInputField {
-  margin-top: 1.5%;
   width: 94.2%;
   height: 65px;
   border: 1px solid #788595;
-  margin-left: 2.8%;
+  margin: 20px 2.8%;
 }
 .IBOFOSButtonClass {
   float: left;
