@@ -1,6 +1,6 @@
 ---
 Goal: Events Unification
-Version: "v.83"
+Version: "v.85"
 modules:
   - name: "COMMON"
     count: 999
@@ -682,6 +682,18 @@ modules:
     idStart: 2800
     idEnd:   2899
     info:
+      - code: 2800
+        level: INFO
+        message: RebuildingDebuglog
+      - code: 2802
+        level: INFO
+        message: Rebuilding stopped
+      - code: 2803
+        level: INFO
+        message: Rebuilding failed
+      - code: 2804
+        level: INFO
+        message: rebuild progress report
       - code: 2805
         level: INFO
         message: rebuild progress
@@ -1142,6 +1154,14 @@ modules:
         message: requested log-level to set is invalid
         problem:
         solution:
+  - name: "QoSManager"
+    count: 20
+    idStart: 4600
+    idEnd:   4699
+    info:
+      - code: 4600
+        level: INFO
+        message: set event policy
   - name: "IOPath-nvmf"
     count: 100
     idStart: 5000
@@ -1194,6 +1214,9 @@ modules:
         level: ERROR
         message: Json Type Error
         solution: Check Request Body Type
+      - code: 10050
+        level: ERROR
+        message: Receiving error from POS
       - code: 10110
         level: ERROR
         message: Unauthorized User
@@ -1214,11 +1237,11 @@ modules:
       - code: 11010
         level: ERROR
         message: Json Error
-        problem: Maformed Json
+        problem: Malformed Json
         solution: Use valid Json format
       - code: 11020
         level: ERROR
-        message: Connection error
+        message: iBof Connection Error
         problem: connection problem between POS and Management Stack
         solution: restart POS
       - code: 12010
