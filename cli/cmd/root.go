@@ -335,17 +335,16 @@ func PrintReqRes(req model.Request, res model.Response) {
 
 		volumes := obj["volumes"]
 		if volumes != nil {
-			/*for _, b := range volumes.([]interface{}) {
-				b.(map[string]interface{})["remain"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["remain"]))
-				b.(map[string]interface{})["total"] = ChangeDataHumanReadable(cast.ToString(b.(map[string]interface{})["total"]))
-			}*/
+			for _, b := range volumes.([]interface{}) {
+				b.(map[string]interface{})["remain"] = ChangeDataHumanReadable(cast.ToUint64(b.(map[string]interface{})["remain"]))
+				b.(map[string]interface{})["total"] = ChangeDataHumanReadable(cast.ToUint64(b.(map[string]interface{})["total"]))
+			}
 		}
 		if obj["capacity"] != nil {
-			//obj["capacity"] = ChangeDataHumanReadable(cast.ToString(obj["capacity"]))
-			ChangeDataHumanReadable(cast.ToUint64(obj["capacity"]))
+			obj["capacity"] = ChangeDataHumanReadable(cast.ToUint64(obj["capacity"]))
 		}
 		if obj["used"] != nil {
-			//obj["used"] = ChangeDataHumanReadable(cast.ToString(obj["used"]))
+			obj["used"] = ChangeDataHumanReadable(cast.ToUint64(obj["used"]))
 		}
 
 		if string(b) != "null" {
@@ -357,7 +356,13 @@ func PrintReqRes(req model.Request, res model.Response) {
 	}
 }
 
-func ChangeDataHumanReadable(size uint64) {
+func ChangeDataHumanReadable(size uint64) string{
 	b := bytesize.Bytesize(size)
-	fmt.Printf("%g bytes is: %g KB and %g MB\n", b, b.Kilobytes(), b.Megabytes())
+
+	if b.Gigabytes() >= 1000 {
+		return fmt.Sprintf("%s (%dB)", b.Format("tb"), size)
+	
+	} else {
+		return fmt.Sprintf("%s (%dB)", b.Format("gb"), size)
+	}
 }
