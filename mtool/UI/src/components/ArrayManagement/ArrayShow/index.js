@@ -126,7 +126,7 @@ const styles = (theme) => ({
   buttonContainer: {
     justifyContent: "flex-end",
     padding: theme.spacing(0,2,0,0),
-    //paddingLeft:"0px",
+    // paddingLeft:"0px",
     marginTop: theme.spacing(0.5),
     [theme.breakpoints.down("xs")]: {
       justifyContent: "center",
@@ -423,7 +423,7 @@ class ArrayShow extends Component {
                           classes={{
                             tooltip: classes.tooltip,
                           }}
-                          title={
+                          title={(
                             <React.Fragment>
                               <div>
                                 Name:
@@ -445,7 +445,7 @@ class ArrayShow extends Component {
                                 <u>More Details</u>
                               </div>
                             </React.Fragment>
-                          }
+                          )}
                           interactive
                         >
                           <Grid

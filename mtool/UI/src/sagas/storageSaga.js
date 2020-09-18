@@ -490,8 +490,7 @@ function* renameVolume(action) {
             })
           );
         }
-      } else {
-        if (action.payload.error === "") {
+      } else if (action.payload.error === "") {
 
           yield put(
             actionCreators.showStorageAlert({
@@ -520,7 +519,6 @@ function* renameVolume(action) {
           })
         );
         }
-      }
     }
   } catch (error) {
     if (action.payload.error === "") {

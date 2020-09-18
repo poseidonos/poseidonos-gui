@@ -46,12 +46,14 @@ export const fetchAlerts = alerts => {
   };
 };
 
-export const fetchPerformance = (readiops, writeiops, bw) => {
+export const fetchPerformance = (readIOPS, writeIOPS, readBW, writeBW, latency) => {
   return {
     type: actionTypes.FETCH_PERFORMANCE_INFO,
-    read_iops: readiops,
-    write_iops: writeiops,
-    bw,
+    readIOPS,
+    writeIOPS,
+    readBW,
+    writeBW,
+    latency
   };
 };
 

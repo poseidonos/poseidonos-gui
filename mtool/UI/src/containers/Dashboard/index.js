@@ -58,6 +58,7 @@ const styles = (theme) => {
   storageDetailsPaper: {
     height: 250,
     position: "relative",
+    marginTop: theme.spacing(1)
   },
   content: {
     flexGrow: 1,
@@ -74,6 +75,15 @@ const styles = (theme) => {
   tableContainer: {
     minHeight: '372px'
   },
+  readMetric: {
+    backgroundColor: 'rgba(59, 189, 179,0.7)',
+  },
+  writeMetric: {
+    backgroundColor: "rgba(58, 108, 255,0.6)",
+  },
+  totalMetric: {
+    backgroundColor: "rgba(228, 148, 42,0.6)",
+  },
   loadWrapper: {
     width: '100%',
     display: 'flex',
@@ -83,19 +93,47 @@ const styles = (theme) => {
   metricContainer: {
     marginBottom: theme.spacing(1)
   },
+  posInfo: {
+    padding: theme.spacing(1),
+    height: 150,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box'
+  },
+  posInfoKey: {
+    display: 'inline-block',
+    width: '40%'
+  },
+  posInfoText: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(0, 0, 0, 0.8)',
+    margin: `${theme.spacing(1)}px auto`,
+    width: '100%',
+    textAlign: 'center'
+  },
   volumeSummary: {
     minHeight: 413,
     [theme.breakpoints.down('md')]: {
       minHeight: 460
     }
   },
+  volumeContainer: {
+    marginTop: theme.spacing(1)
+  },
   metricBox: {
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
+    width: '50%',
     height: '110px',
     justifyContent: 'center',
-    borderRadius: '4px'
+    borderRadius: '10px',
+    margin: 'auto',
+    [theme.breakpoints.down(1200)]: {
+      width: '75%'
+    }
   },
   storageGraph: {
     position: 'absolute',
@@ -109,28 +147,32 @@ const styles = (theme) => {
     marginTop: theme.spacing(1)
   },
   topGrid:{
-    marginBottom: '-8px'
+    marginBottom: '-8px',
+    marginTop: theme.spacing(1)
   },
   cardHeader: {
     ...customTheme.card.header,
     marginLeft: 0
   },
-  pageHeader: {
-    textAlign: 'left',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    // color: 'rgb(53, 85, 142)',
-    color: '#424850',
+  textRight: {
+    textAlign: 'right',
+    marginRight: theme.spacing(1)
   },
+  textLeft: {
+    textAlign: 'left',
+    marginLeft: theme.spacing(1)
+  },
+  pageHeader: customTheme.page.title,
   textOverflow: {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden'
   },
   metricsPaper: {
-    minHeight: 203,
+    minHeight: 250,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'column'
   }
 })
 };
@@ -310,49 +352,88 @@ class Dashboard extends Component {
             <Grid sm={6} xs={12} item>
               <Typography className={classes.pageHeader} variant="h6">Dashboard</Typography>
             </Grid>
-            <Grid md={6} xs={12} item container direction="row" justify="space-between">
-              <Typography data-testid="dashboard-ip" variant="body1" component="span">
-                  IP : {this.props.ip}
-              </Typography>
-              <Typography data-testid="dashboard-host" variant="body1" component="span">
-                  Poseidon Name : {this.props.host}
-              </Typography>
-              <Typography data-testid="dashboard-mac" variant="body1" component="span">
-                  MAC : {this.props.mac}
-              </Typography>
-            </Grid>
           </Grid>
           <Grid container spacing={1} className={classes.topGrid}>
+            <Grid xs={12} md={12} container spacing={1}>
             <Grid xs={12} md={6} item>
-              <Paper spacing={3} className={classes.metricsPaper}>
+              <Paper spacing={3} xs={6} className={classes.metricsPaper}>
                 <Grid container justify="space-around">
-                     <Grid xs={10} md={3} className={classes.metricContainer} item spacing-xs-1="true">
-                       <Typography align="center" className={classes.textOverflow} color="secondary">BANDWIDTH</Typography>
-                       <Grid item xs={12} className={classes.metricBox} style={{backgroundColor: 'rgba(58, 108, 255,0.6'}}>
-                        <Typography variant="h2" data-testid="dashboard-bandwidth" className={classes.metricTxt}>{this.props.bw} MBps</Typography>
+                     <Grid xs={10} md={6} justify="center" className={classes.metricContainer} item spacing-xs-1="true">
+                       <Typography align="center" className={classes.textOverflow} color="secondary">WRITE BANDWIDTH</Typography>
+                       <Grid item xs={12} className={`${classes.metricBox} ${classes.writeMetric}`}>
+                        <Typography variant="h2" data-testid="write-bw" className={classes.metricTxt}>
+                          {this.props.writeBW} MBps
+                        </Typography>
                        </Grid>
                      </Grid>
-                     <Grid xs={10} md={3} className={classes.metricContainer} item spacing-xs-1="true">
-                       <Typography align="center" className={classes.textOverflow} color="secondary">READ IOPS</Typography>
-                       <Grid item xs={12} className={classes.metricBox} style={{backgroundColor: 'rgba(59, 189, 179,0.7'}}>
+                     <Grid xs={10} md={6} className={classes.metricContainer} item spacing-xs-1="true">
+                       <Typography align="center" className={classes.textOverflow} color="secondary">READ BANDWIDTH</Typography>
+                       <Grid item xs={12} className={`${classes.metricBox} ${classes.readMetric}`}>
                        <Typography 
                        variant="h2" 
-                       data-testid= "read-iops"
+                       data-testid= "read-bw"
                        className={classes.metricTxt}
                        >
-                       {this.props.read_iops}
+                       {this.props.readBW} MBps
                        </Typography>
                        </Grid>
                      </Grid>
-                     <Grid xs={10} md={3} className={classes.metricContainer} item spacing-xs-1="true">
+                </Grid>
+                <Grid container justify="center">
+                     <Grid xs={10} md={6} className={classes.metricContainer} item spacing-xs-1="true">
+                       <Typography align="center" className={classes.textOverflow} color="secondary">LATENCY</Typography>
+                       <Grid item xs={12} className={`${classes.metricBox} ${classes.totalMetric}`}>
+                       <Typography variant="h2" data-testid= "latency" className={classes.metricTxt}>
+                         {this.props.latency}
+                       </Typography>
+                       </Grid>
+                     </Grid>
+                </Grid>
+                <Grid container justify="space-around">
+                     <Grid xs={10} md={6} className={classes.metricContainer} item spacing-xs-1="true">
                        <Typography align="center" className={classes.textOverflow} color="secondary">WRITE IOPS</Typography>
-                       <Grid item xs={12} className={classes.metricBox} style={{backgroundColor: 'rgba(228, 148, 42,0.6'}}>
-                       <Typography variant="h2" data-testid= "write-iops" className={classes.metricTxt}>{this.props.write_iops}</Typography>
+                       <Grid item xs={12} className={`${classes.metricBox} ${classes.writeMetric}`}>
+                        <Typography variant="h2" data-testid="write-iops" className={classes.metricTxt}>
+                          {this.props.readIOPS}
+                        </Typography>
+                       </Grid>
+                     </Grid>
+                     <Grid xs={10} md={6} className={classes.metricContainer} item spacing-xs-1="true">
+                       <Typography align="center" className={classes.textOverflow} color="secondary">READ IOPS</Typography>
+                       <Grid item xs={12} className={`${classes.metricBox} ${classes.readMetric}`}>
+                       <Typography
+                       variant="h2"
+                       data-testid= "read-iops"
+                       className={classes.metricTxt}
+                       >
+                       {this.props.writeIOPS}
+                       </Typography>
                        </Grid>
                      </Grid>
                 </Grid>
               </Paper>
-              <Paper spacing={3} className={`${classes.spaced} ${classes.storageDetailsPaper}`}>
+            </Grid>
+              <Grid xs={12} md={6} item spacing={1}>
+              <Paper className={classes.posInfo}>
+                <Grid md={6} xs={12} item container direction="column" justify="space-between">
+                  <Typography data-testid="dashboard-ip" className={classes.posInfoText} variant="body1" component="span">
+                      <span className={`${classes.posInfoKey} ${classes.textLeft}`}>IP</span>
+                       :
+                       <span className={`${classes.posInfoKey} ${classes.textLeft}`}>{this.props.ip}</span>
+                  </Typography>
+                  <Typography data-testid="dashboard-host" className={classes.posInfoText} variant="body1" component="span">
+                      <span className={`${classes.posInfoKey} ${classes.textLeft}`}>Poseidon Name</span>
+                       :
+                       <span className={`${classes.posInfoKey} ${classes.textLeft}`}>{this.props.host}</span>
+                  </Typography>
+                  <Typography data-testid="dashboard-mac" className={classes.posInfoText} variant="body1" component="span">
+                      <span className={`${classes.posInfoKey} ${classes.textLeft}`}>MAC</span>
+                       :
+                       <span className={`${classes.posInfoKey} ${classes.textLeft}`}>{this.props.mac}</span>
+                  </Typography>
+                </Grid>
+              </Paper>
+              <Paper spacing={3} xs={6} className={`${classes.storageDetailsPaper}`}>
                 <Grid container justify="space-between">
                   <Typography className={classes.cardHeader} style={{marginLeft: "24px"}}>
                     Storage Details
@@ -419,9 +500,11 @@ class Dashboard extends Component {
                 )}
                 </Grid>
               </Paper>
+              </Grid>
             </Grid>
 
-            <Grid xs={12} md={6} item>
+            <Grid xs={12} md={12} container spacing={1}>
+              <Grid xs={12} md={12} item className={classes.volumeContainer}>
               <Paper spacing={3} className={classes.volumeSummary}>
                 <MaterialTable
                   title={(
@@ -442,6 +525,7 @@ class Dashboard extends Component {
                   icons={icons}
                 />
               </Paper>
+              </Grid>
             </Grid>
           </Grid>
           {/* <Grid container spacing={1} className={classes.spaced}>
@@ -493,9 +577,11 @@ const mapStateToProps = state => {
     unusedSpace: state.dashboardReducer.unusedSpace,
     used: state.dashboardReducer.used,
     unused: state.dashboardReducer.unused,
-    read_iops: state.dashboardReducer.read_iops,
-    write_iops: state.dashboardReducer.write_iops,
-    bw: state.dashboardReducer.bw,
+    readIOPS: state.dashboardReducer.readIOPS,
+    writeIOPS: state.dashboardReducer.writeIOPS,
+    readBW: state.dashboardReducer.readBW,
+    writeBW: state.dashboardReducer.writeBW,
+    latency: state.dashboardReducer.latency,
     fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
     mac: state.dashboardReducer.mac,

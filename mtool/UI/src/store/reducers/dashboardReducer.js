@@ -34,9 +34,11 @@ const initialState = {
     unusedSpace: 100,
     used: 0,
     unused: 100,
-    read_iops: 0,
-    write_iops: 0,
-    bw: 0,
+    readIOPS: 0,
+    writeIOPS: 0,
+    readBW: 0,
+    writeBW: 0,
+    latency: 0,
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
@@ -73,9 +75,11 @@ const dashboardReducer = (state = initialState, action) => {
         case actionTypes.FETCH_PERFORMANCE_INFO:
             return {
                 ...state,
-                read_iops: action.read_iops,
-                write_iops:action.write_iops,
-                bw:action.bw
+                readIOPS: action.readIOPS,
+                writeIOPS:action.writeIOPS,
+                readBW:action.readBW,
+                writeBW: action.writeBW,
+                latency: action.latency
             };
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {

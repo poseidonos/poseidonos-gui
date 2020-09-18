@@ -37,4 +37,16 @@ const formatBytes = (bytes, decimals = 2) => {
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
+export const formatNanoSeconds = (duration) => {
+  let i = 0;
+  const level = ["ns", "us", "ms", "s"];
+  while(duration > 999 && level[i] !== "s") {
+    duration /= 1000;
+    i += 1;
+  };
+  return `${Math.round(duration * 100) / 100 } ${ level[i]}`;
+
+}
+
+
 export default formatBytes;

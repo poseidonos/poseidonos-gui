@@ -26,8 +26,10 @@ DESCRIPTION: <Contains Generator Functions for Dashboard component> *
 */
 import axios from 'axios';
 import { call, takeEvery, put,cancelled } from 'redux-saga/effects';
+import { format as d3Format } from "d3-format";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
+import {formatNanoSeconds} from "../utils/format-bytes";
 
 
 export function* fetchVolumeInfo() {
@@ -120,12 +122,15 @@ function* fetchPerformanceInfo() {
         });
 
         const result = response.data;
+
          /* istanbul ignore else */
         if (result) {
             yield put(actionCreators.fetchPerformance(
-                Math.round(result.iops_read),
-                Math.round(result.iops_write),
-                Math.round((result.bw_total / (1000 * 1000)) * 100) / 100
+                d3Format(".1s")(result.iops_read),
+                d3Format(".1s")(result.iops_write),
+                Math.round((result.bw_read / (1024 * 1024)) * 100) / 100,
+                Math.round((result.bw_write / (1024 * 1024)) * 100) / 100,
+                formatNanoSeconds(Math.round(result.latency))
             ));
         }
     }
