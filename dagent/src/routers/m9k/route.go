@@ -81,7 +81,7 @@ func Route(router *gin.Engine) {
 			marshalled, _ := json.Marshal(req.Param)
 			param := model.DeviceParam{}
 			_ = json.Unmarshal(marshalled, &param)
-			param.SpareDevice = param.Spare
+			param.Spare = param.Spare
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddDevice, param)
 
 			//ibofos.CalliBoFOS(ctx, amoduleIBoFOS.AddDevice)
@@ -92,7 +92,7 @@ func Route(router *gin.Engine) {
 		})
 		iBoFOSPath.DELETE("/devices/:deviceName", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
-			param := model.DeviceParam{SpareDevice: deviceName, Spare: deviceName}
+			param := model.DeviceParam{Spare: deviceName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
 		})
 		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {

@@ -153,15 +153,10 @@ func Send(cmd *cobra.Command, args []string) (model.Response, error) {
 			param.Data = append(param.Data, device)
 		}
 
-		if (command == "add" || command == "remove") && len(spare) != 0 {
-			param.SpareDevice = spare[0]
-
-		} else {
-			for _, v := range spare {
-				device := model.Device{}
-				device.DeviceName = v
-				param.Spare = append(param.Spare, device)
-			}
+		for _, v := range spare {
+			device := model.Device{}
+			device.DeviceName = v
+			param.Spare = append(param.Spare, device)
 		}
 
 		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {

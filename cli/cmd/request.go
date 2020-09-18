@@ -16,13 +16,13 @@ var RequestArrayCommand = map[string]func(string, interface{}) (model.Request, m
 	"list_array_device": iBoFOS.ListArrayDevice,
 	"load_array":        iBoFOS.LoadArray,
 	"array_info":        iBoFOS.ArrayInfo,
+	"add_dev":           iBoFOS.AddDevice,
+	"remove_dev":        iBoFOS.RemoveDevice,
 }
 
 var RequestDeviceCommand = map[string]func(string, interface{}) (model.Request, model.Response, error){
 	"scan_dev":         iBoFOS.ScanDevice,
 	"list_dev":         iBoFOS.ListDevice,
-	"add_dev":          iBoFOS.AddDevice,
-	"remove_dev":       iBoFOS.RemoveDevice,
 	"start_monitoring": iBoFOS.StartDeviceMonitoring,
 	"stop_monitoring":  iBoFOS.StopDeviceMonitoring,
 	"monitoring_state": iBoFOS.DeviceMonitoringState,
@@ -218,9 +218,6 @@ func RequestSend(cmd *cobra.Command, args []string) (model.Response, error) {
 
 		if cmd.PersistentFlags().Changed("name") && len(name) > 0 {
 			param.Name = name
-		}
-		if cmd.PersistentFlags().Changed("spare") && len(spare) > 0 {
-			param.Spare = spare[0]
 		}
 		if cmd.PersistentFlags().Changed("array") && len(array) > 0 {
 			param.Array = array

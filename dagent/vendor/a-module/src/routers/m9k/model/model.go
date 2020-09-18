@@ -46,7 +46,6 @@ type ArrayParam struct {
 	Buffer      []Device `json:"buffer,omitempty"`
 	Data        []Device `json:"data,omitempty"`
 	Spare       []Device `json:"spare,omitempty"`
-	SpareDevice string   `json:"sparedevice,omitempty"`
 	Array       string   `json:"array,omitempty"`
 }
 
@@ -58,7 +57,6 @@ type MAgentParam struct {
 type DeviceParam struct {
 	Name        string `json:"name,omitempty"`
 	Spare       string `json:"spare,omitempty"`
-	SpareDevice string `json:"sparedevice,omitempty"` // temp, it must removed after fixing cli_server
 	Array       string `json:"array,omitempty"`
 }
 type VolumeParam struct {
