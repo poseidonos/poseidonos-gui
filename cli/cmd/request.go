@@ -74,11 +74,11 @@ array      : create_array     : Provides device configuration information for co
            : list_array_device: Show all devices in the Array.                                   : not needed
            : load_array       : Load device configuration from mbr data.                         : not needed
            : array_info       : Show Information about Array.                                    : not needed
+           : add_dev          : Add spare device to the Array.                                   : -s [spare devs]
+           : remove_dev       : Remove spare device from the Array.                              : -n [dev name]
 
 device     : scan_dev         : Scan devices in the system.                                      : not needed
            : list_dev         : Show all devices in the system.                                  : not needed
-           : add_dev          : Add spare device to the Array.                                   : -s [spare devs]
-           : remove_dev       : Remove spare device from the Array.                              : -n [dev name]
            : smart            : Get SMART from NVMe device.                                      : -n [dev name]
 
 system     : run_ibofos       : Run iBoFOS.                                                      : not needed
