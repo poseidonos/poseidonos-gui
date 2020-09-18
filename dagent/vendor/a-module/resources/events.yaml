@@ -1,6 +1,6 @@
 ---
 Goal: Events Unification
-Version: "v.85"
+Version: "v.87"
 modules:
   - name: "COMMON"
     count: 999
@@ -692,7 +692,7 @@ modules:
         level: INFO
         message: Rebuilding failed
       - code: 2804
-        level: INFO
+        level: REPORT_TRACE 
         message: rebuild progress report
       - code: 2805
         level: INFO
@@ -884,6 +884,9 @@ modules:
         message: Failed to enqueue new msg
         problem: Failed to enqueue new msg to MFS, may need to expand free msg Q
         solution:
+      - code: 4204
+        level: WARN
+        message: Compaction couldn't be done due to not enough free space
       - code: 4300
         level: ERROR
         message: MFS is mounted
@@ -1205,7 +1208,7 @@ modules:
   - name: "Management Stack(M9K)"
     count: 10000
     idStart: 10000
-    idEnd:   20000
+    idEnd:   19999
     info:
       - code: 10004
         level: ERROR
@@ -1256,7 +1259,7 @@ modules:
   - name: "MAgent"
     count: 10000
     idStart: 20000
-    idEnd:   30000
+    idEnd:   29999
     info:
       - code: 20313
         level: WARN
@@ -1273,3 +1276,18 @@ modules:
         message: Time parameter error
         problem: Invalid time period specified
         solution: use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d
+  - name: "NVME Admin"
+    count: 100
+    idStart: 30000
+    idEnd:   30099
+    info:
+      - code: 30000
+        level: ERROR
+        message: Can't get nvme ctrlr
+      - code: 30001
+        level: ERROR
+        message: Can't get log page
+      - code: 30002
+        level: ERROR
+        message: Can't process completions
+
