@@ -526,18 +526,14 @@ def get_storage_details(current_user):
         else:
             val[0]['arraySize'] = 0
             val[0]['usedSpace'] = 0
+        val[0]['mountStatus'] = res["info"]["state"].upper()
     else:
         val[0]['arraySize'] = 0
         val[0]['usedSpace'] = 0
+        val[0]['mountStatus'] = MACRO_OFFLINE_STATE
+
     print(val)
     return jsonify(val)
-
-    # if array:
-    #     val[0]['arraySize'] = array['totalsize']
-    # else:
-    #     val[0]['arraySize'] = 0
-    # print(val)
-    # return jsonify(val)
 
 
 @app.route('/api/v1.0/usage_user/<time_interval>', methods=['GET'])
@@ -1374,6 +1370,23 @@ def unmountVolume():
         return toJson(unmount_vol_res.json())
     except Exception as e:
         return make_response('Could not Unmount Volume: '+e, 500) 
+
+@app.route('/api/v1.0/ibofos/mount', methods=['POST'])
+def mountPOS():
+    try:
+        mount_ibofos_res = dagent.mount_ibofos()
+        return toJson(mount_ibofos_res.json())
+    except Exception as e:
+        return make_response('Could not mount POS: '+e, 500)
+
+@app.route('/api/v1.0/ibofos/mount', methods=['DELETE'])
+def unmountPOS():
+    try:
+        unmount_ibofos_res = dagent.unmount_ibofos()
+        return toJson(unmount_ibofos_res.json())
+    except Exception as e:
+        return make_response('Could not unmount POS: '+e, 500)
+
 
 @app.route('/api/v1.0/delete_volumes', methods=['POST'])
 def deleteVolumes():

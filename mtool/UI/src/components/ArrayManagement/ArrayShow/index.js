@@ -28,11 +28,11 @@ DESCRIPTION: <File description> *
 
 /* eslint-disable no-nested-ternary */
 
-import React, { Component } from 'react';
-import 'react-dropdown/style.css';
-import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import React, { Component } from "react";
+import "react-dropdown/style.css";
+import Tooltip from "@material-ui/core/Tooltip";
+import { withStyles } from "@material-ui/core/styles";
+import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import {
   Button,
   Grid,
@@ -42,171 +42,174 @@ import {
   GridList,
   Typography,
   MenuItem,
-} from '@material-ui/core';
-import formatBytes from '../../../utils/format-bytes';
-import AlertDialog from '../../Dialog';
-import DiskDetails from '../../DiskDetails';
-import '../ArrayCreate/ArrayCreate.css';
-import { PageTheme } from '../../../theme';
-import Legend from '../../Legend';
+} from "@material-ui/core";
+import formatBytes from "../../../utils/format-bytes";
+import AlertDialog from "../../Dialog";
+import DiskDetails from "../../DiskDetails";
+import "../ArrayCreate/ArrayCreate.css";
+import { PageTheme } from "../../../theme";
+import Legend from "../../Legend";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     width: `calc(100% - ${theme.spacing(4)}px)`,
     padding: theme.spacing(0, 2),
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(0, 1)
-    }
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(0, 1),
+    },
   },
   tooltip: {
-    backgroundColor: '#f5f5f9',
+    backgroundColor: "#f5f5f9",
     opacity: 1,
-    color: 'rgba(0, 0, 0, 1)',
+    color: "rgba(0, 0, 0, 1)",
     maxWidth: 220,
     fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-    '& b': {
+    border: "1px solid #dadde9",
+    "& b": {
       fontWeight: theme.typography.fontWeightMedium,
     },
   },
   formControl: {
     margin: theme.spacing(0.5, 2),
     minWidth: 170,
-    [theme.breakpoints.down('xs')]: {
-      margin: theme.spacing(1, 0)
-    }
+    [theme.breakpoints.down("xs")]: {
+      margin: theme.spacing(1, 0),
+    },
   },
   gridList: {
-    flexWrap: 'nowrap',
+    flexWrap: "nowrap",
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)',
+    transform: "translateZ(0)",
     flexGrow: 1,
-    padding: theme.spacing(1, 0)
+    padding: theme.spacing(1, 0),
   },
   gridTile: {
     width: 200,
     minWidth: 35,
-    border: '2px solid lightgray',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    flexDirection: 'column',
-    '&>div': {
-      height: 'auto'
-    }
+    border: "2px solid lightgray",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    flexDirection: "column",
+    "&>div": {
+      height: "auto",
+    },
   },
   gridTileDisabled: {
-    backgroundColor: '#e2e1e1'
+    backgroundColor: "#e2e1e1",
   },
   diskGridContainer: {
-    width: '100%',
-    overflowX: 'auto',
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 32px)'
-    }
+    width: "100%",
+    overflowX: "auto",
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100% - 32px)",
+    },
   },
   diskContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2, 2, 0, 2),
-    minWidth: 800
+    minWidth: 800,
   },
   legendButtonGrid: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   legendContainer: {
-    padding: theme.spacing(0, 2)
+    padding: theme.spacing(0, 2),
   },
   buttonContainer: {
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 2),
+    justifyContent: "flex-end",
+    padding: theme.spacing(0,2,0,0),
+    //paddingLeft:"0px",
     marginTop: theme.spacing(0.5),
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center'
-    }
+    [theme.breakpoints.down("xs")]: {
+      justifyContent: "center",
+    },
   },
+
   button: {
-    height: '1.8rem',
-    lineHeight: '0px'
+    height: "1.8rem",
+    lineHeight: "0px",
+    marginLeft: "2px",
+    marginBottom: "4px"
   },
   legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: theme.spacing(0.5)
+    display: "flex",
+    alignItems: "center",
+    marginTop: theme.spacing(0.5),
   },
   inputGrid: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'flex',
-      justifyContent: 'center'
-    }
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   storagedisk: {
-    backgroundColor: 'rgb(236,219,87)',
-    cursor: 'default'
+    backgroundColor: "rgb(236,219,87)",
+    cursor: "default",
   },
   writebufferdisk: {
-    backgroundColor: 'rgb(232,114,114)',
-    cursor: 'default'
+    backgroundColor: "rgb(232,114,114)",
+    cursor: "default",
   },
   sparedisk: {
-    backgroundColor: '#339EFF',
-    cursor: 'default'
+    backgroundColor: "#339EFF",
+    cursor: "default",
   },
   freedisk: {
-    backgroundColor: 'rgb(137,163,196)',
-    cursor: 'default'
+    backgroundColor: "rgb(137,163,196)",
+    cursor: "default",
   },
   partOfArray: {
-    backgroundColor: 'rgb(236, 219, 87)'
+    backgroundColor: "rgb(236, 219, 87)",
   },
   notSelectedShow: {
-    backgroundColor: 'rgb(137, 163, 196)'
+    backgroundColor: "rgb(137, 163, 196)",
   },
   corrupted: {
-    backgroundColor: 'rgb(232, 114, 114)'
+    backgroundColor: "rgb(232, 114, 114)",
   },
   detachBtn: {
-    bottom: '-3px',
-    width: '80%',
-    position: 'absolute',
-    fontSize: '0.6rem'
+    bottom: "-3px",
+    width: "80%",
+    position: "absolute",
+    fontSize: "0.6rem",
   },
   diskNo: {
-    position: 'absolute'
-  }
+    position: "absolute",
+  },
 });
 
 const defaultDiskDetails = {
-  DevicePath: 'NA',
-  SerialNumber: 'NA',
-  Model: 'NA',
-  PhysicalSize: 'NA',
-  UsedBytes: 'NA',
-  Firmware: 'NA',
-  critical_warning: 'NA',
-  temperature: 'NA',
-  avail_spare: 'NA',
-  spare_thresh: 'NA',
-  precent_used: 'NA',
-  data_units_read: 'NA',
-  data_units_written: 'NA',
-  critical_comp_time: 'NA',
-  warning_temp_time: 'NA',
-  percent_used: 'NA',
+  DevicePath: "NA",
+  SerialNumber: "NA",
+  Model: "NA",
+  PhysicalSize: "NA",
+  UsedBytes: "NA",
+  Firmware: "NA",
+  critical_warning: "NA",
+  temperature: "NA",
+  avail_spare: "NA",
+  spare_thresh: "NA",
+  precent_used: "NA",
+  data_units_read: "NA",
+  data_units_written: "NA",
+  critical_comp_time: "NA",
+  warning_temp_time: "NA",
+  percent_used: "NA",
 };
 
-
 const findDisk = (diskName) => {
-  return d => {
+  return (d) => {
     return d.deviceName === diskName;
   };
-}
+};
 
 class ArrayShow extends Component {
   constructor(props) {
@@ -215,13 +218,15 @@ class ArrayShow extends Component {
       open: false,
       diskDetails: { ...defaultDiskDetails },
       popupOpen: false,
-      messageDescription: '',
-      messageOpen: '',
-      messageTitle: '',
+      messageDescription: "",
+      messageOpen: "",
+      messageTitle: "",
       selectedSlot: null,
-      onConfirm: null
+      onConfirm: null,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleMountClick = this.handleMountClick.bind(this);
+    this.handleUnmountClick = this.handleUnmountClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.showPopup = this.showPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
@@ -242,6 +247,14 @@ class ArrayShow extends Component {
     this.setState({
       open: true,
     });
+  }
+
+  handleUnmountClick() {
+    this.props.handleUnmountPOS();
+  }
+
+  handleMountClick() {
+    this.props.handleMountPOS();
   }
 
   handleClose() {
@@ -294,15 +307,15 @@ class ArrayShow extends Component {
     this.setState({
       selectedSlot: slot,
       messageOpen: true,
-      messageDescription: 'Are you sure you want to Add the Disk?',
-      messageTitle: 'Add Spare Disk',
+      messageDescription: "Are you sure you want to Add the Disk?",
+      messageTitle: "Add Spare Disk",
       onConfirm: () => {
         this.props.addSpareDisk(this.state.selectedSlot);
         this.setState({
-          messageOpen: false
+          messageOpen: false,
         });
-      }
-    })
+      },
+    });
   }
 
   // detachDisk(slot) {
@@ -324,15 +337,15 @@ class ArrayShow extends Component {
     this.setState({
       selectedSlot: slot,
       messageOpen: true,
-      messageDescription: 'Are you sure you want to Remove the Disk?',
-      messageTitle: 'Remove Spare Disk',
+      messageDescription: "Are you sure you want to Remove the Disk?",
+      messageTitle: "Remove Spare Disk",
       onConfirm: () => {
         this.props.removeSpareDisk(this.state.selectedSlot);
         this.setState({
-          messageOpen: false
+          messageOpen: false,
         });
-      }
-    })
+      },
+    });
   }
 
   render() {
@@ -343,7 +356,9 @@ class ArrayShow extends Component {
       for (let i = this.props.slots.length; i < 32; i += 1) {
         freeSlots.push(
           <Grid className={`${classes.gridTile} ${classes.gridTileDisabled}`}>
-            <Typography color="secondary" className={classes.diskNo}>{i + 1}</Typography>
+            <Typography color="secondary" className={classes.diskNo}>
+              {i + 1}
+            </Typography>
           </Grid>
         );
       }
@@ -360,7 +375,7 @@ class ArrayShow extends Component {
         return classes.sparedisk;
       }
       return classes.freedisk;
-    }
+    };
     return (
       <ThemeProvider theme={PageTheme}>
         <form className={classes.root} data-testid="arrayshow">
@@ -370,12 +385,14 @@ class ArrayShow extends Component {
               <Select
                 value={this.props.RAIDLevel}
                 inputProps={{
-                  name: 'Fault Tolerance Type',
-                  id: 'raid',
+                  name: "Fault Tolerance Type",
+                  id: "raid",
                 }}
                 disabled
               >
-                <MenuItem value={this.props.RAIDLevel}>RAID {this.props.RAIDLevel}</MenuItem>
+                <MenuItem value={this.props.RAIDLevel}>
+                  RAID {this.props.RAIDLevel}
+                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -385,12 +402,14 @@ class ArrayShow extends Component {
               <Select
                 value={this.props.metadiskpath[0].deviceName}
                 inputProps={{
-                  name: 'Write Buffer Path',
-                  id: 'writebuffer',
+                  name: "Write Buffer Path",
+                  id: "writebuffer",
                 }}
                 disabled
               >
-                <MenuItem value={this.props.metadiskpath[0].deviceName}>{this.props.metadiskpath[0].deviceName}</MenuItem>
+                <MenuItem value={this.props.metadiskpath[0].deviceName}>
+                  {this.props.metadiskpath[0].deviceName}
+                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -399,65 +418,66 @@ class ArrayShow extends Component {
               <GridList cellHeight={110} className={classes.gridList} cols={32}>
                 {this.props.slots
                   ? this.props.slots.map((slot, index) => {
-                    return (
-                      <Tooltip
-                        classes={{
-                          tooltip: classes.tooltip,
-                        }}
-                        title={(
-                          <React.Fragment>
-                            <div>
-                              Name:
-                            {slot.name}
-                            </div>
-                            <div>
-                              Size:
-                            {formatBytes(slot.size)}
-                            </div>
-                            <div
-                              onClick={() => this.showPopup(slot.name)}
-                              aria-hidden="true"
-			      style={{
-                                cursor: 'pointer',
-                                textAlign: 'right',
-                                margin: '10px',
-                              }}
-                            >
-                              <u>More Details</u>
-                            </div>
-                          </React.Fragment>
-                        )}
-                        interactive
-                      >
-                        <Grid
-                          className={`${classes.gridTile} ${getClass(slot)}`}
-                          id={index}
-                          data-testid={`diskshow-${index}`}
+                      return (
+                        <Tooltip
+                          classes={{
+                            tooltip: classes.tooltip,
+                          }}
+                          title={
+                            <React.Fragment>
+                              <div>
+                                Name:
+                                {slot.name}
+                              </div>
+                              <div>
+                                Size:
+                                {formatBytes(slot.size)}
+                              </div>
+                              <div
+                                onClick={() => this.showPopup(slot.name)}
+                                aria-hidden="true"
+                                style={{
+                                  cursor: "pointer",
+                                  textAlign: "right",
+                                  margin: "10px",
+                                }}
+                              >
+                                <u>More Details</u>
+                              </div>
+                            </React.Fragment>
+                          }
+                          interactive
                         >
-                          <Typography color="secondary" className={classes.diskNo}>{index + 1}</Typography>
-                          {(getClass(slot) === classes.freedisk) ? (
+                          <Grid
+                            className={`${classes.gridTile} ${getClass(slot)}`}
+                            id={index}
+                            data-testid={`diskshow-${index}`}
+                          >
+                            <Typography
+                              color="secondary"
+                              className={classes.diskNo}
+                            >
+                              {index + 1}
+                            </Typography>
+                            {getClass(slot) === classes.freedisk ? (
                               <Button
                                 className={classes.detachBtn}
                                 data-testid={`attachdisk-${index}`}
                                 onClick={() => this.addSpareDisk(slot)}
                               >
-				  Add Spare Disk
+                                Add Spare Disk
                               </Button>
-			    ) : (
-                              (getClass(slot) === classes.sparedisk) ? (
-                                <Button
-                                  className={classes.detachBtn}
-                                  data-testid={`detachdisk-${index}`}
-                                  onClick={() => this.removeSpareDisk(slot)}
-                                >
-				      Remove Spare Disk
-                                </Button>
-			       ) : null
-			     )
-                          }
+                            ) : getClass(slot) === classes.sparedisk ? (
+                              <Button
+                                className={classes.detachBtn}
+                                data-testid={`detachdisk-${index}`}
+                                onClick={() => this.removeSpareDisk(slot)}
+                              >
+                                Remove Spare Disk
+                              </Button>
+                            ) : null}
 
-
-                          {/* {(getClass(slot) === classes.freedisk) ? (
+                            {/* {(getClass(slot) === classes.freedisk) ? (
                         <Button
                           className={classes.detachBtn}
                           data-testid={`attachdisk-${index}`}
@@ -470,23 +490,55 @@ class ArrayShow extends Component {
                           onClick={() => this.detachDisk(slot)}
                         >Detach</Button>
                       )} */}
-                        </Grid>
-                      </Tooltip>
-                    );
-                  })
-                 /* istanbul ignore next */: null}
+                          </Grid>
+                        </Tooltip>
+                      );
+                    })
+                  : /* istanbul ignore next */ null}
                 {freeSlots}
               </GridList>
             </Grid>
           </div>
           <Grid container xs={12} className={classes.legendButtonGrid}>
-            <Grid item container sm={8} xs={12} wrap="wrap" className={classes.legendContainer}>
+            <Grid
+              item
+              container
+              sm={8}
+              xs={12}
+              wrap="wrap"
+              className={classes.legendContainer}
+            >
               <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
               <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
               <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
               <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
             </Grid>
-            <Grid item container sm={4} xs={12} className={classes.buttonContainer}>
+            <Grid
+              item
+              container
+              sm={4}
+              xs={12}
+              className={classes.buttonContainer}
+            >
+              {this.props.mountStatus === "OFFLINE" ? (
+                <Button
+                  onClick={this.handleMountClick}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Mount Poseidon
+                </Button>
+              ) : (
+                <Button
+                  onClick={this.handleUnmountClick}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Unmount Poseidon
+                </Button>
+              )}
               <Button
                 onClick={this.handleClick}
                 variant="contained"

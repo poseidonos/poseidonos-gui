@@ -51,13 +51,14 @@ function* fetchArraySize() {
         actionCreators.fetchArraySize({
           totalsize: response.data[0].arraySize,
           usedspace: response.data[0].usedSpace,
+          mountStatus: response.data[0].mountStatus,
         })
       );
     } else {
-      yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0 }));
+      yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0, mountStatus: 'OFFLINE' }));
     }
   } catch (e) {
-    yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0 }));
+    yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0, mountStatus: 'OFFLINE' }));
   }
 }
 
@@ -288,7 +289,7 @@ function* createVolume(action) {
         alertType: "alert",
         alertTitle: "Create Volume",
         errorMsg: "Volume(s) creation failed",
-        errorCode: `Agent Communiication error ${error.message ? (`: - ${error.message}`) : ''}`,
+        errorCode: `Agent Communication error ${error.message ? (`: - ${error.message}`) : ''}`,
       })
     );
   } finally {
@@ -470,7 +471,7 @@ function* renameVolume(action) {
         (response.data.result.status.code === 2000 ||
           response.data.result.status.code === 0)
       ) {
-        if (action.payload.error == "") {
+        if (action.payload.error === "") {
           yield put(
             actionCreators.showStorageAlert({
               alertType: "info",
@@ -490,7 +491,7 @@ function* renameVolume(action) {
           );
         }
       } else {
-        if (action.payload.error == "") {
+        if (action.payload.error === "") {
 
           yield put(
             actionCreators.showStorageAlert({
@@ -522,7 +523,7 @@ function* renameVolume(action) {
       }
     }
   } catch (error) {
-    if (action.payload.error == "") {
+    if (action.payload.error === "") {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
@@ -1155,7 +1156,7 @@ function* changeVolumeMountStatus(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: `Error while ${message}ing Volume`,
-            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
             alertTitle: `${message}ing Volume`,
           })
         );
@@ -1168,7 +1169,7 @@ function* changeVolumeMountStatus(action) {
           errorCode:
             response.data && response.data.result
               ? response.data.result
-              : `${message}ing Spare Device failed`,
+              : `${message}ing Volume failed`,
           alertTitle: `${message}ing Volume`,
         })
       );
@@ -1184,6 +1185,130 @@ function* changeVolumeMountStatus(action) {
     );
   } finally {
     yield fetchVolumeDetails({ payload: action.payload.url });
+    yield put(actionCreators.stopStorageLoader());
+  }
+}
+
+function* unmountPOS() {
+  const message = "Unmount";
+  try {
+    let response = {};
+      yield put(actionCreators.startStorageLoader("Unmounting POS"));
+      response = yield call([axios, axios.delete], "/api/v1.0/ibofos/mount", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data && response.data.result.status.code === 0) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: `POS ${message}ed Successfully`,
+            alertTitle: `${message}ing POS`,
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: `Error while ${message}ing POS`,
+            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            alertTitle: `${message}ing POS`,
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: `Error while ${message}ing POS`,
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : `${message}ing POS failed`,
+          alertTitle: `${message}ing POS`,
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: `Error while ${message}ing POS`,
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: `${message}ing POS`,
+      })
+    );
+  } finally {
+    yield fetchVolumes();
+    yield fetchArraySize();
+    yield put(actionCreators.stopStorageLoader());
+  }
+}
+
+function* mountPOS() {
+  const message = "Mount";
+  try {
+    let response = {};
+      yield put(actionCreators.startStorageLoader("Mounting POS"));
+      response = yield call([axios, axios.post], "/api/v1.0/ibofos/mount", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data && response.data.result.status.code === 0) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: `POS ${message}ed Successfully`,
+            alertTitle: `${message}ing POS`,
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: `Error while ${message}ing POS`,
+            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            alertTitle: `${message}ing POS`,
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: `Error while ${message}ing POS`,
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : `${message}ing POS failed`,
+          alertTitle: `${message}ing POS`,
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: `Error while ${message}ing POS`,
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: `${message}ing POS`,
+      })
+    );
+  } finally {
+    yield fetchVolumes();
+    yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1292,4 +1417,6 @@ export default function* storageWatcher() {
     actionTypes.SAGA_VOLUME_MOUNT_CHANGE,
     changeVolumeMountStatus
   );
+  yield takeEvery(actionTypes.SAGA_UNMOUNT_POS, unmountPOS);
+  yield takeEvery(actionTypes.SAGA_MOUNT_POS, mountPOS);
 }

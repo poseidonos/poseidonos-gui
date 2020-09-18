@@ -654,6 +654,50 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to unmount volumes...', 500)
 
+def mount_ibofos(auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/system/mount',
+            headers=req_headers,
+            timeout=(
+                180,
+                180))
+        # print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
+        return response
+    except HTTPError as http_err:
+        print('HTTP error occurred: ', http_err)
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not mount POS...', 500)
+
+def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/system/mount',
+            headers=req_headers,
+            timeout=(
+                180,
+                180))
+        # print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
+        return response
+    except HTTPError as http_err:
+        print('HTTP error occurred: ', http_err)
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not unmount POS...', 500)
+
 
 def list_volumes(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)

@@ -51,6 +51,7 @@ export const initialState = {
     arrayExists: false,
     RAIDLevel: '',
     loadText: 'Loading...',
+    mountStatus: 'OFFLINE',
     diskDetails: {
         DevicePath: 'NA',
         SerialNumber: 'NA',
@@ -93,7 +94,8 @@ const storageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 arraySize: action.payload.totalsize,
-                totalVolSize: action.payload.usedspace
+                totalVolSize: action.payload.usedspace,
+                mountStatus: action.payload.mountStatus,
             }
         case actionTypes.FETCH_MAX_VOLUME_COUNT:
             return {

@@ -270,6 +270,9 @@ class Volume extends Component {
                           // attachDisk={this.props.Attach_Disk}
                           addSpareDisk={this.props.Add_Spare_Disk}
                           removeSpareDisk={this.props.Remove_Spare_Disk}
+                          mountStatus={this.props.mountStatus}
+                          handleUnmountPOS={this.props.Unmount_POS}
+                          handleMountPOS={this.props.Mount_POS}
                         />
                       ) : (
                           <ArrayCreate
@@ -403,7 +406,8 @@ const mapStateToProps = state => {
     arrayExists: state.storageReducer.arrayExists,
     RAIDLevel: state.storageReducer.RAIDLevel,
     diskDetails: state.storageReducer.diskDetails,
-    loadText: state.storageReducer.loadText
+    loadText: state.storageReducer.loadText,
+    mountStatus: state.storageReducer.mountStatus,
   };
 }
 const mapDispatchToProps = dispatch => {
@@ -426,6 +430,8 @@ const mapDispatchToProps = dispatch => {
     Add_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
     Remove_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_REMOVE_SPARE_DISK, payload }),
     Get_Max_Volume_Count: () => dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
+    Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
+    Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
   };
 }
 
