@@ -206,7 +206,7 @@ modules:
         level: WARN
         message: Volume name  is too long
         problem: Volume name entered is too long
-        solution: Enter a volume name that does not exceed xx characters
+        solution: Enter a volume name that does not exceed 255 characters
       - code: 2022
         level: WARN
         message: Volume name is duplicated
@@ -886,6 +886,11 @@ modules:
         solution:
       - code: 4204
         level: WARN
+        message: Compaction failed
+        problem: Compaction couldn't be done due to not enough free space
+        solution:
+      - code: 4204
+        level: WARN
         message: Compaction couldn't be done due to not enough free space
       - code: 4300
         level: ERROR
@@ -1205,7 +1210,7 @@ modules:
         message: The request cannot be executed since ibofos is mounted
         problem: ibofos already has been mounted
         solution: try again after unmount ibofos
-  - name: "Management Stack(M9K)"
+  - name: "D-Agent"
     count: 10000
     idStart: 10000
     idEnd:   19999
@@ -1256,7 +1261,7 @@ modules:
       - code: 13000
         level: ERROR
         message: Response timeout
-  - name: "MAgent"
+  - name: "M-Agent"
     count: 10000
     idStart: 20000
     idEnd:   29999
@@ -1276,6 +1281,23 @@ modules:
         message: Time parameter error
         problem: Invalid time period specified
         solution: use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d
+  - name: "NVME admin"
+    count: 100
+    idStart: 30000
+    idEnd:   30099
+    info:
+      - code: 30000
+        level: ERROR
+        message: NVME ctlr error
+        problem: Can't get nvme ctrlr
+      - code: 30001
+        level: ERROR
+        message: Log page error
+        problem: Can't get log page
+      - code: 30002
+        level: ERROR
+        message: Completion error
+        problem: Can't process completions
   - name: "NVME Admin"
     count: 100
     idStart: 30000
