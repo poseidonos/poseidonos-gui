@@ -158,7 +158,7 @@ func Route(router *gin.Engine) {
 			param.Name = ctx.Param("arrayName") // Temp
 			param.Array = ctx.Param("arrayName")
 			param.Spare = []model.Device{{DeviceName: ctx.Param("deviceName")}}
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RemoveDevice)
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
 		})
 	}
 
