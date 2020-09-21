@@ -199,9 +199,9 @@ modules:
         solution: Check the system capacity and try again
       - code: 2020
         level: WARN
-        message: Volume can not have a blank name
-        problem: Blank is not allowed for volume name
-        solution: Enter the correct volume name for volume creation
+        message: Volume name is too short
+        problem: The volume name entered is to short
+        solution: Enter a volume name between 2 and 255 characters
       - code: 2021
         level: WARN
         message: Volume name  is too long
