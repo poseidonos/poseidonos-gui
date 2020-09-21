@@ -77,24 +77,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "http://{{host}}/api/dagent/v1/doc/api.html",
 							"protocol": "http",
@@ -206,24 +189,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "http://{{host}}/api/dagent/v1/doc/api.md",
 							"protocol": "http",
@@ -2203,415 +2169,6 @@
 							]
 						},
 						{
-							"name": "ADD DEVICE",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "cdb702be-d4aa-48f6-9ccc-fe38fa1a7487",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "91e03f19-b883-49d9-a000-8c0f087e4fe6",
-										"exec": [
-											"pm.test(\"ADD DEVICE\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/devices",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"devices"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "Fail - 2501",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 07:59:11 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "281"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "51cb31eb-35a1-4bf7-87e9-b33bcef2b066"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"51cb31eb-35a1-4bf7-87e9-b33bcef2b066\",\n    \"lastSuccessTime\": 1597910351,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
-								},
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:00:36 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "268"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "5794b792-4506-4323-a51c-59a26c064d8e"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"5794b792-4506-4323-a51c-59a26c064d8e\",\n    \"lastSuccessTime\": 1597910436,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "REMOVE DEVICE",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "0819dfaf-b185-4704-87f5-b3c9c31db816",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "83d6f995-4b76-4b44-b943-2e75d536015b",
-										"exec": [
-											"pm.test(\"REMOVE DEVICE\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"devices",
-										"{{deviceName4}}"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices",
-												"{{deviceName4}}"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:00:17 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "268"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "2e7818c7-34e4-4668-9663-b5670a4678a1"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"2e7818c7-34e4-4668-9663-b5670a4678a1\",\n    \"lastSuccessTime\": 1597910417,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
-								},
-								{
-									"name": "Fail - 2501",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices",
-												"{{deviceName4}}"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 07:58:22 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "281"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "6827ac78-40e2-47f6-a3b9-1a10224e694c"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"6827ac78-40e2-47f6-a3b9-1a10224e694c\",\n    \"lastSuccessTime\": 1597910302,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
-								}
-							]
-						},
-						{
 							"name": "SMART",
 							"event": [
 								{
@@ -3356,6 +2913,419 @@
 							]
 						},
 						{
+							"name": "ADD DEVICE",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "cdb702be-d4aa-48f6-9ccc-fe38fa1a7487",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "91e03f19-b883-49d9-a000-8c0f087e4fe6",
+										"exec": [
+											"pm.test(\"ADD DEVICE\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"{{arrayName}}",
+										"devices"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Fail - 2501",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 07:59:11 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "281"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "51cb31eb-35a1-4bf7-87e9-b33bcef2b066"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"51cb31eb-35a1-4bf7-87e9-b33bcef2b066\",\n    \"lastSuccessTime\": 1597910351,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:00:36 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "268"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "5794b792-4506-4323-a51c-59a26c064d8e"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"5794b792-4506-4323-a51c-59a26c064d8e\",\n    \"lastSuccessTime\": 1597910436,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "REMOVE DEVICE",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0819dfaf-b185-4704-87f5-b3c9c31db816",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "83d6f995-4b76-4b44-b943-2e75d536015b",
+										"exec": [
+											"pm.test(\"REMOVE DEVICE\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName4}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"{{arrayName}}",
+										"devices",
+										"{{deviceName4}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices",
+												"{{deviceName4}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:00:17 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "268"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "2e7818c7-34e4-4668-9663-b5670a4678a1"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"2e7818c7-34e4-4668-9663-b5670a4678a1\",\n    \"lastSuccessTime\": 1597910417,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Fail - 2501",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices",
+												"{{deviceName4}}"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 07:58:22 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "281"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "6827ac78-40e2-47f6-a3b9-1a10224e694c"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"6827ac78-40e2-47f6-a3b9-1a10224e694c\",\n    \"lastSuccessTime\": 1597910302,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								}
+							]
+						},
+						{
 							"name": "DELETE ARRAY",
 							"event": [
 								{
@@ -3960,7 +3930,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n        \"name\": \"volmul\",\n        \"size\": 10737418,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"totalcount\": 2,\n        \"stoponerror\": false,\n        \"namesuffix\": 0,\n        \"mountall\": true\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"volmulAA\",\n        \"size\": 5242880,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"totalcount\": 174,\n        \"stoponerror\": false,\n        \"namesuffix\": 0,\n        \"mountall\": true\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes",
@@ -4028,7 +3998,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"maxiops\": 0,\n        \"maxbw\": 6000\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"maxiops\": 100,\n        \"maxbw\": 500\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/qos",
@@ -6655,7 +6625,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -6665,7 +6635,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"readbw"
 							]
 						}
@@ -6694,7 +6664,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -6704,7 +6674,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"readbw"
 									]
 								}
@@ -6786,7 +6756,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -6796,7 +6766,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"readbw",
 								"{{period}}"
 							]
@@ -6893,7 +6863,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readbw/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -6903,7 +6873,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"readbw",
 										"20hours"
 									]
@@ -7299,7 +7269,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7309,7 +7279,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"writebw"
 							]
 						}
@@ -7338,7 +7308,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7348,7 +7318,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writebw"
 									]
 								}
@@ -7430,7 +7400,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7440,7 +7410,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"writebw",
 								"{{period}}"
 							]
@@ -7470,7 +7440,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7480,7 +7450,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writebw",
 										"20hours"
 									]
@@ -7533,7 +7503,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writebw/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7543,7 +7513,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writebw",
 										"{{period}}"
 									]
@@ -7943,7 +7913,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7953,7 +7923,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"readiops"
 							]
 						}
@@ -7982,7 +7952,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7992,7 +7962,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"readiops"
 									]
 								}
@@ -8074,7 +8044,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8084,7 +8054,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"readiops",
 								"{{period}}"
 							]
@@ -8114,7 +8084,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8124,7 +8094,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"readiops",
 										"{{period}}"
 									]
@@ -8181,7 +8151,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/readiops/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8191,7 +8161,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"readiops",
 										"20hours"
 									]
@@ -8587,7 +8557,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8597,7 +8567,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"writeiops"
 							]
 						}
@@ -8626,7 +8596,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8636,7 +8606,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writeiops"
 									]
 								}
@@ -8718,7 +8688,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -8728,7 +8698,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"writeiops",
 								"{{period}}"
 							]
@@ -8758,7 +8728,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8768,7 +8738,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writeiops",
 										"20hours"
 									]
@@ -8821,7 +8791,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/writeiops/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8831,7 +8801,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"writeiops",
 										"{{period}}"
 									]
@@ -9231,7 +9201,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -9241,7 +9211,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"latency"
 							]
 						}
@@ -9270,7 +9240,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9280,7 +9250,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"latency"
 									]
 								}
@@ -9362,7 +9332,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -9372,7 +9342,7 @@
 								"metric",
 								"v1",
 								"volumes",
-								"{{volume_id}}",
+								"{{volid01}}",
 								"latency",
 								"{{period}}"
 							]
@@ -9402,7 +9372,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/{{period}}",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9412,7 +9382,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"latency",
 										"{{period}}"
 									]
@@ -9469,7 +9439,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volume_id}}/latency/20hours",
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -9479,7 +9449,7 @@
 										"metric",
 										"v1",
 										"volumes",
-										"{{volume_id}}",
+										"{{volid01}}",
 										"latency",
 										"20hours"
 									]
@@ -9751,49 +9721,54 @@
 	],
 	"variable": [
 		{
-			"id": "8c72549e-c32c-4472-8471-a475e141fe61",
+			"id": "aace525c-eb91-4a84-af8b-05eef36ee48f",
 			"key": "deviceName1",
 			"value": "unvme-ns-0"
 		},
 		{
-			"id": "80e9a5dc-da50-4094-b2b7-7f02fc168c89",
+			"id": "32997308-b4be-4d1e-97d4-f1736d7d2ceb",
 			"key": "deviceName2",
 			"value": "unvme-ns-1"
 		},
 		{
-			"id": "dea41815-2aec-4f82-9517-9a9c48c4e8e1",
+			"id": "fb1c9261-227a-4839-b5de-300e358dbb81",
 			"key": "deviceName3",
 			"value": "unvme-ns-2"
 		},
 		{
-			"id": "1f442e2d-0e1b-4d0a-b88a-3ab41d34d861",
+			"id": "77963a64-9ded-4944-9589-9b2d8bb7e1e7",
 			"key": "deviceName4",
 			"value": "unvme-ns-3"
 		},
 		{
-			"id": "6e1d8f69-42b0-48df-89a7-446b356bfbec",
+			"id": "8507bb3b-3d30-4864-b7ca-feb4e172f13c",
 			"key": "volumeName1",
 			"value": "vol01"
 		},
 		{
-			"id": "6db6aa77-210f-4b4c-abda-bdad2f2d1c04",
+			"id": "f393a71e-c978-43f1-9c56-4c55d8a707f3",
 			"key": "volumeName2",
 			"value": "vol02"
 		},
 		{
-			"id": "14cec18c-236c-4680-b16b-8b4b8ae2540a",
+			"id": "ca2b7a46-3d2b-498e-a7ab-b2ec03ad0c8c",
 			"key": "volumeNameNew1",
 			"value": "volNew01"
 		},
 		{
-			"id": "6ba23f13-5d3c-42a1-aafb-bd9b33379a87",
+			"id": "7a02ffcb-90f7-40f0-853d-d93d1e67a708",
 			"key": "period",
 			"value": "5m"
 		},
 		{
-			"id": "c89de704-17c3-4df5-b932-26251c8ac47d",
+			"id": "0362fb76-fbfa-4225-a747-2d07e4fa3ff4",
 			"key": "arrayName",
 			"value": "POSArray"
+		},
+		{
+			"id": "957b4688-4ca7-41c0-9b21-c9673ddf914f",
+			"key": "volid01",
+			"value": "1"
 		}
 	],
 	"protocolProfileBehavior": {}

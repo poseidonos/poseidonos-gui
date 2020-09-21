@@ -2010,10 +2010,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"param\": {\n        \"array\":\"{{arrayName}}\"\n    }\n}"
+					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+					"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName4}}",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -2022,6 +2022,8 @@
 						"api",
 						"ibofos",
 						"v1",
+						"array",
+						"{{arrayName}}",
 						"devices",
 						"{{deviceName4}}"
 					]
@@ -2148,10 +2150,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+					"raw": "{\n    \"param\": {\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 				},
 				"url": {
-					"raw": "http://{{host}}/api/ibofos/v1/devices",
+					"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -2160,6 +2162,8 @@
 						"api",
 						"ibofos",
 						"v1",
+						"array",
+						"{{arrayName}}",
 						"devices"
 					]
 				}
@@ -4481,7 +4485,7 @@
 					"script": {
 						"id": "d8d5f646-9df8-4af4-8234-4189338d19db",
 						"exec": [
-							"pm.test(\"UPDATE VOLUME\", function () {\r",
+							"pm.test(\"RENAME VOLUME\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
