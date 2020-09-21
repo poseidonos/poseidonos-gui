@@ -31,6 +31,11 @@ func init() {
 func PrintVol(cmd *cobra.Command, args []string) {
 
 	isQuiet = true
+
+	if len(args) == 0 {
+		return
+	}
+
 	command := make([]string, 1)
 	command[0] = args[0]
 
