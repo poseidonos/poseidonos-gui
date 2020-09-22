@@ -1360,7 +1360,7 @@ def mountVolume():
         mount_vol_res = mount_volume(body["name"], body.get("array"))
         return toJson(mount_vol_res.json())
     except Exception as e:
-        return make_response('Could not mount Volume: '+e, 500)
+        return make_response('Could not mount Volume', 500)
 @app.route('/api/v1.0/volume/mount', methods=['DELETE'])
 def unmountVolume():
     try:
@@ -1369,16 +1369,15 @@ def unmountVolume():
         unmount_vol_res = unmount_volume(body["name"], body.get("array"))
         return toJson(unmount_vol_res.json())
     except Exception as e:
-        return make_response('Could not Unmount Volume: '+e, 500) 
+        return make_response('Could not Unmount Volume', 500) 
 
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
-@token_required
-def mountPOS(current_user):
+def mountPOS():
     try:
         mount_ibofos_res = dagent.mount_ibofos()
         return toJson(mount_ibofos_res.json())
     except Exception as e:
-        return make_response('Could not mount POS: '+e, 500)
+        return make_response('Could not mount POS', 500)
 
 @app.route('/api/v1.0/ibofos/mount', methods=['DELETE'])
 @token_required
@@ -1387,7 +1386,7 @@ def unmountPOS(current_user):
         unmount_ibofos_res = dagent.unmount_ibofos()
         return toJson(unmount_ibofos_res.json())
     except Exception as e:
-        return make_response('Could not unmount POS: '+e, 500)
+        return make_response('Could not unmount POS', 500)
 
 
 @app.route('/api/v1.0/delete_volumes', methods=['POST'])

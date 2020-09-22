@@ -13,7 +13,9 @@ port = '3000'
 
 DEFAULT_ARRAY = 'POSArray'
 DAGENT_URL = 'http://' + ip + ':' + port
+BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
+VERSION = 'v1'
 
 connect_timeout = 5
 read_timeout = 5
@@ -623,14 +625,15 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
 
     try:
+        method = 'system/mount'
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + method,
             headers=req_headers,
             timeout=(
-                180,
-                180))
+                connect_timeout * 36,
+                read_timeout * 36))
+
         # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
         return response
@@ -645,16 +648,16 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
 
     try:
+        method = 'system/mount'
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + method,
             headers=req_headers,
             timeout=(
-                180,
-                180))
+                read_timeout*36,
+                connect_timeout*36))
+
         # print("---------------RESPONSE---------------")
-        #print(response.status_code , response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
