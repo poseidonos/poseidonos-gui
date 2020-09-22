@@ -125,7 +125,7 @@ const styles = (theme) => ({
   },
   buttonContainer: {
     justifyContent: "flex-end",
-    padding: theme.spacing(0,2,0,0),
+    padding: theme.spacing(0, 2, 0, 0),
     // paddingLeft:"0px",
     marginTop: theme.spacing(0.5),
     [theme.breakpoints.down("xs")]: {
@@ -137,7 +137,7 @@ const styles = (theme) => ({
     height: "1.8rem",
     lineHeight: "0px",
     marginLeft: "2px",
-    marginBottom: "4px"
+    marginBottom: "4px",
   },
   legendItem: {
     display: "flex",
@@ -424,7 +424,7 @@ class ArrayShow extends Component {
                             tooltip: classes.tooltip,
                           }}
                           title={(
-                            <React.Fragment>
+<React.Fragment>
                               <div>
                                 Name:
                                 {slot.name}
@@ -444,8 +444,8 @@ class ArrayShow extends Component {
                               >
                                 <u>More Details</u>
                               </div>
-                            </React.Fragment>
-                          )}
+</React.Fragment>
+)}
                           interactive
                         >
                           <Grid
@@ -521,23 +521,39 @@ class ArrayShow extends Component {
               className={classes.buttonContainer}
             >
               {this.props.mountStatus === "OFFLINE" ? (
-                <Button
-                  onClick={this.handleMountClick}
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
+                <Tooltip
+                  title="Mount the array to perform volume level operations"
+                  placement="bottom-start"
+                  classes={{
+                    tooltip: classes.tooltip,
+                  }}
                 >
-                  Mount Poseidon
-                </Button>
+                  <Button
+                    onClick={this.handleMountClick}
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    Mount Array
+                  </Button>
+                </Tooltip>
               ) : (
-                <Button
-                  onClick={this.handleUnmountClick}
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
+                <Tooltip
+                  title="Unmounting the array will disable all the volume level operations for the user"
+                  placement="bottom-start"
+                  classes={{
+                    tooltip: classes.tooltip,
+                  }}
                 >
-                  Unmount Poseidon
-                </Button>
+                  <Button
+                    onClick={this.handleUnmountClick}
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    Unmount Array
+                  </Button>
+                </Tooltip>
               )}
               <Button
                 onClick={this.handleClick}

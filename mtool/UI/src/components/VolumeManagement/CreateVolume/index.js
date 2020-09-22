@@ -389,7 +389,7 @@ class CreateVolume extends Component {
               <Tooltip
                 title=" Min suffix value allowed is 0.
                         The suffix will be appended to the volume name to form the final volume name (e.g. vol_0, vol_1)"
-                placement="bottom-start"
+                placement="right-start"
                 disableFocusListener={this.state.volume_count < 2}
                 disableHoverListener={this.state.volume_count < 2}
                 disableTouchListener={this.state.volume_count < 2}
@@ -423,7 +423,7 @@ class CreateVolume extends Component {
             >
               <Tooltip
                 title="0 means max available size"
-                placement="bottom-start"
+                placement="right-start"
               >
                 <FormControl className={classes.unitText}>
                   <TextField
@@ -474,7 +474,7 @@ class CreateVolume extends Component {
             >
               <Tooltip
                 title="Min Value 10. 0 means max"
-                placement="bottom-start"
+                placement="right-start"
               >
                 <FormControl className={classes.volumeName}>
                   <TextField
@@ -502,7 +502,7 @@ class CreateVolume extends Component {
               justify="flex-start"
               className={classes.formControl}
             >
-              <Tooltip title="0 means max" placement="bottom-start">
+              <Tooltip title="0 means max" placement="right-start">
                 <FormControl className={classes.volumeName}>
                   <TextField
                     id="create-vol-maxbw"
@@ -530,7 +530,7 @@ class CreateVolume extends Component {
               <FormControl className={classes.volumeName}>
                 <Tooltip
                   title="Do you want to proceed with subsequent volume creation in case an error occurs or abort the remaining process?"
-                  placement="top-start"
+                  placement="bottom-start"
                   disableFocusListener={this.state.volume_count < 2}
                   disableHoverListener={this.state.volume_count < 2}
                   disableTouchListener={this.state.volume_count < 2}

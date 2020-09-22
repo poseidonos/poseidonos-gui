@@ -94,6 +94,7 @@ class Chart extends Component {
       .scale(this.state.xScale)
       .ticks(4);
 
+     /* istanbul ignore if */
     if (this.props.id === "chart-1" || this.props.id === "chart-2") {
       this.yAxis = d3AxisLeft()
         .tickFormat((val) => formatBytes(val,0))

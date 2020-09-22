@@ -26,48 +26,48 @@ DESCRIPTION: <File description> *
 [12/06/2019] [Aswin] : Total Volume size shown. Error message on status code from iBOF
 [05/05/2020] [Palak] : Multi-Volume Creation
 */
-import React, { Component } from 'react';
-import { Box, Grid, Typography, Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { connect } from 'react-redux';
-import io from 'socket.io-client';
-import 'react-dropdown/style.css';
-import 'react-table/react-table.css';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
-import ArrayCreate from '../../components/ArrayManagement/ArrayCreate';
-import ArrayShow from '../../components/ArrayManagement/ArrayShow';
-import CreateVolume from '../../components/VolumeManagement/CreateVolume';
-import VolumeList from '../../components/VolumeManagement/VolumeList';
-import MToolLoader from '../../components/MToolLoader';
-import AlertDialog from '../../components/Dialog';
-import './Volume.css';
-import MToolTheme, { customTheme } from '../../theme';
-import Legend from '../../components/Legend';
+import React, { Component } from "react";
+import { Box, Grid, Typography, Paper } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { connect } from "react-redux";
+import io from "socket.io-client";
+import "react-dropdown/style.css";
+import "react-table/react-table.css";
+import Header from "../../components/Header";
+import Sidebar from "../../components/Sidebar";
+import ArrayCreate from "../../components/ArrayManagement/ArrayCreate";
+import ArrayShow from "../../components/ArrayManagement/ArrayShow";
+import CreateVolume from "../../components/VolumeManagement/CreateVolume";
+import VolumeList from "../../components/VolumeManagement/VolumeList";
+import MToolLoader from "../../components/MToolLoader";
+import AlertDialog from "../../components/Dialog";
+import "./Volume.css";
+import MToolTheme, { customTheme } from "../../theme";
+import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 // import bytesToTB from '../../utils/bytes-to-tb';
-import formatBytes from '../../utils/format-bytes';
+import formatBytes from "../../utils/format-bytes";
 
 const styles = (theme) => ({
   dashboardContainer: {
-    display: 'flex'
+    display: "flex",
   },
   statsWrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: '100%',
-    boxSizing: 'border-box',
+    display: "flex",
+    flexWrap: "wrap",
+    width: "100%",
+    boxSizing: "border-box",
     zIndex: 100,
-    position: 'absolute',
-    flexBasis: '100%',
-    height: '100%',
-    alignContent: 'center',
+    position: "absolute",
+    flexBasis: "100%",
+    height: "100%",
+    alignContent: "center",
     padding: theme.spacing(0, 3),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       padding: theme.spacing(0, 1),
-      marginTop: theme.spacing(1)
-    }
+      marginTop: theme.spacing(1),
+    },
   },
   content: {
     flexGrow: 1,
@@ -75,40 +75,39 @@ const styles = (theme) => ({
     paddingTop: "10px",
     paddingLeft: "35px",
     paddingRight: "24px",
-    width: 'calc(100% - 256px)',
-    boxSizing: 'border-box'
+    width: "calc(100% - 256px)",
+    boxSizing: "border-box",
   },
   statsContainer: {
-    margin: theme.spacing(1, 0, 2)
+    margin: theme.spacing(1, 0, 2),
   },
   volumeStats: {
-    width: '100%',
-    border: '0px solid gray',
-    height: 50
+    width: "100%",
+    border: "0px solid gray",
+    height: 50,
   },
   toolbar: customTheme.toolbar,
   titleContainer: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   volumeStatsPaper: {
     height: 350,
-    display: 'flex',
-    position: 'relative',
-    flexDirection: 'column',
-    [theme.breakpoints.down('md')]: {
-      height: 400
+    display: "flex",
+    position: "relative",
+    flexDirection: "column",
+    [theme.breakpoints.down("md")]: {
+      height: 400,
     },
-    [theme.breakpoints.down('xs')]: {
-      height: 220
-    }
+    [theme.breakpoints.down("xs")]: {
+      height: 220,
+    },
   },
   pageHeader: customTheme.page.title,
   cardHeader: customTheme.card.header,
   card: {
-    marginTop: theme.spacing(1)
-  }
+    marginTop: theme.spacing(1),
+  },
 });
-
 
 // namespace to connect to the websocket for multi-volume creation
 const createVolSocketEndPoint = ":5000/create_vol";
@@ -119,11 +118,11 @@ class Volume extends Component {
     this.state = {
       mobileOpen: false,
       createVolSocket: io(createVolSocketEndPoint, {
-        transports: ['websocket'],
+        transports: ["websocket"],
         query: {
-          'x-access-token': localStorage.getItem('token')
-        }
-      })
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }),
     };
     this.deleteVolumes = this.deleteVolumes.bind(this);
     this.fetchVolumes = this.fetchVolumes.bind(this);
@@ -145,7 +144,7 @@ class Volume extends Component {
 
   handleDrawerToggle() {
     this.setState({
-      mobileOpen: !this.state.mobileOpen
+      mobileOpen: !this.state.mobileOpen,
     });
   }
 
@@ -162,7 +161,7 @@ class Volume extends Component {
       suffix: volume.volume_suffix,
       stop_on_error: volume.stop_on_error_checkbox,
       mount_vol: volume.mount_vol,
-      max_available_size:  this.props.arraySize - this.props.totalVolSize
+      max_available_size: this.props.arraySize - this.props.totalVolSize,
     });
   }
 
@@ -180,7 +179,7 @@ class Volume extends Component {
 
   deleteVolumes(volumes) {
     const ids = [];
-    volumes.forEach(volume => {
+    volumes.forEach((volume) => {
       ids.push(volume.name);
     });
     this.props.Delete_Volumes({ volumes: ids });
@@ -199,34 +198,38 @@ class Volume extends Component {
   }
 
   alertConfirm() {
-    this.props.Close_Alert()
+    this.props.Close_Alert();
   }
 
   render() {
     const volumeFilledStyle = {
-      width: `${this.props.arraySize !== 0 ?
-        (100 * (this.props.totalVolSize)) /
-        (this.props.arraySize) : 0}%`,
-      height: '100%',
-      backgroundColor: 'rgba(51, 158, 255,0.6)',
-      float: 'left',
-      overflowY: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      width: `${
+        this.props.arraySize !== 0
+          ? (100 * this.props.totalVolSize) / this.props.arraySize
+          : 0
+      }%`,
+      height: "100%",
+      backgroundColor: "rgba(51, 158, 255,0.6)",
+      float: "left",
+      overflowY: "hidden",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     };
     const volumeFreeStyle = {
-      width: `${this.props.arraySize !== 0 ? 100 -
-        (100 * (this.props.totalVolSize)) /
-        (this.props.arraySize) : 100}%`,
-      height: '100%',
-      color: 'white',
-      backgroundColor: 'rgba(0, 186, 0, 0.6)',
-      float: 'left',
-      overflowY: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      width: `${
+        this.props.arraySize !== 0
+          ? 100 - (100 * this.props.totalVolSize) / this.props.arraySize
+          : 100
+      }%`,
+      height: "100%",
+      color: "white",
+      backgroundColor: "rgba(0, 186, 0, 0.6)",
+      float: "left",
+      overflowY: "hidden",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     };
     const { classes } = this.props;
 
@@ -234,7 +237,10 @@ class Volume extends Component {
       <ThemeProvider theme={MToolTheme}>
         <Box display="flex">
           <Header toggleDrawer={this.handleDrawerToggle} />
-          <Sidebar mobileOpen={this.state.mobileOpen} toggleDrawer={this.handleDrawerToggle} />
+          <Sidebar
+            mobileOpen={this.state.mobileOpen}
+            toggleDrawer={this.handleDrawerToggle}
+          />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <Grid container spacing={3}>
@@ -250,7 +256,10 @@ class Volume extends Component {
                   <Paper spacing={3} className={classes.spaced}>
                     <Grid container justify="space-between">
                       <Grid item xs={12}>
-                        <Typography className={classes.cardHeader} data-testid="title">
+                        <Typography
+                          className={classes.cardHeader}
+                          data-testid="title"
+                        >
                           Array Management
                         </Typography>
                       </Grid>
@@ -275,29 +284,43 @@ class Volume extends Component {
                           handleMountPOS={this.props.Mount_POS}
                         />
                       ) : (
-                          <ArrayCreate
-                            createArray={this.createArray}
-                            disks={this.props.ssds}
-                            data-testid="arraycreate"
-                            metadisks={this.props.metadisks}
-                            diskDetails={this.props.diskDetails}
-                            getDiskDetails={this.props.Get_Disk_Details}
-                          />
-                        )}
+                        <ArrayCreate
+                          createArray={this.createArray}
+                          disks={this.props.ssds}
+                          data-testid="arraycreate"
+                          metadisks={this.props.metadisks}
+                          diskDetails={this.props.diskDetails}
+                          getDiskDetails={this.props.Get_Disk_Details}
+                        />
+                      )}
                     </Grid>
                   </Paper>
                 </Grid>
               </Grid>
               {this.props.arrayExists ? (
                 <React.Fragment>
-                  <Grid container xs={12} spacing={1} className={classes.card}>
+                  <Grid
+                    container
+                    xs={12}
+                    spacing={1}
+                    className={classes.card}
+                    style={{
+                      opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                      pointerEvents:
+                        this.props.mountStatus === "OFFLINE"
+                          ? "none"
+                          : "initial",
+                    }}
+                  >
                     <Grid item xs={12} md={6} className={classes.spaced}>
                       <CreateVolume
                         data-testid="createvolume"
                         createVolume={this.createVolume}
                         maxVolumeCount={this.props.maxVolumeCount}
                         volCount={this.props.volumes.length}
-                        maxAvailableSize = {this.props.arraySize - this.props.totalVolSize}
+                        maxAvailableSize={
+                          this.props.arraySize - this.props.totalVolSize
+                        }
                         createVolSocket={this.state.createVolSocket}
                       />
                     </Grid>
@@ -320,14 +343,18 @@ class Volume extends Component {
                               <div style={volumeFilledStyle} />
                               <div style={volumeFreeStyle} />
                             </Box>
-                            <Grid item container xs={12} wrap="wrap" className={classes.legendContainer}>
+                            <Grid
+                              item
+                              container
+                              xs={12}
+                              wrap="wrap"
+                              className={classes.legendContainer}
+                            >
                               <Legend
                                 bgColor="rgba(51, 158, 255,0.6)"
                                 title={`
                           Used Space :
-                          ${formatBytes(
-                                  this.props.totalVolSize
-                                )}
+                          ${formatBytes(this.props.totalVolSize)}
                         `}
                               />
                               <Legend
@@ -335,9 +362,8 @@ class Volume extends Component {
                                 title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                  this.props.arraySize -
-                                  this.props.totalVolSize
-                                )}
+                            this.props.arraySize - this.props.totalVolSize
+                          )}
                         `}
                               />
                             </Grid>
@@ -347,7 +373,19 @@ class Volume extends Component {
                     </Grid>
                   </Grid>
 
-                  <Grid container xs={12} spacing={1} className={classes.card}>
+                  <Grid
+                    container
+                    xs={12}
+                    spacing={1}
+                    className={classes.card}
+                    style={{
+                      opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                      pointerEvents:
+                        this.props.mountStatus === "OFFLINE"
+                          ? "none"
+                          : "initial",
+                    }}
+                  >
                     <Grid item xs={12}>
                       <VolumeList
                         ref={this.child}
@@ -384,7 +422,7 @@ class Volume extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     ssds: state.storageReducer.ssds,
     metadisks: state.storageReducer.metadisks,
@@ -409,30 +447,48 @@ const mapStateToProps = state => {
     loadText: state.storageReducer.loadText,
     mountStatus: state.storageReducer.mountStatus,
   };
-}
-const mapDispatchToProps = dispatch => {
+};
+const mapDispatchToProps = (dispatch) => {
   return {
-    Get_Devices: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
-    Create_Volume: (payload) => dispatch({ type: actionTypes.SAGA_SAVE_VOLUME, payload }),
+    Get_Devices: (payload) =>
+      dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
+    Create_Volume: (payload) =>
+      dispatch({ type: actionTypes.SAGA_SAVE_VOLUME, payload }),
     Get_Array_Size: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY_SIZE }),
-    Delete_Array: (payload) => dispatch({type: actionTypes.SAGA_DELETE_ARRAY, payload}),
+    Delete_Array: (payload) =>
+      dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),
     Get_Volumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
-    Delete_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
+    Delete_Volumes: (payload) =>
+      dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
-    Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),
-    Get_Disk_Details: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
-    Edit_Volume: (payload) => dispatch({ type: actionTypes.EDIT_VOLUME, payload }),
-    Change_Mount_Status: (payload) => dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
-    Change_Volume_Field: (payload) => dispatch({ type: actionTypes.CHANGE_VOLUME_FIELD, payload }),
-    Update_Volume: (payload) => dispatch({ type: actionTypes.SAGA_UPDATE_VOLUME, payload }),
+    Create_Array: (payload) =>
+      dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),
+    Get_Disk_Details: (payload) =>
+      dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
+    Edit_Volume: (payload) =>
+      dispatch({ type: actionTypes.EDIT_VOLUME, payload }),
+    Change_Mount_Status: (payload) =>
+      dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
+    Change_Volume_Field: (payload) =>
+      dispatch({ type: actionTypes.CHANGE_VOLUME_FIELD, payload }),
+    Update_Volume: (payload) =>
+      dispatch({ type: actionTypes.SAGA_UPDATE_VOLUME, payload }),
     // Detach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_DETACH_DISK, payload }),
     // Attach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ATTACH_DISK, payload }),
-    Add_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
-    Remove_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_REMOVE_SPARE_DISK, payload }),
-    Get_Max_Volume_Count: () => dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
+    Add_Spare_Disk: (payload) =>
+      dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
+    Remove_Spare_Disk: (payload) =>
+      dispatch({ type: actionTypes.SAGA_REMOVE_SPARE_DISK, payload }),
+    Get_Max_Volume_Count: () =>
+      dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
     Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
   };
-}
+};
 
-export default withStyles(styles)((connect(mapStateToProps, mapDispatchToProps))(Volume));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Volume)
+);

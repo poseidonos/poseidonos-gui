@@ -1140,6 +1140,7 @@ function* changeVolumeMountStatus(action) {
     }
     /* istanbul ignore else */
     if (response.status === 200) {
+       /* istanbul ignore else */
       if (response.data && response.data.result.status.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
@@ -1191,7 +1192,7 @@ function* unmountPOS() {
   const message = "Unmount";
   try {
     let response = {};
-      yield put(actionCreators.startStorageLoader("Unmounting POS"));
+      yield put(actionCreators.startStorageLoader("Unmounting Array"));
       response = yield call([axios, axios.delete], "/api/v1.0/ibofos/mount", {
         headers: {
           Accept: "application/json",
@@ -1201,11 +1202,12 @@ function* unmountPOS() {
       });
     /* istanbul ignore else */
     if (response.status === 200) {
+       /* istanbul ignore else */
       if (response.data && response.data.result.status.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
-            errorMsg: `POS ${message}ed Successfully`,
-            alertTitle: `${message}ing POS`,
+            errorMsg: `Array ${message}ed Successfully`,
+            alertTitle: `${message}ing Array`,
             alertType: "info",
             errorCode: "",
           })
@@ -1214,9 +1216,9 @@ function* unmountPOS() {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
-            errorMsg: `Error while ${message}ing POS`,
+            errorMsg: `Error while ${message}ing Array`,
             errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
-            alertTitle: `${message}ing POS`,
+            alertTitle: `${message}ing Array`,
           })
         );
       }
@@ -1224,12 +1226,12 @@ function* unmountPOS() {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
-          errorMsg: `Error while ${message}ing POS`,
+          errorMsg: `Error while ${message}ing Array`,
           errorCode:
             response.data && response.data.result
               ? response.data.result
-              : `${message}ing POS failed`,
-          alertTitle: `${message}ing POS`,
+              : `${message}ing Array failed`,
+          alertTitle: `${message}ing Array`,
         })
       );
     }
@@ -1237,9 +1239,9 @@ function* unmountPOS() {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
-        errorMsg: `Error while ${message}ing POS`,
+        errorMsg: `Error while ${message}ing Array`,
         errorCode: `Agent Communication Error - ${error.message}`,
-        alertTitle: `${message}ing POS`,
+        alertTitle: `${message}ing Array`,
       })
     );
   } finally {
@@ -1253,7 +1255,7 @@ function* mountPOS() {
   const message = "Mount";
   try {
     let response = {};
-      yield put(actionCreators.startStorageLoader("Mounting POS"));
+      yield put(actionCreators.startStorageLoader("Mounting Array"));
       response = yield call([axios, axios.post], "/api/v1.0/ibofos/mount", {
         headers: {
           Accept: "application/json",
@@ -1266,8 +1268,8 @@ function* mountPOS() {
       if (response.data && response.data.result.status.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
-            errorMsg: `POS ${message}ed Successfully`,
-            alertTitle: `${message}ing POS`,
+            errorMsg: `Array ${message}ed Successfully`,
+            alertTitle: `${message}ing Array`,
             alertType: "info",
             errorCode: "",
           })
@@ -1276,9 +1278,9 @@ function* mountPOS() {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
-            errorMsg: `Error while ${message}ing POS`,
+            errorMsg: `Error while ${message}ing Array`,
             errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
-            alertTitle: `${message}ing POS`,
+            alertTitle: `${message}ing Array`,
           })
         );
       }
@@ -1286,12 +1288,12 @@ function* mountPOS() {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
-          errorMsg: `Error while ${message}ing POS`,
+          errorMsg: `Error while ${message}ing Array`,
           errorCode:
             response.data && response.data.result
               ? response.data.result
-              : `${message}ing POS failed`,
-          alertTitle: `${message}ing POS`,
+              : `${message}ing Array failed`,
+          alertTitle: `${message}ing Array`,
         })
       );
     }
@@ -1299,9 +1301,9 @@ function* mountPOS() {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
-        errorMsg: `Error while ${message}ing POS`,
+        errorMsg: `Error while ${message}ing Array`,
         errorCode: `Agent Communication Error - ${error.message}`,
-        alertTitle: `${message}ing POS`,
+        alertTitle: `${message}ing Array`,
       })
     );
   } finally {

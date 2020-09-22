@@ -462,41 +462,6 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
         'Could not get ibofos to get list array...', 500)
 
 
-def mount_array(
-        level,
-        meta_devices,
-        data_devices,
-        spare_devices,
-        auth=BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
-    request_body = {
-        "param": {
-            "fttype": level,
-            "buffer": meta_devices,
-            "data": data_devices,
-            "spare": spare_devices}}
-    request_body = json.dumps(request_body)
-    print(request_body)
-    try:
-        response = send_command_to_dagent(
-            "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/mount',
-            headers=req_headers,
-            timeout=(
-                10,
-                10),
-            data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return make_failure_response(
-        'Could not get ibofos to create_array...', 500)
-
-
 def create_volume(
         name,
         arrayname,

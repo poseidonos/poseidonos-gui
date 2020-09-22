@@ -840,3 +840,36 @@ def test_get_arrays_func(**kwargs):
     response = app.test_client().get('/api/v1.0/get_arrays/',headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_mount_array(mock_get_current_user,**kwargs):
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/system/mount',
+        json={
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}}},
+        status_code=200)
+
+    response = app.test_client().post('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_unmount_array(mock_get_current_user,**kwargs):
+    kwargs["mock"].delete(
+        DAGENT_URL +
+        '/api/ibofos/v1/system/mount',
+        json={
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}}},
+        status_code=200)
+
+    response = app.test_client().delete('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    assert response.status_code == 200

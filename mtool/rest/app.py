@@ -1372,7 +1372,8 @@ def unmountVolume():
         return make_response('Could not Unmount Volume: '+e, 500) 
 
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
-def mountPOS():
+@token_required
+def mountPOS(current_user):
     try:
         mount_ibofos_res = dagent.mount_ibofos()
         return toJson(mount_ibofos_res.json())
@@ -1380,7 +1381,8 @@ def mountPOS():
         return make_response('Could not mount POS: '+e, 500)
 
 @app.route('/api/v1.0/ibofos/mount', methods=['DELETE'])
-def unmountPOS():
+@token_required
+def unmountPOS(current_user):
     try:
         unmount_ibofos_res = dagent.unmount_ibofos()
         return toJson(unmount_ibofos_res.json())
