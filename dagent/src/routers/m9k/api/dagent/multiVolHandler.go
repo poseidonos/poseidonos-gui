@@ -167,9 +167,10 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
 	res := model.Response{}
-	res.Result.Status, _ = util.GetStatusInfo(10050)
+	res.Result.Status, _ = util.GetStatusInfo(10202)
 
 	if (command == CREATE_VOLUME && CreateVolumeMutex) || (command == MOUNT_VOLUME && MountVolumeMutex) {
+		res.Result.Status, _ = util.GetStatusInfo(11030)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
 	}

@@ -1,6 +1,6 @@
 ---
 Goal: Events Unification
-Version: "v.87"
+Version: "v.89"
 modules:
   - name: "COMMON"
     count: 999
@@ -1237,6 +1237,9 @@ modules:
         level: ERROR
         message: X-request-Id Header Error
         solution: Check X-request-Id (uuid) Value
+      - code: 10202
+        level: INFO
+        message: Request Accepted and passed to POS
       - code: 11000
         level: ERROR
         message: Sending error
@@ -1252,6 +1255,11 @@ modules:
         message: iBof Connection Error
         problem: connection problem between POS and Management Stack
         solution: restart POS
+      - code: 11030
+        level: ERROR
+        message: Another Request already in progress
+        problem: another request is in progress. please try after some time
+        solution: try after some time
       - code: 12010
         level: ERROR
         message: one of iBoF service is dead
