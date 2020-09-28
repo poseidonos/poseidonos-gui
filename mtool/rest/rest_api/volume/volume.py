@@ -65,11 +65,11 @@ def rename_volume(data):
     rename_vol_response = dagent.rename_volume(data)
     return rename_vol_response
 
-def mount_volume(vol_name, array_name = dagent.DEFAULT_ARRAY):
+def mount_volume(vol_name, array_name = dagent.array_names[0]):
     return dagent.mount_volume(vol_name, array_name)
 
 
-def unmount_volume(vol_name, array_name = dagent.DEFAULT_ARRAY):
+def unmount_volume(vol_name, array_name = dagent.array_names[0]):
     return dagent.unmount_volume(vol_name, array_name)
 
 

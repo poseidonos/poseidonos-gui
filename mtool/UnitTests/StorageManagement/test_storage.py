@@ -413,7 +413,7 @@ def test_make_block_aligned():
 def test_add_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/devices',
+        '/api/ibofos/v1/array/POSArray/devices',
         json={
             "result": {
                 "status": {
@@ -423,7 +423,8 @@ def test_add_spare(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/add_spare_device/',
         data='''{
-                "name": "unvme-ns-3"
+                "name": "unvme-ns-3",
+                "array" : "POSArray"
                 }''',
         headers={'x-access-token': json_token})
 
@@ -436,7 +437,7 @@ def test_add_spare(mock_get_current_user, **kwargs):
 def test_add_spare_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/devices',
+        '/api/ibofos/v1/array/POSArray/devices',
         json={
             "result": {
                 "status": {
@@ -446,7 +447,8 @@ def test_add_spare_failure(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/add_spare_device/',
         data='''{
-                "name": "unvme-ns-3"
+                "name": "unvme-ns-3",
+                "array": "POSArray"
                 }''',
         headers={'x-access-token': json_token})
 
@@ -460,7 +462,7 @@ def test_add_spare_failure(mock_get_current_user, **kwargs):
 def test_remove_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
-        '/api/ibofos/v1/devices/unvme-ns-3',
+        '/api/ibofos/v1/array/POSArray/devices/unvme-ns-3',
         json={
             "result": {
                 "status": {
@@ -470,7 +472,8 @@ def test_remove_spare(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/remove_spare_device/',
         data='''{
-                "name": "unvme-ns-3"
+                "name": "unvme-ns-3",
+                "array": "POSArray"
                 }''',
         headers={'x-access-token': json_token})
 
@@ -484,7 +487,7 @@ def test_remove_spare(mock_get_current_user, **kwargs):
 def test_remove_spare_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
-        '/api/ibofos/v1/devices/unvme-ns-3',
+        '/api/ibofos/v1/array/POSArray/devices/unvme-ns-3',
         json={
             "result": {
                 "status": {
@@ -494,7 +497,8 @@ def test_remove_spare_failure(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/remove_spare_device/',
         data='''{
-                "name": "unvme-ns-3"
+                "name": "unvme-ns-3",
+                "array":"POSArray"
                 }''',
         headers={'x-access-token': json_token})
 
@@ -577,7 +581,7 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
                 "used": 0}},
         status_code=200)
     response = app.test_client().post(
-        '/api/v1.0/delete_volumes',
+        '/api/v1.0/delete_volumes/POSArray',
         data='''{
                 "volumes": ["vol1"]
                 }''',
@@ -604,7 +608,7 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
                 "used": 0}},
         status_code=500)
     response = app.test_client().post(
-        '/api/v1.0/delete_volumes',
+        '/api/v1.0/delete_volumes/POSArray',
         data='''{
                 "volumes": ["vol1"]
                 }''',
@@ -628,7 +632,7 @@ def test_delete_volumes_failed(mock_get_current_user, **kwargs):
                 "used": 0}},
         status_code=400)
     response = app.test_client().post(
-        '/api/v1.0/delete_volumes',
+        '/api/v1.0/delete_volumes/POSArray',
         data='''{
                 "volumes": ["vol1"]
                 }''',

@@ -118,7 +118,7 @@ describe("<Storage Management />", () => {
 
   const array = {
     RAIDLevel: "5",
-    _id: "ibofArray",
+    arrayname: "POSArray",
     metadiskpath: [
       {
         deviceName: "uram0",
@@ -239,6 +239,8 @@ describe("<Storage Management />", () => {
     });
     const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
     fireEvent.click(dev4);
+    const arrayname = getByTestId('array-name');
+    fireEvent.change(arrayname, { target: { value: 'POSArray2' } });
     fireEvent.click(getByTestId("createarray-btn"));
     const success = await waitForElement(() => getByTestId("alertDescription"));
     expect(success).toBeDefined();

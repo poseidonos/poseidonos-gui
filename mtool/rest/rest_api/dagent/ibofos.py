@@ -11,7 +11,7 @@ from logging.handlers import RotatingFileHandler
 ip = os.environ.get('DAGENT_HOST', 'localhost')
 port = '3000'
 
-DEFAULT_ARRAY = 'POSArray'
+array_names= [ 'POSArray', 'POSArray2' ]
 DAGENT_URL = 'http://' + ip + ':' + port
 BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
@@ -63,6 +63,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 return response
             time.sleep(1)
     except BaseException:
+        print("in except block", url)
         return response
 
 
@@ -129,7 +130,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
                 10))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
-        array_exists()
+        array_exists(array_names[0])
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -235,7 +236,7 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
+        print("---------------RESPONSE get devices---------------")
         print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
@@ -348,7 +349,7 @@ def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
 
 
 
-def array_exists(auth=BASIC_AUTH_TOKEN,arrayname=DEFAULT_ARRAY):
+def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
     print("in array exists")
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get array status...')
@@ -403,7 +404,7 @@ def create_array(
     request_body = {
         "param": {
             "name": name,
-            "raidtype": raidtype,
+            "raidtype": "RAID5",
             "buffer": meta_devices,
             "data": data_devices,
             "spare": spare_devices}}
@@ -420,6 +421,7 @@ def create_array(
                 10,
                 10),
             data=request_body)
+        print("resp for create array",response.json())
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
@@ -549,7 +551,7 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
                 8,
                 8),
             data=request_body)
-        print("---------------RESPONSE---------------")
+        print("---------------RENAME RESPONSE---------------")
         print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
@@ -564,7 +566,6 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
             "param": {
-                "name": name,
                 "array": arrayname
             }
     }
@@ -595,7 +596,6 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
             "param": {
-                "name": name,
                 "array": arrayname
             }
     }
@@ -755,12 +755,15 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
 
 
 
-def add_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
+def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
             "param": {
-                "spare": name,
-                "array": arrayname
+                "spare":[
+                    {
+                        "deviceName" : name,
+                    }
+                 ]
             }
     }
     request_body = json.dumps(request_body)
@@ -768,8 +771,8 @@ def add_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/devices',
+            url=DAGENT_URL + '/' +
+            BASE_PATH + '/' + VERSION + '/array/' + arrayname + '/devices',
             headers=req_headers,
             timeout=(
                 10,
@@ -786,26 +789,17 @@ def add_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
         'Could not get POS to add a spare disk...', 500)
 
 
-def remove_spare_disk(name, arrayname=DEFAULT_ARRAY, auth=BASIC_AUTH_TOKEN):
+def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
-    request_body = {
-            "param": {
-                "name": name,
-                "array": arrayname
-            }
-    }
-    request_body = json.dumps(request_body)
-    print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/devices/' + name,
+            url=DAGENT_URL + '/' + 
+            BASE_PATH + '/' + VERSION + '/array/' + arrayname + '/devices/' + name,
             headers=req_headers,
             timeout=(
                 10,
-                10),
-            data=request_body)
+                10))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response

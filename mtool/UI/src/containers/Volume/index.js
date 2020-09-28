@@ -154,7 +154,7 @@ class Volume extends Component {
       size: volume.volume_size,
       description: volume.volume_description,
       unit: volume.volume_units,
-      arrayname: "POSArray",
+      // arrayname: "POSArray",
       maxbw: volume.maxbw,
       maxiops: volume.maxiops,
       count: volume.volume_count,

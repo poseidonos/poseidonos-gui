@@ -26,11 +26,11 @@ DESCRIPTION: <Contains Generator Functions for Storage Management component> *
 */
 
 import axios from "axios";
-import { call, takeEvery, put } from "redux-saga/effects";
+import { call, takeEvery, put, select } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
+import {arrayname} from "../store/reducers/storageReducer";
 
-const DEFAULT_ARRAY = "POSArray";
 
 function* fetchArraySize() {
   try {
@@ -207,7 +207,8 @@ function* fetchDevices() {
 
 function* createVolume(action) {
   try {
-    // for multi-volume creation
+    const arrayName = yield select(arrayname)
+        // for multi-volume creation
     if (action.payload.count < 2)
       yield put(actionCreators.startStorageLoader("Creating Volume"));
     const response = yield call(
@@ -215,7 +216,7 @@ function* createVolume(action) {
       "/api/v1.0/save-volume/",
       {
         ...action.payload,
-        array: DEFAULT_ARRAY,
+        array: arrayName,
       },
       {
         headers: {
@@ -445,6 +446,7 @@ function* createVolume(action) {
 
 function* renameVolume(action) {
   try {
+    const arrayName = yield select(arrayname)
     const response = yield call(
       [axios, axios.patch],
       `/api/v1.0/volumes/${action.payload.name}`,
@@ -452,7 +454,7 @@ function* renameVolume(action) {
         param: {
           name: action.payload.name,
           newname: action.payload.newName,
-          array: DEFAULT_ARRAY,
+          array: arrayName,
         },
       },
       {
@@ -544,6 +546,7 @@ function* renameVolume(action) {
 }
 
 function* updateVolume(action) {
+  const arrayName = yield select(arrayname)
   try {
     yield put(actionCreators.startStorageLoader("Updating Volume"));
     if (
@@ -565,7 +568,7 @@ function* updateVolume(action) {
       maxiops: parseInt(action.payload.maxiops, 10),
       maxbw: parseInt(action.payload.maxbw, 10),
       name: action.payload.name,
-      array: DEFAULT_ARRAY,
+      array: arrayName,
     };
     const response = yield call(
       [axios, axios.put],
@@ -593,7 +596,7 @@ function* updateVolume(action) {
             payload: {
               name: action.payload.name,
               newName: action.payload.newName,
-              array: DEFAULT_ARRAY,
+              array: arrayName,
               error: "Max IOPS and Bandwidth Updated successfully"
             },
           });
@@ -612,7 +615,7 @@ function* updateVolume(action) {
           payload: {
             name: action.payload.name,
             newName: action.payload.newName,
-            array: DEFAULT_ARRAY,
+            array: arrayName,
             error: `Max IOPS and Bandwidth update failed: ${
               response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
@@ -627,7 +630,7 @@ function* updateVolume(action) {
         payload: {
           name: action.payload.name,
           newName: action.payload.newName,
-          array: DEFAULT_ARRAY,
+          array: arrayName,
           error: `Max IOPS and Bandwidth update failed: ${
             response.data}, Error code:${response.status}\n`
         },
@@ -638,7 +641,7 @@ function* updateVolume(action) {
       payload: {
         name: action.payload.name,
         newName: action.payload.newName,
-        array: DEFAULT_ARRAY,
+        array: arrayName,
         error: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
       },
     });
@@ -671,10 +674,11 @@ function* fetchMaxVolumeCount() {
 
 function* deleteArray(action) {
   try {
+    const arrayName = yield select(arrayname)
     yield put(actionCreators.startStorageLoader("Deleting Array"));
     const response = yield call(
       [axios, axios.post],
-      `/api/v1.0/delete_array/${DEFAULT_ARRAY}`,
+      `/api/v1.0/delete_array/${arrayName}`,
       {
         ...action.payload,
       },
@@ -737,10 +741,11 @@ function* deleteArray(action) {
 
 function* deleteVolumes(action) {
   try {
+    const arrayName = yield select(arrayname)
     yield put(actionCreators.startStorageLoader("Deleting Volume(s)"));
     const response = yield call(
       [axios, axios.post],
-      "/api/v1.0/delete_volumes",
+      `/api/v1.0/delete_volumes/${arrayName}`,
       action.payload,
       {
         headers: {
@@ -920,13 +925,14 @@ function* createArray(action) {
 
 function* addSpareDisk(action) {
   try {
+    const arrayName = yield select(arrayname)
     yield put(actionCreators.startStorageLoader("Adding Spare Device"));
     const response = yield call(
       [axios, axios.post],
       "/api/v1.0/add_spare_device/",
       {
         name: action.payload.name,
-        array: DEFAULT_ARRAY,
+        array: arrayName,
       },
       {
         headers: {
@@ -1037,13 +1043,14 @@ function* addSpareDisk(action) {
 
 function* removeSpareDisk(action) {
   try {
+    const arrayName = yield select(arrayname)
     yield put(actionCreators.startStorageLoader("Removing Spare Device"));
     const response = yield call(
       [axios, axios.post],
       "/api/v1.0/remove_spare_device/",
       {
         name: action.payload.name,
-        array: DEFAULT_ARRAY,
+        array: arrayName,
       },
       {
         headers: {
@@ -1105,6 +1112,7 @@ function* removeSpareDisk(action) {
 function* changeVolumeMountStatus(action) {
   let message = "Mount";
   try {
+    const arrayName = yield select(arrayname)
     let response = {};
     if (action.payload.status === "Mounted") {
       message = "Unmount";
@@ -1112,7 +1120,7 @@ function* changeVolumeMountStatus(action) {
       response = yield call([axios, axios.delete], "/api/v1.0/volume/mount", {
         data: {
           name: action.payload.name,
-          array: DEFAULT_ARRAY,
+          array: arrayName,
         },
         headers: {
           Accept: "application/json",
@@ -1127,7 +1135,7 @@ function* changeVolumeMountStatus(action) {
         "/api/v1.0/volume/mount",
         {
           name: action.payload.name,
-          array: DEFAULT_ARRAY,
+          array: arrayName,
         },
         {
           headers: {

@@ -30,6 +30,7 @@ import formatBytes from '../../utils/format-bytes';
 
 export const initialState = {
     ssds: [],
+    arrayname: "",
     volumes: [],
     metadisks: [],
     loading: false,
@@ -247,4 +248,5 @@ const storageReducer = (state = initialState, action) => {
     }
 }
 
+export const arrayname = (state = {storageReducer:{}}) => state.storageReducer.arrayname
 export default storageReducer;

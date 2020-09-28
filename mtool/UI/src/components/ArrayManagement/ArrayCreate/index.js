@@ -26,139 +26,150 @@ DESCRIPTION: <File description> *
 [11/06/2019] [Aswin] : Removed Write Buffer disk from dropdown
 [12/06/2019] [Aswin] : Fixed Spare disk selection bug. Default disk details set to NA
 */
-import React, { Component } from 'react';
-import 'react-dropdown/style.css';
-import Tooltip from '@material-ui/core/Tooltip';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { FormControl, InputLabel, Select, MenuItem, Typography, Grid, GridList, GridListTile, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import formatBytes from '../../../utils/format-bytes';
-import MToolLoader from '../../MToolLoader';
-import AlertDialog from '../../Dialog';
-import DiskDetails from '../../DiskDetails';
-import './ArrayCreate.css';
-import { PageTheme } from '../../../theme';
-import Legend from '../../Legend';
+import React, { Component } from "react";
+import "react-dropdown/style.css";
+import Tooltip from "@material-ui/core/Tooltip";
+import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+  Grid,
+  GridList,
+  GridListTile,
+  Button,
+  TextField,
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import formatBytes from "../../../utils/format-bytes";
+import MToolLoader from "../../MToolLoader";
+import AlertDialog from "../../Dialog";
+import DiskDetails from "../../DiskDetails";
+import "./ArrayCreate.css";
+import { PageTheme } from "../../../theme";
+import Legend from "../../Legend";
 
 const defaultDiskDetails = {
-  DevicePath: 'NA',
-  SerialNumber: 'NA',
-  Model: 'NA',
-  PhysicalSize: 'NA',
-  UsedBytes: 'NA',
-  Firmware: 'NA',
-  critical_warning: 'NA',
-  temperature: 'NA',
-  avail_spare: 'NA',
-  spare_thresh: 'NA',
-  precent_used: 'NA',
-  data_units_read: 'NA',
-  data_units_written: 'NA',
-  critical_comp_time: 'NA',
-  warning_temp_time: 'NA',
-  percent_used: 'NA',
+  DevicePath: "NA",
+  SerialNumber: "NA",
+  Model: "NA",
+  PhysicalSize: "NA",
+  UsedBytes: "NA",
+  Firmware: "NA",
+  critical_warning: "NA",
+  temperature: "NA",
+  avail_spare: "NA",
+  spare_thresh: "NA",
+  precent_used: "NA",
+  data_units_read: "NA",
+  data_units_written: "NA",
+  critical_comp_time: "NA",
+  warning_temp_time: "NA",
+  percent_used: "NA",
 };
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     width: `calc(100% - ${theme.spacing(4)}px)`,
     padding: theme.spacing(0, 2),
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(0, 1)
-    }
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(0, 1),
+    },
   },
   tooltip: {
-    backgroundColor: '#f5f5f9',
+    backgroundColor: "#f5f5f9",
     opacity: 1,
-    color: 'rgba(0, 0, 0, 1)',
+    color: "rgba(0, 0, 0, 1)",
     maxWidth: 220,
     fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-    '& b': {
+    border: "1px solid #dadde9",
+    "& b": {
       fontWeight: theme.typography.fontWeightMedium,
     },
   },
   formControl: {
     margin: theme.spacing(0.5, 2),
     minWidth: 170,
-    [theme.breakpoints.down('xs')]: {
-      margin: theme.spacing(1, 0)
-    }
+    [theme.breakpoints.down("xs")]: {
+      margin: theme.spacing(1, 0),
+    },
   },
   gridList: {
-    flexWrap: 'nowrap',
+    flexWrap: "nowrap",
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)',
+    transform: "translateZ(0)",
     flexGrow: 1,
-    padding: theme.spacing(1, 0)
+    padding: theme.spacing(1, 0),
   },
   gridTile: {
     width: 200,
-    border: '2px solid lightgray',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    '&>div': {
-      height: 'auto'
-    }
+    border: "2px solid lightgray",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "&>div": {
+      height: "auto",
+    },
   },
   gridTileDisabled: {
-    backgroundColor: '#e2e1e1'
+    backgroundColor: "#e2e1e1",
   },
   diskGridContainer: {
-    width: '100%',
-    overflowX: 'auto',
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 32px)'
-    }
+    width: "100%",
+    overflowX: "auto",
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100% - 32px)",
+    },
   },
   diskContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2, 2, 0, 2),
-    minWidth: 800
+    minWidth: 800,
   },
   legendButtonGrid: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   legendContainer: {
-    padding: theme.spacing(0, 2)
+    padding: theme.spacing(0, 2),
   },
   button: {
-    textTransform: 'none'
+    textTransform: "none",
   },
   buttonContainer: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     padding: theme.spacing(0, 2),
     marginTop: theme.spacing(0.5),
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center'
-    }
+    [theme.breakpoints.down("xs")]: {
+      justifyContent: "center",
+    },
   },
   legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: theme.spacing(0.5)
+    display: "flex",
+    alignItems: "center",
+    marginTop: theme.spacing(0.5),
   },
   inputGrid: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'flex',
-      justifyContent: 'center'
-    }
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   partOfArray: {
-    backgroundColor: 'rgb(236, 219, 87)'
+    backgroundColor: "rgb(236, 219, 87)",
   },
   notSelectedShow: {
-    backgroundColor: 'rgb(137, 163, 196)'
+    backgroundColor: "rgb(137, 163, 196)",
   },
   corrupted: {
-    backgroundColor: 'rgb(232, 114, 114)'
-  }
+    backgroundColor: "rgb(232, 114, 114)",
+  },
 });
 const removeA = (slot, disk) => {
   const arr = [];
@@ -173,35 +184,35 @@ const removeA = (slot, disk) => {
     arr,
     size,
   };
-}
+};
 
 class ArrayCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      arrayname: 'POSArray',
+      arrayname: "POSArray",
       raids: [
         {
-          label: 'RAID-5',
+          label: "RAID-5",
           minStorage: 3,
           minSpare: 1,
           minWriteBUffer: 1,
-          value: 'raid5',
-        }
+          value: "raid5",
+        },
       ],
       minStorage: 3,
       minSpare: 1,
       minWriteBUffer: 1,
-      raid: 'raid5',
-      slots: { 'Storage Disk': [], 'Write Buffer Disk': [], 'Spare Disk': [] },
-      diskType: 'Storage Disk',
-      metaDisk: '',
+      raid: "raid5",
+      slots: { "Storage Disk": [], "Write Buffer Disk": [], "Spare Disk": [] },
+      diskType: "Storage Disk",
+      metaDisk: "",
       loading: false,
-      errorMsg: '',
+      errorMsg: "",
       alertOpen: false,
       popupOpen: false,
       totalSize: 0,
-      alertType: 'error',
+      alertType: "error",
       diskDetails: { ...defaultDiskDetails },
     };
     this.toggleRowSelect = this.toggleRowSelect.bind(this);
@@ -212,6 +223,7 @@ class ArrayCreate extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   // onSelectRaid(event) {
@@ -232,8 +244,10 @@ class ArrayCreate extends Component {
   onSelectDiskType(event) {
     this.setState({
       ...this.state,
-      diskType: (event && event.target) ?
-        event.target.value /* istanbul ignore next */: '',
+      diskType:
+        event && event.target
+          ? event.target.value /* istanbul ignore next */
+          : "",
     });
   }
 
@@ -266,10 +280,10 @@ class ArrayCreate extends Component {
 
   createArray(event) {
     event.preventDefault();
-    if (this.state.minStorage > this.state.slots['Storage Disk'].length) {
+    if (this.state.minStorage > this.state.slots["Storage Disk"].length) {
       this.setState({
         ...this.state,
-        alertType: 'alert',
+        alertType: "alert",
         errorMsg: `Select at least ${this.state.minStorage} storage disk`,
         alertOpen: true,
       });
@@ -284,11 +298,11 @@ class ArrayCreate extends Component {
     //   });
     //   return;
     // }
-    if (this.state.metaDisk === '') {
+    if (this.state.metaDisk === "") {
       this.setState({
         ...this.state,
-        alertType: 'alert',
-        errorMsg: 'Select a Write Buffer',
+        alertType: "alert",
+        errorMsg: "Select a Write Buffer",
         alertOpen: true,
       });
       return;
@@ -299,32 +313,30 @@ class ArrayCreate extends Component {
     });
 
     this.props.createArray({
-        size: this.state.totalSize,
-        arrayname: this.state.arrayname,
-        raidtype: this.state.raid,
-        storageDisks: this.state.slots['Storage Disk'],
-        spareDisks: this.state.slots['Spare Disk'],
-        writeBufferDisk: this.state.slots['Write Buffer Disk'],
-        metaDisk: this.state.metaDisk
+      size: this.state.totalSize,
+      arrayname: this.state.arrayname,
+      raidtype: this.state.raid,
+      storageDisks: this.state.slots["Storage Disk"],
+      spareDisks: this.state.slots["Spare Disk"],
+      writeBufferDisk: this.state.slots["Write Buffer Disk"],
+      metaDisk: this.state.metaDisk,
     });
   }
 
   toggleRowSelect(position, disk) {
     const diskColorMap = {
-      'Storage Disk': '#51ce46',
-      '': 'white',
-      'Spare Disk': '#339EFF',
-      'Write Buffer Disk': '#FFEC33',
+      "Storage Disk": "#51ce46",
+      "": "white",
+      "Spare Disk": "#339EFF",
+      "Write Buffer Disk": "#FFEC33",
     };
     const el = document.getElementById(position);
     if (
-      (el.style.backgroundColor === 'white' ||
-        el.style.backgroundColor === '') &&
-      this.state.diskType !== ''
+      (el.style.backgroundColor === "white" ||
+        el.style.backgroundColor === "") &&
+      this.state.diskType !== ""
     ) {
-      if (
-        this.state.diskType === 'Spare Disk'
-      ) {
+      if (this.state.diskType === "Spare Disk") {
         el.style.backgroundColor = diskColorMap[this.state.diskType];
         const spareSlots = [...this.state.slots[this.state.diskType]];
         spareSlots.push({ deviceName: disk.name });
@@ -332,10 +344,10 @@ class ArrayCreate extends Component {
           ...this.state,
           slots: {
             ...this.state.slots,
-            'Spare Disk': spareSlots,
+            "Spare Disk": spareSlots,
           },
         });
-      } else if (this.state.diskType === 'Storage Disk') {
+      } else if (this.state.diskType === "Storage Disk") {
         el.style.backgroundColor = diskColorMap[this.state.diskType];
         const storageSlots = [...this.state.slots[this.state.diskType]];
         storageSlots.push({ deviceName: disk.name });
@@ -343,35 +355,35 @@ class ArrayCreate extends Component {
           ...this.state,
           slots: {
             ...this.state.slots,
-            'Storage Disk': storageSlots,
+            "Storage Disk": storageSlots,
           },
           totalSize: this.state.totalSize + disk.size,
         });
-      // } else if (
-      //   this.state.diskType === 'Write Buffer Disk' &&
-      //   this.state.slots[this.state.diskType].length < 1 &&
-      //   this.state.metaDisk === ''
-      // ) {
-      //   el.style.backgroundColor = diskColorMap[this.state.diskType];
-      //   const joined = this.state.slots[this.state.diskType].push({
-      //     deviceName: position,
-      //   });
-      //   this.setState({
-      //     ...this.state,
-      //     slots: {
-      //       ...this.state.slots,
-      //       'Write Disk Buffer': joined,
-      //     },
-      //   });
+        // } else if (
+        //   this.state.diskType === 'Write Buffer Disk' &&
+        //   this.state.slots[this.state.diskType].length < 1 &&
+        //   this.state.metaDisk === ''
+        // ) {
+        //   el.style.backgroundColor = diskColorMap[this.state.diskType];
+        //   const joined = this.state.slots[this.state.diskType].push({
+        //     deviceName: position,
+        //   });
+        //   this.setState({
+        //     ...this.state,
+        //     slots: {
+        //       ...this.state.slots,
+        //       'Write Disk Buffer': joined,
+        //     },
+        //   });
       }
     } else {
-      el.style.backgroundColor = 'white';
+      el.style.backgroundColor = "white";
       const updatedSlots = { ...this.state.slots };
       let size = this.state.totalSize;
       Object.keys(this.state.slots).forEach((key) => {
         const x = removeA(this.state.slots[key], disk);
         updatedSlots[key] = x.arr;
-        if (key === 'Storage Disk') {
+        if (key === "Storage Disk") {
           size = x.size;
         }
       });
@@ -386,176 +398,222 @@ class ArrayCreate extends Component {
     }
   }
 
+  handleChange(event) {
+    const { value } = event.target;
+    this.setState({ arrayname: value });
+  }
+
   render() {
     const { classes } = this.props;
-    const diskTypes = ['Storage Disk', 'Spare Disk'];
+    const diskTypes = ["Storage Disk", "Spare Disk"];
 
     const freedisks = [];
     if (this.props.disks) {
       for (let i = this.props.disks.length; i < 32; i += 1) {
         freedisks.push(
-          <GridListTile className={`${classes.gridTile} ${classes.gridTileDisabled}`}>
+          <GridListTile
+            className={`${classes.gridTile} ${classes.gridTileDisabled}`}
+          >
             <Typography color="secondary">{i + 1}</Typography>
           </GridListTile>
         );
       }
     }
-    
+
     return (
       <ThemeProvider theme={PageTheme}>
-      <form className={classes.root} data-testid="arraycreate">
-      <Grid item xs={12} sm={6} className={classes.inputGrid}>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
-        <Select
-          value={this.state.raid}
-          // onChange={this.onSelectRaid}
-          inputProps={{
-            name: 'Fault Tolerance Type',
-            id: 'raid',
-            'data-testid': 'raid-select-input'
-          }}
-          SelectDisplayProps={{
-            'data-testid': 'raid-select'
-          }}
-        >
-          {this.state.raids.map((raid) => (
-             <MenuItem value={raid.value}><Typography color="secondary">{raid.label}</Typography></MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6} className={classes.inputGrid}>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
-        <Select
-          value={this.state.metaDisk}
-          onChange={this.onSelectWriteBuffer}
-          inputProps={{
-            name: 'Write Buffer Path',
-            id: 'writebuffer',
-            'data-testid': "writebuffer-input"
-          }}
-          SelectDisplayProps={{
-            'data-testid': 'writebuffer'
-          }}
-          disabled={!this.props.metadisks}
-        >
-          {this.props.metadisks ? this.props.metadisks.map((disk) => (
-             <MenuItem value={disk}><Typography color="secondary">{disk}</Typography></MenuItem>
-          )): null}
-        </Select>
-      </FormControl>
-      </Grid>
-      <Grid item xs={12} className={classes.inputGrid}>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="disktype">Disk Type</InputLabel>
-        <Select
-          value={this.state.diskType}
-          onChange={this.onSelectDiskType}
-          inputProps={{
-            name: 'Disk Type',
-            id: 'disktype',
-            'data-testid': "disktype-input"
-          }}
-          SelectDisplayProps={{
-            'data-testid': 'disktype'
-          }}
-        >
-          {diskTypes.map((type) => (
-             <MenuItem value={type}><Typography color="secondary">{type}</Typography></MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      </Grid>
-      <div className={classes.diskGridContainer}>
-      <Grid container className={classes.diskContainer}>
-      <GridList cellHeight={110} className={classes.gridList} cols={32}>
-          {this.props.disks
-            ? this.props.disks.map((disk, i) => {
-                return (
-                  <Tooltip
-                    classes={{
-                      tooltip: classes.tooltip,
-                    }}
-                    title={(
-                      <React.Fragment>
-                        <div style={{ margin: '10px' }}>
-                          Name:
-                          {disk.name}
-                        </div>
-                        <div style={{ margin: '10px' }}>
-                          Size: {formatBytes(disk.size)}
-                        </div>
-                        <div
-                          onClick={() => this.showPopup(disk.name)}
-			  aria-hidden="true"
-                          style={{
-                            cursor: 'pointer',
-                            textAlign: 'right',
-                            margin: '10px',
+        <form className={classes.root} data-testid="arraycreate">
+          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
+              <Select
+                value={this.state.raid}
+                // onChange={this.onSelectRaid}
+                inputProps={{
+                  name: "Fault Tolerance Type",
+                  id: "raid",
+                  "data-testid": "raid-select-input",
+                }}
+                SelectDisplayProps={{
+                  "data-testid": "raid-select",
+                }}
+              >
+                {this.state.raids.map((raid) => (
+                  <MenuItem value={raid.value}>
+                    <Typography color="secondary">{raid.label}</Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
+              <Select
+                value={this.state.metaDisk}
+                onChange={this.onSelectWriteBuffer}
+                inputProps={{
+                  name: "Write Buffer Path",
+                  id: "writebuffer",
+                  "data-testid": "writebuffer-input",
+                }}
+                SelectDisplayProps={{
+                  "data-testid": "writebuffer",
+                }}
+                disabled={!this.props.metadisks}
+              >
+                {this.props.metadisks
+                  ? this.props.metadisks.map((disk) => (
+                      <MenuItem value={disk}>
+                        <Typography color="secondary">{disk}</Typography>
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="disktype">Disk Type</InputLabel>
+              <Select
+                value={this.state.diskType}
+                onChange={this.onSelectDiskType}
+                inputProps={{
+                  name: "Disk Type",
+                  id: "disktype",
+                  "data-testid": "disktype-input",
+                }}
+                SelectDisplayProps={{
+                  "data-testid": "disktype",
+                }}
+              >
+                {diskTypes.map((type) => (
+                  <MenuItem value={type}>
+                    <Typography color="secondary">{type}</Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                id="array-name"
+                name="arrayname"
+                label="Array Name"
+                value={this.state.arrayname}
+                onChange={this.handleChange}
+                required="true"
+                style={{ display: "none" }}
+                inputProps={{
+                  "data-testid": "array-name",
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <div className={classes.diskGridContainer}>
+            <Grid container className={classes.diskContainer}>
+              <GridList cellHeight={110} className={classes.gridList} cols={32}>
+                {this.props.disks
+                  ? this.props.disks.map((disk, i) => {
+                      return (
+                        <Tooltip
+                          classes={{
+                            tooltip: classes.tooltip,
                           }}
+                          title={(
+<React.Fragment>
+                              <div style={{ margin: "10px" }}>
+                                Name:
+                                {disk.name}
+                              </div>
+                              <div style={{ margin: "10px" }}>
+                                Size: {formatBytes(disk.size)}
+                              </div>
+                              <div
+                                onClick={() => this.showPopup(disk.name)}
+                                aria-hidden="true"
+                                style={{
+                                  cursor: "pointer",
+                                  textAlign: "right",
+                                  margin: "10px",
+                                }}
+                              >
+                                <u>More Details</u>
+                              </div>
+</React.Fragment>
+)}
+                          interactive
                         >
-                          <u>More Details</u>
-                        </div>
-                      </React.Fragment>
-                    )}
-                    interactive
-                  >
-                    <GridListTile
-                      className={classes.gridTile}
-                      id={i}
-                      onClick={() => {
-                        this.toggleRowSelect(i, disk);
-                      }}
-                      data-testid={`diskselect-${i}`}
-                    >
-                      <Typography color="secondary">{ i + 1 }</Typography>
-                    </GridListTile>
-                  </Tooltip>
-                );
-              })
-            : null}
-          {freedisks}
-      </GridList>
-      </Grid>
-      </div>
-        <Grid container xs={12} className={classes.legendButtonGrid}>
-          <Grid item container sm={8} xs={12} wrap="wrap" className={classes.legendContainer}>
-            <Legend bgColor="#51ce46" title="Selected Storage disk" />
-            <Legend bgColor="#339eff" title="Selected Spare disk" />
-            <Legend bgColor="#ffffff" title="Not Selected" />
-            <Legend bgColor="#e2e1e1" title="Empty Slot" />
-          </Grid>
-          <Grid item container sm={4} xs={12} className={classes.buttonContainer}>
-            <Button
-              onClick={this.createArray}
-              variant="contained"
-              color="primary"
-              data-testid="createarray-btn"
-              className={classes.button}
+                          <GridListTile
+                            className={classes.gridTile}
+                            id={i}
+                            onClick={() => {
+                              this.toggleRowSelect(i, disk);
+                            }}
+                            data-testid={`diskselect-${i}`}
+                          >
+                            <Typography color="secondary">{i + 1}</Typography>
+                          </GridListTile>
+                        </Tooltip>
+                      );
+                    })
+                  : null}
+                {freedisks}
+              </GridList>
+            </Grid>
+          </div>
+          <Grid container xs={12} className={classes.legendButtonGrid}>
+            <Grid
+              item
+              container
+              sm={8}
+              xs={12}
+              wrap="wrap"
+              className={classes.legendContainer}
             >
-              Create Array
-            </Button>
+              <Legend bgColor="#51ce46" title="Selected Storage disk" />
+              <Legend bgColor="#339eff" title="Selected Spare disk" />
+              <Legend bgColor="#ffffff" title="Not Selected" />
+              <Legend bgColor="#e2e1e1" title="Empty Slot" />
+            </Grid>
+            <Grid
+              item
+              container
+              sm={4}
+              xs={12}
+              className={classes.buttonContainer}
+            >
+              <Button
+                onClick={this.createArray}
+                variant="contained"
+                color="primary"
+                data-testid="createarray-btn"
+                className={classes.button}
+              >
+                Create Array
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-        {this.props.loading /* istanbul ignore next */? <MToolLoader /> : null}
-        <AlertDialog
-          type={this.state.alertType}
-          title="Create Array"
-          description={this.state.errorMsg}
-          open={this.state.alertOpen}
-          onConfirm={this.closePopup}
-          handleClose={this.closePopup}
-        />
-        <DiskDetails
-          title="Disk Details"
-          details={this.props.diskDetails}
-          open={this.state.popupOpen}
-          onConfirm={this.closePopup}
-          handleClose={this.closePopup}
-        />
-      </form>
+          {this.props.loading /* istanbul ignore next */ ? (
+            <MToolLoader />
+          ) : null}
+          <AlertDialog
+            type={this.state.alertType}
+            title="Create Array"
+            description={this.state.errorMsg}
+            open={this.state.alertOpen}
+            onConfirm={this.closePopup}
+            handleClose={this.closePopup}
+          />
+          <DiskDetails
+            title="Disk Details"
+            details={this.props.diskDetails}
+            open={this.state.popupOpen}
+            onConfirm={this.closePopup}
+            handleClose={this.closePopup}
+          />
+        </form>
       </ThemeProvider>
     );
   }

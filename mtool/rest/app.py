@@ -79,6 +79,7 @@ eventlet.monkey_patch()
 
 BLOCK_SIZE = 1024 * 1024
 
+
 # Connect to MongoDB first. PyMODM supports all URI options supported by
 # PyMongo. Make sure also to specify a database in the connection string:
 
@@ -900,7 +901,7 @@ def create_arrays(current_user):
     if totalsize < 3:
         return abort(404)
     if arrayname == None:
-        arrayname = dagent.DEFAULT_ARRAY
+        arrayname = dagent.array_names[0]
 
     
     print('storageDisks: ', storageDisks)
@@ -908,13 +909,14 @@ def create_arrays(current_user):
 
     # check if array exists
     found = False
-    res = check_arr_exists()
+    res = check_arr_exists(arrayname)
     #print("res from get array",res)
 
     if res == True:
         found = True
 
     if not found:
+        print("going in create array")
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
                                   {"deviceName": metaDisk}])
         array_create = array_create.json()
@@ -928,8 +930,7 @@ def create_arrays(current_user):
 
 def get_mod_array(array):
     _array = {}
-    arrayname = 'ibofArray'
-    _array["_id"] = arrayname
+    _array["arrayname"] = dagent.array_names[0]
     _array["RAIDLevel"] = "5"
     _array["storagedisks"] = []
     _array["writebufferdisks"]: []
@@ -952,7 +953,7 @@ def get_mod_array(array):
 @app.route('/api/v1.0/get_arrays/', methods=['GET'])
 @token_required
 def get_arrays(current_user):
-    res = check_arr_exists()
+    res = check_arr_exists(dagent.array_names[0])
     #print("result from get array",res)
 
 
@@ -1225,7 +1226,7 @@ def saveVolume():
     max_available_size = body['max_available_size']
     
     if array_name == None:
-        array_name = dagent.DEFAULT_ARRAY
+        array_name = dagent.array_names[0]
 
     if (vol_size == 0):
         size = int(max_available_size)
@@ -1389,8 +1390,8 @@ def unmountPOS(current_user):
         return make_response('Could not unmount POS', 500)
 
 
-@app.route('/api/v1.0/delete_volumes', methods=['POST'])
-def deleteVolumes():
+@app.route('/api/v1.0/delete_volumes/<name>', methods=['POST'])
+def deleteVolumes(name):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     vols = list(body['volumes'])
@@ -1398,10 +1399,11 @@ def deleteVolumes():
     passed = 0
     fail = 0
     description = ""
+    print("dellll vol arrayname is", name)
     # arrays=db.array.find()
     # arrayname=arrays[0]['_id']
     # print(arrayname)
-    arrayname = dagent.DEFAULT_ARRAY
+    arrayname = name
     deleted_vols = []
     return_msg = {"result": "Success"}
     for vol in vols:
