@@ -619,7 +619,7 @@ modules:
         solution:
       - code: 2522
         level: WARN
-        message: no array exist named "targetarray
+        message: no array exist named "targetarray"
         problem:
         solution:
       - code: 2523
@@ -672,11 +672,30 @@ modules:
         message: array status updated
         problem:
         solution:
-      - code: 2600
-        level: CRITICAL
-        message: SYSTEM STOPPED
-        problem: fault tolerance exceeded due to device failure
-        solution: replace fault devices and re-create array
+      - code: 2551
+        level: INFO
+        message: Array State : Exist Normal
+      - code: 2552
+        level: INFO
+        message: Array State : Exist Degraded
+      - code: 2553
+        level: INFO
+        message: Array State : Exist Missing
+      - code: 2554
+        level: INFO
+        message: Array State : Exist Broken
+      - code: 2555
+        level: INFO
+        message: Array State : Normal
+      - code: 2556
+        level: INFO
+        message: Array State : Degraded
+      - code: 2557
+        level: INFO
+        message: Array State : Rebuilding
+      - code: 2558
+        level: INFO
+        message: Array State : Stop
   - name: "Rebuild"
     count: 100
     idStart: 2800
