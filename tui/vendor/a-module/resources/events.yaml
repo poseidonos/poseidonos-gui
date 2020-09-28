@@ -674,28 +674,28 @@ modules:
         solution:
       - code: 2551
         level: INFO
-        message: Array State : Exist Normal
+        message: "Array State : Exist Normal"
       - code: 2552
         level: INFO
-        message: Array State : Exist Degraded
+        message: "Array State : Exist Degraded"
       - code: 2553
         level: INFO
-        message: Array State : Exist Missing
+        message: "Array State : Exist Missing"
       - code: 2554
         level: INFO
-        message: Array State : Exist Broken
+        message: "Array State : Exist Broken"
       - code: 2555
         level: INFO
-        message: Array State : Normal
+        message: "Array State : Normal"
       - code: 2556
         level: INFO
-        message: Array State : Degraded
+        message: "Array State : Degraded"
       - code: 2557
         level: INFO
-        message: Array State : Rebuilding
+        message: "Array State : Rebuilding"
       - code: 2558
         level: INFO
-        message: Array State : Stop
+        message: "Array State : Stop"
   - name: "Rebuild"
     count: 100
     idStart: 2800
