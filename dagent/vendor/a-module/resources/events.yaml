@@ -1210,6 +1210,14 @@ modules:
         message: The request cannot be executed since ibofos is mounted
         problem: ibofos already has been mounted
         solution: try again after unmount ibofos
+      - code: 9004
+        level: INFO
+        message: load system versionA
+        problem: load system versionA
+      - code: 9005
+        level: INFO
+        message: system unmounting
+        problem: pos system unmounting
   - name: "D-Agent"
     count: 10000
     idStart: 10000
@@ -1257,9 +1265,8 @@ modules:
         solution: restart POS
       - code: 11030
         level: ERROR
-        message: Another Request already in progress
-        problem: another request is in progress. please try after some time
-        solution: try after some time
+        message: Another request already in progress
+        problem: another request is in progress. Wait for it's completion
       - code: 12010
         level: ERROR
         message: one of iBoF service is dead
@@ -1320,4 +1327,3 @@ modules:
       - code: 30002
         level: ERROR
         message: Can't process completions
-

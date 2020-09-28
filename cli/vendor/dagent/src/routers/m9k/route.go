@@ -142,14 +142,6 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.LoadArray, param)
 		})
 		iBoFOSPath.POST("/array/:arrayName/devices", func(ctx *gin.Context) {
-			// Temp workaround
-			//req := model.Request{}
-			//ctx.ShouldBindBodyWith(&req, binding.JSON)
-			//marshalled, _ := json.Marshal(req.Param)
-			//param := model.DeviceParam{}
-			//_ = json.Unmarshal(marshalled, &param)
-			//param.Spare = param.Spare
-			//ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddDevice, param)
 			param.Name = ctx.Param("arrayName") // Temp
 			param.Array = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddDevice, param)
@@ -158,7 +150,7 @@ func Route(router *gin.Engine) {
 			param.Name = ctx.Param("arrayName") // Temp
 			param.Array = ctx.Param("arrayName")
 			param.Spare = []model.Device{{DeviceName: ctx.Param("deviceName")}}
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.RemoveDevice)
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
 		})
 	}
 

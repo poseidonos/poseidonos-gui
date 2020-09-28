@@ -54,19 +54,19 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [POS/Array](#posarray)
 
-  * [ARRAY INFO](#1-array-info)
-  * [CREATE ARRAY](#2-create-array)
-  * [DELETE ARRAY](#3-delete-array)
-  * [LIST ARRAY DEVICE](#4-list-array-device)
-  * [LOAD ARRAY](#5-load-array)
+  * [ADD DEVICE](#1-add-device)
+  * [ARRAY INFO](#2-array-info)
+  * [CREATE ARRAY](#3-create-array)
+  * [DELETE ARRAY](#4-delete-array)
+  * [LIST ARRAY DEVICE](#5-list-array-device)
+  * [LOAD ARRAY](#6-load-array)
+  * [REMOVE DEVICE](#7-remove-device)
 
 * [POS/Devices](#posdevices)
 
-  * [ADD DEVICE](#1-add-device)
-  * [LIST DEVICE](#2-list-device)
-  * [REMOVE DEVICE](#3-remove-device)
-  * [SCAN DEVICE](#4-scan-device)
-  * [SMART](#5-smart)
+  * [LIST DEVICE](#1-list-device)
+  * [SCAN DEVICE](#2-scan-device)
+  * [SMART](#3-smart)
 
 * [POS/System](#possystem)
 
@@ -434,16 +434,6 @@ URL: http://{{host}}/api/dagent/v1/doc/api.html
 ```
 
 
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
 
 ***More example Requests/Responses:***
 
@@ -506,16 +496,6 @@ Method: GET
 Type: 
 URL: http://{{host}}/api/dagent/v1/doc/api.md
 ```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
 
 
 
@@ -2253,7 +2233,7 @@ URL: http://{{host}}/api/metric/v1/rebuildlogs/5m
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency
+URL: http://{{host}}/api/metric/v1/volumes/1/latency
 ```
 
 
@@ -2323,7 +2303,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/5m
+URL: http://{{host}}/api/metric/v1/volumes/1/latency/5m
 ```
 
 
@@ -2465,7 +2445,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/5m
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw
+URL: http://{{host}}/api/metric/v1/volumes/1/readbw
 ```
 
 
@@ -2535,7 +2515,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/5m
+URL: http://{{host}}/api/metric/v1/volumes/1/readbw/5m
 ```
 
 
@@ -2661,7 +2641,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/5m
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops
+URL: http://{{host}}/api/metric/v1/volumes/1/readiops
 ```
 
 
@@ -2731,7 +2711,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/5m
+URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m
 ```
 
 
@@ -2869,7 +2849,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/5m
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw
+URL: http://{{host}}/api/metric/v1/volumes/1/writebw
 ```
 
 
@@ -2943,7 +2923,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops
+URL: http://{{host}}/api/metric/v1/volumes/1/writeiops
 ```
 
 
@@ -3013,7 +2993,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/5m
+URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m
 ```
 
 
@@ -3155,7 +3135,7 @@ URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/5m
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/5m
+URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m
 ```
 
 
@@ -3724,7 +3704,164 @@ URL: http://{{host}}/api/metric/v1/writeiops/5m
 
 
 
-### 1. ARRAY INFO
+### 1. ADD DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "spare": [
+            {
+                "deviceName": "{{deviceName4}}"
+            }
+        ]
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 2501
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### I. Example Response: Fail - 2501
+```js
+{
+    "rid": "51cb31eb-35a1-4bf7-87e9-b33bcef2b066",
+    "lastSuccessTime": 1597910351,
+    "result": {
+        "status": {
+            "module": "Array",
+            "code": 2501,
+            "level": "ERROR",
+            "description": "Array is already umounted."
+        }
+    },
+    "info": {
+        "capacity": 0,
+        "rebuildingProgress": "0",
+        "situation": "DEFAULT",
+        "state": "OFFLINE",
+        "used": 0
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "5794b792-4506-4323-a51c-59a26c064d8e",
+    "lastSuccessTime": 1597910436,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
+        }
+    },
+    "info": {
+        "capacity": 120312771380,
+        "rebuildingProgress": "0",
+        "situation": "NORMAL",
+        "state": "NORMAL",
+        "used": 0
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 2. ARRAY INFO
 
 
 
@@ -3818,7 +3955,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-### 2. CREATE ARRAY
+### 3. CREATE ARRAY
 
 
 
@@ -4035,7 +4172,7 @@ URL: http://{{host}}/api/ibofos/v1/array
 
 
 
-### 3. DELETE ARRAY
+### 4. DELETE ARRAY
 
 
 
@@ -4150,7 +4287,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-### 4. LIST ARRAY DEVICE
+### 5. LIST ARRAY DEVICE
 
 
 
@@ -4244,7 +4381,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
 
 
 
-### 5. LOAD ARRAY
+### 6. LOAD ARRAY
 
 
 
@@ -4315,284 +4452,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
 
 
 
-## POS/Devices
-
-
-
-### 1. ADD DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/devices
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 2501
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
-##### I. Example Response: Fail - 2501
-```js
-{
-    "rid": "51cb31eb-35a1-4bf7-87e9-b33bcef2b066",
-    "lastSuccessTime": 1597910351,
-    "result": {
-        "status": {
-            "module": "Array",
-            "code": 2501,
-            "level": "ERROR",
-            "description": "Array is already umounted."
-        }
-    },
-    "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "5794b792-4506-4323-a51c-59a26c064d8e",
-    "lastSuccessTime": 1597910436,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        }
-    },
-    "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 2. LIST DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/devices
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "7ec6e965-dc86-4a95-8a3a-353dc36478a1",
-    "lastSuccessTime": 1588920642,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "addr": "0000:04:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-0",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0002",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:0c:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-1",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0003",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:13:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-2",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0000",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:1b:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-3",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0001",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "",
-                    "class": "SYSTEM",
-                    "mn": "uram0",
-                    "name": "uram0",
-                    "size": 262144,
-                    "sn": "uram0",
-                    "type": "NVRAM"
-                }
-            ]
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 3. REMOVE DEVICE
+### 7. REMOVE DEVICE
 
 
 
@@ -4601,7 +4461,7 @@ URL: http://{{host}}/api/ibofos/v1/devices
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-3
+URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 ```
 
 
@@ -4613,18 +4473,6 @@ URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-3
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
 
 
 
@@ -4743,7 +4591,130 @@ URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-3
 
 
 
-### 4. SCAN DEVICE
+## POS/Devices
+
+
+
+### 1. LIST DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/ibofos/v1/devices
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "7ec6e965-dc86-4a95-8a3a-353dc36478a1",
+    "lastSuccessTime": 1588920642,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "DONE"
+        },
+        "data": {
+            "devicelist": [
+                {
+                    "addr": "0000:04:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-0",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0002",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:0c:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-1",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0003",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:13:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-2",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0000",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "0000:1b:00.0",
+                    "class": "SYSTEM",
+                    "mn": "VMware Virtual NVMe Disk",
+                    "name": "unvme-ns-3",
+                    "size": 16777216,
+                    "sn": "VMWare NVME-0001",
+                    "type": "SSD"
+                },
+                {
+                    "addr": "",
+                    "class": "SYSTEM",
+                    "mn": "uram0",
+                    "name": "uram0",
+                    "size": 262144,
+                    "sn": "uram0",
+                    "type": "NVRAM"
+                }
+            ]
+        }
+    },
+    "info": {
+        "state": "OFFLINE",
+        "situation": "DEFAULT",
+        "rebuliding_progress": 0,
+        "capacity": 0,
+        "used": 0
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 2. SCAN DEVICE
 
 
 
@@ -4814,7 +4785,7 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
 
 
 
-### 5. SMART
+### 3. SMART
 
 
 
@@ -5686,12 +5657,12 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}"
-        "name": "volmul",
-        "size": 10737418,
+        "array": "{{arrayName}}",
+        "name": "volmulAA",
+        "size": 5242880,
         "maxbw": 0,
         "maxiops": 0,
-        "totalcount": 2,
+        "totalcount": 174,
         "stoponerror": false,
         "namesuffix": 0,
         "mountall": true
@@ -6513,8 +6484,8 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 {
     "param": {
         "array": "{{arrayName}}",
-        "maxiops": 0,
-        "maxbw": 6000
+        "maxiops": 100,
+        "maxbw": 500
     }
 }
 ```
@@ -6655,9 +6626,10 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 | volumeNameNew1 | volNew01 |  |
 | period | 5m |  |
 | arrayName | POSArray |  |
+| volid01 | 1 |  |
 
 
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-08-31 11:27:17 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-09-28 10:57:33 by [docgen](https://github.com/thedevsaddam/docgen)
