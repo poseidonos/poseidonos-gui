@@ -73,7 +73,7 @@ func init() {
 
 		rootCmd.PersistentFlags().BoolVar(&isVerbose, "verbose", false, "verbose output")
 		rootCmd.PersistentFlags().BoolVar(&isDebug, "debug", false, "set a debug mode")
-		rootCmd.PersistentFlags().BoolVar(&isJson, "json", false, "print request and response fommated json")
+		rootCmd.PersistentFlags().BoolVar(&isJson, "json", false, "print request and response formatted json")
 		rootCmd.PersistentFlags().BoolVar(&isQuiet, "quiet", false, "set a quiet mode")
 	}
 
