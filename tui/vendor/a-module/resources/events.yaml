@@ -189,7 +189,7 @@ modules:
         solution: Enter the correct volume name or volume ID after checking the volume list
       - code: 2011
         level: WARN
-        message: Volume size is too large
+        message: Too many volumes
         problem: Volume can not be created because the maximum number of volumes that can be created is exceeded
         solution: Retry after removing unnecessary volume among existing created volumes
       - code: 2012
