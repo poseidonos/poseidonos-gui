@@ -52,6 +52,8 @@ from flask import Flask, abort, request, jsonify, send_from_directory, make_resp
 #import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
+from util.log.influx_handler import InfluxHandler
+from util.log.ui_logger import log_to_influx
 import time
 from time import strftime
 import logging
@@ -97,6 +99,7 @@ handler = RotatingFileHandler(
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
+logger.addHandler(InfluxHandler())
 
 
 connection_obj = DBConnection()
@@ -164,12 +167,13 @@ def exceptions(e):
     # Logging after every Exception
     ts = strftime('[%Y-%b-%d %H:%M]')
     tb = traceback.format_exc()
-    logger.error('%s %s %s %s %s 5xx INTERNAL SERVER ERROR\n%s',
+    logger.error('%s %s %s %s %s 5xx INTERNAL SERVER ERROR\n%s%s',
                  ts,
                  request.remote_addr,
                  request.method,
                  request.scheme,
                  request.full_path,
+                 "",
                  tb)
     return "Internal Server Error", 500
 
@@ -193,6 +197,17 @@ def token_required(f):
             return jsonify({'message': 'Token is invalid'}), 401
         return f(current_user, *args, **kwargs)
     return decorated
+
+
+@app.route('/api/v1.0/logger', methods=['POST'])
+def log_collect():
+    body_unicode = request.data.decode('utf-8')
+    body=json.loads(body_unicode)
+    try:
+        log_to_influx(body)
+    except Exception as e:
+        print(e)
+    return "Log written sucessfully"
 
 
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
@@ -903,7 +918,7 @@ def create_arrays(current_user):
     if arrayname == None:
         arrayname = dagent.array_names[0]
 
-    
+
     print('storageDisks: ', storageDisks)
     print('metaDisk: ', metaDisk)
 
@@ -959,7 +974,7 @@ def get_arrays(current_user):
 
     array_list = list_arr()
     #print("array list is", array_list.json())
-        
+
     if array_list.status_code == 200:
         array = array_list.json()
         res = array
@@ -968,7 +983,7 @@ def get_arrays(current_user):
         array['totalsize'] = int( res["info"]["capacity"])
         array['usedspace'] = int(res["info"]["used"])
         return jsonify([array])
-        
+
     return toJson([])
 
 
@@ -1204,7 +1219,7 @@ def make_block_aligned(size):
     size = math.floor(size)
     aligned_size = (math.floor(size/BLOCK_SIZE) * BLOCK_SIZE)
     return aligned_size
-    
+
 
 @app.route('/api/v1.0/save-volume/', methods=['POST'])
 def saveVolume():
@@ -1224,7 +1239,7 @@ def saveVolume():
     count = body['count']
     suffix = body['suffix']
     max_available_size = body['max_available_size']
-    
+
     if array_name == None:
         array_name = dagent.array_names[0]
 
@@ -1240,7 +1255,7 @@ def saveVolume():
         else:
             # default case assuming the unit is TB
             size = vol_size * 1024 * 1024 * 1024 * 1024
-        size = make_block_aligned(size)    
+        size = make_block_aligned(size)
 
     create_vol_res = create_volume(
         volume_name,
@@ -1370,7 +1385,7 @@ def unmountVolume():
         unmount_vol_res = unmount_volume(body["name"], body.get("array"))
         return toJson(unmount_vol_res.json())
     except Exception as e:
-        return make_response('Could not Unmount Volume', 500) 
+        return make_response('Could not Unmount Volume', 500)
 
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
 def mountPOS():
@@ -1413,7 +1428,7 @@ def deleteVolumes(name):
             deleted_vols.append(vol)
             return_msg["result"] = del_vol_cmd.json(
             )["result"]["status"]["description"]
-    
+
         elif del_vol_cmd.status_code == 500:
             fail = fail + 1
             return_msg["result"] = del_vol_cmd.json()["error"]
@@ -1430,7 +1445,7 @@ def deleteVolumes(name):
                 description += ", Error code: "
                 description += str(del_vol_cmd["result"]["status"]["code"])
                 description+= "\n"
-    
+
                 return_msg["result"] = del_vol_cmd["result"]["status"]
                 return_msg["vol_name"] = vol
     # try:
@@ -2080,12 +2095,12 @@ def createMultiVolumeCallback():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     description = ""
-    
+
     for entry in body['MultiVolArray']:
         if entry["result"]["status"]["code"] != 0:
             description += entry["result"]["status"]["description"]
-            description+= "\n" 
-    
+            description+= "\n"
+
     passed = body['Pass']
     total_count = body['TotalCount']
     socketIo.emit('create_multi_volume',

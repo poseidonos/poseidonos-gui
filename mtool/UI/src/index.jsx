@@ -31,6 +31,7 @@ import {BrowserRouter} from 'react-router-dom';
 import 'react-app-polyfill/ie9';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import 'core-js/es/array';
 import 'core-js/es/object';
 import 'react-app-polyfill/ie11';
@@ -42,6 +43,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import App from './App';
 import './index.css';
+import log from './utils/log/log';
 import * as serviceWorker from './serviceWorker';
 import headerReducer from "./store/reducers/headerReducer";
 import storageReducer from "./store/reducers/storageReducer";
@@ -60,6 +62,27 @@ import hardwareHealthReducer from "./store/reducers/hardwareHealthReducer";
 import hardwarePowerManagementReducer from "./store/reducers/hardwarePowerManagementReducer";
 import waitLoaderReducer from "./store/reducers/waitLoaderReducer"
 import rootSaga from "./sagas/indexSaga";
+
+// Add a request interceptor
+axios.interceptors.request.use((config) => {
+    log.info(`Request: ${config.method} ${config.url}`);
+    return config;
+  }, (error) => {
+    log.error(`Request: ${error.request.config.method} ${error.request.config.url} ${error.request.status}`);
+    return Promise.reject(error);
+  });
+
+// Add a response interceptor
+axios.interceptors.response.use((response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    log.info(`Response: ${response.config.method} ${response.config.url} ${response.status}`);
+    return response;
+  }, (error) => {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    log.error(`Response: ${error.response.config.method} ${error.response.config.url} ${error.response.status}`);
+    return Promise.reject(error);
+  });
+
 
 const sagaMiddleware = createSagaMiddleware();
 // Start-For Debugging Purpose Only

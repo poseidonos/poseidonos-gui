@@ -8,7 +8,7 @@
 /   products to use or abstract this computer program for the sole purpose of         /
 /   implementing a product based on Samsung Electronics Co., Ltd. products.           /
 /   No other rights to reproduce, use, or disseminate this computer program,          /
-/   whether in part or in whole, are granted.                                         / 
+/   whether in part or in whole, are granted.                                         /
 /                                                                                     /
 /   Samsung Electronics Co., Ltd. makes no representation or warranties with          /
 /   respect to the performance of this computer program, and specifically disclaims   /
@@ -20,7 +20,7 @@
 
 DESCRIPTION: <File description> *
 @NAME : influx.py
-@AUTHORS: Jay Hitesh Sanghavi 
+@AUTHORS: Jay Hitesh Sanghavi
 @Version : 1.0 *
 @REVISION HISTORY
 [03/06/2019] [Jay] : Prototyping..........////////////////////
@@ -49,8 +49,7 @@ def get_connection(db=MTOOL_DB,
                    port=PORT):
     try:
         ip = os.environ.get('INFLUX_HOST',ip)
-        #print('IP',ip)
-        client = InfluxDBClient(host=ip, port=port, database=db , use_udp=True)
+        client = InfluxDBClient(host=ip, port=port, database=db)
         return client
     except BaseException:
         print("Error in Influx.py get_connection()")

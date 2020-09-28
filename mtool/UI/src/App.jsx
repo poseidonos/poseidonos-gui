@@ -36,7 +36,8 @@ import Volume from './containers/Volume';
 import ConfigurationSetting from './containers/ConfigurationSetting';
 import IbofOsOperations from './containers/IbofOsOperations';
 import LogManagement from './containers/Log-Management';
-import Hardware from './containers/Hardware'
+import Hardware from './containers/Hardware';
+import ErrorBoundary from './containers/ErrorBoundary';
 
 const App = () => {
     return (
@@ -45,49 +46,81 @@ const App = () => {
           className="App-content"
           path="/"
           exact
-          component={Authentication}
+          component={() => (
+            <ErrorBoundary>
+              <Authentication />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/performance"
           exact
-          component={Performance}
+          component={() => (
+            <ErrorBoundary>
+              <Performance />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/dashboard"
           exact
-          component={Dashboard}
+          component={() => (
+            <ErrorBoundary>
+              <Dashboard />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/volume"
           exact
-          component={Volume}
+          component={() => (
+            <ErrorBoundary>
+              <Volume />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/IbofOsOperations"
           exact
-          component={IbofOsOperations}
+          component={() => (
+            <ErrorBoundary>
+              <IbofOsOperations />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/ConfigurationSetting/*"
           exact
-          component={ConfigurationSetting}
+          component={() => (
+            <ErrorBoundary>
+              <ConfigurationSetting />
+            </ErrorBoundary>
+          )}
         />
         <PrivateRoute
           className="App-content"
           path="/LogManagement"
           exact
-          component={LogManagement}
+          component={() => (
+            <ErrorBoundary>
+              <LogManagement />
+            </ErrorBoundary>
+          )}
         />
         <Route
           className="App-content"
           path="/Hardware/*"
           exact
-          component={Hardware}
+          component={() => (
+            <ErrorBoundary>
+              <Hardware />
+            </ErrorBoundary>
+          )}
         />
       </React.Fragment>
     );

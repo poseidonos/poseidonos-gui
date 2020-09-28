@@ -32,6 +32,8 @@
     "i18next": "^17.3.1",
     "i18next-browser-languagedetector": "^3.1.1",
     "i18next-xhr-backend": "^3.2.2",
+    "loglevel": "^1.7.0",
+    "loglevel-plugin-remote": "^0.6.8",
     "material-table": "^1.54.2",
     "material-ui-country-flags": "^3.0.1",
     "material-ui-phone-number": "^2.2.5",
@@ -67,7 +69,7 @@
     "clear_jest": "jest --clearCache"
   },
   "jest": {
-     "collectCoverageFrom": [
+    "collectCoverageFrom": [
       "src/**/*.{js, jsx}",
       "!src/containers/Hardware/**/*.js",
       "!src/containers/Log-Management/**/*.js",
