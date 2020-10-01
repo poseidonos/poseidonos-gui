@@ -38,6 +38,11 @@ from rest.rest_api.dagent import metrics
 def get_user_cpu_usage(time):
     return metrics.get_cpu_usage(time)
 
+def get_user_memory_usage(time):
+    return metrics.get_memory_usage(time)
+
+def get_latency_usage(time):
+    return metrics.get_latency(time)
 
 def get_diskio_mbps(time, level):
     connection = get_connection()

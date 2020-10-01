@@ -41,10 +41,11 @@ from rest.rest_api.array.array import create_arr, list_arr, get_arr_status, chec
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
+from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_diskio_mbps, get_total_processes,  \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_diskio_mbps, get_total_processes,  \
     get_total_disk_used_percent, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
     get_disk_current_perf
 from flask_socketio import SocketIO, disconnect
@@ -123,6 +124,7 @@ def toJson(data):
   #  print("tojson :",json_util.dumps(data))
     return json_util.dumps(data)
 
+
 """
 alerts = [
     'CPU Utilization',
@@ -132,6 +134,8 @@ alerts = [
 """
 
 # Serve React App
+
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
@@ -241,7 +245,7 @@ def start_ibofos(current_user):
     return jsonify({"response": "unable to start POS"})
 
 
-#Delete Array
+# Delete Array
 @app.route('/api/v1.0/delete_array/<name>', methods=['POST'])
 @token_required
 def delete_array(current_user, name):
@@ -260,6 +264,8 @@ def delete_array(current_user, name):
             return toJson(return_msg)
     res = "unable to delete array"
     return make_response(res, 500)
+
+
 @app.route('/api/v1.0/stop_ibofos', methods=['GET'])
 @token_required
 def stop_ibofos(current_user):
@@ -351,7 +357,8 @@ def is_ibofos_running(current_user):
         response = fetch_system_state()
         response = response.json()
         if 'lastSuccessTime' in response and response['lastSuccessTime'] != 0:
-            lastRunningTime = datetime.datetime.fromtimestamp(response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
+            lastRunningTime = datetime.datetime.fromtimestamp(
+                response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
         if('result' in response and 'status' in response['result'] and 'code' in response['result']['status'] and response['result']['status']['code'] == 0):
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = True
         else:
@@ -364,11 +371,12 @@ def is_ibofos_running(current_user):
                        "level": level,
                        "value": value})
     return toJson({"RESULT": response,
-                       "lastRunningTime": lastRunningTime,
-                       "timestamp": timestamp,
-                       "code": code,
-                       "level": level,
-                       "value": value})
+                   "lastRunningTime": lastRunningTime,
+                   "timestamp": timestamp,
+                   "code": code,
+                   "level": level,
+                   "value": value})
+
 
 """
 @app.route('/api/v1.0/get_Ibof_OS_Logs/')
@@ -526,6 +534,7 @@ def get_available_mem():
     return jsonify(val)
 """
 
+
 @app.route('/api/v1.0/available_storage/', methods=['GET'])
 @token_required
 def get_storage_details(current_user):
@@ -677,6 +686,7 @@ def get_write_bw(time_interval, level):
         print(e)
         return jsonify({"res": []})
 
+
 """
 def trigger_email(serverip, serverport, emailid):
     print("Inside Trigger")
@@ -818,6 +828,8 @@ def toggle_email_status():
 """
 
 # Get Devices
+
+
 @app.route('/api/v1.0/get_devices/', methods=['GET'])
 @token_required
 def getDevices(current_user):
@@ -915,9 +927,8 @@ def create_arrays(current_user):
 
     if totalsize < 3:
         return abort(404)
-    if arrayname == None:
+    if arrayname is None:
         arrayname = dagent.array_names[0]
-
 
     print('storageDisks: ', storageDisks)
     print('metaDisk: ', metaDisk)
@@ -927,7 +938,7 @@ def create_arrays(current_user):
     res = check_arr_exists(arrayname)
     #print("res from get array",res)
 
-    if res == True:
+    if res:
         found = True
 
     if not found:
@@ -948,11 +959,11 @@ def get_mod_array(array):
     _array["arrayname"] = dagent.array_names[0]
     _array["RAIDLevel"] = "5"
     _array["storagedisks"] = []
-    _array["writebufferdisks"]: []
+    _array["writebufferdisks"] = []
     _array["sparedisks"] = []
     _array["metadiskpath"] = []
     _array["totalsize"] = 0
-    _array["usedspace"]: 0
+    _array["usedspace"] = 0
     for device in array["result"]["data"]["devicelist"]:
         if device["type"] == "DATA":
             _array["storagedisks"].append({"deviceName": device["name"]})
@@ -971,7 +982,6 @@ def get_arrays(current_user):
     res = check_arr_exists(dagent.array_names[0])
     #print("result from get array",res)
 
-
     array_list = list_arr()
     #print("array list is", array_list.json())
 
@@ -980,7 +990,7 @@ def get_arrays(current_user):
         res = array
         # convert to format expected by UI
         array = get_mod_array(array)
-        array['totalsize'] = int( res["info"]["capacity"])
+        array['totalsize'] = int(res["info"]["capacity"])
         array['usedspace'] = int(res["info"]["used"])
         return jsonify([array])
 
@@ -1009,7 +1019,7 @@ def add_new_user(current_user):
         "Create,Edit,View",
         4,
         True)
-    if result == True:
+    if result:
         return jsonify({"message": "NEW USER CREATED"})
     else:
         message = "User Already Exists"
@@ -1207,7 +1217,7 @@ def getIpAndMac():
         return make_response('Could not get ip and mac', 500)
 
 
-#POS expects the volume size to be block aligned
+# POS expects the volume size to be block aligned
 def make_block_aligned(size):
     """
     Example:
@@ -1217,7 +1227,7 @@ def make_block_aligned(size):
     """
 
     size = math.floor(size)
-    aligned_size = (math.floor(size/BLOCK_SIZE) * BLOCK_SIZE)
+    aligned_size = (math.floor(size / BLOCK_SIZE) * BLOCK_SIZE)
     return aligned_size
 
 
@@ -1229,7 +1239,7 @@ def saveVolume():
     # ifOldName=body['old']
     print('----------body---', body)
     volume_name = body['name']
-    vol_size = float( body['size'])
+    vol_size = float(body['size'])
     maxbw = body['maxbw']
     array_name = body.get('array')
     maxiops = body['maxiops']
@@ -1240,7 +1250,7 @@ def saveVolume():
     suffix = body['suffix']
     max_available_size = body['max_available_size']
 
-    if array_name == None:
+    if array_name is None:
         array_name = dagent.array_names[0]
 
     if (vol_size == 0):
@@ -1355,6 +1365,7 @@ def updateVolume(current_user):
     update_vol_res = update_volume(body)
     return toJson(update_vol_res.json())
 
+
 @app.route('/api/v1.0/volumes/<volume_name>', methods=['PATCH'])
 @token_required
 def renameVolume(current_user, volume_name):
@@ -1367,6 +1378,7 @@ def renameVolume(current_user, volume_name):
         return make_response('Invalid Parameters received', 500)
     rename_vol_res = rename_volume(body)
     return toJson(rename_vol_res.json())
+
 
 @app.route('/api/v1.0/volume/mount', methods=['POST'])
 def mountVolume():
@@ -1386,7 +1398,6 @@ def unmountVolume():
         return toJson(unmount_vol_res.json())
     except Exception as e:
         return make_response('Could not Unmount Volume', 500)
-
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
 def mountPOS():
     try:
@@ -1394,6 +1405,7 @@ def mountPOS():
         return toJson(mount_ibofos_res.json())
     except Exception as e:
         return make_response('Could not mount POS', 500)
+
 
 @app.route('/api/v1.0/ibofos/mount', methods=['DELETE'])
 @token_required
@@ -1444,7 +1456,7 @@ def deleteVolumes(name):
                 description += del_vol_cmd["result"]["status"]["description"]
                 description += ", Error code: "
                 description += str(del_vol_cmd["result"]["status"]["code"])
-                description+= "\n"
+                description += "\n"
 
                 return_msg["result"] = del_vol_cmd["result"]["status"]
                 return_msg["vol_name"] = vol
@@ -1696,13 +1708,13 @@ def toggle_alert_status(current_user):
         return abort(404)
 '''
 
+
 @app.route('/api/v1.0/download_logs', methods=['GET'])
 def downloadLogs():
     print(request.args)
     startdate = request.args.get('start_date')
     enddate = request.args.get('end_date')
     return download_logs(startdate, enddate)
-
 
 
 @app.route('/api/v1.0/set_live_logs/', methods=['POST'])
@@ -2099,7 +2111,7 @@ def createMultiVolumeCallback():
     for entry in body['MultiVolArray']:
         if entry["result"]["status"]["code"] != 0:
             description += entry["result"]["status"]["description"]
-            description+= "\n"
+            description += "\n"
 
     passed = body['Pass']
     total_count = body['TotalCount']
@@ -2117,6 +2129,36 @@ def default_error_handler(e):
     print(e)
 
 
+@app.route('/api/v1.0/health_status/', methods=['GET'])
+@token_required
+def getHealthStatus(current_user):
+    try:
+        response = {}
+        statuses = []
+        res = get_user_cpu_usage("15m")
+        cpu_result = process_response(res, "cpu", "cpuUsagePercent", 1)
+        statuses.append(cpu_result)
+        res = get_user_memory_usage("15m")
+        mem_result = process_response(res, "memory", "memoryUsagePercent", 2)
+        statuses.append(mem_result)
+        res = get_latency_usage("15m")
+        set_max_latency(res, "latency")
+        res = get_latency_usage("")
+        latency_result = process_response(res, "latency", "latency", 3)
+        statuses.append(latency_result)
+        health_result = get_overall_health(
+            cpu_result["isHealthy"],
+            mem_result["isHealthy"],
+            latency_result["isHealthy"])
+        response["isHealthy"] = health_result
+        response["statuses"] = statuses
+        print("response ", response)
+        return jsonify(response)
+    except Exception as e:
+        print("In Health Status Exception: ", e)
+        return make_response('Could not get health status', 500)
+
+
 if __name__ == '__main__':
     #bmc_thread = threading.Thread(target=activate_bmc_thread)
     # bmc_thread.start()
@@ -2130,4 +2172,4 @@ if __name__ == '__main__':
         host='0.0.0.0',
         debug=False,
         use_reloader=False,
-        port=5000)
+        port=5002)

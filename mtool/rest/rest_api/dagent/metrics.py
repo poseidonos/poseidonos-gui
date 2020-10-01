@@ -46,6 +46,21 @@ def get_cpu_usage(time, auth = BASIC_AUTH_TOKEN):
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
+def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    try:
+        print("Sending command to dagent")
+        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/memory/' + time, \
+        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        print("--------------RESPONSE-------------")
+        response = response.json()
+        print("--------------RESPONSE-------------")
+        return response
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+
 
 def get_read_iops(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
