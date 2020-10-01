@@ -37,6 +37,7 @@ export {
     fetchPerformance,
     fetchStorage,
     fetchIpAndMac,
+    fetchHealthStatus,
 } from "./dashboardActions";
 export {
     openAlertBox,

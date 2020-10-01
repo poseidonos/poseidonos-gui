@@ -24,150 +24,211 @@ DESCRIPTION: <Contains Generator Functions for Dashboard component> *
 @REVISION HISTORY
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
-import axios from 'axios';
-import { call, takeEvery, put,cancelled } from 'redux-saga/effects';
+import axios from "axios";
+import { call, takeEvery, put, cancelled } from "redux-saga/effects";
 import { format as d3Format } from "d3-format";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
-import {formatNanoSeconds} from "../utils/format-bytes";
-
+import { formatNanoSeconds } from "../utils/format-bytes";
 
 export function* fetchVolumeInfo() {
-    try {
-        const response = yield call([axios, axios.get], '/api/v1.0/get_volumes/',{ 
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
+  try {
+    const response = yield call([axios, axios.get], "/api/v1.0/get_volumes/", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
 
-        const result = response.data;
-         /* istanbul ignore else */
-        if (result && !result.message) {
-            yield put(actionCreators.fetchVolumes(result));
-        }
-        yield put(actionCreators.enableFetchingAlerts(false));
+    const result = response.data;
+    /* istanbul ignore else */
+    if (result && !result.message) {
+      yield put(actionCreators.fetchVolumes(result));
     }
-    catch (error) {
-       const defaultResponse = [];
-       yield put(actionCreators.fetchVolumes(defaultResponse));
-       yield put(actionCreators.enableFetchingAlerts(false));
+    yield put(actionCreators.enableFetchingAlerts(false));
+  } catch (error) {
+    const defaultResponse = [];
+    yield put(actionCreators.fetchVolumes(defaultResponse));
+    yield put(actionCreators.enableFetchingAlerts(false));
+  } finally {
+    if (yield cancelled()) {
+      const defaultResponse = [];
+      yield put(actionCreators.fetchVolumes(defaultResponse));
+      yield put(actionCreators.enableFetchingAlerts(false));
     }
-    finally {
-        if(yield cancelled())
-        {
-            const defaultResponse = [];
-            yield put(actionCreators.fetchVolumes(defaultResponse));
-            yield put(actionCreators.enableFetchingAlerts(false));
-        }
-    }
+  }
 }
 
 export function* fetchAlertsInfo() {
-    try {
-        const response = yield call([axios, axios.get], "/api/v1.0/get_alert_info",{ 
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      "/api/v1.0/get_alert_info",
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
 
-        const result = response.data;
-         /* istanbul ignore else */
-        if (result) {
-            yield put(actionCreators.fetchAlerts(result.alerts));
-        }
+    const result = response.data;
+    /* istanbul ignore else */
+    if (result) {
+      yield put(actionCreators.fetchAlerts(result.alerts));
     }
-    catch (error) {
-        // console.log(error);
-    }
+  } catch (error) {
+    // console.log(error);
+  }
 }
 
 function* fetchStorageInfo() {
-    try {
-        const response = yield call([axios, axios.get], `/api/v1.0/available_storage/?ts=${Date.now()}`,{ 
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1.0/available_storage/?ts=${Date.now()}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
 
-        const result = response.data;
-         /* istanbul ignore else */
-        if (result) {
-            yield put(actionCreators.fetchStorage(
-                result[0] ? ((result[0].avail_size / result[0].total_size) * 100) : 0,
-                result[0].total_size - result[0].avail_size,
-                result[0].avail_size,
-                result[0].arraySize
-            ));
-        }
+    const result = response.data;
+    /* istanbul ignore else */
+    if (result) {
+      yield put(
+        actionCreators.fetchStorage(
+          result[0] ? (result[0].avail_size / result[0].total_size) * 100 : 0,
+          result[0].total_size - result[0].avail_size,
+          result[0].avail_size,
+          result[0].arraySize
+        )
+      );
     }
-    catch (error) {
-        // console.log(error);
-    }
+  } catch (error) {
+    // console.log(error);
+  }
 }
 
 function* fetchPerformanceInfo() {
-    try {
-        const response = yield call([axios, axios.get], `/api/v1.0/perf/all?ts=${Date.now()}`,{ 
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1.0/perf/all?ts=${Date.now()}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
 
-        const result = response.data;
+    const result = response.data;
 
-         /* istanbul ignore else */
-        if (result) {
-            yield put(actionCreators.fetchPerformance(
-                d3Format(".1s")(result.iops_read),
-                d3Format(".1s")(result.iops_write),
-                Math.round((result.bw_read / (1024 * 1024)) * 100) / 100,
-                Math.round((result.bw_write / (1024 * 1024)) * 100) / 100,
-                formatNanoSeconds(Math.round(result.latency))
-            ));
-        }
+    /* istanbul ignore else */
+    if (result) {
+      yield put(
+        actionCreators.fetchPerformance(
+          d3Format(".1s")(result.iops_read),
+          d3Format(".1s")(result.iops_write),
+          Math.round((result.bw_read / (1024 * 1024)) * 100) / 100,
+          Math.round((result.bw_write / (1024 * 1024)) * 100) / 100,
+          formatNanoSeconds(Math.round(result.latency))
+        )
+      );
     }
-    catch (error) {
-        // console.log(error);
-    }
+  } catch (error) {
+    // console.log(error);
+  }
 }
 
-
 function* fetchIpAndMacInfo() {
-    try {
-        const response = yield call([axios, axios.get], "/api/v1.0/get_ip_and_mac",{ 
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      "/api/v1.0/get_ip_and_mac",
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
 
-        const result = response.data;
-         /* istanbul ignore else */
-        if (result) {
-            yield put(actionCreators.fetchIpAndMac(
-                result.ip, result.mac, result.host
-            ));
-        }
+    const result = response.data;
+    /* istanbul ignore else */
+    if (result) {
+      yield put(
+        actionCreators.fetchIpAndMac(result.ip, result.mac, result.host)
+      );
     }
-    catch (error) {
-       // console.log(error);
+  } catch (error) {
+    // console.log(error);
+  }
+}
+
+function* fetchHealthStatus() {
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1.0/health_status/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+
+    const result = response.data;
+    /* istanbul ignore else */
+    if (result.statuses) {
+      const cpuDetails = result.statuses[0];
+      const memoryDetails = result.statuses[1];
+      const latencyDetails = result.statuses[2];
+
+      const cpuUsage = cpuDetails.value / 100;
+      const cpuArcsLength = cpuDetails.arcsArr;
+      const memoryUsage = memoryDetails.value / 100;
+      const memoryArcsLength = memoryDetails.arcsArr;
+      const latencyPer = latencyDetails.value / 100;
+      const latencyArcsLength = latencyDetails.arcsArr;
+      const latencyVal = Math.round(latencyDetails.latency/1000000);
+     
+      yield put(
+        actionCreators.fetchHealthStatus(
+          cpuUsage,
+          memoryUsage,
+          latencyPer,
+          cpuArcsLength,
+          memoryArcsLength,
+          latencyArcsLength,
+          latencyVal
+        )
+      );
     }
+  } catch (error) {
+    // console.log(error);
+  }
 }
 
 export function* dashboardWatcher() {
-    yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
-    yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
-    yield takeEvery(actionTypes.SAGA_FETCH_STORAGE_INFO, fetchStorageInfo);
-    yield takeEvery(actionTypes.SAGA_FETCH_PERFORMANCE_INFO, fetchPerformanceInfo);
-    yield takeEvery(actionTypes.SAGA_FETCH_IPANDMAC_INFO, fetchIpAndMacInfo);
-   // console.log("This is async operation");
+  yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
+  yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
+  yield takeEvery(actionTypes.SAGA_FETCH_STORAGE_INFO, fetchStorageInfo);
+  yield takeEvery(
+    actionTypes.SAGA_FETCH_PERFORMANCE_INFO,
+    fetchPerformanceInfo
+  );
+  yield takeEvery(actionTypes.SAGA_FETCH_HEALTH_STATUS, fetchHealthStatus);
+  yield takeEvery(actionTypes.SAGA_FETCH_IPANDMAC_INFO, fetchIpAndMacInfo);
+  // console.log("This is async operation");
 }

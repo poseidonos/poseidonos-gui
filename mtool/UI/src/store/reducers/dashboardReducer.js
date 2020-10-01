@@ -43,7 +43,14 @@ const initialState = {
     ip: '0.0.0.0',
     mac: 'NA',
     host: '',
-    arraySize: 0
+    arraySize: 0,
+    memoryUsage: 0,
+    cpuUsage: 0,
+    latencyVal: 0,
+    latencyPer: 0,
+    cpuArcsLength:[0.5, 0.2, 0.3],
+    memoryArcsLength:[0.5, 0.2, 0.3],
+    latencyArcsLength:[0.5, 0.2, 0.3],
 }
 
 
@@ -87,6 +94,17 @@ const dashboardReducer = (state = initialState, action) => {
                 ip:action.ip,
                 mac:action.mac,
                 host:action.host
+            };
+        case actionTypes.FETCH_HEALTH_STATUS:
+                return {
+                    ...state,
+                    cpuUsage: action.cpuUsage,
+                    memoryUsage: action.memoryUsage,
+                    latencyVal: action.latencyVal,
+                    latencyPer: action.latencyPer,
+                    cpuArcsLength: action.cpuArcsLength,
+                    memoryArcsLength: action.memoryArcsLength,
+                    latencyArcsLength: action.latencyArcsLength,
             };
         default:
             return state;

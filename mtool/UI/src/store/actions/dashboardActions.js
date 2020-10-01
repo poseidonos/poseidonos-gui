@@ -24,36 +24,63 @@ DESCRIPTION: <Contains pure actions for Dashboard Page> *
 @REVISION HISTORY
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
-export const enableFetchingAlerts = flag => {
+export const enableFetchingAlerts = (flag) => {
   return {
     type: actionTypes.ENABLE_FETCHING_ALERTS,
     fetchingAlerts: flag,
   };
 };
-export const fetchVolumes = volumes => {
+export const fetchVolumes = (volumes) => {
   return {
     type: actionTypes.FETCH_VOLUME_INFO,
     volumes,
   };
 };
 
-export const fetchAlerts = alerts => {
+export const fetchAlerts = (alerts) => {
   return {
     type: actionTypes.FETCH_ALERTS_INFO,
     alerts,
   };
 };
 
-export const fetchPerformance = (readIOPS, writeIOPS, readBW, writeBW, latency) => {
+export const fetchPerformance = (
+  readIOPS,
+  writeIOPS,
+  readBW,
+  writeBW,
+  latency
+) => {
   return {
     type: actionTypes.FETCH_PERFORMANCE_INFO,
     readIOPS,
     writeIOPS,
     readBW,
     writeBW,
-    latency
+    latency,
+  };
+};
+
+export const fetchHealthStatus = (
+  cpuUsage,
+  memoryUsage,
+  latencyPer,
+  cpuArcsLength,
+  memoryArcsLength,
+  latencyArcsLength,
+  latencyVal
+) => {
+  return {
+    type: actionTypes.FETCH_HEALTH_STATUS,
+    cpuUsage,
+    memoryUsage,
+    latencyPer,
+    cpuArcsLength,
+    memoryArcsLength,
+    latencyArcsLength,
+    latencyVal,
   };
 };
 
