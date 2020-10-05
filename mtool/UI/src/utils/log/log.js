@@ -13,7 +13,7 @@ const jsonFormatter = (log) => {
             user: userid
         },
         fields: {
-            "message": log.message,
+            "value": log.message,
             "useragent": navigator.userAgent
         },
         measurement: "mtool_log",

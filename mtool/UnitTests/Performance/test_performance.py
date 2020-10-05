@@ -14,6 +14,7 @@ ip = os.environ.get('DAGENT_HOST', 'localhost')
 port = '3000'
 
 DAGENT_URL = 'http://' + ip + ':' + port
+INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 
 class InfluxMock:
     '''
@@ -67,6 +68,7 @@ class InfluxMock:
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_cpu_usage(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -134,6 +136,7 @@ def test_get_disk_used_percent(mock_get_current_user, mock_influx_db):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_read_iops(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -173,6 +176,7 @@ def test_get_read_iops(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_vol_read_iops(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -212,6 +216,7 @@ def test_get_vol_read_iops(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_write_iops(mock_get1_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -251,6 +256,7 @@ def test_get_write_iops(mock_get1_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_vol_write_iops(mock_get1_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -291,6 +297,7 @@ def test_get_vol_write_iops(mock_get1_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_read_bw(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -330,6 +337,7 @@ def test_get_read_bw(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_vol_read_bw(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readbw/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -370,6 +378,7 @@ def test_get_vol_read_bw(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_write_bw(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -409,6 +418,7 @@ def test_get_write_bw(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_vol_write_bw(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writebw/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -449,6 +459,7 @@ def test_get_vol_write_bw(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_vol_latency(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -488,6 +499,7 @@ def test_get_vol_latency(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_latency(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -527,6 +539,7 @@ def test_get_latency(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_current_iops(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{

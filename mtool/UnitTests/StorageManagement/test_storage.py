@@ -15,6 +15,8 @@ ip = os.environ.get('DAGENT_HOST', 'localhost')
 
 DAGENT_URL = 'http://' + ip + ':3000'
 
+INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
+
 @pytest.fixture(scope='module')
 @mock.patch("rest.app.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
@@ -34,6 +36,7 @@ def global_data(mock_match_username_from_db):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_devices(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": {"devicelist": [{"name": "uram0",
@@ -60,6 +63,7 @@ def test_get_devices(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_smart_info(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/unvme-ns-1/smart',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": {"temp": "120C"}}},
@@ -74,6 +78,7 @@ def test_get_smart_info(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volumes(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumes',
         json={
@@ -100,6 +105,7 @@ def test_get_volumes(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_available_storage(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
         json={
@@ -124,6 +130,7 @@ def test_get_available_storage(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volume_count(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/maxcount',
@@ -146,6 +153,7 @@ def test_get_volume_count(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_arrays(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL +
         '/api/ibofos/v1/system',
@@ -196,6 +204,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_arrays(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
         json={
@@ -237,6 +246,7 @@ def test_get_arrays(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
@@ -270,6 +280,7 @@ def test_create_volumes(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_max_size(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
@@ -303,6 +314,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_tb(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
@@ -336,6 +348,7 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_pb(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
@@ -369,6 +382,7 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
@@ -411,6 +425,7 @@ def test_make_block_aligned():
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_spare(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices',
@@ -435,6 +450,7 @@ def test_add_spare(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_spare_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices',
@@ -460,6 +476,7 @@ def test_add_spare_failure(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_remove_spare(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices/unvme-ns-3',
@@ -485,6 +502,7 @@ def test_remove_spare(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_remove_spare_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices/unvme-ns-3',
@@ -510,6 +528,7 @@ def test_remove_spare_failure(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_array(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
@@ -539,6 +558,7 @@ def test_delete_array(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_array_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
@@ -568,6 +588,7 @@ def test_delete_array_failure(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
         json={
@@ -595,6 +616,7 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
         json={
@@ -619,6 +641,7 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes_failed(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
         json={
@@ -646,6 +669,7 @@ def test_delete_volumes_failed(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_update_volume(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].patch(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/qos',
         json={
@@ -674,6 +698,7 @@ def test_update_volume(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_rename_volume(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].patch(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
         json={
@@ -741,6 +766,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_mount_volume(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
         json={
@@ -776,6 +802,7 @@ def test_mount_volume(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_unmount_volume(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
         json={
@@ -805,8 +832,24 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
         headers={'x-access-token': json_token})
     assert response.status_code == 500
 
-
-def test_list_devices(global_data):
+@requests_mock.Mocker(kw="mock")
+def test_list_devices(global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": {"devicelist": [{"name": "uram0",
+                                                                 "type": "NVRAM",
+                                                                 "size": 12345,
+                                                                 "mn": "DEFG",
+                                                                 "sn": "SN"},
+                                                                {"name": "unvme-ns-0",
+                                                                 "type": "SSD",
+                                                                 "size": 12345,
+                                                                 "mn": "ABCD",
+                                                                 "sn": "SN!"}]}},
+                             "data": {"devicelist": [{"name": "unvme-ns-0",
+                                                      "type": "NVRAM"}]}},
+                       status_code=200)
     output = list_devices()
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
@@ -820,6 +863,7 @@ def test_list_devices(global_data):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_volume_collection(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumes',
                        status_code=200)
 
@@ -829,6 +873,7 @@ def test_get_volume_collection(**kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_volume(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumes',
                        status_code=200)
 
@@ -838,6 +883,7 @@ def test_get_volume(**kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_arrays_func(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/devices',
                        status_code=200)
 
@@ -848,6 +894,7 @@ def test_get_arrays_func(**kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_mount_array(mock_get_current_user,**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
@@ -865,6 +912,7 @@ def test_mount_array(mock_get_current_user,**kwargs):
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_unmount_array(mock_get_current_user,**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
