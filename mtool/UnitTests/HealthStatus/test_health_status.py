@@ -13,12 +13,13 @@ ip = os.environ.get('DAGENT_HOST', 'localhost')
 port = '3000'
 
 DAGENT_URL = 'http://' + ip + ':' + port
-
+INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)                       
 def test_getHealthStatus(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
@@ -59,14 +60,38 @@ def test_getHealthStatus(mock_get_current_user, **kwargs):
     response = app.test_client().get(
         '/api/v1.0/health_status/',
         headers={'x-access-token': json_token})
-    print("Response :",response)	
 
     data = json.loads(response.get_data(as_text=True))
-    print("Data ",data,type(data))
     assert response.status_code == 200
     assert data["statuses"][0]["name"] == "cpu"
     assert data["statuses"][1]["name"] == "memory"
     assert data["statuses"][2]["name"] == "latency"
 
 
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_getHealthStatus_with_empty_result(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": []}}, status_code=200)
+
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/memory/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": []}}, status_code=200)
+
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": []}}, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": []}}, status_code=200)
+
+    response = app.test_client().get(
+        '/api/v1.0/health_status/',
+        headers={'x-access-token': json_token})
+    data = json.loads(response.get_data(as_text=True))
+    assert response.status_code == 200
 

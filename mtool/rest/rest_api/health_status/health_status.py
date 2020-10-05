@@ -151,8 +151,5 @@ def process_response(res, rule, field, _id):
     return result
 
 
-def get_overall_health(result1, result2, result3):
-    if result1 and result2 and result3:
-        return True
-    else:
-        return False
+def get_overall_health(results):
+	return all(results)

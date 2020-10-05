@@ -2146,13 +2146,12 @@ def getHealthStatus(current_user):
         res = get_latency_usage("")
         latency_result = process_response(res, "latency", "latency", 3)
         statuses.append(latency_result)
-        health_result = get_overall_health(
+        health_result = get_overall_health([
             cpu_result["isHealthy"],
             mem_result["isHealthy"],
-            latency_result["isHealthy"])
+            latency_result["isHealthy"]])
         response["isHealthy"] = health_result
         response["statuses"] = statuses
-        print("response ", response)
         return jsonify(response)
     except Exception as e:
         print("In Health Status Exception: ", e)
