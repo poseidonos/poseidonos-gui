@@ -544,7 +544,7 @@ modules:
         solution:
       - code: 2505
         level: ERROR
-        message: the number of ssds must be between {} and {}
+        message: the number of ssds must be between 3 and 32
         problem:
         solution:
       - code: 2506
