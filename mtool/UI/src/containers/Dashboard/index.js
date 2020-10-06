@@ -278,6 +278,7 @@ class Dashboard extends Component {
     clearInterval(this.interval);
     window.removeEventListener("resize", this.setChartWidth);
   }
+
   setChartWidth() {
     setTimeout(() => {
       const chart = document.getElementById(
@@ -478,7 +479,7 @@ class Dashboard extends Component {
                               needleColor="#D6DBDF"
                               needleBaseColor="#D6DBDF"
                               textColor="rgba(0,0,0,0.8)"
-                              formatTextValue={(value) => this.props.latencyVal+ ' ms'}
+                              formatTextValue={() => `${this.props.latencyVal } ms`}
                             />
                           </Grid>
                         </Grid>
@@ -512,7 +513,7 @@ class Dashboard extends Component {
                           </Grid>
                         </Grid>
                       </Grid>
-                    </Paper>
+                  </Paper>
                     <Paper spacing={3} xs={6} className={classes.metricsPaper}>
                       <Grid container justify="space-around">
                         <Grid
@@ -833,11 +834,11 @@ class Dashboard extends Component {
                   >
                     <Paper spacing={3} className={classes.volumeSummary}>
                       <MaterialTable
-                        title={
-                          <Typography className={classes.cardHeader}>
+                        title={(
+<Typography className={classes.cardHeader}>
                             Volume Summary
-                          </Typography>
-                        }
+</Typography>
+)}
                         columns={volumeTableColumns}
                         data={this.props.volumes}
                         options={{

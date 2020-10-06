@@ -27,6 +27,7 @@ DESCRIPTION: <Contains Generator Functions for Dashboard component> *
 import axios from "axios";
 import { call, takeEvery, put, cancelled } from "redux-saga/effects";
 import { format as d3Format } from "d3-format";
+import _ from "lodash"
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 import { formatNanoSeconds } from "../utils/format-bytes";
@@ -191,9 +192,14 @@ function* fetchHealthStatus() {
     const result = response.data;
     /* istanbul ignore else */
     if (result.statuses) {
-      const cpuDetails = result.statuses[0];
-      const memoryDetails = result.statuses[1];
-      const latencyDetails = result.statuses[2];
+      const cpuIndex = _.findIndex(result.statuses, { 'name' : 'cpu'})
+      const cpuDetails = result.statuses[cpuIndex];
+
+      const memoryIndex = _.findIndex(result.statuses, { 'name' : 'memory'})
+      const memoryDetails = result.statuses[memoryIndex];
+
+      const latencyIndex = _.findIndex(result.statuses, { 'name' : 'latency'})
+      const latencyDetails = result.statuses[latencyIndex];
 
       const cpuUsage = cpuDetails.value / 100;
       const cpuArcsLength = cpuDetails.arcsArr;
@@ -201,7 +207,13 @@ function* fetchHealthStatus() {
       const memoryArcsLength = memoryDetails.arcsArr;
       const latencyPer = latencyDetails.value / 100;
       const latencyArcsLength = latencyDetails.arcsArr;
-      const latencyVal = Math.round(latencyDetails.latency/1000000);
+      let latencyVal = Math.round(latencyDetails.latency/1000000);
+
+       /* istanbul ignore else */
+      if(latencyVal % 1 === 0)
+        latencyVal = Math.round(latencyVal);
+      else
+        latencyVal = latencyVal.toFixed(2);
      
       yield put(
         actionCreators.fetchHealthStatus(
