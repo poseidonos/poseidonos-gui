@@ -1294,6 +1294,16 @@ modules:
         level: ERROR
         message: Another request already in progress
         problem: another request is in progress. Wait for it's completion
+      - code: 11040
+        level: ERROR
+        message: Associated POS call failed
+        problem: POS calls returned error or busy status
+        solution: Try again after some time
+      - code: 11050
+        level: ERROR
+        message: Volume count exceeds limit
+        problem: Number of volume exceeds maximum supported count
+        solution: Try with a smaller value for count
       - code: 12010
         level: ERROR
         message: one of iBoF service is dead
