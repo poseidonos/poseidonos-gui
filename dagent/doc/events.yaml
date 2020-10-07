@@ -1,6 +1,6 @@
 ---
 Goal: Events Unification
-Version: "v.89"
+Version: "v.91"
 modules:
   - name: "COMMON"
     count: 999
@@ -317,6 +317,14 @@ modules:
         message: subsystem not created
         problem: Attempt to mount volume with no subsystem created
         solution: Subsystems must be created before mounting volumes
+      - code: 2101
+        level: Warning
+        message: Volume already has set subsysten nqn
+        solution: Subsystems must be created before mounting volumes
+      - code: 2102
+        level: Warning
+        message: Fail to attach namespace to subsystem
+        solution: Check if max namespaces was specified during subsystem creation (ex. -m 256)
   - name: "MBR Manager"
     count: 100
     idStart: 2300
