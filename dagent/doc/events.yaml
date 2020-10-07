@@ -1302,7 +1302,7 @@ modules:
       - code: 11050
         level: ERROR
         message: Volume count exceeds limit
-        problem: Number of volume exceeds maximum supported count
+        problem: POS allows only 256 volumes to create. please check and try again
         solution: Try with a smaller value for count
       - code: 12010
         level: ERROR

@@ -27,6 +27,8 @@ const (
 	CALLBACK_URL         = "http://" + CALLBACK_IP + ":" + CALLBACK_PORT + "/api/v1.0/multi_vol_response/"
 	MAX_RETRY_COUNT      = 5
 	POST                 = "POST"
+	POS_API_ERROR        = 11040
+	COUNT_EXCEEDED_ERROR = 11050
 )
 
 var (
@@ -173,7 +175,7 @@ func maxCountExceeded(count int) (int, bool) {
 	_, volList, err := iBoFOS.ListVolume(listXrid.String(), req.Param)
 	_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), req.Param)
 	if err != nil {
-		return 11040, true
+		return POS_API_ERROR, true
 	}
 	volCount := 0
 	maxCount := 0
@@ -183,19 +185,19 @@ func maxCountExceeded(count int) (int, bool) {
 	}
 	maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["count"].(string))
 	if err != nil {
-		return 11040, true
+		return POS_API_ERROR, true
 	}
 	if count <= (maxCount - volCount) {
 		return 0, false
 	}
-	return 11050, true
+	return COUNT_EXCEEDED_ERROR, true
 }
 
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
 
-    if status, ok := maxCountExceeded(int(volParam.TotalCount)); ok {
+	if status, ok := maxCountExceeded(int(volParam.TotalCount)); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
