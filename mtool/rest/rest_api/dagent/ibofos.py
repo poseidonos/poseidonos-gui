@@ -17,8 +17,8 @@ BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 VERSION = 'v1'
 
-connect_timeout = 5
-read_timeout = 5
+connect_timeout = 60
+read_timeout = 60
 
 
 def get_headers(
@@ -126,8 +126,8 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/system',
             headers=req_headers,
             timeout=(
-                8,
-                10))
+                connect_timeout,
+                read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         array_exists(array_names[0])
@@ -151,8 +151,8 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/system/mount',
             headers=req_headers,
             timeout=(
-                10,
-                10))
+                connect_timeout,
+                read_timeout))
 
         response = send_command_to_dagent(
             "DELETE",
@@ -211,7 +211,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
             headers=req_headers,
             timeout=(
                 connect_timeout,
-                10))
+                read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
@@ -281,8 +281,8 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/system/mount',
             headers=req_headers,
             timeout=(
-                10,
-                10))
+                connect_timeout,
+                read_timeout))
 
         response = send_command_to_dagent(
                 "DELETE",
@@ -290,8 +290,8 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
                 '/api/ibofos/v1/array/' + name,
                 headers=req_headers,
                 timeout=(
-                    10,
-                    10))
+                    connect_timeout,
+                    read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
@@ -315,7 +315,7 @@ def array_status(auth=BASIC_AUTH_TOKEN):
             headers=req_headers,
             timeout=(
                 connect_timeout,
-                10))
+                read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
@@ -337,8 +337,8 @@ def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/array/' + arrayname + 'load',
             headers=req_headers,
             timeout=(
-                8,
-                10))
+                connect_timeout,
+                read_timeout))
         print("Load array response status", response.status_code)
         if (response.status_code == 200):
             return True
@@ -363,8 +363,8 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/array/' + arrayname + '/load',
             headers=req_headers,
             timeout=(
-                8,
-                10))
+                connect_timeout,
+                read_timeout))
         print("Load array response status", response.status_code)
         print(response.json())
         
@@ -376,8 +376,8 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/system/mount',
             headers=req_headers,
             timeout=(
-                180,
-                180)
+                connect_timeout,
+                read_timeout)
             )
     
             return True
@@ -418,8 +418,8 @@ def create_array(
             '/api/ibofos/v1/array',
             headers=req_headers,
             timeout=(
-                10,
-                10),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         print("resp for create array",response.json())
         response = send_command_to_dagent(
@@ -428,8 +428,8 @@ def create_array(
             '/api/ibofos/v1/system/mount',
             headers=req_headers,
             timeout=(
-                180,
-                180),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
@@ -454,7 +454,7 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
             headers=req_headers,
             timeout=(
                 connect_timeout,
-                10))
+                read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
@@ -499,8 +499,8 @@ def create_volume(
             '/api/ibofos/v1/volumes',
             headers=req_headers,
             timeout=(
-                8,
-                8),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         # print("---------------RESPONSE---------------")
         return response
@@ -524,8 +524,8 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/volumes/' + params["name"] + '/qos',
             headers=req_headers,
             timeout=(
-                8,
-                8),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
@@ -548,8 +548,8 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
             '/api/ibofos/v1/volumes/' + params["param"]["name"],
             headers=req_headers,
             timeout=(
-                8,
-                8),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         print("---------------RENAME RESPONSE---------------")
         print(response.status_code, response.json())
@@ -631,8 +631,8 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + method,
             headers=req_headers,
             timeout=(
-                connect_timeout * 36,
-                read_timeout * 36))
+                connect_timeout,
+                read_timeout))
 
         # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
@@ -654,8 +654,8 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + method,
             headers=req_headers,
             timeout=(
-                read_timeout*36,
-                connect_timeout*36))
+                connect_timeout,
+                read_timeout))
 
         # print("---------------RESPONSE---------------")
         return response
@@ -775,8 +775,8 @@ def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
             BASE_PATH + '/' + VERSION + '/array/' + arrayname + '/devices',
             headers=req_headers,
             timeout=(
-                10,
-                10),
+                connect_timeout,
+                read_timeout),
             data=request_body)
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
@@ -798,8 +798,8 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
             BASE_PATH + '/' + VERSION + '/array/' + arrayname + '/devices/' + name,
             headers=req_headers,
             timeout=(
-                10,
-                10))
+                connect_timeout,
+                read_timeout))
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
