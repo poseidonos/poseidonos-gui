@@ -2157,6 +2157,15 @@ def getHealthStatus(current_user):
         print("In Health Status Exception: ", e)
         return make_response('Could not get health status', 500)
 
+@app.route('/api/v1.0/cleanup/', methods=['GET'])
+@token_required
+def do_cleanup(current_user):
+    try:
+        os.system("./scripts/cleanup.sh > /dev/null 2>&1")
+        return jsonify({"response": "Success"})
+    except Exception as e:
+        return make_response('Could not cleanup', 500)
+
 
 if __name__ == '__main__':
     #bmc_thread = threading.Thread(target=activate_bmc_thread)

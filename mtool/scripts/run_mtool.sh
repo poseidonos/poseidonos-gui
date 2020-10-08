@@ -39,6 +39,9 @@ sudo chmod 777 /var/log/logmtool2.log
 #give permission to sqlite db
 sudo chmod 777 $PWD/ibof.db
 
+#give permission to cleanup.sh
+sudo chmod +x $PWD/scripts/cleanup.sh
+
 #create a soft link for the folder , to get absolute path for starting service
 sudo rm /usr/local/m9k
 parentdir="$(dirname "$currdir")"
