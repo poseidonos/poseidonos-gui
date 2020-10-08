@@ -597,7 +597,7 @@ function* updateVolume(action) {
               name: action.payload.name,
               newName: action.payload.newName,
               array: arrayName,
-              error: "Max IOPS and Bandwidth Updated successfully"
+              error: ""
             },
           });
         } else {

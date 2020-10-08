@@ -1,27 +1,35 @@
 {
   "files": {
     "main.css": "/static/css/main.73af2b61.chunk.css",
-    "main.js": "/static/js/main.52ae4f72.chunk.js",
-    "main.js.map": "/static/js/main.52ae4f72.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.a3e533b7.js",
-    "runtime-main.js.map": "/static/js/runtime-main.a3e533b7.js.map",
+    "main.js": "/static/js/main.a6162129.chunk.js",
+    "main.js.map": "/static/js/main.a6162129.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.dfa3c1f8.js",
+    "runtime-main.js.map": "/static/js/runtime-main.dfa3c1f8.js.map",
     "static/css/2.06a9ef75.chunk.css": "/static/css/2.06a9ef75.chunk.css",
-    "static/js/2.e02cb46b.chunk.js": "/static/js/2.e02cb46b.chunk.js",
-    "static/js/2.e02cb46b.chunk.js.map": "/static/js/2.e02cb46b.chunk.js.map",
+    "static/js/2.b885770e.chunk.js": "/static/js/2.b885770e.chunk.js",
+    "static/js/2.b885770e.chunk.js.map": "/static/js/2.b885770e.chunk.js.map",
+    "static/js/3.26008fab.chunk.js": "/static/js/3.26008fab.chunk.js",
+    "static/js/3.26008fab.chunk.js.map": "/static/js/3.26008fab.chunk.js.map",
+    "static/js/4.7a896503.chunk.js": "/static/js/4.7a896503.chunk.js",
+    "static/js/4.7a896503.chunk.js.map": "/static/js/4.7a896503.chunk.js.map",
+    "static/js/5.890a206d.chunk.js": "/static/js/5.890a206d.chunk.js",
+    "static/js/5.890a206d.chunk.js.map": "/static/js/5.890a206d.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.9b19890d28b96803ff06e7a23ce3cc04.js": "/precache-manifest.9b19890d28b96803ff06e7a23ce3cc04.js",
+    "precache-manifest.40901d216a2b08b2d09bac2bb6e55af4.js": "/precache-manifest.40901d216a2b08b2d09bac2bb6e55af4.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.06a9ef75.chunk.css.map": "/static/css/2.06a9ef75.chunk.css.map",
     "static/css/main.73af2b61.chunk.css.map": "/static/css/main.73af2b61.chunk.css.map",
-    "static/js/2.e02cb46b.chunk.js.LICENSE.txt": "/static/js/2.e02cb46b.chunk.js.LICENSE.txt",
+    "static/js/2.b885770e.chunk.js.LICENSE.txt": "/static/js/2.b885770e.chunk.js.LICENSE.txt",
+    "static/js/4.7a896503.chunk.js.LICENSE.txt": "/static/js/4.7a896503.chunk.js.LICENSE.txt",
+    "static/js/5.890a206d.chunk.js.LICENSE.txt": "/static/js/5.890a206d.chunk.js.LICENSE.txt",
     "static/media/Header-logo.png": "/static/media/Header-logo.1e52dde6.png",
-    "static/media/Samsung_iBOF_Management_Tool_User_Manual.pdf": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.584ab2b0.pdf"
+    "static/media/Samsung_iBOF_Management_Tool_User_Manual.pdf": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.7b355157.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.a3e533b7.js",
+    "static/js/runtime-main.dfa3c1f8.js",
     "static/css/2.06a9ef75.chunk.css",
-    "static/js/2.e02cb46b.chunk.js",
+    "static/js/2.b885770e.chunk.js",
     "static/css/main.73af2b61.chunk.css",
-    "static/js/main.52ae4f72.chunk.js"
+    "static/js/main.a6162129.chunk.js"
   ]
 }
