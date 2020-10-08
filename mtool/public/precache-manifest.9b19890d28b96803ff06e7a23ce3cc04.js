@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f5b42d321aa05809629f862e9100014e",
+    "revision": "0249f1e686fc53577d5bb57d8992d397",
     "url": "/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.06a9ef75.chunk.css"
   },
   {
-    "revision": "7bb470df4ba492470605",
+    "revision": "10f137a69b09db0b21b1",
     "url": "/static/css/main.73af2b61.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.e02cb46b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7bb470df4ba492470605",
-    "url": "/static/js/main.9da409d3.chunk.js"
+    "revision": "10f137a69b09db0b21b1",
+    "url": "/static/js/main.52ae4f72.chunk.js"
   },
   {
     "revision": "ef844570c74027621af6",
@@ -32,7 +32,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/Header-logo.1e52dde6.png"
   },
   {
-    "revision": "1e12d46a9662c21191fc7a0bf785701a",
-    "url": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.1e12d46a.pdf"
+    "revision": "584ab2b0577b8305ca9cc19ef7c5554c",
+    "url": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.584ab2b0.pdf"
   }
 ]);
