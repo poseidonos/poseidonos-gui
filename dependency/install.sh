@@ -15,14 +15,33 @@ then
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libnginx-mod-http-echo_1.14.0-0ubuntu1_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-light_1.14.0-0ubuntu1_amd64.deb
 
+    if ! [ -x "$(command -v pip3)" ]; then
+
+      unzip $SCRIPT_PATH/python-packages/setuptools-50.3.0.zip
+      cd setuptools-50.3.0
+      python3 setup.py install
+      cd ..
+      rm -r setuptools-50.3.0
+
+      tar -xzvf $SCRIPT_PATH/python-packages/pip-20.2.3.tar.gz
+      cd pip-20.2.3
+      python3 setup.py build
+      python3 setup.py install
+      cd ..
+      rm -r pip-20.2.3
+    else
+      echo "Pip is present"
+    fi
+
+
     sudo service influxdb start
     sudo service chronograf start
     sudo service kapacitor start
 
     # It should use requirements.txt
-    sudo pip3 install --src $SCRIPT_PATH/python-packages msgpack==0.6.1 -f ./ --no-index
-    sudo pip3 install $SCRIPT_PATH/python-packages/influxdb-5.3.0-py2.py3-none-any.whl -f ./ --no-index
-    sudo pip3 install $SCRIPT_PATH/python-packages/requests-2.21.0.tar.gz -f ./ --no-index
+    sudo pip3 install --src $SCRIPT_PATH/python-packages msgpack --find-links=$SCRIPT_PATH/python-packages --no-index
+    sudo pip3 install $SCRIPT_PATH/python-packages/influxdb-5.3.0-py2.py3-none-any.whl --find-links=$SCRIPT_PATH/python-packages --no-index
+    sudo pip3 install $SCRIPT_PATH/python-packages/requests-2.21.0.tar.gz --find-links=$SCRIPT_PATH/python-packages --no-index
   elif [ $1 = "apt" ]
   then
     wget --no-check-certificate -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
