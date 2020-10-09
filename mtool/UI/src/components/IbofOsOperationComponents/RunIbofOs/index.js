@@ -81,6 +81,19 @@ const RunIbofOs = props => {
                   Stop
                 </Button>
               </div>
+              <div className="IBOFOSButtonClass">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    title="Reset Poseidon OS"
+                    data-testid="resetButton"
+                    onClick={() => {
+                      props.openAlert('Reset');
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </div>
             </div>
           </div>
         ) : (
@@ -127,6 +140,19 @@ const RunIbofOs = props => {
                     disabled={!props.status}
                   >
                     Stop
+                  </Button>
+                </div>
+                <div className="IBOFOSButtonClass">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    title="Reset Poseidon OS"
+                    data-testid="resetButton"
+                    onClick={() => {
+                      props.openAlert('Reset');
+                    }}
+                  >
+                    Reset
                   </Button>
                 </div>
               </div>

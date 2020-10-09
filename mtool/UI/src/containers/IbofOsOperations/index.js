@@ -59,6 +59,7 @@ class IbofOsOperations extends Component {
         this.triggerCommand = this.triggerCommand.bind(this);
         this.OnHandleStart = this.OnHandleStart.bind(this);
         this.OnHandleShutdown = this.OnHandleShutdown.bind(this);
+        this.OnHandleReset = this.OnHandleReset.bind(this);
         // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
         // this.OnHandleChange = this.OnHandleChange.bind(this);
         // this.validate = this.validate.bind(this);
@@ -165,6 +166,30 @@ class IbofOsOperations extends Component {
             });
     }
 
+    OnHandleReset() {
+        fetch('/api/v1.0/cleanup/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token')
+            },
+        }).then((res) => {
+            this.IsIbofOSRunning();
+            if (res.status === 200) {
+                return res.json();
+            }
+            return [];
+        })
+            .then((result) => {
+                this.setState({
+                    ...this.state,
+                    responseforIbofOS: result.response,// result.response
+                    isButtonDisabled: false
+                });
+            });
+    }
+
 
     // OnHandleChange(event) {
     //     const { name, value } = event.target
@@ -223,14 +248,18 @@ class IbofOsOperations extends Component {
         // if (operationType === "Start" || operationType === "Stop" || operationType === "Exit")
         // if (operationType === "Start" || operationType === "Stop")
         message = "Poseidon OS";
+        let alertMessage = operationType === "Reset" ?
+            "Reset will delete all the array and volumes in POS \n" : "";
+
+
         this.setState({
             ...this.state,
             alertOpen: true,
             add_delete_send: operationType,
             alerttype: "delete",
             istypealert: false,
-            alerttitle: operationType + message,
-            alertdescription: `Do you want to  ${operationType} the ${message} ?`,
+            alerttitle: `${operationType} ${message}`,
+            alertdescription: `${alertMessage}Do you want to  ${operationType} the ${message} ?`,
         });
     }
 
@@ -254,8 +283,8 @@ class IbofOsOperations extends Component {
                 isButtonDisabled: true,
                 responseforIbofOS: "Initializing..."
             });
-        // else if (this.state.add_delete_send === "Stop") {
-        } else {
+        } else if (this.state.add_delete_send === "Stop") {
+        // } else {
             this.setState({
                 ...this.setState,
                 alertOpen: false,
@@ -267,6 +296,13 @@ class IbofOsOperations extends Component {
                 alertOpen: false,
                 isButtonDisabled: true,
                 responseforIbofOS: "Stopping..."
+            });
+        } else {
+            this.setState({
+                ...this.setState,
+                alertOpen: false,
+                isButtonDisabled: true,
+                responseforIbofOS: "Resetting..."
             });
         }
         // else if (this.state.add_delete_send === "Exit")
@@ -285,9 +321,11 @@ class IbofOsOperations extends Component {
         if (this.state.add_delete_send === "Start") {
             this.OnHandleStart();
             this.handleAlertClose("YES");
-        } else {
-        // else if (this.state.add_delete_send === "Stop") {
+        } else if (this.state.add_delete_send === "Stop") {
             this.OnHandleShutdown();
+            this.handleAlertClose("YES");
+        } else {
+            this.OnHandleReset();
             this.handleAlertClose("YES");
         }
         // else if (this.state.add_delete_send === "Exit") {
