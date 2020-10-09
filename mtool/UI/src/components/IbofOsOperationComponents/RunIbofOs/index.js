@@ -87,6 +87,9 @@ const RunIbofOs = props => {
                     color="primary"
                     title="Reset Poseidon OS"
                     data-testid="resetButton"
+                    style={{
+                      display: "none"
+                    }}
                     onClick={() => {
                       props.openAlert('Reset');
                     }}
@@ -148,6 +151,9 @@ const RunIbofOs = props => {
                     color="primary"
                     title="Reset Poseidon OS"
                     data-testid="resetButton"
+                    style={{
+                      display: "none"
+                    }}
                     onClick={() => {
                       props.openAlert('Reset');
                     }}
