@@ -207,7 +207,7 @@ function* fetchHealthStatus() {
       const memoryArcsLength = memoryDetails.arcsArr;
       const latencyPer = latencyDetails.value / 100;
       const latencyArcsLength = latencyDetails.arcsArr;
-      let latencyVal = Math.round(latencyDetails.latency/1000000);
+      let latencyVal = latencyDetails.latency/1000000;
 
        /* istanbul ignore else */
       if(latencyVal % 1 === 0)
