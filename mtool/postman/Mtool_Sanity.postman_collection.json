@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "74c517cf-8316-4614-8b8b-571ce802e275",
-		"name": "Mtool_End_To_End_Comprehensive",
+		"_postman_id": "d5d76c07-e519-40f0-8fdc-9aca3779f9f0",
+		"name": "Mtool_Sanity",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ba8cccc7-76c3-4f23-a1f4-b40f89303957",
+						"id": "cdca1301-2451-437b-9fcc-da12632a8b9c",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -69,7 +69,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "20fe6b6e-5645-4b10-a03c-bb77a917ec2c",
+						"id": "677e6676-7952-4c8a-a065-cf4886b8fc3d",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -96,6 +96,7 @@
 							"    //Devices.. Create or use existing array\r",
 							"    console.log(deviceCount, ' device found.... Creating array or using existing array now...');\r",
 							"    postman.setNextRequest(\"Get Arrays\");    \r",
+							"    // postman.setNextRequest(\"Create Array\")\r",
 							"\r",
 							"} else {\r",
 							"    //no devices.. logout \r",
@@ -109,7 +110,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "32c9c912-4024-4d12-b6fe-aa8f91ee1f78",
+						"id": "2e9c8f0e-d613-4977-8f92-0e6aedbc46db",
 						"exec": [
 							"//setTimeout( function() {}, 2000)\r",
 							"//pm.Wait(5000);\r",
@@ -153,27 +154,26 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5042b25f-95b4-4df5-a511-cd4d4309f6ea",
+						"id": "511cead4-d995-407b-aaac-cc11de64223a",
 						"exec": [
 							"\r",
-							"//pm.test(\"Array Info is retrieved...\", function () {\r",
-							"//    pm.response.to.have.status(200);\r",
-							"//});\r",
+							"pm.test(\"Array Info is retrieved...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
 							"\r",
 							"var jsonData = pm.response.json();\r",
 							"\r",
 							"// console.log(\"jsonData \",jsonData,jsonData[0],\"jsonData\")\r",
-							"if (jsonData.length==0){\r",
+							"if (jsonData.length == 0) {\r",
 							"    // console.log(\"Failed\")\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Array not found.. Creating one now.. \") });    \r",
+							"    console.log('Creating new array....');\r",
 							"\r",
-							"    console.log( 'Creating new array....');\r",
-							"    \r",
 							"    // Create a new array\r",
 							"    postman.setNextRequest(\"Create Array\")\r",
 							"} else {\r",
 							"\r",
-							"    console.log( 'Array exists.... Creating volume.');\r",
+							"    console.log('Array exists.... Creating volume.');\r",
 							"\r",
 							"    // create volume \r",
 							"    postman.setNextRequest(\"Create Volume\")\r",
@@ -187,7 +187,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7a981c44-42cf-45da-9c74-a9d7c22eef2d",
+						"id": "b2df2e1a-8c20-4ca4-a2e1-a8c9ca8ba639",
 						"exec": [
 							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'"
 						],
@@ -227,7 +227,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "33f99813-f4ad-471d-bdd3-08a8fdafd2a0",
+						"id": "6b6fcdb6-54ee-467a-a4ee-d573cdc1a8bf",
 						"exec": [
 							"let res = pm.response.json();\r",
 							"\r",
@@ -250,7 +250,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3541d3f2-e308-472b-b2f5-ef7c3d170287",
+						"id": "91128fd9-291b-45c9-b1a5-26025fd72e75",
 						"exec": [
 							""
 						],
@@ -289,18 +289,20 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b1192376-258e-4802-ab01-0a33fd0a4c73",
+						"id": "eaf43879-e880-452b-9a48-b8693e422745",
 						"exec": [
 							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
 							"    setTimeout(function () {\r",
-							"        console.log(\"after timeout\")\r",
 							"    }, 10000);\r",
 							"}\r",
 							"\r",
-							"pm.test(\"Successful POST request\", () => {\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
 							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
 							"\r",
 							"});\r",
+							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -338,7 +340,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "51f9895c-2abd-4f91-ad8d-ea54f24543d3",
+						"id": "39de253e-032b-4e86-a831-f90eb9709028",
 						"exec": [
 							"pm.test(\"POS is Running...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -361,7 +363,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a8336221-8fc7-4fad-a8e6-2d6b441be24a",
+						"id": "20161d9a-8242-4748-810e-62b938a56da3",
 						"exec": [
 							""
 						],
@@ -401,7 +403,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8ebe7073-2c40-4876-aeb1-8a4181312ccd",
+						"id": "2ec0c473-f4b0-4b06-955a-bd30d96da59a",
 						"exec": [
 							"//pm.test(\"Created an array...\", function () {\r",
 							" //   pm.response.to.have.status(200);\r",
@@ -416,7 +418,9 @@
 							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
 							"});\r",
 							"\r",
-							"if (status.toLowerCase() == \"success\"){\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\"){\r",
 							"    // Create Volume\r",
 							"    postman.setNextRequest(\"Create Volume\")\r",
 							"} else {\r",
@@ -480,12 +484,215 @@
 			"response": []
 		},
 		{
+			"name": "Get-available-size",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5d63b1e8-0216-494a-97fb-76b6912778de",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    totalsize = jsonData[0].totalsize\r",
+							"    totalSizeOfArray = jsonData[0].totalsize\r",
+							"    totalSizeOfArray = totalSizeOfArray / (1024 * 1024 * 1024)\r",
+							"    totalSizeOfArray = totalSizeOfArray - 1\r",
+							"    console.log(\"totalSizeOfArray \", totalSizeOfArray)\r",
+							"    //pm.globals.set('totalSizeOfArray', totalSizeOfArray);\r",
+							"    postman.setEnvironmentVariable(\"totalSizeOfArray\", totalSizeOfArray);\r",
+							"\r",
+							"    pm.globals.set('totalsize', totalsize);\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"\r",
+							"if (jsonData.length == 0) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Response array is empty\") });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7a0e936d-3387-40eb-aed1-9462a0d0ad24",
+						"exec": [
+							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_arrays/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_arrays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove spare disk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7c24f6a-8eae-4c78-a2e4-ee60ca8997bd",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{spareDisk1}}\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/remove_spare_device/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"remove_spare_device",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add spare disk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2f557126-0cac-4486-b039-232dad195b2f",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"{{spareDisk1}}\", \"array\": \"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_spare_device",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create Volume",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "6f14521d-0399-4f70-9fc8-7ef77e50b711",
+						"id": "e06d1dbe-0188-4a3c-b968-8c856a1c32f3",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -506,7 +713,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"volpk\",\"size\":\"4\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName}}\",\"maxbw\":0,\"maxiops\":0,\"count\":1,\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true}",
+					"raw": "{\"name\":\"voltest\",\"size\":\"3\",\"description\":\"\",\"unit\":\"GB\",\"maxbw\":0,\"maxiops\":0,\"count\":\"2\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"max_available_size\": \"{{globals.totalsize}}\",\"array\":\"{{arrayName}}\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -531,12 +738,79 @@
 			"response": []
 		},
 		{
-			"name": "FIO 3 min",
+			"name": "Get Volumes",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "6da3ac21-0664-4eae-b92e-808de24e2ccd",
+						"id": "f8aa6556-0dcc-4397-a89d-e36a3a07b742",
+						"exec": [
+							"pm.test(\"Get Volume data is successful...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify volume count\", function () {\r",
+							"    // console.log(\"len \",volArr.length)\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    var count = jsonData.Members.length;\r",
+							"\r",
+							"    pm.expect(count).to.be.above(0); \r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "59994933-08da-4e48-8858-e05a5af409ee",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/redfish/v1/StorageServices/1/Volumes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"redfish",
+						"v1",
+						"StorageServices",
+						"1",
+						"Volumes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIO 3 min (optional)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "424763dc-954c-4742-9ec8-341ee5fc1642",
 						"exec": [
 							"pm.test(\"FIO started for 3 min...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -577,7 +851,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f0ca171d-4f8a-46b0-97c7-a4cc26b6784a",
+						"id": "f326b7a9-122b-4636-a4c8-2b5d2b014b15",
 						"exec": [
 							"pm.test(\"Data received \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -590,7 +864,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "9cb43aba-524f-4706-b00d-8806ee293468",
+						"id": "0b3777ca-2402-40a1-af69-43f7444ae525",
 						"exec": [
 							""
 						],
@@ -630,7 +904,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f05e409c-8183-44f4-a0ef-ba4f775e07e6",
+						"id": "264b77a4-9e51-4e4f-b0db-d14eb16c9384",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -686,7 +960,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "35de1e17-4b74-4f10-8203-ec725295aff0",
+						"id": "c08aabba-6eb8-44f9-a7cf-46adbbe9fed7",
 						"exec": [
 							"pm.test(\"Added as custom user admin...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -746,7 +1020,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1a5605a4-0ec0-4ae0-810c-4ab4b791351b",
+						"id": "fa1c9f8a-a7c7-4978-97be-93e4e27b5b94",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -806,7 +1080,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9c7e95ee-a8a8-48fc-af6d-4a7fcd73eeda",
+						"id": "0501cf43-500a-4ca9-90ec-93c23cd7c09b",
 						"exec": [
 							"pm.test(\"Array Based Perf...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -845,12 +1119,270 @@
 			"response": []
 		},
 		{
+			"name": "Get Smart Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "38449aaa-00db-4b21-ad44-1d42af3a9788",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "18f7c852-a58e-43cf-83e5-96056b32a96d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/device/smart/{{storageDisk1}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"device",
+						"smart",
+						"{{storageDisk1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update voltest0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a5da478-a9df-4ef9-803b-3da2d275c9c6",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"maxiops\":10,\"maxbw\":20,\"name\":\"voltest0\",\"array\":\"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update-volume/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update-volume",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rename vol_test0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6b9dc68f-4468-4fe1-8b32-68dba3bbf481",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"param\": {\"name\": \"voltest0\", \"newname\": \"voltest0_renamed\", \"array\": \"{{arrayName}}\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/voltest0",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volumes",
+						"voltest0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rename vol_test0 Back",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f424efd-5579-4017-af3e-4fb5fb16451f",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"param\": {\"name\": \"voltest0_renamed\", \"newname\": \"voltest0\", \"array\": \"{{arrayName}}\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/voltest0_renamed",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volumes",
+						"voltest0_renamed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "unmount vol",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "59e62c17-5829-494d-98c4-cfa0c4b0352b",
+						"id": "dbba0a91-762d-4f64-b4f1-8b5036118e74",
 						"exec": [
 							"\r",
 							"\r",
@@ -879,7 +1411,71 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"volpk\", \"array\": \"{{arrayName}}\"}",
+					"raw": "{\"name\": \"voltest0\", \"array\": \"{{arrayName}}\"}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"volume",
+						"mount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mount vol_test0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1864a9fb-aa51-4b1f-bd86-ab659822360f",
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"voltest0\", \"array\": \"{{arrayName}}\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -909,7 +1505,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a4b9bfdd-d26b-4f34-bc05-8645e172042e",
+						"id": "cea61b70-6a9f-4d04-ab2c-69d6ec127ff8",
 						"exec": [
 							"pm.test(\"Delete volume successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -930,7 +1526,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"volumes\": [\"volpk\"]}",
+					"raw": "{\"volumes\": [\"voltest0\", \"voltest1\"]}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -938,7 +1534,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes",
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes/{{arrayName}}",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -947,7 +1543,8 @@
 					"path": [
 						"api",
 						"v1.0",
-						"delete_volumes"
+						"delete_volumes",
+						"{{arrayName}}"
 					]
 				}
 			},
@@ -959,7 +1556,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1767e370-53a0-4cdc-b789-2c9b462ebdf9",
+						"id": "4f3e4dcd-e8e1-4eaa-bde1-0b0fe429a093",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -1005,6 +1602,57 @@
 					]
 				},
 				"description": "login to MTool"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Array (optional)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5252b60-f199-4a3a-9eab-73344b5657eb",
+						"exec": [
+							"pm.test(\"Deleted Array, if any...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrayname\":\"{{arrayName}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/POSArray",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_array",
+						"POSArray"
+					]
+				}
 			},
 			"response": []
 		}
