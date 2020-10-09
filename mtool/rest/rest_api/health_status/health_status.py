@@ -32,8 +32,8 @@ import time
 status_list = ["Good", "Fair", "Critical"]
 # 008000:Green, #FFA500:Orange, #FF0000:Red
 color_list = ["#008000", "#FFA500", "#FF0000"]
-rules = {"cpu": [[0, 50], [50, 70], [70, 100]], "memory": [[0, 50], [50, 70], [
-    70, 100]], "osDisk": [[0, 70], [70, 85], [85, 100]], "latency": [[0, 50], [50, 70], [70, 100]]}
+rules = {"cpu": [[0, 40], [40, 80], [80, 100]], "memory": [[0, 50], [50, 70], [
+    70, 100]], "osDisk": [[0, 70], [70, 85], [85, 100]], "latency": [[0, 60], [60, 85], [85, 100]]}
 time_interval = "15"
 max_latency = 0
 descriptions = {
