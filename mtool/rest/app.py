@@ -985,16 +985,20 @@ def get_arrays(current_user):
     array_list = list_arr()
     #print("array list is", array_list.json())
 
-    if array_list.status_code == 200:
-        array = array_list.json()
-        res = array
-        # convert to format expected by UI
-        array = get_mod_array(array)
-        array['totalsize'] = int(res["info"]["capacity"])
-        array['usedspace'] = int(res["info"]["used"])
-        return jsonify([array])
+    try:
+        if array_list.status_code == 200:
+            array = array_list.json()
+            res = array
+            # convert to format expected by UI
+            array = get_mod_array(array)
+            array['totalsize'] = int(res["info"]["capacity"])
+            array['usedspace'] = int(res["info"]["used"])
+            return jsonify([array])
 
-    return toJson([])
+        return toJson([])
+    except BaseException:
+        return toJson([])
+
 
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])

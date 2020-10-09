@@ -39,6 +39,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
     response = None
     try:
         while(1):
+            print("sending request to dagent ",url)
             if(req_type == "GET"):
                 response = requests.get(
                     url=url, headers=headers, timeout=timeout)
