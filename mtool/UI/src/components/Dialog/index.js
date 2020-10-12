@@ -218,8 +218,7 @@ class AlertDialog extends React.Component {
                   padding: '35px 30px 0px 0px',
                   color: '#000',
                   fontSize: '12px',
-                  display: 'block',
-                  whiteSpace: 'pre',
+                  display: 'block'
                 }}
                 data-testid = "alertDescription"
               >

@@ -249,7 +249,7 @@ class IbofOsOperations extends Component {
         // if (operationType === "Start" || operationType === "Stop")
         message = "Poseidon OS";
         let alertMessage = operationType === "Reset" ?
-            "Reset will delete all the array and volumes in POS \n" : "";
+            "Reset will delete all the array and volumes in POS. " : "";
 
 
         this.setState({
