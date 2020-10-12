@@ -48,7 +48,7 @@ descriptions = {
         "{name} has been greater than {value}% for the last {time} minutes"]}
 
 
-def get_json_result(usage_percent, timestamp, rule, _id):
+def get_json_result(usage_percent, timestamp, rule, _id, label):
     if rules[rule][0][0] <= usage_percent and usage_percent < rules[rule][0][1]:
         status = status_list[0]
         color = color_list[0]
@@ -78,7 +78,8 @@ def get_json_result(usage_percent, timestamp, rule, _id):
                (rules[rule][2][1] - rules[rule][2][0]) / 100]
     warn_time_in_seconds = int(time_interval) * 60
     critical_time_in_seconds = int(time_interval) * 60
-    value = round(usage_percent, 2)
+    percentage = usage_percent/100
+    percentage = round(percentage, 2)
     epoch_time = timestamp
     utc_time = datetime.datetime.utcfromtimestamp(timestamp / 1000000000)
     response = {
@@ -91,11 +92,12 @@ def get_json_result(usage_percent, timestamp, rule, _id):
         "warnTimeInSeconds": warn_time_in_seconds,
         "criticalValue": critical_value,
         "criticalTimeInSeconds": critical_time_in_seconds,
-        "value": value,
+        "percentage": percentage,
         "epochTime": epoch_time,
         "utcTime": utc_time,
         "isHealthy": is_healthy,
-        "arcsArr": arcsArr}
+        "arcsArr": arcsArr,
+        "label":label}
     return response
 
 
@@ -128,7 +130,7 @@ def get_percentage(usage_percent):
         return 0
 
 
-def process_response(res, rule, field, _id):
+def process_response(res, rule, field, _id, label):
     try:
         result = {}
         result["isHealthy"] = False
@@ -140,11 +142,12 @@ def process_response(res, rule, field, _id):
             if rule == "latency":
                 latency = get_avg(res, arr_len, field)
                 usage_percent = get_percentage(latency)
-                result = get_json_result(usage_percent, time, rule, _id)
-                result["latency"] = latency
+                result = get_json_result(usage_percent, time, rule, _id, label)
+                result["value"] = str(round(latency/1000000,2))+"ms"
             else:
                 usage_percent = get_avg(res, arr_len, field)
-                result = get_json_result(usage_percent, time, rule, _id)
+                result = get_json_result(usage_percent, time, rule, _id, label)
+                result["value"] = str(round(usage_percent, 2))+"%"
     except Exception as e:
         print("In Exception: ", e)
         return result

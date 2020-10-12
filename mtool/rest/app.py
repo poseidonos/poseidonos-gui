@@ -2140,15 +2140,15 @@ def getHealthStatus(current_user):
         response = {}
         statuses = []
         res = get_user_cpu_usage("15m")
-        cpu_result = process_response(res, "cpu", "cpuUsagePercent", 1)
+        cpu_result = process_response(res, "cpu", "cpuUsagePercent", "cpu-status","CPU UTILIZATION")
         statuses.append(cpu_result)
         res = get_user_memory_usage("15m")
-        mem_result = process_response(res, "memory", "memoryUsagePercent", 2)
+        mem_result = process_response(res, "memory", "memoryUsagePercent", "mem-status","MEMORY UTILIZATION")
         statuses.append(mem_result)
         res = get_latency_usage("15m")
         set_max_latency(res, "latency")
         res = get_latency_usage("")
-        latency_result = process_response(res, "latency", "latency", 3)
+        latency_result = process_response(res, "latency", "latency", "lat-status","LATENCY")
         statuses.append(latency_result)
         health_result = get_overall_health([
             cpu_result["isHealthy"],
