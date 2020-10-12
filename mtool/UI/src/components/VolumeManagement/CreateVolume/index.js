@@ -151,16 +151,16 @@ class CreateVolume extends Component {
 
     // callback function for create multi-volume response
     this.props.createVolSocket.on("create_multi_volume", (msg) => {
+      /* eslint-disable camelcase */
       if (this.props.createVolumeButton === true) {
         let alertType = "info";
-        const { total_count, pass, description } = msg; // eslint-disable-line camelcase
+        const { total_count, pass, description } = msg;
         if (pass === 0) {
           alertType = "alert";
         } else if (pass > 0 && total_count - pass > 0)
-          // eslint-disable-line camelcase
           alertType = "partialError";
         const errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
-          pass}`; // eslint-disable-line camelcase
+          pass}`;
         this.props.toggleCreateVolumeButton(false);
         this.props.showStorageAlert({
           alertType,
@@ -185,6 +185,7 @@ class CreateVolume extends Component {
 
         this.props.fetchVolumes();
       }
+      /* eslint-enable camelcase */
     });
   }
 

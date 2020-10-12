@@ -3,21 +3,20 @@ import log from 'loglevel';
 import remote from 'loglevel-plugin-remote';
 
 
-const jsonFormatter = (log) => {
+const jsonFormatter = (logItem) => {
     const userid = localStorage.getItem("userid");
-    console.log(log)
     return {
         tags: {
             entity: "UI",
-            level: log.level.label,
+            level: logItem.level.label,
             user: userid
         },
         fields: {
-            "value": log.message,
+            "value": logItem.message,
             "useragent": navigator.userAgent
         },
         measurement: "mtool_log",
-        time: log.timestamp
+        time: logItem.timestamp
     }
 };
 

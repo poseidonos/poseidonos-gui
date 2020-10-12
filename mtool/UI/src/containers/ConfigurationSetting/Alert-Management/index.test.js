@@ -941,33 +941,33 @@ describe("Alert Management", () => {
     getByTestId('alertManagementTag')
   });
 
-  test('should edit an alert', async () => {
-    let mock = new MockAdapter(axios);
-    jest.setTimeout(30000);
-    mock.onGet('api/v1.0/get_alerts/').reply(200, [{
-      "alertName": "fiisuyjsac",
-      "alertCluster": "cpu",
-      "alertSubCluster": "cpu",
-      "alertType": "cpu-total",
-      "alertCondition": "Equal to",
-      "alertField": "usage_user",
-      "description": "des1",
-      "alertRange": "13",
-      "active": 0
-    }]).onPost('api/v1.0/update_alerts/').reply(200);
-    await act(async () => {
-    renderComponent();
-    const {getAllByTestId, asFragment, getAllByTitle} = wrapper;
-    const editBtn = await waitForElement(() => getAllByTitle('Edit')[0]);
-    fireEvent.click(editBtn);
-    const conditionSelect = await waitForElement(() => getAllByTestId('SelectEditTag')[0]);
-    fireEvent.click(conditionSelect);
-    const condition = await waitForElement(() => getAllByTestId('SelectEditMenuItemTag')[0]);
-    fireEvent.click(condition);
-    const save = await waitForElement(() => getAllByTitle('Save')[0]);
-    fireEvent.click(save);
-    });
-  });
+  // test('should edit an alert', async () => {
+  //   let mock = new MockAdapter(axios);
+  //   jest.setTimeout(30000);
+  //   mock.onGet('api/v1.0/get_alerts/').reply(200, [{
+  //     "alertName": "fiisuyjsac",
+  //     "alertCluster": "cpu",
+  //     "alertSubCluster": "cpu",
+  //     "alertType": "cpu-total",
+  //     "alertCondition": "Equal to",
+  //     "alertField": "usage_user",
+  //     "description": "des1",
+  //     "alertRange": "13",
+  //     "active": 0
+  //   }]).onPost('api/v1.0/update_alerts/').reply(200);
+  //   await act(async () => {
+  //   renderComponent();
+  //   const {getAllByTestId, asFragment, getAllByTitle} = wrapper;
+  //   const editBtn = await waitForElement(() => getAllByTitle('Edit')[0]);
+  //   fireEvent.click(editBtn);
+  //   const conditionSelect = await waitForElement(() => getAllByTestId('SelectEditTag')[0]);
+  //   fireEvent.click(conditionSelect);
+  //   const condition = await waitForElement(() => getAllByTestId('SelectEditMenuItemTag')[0]);
+  //   fireEvent.click(condition);
+  //   const save = await waitForElement(() => getAllByTitle('Save')[0]);
+  //   fireEvent.click(save);
+  //   });
+  // });
 
   //disabling for PoC1
 

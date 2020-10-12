@@ -166,6 +166,7 @@ class IbofOsOperations extends Component {
             });
     }
 
+    // istanbul ignore next: cannot click as it is hidden
     OnHandleReset() {
         fetch('/api/v1.0/cleanup/', {
             method: 'GET',
@@ -248,7 +249,8 @@ class IbofOsOperations extends Component {
         // if (operationType === "Start" || operationType === "Stop" || operationType === "Exit")
         // if (operationType === "Start" || operationType === "Stop")
         message = "Poseidon OS";
-        let alertMessage = operationType === "Reset" ?
+        // istanbul ignore next: cannot reset as it is hidden
+        const alertMessage = operationType === "Reset" ?
             "Reset will delete all the array and volumes in POS. " : "";
 
 

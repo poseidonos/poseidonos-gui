@@ -378,7 +378,12 @@ describe("<Storage Management />", () => {
     wb.value = "uram0";
     fireEvent.change(wb);
     fireEvent.click(wb);
-    fireEvent.click(await waitForElement(() => getAllByText("uram0")[0]));
+    try {
+      fireEvent.click(await waitForElement(() => getAllByText("uram0")[0]));
+    } catch {
+      const wbInput = await waitForElement(() => getByTestId("writebuffer-input"));
+      fireEvent.change(wbInput, {target: {value: "uram0"}});
+    }
     fireEvent.click(getByTestId("disktype"));
     fireEvent.click(getAllByText("Storage Disk")[0]);
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
@@ -395,7 +400,12 @@ describe("<Storage Management />", () => {
     disktype.value = "Spare Disk";
     fireEvent.change(disktype);
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Spare Disk")[0]);
+    try {
+      fireEvent.click(getAllByText("Spare Disk")[0]);
+    } catch {
+      const diskTypeInput = await waitForElement(() => getByTestId("disktype-input"));
+      fireEvent.change(diskTypeInput, {target: {value: "Spare Disk"}})
+    }
     fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
     fireEvent.click(getByTestId("createarray-btn"));
     expect(getSpy).toHaveBeenCalledWith(
@@ -1674,8 +1684,12 @@ describe("<Storage Management />", () => {
     fireEvent.change(volSize, { target: { value: "2.57" } });
     const volUnit = await waitForElement(() => getByTestId("volume-unit"));
     fireEvent.click(volUnit);
-    //fireEvent.change(volUnit, { target: { value: "TB" } });
-    fireEvent.click(getByTestId("tb"));
+    try {
+      fireEvent.click(getByTestId("tb"));
+    } catch {
+      const volUnitInput = await waitForElement(() => getByTestId("volume-unit-input"));
+      fireEvent.change(volUnitInput, { target: { value: "TB" } });
+    }
     //fireEvent.click(await waitForElement(() => getByText('TB')));
     const volBW = await waitForElement(() => getByTestId("create-vol-max-bw"));
     fireEvent.change(volBW, { target: { value: "10" } });

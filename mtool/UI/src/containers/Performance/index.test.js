@@ -315,9 +315,12 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     expect(asFragment()).toMatchSnapshot();
     const volReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
     expect(volReadBw).toBeDefined();
@@ -402,25 +405,39 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
     const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
-    const volumeInput = await waitForElement(() => getByTestId("volumeInput"));
-    fireEvent.change(volumeInput, {target: {value: 'vol2'}});
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     const volumeSelect = await waitForElement(() => getByTestId("volumeSelect"));
     fireEvent.click(volumeSelect);
-    const volume1 = await waitForElement(() => getByTestId("vol2"));
-    fireEvent.click(volume1);
+    const volumeInput = await waitForElement(() => getByTestId("volumeInput"));
+    try {
+      const volume1 = await waitForElement(() => getByTestId("vol2"));
+      fireEvent.click(volume1);
+    } catch {
+      fireEvent.change(volumeInput, {target: {value: '1'}});
+    }
     const volReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
     expect(volReadBw).toBeDefined();
-    fireEvent.change(volumeInput, {target: {value: 'all-volumes'}});
+    expect(asFragment()).toMatchSnapshot();
     fireEvent.click(volumeSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("all-volume")));
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("all-volume")));
+    } catch {
+      fireEvent.change(volumeInput, {target: {value: 'all-volumes'}});
+    }
+    fireEvent.change(volumeInput, {target: {value: 'all-volumes'}});
     const allVolReadBw = await waitForElement(() => getByTestId("readBandwidth-vol"));
     expect(allVolReadBw).toBeDefined();
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("arrayMenuItem")));
-    fireEvent.change(levelInput, { target: { value: 'array' } });
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("arrayMenuItem")));
+    } catch {
+      fireEvent.change(levelInput, { target: { value: 'array' } });
+    }
     const arrayReadBw = await waitForElement(() => getByTestId("readBandwidth"));
     expect(arrayReadBw).toBeDefined();
   });
@@ -496,15 +513,21 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
-    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-    fireEvent.change(measurementInput, {target: {value: 'write_bw'}});
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
     expect(asFragment()).toMatchSnapshot();
-    fireEvent.click(await waitForElement(() => getByTestId("write_bw")));
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("write_bw")));
+    } catch {
+      const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+      fireEvent.change(measurementInput, {target: {value: 'write_bw'}});
+    }
     
     const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
     expect(volWriteBw).toBeDefined();
@@ -580,15 +603,21 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
-    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-    fireEvent.change(measurementInput, {target: {value: 'read_iops'}});
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
     expect(asFragment()).toMatchSnapshot();
-    fireEvent.click(await waitForElement(() => getByTestId("read_iops")));
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("read_iops")));
+    } catch {
+      const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+      fireEvent.change(measurementInput, {target: {value: 'read_iops'}});
+    }
     
     const volReadIOPS = await waitForElement(() => getByTestId("readIOPS-vol"));
     expect(volReadIOPS).toBeDefined();
@@ -664,15 +693,21 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
-    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-    fireEvent.change(measurementInput, {target: {value: 'write_iops'}});
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
     expect(asFragment()).toMatchSnapshot();
-    fireEvent.click(await waitForElement(() => getByTestId("write_iops")));
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("write_iops")));
+    } catch {
+      const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+      fireEvent.change(measurementInput, {target: {value: 'write_iops'}});
+    }
     
     const volWriteIOPS = await waitForElement(() => getByTestId("writeIOPS-vol"));
     expect(volWriteIOPS).toBeDefined();
@@ -748,15 +783,21 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'volume' } });
-    const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-    fireEvent.change(measurementInput, {target: {value: 'latency'}});
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("volumeMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'volume' } });
+    }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
     expect(asFragment()).toMatchSnapshot();
-    fireEvent.click(await waitForElement(() => getByTestId("latency")));
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("latency")));
+    } catch {
+      const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
+      fireEvent.change(measurementInput, {target: {value: 'latency'}});
+    }
     
     const volLatency = await waitForElement(() => getByTestId("latency-vol"));
     expect(volLatency).toBeDefined();
@@ -781,9 +822,12 @@ describe("Performance", () => {
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("systemMenuItem")));
-    const levelInput = await waitForElement(() => getByTestId("levelInput"));
-    fireEvent.change(levelInput, { target: { value: 'system' } });
+    try {
+      fireEvent.click(await waitForElement(() => getByTestId("systemMenuItem")));
+    } catch {
+      const levelInput = await waitForElement(() => getByTestId("levelInput"));
+      fireEvent.change(levelInput, { target: { value: 'system' } });
+    }
     expect(asFragment()).toMatchSnapshot();
     
     const cpuGraph = await waitForElement(() => getByTestId("cpuusage"));
@@ -884,8 +928,13 @@ describe("Performance", () => {
         getByTestId("intervalSelect")
       );
       fireEvent.click(intervalSelect);
-      const lastSevenDay = await waitForElement(() => getByTestId("7d"));
-      fireEvent.click(lastSevenDay);
+      try {
+        const lastSevenDay = await waitForElement(() => getByTestId("7d"));
+        fireEvent.click(lastSevenDay);
+      } catch {
+        fireEvent.change(await waitForElement(() => getByTestId("timeInput")),
+          {target: {value: "7d"}});
+      }
       const intervalInput = await waitForElement(() =>
         getByTestId("timeInput")
       );

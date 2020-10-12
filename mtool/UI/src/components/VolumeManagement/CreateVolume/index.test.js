@@ -99,6 +99,7 @@ afterEach(cleanup);
 test('it should show message on successful Volume Creation', async () => {
     const { getByTestId, getByLabelText, asFragment } = wrapper;
     socket.emit("connect", {});
+    jest.setTimeout(30000);
     const volName = await waitForElement(() => getByTestId('create-vol-name'));
     fireEvent.change(volName, { target: { value: 'vol1' } });
     const volCount = await waitForElement(() => getByTestId('create-vol-count'));
@@ -109,9 +110,12 @@ test('it should show message on successful Volume Creation', async () => {
     fireEvent.change(volSize, { target: { value: '10' } });
     const volUnitSelect = await waitForElement(() => getByTestId('volume-unit'));
     fireEvent.click(volUnitSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("tb")));
-    const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-    fireEvent.change(volUnit, { target: {value: "TB"}});
+    try {
+        fireEvent.click(await waitForElement(() => getByTestId("tb")));
+    } catch {
+        const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
+        fireEvent.change(volUnit, { target: {value: "TB"}});
+    }
     const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
     fireEvent.change(volBW, { target: { value: '10' } });
     const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
@@ -152,9 +156,12 @@ test('it should show message on failed Volume Creation', async () => {
     fireEvent.change(volSize, { target: { value: '10' } });
     const volUnitSelect = await waitForElement(() => getByTestId('volume-unit'));
     fireEvent.click(volUnitSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("tb")));
-    const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-    fireEvent.change(volUnit, { target: {value: "TB"}});
+    try {
+        fireEvent.click(await waitForElement(() => getByTestId("tb")));
+    } catch {
+        const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
+        fireEvent.change(volUnit, { target: {value: "TB"}});
+    }
     const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
     fireEvent.change(volBW, { target: { value: '10' } });
     const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
@@ -187,9 +194,12 @@ test('it should show message on partial success in Volume Creation', async () =>
     fireEvent.change(volSize, { target: { value: '10' } });
     const volUnitSelect = await waitForElement(() => getByTestId('volume-unit'));
     fireEvent.click(volUnitSelect);
-    fireEvent.click(await waitForElement(() => getByTestId("tb")));
-    const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-    fireEvent.change(volUnit, { target: {value: "TB"}});
+    try {
+        fireEvent.click(await waitForElement(() => getByTestId("tb")));
+    } catch {
+        const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
+        fireEvent.change(volUnit, { target: {value: "TB"}});
+    }
     const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
     fireEvent.change(volBW, { target: { value: '10' } });
     const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
