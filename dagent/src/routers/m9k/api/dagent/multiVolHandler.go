@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
@@ -29,6 +30,7 @@ const (
 	POST                 = "POST"
 	POS_API_ERROR        = 11040
 	COUNT_EXCEEDED_ERROR = 11050
+	DELAY                = 1 * time.Second
 )
 
 var (
@@ -40,11 +42,11 @@ var (
 	MountVolPassCount  int = 0
 )
 
-func callbackMethod(Buffer []model.Response, Auth string, PassCount int) {
+func callbackMethod(Buffer []model.Response, Auth string, PassCount int, totalCount int) {
 	responseData := &model.CallbackMultiVol{
-		TotalCount:    len(Buffer),
+		TotalCount:    totalCount,
 		Pass:          PassCount,
-		Fail:          len(Buffer) - PassCount,
+		Fail:          totalCount - PassCount,
 		MultiVolArray: Buffer,
 	}
 	for retryCount := 1; retryCount < MAX_RETRY_COUNT; retryCount = retryCount + 1 {
@@ -80,29 +82,72 @@ func callbackMethod(Buffer []model.Response, Auth string, PassCount int) {
 	}
 }
 
+/*
+  createVolumeWrite function tries to create the volumes and mount them. For each Volume the following steps are done
+  1. Call the create Volume API
+  2. If Create VOlume Succeeds, go to step 4
+  3. If Create Volume fails, Try MAX_RETRY_COUNT times. If it still fails, move to next volume and Start from step 1
+  4. If MountAll parameter is true, Call the Mount Volume API
+  5. If Mount Volume fails, try MAX_RETRY_COUNT times. If it still fails, move to next voluem and Start from Step 1
+*/
 func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam) {
 	volId := volParam.NameSuffix
 	volName := volParam.Name
 	for volItr := 0; volItr < int(volParam.TotalCount); volItr, volId = volItr+1, volId+1 {
+		posErr := false
 		volParam.Name = volName + strconv.Itoa(int(volId))
-		_, res, err := iBoFOS.CreateVolume(header.XrId(ctx), *volParam)
-		if err == nil && res.Result.Status.Code == 0 && volParam.MountAll == true {
-			_, res, err = iBoFOS.MountVolume(header.XrId(ctx), *volParam)
-		}
-		CreateVolCh <- res
-		if err != nil || res.Result.Status.Code != 0 {
-			if volParam.StopOnError == true {
+
+		// Retry Create Volume API if the API fails
+		for createItr := 1; createItr <= MAX_RETRY_COUNT; createItr = createItr + 1 {
+
+			// Call the API after a delay
+			time.Sleep(DELAY)
+			_, res, err := iBoFOS.CreateVolume(header.XrId(ctx), *volParam)
+
+			// If Create Volume API fails, retry
+			if err != nil || res.Result.Status.Code != 0 {
+				if createItr == MAX_RETRY_COUNT {
+					CreateVolCh <- res
+					posErr = true
+				}
+				continue
+			}
+			CreateVolCh <- res
+			if posErr {
 				break
 			}
-		} else {
+
+			// if MountAll parameter is true, mount the volume
+			if volParam.MountAll {
+				// Retry Mount Volume API if it fails
+				for mountItr := 1; mountItr <= MAX_RETRY_COUNT; mountItr = mountItr + 1 {
+					time.Sleep(DELAY)
+					_, res, err = iBoFOS.MountVolume(header.XrId(ctx), *volParam)
+					if err != nil || res.Result.Status.Code != 0 {
+						if mountItr == MAX_RETRY_COUNT {
+							posErr = true
+							CreateVolCh <- res
+						}
+						continue
+					}
+					CreateVolCh <- res
+					break
+				}
+			}
+			break
+
+		}
+		if !posErr {
 			CreateVolPassCount++
+		} else if volParam.StopOnError {
+			break
 		}
 	}
 	close(CreateVolCh)
 
 }
 
-func createVolumeRead(CreateVolCh chan model.Response, Auth string) {
+func createVolumeRead(CreateVolCh chan model.Response, Auth string, totalCount int) {
 	for {
 		res, ok := <-CreateVolCh
 		if ok == false {
@@ -113,7 +158,7 @@ func createVolumeRead(CreateVolCh chan model.Response, Auth string) {
 		CreateVolResponses = append(CreateVolResponses, res)
 	}
 	CreateVolumeMutex = false
-	callbackMethod(CreateVolResponses, Auth, CreateVolPassCount)
+	callbackMethod(CreateVolResponses, Auth, CreateVolPassCount, totalCount)
 	CreateVolResponses = nil
 	CreateVolPassCount = 0
 }
@@ -137,7 +182,7 @@ func mountVolumeWrite(MountVolCh chan model.Response, ctx *gin.Context, f func(s
 
 }
 
-func mountVolumeRead(MountVolCh chan model.Response, Auth string) {
+func mountVolumeRead(MountVolCh chan model.Response, Auth string, totalCount int) {
 	for {
 		res, ok := <-MountVolCh
 		if ok == false {
@@ -147,7 +192,7 @@ func mountVolumeRead(MountVolCh chan model.Response, Auth string) {
 		MountVolResponses = append(MountVolResponses, res)
 	}
 	MountVolumeMutex = false
-	callbackMethod(MountVolResponses, Auth, MountVolPassCount)
+	callbackMethod(MountVolResponses, Auth, MountVolPassCount, totalCount)
 	MountVolResponses = nil
 	MountVolPassCount = 0
 }
@@ -215,14 +260,14 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (mo
 			CreateVolCh := make(chan model.Response)
 			CreateVolumeMutex = true
 			go createVolumeWrite(CreateVolCh, ctx, volParam)
-			go createVolumeRead(CreateVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER))
+			go createVolumeRead(CreateVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER), int(volParam.TotalCount))
 		}
 	case MOUNT_VOLUME: //Optional Functionality for MTool
 		if MountVolumeMutex == false {
 			MountVolCh := make(chan model.Response)
 			MountVolumeMutex = true
 			go mountVolumeWrite(MountVolCh, ctx, f, volParam)
-			go mountVolumeRead(MountVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER))
+			go mountVolumeRead(MountVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER), int(volParam.TotalCount))
 		}
 	}
 	//Pending Request 202
