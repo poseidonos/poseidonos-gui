@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/google/uuid"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -26,6 +27,8 @@ const (
 	CALLBACK_URL         = "http://" + CALLBACK_IP + ":" + CALLBACK_PORT + "/api/v1.0/multi_vol_response/"
 	MAX_RETRY_COUNT      = 5
 	POST                 = "POST"
+	POS_API_ERROR        = 11040
+	COUNT_EXCEEDED_ERROR = 11050
 )
 
 var (
@@ -165,9 +168,40 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 	}
 }
 
+func maxCountExceeded(count int) (int, bool) {
+	req := model.Request{}
+	listXrid, _ := uuid.NewUUID()
+	countXrid, _ := uuid.NewUUID()
+	_, volList, err := iBoFOS.ListVolume(listXrid.String(), req.Param)
+	_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), req.Param)
+	if err != nil {
+		return POS_API_ERROR, true
+	}
+	volCount := 0
+	maxCount := 0
+	if volList.Result.Data != nil {
+		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
+		volCount = len(volumes.([]interface{}))
+	}
+	maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["count"].(string))
+	if err != nil {
+		return POS_API_ERROR, true
+	}
+	if count <= (maxCount - volCount) {
+		return 0, false
+	}
+	return COUNT_EXCEEDED_ERROR, true
+}
+
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
+
+	if status, ok := maxCountExceeded(int(volParam.TotalCount)); ok {
+		res.Result.Status, _ = util.GetStatusInfo(status)
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+		return
+	}
 
 	if (command == CREATE_VOLUME && CreateVolumeMutex) || (command == MOUNT_VOLUME && MountVolumeMutex) {
 		res.Result.Status, _ = util.GetStatusInfo(11030)
