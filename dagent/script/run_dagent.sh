@@ -4,7 +4,7 @@ SCRIPT_PATH=$(readlink -f $(dirname $0))
 PARENT_SCRIPT_PATH="$(dirname "$SCRIPT_PATH")"
 mkdir -p /var/log/m9k/
 sudo systemctl stop dagent
-
+sudo pkill -9 dagent
 #create a soft link of the directory, to get the absolute path for starting the service
 sudo rm /usr/local/dagent
 sudo ln -s $PARENT_SCRIPT_PATH /usr/local
