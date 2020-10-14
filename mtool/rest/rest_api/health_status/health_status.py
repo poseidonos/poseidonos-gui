@@ -143,11 +143,13 @@ def process_response(res, rule, field, _id, label):
                 latency = get_avg(res, arr_len, field)
                 usage_percent = get_percentage(latency)
                 result = get_json_result(usage_percent, time, rule, _id, label)
-                result["value"] = str(round(latency/1000000,2))+"ms"
+                result["value"] = str(round(latency/1000000,2))
+                result["unit"] = "ms"
             else:
                 usage_percent = get_avg(res, arr_len, field)
                 result = get_json_result(usage_percent, time, rule, _id, label)
-                result["value"] = str(round(usage_percent, 2))+"%"
+                result["value"] = str(round(usage_percent, 2))
+                result["unit"] = "%"
     except Exception as e:
         print("In Exception: ", e)
         return result
