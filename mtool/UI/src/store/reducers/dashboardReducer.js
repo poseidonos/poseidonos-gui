@@ -44,13 +44,7 @@ const initialState = {
     mac: 'NA',
     host: '',
     arraySize: 0,
-    memoryUsage: 0,
-    cpuUsage: 0,
-    latencyVal: 0,
-    latencyPer: 0,
-    cpuArcsLength:[0.5, 0.2, 0.3],
-    memoryArcsLength:[0.5, 0.2, 0.3],
-    latencyArcsLength:[0.5, 0.2, 0.3],
+    healthStatus: [],
 }
 
 
@@ -74,37 +68,31 @@ const dashboardReducer = (state = initialState, action) => {
         case actionTypes.FETCH_STORAGE_INFO:
             return {
                 ...state,
-                unusedSpace:action.unusedSpace,
-                used:action.used,
-                unused:action.unused,
-                arraySize:action.arraySize
+                unusedSpace: action.unusedSpace,
+                used: action.used,
+                unused: action.unused,
+                arraySize: action.arraySize
             };
         case actionTypes.FETCH_PERFORMANCE_INFO:
             return {
                 ...state,
                 readIOPS: action.readIOPS,
-                writeIOPS:action.writeIOPS,
-                readBW:action.readBW,
+                writeIOPS: action.writeIOPS,
+                readBW: action.readBW,
                 writeBW: action.writeBW,
                 latency: action.latency
             };
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {
                 ...state,
-                ip:action.ip,
-                mac:action.mac,
-                host:action.host
+                ip: action.ip,
+                mac: action.mac,
+                host: action.host
             };
         case actionTypes.FETCH_HEALTH_STATUS:
-                return {
-                    ...state,
-                    cpuUsage: action.cpuUsage,
-                    memoryUsage: action.memoryUsage,
-                    latencyVal: action.latencyVal,
-                    latencyPer: action.latencyPer,
-                    cpuArcsLength: action.cpuArcsLength,
-                    memoryArcsLength: action.memoryArcsLength,
-                    latencyArcsLength: action.latencyArcsLength,
+            return {
+                ...state,
+                healthStatus: action.healthStatus,
             };
         default:
             return state;

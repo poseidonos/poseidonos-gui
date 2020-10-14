@@ -64,23 +64,11 @@ export const fetchPerformance = (
 };
 
 export const fetchHealthStatus = (
-  cpuUsage,
-  memoryUsage,
-  latencyPer,
-  cpuArcsLength,
-  memoryArcsLength,
-  latencyArcsLength,
-  latencyVal
+  healthStatus
 ) => {
   return {
     type: actionTypes.FETCH_HEALTH_STATUS,
-    cpuUsage,
-    memoryUsage,
-    latencyPer,
-    cpuArcsLength,
-    memoryArcsLength,
-    latencyArcsLength,
-    latencyVal,
+    healthStatus
   };
 };
 

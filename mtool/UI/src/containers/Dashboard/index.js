@@ -261,7 +261,7 @@ class Dashboard extends Component {
     ];
     const date = `${
       months[today.getMonth()]
-    } ${today.getDate()}, ${today.getFullYear()},`;
+      } ${today.getDate()}, ${today.getFullYear()},`;
     const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
     const dateTime = `${date} ${time}`;
     this.setState({ time: dateTime });
@@ -281,9 +281,14 @@ class Dashboard extends Component {
 
   setChartWidth() {
     setTimeout(() => {
-      const chart = document.getElementById(
-        'gauge-chart1'
-      );
+      let chart;
+
+      // istanbul ignore if
+      if(this.props.healthStatus.length > 0)
+        chart = document.getElementById(
+          this.props.healthStatus[0].id
+        );
+      // istanbul ignore next
       const gaugeWidth = chart ? chart.clientWidth : 500;
       this.setState({
         ...this.state,
@@ -418,102 +423,45 @@ class Dashboard extends Component {
               </Grid>
               <Grid container spacing={1} className={classes.topGrid}>
                 <Grid xs={12} md={12} container spacing={1}>
-                  
-                  <Grid xs={12} md={6} item spacing={1}>
-                  <Paper spacing={3} xs={6} className={classes.healthMetricsPaper}>
-                      <Grid container justify="space-around">
-                        <Grid
-                          xs={10}
-                          md={4}
-                          justify="center"
-                          className={classes.healthMetricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            CPU UTILIZATION
-                          </Typography>
-                          <Grid item xs={12}>
-                            <GaugeChart
-                              id="gauge-chart1"
-                              styles={{width:this.state.gaugeWidth}}
-                              nrOfLevels={3}
-                              arcsLength={this.props.cpuArcsLength}
-                              colors={["rgba(91,225,44,0.7)", "rgba(245,205,25,0.7)", "rgba(234,66,40,0.7"]}
-                              percent={this.props.cpuUsage}
-                              arcPadding={0.02}
-                              needleColor="#D6DBDF"
-                              needleBaseColor="#D6DBDF"
-                              textColor="rgba(0,0,0,0.8)"
 
-                            />
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          xs={10}
-                          md={4}
-                          className={classes.healthMetricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
+                  <Grid xs={12} md={6} item spacing={1}>
+                    <Paper spacing={3} xs={6} className={classes.healthMetricsPaper}>
+                      <Grid container justify="space-around">
+                        {this.props.healthStatus.map((metric) => (
+                          <Grid
+                            xs={10}
+                            md={4} // currently, it is assumed that there are only 3 health metrics
+                            justify="center"
+                            className={classes.healthMetricContainer}
+                            item
+                            spacing-xs-1="true"
                           >
-                            LATENCY
-                          </Typography>
-                          <Grid item xs={12}>
-                            <GaugeChart
-                              id="gauge-chart2"
-                              styles={{width:this.state.gaugeWidth}}
-                              nrOfLevels={3}
-                              arcsLength={this.props.latencyArcsLength}
-                              colors={["rgba(91,225,44,0.7)", "rgba(245,205,25,0.7)", "rgba(234,66,40,0.7"]}
-                              percent={this.props.latencyPer}
-                              arcPadding={0.02}
-                              needleColor="#D6DBDF"
-                              needleBaseColor="#D6DBDF"
-                              textColor="rgba(0,0,0,0.8)"
-                              formatTextValue={() => `${this.props.latencyVal } ms`}
-                            />
+                            <Typography
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
+                            >
+                              {metric.label}
+                            </Typography>
+                            <Grid item xs={12}>
+                              <GaugeChart
+                                id={metric.id}
+                                styles={{ width: this.state.gaugeWidth }}
+                                nrOfLevels={3}
+                                arcsLength={metric.arcsLength}
+                                colors={["rgba(91,225,44,0.7)", "rgba(245,205,25,0.7)", "rgba(234,66,40,0.7"]}
+                                percent={metric.percentage}
+                                arcPadding={0.02}
+                                needleColor="#D6DBDF"
+                                needleBaseColor="#D6DBDF"
+                                textColor="rgba(0,0,0,0.8)"
+                                formatTextValue={() => `${metric.value} ` + `${metric.unit}`}
+                              />
+                            </Grid>
                           </Grid>
-                        </Grid>
-                        <Grid
-                          xs={10}
-                          md={4}
-                          className={classes.healthMetricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            MEMORY UTILIZATION
-                          </Typography>
-                          <Grid item xs={12}>
-                            <GaugeChart
-                              id="gauge-chart3"
-                              styles={{width:this.state.gaugeWidth}}
-                              nrOfLevels={3}
-                              arcsLength={this.props.memoryArcsLength}
-                              colors={["rgba(91,225,44,0.7)", "rgba(245,205,25,0.7)", "rgba(234,66,40,0.7"]}
-                              percent={this.props.memoryUsage}
-                              arcPadding={0.02}
-                              needleColor="#D6DBDF"
-                              needleBaseColor="#D6DBDF"
-                              textColor="rgba(0,0,0,0.8)"
-                            />
-                          </Grid>
-                        </Grid>
+                        ))}
                       </Grid>
-                  </Paper>
+                    </Paper>
                     <Paper spacing={3} xs={6} className={classes.metricsPaper}>
                       <Grid container justify="space-around">
                         <Grid
@@ -757,69 +705,69 @@ class Dashboard extends Component {
                             No Array Created
                           </Typography>
                         ) : (
-                          <React.Fragment>
-                            <div className="dashboard-size-label-container">
-                              <span className="dashboard-min-label">0TB</span>
-                              <span className="dashboard-max-label">
-                                {bytesToTB(this.props.arraySize)}
-                              </span>
-                            </div>
-                            <div className="storage-detail-container">
-                              <div style={volFilledStyle}>
-                                <div style={volUsedStyle} />
+                            <React.Fragment>
+                              <div className="dashboard-size-label-container">
+                                <span className="dashboard-min-label">0TB</span>
+                                <span className="dashboard-max-label">
+                                  {bytesToTB(this.props.arraySize)}
+                                </span>
                               </div>
-                              <div style={storageFreeStyle} />
-                              <div style={storageDangerStyle}>
-                                <div className="dashboard-threshold-label">
-                                  80%
+                              <div className="storage-detail-container">
+                                <div style={volFilledStyle}>
+                                  <div style={volUsedStyle} />
+                                </div>
+                                <div style={storageFreeStyle} />
+                                <div style={storageDangerStyle}>
+                                  <div className="dashboard-threshold-label">
+                                    80%
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div
-                              style={{
-                                width: "94%",
-                                margin: "5px auto auto",
-                                height: "auto",
-                                position: "relative",
-                              }}
-                            >
-                              <Grid item container xs={12} wrap="wrap">
-                                <Legend
-                                  bgColor="rgba(0, 186, 0, 0.6)"
-                                  title={`Data Written: ${bytesToTB(
-                                    volUsedSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="#e0e0e0"
-                                  title={`Volume Space Allocated: ${bytesToTB(
-                                    volSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="#fff"
-                                  title={`Available for Volume Creation: ${bytesToTB(
-                                    this.props.arraySize - volSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="rgb(255, 173, 173)"
-                                  title="Threshold"
-                                />
-                              </Grid>
-                              <span
+                              <div
                                 style={{
-                                  width: "100%",
-                                  marginTop: "10px",
-                                  float: "left",
-                                  textAlign: "left",
+                                  width: "94%",
+                                  margin: "5px auto auto",
+                                  height: "auto",
+                                  position: "relative",
                                 }}
                               >
-                                As of {this.state.time}
-                              </span>
-                            </div>
-                          </React.Fragment>
-                        )}
+                                <Grid item container xs={12} wrap="wrap">
+                                  <Legend
+                                    bgColor="rgba(0, 186, 0, 0.6)"
+                                    title={`Data Written: ${bytesToTB(
+                                      volUsedSpace
+                                    )}`}
+                                  />
+                                  <Legend
+                                    bgColor="#e0e0e0"
+                                    title={`Volume Space Allocated: ${bytesToTB(
+                                      volSpace
+                                    )}`}
+                                  />
+                                  <Legend
+                                    bgColor="#fff"
+                                    title={`Available for Volume Creation: ${bytesToTB(
+                                      this.props.arraySize - volSpace
+                                    )}`}
+                                  />
+                                  <Legend
+                                    bgColor="rgb(255, 173, 173)"
+                                    title="Threshold"
+                                  />
+                                </Grid>
+                                <span
+                                  style={{
+                                    width: "100%",
+                                    marginTop: "10px",
+                                    float: "left",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  As of {this.state.time}
+                                </span>
+                              </div>
+                            </React.Fragment>
+                          )}
                       </Grid>
                     </Paper>
                   </Grid>
@@ -835,10 +783,10 @@ class Dashboard extends Component {
                     <Paper spacing={3} className={classes.volumeSummary}>
                       <MaterialTable
                         title={(
-<Typography className={classes.cardHeader}>
+                          <Typography className={classes.cardHeader}>
                             Volume Summary
-</Typography>
-)}
+                          </Typography>
+                        )}
                         columns={volumeTableColumns}
                         data={this.props.volumes}
                         options={{
@@ -923,6 +871,7 @@ const mapStateToProps = (state) => {
     cpuArcsLength: state.dashboardReducer.cpuArcsLength,
     memoryArcsLength: state.dashboardReducer.memoryArcsLength,
     latencyArcsLength: state.dashboardReducer.latencyArcsLength,
+    healthStatus: state.dashboardReducer.healthStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {

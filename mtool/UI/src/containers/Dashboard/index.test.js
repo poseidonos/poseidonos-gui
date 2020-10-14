@@ -252,10 +252,8 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(/\/api\/v1\.0\/health_status/)
       .reply(200,
-
-        { isHealthy: false, statuses: [{ arcsArr: [0.5, 0.2, 0.3], color: "#008000", criticalTimeInSeconds: 900, criticalValue: 70, description: "cpu has been less than 50% for the last 15 minutes", epochTime: 1601893500000000000, id: 1, isHealthy: true, name: "cpu", status: "Good", utcTime: "Mon, 05 Oct 2020 10:25:00 GMT", value: 3.74, warnTimeInSeconds: 900, warnValue: 50 }, { arcsArr: [0.5, 0.2, 0.3], color: "#FF0000", criticalTimeInSeconds: 900, criticalValue: 70, description: "memory has been greater than 70% for the last 15 minutes", epochTime: 1601893500000000000, id: 2, isHealthy: false, name: "memory", status: "Critical", utcTime: "Mon, 05 Oct 2020 10:25:00 GMT", value: 74.21, warnTimeInSeconds: 900, warnValue: 50 }, { arcsArr: [0.5, 0.2, 0.3], color: "#008000", criticalTimeInSeconds: 900, criticalValue: 70, description: "latency has been less than 50% for the last 15 minutes", epochTime: 1601893522621329395, id: 3, isHealthy: true, latency: 0.0, name: "latency", status: "Good", utcTime: "Mon, 05 Oct 2020 10:25:22 GMT", value: 0, warnTimeInSeconds: 900, warnValue: 50 }] }
-
-      ).onAny().reply(200, {});
+        {"isHealthy":false,"statuses":[{"arcsArr":[0.4,0.4,0.2],"id":'cpu_status','percentage':0.55, 'value':'55', 'unit':'%', 'label':"CPU UTILIZATION"}]}
+      )
     renderComponent();
     jest.advanceTimersByTime(2000);
     const { getByTestId } = wrapper;

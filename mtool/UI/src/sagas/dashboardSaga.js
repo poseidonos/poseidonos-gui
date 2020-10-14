@@ -27,7 +27,6 @@ DESCRIPTION: <Contains Generator Functions for Dashboard component> *
 import axios from "axios";
 import { call, takeEvery, put, cancelled } from "redux-saga/effects";
 import { format as d3Format } from "d3-format";
-import _ from "lodash"
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 import { formatNanoSeconds } from "../utils/format-bytes";
@@ -176,6 +175,7 @@ function* fetchIpAndMacInfo() {
 }
 
 function* fetchHealthStatus() {
+  const healthStatus = []
   try {
     const response = yield call(
       [axios, axios.get],
@@ -192,43 +192,26 @@ function* fetchHealthStatus() {
     const result = response.data;
     /* istanbul ignore else */
     if (result.statuses) {
-      const cpuIndex = _.findIndex(result.statuses, { 'name' : 'cpu'})
-      const cpuDetails = result.statuses[cpuIndex];
-
-      const memoryIndex = _.findIndex(result.statuses, { 'name' : 'memory'})
-      const memoryDetails = result.statuses[memoryIndex];
-
-      const latencyIndex = _.findIndex(result.statuses, { 'name' : 'latency'})
-      const latencyDetails = result.statuses[latencyIndex];
-
-      const cpuUsage = cpuDetails.value / 100;
-      const cpuArcsLength = cpuDetails.arcsArr;
-      const memoryUsage = memoryDetails.value / 100;
-      const memoryArcsLength = memoryDetails.arcsArr;
-      const latencyPer = latencyDetails.value / 100;
-      const latencyArcsLength = latencyDetails.arcsArr;
-      let latencyVal = latencyDetails.latency/1000000;
-
-       /* istanbul ignore else */
-      if(latencyVal % 1 === 0)
-        latencyVal = Math.round(latencyVal);
-      else
-        latencyVal = latencyVal.toFixed(2);
-     
+      const healthDetails = result.statuses
+      healthDetails.map(metric => {
+        const metricDetails = {}
+        metricDetails.id = metric.id
+        metricDetails.arcsLength = metric.arcsArr
+        metricDetails.percentage = metric.percentage
+        metricDetails.value = metric.value
+        metricDetails.label = metric.label
+        metricDetails.unit = metric.unit
+        healthStatus.push(metricDetails)
+        return null;
+      })
       yield put(
         actionCreators.fetchHealthStatus(
-          cpuUsage,
-          memoryUsage,
-          latencyPer,
-          cpuArcsLength,
-          memoryArcsLength,
-          latencyArcsLength,
-          latencyVal
+          healthStatus
         )
       );
     }
   } catch (error) {
-    // console.log(error);
+    // console.log("catch",error);
   }
 }
 
