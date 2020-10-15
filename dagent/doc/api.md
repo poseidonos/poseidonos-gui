@@ -973,7 +973,7 @@ URL: http://{{host}}/api/metric/v1/cpu/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -987,47 +987,7 @@ URL: http://{{host}}/api/metric/v1/cpu/5m
 
 
 
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -1067,6 +1027,46 @@ URL: http://{{host}}/api/metric/v1/cpu/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -1562,7 +1562,7 @@ URL: http://{{host}}/api/metric/v1/network/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -1576,47 +1576,7 @@ URL: http://{{host}}/api/metric/v1/network/5m
 
 
 
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -1681,6 +1641,46 @@ URL: http://{{host}}/api/metric/v1/network/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -1783,7 +1783,7 @@ URL: http://{{host}}/api/metric/v1/readbw/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 0 invalid time interval, empty response
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -1797,47 +1797,7 @@ URL: http://{{host}}/api/metric/v1/readbw/5m
 
 
 
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -1897,6 +1857,46 @@ URL: http://{{host}}/api/metric/v1/readbw/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 0 invalid time interval, empty response
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -2729,7 +2729,7 @@ URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Success
+##### I. Example Request: Fail - 0 invalid time interval, empty response
 
 
 ***Headers:***
@@ -2743,7 +2743,47 @@ URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m
 
 
 
-##### I. Example Response: Success
+##### I. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Success
 ```js
 {
     "rid": "",
@@ -2789,46 +2829,6 @@ URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m
                 "time": 1597737220000000000
             }
         ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
     }
 }
 ```
@@ -3011,7 +3011,7 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 0 invalid time interval, empty response
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -3025,47 +3025,7 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m
 
 
 
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -3126,6 +3086,46 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m
 
 
 
+##### II. Example Request: Fail - 0 invalid time interval, empty response
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
 ### 23. VOL WRITE BW with PERIOD
 
 
@@ -3153,7 +3153,7 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 0 invalid time interval, empty response
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -3167,47 +3167,7 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m
 
 
 
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -3259,6 +3219,46 @@ URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 0 invalid time interval, empty response
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -3361,7 +3361,7 @@ URL: http://{{host}}/api/metric/v1/writebw/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 0 invalid time interval, empty response
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -3375,47 +3375,7 @@ URL: http://{{host}}/api/metric/v1/writebw/5m
 
 
 
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -3483,6 +3443,46 @@ URL: http://{{host}}/api/metric/v1/writebw/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 0 invalid time interval, empty response
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -3585,7 +3585,7 @@ URL: http://{{host}}/api/metric/v1/writeiops/5m
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 0 invalid time interval, empty response
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -3599,47 +3599,7 @@ URL: http://{{host}}/api/metric/v1/writeiops/5m
 
 
 
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -3695,6 +3655,46 @@ URL: http://{{host}}/api/metric/v1/writeiops/5m
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 0 invalid time interval, empty response
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail - 0 invalid time interval, empty response
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "MAgent",
+            "code": 21010,
+            "level": "ERROR",
+            "description": "Time parameter error",
+            "problem": "Invalid time period specified",
+            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
+        },
+        "data": []
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -5493,7 +5493,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 {
     "param": {
         "array": "{{arrayName}}",
-        "name": "vol01",
+        "name": "vol01f",
         "size": 4194304,
         "maxbw": 0,
         "maxiops": 0
@@ -6632,4 +6632,4 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-10-13 14:10:05 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2020-10-15 16:15:32 by [docgen](https://github.com/thedevsaddam/docgen)

@@ -383,22 +383,8 @@ http://{{host}}/api/metric/v1/cpu</h4></a></div><div id=collapse-Metric-CPU clas
 &nbsp;
 http://{{host}}/api/metric/v1/cpu/5m</h4></a></div><div id=collapse-Metric-CPUwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_CPUwithPERIOD_0_Fail>Fail
-<option value=req_res_Metric_CPUwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_CPUwithPERIOD_0_Fail style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/cpu/20</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_CPUwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/cpu/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_CPUwithPERIOD_0_Success>Success
+<option value=req_res_Metric_CPUwithPERIOD_1_Fail>Fail</select><br><section id=req_res_Metric_CPUwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/cpu/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -431,7 +417,21 @@ http://{{host}}/api/metric/v1/cpu/5m</h4></a></div><div id=collapse-Metric-CPUwi
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-LATENCY><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-LATENCY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LATENCY</strong> &nbsp;|&nbsp;
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_CPUwithPERIOD_1_Fail style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/cpu/20</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-LATENCY><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-LATENCY><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>LATENCY</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
 http://{{host}}/api/metric/v1/latency</h4></a></div><div id=collapse-Metric-LATENCY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
@@ -609,22 +609,8 @@ http://{{host}}/api/metric/v1/network</h4></a></div><div id=collapse-Metric-NETW
 &nbsp;
 http://{{host}}/api/metric/v1/network/5m</h4></a></div><div id=collapse-Metric-NETWORKwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_NETWORKwithPERIOD_0_Fail>Fail
-<option value=req_res_Metric_NETWORKwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_NETWORKwithPERIOD_0_Fail style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/network/100</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_NETWORKwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/network/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_NETWORKwithPERIOD_0_Success>Success
+<option value=req_res_Metric_NETWORKwithPERIOD_1_Fail>Fail</select><br><section id=req_res_Metric_NETWORKwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/network/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -682,7 +668,21 @@ http://{{host}}/api/metric/v1/network/5m</h4></a></div><div id=collapse-Metric-N
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-READBW><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-READBW><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>READ BW</strong> &nbsp;|&nbsp;
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_NETWORKwithPERIOD_1_Fail style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/network/100</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-READBW><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-READBW><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>READ BW</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
 http://{{host}}/api/metric/v1/readbw</h4></a></div><div id=collapse-Metric-READBW class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
@@ -709,22 +709,8 @@ http://{{host}}/api/metric/v1/readbw</h4></a></div><div id=collapse-Metric-READB
 &nbsp;
 http://{{host}}/api/metric/v1/readbw/5m</h4></a></div><div id=collapse-Metric-READBWwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_READBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
-<option value=req_res_Metric_READBWwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_READBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/readbw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_READBWwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/readbw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_READBWwithPERIOD_0_Success>Success
+<option value=req_res_Metric_READBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_READBWwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/readbw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -777,7 +763,21 @@ http://{{host}}/api/metric/v1/readbw/5m</h4></a></div><div id=collapse-Metric-RE
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-READIOPS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-READIOPS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>READ IOPS</strong> &nbsp;|&nbsp;
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_READBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/readbw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-READIOPS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-READIOPS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>READ IOPS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
 http://{{host}}/api/metric/v1/readiops</h4></a></div><div id=collapse-Metric-READIOPS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
@@ -1098,8 +1098,22 @@ http://{{host}}/api/metric/v1/volumes/1/readiops</h4></a></div><div id=collapse-
 &nbsp;
 http://{{host}}/api/metric/v1/volumes/1/readiops/5m</h4></a></div><div id=collapse-Metric-VOLREADIOPSwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_VOLREADIOPSwithPERIOD_0_Success>Success
-<option value=req_res_Metric_VOLREADIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_VOLREADIOPSwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_VOLREADIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
+<option value=req_res_Metric_VOLREADIOPSwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_VOLREADIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/readiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_VOLREADIOPSwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1143,20 +1157,6 @@ http://{{host}}/api/metric/v1/volumes/1/readiops/5m</h4></a></div><div id=collap
 &#34;time&#34;: 1597737220000000000
 }
 ]
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_VOLREADIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/readiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
 }
 }</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-VOLWRITEBW><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-VOLWRITEBW><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>VOL WRITE BW</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
@@ -1211,22 +1211,8 @@ http://{{host}}/api/metric/v1/volumes/1/writeiops</h4></a></div><div id=collapse
 &nbsp;
 http://{{host}}/api/metric/v1/volumes/1/writeiops/5m</h4></a></div><div id=collapse-Metric-VOLWRITEBWIOPSwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
-<option value=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_0_Success>Success
+<option value=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1275,13 +1261,7 @@ http://{{host}}/api/metric/v1/volumes/1/writeiops/5m</h4></a></div><div id=colla
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-VOLWRITEBWwithPERIOD><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-VOLWRITEBWwithPERIOD><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>VOL WRITE BW with PERIOD</strong> &nbsp;|&nbsp;
-<strong class="request-method border-info">GET</strong>
-&nbsp;
-http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h4></a></div><div id=collapse-Metric-VOLWRITEBWwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
-<option value>Select Example Request/Response
-<option value=req_res_Metric_VOLWRITEBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
-<option value=req_res_Metric_VOLWRITEBWwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_VOLWRITEBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writebw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_VOLWRITEBWIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1295,7 +1275,13 @@ http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h4></a></div><div id=collaps
 },
 &#34;data&#34;: []
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_VOLWRITEBWwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-VOLWRITEBWwithPERIOD><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-VOLWRITEBWwithPERIOD><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>VOL WRITE BW with PERIOD</strong> &nbsp;|&nbsp;
+<strong class="request-method border-info">GET</strong>
+&nbsp;
+http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h4></a></div><div id=collapse-Metric-VOLWRITEBWwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
+<option value>Select Example Request/Response
+<option value=req_res_Metric_VOLWRITEBWwithPERIOD_0_Success>Success
+<option value=req_res_Metric_VOLWRITEBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_VOLWRITEBWwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1340,7 +1326,21 @@ http://{{host}}/api/metric/v1/volumes/1/writebw/5m</h4></a></div><div id=collaps
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-WRITEBW><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-WRITEBW><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>WRITE BW</strong> &nbsp;|&nbsp;
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_VOLWRITEBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/volumes/1/writebw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-WRITEBW><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-WRITEBW><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>WRITE BW</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
 http://{{host}}/api/metric/v1/writebw</h4></a></div><div id=collapse-Metric-WRITEBW class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
@@ -1367,22 +1367,8 @@ http://{{host}}/api/metric/v1/writebw</h4></a></div><div id=collapse-Metric-WRIT
 &nbsp;
 http://{{host}}/api/metric/v1/writebw/5m</h4></a></div><div id=collapse-Metric-WRITEBWwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_WRITEBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
-<option value=req_res_Metric_WRITEBWwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_WRITEBWwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writebw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_WRITEBWwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writebw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_WRITEBWwithPERIOD_0_Success>Success
+<option value=req_res_Metric_WRITEBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_WRITEBWwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writebw/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1443,7 +1429,21 @@ http://{{host}}/api/metric/v1/writebw/5m</h4></a></div><div id=collapse-Metric-W
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-WRITEIOPS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-WRITEIOPS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>WRITE IOPS</strong> &nbsp;|&nbsp;
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_WRITEBWwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writebw/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div><div class="panel panel-info" id=jump-Metric-WRITEIOPS><div class=panel-heading><small class="pull-right text-muted"></small><a class=text-info data-toggle=collapse data-parent=#accordion-Metric href=#collapse-Metric-WRITEIOPS><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>WRITE IOPS</strong> &nbsp;|&nbsp;
 <strong class="request-method border-info">GET</strong>
 &nbsp;
 http://{{host}}/api/metric/v1/writeiops</h4></a></div><div id=collapse-Metric-WRITEIOPS class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
@@ -1470,22 +1470,8 @@ http://{{host}}/api/metric/v1/writeiops</h4></a></div><div id=collapse-Metric-WR
 &nbsp;
 http://{{host}}/api/metric/v1/writeiops/5m</h4></a></div><div id=collapse-Metric-WRITEIOPSwithPERIOD class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Metric_WRITEIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response
-<option value=req_res_Metric_WRITEIOPSwithPERIOD_1_Success>Success</select><br><section id=req_res_Metric_WRITEIOPSwithPERIOD_0_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writeiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;&#34;,
-&#34;lastSuccessTime&#34;: 0,
-&#34;result&#34;: {
-&#34;status&#34;: {
-&#34;module&#34;: &#34;MAgent&#34;,
-&#34;code&#34;: 21010,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;Time parameter error&#34;,
-&#34;problem&#34;: &#34;Invalid time period specified&#34;,
-&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
-},
-&#34;data&#34;: []
-}
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Metric_WRITEIOPSwithPERIOD_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writeiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+<option value=req_res_Metric_WRITEIOPSwithPERIOD_0_Success>Success
+<option value=req_res_Metric_WRITEIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse>Fail - 0 invalid time interval, empty response</select><br><section id=req_res_Metric_WRITEIOPSwithPERIOD_0_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writeiops/5m</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
 &#34;rid&#34;: &#34;&#34;,
 &#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
@@ -1534,7 +1520,21 @@ http://{{host}}/api/metric/v1/writeiops/5m</h4></a></div><div id=collapse-Metric
 }
 ]
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div></div></div></div></div><div class="panel panel-default"><div class=panel-heading><h3 class=panel-title id=POS_2FArray>POS/Array
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section><section id=req_res_Metric_WRITEIOPSwithPERIOD_1_Fail0invalidtimeinterval_2Cemptyresponse style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/metric/v1/writeiops/20hours</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
+&#34;result&#34;: {
+&#34;status&#34;: {
+&#34;module&#34;: &#34;MAgent&#34;,
+&#34;code&#34;: 21010,
+&#34;level&#34;: &#34;ERROR&#34;,
+&#34;description&#34;: &#34;Time parameter error&#34;,
+&#34;problem&#34;: &#34;Invalid time period specified&#34;,
+&#34;solution&#34;: &#34;use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d&#34;
+},
+&#34;data&#34;: []
+}
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section></div></div></div></div></div></div></div><div class="panel panel-default"><div class=panel-heading><h3 class=panel-title id=POS_2FArray>POS/Array
 <span class=badge>7</span></h3></div><div class=panel-body><p><div class=request-item><div class=panel-group id=accordion-POS_2FArray><div class="panel panel-success" id=jump-POS_2FArray-ADDDEVICE><div class=panel-heading><small class="pull-right text-muted">raw</small>
 <a class=text-success data-toggle=collapse data-parent=#accordion-POS_2FArray href=#collapse-POS_2FArray-ADDDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>ADD DEVICE</strong> &nbsp;|&nbsp;
 <strong class="request-method border-success">POST</strong>
@@ -2291,7 +2291,7 @@ http://{{host}}/api/ibofos/v1/system</h4></a></div><div id=collapse-POS_2FSystem
 http://{{host}}/api/ibofos/v1/volumes</h4></a></div><div id=collapse-POS_2FVolume-CREATEVOLUME class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 &#34;param&#34;: {
 &#34;array&#34;: &#34;{{arrayName}}&#34;,
-&#34;name&#34;: &#34;vol01&#34;,
+&#34;name&#34;: &#34;vol01f&#34;,
 &#34;size&#34;: 4194304,
 &#34;maxbw&#34;: 0,
 &#34;maxiops&#34;: 0
@@ -2744,4 +2744,4 @@ if(IsJsonString(html)){var obj=JSON.parse(html);var formattedJson=JSON.stringify
 function IsJsonString(str){try{JSON.parse(str);}catch(e){return false;}
 return true;}
 String.prototype.replaceAll=function(replaceThis,withThis){var re=new RegExp(RegExp.quote(replaceThis),"g");return this.replace(re,withThis);};RegExp.quote=function(str){return str.replace(/([.?*+^$[\]\\(){}-])/g,"\\$1");};function syntaxHighlight(json){json=json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){var cls='number';if(/^"/.test(match)){if(/:$/.test(match)){cls='key';}else{cls='string';}}else if(/true|false/.test(match)){cls='boolean';}else if(/null/.test(match)){cls='null';}
-return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2020-10-13 14:10:05 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
+return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2020-10-15 16:15:32 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
