@@ -202,6 +202,14 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
+@app.route('/api/v1.0/version', methods=['GET'])
+def get_version():
+    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../UI/package.json"))
+    with open(package_json_path) as f:
+        data = json.load(f)
+        return toJson({"version": data["version"]})
+
+
 
 @app.route('/api/v1.0/logger', methods=['POST'])
 def log_collect():
