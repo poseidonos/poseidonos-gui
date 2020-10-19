@@ -114,43 +114,36 @@ func Route(router *gin.Engine) {
 	{
 		iBoFOSPath.POST("/array", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
-			param.Array = ctx.Param("arrayName")
+			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateArray, param)
 		})
 		iBoFOSPath.GET("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
-			param.Array = ctx.Param("arrayName")
+			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ArrayInfo, param)
 		})
 		iBoFOSPath.DELETE("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
-			param.Array = ctx.Param("arrayName")
+			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.DeleteArray, param)
 		})
 		iBoFOSPath.GET("/array/:arrayName/devices", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
-			param.Array = ctx.Param("arrayName")
+			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListArrayDevice, param)
 		})
 		iBoFOSPath.GET("/array/:arrayName/load", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
-			param.Array = ctx.Param("arrayName")
+			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.LoadArray, param)
 		})
 		iBoFOSPath.POST("/array/:arrayName/devices", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
 			param.Array = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddDevice, param)
 		})
 		iBoFOSPath.DELETE("/array/:arrayName/devices/:deviceName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName") // Temp
 			param.Array = ctx.Param("arrayName")
 			param.Spare = []model.Device{{DeviceName: ctx.Param("deviceName")}}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RemoveDevice, param)
