@@ -14,6 +14,8 @@ import (
 	"time"
 )
 
+const TimeOut = 100
+
 func init() {
 	log.SetDebugMode()
 	setting.LoadConfig()
@@ -32,12 +34,11 @@ func showBuildInfo() {
 
 func startServer() {
 	routersInit := routers.InitRouter()
-
 	server := &http.Server{
 		Addr:           ":" + setting.Config.Server.Dagent.Port,
 		Handler:        routersInit,
-		ReadTimeout:    30 * time.Second,
-		WriteTimeout:   30 * time.Second,
+		ReadTimeout:    TimeOut * time.Second,
+		WriteTimeout:   TimeOut * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
