@@ -19,9 +19,8 @@ sudo service influxdb start
 echo "Starting InfluxDB..."
 sleep 8s
 [ ! -d "/tmp/air_result.json" ] && touch /tmp/air_result.json
-[ ! -d "/etc/ibofos" ] && mkdir /etc/ibofos
-[ ! -d "/etc/ibofos/report" ] && mkdir /etc/ibofos/report
-touch /etc/ibofos/report/report.log
+[ ! -d "/var/log/ibofos" ] && mkdir /var/log/ibofos
+touch /var/log/ibofos/report.log
 
 sudo systemctl daemon-reload
 sudo systemctl enable magent.service

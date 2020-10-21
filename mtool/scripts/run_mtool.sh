@@ -1,8 +1,9 @@
 #!/bin/bash
 
 ROOT_DIR=$(readlink -f $(dirname $0))
-cd $ROOT_DIR
-cd ..
+#cd $ROOT_DIR        #/mtool/script
+#echo $ROOT_DIR
+#cd ..               #/mtool
 
 sudo service kapacitor stop
 sudo service influxdb stop
@@ -10,20 +11,22 @@ sudo service influxdb stop
 
 . ~/.bashrc
 
-currdir=$PWD
+#currdir=$PWD               #
+currdir=$ROOT_DIR/..        #/mtool
+#echo $currdir
 
 sudo service influxdb start
 sudo service kapacitor start
 
 #Configuring nginx
 sudo find /usr/share/nginx/html/ ! -name 'index.nginx-debian.html' -type f -exec rm -f {} +
-if [ -d "/usr/share/nginx/html/static" ] 
-then 
+if [ -d "/usr/share/nginx/html/static" ]
+then
 sudo rm -r /usr/share/nginx/html/static
 fi
 if [ -d "/usr/share/nginx/html" ]
 then
-sudo cp -r ./public/* /usr/share/nginx/html/
+    sudo cp -r $currdir/public/* /usr/share/nginx/html/
 fi
 #python3 scripts/nginx_form_conf.py
 #sudo cp virtual.conf /etc/nginx/conf.d/
@@ -38,19 +41,25 @@ sudo chmod 777 /var/log/logmtool1.log
 sudo chmod 777 /var/log/logmtool2.log
 
 #give permission to sqlite db
-sudo chmod 777 $PWD/ibof.db
+if [ -e "$currdir/dist/ibof.db" ]; then
+   sudo chmod 777 $currdir/dist/ibof.db
+fi
 
 #give permission to cleanup.sh
-sudo chmod +x $PWD/scripts/cleanup.sh
+sudo chmod +x $currdir/scripts/cleanup.sh
 
 #create a soft link for the folder , to get absolute path for starting service
 sudo rm /usr/local/m9k
-parentdir="$(dirname "$currdir")"
-echo $parentdir
+parentdir="$(dirname $(dirname $ROOT_DIR))"
+#echo $parentdir
 sudo ln -s $parentdir /usr/local
 
 #move the service file  to the /etc/systemd/system/
-sudo cp $PWD/scripts/start-iBofMtool.service /etc/systemd/system/
+echo "Stopping MTool service if already present"
+sudo systemctl stop start-iBofMtool
+
+echo "Starting MTool Service"
+sudo cp $currdir/scripts/start-iBofMtool.service /etc/systemd/system/
 sudo chmod 664 /etc/systemd/system/start-iBofMtool.service
 
 sudo systemctl daemon-reload
@@ -70,6 +79,9 @@ else
         echo Mtool  failed to start
 
 fi
+
+#echo $currdir      #/mtool
+
 #python3 PreConfiguredAlerts.py #Set Kapacitor Pre-Configured Alerts...Kapacitor takes sometime to load its resources.. Adding this statement at the end...
 #Run sudo -s at the end always
 sudo -s

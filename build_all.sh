@@ -7,3 +7,5 @@ $SCRIPT_PATH/dagent/script/build_dagent.sh
 $SCRIPT_PATH/magent/script/build_magent.sh
 $SCRIPT_PATH/cli/script/build_cli.sh
 $SCRIPT_PATH/tui/script/build_tui.sh
+$SCRIPT_PATH/mtool/scripts/build_mtool.sh
+$SCRIPT_PATH/dependency/build_python_scripts.sh

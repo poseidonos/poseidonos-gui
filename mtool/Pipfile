@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "==1.0.2"
+eventlet = "==0.25.2"
+requests = "==2.21.0"
+influxdb = ">=5.2.1"
+pymongo = ">=3.7"
+pymodm = "==0.4.1"
+Flask-SocketIO = "==4.3.0"
+PyJWT = "==1.7.1"
+
+[requires]
+python_version = "3.6"
