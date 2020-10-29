@@ -224,6 +224,9 @@ func maxCountExceeded(count int) (int, bool) {
 	}
 	volCount := 0
 	maxCount := 0
+	if volList.Info.(map[string]interface{})["state"].(string) != "NORMAL" {
+		return 12090, true
+	}
 	if volList.Result.Data != nil {
 		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
 		volCount = len(volumes.([]interface{}))

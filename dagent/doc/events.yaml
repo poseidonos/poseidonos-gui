@@ -1,6 +1,6 @@
 ---
 Goal: Events Unification
-Version: "v.91"
+Version: "v.92"
 modules:
   - name: "COMMON"
     count: 999
@@ -1310,6 +1310,11 @@ modules:
       - code: 12020
         level: ERROR
         message: could not find build info
+      - code: 12090
+        level: ERROR
+        message: POS array is not mounted
+        problem: Volumes can be created only after POS is mounted
+        solution: mount POS
       - code: 13000
         level: ERROR
         message: Response timeout

@@ -33,6 +33,7 @@ func DisconnectToIBoFOS(conn net.Conn) error {
 	var err error = nil
 
 	if conn != nil {
+		log.Info("Connection Cloase : ", conn.LocalAddr().String())
 		err = conn.Close()
 	}
 
