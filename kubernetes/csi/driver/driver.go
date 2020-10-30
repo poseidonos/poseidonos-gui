@@ -24,7 +24,7 @@ type Driver struct {
     srv     *grpc.Server
 }
 
-func NewDriver(ep, token, url, doTag, driverName, debugAddr string) error {
+func NewDriver() (*Driver, error) {
 
 	return nil
 }

@@ -6,5 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Println("vim-go")
+
+	fmt.Println("csi_main entrypoint")
+
+	drv, err := driver.NewDriver()
 }
