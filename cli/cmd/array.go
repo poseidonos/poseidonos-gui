@@ -15,6 +15,8 @@ var ArrayCommand = map[string]func(string, interface{}) (model.Request, model.Re
 	"info":        iBoFOS.ArrayInfo,
 	"add":         iBoFOS.AddDevice,
 	"remove":      iBoFOS.RemoveDevice,
+	"mount":       iBoFOS.MountArray,
+	"unmount":     iBoFOS.UnmountArray,
 }
 
 var arrayCmd = &cobra.Command{
@@ -33,6 +35,8 @@ array      : create      : Provides device configuration information for configu
            : info        : Show Information about Array.                                    : not needed
            : add         : Add spare device to the Array.                                   : -s [spare devs]
            : remove      : Remove spare device from the Array.                              : -s [spare devs]
+           : mount       : Mount iBoFOS.                                                    : --name [array] 
+           : unmount     : Unmount iBoFOS.                                                  : --name [array]
 
 
 If you want to input multiple flag parameter, you have to seperate with ",". 

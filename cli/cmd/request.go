@@ -63,7 +63,7 @@ var RequestVolumeCommand = map[string]func(string, interface{}) (model.Request, 
 var requestCmd = &cobra.Command{
 	Use:   "request [msg]",
 	Short: "** this will be deprecated **",
-	Long: `Request for msg to Poseidon OS and get a response fommated by JSON.
+	Long: `Request for msg to Poseidon OS and get a response formatted by JSON.
 
 Available msg list :
 

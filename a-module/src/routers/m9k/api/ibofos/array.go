@@ -35,3 +35,11 @@ func RemoveDevice(xrId string, param interface{}) (model.Request, model.Response
 func arraySender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.ArrayParam{}}.Send(command)
 }
+
+func MountArray(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return systemSender(xrId, param, "MOUNTARRAY")
+}
+
+func UnmountArray(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return systemSender(xrId, param, "UNMOUNTARRAY")
+}
