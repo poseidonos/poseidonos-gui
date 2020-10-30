@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"a-module/src/log"
-	"a-module/src/routers/m9k/model"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"

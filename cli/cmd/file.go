@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"a-module/src/errors"
-	"a-module/src/log"
-	iBoFOS "a-module/src/routers/m9k/api/ibofos"
-	"a-module/src/routers/m9k/model"
+	"pnconnector/src/errors"
+	"pnconnector/src/log"
+	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+	"pnconnector/src/routers/m9k/model"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"

@@ -1,7 +1,7 @@
 package bmc
 
 import (
-	"a-module/src/setting"
+	"pnconnector/src/setting"
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
 	"net/http"

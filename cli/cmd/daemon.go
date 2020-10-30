@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	//    "a-module/src/log"
-	_ "a-module/src/setting"
+	//    "pnconnector/src/log"
+	_ "pnconnector/src/setting"
 	//_ "dagent/src/routers"
 	_ "net/http"
 	_ "time"
 	//	"fmt"
-	"a-module/src/errors"
+	"pnconnector/src/errors"
 	"github.com/spf13/cobra"
 )
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"a-module/src/log"
+	"pnconnector/src/log"
 	termui "github.com/gizak/termui/v3"
 	"tui/src/storage/layout"
 	"tui/src/storage/widget"

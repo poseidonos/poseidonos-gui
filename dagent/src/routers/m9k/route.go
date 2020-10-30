@@ -1,10 +1,10 @@
 package m9k
 
 import (
-	"a-module/src/routers/m9k/api/exec"
-	amoduleIBoFOS "a-module/src/routers/m9k/api/ibofos"
-	amoduleMagent "a-module/src/routers/m9k/api/magent"
-	"a-module/src/routers/m9k/model"
+	"pnconnector/src/routers/m9k/api/exec"
+	amoduleIBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+	amoduleMagent "pnconnector/src/routers/m9k/api/magent"
+	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/api/magent"

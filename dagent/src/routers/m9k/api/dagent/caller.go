@@ -1,7 +1,7 @@
 package dagent
 
 import (
-	"a-module/src/routers/m9k/model"
+	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"dagent/src/routers/m9k/header"
 	"github.com/gin-gonic/gin"

@@ -3,10 +3,10 @@ SCRIPT_PATH=$(readlink -f $(dirname $0))/
 cd $SCRIPT_PATH
 
 cd ..
-rm -rf ./vendor/a-module
-cp -rf ../a-module ./vendor/
+rm -rf ./vendor/pnconnector
+cp -rf ../pnconnector ./vendor/
 
-cp ../a-module/resources/events.yaml ./doc
+cp ../pnconnector/resources/events.yaml ./doc
 
 export GIT_COMMIT_DAGENT=$(git rev-list -1 HEAD)
 export BUILD_TIME_DAGENT=$(date +%s)

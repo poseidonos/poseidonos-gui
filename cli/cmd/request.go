@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"a-module/src/errors"
-	iBoFOS "a-module/src/routers/m9k/api/ibofos"
-	"a-module/src/routers/m9k/model"
+	"pnconnector/src/errors"
+	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+	"pnconnector/src/routers/m9k/model"
 	"fmt"
 	"github.com/c2h5oh/datasize"
 	"github.com/google/uuid"

@@ -1,9 +1,9 @@
 package dagent
 
 import (
-	iBoFOS "a-module/src/routers/m9k/api/ibofos"
-	"a-module/src/routers/m9k/model"
-	"a-module/src/util"
+	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 	"errors"
 	"syscall"
 	"time"

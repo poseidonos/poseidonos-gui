@@ -1,15 +1,15 @@
-# a-module v0.0.0-00010101000000-000000000000 => ./../a-module
+# pnconnector v0.0.0-00010101000000-000000000000 => ./../pnconnector
 ## explicit
-a-module/src/errors
-a-module/src/handler
-a-module/src/influxdb
-a-module/src/log
-a-module/src/routers/m9k/api/exec
-a-module/src/routers/m9k/api/ibofos
-a-module/src/routers/m9k/api/magent
-a-module/src/routers/m9k/model
-a-module/src/setting
-a-module/src/util
+pnconnector/src/errors
+pnconnector/src/handler
+pnconnector/src/influxdb
+pnconnector/src/log
+pnconnector/src/routers/m9k/api/exec
+pnconnector/src/routers/m9k/api/ibofos
+pnconnector/src/routers/m9k/api/magent
+pnconnector/src/routers/m9k/model
+pnconnector/src/setting
+pnconnector/src/util
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/deepmap/oapi-codegen v1.3.6
@@ -104,4 +104,4 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 # gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
-# a-module => ./../a-module
+# pnconnector => ./../pnconnector

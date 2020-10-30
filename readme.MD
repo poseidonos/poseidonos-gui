@@ -30,7 +30,7 @@ The Commnad Line Interface to control POS
 #### TUI Client (Experimental)
 The Text-Based User interface to control or monitor POS
 
-#### A-Module
+#### PNConnector (Poseidon Native Connector)
 The Go module for communicating between app and POS
 
 ***

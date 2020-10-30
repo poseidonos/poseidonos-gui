@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"a-module/src/log"
-	"a-module/src/routers/m9k/model"
-	"a-module/src/setting"
-	"a-module/src/util"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/setting"
+	"pnconnector/src/util"
 	"encoding/json"
 	"fmt"
 	"github.com/c2h5oh/datasize"

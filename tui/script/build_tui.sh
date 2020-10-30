@@ -5,8 +5,8 @@ SCRIPT_PATH=$(readlink -f $(dirname $0))/
 cd $SCRIPT_PATH
 
 cd ..
-rm -rf ./vendor/a-module
-cp -rf ../a-module ./vendor/
+rm -rf ./vendor/pnconnector
+cp -rf ../pnconnector ./vendor/
 
 export GIT_COMMIT_TUI=$(git rev-list -1 HEAD)
 export BUILD_TIME_TUI=$(date +%s)
