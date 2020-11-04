@@ -25,6 +25,7 @@ DESCRIPTION: <File description> *
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
 import React, { Component } from "react";
+import io from "socket.io-client";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import GaugeChart from "react-gauge-chart";
@@ -50,17 +51,12 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
 import bytesToTB from "../../utils/bytes-to-tb";
+import HealthMetrics from "../../components/HealthMetrics";
 
 const styles = (theme) => {
   return {
     dashboardContainer: {
       display: "flex",
-    },
-    healthMetricsPaper: {
-      minHeight: 150,
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
     },
     storageDetailsPaper: {
       height: 250,
@@ -96,10 +92,6 @@ const styles = (theme) => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-    },
-    healthMetricContainer: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(1),
     },
     metricContainer: {
       marginTop: theme.spacing(1),
@@ -142,18 +134,6 @@ const styles = (theme) => {
       height: "82.5px",
       justifyContent: "center",
       borderRadius: "10px",
-      margin: "auto",
-      [theme.breakpoints.down(1200)]: {
-        width: "75%",
-      },
-    },
-    healthMetricBox: {
-      display: "flex",
-      alignItems: "center",
-      width: "75%",
-      height: "82.5px",
-      justifyContent: "center",
-      borderRadius: "100px",
       margin: "auto",
       [theme.breakpoints.down(1200)]: {
         width: "75%",
@@ -224,6 +204,11 @@ const icons = {
 //   PreviousPage: () => <ChevronLeft id="Dashboard-alert-vol-previouspage" />,
 // };
 
+// namespace to connect to the websocket for multi-volume creation
+const healthStatusSocketEndPoint = ":5000/health_status";
+//const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
+//const healthStatusSocketEndPoint = "http://107.122.11.174:3000/health_status";
+
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
   constructor(props) {
@@ -231,11 +216,15 @@ class Dashboard extends Component {
     this.state = {
       time: "",
       mobileOpen: false,
-      gaugeWidth: '100%',
+      healthStatusSocket: io(healthStatusSocketEndPoint, {
+        transports: ["websocket"],
+        query: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }),
     };
     this.interval = null;
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-    this.setChartWidth = this.setChartWidth.bind(this);
   }
 
   componentDidMount() {
@@ -268,33 +257,12 @@ class Dashboard extends Component {
     this.props.enableFetchingAlerts(true);
     this.interval = setInterval(() => {
       this.props.fetchPerformance();
-      this.props.fetchHealthStatus();
     }, 2000);
-    this.setChartWidth();
-    window.addEventListener("resize", this.setChartWidth);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
-    window.removeEventListener("resize", this.setChartWidth);
-  }
-
-  setChartWidth() {
-    setTimeout(() => {
-      let chart;
-
-      // istanbul ignore if
-      if(this.props.healthStatus.length > 0)
-        chart = document.getElementById(
-          this.props.healthStatus[0].id
-        );
-      // istanbul ignore next
-      const gaugeWidth = chart ? chart.clientWidth : 500;
-      this.setState({
-        ...this.state,
-        gaugeWidth,
-      });
-    }, 100);
+    this.state.healthStatusSocket.disconnect();
   }
 
   handleDrawerToggle() {
@@ -423,11 +391,17 @@ class Dashboard extends Component {
               </Grid>
               <Grid container spacing={1} className={classes.topGrid}>
                 <Grid xs={12} md={12} container spacing={1}>
-
                   <Grid xs={12} md={6} item spacing={1}>
-                    <Paper spacing={3} xs={6} className={classes.healthMetricsPaper}>
+                    <HealthMetrics
+                      healthStatusSocket={this.state.healthStatusSocket}
+                    />
+                    {/* <Paper
+                      spacing={3}
+                      xs={6}
+                      className={classes.healthMetricsPaper}
+                    >
                       <Grid container justify="space-around">
-                        {this.props.healthStatus.map((metric) => (
+                        {this.state.healthMetrics.map((metric) => (
                           <Grid
                             xs={10}
                             md={4} // currently, it is assumed that there are only 3 health metrics
@@ -449,19 +423,25 @@ class Dashboard extends Component {
                                 styles={{ width: this.state.gaugeWidth }}
                                 nrOfLevels={3}
                                 arcsLength={metric.arcsLength}
-                                colors={["rgba(91,225,44,0.7)", "rgba(245,205,25,0.7)", "rgba(234,66,40,0.7"]}
+                                colors={[
+                                  "rgba(91,225,44,0.7)",
+                                  "rgba(245,205,25,0.7)",
+                                  "rgba(234,66,40,0.7",
+                                ]}
                                 percent={metric.percentage}
                                 arcPadding={0.02}
                                 needleColor="#D6DBDF"
                                 needleBaseColor="#D6DBDF"
                                 textColor="rgba(0,0,0,0.8)"
-                                formatTextValue={() => `${metric.value} ` + `${metric.unit}`}
+                                formatTextValue={() =>
+                                  `${metric.value} ` + `${metric.unit}`
+                                }
                               />
                             </Grid>
                           </Grid>
                         ))}
                       </Grid>
-                    </Paper>
+                    </Paper> */}
                     <Paper spacing={3} xs={6} className={classes.metricsPaper}>
                       <Grid container justify="space-around">
                         <Grid
@@ -705,69 +685,69 @@ class Dashboard extends Component {
                             No Array Created
                           </Typography>
                         ) : (
-                            <React.Fragment>
-                              <div className="dashboard-size-label-container">
-                                <span className="dashboard-min-label">0TB</span>
-                                <span className="dashboard-max-label">
-                                  {bytesToTB(this.props.arraySize)}
-                                </span>
+                          <React.Fragment>
+                            <div className="dashboard-size-label-container">
+                              <span className="dashboard-min-label">0TB</span>
+                              <span className="dashboard-max-label">
+                                {bytesToTB(this.props.arraySize)}
+                              </span>
+                            </div>
+                            <div className="storage-detail-container">
+                              <div style={volFilledStyle}>
+                                <div style={volUsedStyle} />
                               </div>
-                              <div className="storage-detail-container">
-                                <div style={volFilledStyle}>
-                                  <div style={volUsedStyle} />
-                                </div>
-                                <div style={storageFreeStyle} />
-                                <div style={storageDangerStyle}>
-                                  <div className="dashboard-threshold-label">
-                                    80%
-                                  </div>
+                              <div style={storageFreeStyle} />
+                              <div style={storageDangerStyle}>
+                                <div className="dashboard-threshold-label">
+                                  80%
                                 </div>
                               </div>
-                              <div
+                            </div>
+                            <div
+                              style={{
+                                width: "94%",
+                                margin: "5px auto auto",
+                                height: "auto",
+                                position: "relative",
+                              }}
+                            >
+                              <Grid item container xs={12} wrap="wrap">
+                                <Legend
+                                  bgColor="rgba(0, 186, 0, 0.6)"
+                                  title={`Data Written: ${bytesToTB(
+                                    volUsedSpace
+                                  )}`}
+                                />
+                                <Legend
+                                  bgColor="#e0e0e0"
+                                  title={`Volume Space Allocated: ${bytesToTB(
+                                    volSpace
+                                  )}`}
+                                />
+                                <Legend
+                                  bgColor="#fff"
+                                  title={`Available for Volume Creation: ${bytesToTB(
+                                    this.props.arraySize - volSpace
+                                  )}`}
+                                />
+                                <Legend
+                                  bgColor="rgb(255, 173, 173)"
+                                  title="Threshold"
+                                />
+                              </Grid>
+                              <span
                                 style={{
-                                  width: "94%",
-                                  margin: "5px auto auto",
-                                  height: "auto",
-                                  position: "relative",
+                                  width: "100%",
+                                  marginTop: "10px",
+                                  float: "left",
+                                  textAlign: "left",
                                 }}
                               >
-                                <Grid item container xs={12} wrap="wrap">
-                                  <Legend
-                                    bgColor="rgba(0, 186, 0, 0.6)"
-                                    title={`Data Written: ${bytesToTB(
-                                      volUsedSpace
-                                    )}`}
-                                  />
-                                  <Legend
-                                    bgColor="#e0e0e0"
-                                    title={`Volume Space Allocated: ${bytesToTB(
-                                      volSpace
-                                    )}`}
-                                  />
-                                  <Legend
-                                    bgColor="#fff"
-                                    title={`Available for Volume Creation: ${bytesToTB(
-                                      this.props.arraySize - volSpace
-                                    )}`}
-                                  />
-                                  <Legend
-                                    bgColor="rgb(255, 173, 173)"
-                                    title="Threshold"
-                                  />
-                                </Grid>
-                                <span
-                                  style={{
-                                    width: "100%",
-                                    marginTop: "10px",
-                                    float: "left",
-                                    textAlign: "left",
-                                  }}
-                                >
-                                  As of {this.state.time}
-                                </span>
-                              </div>
-                            </React.Fragment>
-                          )}
+                                As of {this.state.time}
+                              </span>
+                            </div>
+                          </React.Fragment>
+                        )}
                       </Grid>
                     </Paper>
                   </Grid>
@@ -871,7 +851,6 @@ const mapStateToProps = (state) => {
     cpuArcsLength: state.dashboardReducer.cpuArcsLength,
     memoryArcsLength: state.dashboardReducer.memoryArcsLength,
     latencyArcsLength: state.dashboardReducer.latencyArcsLength,
-    healthStatus: state.dashboardReducer.healthStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -887,8 +866,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
     fetchIpAndMacInfo: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
-    fetchHealthStatus: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_HEALTH_STATUS }),
   };
 };
 export default withStyles(styles)(

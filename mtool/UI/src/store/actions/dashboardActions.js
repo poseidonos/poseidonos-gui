@@ -63,14 +63,7 @@ export const fetchPerformance = (
   };
 };
 
-export const fetchHealthStatus = (
-  healthStatus
-) => {
-  return {
-    type: actionTypes.FETCH_HEALTH_STATUS,
-    healthStatus
-  };
-};
+
 
 export const fetchStorage = (unusedSpace, used, unused, arraySize) => {
   return {

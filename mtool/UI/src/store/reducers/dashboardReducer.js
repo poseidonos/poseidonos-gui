@@ -44,7 +44,6 @@ const initialState = {
     mac: 'NA',
     host: '',
     arraySize: 0,
-    healthStatus: [],
 }
 
 
@@ -88,11 +87,6 @@ const dashboardReducer = (state = initialState, action) => {
                 ip: action.ip,
                 mac: action.mac,
                 host: action.host
-            };
-        case actionTypes.FETCH_HEALTH_STATUS:
-            return {
-                ...state,
-                healthStatus: action.healthStatus,
             };
         default:
             return state;

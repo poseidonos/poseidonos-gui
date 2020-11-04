@@ -174,47 +174,6 @@ function* fetchIpAndMacInfo() {
   }
 }
 
-function* fetchHealthStatus() {
-  const healthStatus = []
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/health_status/`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
-
-    const result = response.data;
-    /* istanbul ignore else */
-    if (result.statuses) {
-      const healthDetails = result.statuses
-      healthDetails.map(metric => {
-        const metricDetails = {}
-        metricDetails.id = metric.id
-        metricDetails.arcsLength = metric.arcsArr
-        metricDetails.percentage = metric.percentage
-        metricDetails.value = metric.value
-        metricDetails.label = metric.label
-        metricDetails.unit = metric.unit
-        healthStatus.push(metricDetails)
-        return null;
-      })
-      yield put(
-        actionCreators.fetchHealthStatus(
-          healthStatus
-        )
-      );
-    }
-  } catch (error) {
-    // console.log("catch",error);
-  }
-}
-
 export function* dashboardWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
   yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
@@ -223,7 +182,6 @@ export function* dashboardWatcher() {
     actionTypes.SAGA_FETCH_PERFORMANCE_INFO,
     fetchPerformanceInfo
   );
-  yield takeEvery(actionTypes.SAGA_FETCH_HEALTH_STATUS, fetchHealthStatus);
   yield takeEvery(actionTypes.SAGA_FETCH_IPANDMAC_INFO, fetchIpAndMacInfo);
   // console.log("This is async operation");
 }
