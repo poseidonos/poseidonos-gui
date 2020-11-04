@@ -39,7 +39,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
     response = None
     try:
         while(1):
-            print("sending request to dagent ",url)
+            #print("sending request to dagent ",url)
             if(req_type == "GET"):
                 response = requests.get(
                     url=url, headers=headers, timeout=timeout)
@@ -64,7 +64,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 return response
             time.sleep(1)
     except BaseException:
-        print("in except block", url)
+        #print("in except block", url)
         return response
 
 
@@ -105,10 +105,10 @@ def get_dagent_state(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print(response['result']['status']['code'])
-        print("--------------RESPONSE-------------")
+        #print(response['result']['status']['code'])
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -129,8 +129,8 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         array_exists(array_names[0])
         return response
     except HTTPError as http_err:
@@ -163,8 +163,8 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -188,8 +188,8 @@ def exit_system(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -824,8 +824,8 @@ def report_test(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
     except Exception as err:

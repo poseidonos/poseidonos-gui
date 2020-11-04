@@ -35,12 +35,12 @@ METRIC_PATH = '/api/metric/v1'
 def get_cpu_usage(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/cpu/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -49,12 +49,12 @@ def get_cpu_usage(time, auth = BASIC_AUTH_TOKEN):
 def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/memory/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -65,12 +65,12 @@ def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
 def get_read_iops(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/readiops/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -80,12 +80,12 @@ def get_read_iops(time, auth = BASIC_AUTH_TOKEN):
 def get_vol_read_iops(time, level, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/readiops/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -95,12 +95,12 @@ def get_vol_read_iops(time, level, auth = BASIC_AUTH_TOKEN):
 def get_write_iops(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/writeiops/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -110,12 +110,12 @@ def get_write_iops(time, auth = BASIC_AUTH_TOKEN):
 def get_vol_write_iops(time, level, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/writeiops/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -125,13 +125,13 @@ def get_vol_write_iops(time, level, auth = BASIC_AUTH_TOKEN):
 def get_read_bw(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/readbw/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
-        print(response)
+        #print("--------------RESPONSE-------------")
+        #print(response)
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -141,14 +141,14 @@ def get_read_bw(time, auth = BASIC_AUTH_TOKEN):
 def get_vol_read_bw(time, level, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/readbw/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
-        print(DAGENT_URL + '/api/metric/v1/readbw/volumes/' + level + '/' + time)
-        print(response)
+        #print("--------------RESPONSE-------------")
+        #print(DAGENT_URL + '/api/metric/v1/readbw/volumes/' + level + '/' + time)
+        #print(response)
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -158,12 +158,12 @@ def get_vol_read_bw(time, level, auth = BASIC_AUTH_TOKEN):
 def get_write_bw(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/writebw/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -173,12 +173,12 @@ def get_write_bw(time, auth = BASIC_AUTH_TOKEN):
 def get_vol_write_bw(time, level, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/writebw/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -188,12 +188,12 @@ def get_vol_write_bw(time, level, auth = BASIC_AUTH_TOKEN):
 def get_latency(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/latency/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -203,12 +203,12 @@ def get_latency(time, auth = BASIC_AUTH_TOKEN):
 def get_vol_latency(time, level, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        print("Sending command to dagent")
+        #print("Sending command to dagent")
         response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/latency/' + time, \
         headers= req_headers,timeout=(connect_timeout,read_timeout))
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         response = response.json()
-        print("--------------RESPONSE-------------")
+        #print("--------------RESPONSE-------------")
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')

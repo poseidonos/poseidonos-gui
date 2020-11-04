@@ -34,7 +34,7 @@ status_list = ["Good", "Fair", "Critical"]
 color_list = ["#008000", "#FFA500", "#FF0000"]
 rules = {"cpu": [[0, 40], [40, 80], [80, 100]], "memory": [[0, 50], [50, 70], [
     70, 100]], "osDisk": [[0, 70], [70, 85], [85, 100]], "latency": [[0, 60], [60, 85], [85, 100]]}
-time_interval = "15"
+time_interval = "1"
 max_latency = 0
 descriptions = {
     "cpu": [
@@ -94,7 +94,7 @@ def get_json_result(usage_percent, timestamp, rule, _id, label):
         "criticalTimeInSeconds": critical_time_in_seconds,
         "percentage": percentage,
         "epochTime": epoch_time,
-        "utcTime": utc_time,
+        #"utcTime": utc_time,
         "isHealthy": is_healthy,
         "arcsArr": arcsArr,
         "label":label}
@@ -108,6 +108,11 @@ def get_avg(res, arr_len, field):
     avg_usage_percent = sum_usage_percent / arr_len
     return avg_usage_percent
 
+def get_last_result(res, arr_len, field):
+    if arr_len > 0:
+        return res["result"]["data"][arr_len-1][field]
+    else:
+        return 0
 
 def set_max_latency(res, field):
     global max_latency
@@ -140,13 +145,15 @@ def process_response(res, rule, field, _id, label):
         else:
             time = res["result"]["data"][arr_len - 1]["time"]
             if rule == "latency":
-                latency = get_avg(res, arr_len, field)
+                #latency = get_avg(res, arr_len, field)
+                latency = get_last_result(res, arr_len, field)
                 usage_percent = get_percentage(latency)
                 result = get_json_result(usage_percent, time, rule, _id, label)
                 result["value"] = str(round(latency/1000000,2))
                 result["unit"] = "ms"
             else:
-                usage_percent = get_avg(res, arr_len, field)
+                #usage_percent = get_avg(res, arr_len, field)
+                usage_percent = get_last_result(res, arr_len, field)
                 result = get_json_result(usage_percent, time, rule, _id, label)
                 result["value"] = str(round(usage_percent, 2))
                 result["unit"] = "%"

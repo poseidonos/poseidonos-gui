@@ -74,7 +74,7 @@ from bson import json_util
 import traceback
 #import requests
 import json
-#import threading
+import threading
 import os
 import eventlet
 import math
@@ -110,7 +110,8 @@ connection_factory.connect_database()
 connection_factory.create_default_database()
 
 MACRO_OFFLINE_STATE = "OFFLINE"
-
+threshold = 0.9
+old_result = ""
 
 class IBOF_OS_Running:
     Is_Ibof_Os_Running_Flag = False
@@ -2141,13 +2142,11 @@ def default_error_handler(e):
     print(e)
 
 
-@app.route('/api/v1.0/health_status/', methods=['GET'])
-@token_required
-def getHealthStatus(current_user):
+def getHealthStatus():
     try:
         response = {}
         statuses = []
-        res = get_user_cpu_usage("15m")
+        res = get_user_cpu_usage("1m")
         cpu_result = process_response(res, "cpu", "cpuUsagePercent", "cpu-status","CPU UTILIZATION")
         statuses.append(cpu_result)
         res = get_user_memory_usage("15m")
@@ -2164,7 +2163,7 @@ def getHealthStatus(current_user):
             latency_result["isHealthy"]])
         response["isHealthy"] = health_result
         response["statuses"] = statuses
-        return jsonify(response)
+        return response
     except Exception as e:
         print("In Health Status Exception: ", e)
         return make_response('Could not get health status', 500)
@@ -2178,6 +2177,54 @@ def do_cleanup(current_user):
     except Exception as e:
         return make_response('Could not cleanup', 500)
 
+# connect handler for websocket
+@socketIo.on("connect", namespace='/health_status')
+def handleHealthStatusConn():
+    global old_result
+    token = None
+    if 'x-access-token' in request.args:
+        token = request.args['x-access-token']
+    if not token:
+        raise ConnectionRefusedError('unauthorized')
+    res = check_authentication()
+    if not res:
+        raise ConnectionRefusedError('unauthorized user!')
+    else:
+        old_result = ""
+
+@socketIo.on('disconnect', namespace='/health_status')
+def disconnect():
+    print("Health status websocket client disconnected!")
+def compare_result(prev_result,curr_result):
+    if prev_result == "":
+        return True
+    else:
+        try:
+            if abs(float(prev_result["statuses"][0]["value"]) - float(curr_result["statuses"][0]["value"])) > threshold :
+                return True
+            elif abs(float(prev_result["statuses"][1]["value"]) - float(curr_result["statuses"][1]["value"])) > threshold :
+                return True
+            elif abs(float(prev_result["statuses"][2]["value"]) - float(curr_result["statuses"][2]["value"])) > threshold :
+                return True
+            return False
+        except Exception as e:
+            print("In health status comparision exception: ",e)
+            return False
+
+def send_health_status_data():
+    global old_result
+    try:
+        while True:
+            result = getHealthStatus()
+            if compare_result(old_result,result):
+                old_result = result
+                socketIo.emit('health_status_response', result, namespace='/health_status')
+                #print("!!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>   Data sent <<<<<<<<<<<<<<<<<<<<<<<<<< !!!!", threading.currentThread().ident)
+            time.sleep(2)
+    except Exception as e:
+        print("Exception in health status polling: ",e)
+
+
 
 if __name__ == '__main__':
     #bmc_thread = threading.Thread(target=activate_bmc_thread)
@@ -2186,6 +2233,8 @@ if __name__ == '__main__':
     # power_thread.start()
 
     #app.run(host='0.0.0.0', debug=True,use_reloader=False, port=5010, threaded=True)
+    health_status_thread = threading.Thread(target=send_health_status_data, args=())
+    health_status_thread.start()
 
     socketIo.run(
         app,
