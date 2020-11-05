@@ -36,10 +36,6 @@
   stroke-width: 2;
 }
 
-circle {
-  cursor: pointer;
-}
-
 .area {
   fill: rgba(31, 119, 180, 0.4);
 }
