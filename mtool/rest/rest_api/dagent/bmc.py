@@ -3,9 +3,8 @@ import requests
 import uuid
 import time
 import datetime
-from time import strftime
 import json
-from requests.exceptions import HTTPError, Timeout
+from requests.exceptions import HTTPError
 import logging
 import dateutil.parser as dp
 from logging.handlers import RotatingFileHandler
@@ -63,6 +62,7 @@ def send_command_to_bmc(req_type, url, headers, timeout=None, data=None):
             if(retry_count >= 5):
                 return response
     except Exception as err:
+        print("Exception in send_command_to_bmc ",err)
         return response
 
 
@@ -125,7 +125,7 @@ def get_chassis_info(redfish_url=CHASSIS_URL, auth='Basic cm9vdDowcGVuQm1j'):
 
 
 def get_server_info(auth='Basic cm9vdDowcGVuQm1j'):
-    req_headers = get_headers(auth)
+    #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse server info...')
     try:
@@ -204,7 +204,7 @@ def get_power_info_old(auth='Basic cm9vdDowcGVuQm1j'):
 
 
 def get_power_info(auth='Basic cm9vdDowcGVuQm1j'):
-    req_headers = get_headers(auth)
+    #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse power info...')
     try:
@@ -252,9 +252,9 @@ def get_basic_redfish_url(auth='Basic cm9vdDowcGVuQm1j'):
                 20,
                 20))
         response = response.json()
-        SYSTEM_URL = response['Systems']['@odata.id']
-        CHASSIS_URL = response['Chassis']['@odata.id']
-        MANAGER_URL = response['Managers']['@odata.id']
+        #SYSTEM_URL = response['Systems']['@odata.id']
+        #CHASSIS_URL = response['Chassis']['@odata.id']
+        #MANAGER_URL = response['Managers']['@odata.id']
         return jsonify({'response': 'success'})
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -493,7 +493,7 @@ def get_power_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
     try:
         # To  Do
         power_info_arr = []
-        volatage_arr = []
+        #volatage_arr = []
         chassis_info = get_chassis_info()
         try:
             for i in range(0, len(chassis_info)):
@@ -605,7 +605,7 @@ def get_temperature_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
 
 
 def getPowerSummary(auth='Basic cm9vdDowcGVuQm1j'):  # GetCurrentPowerMode
-    req_headers = get_headers(auth)
+    #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'get power summary...')
     try:
@@ -956,7 +956,7 @@ def fetch_journal_logs(auth='Basic cm9vdDowcGVuQm1j'):
 
 
 def fetch_bmc_logs(auth='Basic cm9vdDowcGVuQm1j'):
-    req_headers = get_headers(auth)
+    #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'fetch all bmc logs...')
     try:

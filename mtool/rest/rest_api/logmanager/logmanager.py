@@ -3,7 +3,8 @@ from zipfile import ZipFile
 import os
 from flask import send_file
 import re
-
+from util.db.influx import get_connection
+from util.macros.influxdb_config import mtool_db, infinite_rp
 
 def zipFilesInDir(dirName, zipFileName, mode, startdate, enddate):
     # create a ZipFile object

@@ -27,7 +27,6 @@ DESCRIPTION: <File description> *
 */
 '''
 import datetime
-import time
 
 status_list = ["Good", "Fair", "Critical"]
 # 008000:Green, #FFA500:Orange, #FF0000:Red

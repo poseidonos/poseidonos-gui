@@ -480,9 +480,8 @@ def bmc_logs():
             severity_filter_array.append(value)
 
         total_count = list(count.get_points(measurement='bmc_logs'))
-        res = list(response.get_points())
         for data in list(response.get_points()):
-            for key in data.keys():
+            for _ in data.keys():
                 timestamp = data['Timestamp']
                 source = data['Source']
                 entryType = data['EntryType']
@@ -505,8 +504,6 @@ def bmc_logs():
                   "severity_filter_array": severity_filter_array,
                   }
     except BaseException:
-        return toJson(result)
-    finally:
         return toJson(result)
 
 
@@ -1400,6 +1397,7 @@ def mountVolume():
         mount_vol_res = mount_volume(body["name"], body.get("array"))
         return toJson(mount_vol_res.json())
     except Exception as e:
+        print("In exception mountVolume(): ", e)
         return make_response('Could not mount Volume', 500)
 @app.route('/api/v1.0/volume/mount', methods=['DELETE'])
 def unmountVolume():
@@ -1409,6 +1407,7 @@ def unmountVolume():
         unmount_vol_res = unmount_volume(body["name"], body.get("array"))
         return toJson(unmount_vol_res.json())
     except Exception as e:
+        print("In exception unmountVolume(): ", e)
         return make_response('Could not Unmount Volume', 500)
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
 def mountPOS():
@@ -1416,6 +1415,7 @@ def mountPOS():
         mount_ibofos_res = dagent.mount_ibofos()
         return toJson(mount_ibofos_res.json())
     except Exception as e:
+        print("In exception mountPOS(): ", e)
         return make_response('Could not mount POS', 500)
 
 
@@ -1426,6 +1426,7 @@ def unmountPOS(current_user):
         unmount_ibofos_res = dagent.unmount_ibofos()
         return toJson(unmount_ibofos_res.json())
     except Exception as e:
+        print("In exception unmountPOS(): ", e)
         return make_response('Could not unmount POS', 500)
 
 
@@ -2139,6 +2140,7 @@ def do_cleanup(current_user):
         os.system("./scripts/cleanup.sh > /dev/null 2>&1")
         return jsonify({"response": "Success"})
     except Exception as e:
+        print("In do_cleanup() Exception: ", e)
         return make_response('Could not cleanup', 500)
 
 # connect handler for websocket

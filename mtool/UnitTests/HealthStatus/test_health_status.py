@@ -5,7 +5,6 @@ import datetime
 import requests_mock
 from unittest import mock
 import json
-from requests.exceptions import HTTPError
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
@@ -92,6 +91,6 @@ def test_getHealthStatus_with_empty_result(mock_get_current_user, **kwargs):
     response = app.test_client().get(
         '/api/v1.0/health_status/',
         headers={'x-access-token': json_token})
-    data = json.loads(response.get_data(as_text=True))
+    #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
 
