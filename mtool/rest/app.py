@@ -47,7 +47,7 @@ from rest.rest_api.logmanager.logmanager import get_bmc_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_diskio_mbps, get_total_processes,  \
     get_total_disk_used_percent, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
-    get_disk_current_perf
+    get_disk_current_perf, get_input_power_variation 
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 import rest.rest_api.dagent.bmc as BMC_agent

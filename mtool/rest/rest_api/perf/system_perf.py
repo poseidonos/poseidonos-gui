@@ -33,6 +33,7 @@ DESCRIPTION: Files containing influxdb queries related to Performance data
 from util.db.influx import get_connection
 from util.com.time_groups import time_groups_default
 from rest.rest_api.dagent import metrics
+from util.macros.influxdb_config import mtool_db, infinite_rp
 
 
 def get_user_cpu_usage(time):
@@ -74,7 +75,7 @@ def get_total_disk_used_percent(time, level):
     connection.close()
     return res
 
-"""
+
 def get_input_power_variation(time):
     try:
         res_dict = {}
@@ -103,7 +104,7 @@ def get_input_power_variation(time):
         return res_dict
     except Exception as e:
         print(e)
-"""
+
 
 def get_disk_latency(time, level):
     if level == "array":
