@@ -134,7 +134,7 @@ const AddNewAlerts = props => {
           onKeyDown={e => /[+-.,#, ,]$/.test(e.key) && e.preventDefault()}
         />
         <Typography className={classes.formLabel} variant="caption"> -Send Alert Where</Typography>
-        <TextField
+        {/* <TextField
           required
           disabled
           label="Alert Field"
@@ -142,7 +142,17 @@ const AddNewAlerts = props => {
           value={props.alertRadioButton}
           className={classes.textField}
           margin="none"
-        />
+        /> */}
+        <Select
+          className={classes.textField}
+          onChange={props.onHandleChange}
+          name="alertRadioButton"
+          value={props.alertRadioButton}
+        >
+          {props.alertTypes ? props.alertTypes.map((type) => (
+            <MenuItem value={type}>{type}</MenuItem>
+          )) : null}
+        </Select>
       </Grid>
       <Grid sm={6} xs={12} item className={classes.addNewAlertsSecondInnerGrid}>
         <Typography className={classes.formLabelIs} variant="caption">Is</Typography>

@@ -37,8 +37,8 @@ import DashboardIconDisabled from '../../assets/images/Dashboard-DIS.png';
 import DashboardIconSelected from '../../assets/images/Dashboard-SEL.png';
 import StorageIconDisabled from '../../assets/images/Storage-DIS.png';
 import StorageIconSelected from '../../assets/images/Storage-SEL.png';
-// import ConfigurationIconDisabled from '../../assets/images/Configuration-DIS.png';
-// import ConfigurationIconSelected from '../../assets/images/Configuration-SEL.png';
+import ConfigurationIconDisabled from '../../assets/images/Configuration-DIS.png';
+import ConfigurationIconSelected from '../../assets/images/Configuration-SEL.png';
 import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
 import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
 import HardwareIconDisabled from '../../assets/images/Hardware_DIS.png';
@@ -219,8 +219,8 @@ const Sidebar = (props) => {
             </ListItem>
           </NavLink>
 
-        <Divider className={classes.listDivider} />
-        {/* <NavLink
+        <Divider className={classes.listDivider} /> */}
+        <NavLink
           style={ulStyle}
           className={classes.link} activeClassName={classes.activeLink}
           to="/ConfigurationSetting/general"
@@ -240,8 +240,8 @@ const Sidebar = (props) => {
             <Typography className={classes.sidebarText}>Configuration</Typography>
           </ListItem>
         </NavLink>
-        <Divider className={classes.listDivider} /> */}
-        {/* <Divider className={classes.listDivider} /> */}
+        <Divider className={classes.listDivider} />
+        <Divider className={classes.listDivider} />
 
         {/* <NavLink
           style={ulStyle}

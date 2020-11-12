@@ -28,7 +28,7 @@ DESCRIPTION: Configuration Page Container for rendering Configuration Page
 import React, { Component } from 'react';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MToolTheme , { customTheme } from '../../theme';
@@ -358,7 +358,7 @@ class ConfigurationSetting extends Component {
           />
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            {/* <AppBar position="static" color="default">
+            <AppBar position="static" color="default">
               <Tabs
                 value={this.state.value}
                 onChange={this.handleTabChange}
@@ -367,7 +367,7 @@ class ConfigurationSetting extends Component {
                 <Tab label="Alert" key="alert" value="alert" className={(window.location.href.indexOf('alert') > 0 ? classes.selectedTab : null)} />
                 <Tab label="User" key="user" value="user" className={(window.location.href.indexOf('user') > 0 ? classes.selectedTab : null)} />
               </Tabs>
-            </AppBar> */}
+            </AppBar>
             <Switch>
                 <Route exact path="/ConfigurationSetting/general">
                   <Grid container spacing={1} className={classes.GeneralContainer}>

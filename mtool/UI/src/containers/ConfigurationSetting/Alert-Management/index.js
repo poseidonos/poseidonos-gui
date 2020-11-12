@@ -138,7 +138,7 @@ class AlertManagement extends Component {
       radioindex: 0,
       alertName: '',
       alertType: '',
-      alertRadioButton: '', // For Alert Fields
+      alertRadioButton: 'cpu', // For Alert Fields
       alertCondition: 'Greater Than', // For Add New Alerts
       alertRange: '', // For Add New Alerts
       description: '', // For Add New Alerts
@@ -324,37 +324,37 @@ class AlertManagement extends Component {
       return;
     }
 
-    let alertType = '';
-    this.props.alertClusters.map(cluster => {
-      return {
-        ...cluster,
-        alertSubCluster: cluster.alertSubCluster.map((subcluster) => {
-          return {
-            ...subcluster,
-            alertTypes: subcluster.alertTypes.forEach(cip => {
-              if (cip.selected === true) {
-                if (alertType === '') alertType = cip.type;
-                else alertType = `${alertType}|${cip.type}`;
-              }
-            }),
-          };
-        }),
-      };
-    });
-    this.setState({
-      ...this.state,
-      alertType,
-    });
-    let subClusterName = ""
-    if (this.state.selectedAlertSubCluster != null)
-      subClusterName= this.state.selectedAlertSubCluster.name;
-  if (subClusterName === "cpu ")
-	  subClusterName = "cpu"
+    // let alertType = '';
+    // this.props.alertClusters.map(cluster => {
+    //   return {
+    //     ...cluster,
+    //     alertSubCluster: cluster.alertSubCluster.map((subcluster) => {
+    //       return {
+    //         ...subcluster,
+    //         alertTypes: subcluster.alertTypes.forEach(cip => {
+    //           if (cip.selected === true) {
+    //             if (alertType === '') alertType = cip.type;
+    //             else alertType = `${alertType}|${cip.type}`;
+    //           }
+    //         }),
+    //       };
+    //     }),
+    //   };
+    // });
+    // this.setState({
+    //   ...this.state,
+    //   alertType,
+    // });
+    // let subClusterName = ""
+    // if (this.state.selectedAlertSubCluster != null)
+    //   subClusterName= this.state.selectedAlertSubCluster.name;
+  // if (subClusterName === "cpu ")
+	//   subClusterName = "cpu"
     const addNewAlert = {
       alertName: this.state.alertName,
       alertField: this.state.alertRadioButton,
-      alertCluster: this.state.alertClusterName,
-      alertSubCluster: subClusterName,
+      alertCluster: this.state.alertRadioButton,
+      alertSubCluster: this.state.alertRadioButton,
       alertType: this.state.alertType,
       alertCondition: this.state.alertCondition, // For Add New Alerts
       alertRange: this.state.alertRange, // For Add New Alerts
@@ -364,7 +364,7 @@ class AlertManagement extends Component {
     this.setState({
       alertName: '',
       alertField: '',
-      alertRadioButton: '', // For Alert Fields
+      alertRadioButton: 'cpu', // For Alert Fields
       alertCondition: 'Greater Than', // For Add New Alerts
       alertRange: '', // For Add New Alerts
       description: '', // For Add New Alerts
@@ -431,7 +431,7 @@ class AlertManagement extends Component {
                 triggerCommand={this.triggerCommand}
                 openAlert={this.openAlert}
               />
-              <Grid item container spacing={3}>
+              {/* <Grid item container spacing={3}>
                 <AlertTypes
                   selectAlertCluster={this.selectAlertCluster}
                   selectAlertSubCluster={this.selectAlertSubCluster}
@@ -450,7 +450,7 @@ class AlertManagement extends Component {
                   selectedAlertSubCluster={this.state.selectedAlertSubCluster}
                   alertType={this.state.alertType}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item container>
                 <AddNewAlerts
                   dropdownCondition={this.state.conditions}
@@ -461,6 +461,7 @@ class AlertManagement extends Component {
                   alertRadioButton={this.state.alertRadioButton}
                   alertRange={this.state.alertRange}
                   description={this.state.description}
+                  alertTypes={this.props.alertClusters}
                   // addAlerts={this.addAlerts}
                   openAlert={this.openAlert}
                 />

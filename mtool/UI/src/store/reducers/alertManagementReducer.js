@@ -161,66 +161,67 @@ const alertManagementReducer = (state = initialState, action) => {
 
         case actionTypes.ALERT_MANAGEMENT_FETCH_ALERTS_TYPE:
             {
-                const alertTypesArray = [];
-                for (let i = 0; i < action.alertTypes.length; i += 1) {
-                    if (action.alertTypes[i].name === 'cpu') {
-                        action.alertTypes[i].alertFields = [
-                            // 'usage_idle',
-                            'usage_user',
-                            // 'usage_system',
-                        ];
-                        for (
-                            let j = 0;
-                            j < action.alertTypes[i].alertSubCluster.length;
-                            j += 1
-                        ) {
-                            if (action.alertTypes[i].alertSubCluster[j].name === 'cpu') {
-                                action.alertTypes[i].alertSubCluster = action.alertTypes[
-                                    i
-                                ].alertSubCluster.filter(item => item.name === 'cpu');
-                                action.alertTypes[i].alertSubCluster[
-                                    j
-                                ].alertTypes = action.alertTypes[i].alertSubCluster[
-                                    j
-                                ].alertTypes.filter(item => item.type === 'cpu-total');
-                                action.alertTypes[i].alertSubCluster[j].name = 'cpu ';
-                            }
-                        }
-                        alertTypesArray.push(action.alertTypes[i]);
-                     }           
-                     else if (action.alertTypes[i].name === 'mem' || action.alertTypes[i].name === 'net' || action.alertTypes[i].name === 'disk' || action.alertTypes[i].name === 'air' || action.alertTypes[i].name === 'ethernet') {
-                        alertTypesArray.push(action.alertTypes[i]);
-                    //     for (
-                    //         let j = 0;
-                    //         j < action.alertTypes[i].alertSubCluster.length;
-                    //         j += 1
-                    //     ) {
-                    //         if (action.alertTypes[i].alertSubCluster[j].name !== 'device') {
-                    //             action.alertTypes[i].alertSubCluster = action.alertTypes[
-                    //                 i
-                    //             ].alertSubCluster.filter(item => item.name === 'device');
-                    //         } else {
-                    //             action.alertTypes[i].alertSubCluster[
-                    //                 j
-                    //             ].alertTypes = action.alertTypes[i].alertSubCluster[
-                    //                 j
-                    //             ].alertTypes.slice(0, 1);
-                    //             action.alertTypes[i].alertSubCluster[j].alertTypes.map(
-                    //                 (item) => {
-                    //                     const resItem = { ...item }
-                    //                     resItem.type = 'NA';
-                    //                     return resItem;
-                    //                 }
-                    //             );
-                    //         }
-                    //     }
-                    //     action.alertTypes[i].alertFields = ['NA'];
-                    //     alertTypesArray.push(action.alertTypes[i]);
-                    }
-                }
+                // const alertTypesArray = [];
+                // for (let i = 0; i < action.alertTypes.length; i += 1) {
+                //     if (action.alertTypes[i].name === 'cpu') {
+                //         action.alertTypes[i].alertFields = [
+                //             // 'usage_idle',
+                //             'usage_user',
+                //             // 'usage_system',
+                //         ];
+                //         for (
+                //             let j = 0;
+                //             j < action.alertTypes[i].alertSubCluster.length;
+                //             j += 1
+                //         ) {
+                //             if (action.alertTypes[i].alertSubCluster[j].name === 'cpu') {
+                //                 action.alertTypes[i].alertSubCluster = action.alertTypes[
+                //                     i
+                //                 ].alertSubCluster.filter(item => item.name === 'cpu');
+                //                 action.alertTypes[i].alertSubCluster[
+                //                     j
+                //                 ].alertTypes = action.alertTypes[i].alertSubCluster[
+                //                     j
+                //                 ].alertTypes.filter(item => item.type === 'cpu-total');
+                //                 action.alertTypes[i].alertSubCluster[j].name = 'cpu ';
+                //             }
+                //         }
+                //         alertTypesArray.push(action.alertTypes[i]);
+                //      }           
+                //      else if (action.alertTypes[i].name === 'mem' || action.alertTypes[i].name === 'net' || action.alertTypes[i].name === 'disk' || action.alertTypes[i].name === 'air' || action.alertTypes[i].name === 'ethernet') {
+                //         alertTypesArray.push(action.alertTypes[i]);
+                //     //     for (
+                //     //         let j = 0;
+                //     //         j < action.alertTypes[i].alertSubCluster.length;
+                //     //         j += 1
+                //     //     ) {
+                //     //         if (action.alertTypes[i].alertSubCluster[j].name !== 'device') {
+                //     //             action.alertTypes[i].alertSubCluster = action.alertTypes[
+                //     //                 i
+                //     //             ].alertSubCluster.filter(item => item.name === 'device');
+                //     //         } else {
+                //     //             action.alertTypes[i].alertSubCluster[
+                //     //                 j
+                //     //             ].alertTypes = action.alertTypes[i].alertSubCluster[
+                //     //                 j
+                //     //             ].alertTypes.slice(0, 1);
+                //     //             action.alertTypes[i].alertSubCluster[j].alertTypes.map(
+                //     //                 (item) => {
+                //     //                     const resItem = { ...item }
+                //     //                     resItem.type = 'NA';
+                //     //                     return resItem;
+                //     //                 }
+                //     //             );
+                //     //         }
+                //     //     }
+                //     //     action.alertTypes[i].alertFields = ['NA'];
+                //     //     alertTypesArray.push(action.alertTypes[i]);
+                //     }
+                // }
+                
                 return {
                     ...state,
-                    alertClusters: alertTypesArray,
+                    alertClusters: action.alertTypes
                 };
             }
         default:
