@@ -27,73 +27,90 @@ DESCRIPTION: <File description> *
 */
 '''
 
-'''
+
 import requests
+import json
 from bson import json_util
-from flask import  abort
+from flask import  abort, make_response
 
 
 def toJson(data):
     return json_util.dumps(data)
-
 
 def Get_Kapacitor_Entries():
     print("Inside Kapacitor Entries")
     r = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
     data = r.json()
     kapacitorlist = data['options']['to']
-    print("Kapacitor LIST", kapacitorlist)
+    print("Gettttttt Kapacitor LIST", kapacitorlist)
     # print(r.text,r.content,r.status_code,"TEXT")
     if(r.status_code != 204 and r.status_code != 200):
         return abort(404)
     return kapacitorlist
-
-
+"""
+def Get_Email_IDs_From_Kapacitor():
+    result = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
+    data = result.json()
+    try:
+        if(result.status_code == 200):
+            emailList = data['options']['to']
+            return emailList
+        else:
+            return None
+    except Exception as e:
+        return None
+"""
 def Update_KapacitorList(oldid=None, email=None, updateflag=0):
-    r = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
-    data = r.json()
-    kapacitorlist = data['options']['to']
-    print("OLD ID", oldid, "New ID", email)
-    print("Kapacitor LIST", kapacitorlist)
-    if kapacitorlist is None:
-        kapacitorlist = []
-    if(updateflag):
-        kapacitorlist.remove(oldid)
-    kapacitorlist.append(email)
-    tasks = {
-        "set": {
+    try:
+        result = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
+        data = result.json()
+        kapacitorlist = data['options']['to']
+        print("OLD ID", oldid, "New ID", email)
+        print("Kapacitor LIST", kapacitorlist)
+        if kapacitorlist is None:
+            kapacitorlist = []
+        if(oldid is not None and oldid in kapacitorlist):
+            kapacitorlist.remove(oldid)
+        kapacitorlist.append(email)
+        tasks = {
+            "set": {
+            "enabled": True,
             "to": kapacitorlist
-        }
-    }
-    r = requests.post(
-        url="http://localhost:9092/kapacitor/v1/config/smtp/",
-        data=toJson(tasks))
-    print(r.text, r.content, r.status_code, "TEXT")
-    Get_Kapacitor_Entries()
-    if(r.status_code != 204 and r.status_code != 200):
-        return abort(404)
-    return 'Success'
-
+            }
+       }
+        result = requests.post(
+            url="http://localhost:9092/kapacitor/v1/config/smtp/",
+            data=toJson(tasks))
+       
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+        else:
+            return make_response(json.dumps({"description": "Success"}), 200)
+    except BaseException as e:
+         print("exception in updating email ids in kapacitor",e)
+         return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
 
 def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
-    print("delete ids", ids)
-    kapacitorlist = Get_Kapacitor_Entries()
-    if(singleIdFlag):
-        kapacitorlist.remove(ids)
-    else:
-        for _id in ids:
-            kapacitorlist.remove(_id)
-    tasks = {
-        "set": {
+    print("Delete Email IDs")
+    try:
+        kapacitorlist = Get_Kapacitor_Entries()
+        if(singleIdFlag):
+            kapacitorlist.remove(ids)
+        else:
+            for _id in ids:
+                kapacitorlist.remove(_id)
+        tasks = {
+            "set": {
             "to": kapacitorlist
+            }
         }
-    }
-    r = requests.post(
-        url="http://localhost:9092/kapacitor/v1/config/smtp/",
-        data=toJson(tasks))
-    Get_Kapacitor_Entries()
-    if(r.status_code != 204 and r.status_code != 200):
-        return abort(404)
-    return 'Success'
-
-'''
+        result = requests.post(
+            url="http://localhost:9092/kapacitor/v1/config/smtp/",
+            data=toJson(tasks))
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
+        else:    
+            return make_response(json.dumps({"description": "Email ID Deleted Successfully"}), 200)
+    except BaseException as e:
+         print("exception in deleting email ids from kapacitor",e)
+         return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)

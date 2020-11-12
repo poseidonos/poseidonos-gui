@@ -1,7 +1,11 @@
 import enum
 import sqlite3
+import json
 #import re
+from flask import make_response
 import os
+from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
+from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
 
 """
 try:
@@ -248,31 +252,81 @@ class SQLiteConnection:
         else:
             return True
 
-    def insert_email(self, email):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(INSERT_EMAIL_QUERY, (email, True))
-        DB_CONNECTION.commit()
+    def insert_email(self, oldid, email):
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(INSERT_EMAIL_QUERY, (email, True))
+            result = Update_KapacitorList(oldid, email)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in insert_email:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()    
+            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+        
 
     def update_email_list(self, oldid, email):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
-        DB_CONNECTION.commit()
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
+            result = Update_KapacitorList(oldid, email)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in update_email:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
 
     def delete_emailids_list(self, user_id):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_EMAIL_QUERY, (user_id,))
-        rows = cur.fetchone()
-        if rows is None or len(rows) == 0:
-            return False
-        else:
-            cur.execute(DELETE_EMAIL_QUERY, (user_id,))
-            DB_CONNECTION.commit()
-            return True
+        try:
+            result = None
+            cur = DB_CONNECTION.cursor()
+            cur.execute(SELECT_EMAIL_QUERY, (user_id,))
+            rows = cur.fetchone()
+            if rows is None or len(rows) == 0:
+                return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
+            else:
+                cur.execute(DELETE_EMAIL_QUERY, (user_id,))
+                result = Delete_MultipleID_From_KapacitorList(user_id, True)
 
-    def toggle_email_update(self, status, user_id):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_EMAIL_UPDATE_QUERY, (status, user_id))
-        DB_CONNECTION.commit()
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in delete_email:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
+ 
+
+    def toggle_email_update(self, status, email_id):
+        try:
+            result = None
+            cur = DB_CONNECTION.cursor()
+            cur.execute(TOGGLE_EMAIL_UPDATE_QUERY, (status, email_id))
+            if(status):
+                result = Update_KapacitorList(None, email_id)
+            else:
+                result = Delete_MultipleID_From_KapacitorList(email_id, True)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+                return make_response(json.dumps({"description":"Success"}), 200)
+            else:
+                DB_CONNECTION.rollback()
+                make_response(json.dumps({"description": "Failed to Toggle Email ID"}), 500)
+        except DB_CONNECTION.Error:
+            print("exception in toggle_email_update:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description": "Failed to Toggle Email ID"}), 500)
+
+
 
     def add_new_user_in_db(
             self,
@@ -375,19 +429,37 @@ class SQLiteConnection:
             description,
             alert_range,
             active):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(
-            ADD_ALERT_QUERY,
-            (alert_name,
-             alert_cluster,
-             alert_sub_cluster,
-             alert_type,
-             alert_condition,
-             alert_field,
-             description,
-             alert_range,
-             active))
-        DB_CONNECTION.commit()
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(
+                ADD_ALERT_QUERY,
+                (alert_name,
+                alert_cluster,
+                alert_sub_cluster,
+                alert_type,
+                alert_condition,
+                alert_field,
+                description,
+                alert_range,
+                active))
+            result = create_kapacitor_alert(
+                     alert_name,
+                     alert_type,
+                     alert_condition,
+                     alert_range,
+                     alert_field,
+                     alert_cluster,
+                     alert_sub_cluster,
+                     description)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in add alert:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description":"Failed to Add Alert"}),500) 
 
     def tupple_to_json(self, my_tuple, my_list):
         json_array = []
@@ -408,41 +480,83 @@ class SQLiteConnection:
             return self.tupple_to_json(rows, USER_ALERTS_TABLE_COLUMNS)
 
     def delete_alerts_in_db(self, alert_name):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(DELETE_ALERT_QUERY, (alert_name,))
-        DB_CONNECTION.commit()
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(DELETE_ALERT_QUERY, (alert_name,))
+            result = delete_alert_from_kapacitor(alert_name)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in delete alert:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description":"Failed to Delete Alert"}),500)
+
 
     def update_alerts_in_db(
             self,
             alert_name,
+            alert_cluster,
+            alert_sub_cluster,
+            alert_type,
+            alert_condition,
+            alert_field,
             description,
-            alert_range,
-            alert_condition):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_ALERT_QUERY, (alert_name,))
-        rows = cur.fetchone()
-        if rows is None or len(rows) == 0:
-            return False
-        cur = DB_CONNECTION.cursor()
-        cur.execute(
-            UPDATE_ALERT_QUERY,
-            (description,
-             alert_range,
-             alert_condition,
-             alert_name))
-        DB_CONNECTION.commit()
-        return True
+            alert_range):
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(SELECT_ALERT_QUERY, (alert_name,))
+            rows = cur.fetchone()
+            if rows is None or len(rows) == 0:
+                return make_response(json.dumps({"description":"Failed to Update Alert"}),500)
+            cur = DB_CONNECTION.cursor()
+            cur.execute(
+                UPDATE_ALERT_QUERY,
+                (description,
+                 alert_range,
+                 alert_condition,
+                 alert_name))
+            result = update_in_kapacitor(
+                         alert_name,
+                         alert_type,
+                         alert_condition,
+                         alert_range,
+                         alert_field,
+                         alert_cluster,
+                         alert_sub_cluster,
+                         description)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in update alert:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description":"Failed to Update Alert"}),500) 
 
     def toggle_alert_status_in_db(self, alert_name, status):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
-        rows = cur.fetchone()
-        if rows is None or len(rows) == 0:
-            return False
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
-        DB_CONNECTION.commit()
-        return True
+        try:
+            cur = DB_CONNECTION.cursor()
+            cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
+            rows = cur.fetchone()
+            if rows is None or len(rows) == 0:
+                return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
+            cur = DB_CONNECTION.cursor()
+            cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
+            result = toggle_in_kapacitor(alert_name, status)
+            if(result.status_code == 200):
+                DB_CONNECTION.commit()
+            else:
+                DB_CONNECTION.rollback()
+            return result
+        except DB_CONNECTION.Error:
+            print("exception in toggle alert:",DB_CONNECTION.Error)
+            DB_CONNECTION.rollback()
+            return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
+
 
     def set_live_logs_in_db(self, data, username):
         cur = DB_CONNECTION.cursor()

@@ -30,9 +30,7 @@ DESCRIPTION: <File description> *
 
 #!/usr/bin/python
 from rest.swordfish.handler import swordfish_api
-# Update_KapacitorList,Delete_From_KapacitorList
-#from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
-#from rest.rest_api.alerts.system_alerts import get_alert_categories_new, create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
+from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb, create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
 from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
@@ -59,10 +57,10 @@ import time
 from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
-#from email.mime.text import MIMEText
-#from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 #from dateutil import parser
-#import smtplib
+import smtplib
 import datetime
 import jwt
 from werkzeug.security import generate_password_hash
@@ -72,7 +70,7 @@ import re
 from functools import wraps
 from bson import json_util
 import traceback
-#import requests
+import requests
 import json
 import threading
 import os
@@ -112,6 +110,8 @@ connection_factory.create_default_database()
 MACRO_OFFLINE_STATE = "OFFLINE"
 threshold = 0.9
 old_result = ""
+
+alertFields = {'cpu' : "usage_user", 'mem' : 'used_percent'}
 
 class IBOF_OS_Running:
     Is_Ibof_Os_Running_Flag = False
@@ -523,14 +523,17 @@ def get_alert_info():
         return jsonify({'alerts': alertData})
     except BaseException:
         return jsonify({'alerts': alertData})
-
+"""
 
 @app.route('/api/v1.0/get_alert_types/', methods=['GET'])
 @token_required
 def get_alert_categories(current_user):
-    alertCategories = get_alert_categories_new()
-    return jsonify({'alert_types': alertCategories})
+    #To get the alert subcategories, uncomment the following line
+    #alertCategories = get_alert_categories_new()   
 
+    alertCategories = get_alert_categories_from_influxdb() 
+    return jsonify({'alert_types': alertCategories})
+"""
 @app.route('/api/v1.0/available_memory', methods=['GET'])
 def get_available_mem():
     res = get_available()
@@ -727,7 +730,7 @@ def trigger_email(serverip, serverport, emailid):
 
     # Terminate the SMTP session and close the connection
     s.quit()
-
+"""
 
 @app.route('/api/v1.0/test_smtpserver/', methods=['POST'])
 def test_smtpserver():
@@ -740,19 +743,17 @@ def test_smtpserver():
     print(serverport)
     try:
         s = smtplib.SMTP(serverip, serverport, None, 1)
-        # s.starttls()
         s.quit()
         connection_factory.insert_smtp_ip(serverip, serverport)
-        print(" after calling")
-
-    except BaseException:
+    except BaseException as e:
+        print("exception in test_smtpserver",e)
         return abort(404)
     tasks = {
         "set": {
             "enabled": True,
             "host": serverip,
             "port": serverport,
-            "from": "iBOF@samsung.com"
+            "from": "MTool@samsung.com"
         }
     }
     r = requests.post(
@@ -767,45 +768,42 @@ def test_smtpserver():
 @app.route('/api/v1.0/get_email_ids/', methods=['GET'])
 def get_email_ids():
     email_list = connection_factory.get_email_list()
-    #email_list = [{"_id": {"$oid": "5d8afba1d517a3cc50f0748c"}, "email": "k.k@samsung.com", "active": True}]
-    print("email_list", toJson(email_list))
     return toJson(email_list)
-
-
+ 
+"""
 @app.route('/api/v1.0/get_smtp_server_details/', methods=['GET'])
 def get_smtp_server_details():
     return toJson(connection_factory.get_smtp_details())
-
+"""
 
 @app.route('/api/v1.0/update_email/', methods=['POST'])
 def update_email():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    #_id = body['_id']
+  
     oldid = body['oldid']
     email = body['email']
-    print("in update_email() ", oldid, email, connection_factory)
+    print("in update_email() ", oldid, email)
+    result = None
     found = connection_factory.find_email(oldid)
     if not found:
-        connection_factory.insert_email(email)
-        Update_KapacitorList(oldid, email)
+        result =  connection_factory.insert_email(oldid, email)
     else:
-        connection_factory.update_email_list(oldid, email)
-        Update_KapacitorList(oldid, email, 1)
-    return 'Updated'
-
+        result = connection_factory.update_email_list(oldid, email)
+    return result
+  
 
 @app.route('/api/v1.0/delete_emailids/', methods=['POST'])
 def delete_emailids():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     ids = body['ids']
+    result = None
     for email_id in ids:
-        if connection_factory.delete_emailids_list(email_id):
-            Delete_MultipleID_From_KapacitorList(email_id, True)
-    return 'Success'
+        result = connection_factory.delete_emailids_list(email_id)
+    return result 
 
-
+"""
 @app.route('/api/v1.0/send_email/', methods=['POST'])
 def send_email():
     body_unicode = request.data.decode('utf-8')
@@ -816,7 +814,7 @@ def send_email():
     for email_id in ids:
         trigger_email(serverip, serverport, email_id)
     return 'Success'
-
+"""
 
 @app.route('/api/v1.0/toggle_email_status/', methods=['POST'])
 def toggle_email_status():
@@ -824,13 +822,17 @@ def toggle_email_status():
     body = json.loads(body_unicode)
     email_id = body['emailid']
     status = body['status']
-    connection_factory.toggle_email_update(status, email_id)
+    result = connection_factory.toggle_email_update(status, email_id)
+    print("result toggle",result)
+    return result
+
+    """
     if(status):
         Update_KapacitorList(None, email_id)
     else:
         Delete_MultipleID_From_KapacitorList(email_id, True)
     return 'Updated'
-"""
+    """
 
 # Get Devices
 
@@ -1555,7 +1557,6 @@ def getVolumes():
 </pre>
 '''
 
-'''
 @app.route('/api/v1.0/add_alert/', methods=['POST'])
 @token_required
 def addAlert(current_user):
@@ -1566,28 +1567,18 @@ def addAlert(current_user):
     """
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    # print(body)
+    #print(body)
     alertName = body['alertName']
-    alertType = body['alertType']
     alertCondition = body['alertCondition']
     alertRange = body['alertRange']
     description = body['description']
-    alertField = body['alertField']
     alertCluster = body['alertCluster']
-    alertSubCluster = body['alertSubCluster']
 
-    response = create_kapacitor_alert(
-        alertName,
-        alertType,
-        alertCondition,
-        alertRange,
-        alertField,
-        alertCluster,
-        alertSubCluster,
-        description)
-    if response.status_code == 200:
-        try:
-            connection_factory.add_alert_in_db(
+    alertType = ""
+    alertSubCluster = ""
+
+    alertField = alertFields[alertCluster]
+    result = connection_factory.add_alert_in_db(
                 alertName,
                 alertCluster,
                 alertSubCluster,
@@ -1597,17 +1588,8 @@ def addAlert(current_user):
                 description,
                 alertRange,
                 True)
-            return jsonify({"message": "New Alert Created"})
-        except BaseException:
-            print("unable to create alert entry in db")
-            return jsonify({"message": "NEW ALERT NOT CREATED"})
-
-    else:
-        return abort(400)
-
-    #return jsonify({"message": "NEW ALERT CREATED"})
-
-
+    return result
+           
 @app.route('/api/v1.0/get_alerts/', methods=['GET'])
 def get_alerts():
     """
@@ -1621,7 +1603,7 @@ def get_alerts():
     else:
         return toJson(alerts)
 
-
+'''
 @app.route('/api/v1.0/alert', methods=['POST'])
 def alertHandler():
     #print("alert handler called")
@@ -1630,7 +1612,7 @@ def alertHandler():
     allAlerts = get_alerts()
     # print(list(allAlerts.get_points()))
     return jsonify(list(allAlerts.get_points()))
-
+'''
 
 @app.route('/api/v1.0/delete_alerts/', methods=['POST'])
 @token_required
@@ -1644,16 +1626,8 @@ def delete_alerts(current_user):
     body = json.loads(body_unicode)
     ids = body['ids']
     for alert_id in ids:
-        try:
-            res = delete_alert_from_kapacitor(alert_id)
-            if res.status_code == 204:
-                connection_factory.delete_alerts_in_db(alert_id)
-        except BaseException:
-            return make_response('Could not delete in db', 500)
-
-    return make_response("Successfully deleted", 200)
-
-#{'_id': {'$oid': '5ced1fd53157ac3fb872f0ad'}, 'alertName': 'arun', 'alertSubCluster': 'host', 'alertType': 'lin-2030044719', 'alertCondition': 'Less Than', 'alertField': 'avail_size', 'description': '', 'alertRange': '8889', 'active': True, 'selected': False, 'edit': True}
+        result = connection_factory.delete_alerts_in_db(alert_id)
+    return result
 
 
 @app.route('/api/v1.0/update_alerts/', methods=['POST'])
@@ -1666,34 +1640,26 @@ def update_alerts(current_user):
     """
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    # print(body)
     alertName = body['alertName']
-    alertType = body['alertType']
     alertCondition = body['alertCondition']
     alertRange = body['alertRange']
     description = body['description']
-    alertField = body['alertField']
     alertCluster = body['alertCluster']
-    alertSubCluster = body['alertSubCluster']
-    # if db['user_alerts']:
-    res = update_in_kapacitor(
-        alertName,
-        alertType,
-        alertCondition,
-        alertRange,
-        alertField,
-        alertCluster,
-        alertSubCluster,
-        description)
-    if res.status_code == 200 or res.status_code == 204:
-        if connection_factory.update_alerts_in_db(
-                alertName, description, alertRange, alertCondition) == False:
-            return abort(404)
-        else:
-            return 'Alert Successfully updated'
-    else:
-        print(res.json(), res.content)
-        return abort(404)
+   
+    alertType = ""
+    alertSubCluster = ""
+    
+    alertField = alertFields[alertCluster]
+    result = connection_factory.update_alerts_in_db(
+                alertName,
+                alertCluster,
+                alertSubCluster,
+                alertType,
+                alertCondition,
+                alertField,
+                description, 
+                alertRange)
+    return result
 
 
 @app.route('/api/v1.0/toggle_alert_status/', methods=['POST'])
@@ -1709,19 +1675,9 @@ def toggle_alert_status(current_user):
     print(body)
     alertName = body['alertName']
     status = body['status']
-    res = toggle_in_kapacitor(alertName, status)
-    if res.status_code == 200 or res.status_code == 204:
-        if connection_factory.toggle_alert_status_in_db(
-                alertName, status) == False:
-            return abort(404)
-        else:
-            return 'Alert Successfully updated'
-    else:
-        print(res.json(), res.content)
-        return abort(404)
-'''
-
-
+    result = connection_factory.toggle_alert_status_in_db(alertName, status)
+    return result
+    
 @app.route('/api/v1.0/download_logs', methods=['GET'])
 def downloadLogs():
     print(request.args)

@@ -27,10 +27,12 @@ DESCRIPTION: <File description> *
 */
 '''
 
-'''
+
 from util.db.influx import get_connection
 import requests
+import json
 from util.macros.influxdb_config import mtool_db, infinite_rp, default_rp
+from flask import make_response
 chronograf = 'chronograf'
 
 KAPACITOR_URL = 'http://localhost:9092/kapacitor/v1'
@@ -44,20 +46,33 @@ opertorMAP = {
     'Outside Range': 'check'
 }
 
+def get_alert_categories_from_influxdb():
+    alertCategories = []
 
+    #add/remove alerts based on the requirement
+    requiredAlerts = ['cpu', 'mem']
+    connection = get_connection()
+    query = 'SHOW MEASUREMENTS ON "' + mtool_db + '"'
+    result = connection.query(query)
+    connection.close()
+    resultList = list(result.get_points())
+
+    for measurement in resultList:
+        alertName = measurement['name']
+        if alertName in requiredAlerts:
+            alertCategories.append(alertName)
+    return alertCategories
+
+"""
 def get_alert_categories_new():
-    """
-    Convert a list of lists of the form [[cpu,cpu=cpu0,usage_user],....] to a tree form
-    :return: a nested json
-    """
     connection = get_connection()
     # query = 'SELECT mean("usage_idle") AS "mean_usage_idle" FROM "telegraf"."autogen"."cpu" WHERE time > now()-15m AND  GROUP BY time(1285ms)'
     query = 'SHOW SERIES ON "' + mtool_db + '"'
-    # print("querrryyyy",query)
+    #print("querrryyyy",query)
     res = connection.query(query)
     connection.close()
     points = list(res.get_points())
-
+    print("pointsss",points)
     # Convert an list of dictionary to a nested dictionary
     final = []
     # print(points)
@@ -125,7 +140,7 @@ def get_alert_categories_new():
                                     # newField['_id'] = subId
 
                                     subEntry['alertTypes'].append(newField)
-
+    #print("finallllll",final)
     return final
 
 
@@ -137,7 +152,7 @@ def get_alert_fields():
     connection.close()
     points = list(res.get_points())
     print(points)
-
+"""
 
 def create_kapacitor_alert(
         alertName,
@@ -179,13 +194,13 @@ def create_kapacitor_alert(
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
-        " .durationField(durationField)\n        .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
+        " .durationField(durationField)\n  .email()\n      .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
         "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
         "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
         "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
             mtool_db,
             default_rp,
-            alertCluster,#1,1,
+            alertCluster,
             alertSubCluster,
             alertType,
             alertName,
@@ -195,11 +210,18 @@ def create_kapacitor_alert(
             alertRange,
             alertField,
             opertorMAP[alertCondition])}
-    # print(payload)
-    r = requests.post(kapacitorUrl, json=payload)
-    return r
+    try:
+        result = requests.post(kapacitorUrl, json=payload)
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to Add Alert"}), 500)
+        else:
+            return make_response(json.dumps({"description": "Alert Added Successfully"}), 200)
+    except BaseException as e:
+        print("exception in addind alert",e)
+        return make_response(json.dumps({"description": "Failed to Add Alert"}), 500)
 
-
+   
+   
 def update_in_kapacitor(
         alertName,
         alertType,
@@ -223,42 +245,6 @@ def update_in_kapacitor(
     :return:
     """
     kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alertName)
-
-    payload = {
-        "id": '{}'.format(alertName),
-        "type": "stream",
-        "dbrps": [
-            {
-                "db": mtool_db,
-                "rp": default_rp}],
-        "status": "disabled",
-        "script": "var db = '{}'\nvar rp = '{}'\nvar measurement = '{}'\nvar groupBy = []\nvar whereFilter = "
-        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = '{}'\n\nvar"
-        " idTag = 'alertID'\n\nvar levelTag = 'level'\n\nvar messageField = 'message'\n\n"
-        "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
-        "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
-        "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
-        "       .measurement(measurement)\n        .groupBy(groupBy)\n   "
-        " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
-        "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
-        "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
-        " .durationField(durationField)\n        .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
-        "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
-        "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
-        "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
-            mtool_db,
-            default_rp,
-            alertCluster,
-            alertSubCluster,
-            alertType,
-            alertName,
-            description,
-            chronograf,
-            infinite_rp,
-            alertRange,
-            alertField,
-            opertorMAP[alertCondition])}
-    res = requests.patch(kapacitorUrl, json=payload)
     payload = {
         "id": '{}'.format(alertName),
         "type": "stream",
@@ -277,7 +263,7 @@ def update_in_kapacitor(
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
-        " .durationField(durationField)\n        .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
+        " .durationField(durationField)\n  .email()\n      .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
         "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
         "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
         "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
@@ -293,17 +279,30 @@ def update_in_kapacitor(
             alertRange,
             alertField,
             opertorMAP[alertCondition])}
-    res = requests.patch(kapacitorUrl, json=payload)
-    # print(res)
-    return res
+    try:
+        result = requests.patch(kapacitorUrl, json=payload)
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to Update Alert"}), 500)
+        else:
+            return make_response(json.dumps({"description": "Alert Updated Successfully"}), 200)
+    except BaseException as e:
+        print("exception in updating alert",e)
+        return make_response(json.dumps({"description": "Failed to Update Alert"}), 500)
 
 
 def delete_alert_from_kapacitor(alert_id):
     kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alert_id)
-    r = requests.delete(kapacitorUrl)
-    return r
+    try:
+        result = requests.delete(kapacitorUrl)
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to Delete Alert"}), 500)
+        else:
+            return make_response(json.dumps({"description": "Alert Deleted Successfully"}), 200)
+    except BaseException as e:
+        print("exception in deleting alert",e)
+        return make_response(json.dumps({"description": "Failed to Delete Alert"}), 500)
 
-
+    
 def toggle_in_kapacitor(alert_id, status):
     """
     Sets the status of the given alert in kapacitor
@@ -317,27 +316,28 @@ def toggle_in_kapacitor(alert_id, status):
         alertStatus = "enabled"
     elif status == False:
         alertStatus = "disabled"
+    try:
+        if alertStatus:
+            payload = {
+                "status": "{}".format(alertStatus)
+            }
+        result = requests.patch(kapacitorUrl, json=payload)
+        if(result.status_code != 200 and result.status_code != 204):
+            return make_response(json.dumps({"description": "Failed to Toggle Alert"}), 500)
+        else:
+            return make_response(json.dumps({"description": "Alert Toggled Successfully"}), 200)
+    except BaseException as e:
+        print("exception in toggle alert",e)
+        return make_response(json.dumps({"description": "Failed to Toggle Alert"}), 500)
 
-    if alertStatus:
-        payload = {
-            "status": "{}".format(alertStatus)
-        }
-        res = requests.patch(kapacitorUrl, json=payload)
-        # res = requests.post(kapacitorUrl, payload)
-        print('res in toggle')
-        print(res, res.content)
-        return res
-    return requests.HTTPError
-
-
-def get_alert():
-    """
-    Get alerts from kapacitor
-    :return:
-    """
+"""    
+def get_alerts_from_kapacitor():
     kapacitorUrl = KAPACITOR_URL + "/tasks"
     r = requests.get(kapacitorUrl)
-    for task in r.json()['tasks']:
-        print(task.keys())
-'''
+    print("alertsssss",r.json())
+    return r	
+"""
+
+
+
 
