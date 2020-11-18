@@ -1,19 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.b2d3d946.chunk.css",
-    "main.js": "/static/js/main.ce1a7030.chunk.js",
-    "main.js.map": "/static/js/main.ce1a7030.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.7c22c6fd.js",
-    "runtime~main.js.map": "/static/js/runtime~main.7c22c6fd.js.map",
-    "static/css/2.074c3652.chunk.css": "/static/css/2.074c3652.chunk.css",
-    "static/js/2.e947e7f7.chunk.js": "/static/js/2.e947e7f7.chunk.js",
-    "static/js/2.e947e7f7.chunk.js.map": "/static/js/2.e947e7f7.chunk.js.map",
+    "main.css": "/static/css/main.e9df8dee.chunk.css",
+    "main.js": "/static/js/main.0004c21e.chunk.js",
+    "main.js.map": "/static/js/main.0004c21e.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.a3e533b7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.a3e533b7.js.map",
+    "static/css/2.06a9ef75.chunk.css": "/static/css/2.06a9ef75.chunk.css",
+    "static/js/2.ff0c8e7d.chunk.js": "/static/js/2.ff0c8e7d.chunk.js",
+    "static/js/2.ff0c8e7d.chunk.js.map": "/static/js/2.ff0c8e7d.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.af89ba2a526f1fff1c6238301a5e2ca5.js": "/precache-manifest.af89ba2a526f1fff1c6238301a5e2ca5.js",
+    "precache-manifest.da04b8da037d79458850fa7f3d15ca8f.js": "/precache-manifest.da04b8da037d79458850fa7f3d15ca8f.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.074c3652.chunk.css.map": "/static/css/2.074c3652.chunk.css.map",
-    "static/css/main.b2d3d946.chunk.css.map": "/static/css/main.b2d3d946.chunk.css.map",
+    "static/css/2.06a9ef75.chunk.css.map": "/static/css/2.06a9ef75.chunk.css.map",
+    "static/css/main.e9df8dee.chunk.css.map": "/static/css/main.e9df8dee.chunk.css.map",
+    "static/js/2.ff0c8e7d.chunk.js.LICENSE.txt": "/static/js/2.ff0c8e7d.chunk.js.LICENSE.txt",
     "static/media/Header-logo.png": "/static/media/Header-logo.1e52dde6.png",
     "static/media/Samsung_iBOF_Management_Tool_User_Manual.pdf": "/static/media/Samsung_iBOF_Management_Tool_User_Manual.e23bab45.pdf"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a3e533b7.js",
+    "static/css/2.06a9ef75.chunk.css",
+    "static/js/2.ff0c8e7d.chunk.js",
+    "static/css/main.e9df8dee.chunk.css",
+    "static/js/main.0004c21e.chunk.js"
+  ]
 }

@@ -77,15 +77,25 @@ class HealthMetrics extends Component {
       console.log("response for health status", result);
       const healthStatus = [];
       const healthDetails = result.statuses;
+      const neededKeys = [
+        "id",
+        "arcsArr",
+        "percentage",
+        "value",
+        "label",
+        "unit",
+      ];
       healthDetails.map((metric) => {
-        const metricDetails = {};
-        metricDetails.id = metric.id;
-        metricDetails.arcsLength = metric.arcsArr;
-        metricDetails.percentage = metric.percentage;
-        metricDetails.value = metric.value;
-        metricDetails.label = metric.label;
-        metricDetails.unit = metric.unit;
-        healthStatus.push(metricDetails);
+        if (neededKeys.every((key) => Object.keys(metric).includes(key))) {
+          const metricDetails = {};
+          metricDetails.id = metric.id;
+          metricDetails.arcsLength = metric.arcsArr;
+          metricDetails.percentage = metric.percentage;
+          metricDetails.value = metric.value;
+          metricDetails.label = metric.label;
+          metricDetails.unit = metric.unit;
+          healthStatus.push(metricDetails);
+        }
         return null;
       });
 
