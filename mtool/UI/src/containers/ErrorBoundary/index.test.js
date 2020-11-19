@@ -12,9 +12,6 @@ import {
 it('should show error message on throwing error', () => {
     const ErrorChild = () => {
         throw new Error("Testing error");
-        return (
-            <div>Error</div>
-        )
     };
     const wrapper = render(
         <ErrorBoundary>
