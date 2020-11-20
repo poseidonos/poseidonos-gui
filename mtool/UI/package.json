@@ -75,24 +75,32 @@
       "src/**/*.{js, jsx}",
       
       "!src/containers/Log-Management/**/*.js",
-      "!src/containers/ConfigurationSetting/Alert-Management/**/*.js",
-      "!src/containers/ConfigurationSetting/index.js",
+      "!src/containers/Hardware/**/*.js",
+      "!src/components/DriveComponents/DriveTable/**/*.js",
+      "!src/components/HealthComponents/ServiceStatus/**/*.js",
+      "!src/components/OverviewComponents/**/*.js",
+      "!src/components/PowerManagementComponents/**/*.js",
       "!src/components/LogTable/**/*.js",
-      
+      "!src/components/SensorComponents/**/*.js",
+      "!src/sagas/BMCAuthenticationSaga.js",
+      "!src/sagas/hardwareHealthSaga.js",
+      "!src/sagas/hardwareOverviewSaga.js",
+      "!src/sagas/hardwarePowerManagementSaga.js",
+      "!src/sagas/hardwareSensorSaga.js",
+      "!src/store/actions/BMCAuthenticationActions.js",
+      "!src/store/actions/hardwareOverviewActions.js",
       "!src/components/ChangePassword/**/*.js",
-      "!src/components/AlertManagementComponents/**/*.js",
-     
-      "!src/sagas/alertManagementAddNewAlertsSaga.js",
-      "!src/sagas/alertManagementAlertTableSaga.js",
-      "!src/sagas/alertManagementSaga.js",
+      "!src/store/reducers/hardwareOverviewReducer.js",
+      "!src/store/reducers/BMCAuthenticationReducer.js",
+    
       "!src/sagas/logManagementSaga.js",
      
       "!src/store/actions/logManagementActions.js",
       "!src/store/actions/logManagementActions.js",
-      "!src/store/actions/alertManagementActions.js",
+      
       "!src/store/reducers/logManagementReducer.js",
       
-      "!src/store/reducers/alertManagementReducer.js",
+     
      
       "!src/serviceWorker.js"
     ]
@@ -101,15 +109,24 @@
     "extends": "react-app"
   },
   "eslintIgnore": [
-    "*.test.js"
+    "*.test.js",
+    "*Hardware*",
+    "*hardware*",
+    "*BMC*",
+    "*OverviewComponents*",
+    "*HealthComponents*",
+    "*PowerManagementComponents*",
+    "*DriveComponents*",
+    "*SensorComponents*"
   ],
+
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://107.108.221.146:5000",
+  "proxy": "http://107.109.113.24:5000",
   "devDependencies": {
     "@testing-library/react": "^9.4.0",
     "axios-mock-adapter": "^1.17.0",
