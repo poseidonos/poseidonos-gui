@@ -45,6 +45,9 @@ const styles = (theme) => ({
     overflow: "hidden",
   },
 });
+let healthStatus = [];
+let healthDetails = [];
+let metricDetails = {};
 
 class HealthMetrics extends Component {
   constructor(props) {
@@ -75,8 +78,8 @@ class HealthMetrics extends Component {
     // callback function for health status response
     this.props.healthStatusSocket.on("health_status_response", (result) => {
       console.log("response for health status", result);
-      const healthStatus = [];
-      const healthDetails = result.statuses;
+      healthStatus = [];
+      healthDetails = result.statuses;
       const neededKeys = [
         "id",
         "arcsArr",
@@ -85,20 +88,22 @@ class HealthMetrics extends Component {
         "label",
         "unit",
       ];
-      healthDetails.map((metric) => {
-        if (neededKeys.every((key) => Object.keys(metric).includes(key))) {
-          const metricDetails = {};
-          metricDetails.id = metric.id;
-          metricDetails.arcsLength = metric.arcsArr;
-          metricDetails.percentage = metric.percentage;
-          metricDetails.value = metric.value;
-          metricDetails.label = metric.label;
-          metricDetails.unit = metric.unit;
-          healthStatus.push(metricDetails);
-        }
-        return null;
-      });
 
+      for(let idx = 0; idx < healthDetails.length; idx++){
+        try{
+          metricDetails = {};
+          metricDetails.id = healthDetails[idx].id;
+          metricDetails.arcsLength = healthDetails[idx].arcsArr;
+          metricDetails.percentage = healthDetails[idx].percentage;
+          metricDetails.value = healthDetails[idx].value;
+          metricDetails.label = healthDetails[idx].label;
+          metricDetails.unit = healthDetails[idx].unit;
+          healthStatus.push(metricDetails);
+        } 
+        catch{
+          continue;
+        }
+      }
       this.setState({
         ...this.state,
         healthMetrics: healthStatus,
