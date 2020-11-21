@@ -249,6 +249,39 @@ input#smtp-server[placeholder]
   padding-left: 0px;
 }
 
+input#smtp-fromEmail[placeholder]
+{
+  color: black !important;
+  padding: 5px 14px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 0px;
+}
+
+input#smtp-username[placeholder]
+{
+  color: black !important;
+  padding: 5px 14px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 0px;
+}
+
+input#smtp-password[placeholder]
+{
+  color: black !important;
+  padding: 5px 14px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 0px;
+}
+
 
 @media screen and (max-width: 1200px) {
   .EmailTableMainHeaderData {

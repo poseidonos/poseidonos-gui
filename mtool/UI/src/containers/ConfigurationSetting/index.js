@@ -102,6 +102,7 @@ class ConfigurationSetting extends Component {
 
   componentDidMount() {
     this.props.fetchEmailList();
+    this.props.getSmtpDetails();
     this.setState({
       ibofostimeinterval: this.props.timeinterval
     });
@@ -188,6 +189,7 @@ class ConfigurationSetting extends Component {
       oldid: this.props.emaillist[i].email,
     };
     this.props.updateEmail(newEmail);
+    this.props.fetchEmailList();
   }
 
   // Delete all selected email ids
@@ -195,6 +197,13 @@ class ConfigurationSetting extends Component {
     const ids = [];
     this.props.emaillist.forEach((email, index) => {
       if (email.selected) {
+        if(email.active === 0){
+          const toggleEmail = {
+            emailid: email.email,
+            status: !email.active,
+          };
+          this.props.toggleActiveStatus(toggleEmail);
+        }
         ids.push(email.email);
         const emaillist = [...this.props.emaillist];
         emaillist[index].selected = false;
@@ -259,19 +268,29 @@ class ConfigurationSetting extends Component {
       smtpserver: this.props.smtpserver,
       smtpserverip: this.props.smtpserverip,
       smtpserverport: this.props.smtpserverport,
+      smtpusername: this.props.smtpusername,
+      smtppassword: this.props.smtppassword,
+      smtpfromemail: this.props.smtpfromemail,
     };
     this.props.testEmail(payload);
   }
 
   savesmtpserverdetails(event) {
     const { value } = event.target;
+    let payload = {};
+    if(event.target.name === 'smtpserver'){
     const arr = event.target.value.split(':');
-
-    const payload = {
+    payload = {
       smtpserver: value,
       smtpserverip: arr[0],
       smtpserverport: arr[1],
     };
+  }
+  else{
+     payload = {
+      [event.target.name]:event.target.value
+    };
+  }
     this.props.setSmtpServer(payload);
   }
 
@@ -372,7 +391,7 @@ class ConfigurationSetting extends Component {
                 <Route exact path="/ConfigurationSetting/general">
                   <Grid container spacing={1} className={classes.GeneralContainer}>
 
-                    <Grid item container spacing={1} xs={12} sm={6} className={classes.EmailTableContainer}>
+                    <Grid item container spacing={1} xs={12} sm={12} className={classes.EmailTableContainer}>
                       <EmailAlerts
                         emailids={this.props.emaillist}
                         IP={this.props.smtpserverip}
@@ -399,7 +418,7 @@ class ConfigurationSetting extends Component {
                         onConfirm={this.triggerCommand}
                       />
                     </Grid>
-                    <Grid item container spacing={1} xs={12} sm={6} className={classes.EmailTableContainer}>
+                    {/* <Grid item container spacing={1} xs={12} sm={6} className={classes.EmailTableContainer}>
                       <LogConfiguration
                         downloadLogs={this.props.downloadLogs}
                         OnHandleChange={this.OnHandleChange}
@@ -408,7 +427,7 @@ class ConfigurationSetting extends Component {
                         applyIbofOSTimeInterval={this.applyIbofOSTimeInterval}
                         deleteIbofOSTimeInterval={this.deleteIbofOSTimeInterval}
                       />
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 </Route>
               <Route path="/ConfigurationSetting/alert">
@@ -445,12 +464,16 @@ const mapStateToProps = state => {
     smtpserverip: state.configurationsettingReducer.smtpserverip,
     smtpserverport: state.configurationsettingReducer.smtpserverport,
     smtpserver: state.configurationsettingReducer.smtpserver,
+    smtpusername: state.configurationsettingReducer.smtpusername,
+    smtppassword: state.configurationsettingReducer.smtppassword,
+    smtpfromemail: state.configurationsettingReducer.smtpfromemail,
     timeinterval: state.configurationsettingReducer.timeinterval,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     fetchEmailList: () => dispatch({ type: actionTypes.SAGA_FETCH_EMAIL_LIST }),
+    getSmtpDetails: () => dispatch({ type: actionTypes.SAGA_GET_SMTP_DETAILS }),
     changeEmailList: newemail =>
       dispatch(actionCreators.changeEmailList(newemail)),
     setAlertBox: payload => dispatch(actionCreators.setAlertBox(payload)),
@@ -464,7 +487,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SAGA_TEST_EMAIL, payload: data }),
     setSmtpServer: payload => dispatch(actionCreators.setSmtpServer(payload)),
     deleteConfiguredSmtpServer: () =>
-      dispatch(actionCreators.deleteConfiguredSmtpServer()),
+      dispatch({ type: actionTypes.SAGA_DELETE_SMTP_DETAILS}),
     deleteEmailIds: data =>
       dispatch({ type: actionTypes.SAGA_DELETE_EMAIL_IDS, payload: data }),
     downloadLogs: data =>

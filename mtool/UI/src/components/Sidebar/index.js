@@ -201,7 +201,7 @@ const Sidebar = (props) => {
             <Typography className={classes.sidebarText}>Performance</Typography>
           </ListItem>
         </NavLink>
-        <Divider className={classes.listDivider} />
+        {/* <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/Hardware/Overview">
             <ListItem className={classes.sidebarLink}>
               <span>
@@ -217,9 +217,9 @@ const Sidebar = (props) => {
               </span>
               <Typography className={classes.sidebarText}>Hardware</Typography>
             </ListItem>
-          </NavLink>
+          </NavLink> */}
 
-        <Divider className={classes.listDivider} /> */}
+        <Divider className={classes.listDivider} /> 
         <NavLink
           style={ulStyle}
           className={classes.link} activeClassName={classes.activeLink}

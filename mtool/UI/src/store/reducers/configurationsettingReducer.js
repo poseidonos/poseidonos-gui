@@ -38,6 +38,9 @@ const initialState = {
   smtpserverip: '',
   smtpserverport: '',
   smtpserver: '',
+  smtpfromemail:'',
+  smtpusername:'',
+  smtppassword:'',
   timeinterval: null,
 };
 
@@ -56,12 +59,10 @@ const configurationsettingReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.SET_SMTP_SERVER: {
-      return {
-        ...state,
-        smtpserver: action.payload.smtpserver,
-        smtpserverip: action.payload.smtpserverip,
-        smtpserverport: action.payload.smtpserverport,
-      };
+        return {
+          ...state,
+          ...action.payload
+        };
     }
     case actionTypes.FETCH_EMAIL_LIST: {
       return {

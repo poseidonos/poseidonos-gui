@@ -740,31 +740,69 @@ def test_smtpserver():
     body = json.loads(body_unicode)
     serverip = body['smtpserverip']
     serverport = body['smtpserverport']
+    smtpusername = body['smtpusername']
+    smtppassword = body['smtppassword']
+    smtpfromemail = body['smtpfromemail']
     print(serverip)
     print(serverport)
     try:
         s = smtplib.SMTP(serverip, serverport, None, 1)
         s.quit()
-        connection_factory.insert_smtp_ip(serverip, serverport)
-    except BaseException as e:
-        print("exception in test_smtpserver",e)
-        return abort(404)
-    tasks = {
-        "set": {
-            "enabled": True,
-            "host": serverip,
-            "port": serverport,
-            "from": "MTool@samsung.com"
+        tasks = {
+           "set": {
+               "enabled": True,
+               "host": serverip,
+               "port": serverport,
+               "from": smtpfromemail,
+               "username": smtpusername,
+               "password": smtppassword
         }
-    }
-    r = requests.post(
+      }
+        r = requests.post(
         url="http://localhost:9092/kapacitor/v1/config/smtp/",
         data=toJson(tasks))
-    print(r.text, r.content, r.status_code, "TEXT")
-    if(r.status_code != 204):
+        if(r.status_code != 204 and r.status_code != 200):
+            return abort(404)
+        return 'SMTP Server is Working'
+    except:
         return abort(404)
-    return 'SMTP Server Is Working'
 
+@app.route('/api/v1.0/delete_smtp_details/', methods=['POST'])
+def delete_smtp_details():
+    try:
+        tasks = {
+        "delete": [
+            "enabled",
+            "host",
+            "port",
+            "from",
+            "username",
+            "password"
+        ]
+        }
+        r = requests.post(
+            url="http://localhost:9092/kapacitor/v1/config/smtp/",
+            data=toJson(tasks))
+        if(r.status_code != 204 and r.status_code != 200):
+            return abort(404)
+        return 'SMTP Configuration Deleted Successfully'
+    except:
+       return abort(404)
+
+@app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
+def get_smtp_details():
+    print("in get smtppppppppppp")
+    try:
+        r = requests.get(
+        url="http://localhost:9092/kapacitor/v1/config/smtp/")
+        data = r.json() 
+        print("smtp detailsaaaaa",data['options'])
+        if(r.status_code != 204 and r.status_code != 200):
+            return abort(404)
+        else:
+            return jsonify({"smtpserverip": data['options']['host'], "smtpserverport":data['options']['port']})
+    except:
+        return abort(404)
 
 @app.route('/api/v1.0/get_email_ids/', methods=['GET'])
 def get_email_ids():

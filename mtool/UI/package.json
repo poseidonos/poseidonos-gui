@@ -81,6 +81,7 @@
       "!src/components/OverviewComponents/**/*.js",
       "!src/components/PowerManagementComponents/**/*.js",
       "!src/components/LogTable/**/*.js",
+      "!src/components/LogConfiguration/**/*.js",
       "!src/components/SensorComponents/**/*.js",
       "!src/sagas/BMCAuthenticationSaga.js",
       "!src/sagas/hardwareHealthSaga.js",
@@ -117,7 +118,8 @@
     "*HealthComponents*",
     "*PowerManagementComponents*",
     "*DriveComponents*",
-    "*SensorComponents*"
+    "*SensorComponents*",
+    "*LogConfiguration"
   ],
 
   "browserslist": [

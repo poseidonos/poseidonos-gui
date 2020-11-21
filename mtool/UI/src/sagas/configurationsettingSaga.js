@@ -57,6 +57,70 @@ export function* fetchEmailList() {
   }
 }
 
+export function* getSmtpDetails() {
+  let payload = { smtpserver:''};
+  try {
+    const response = yield call([axios, axios.get], '/api/v1.0/get_smtp_details/', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token'),
+      }
+    });
+
+    const result = response.data;
+    const { status } = response;
+    /* istanbul ignore else */
+    if (status === 200) {
+      payload = {
+        smtpserverip: result.smtpserverip,
+        smtpserverport:result.smtpserverport,
+        smtpserver: `${result.smtpserverip}:${result.smtpserverport}`
+      };
+    }
+  } catch (error) {
+    ;
+  }
+  finally{
+    yield put(actionCreators.setSmtpServer(payload));
+    yield put(actionCreators.changeSmtpServer());
+  }
+}
+
+export function* deleteSmtpDetails() {
+  try {
+    const response = yield call([axios, axios.post], '/api/v1.0/delete_smtp_details/', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token'),
+      }
+    });
+    const { status } = response;
+    /* istanbul ignore else */
+    if (status === 200) {
+      const payload = {
+        alertOpen: true,
+        istypealert: true,
+        alerttype: 'info',
+        alerttitle: 'Delete SMTP Configuration',
+        alertdescription: 'SMTP Configuration Deleted Successfully',
+      };
+      yield put(actionCreators.setAlertBox(payload));
+      yield put(actionCreators.deleteConfiguredSmtpServer());
+    }
+  } catch (error) {
+    const payload = {
+      alertOpen: true,
+      istypealert: true,
+      alerttype: 'alert',
+      alerttitle: 'Delete SMTP Configuration',
+      alertdescription: 'Failed to Delete the SMTP Configuration'
+    };
+    yield put(actionCreators.setAlertBox(payload));
+  }
+}
+
 export function* updateEmail(action) {
   try {
     const response = yield call(
@@ -73,10 +137,28 @@ export function* updateEmail(action) {
     const { status } = response;
      /* istanbul ignore else */
     if (status === 200) {
-      yield fetchEmailList();
+      const payload = {
+        alertOpen: true,
+        istypealert: true,
+        alerttype: 'info',
+        alerttitle: 'SMTP Email',
+        alertdescription: 'Email List Updated Successfully',
+      };
+      yield put(actionCreators.setAlertBox(payload));
+     
     }
   } catch (error) {
-    //  console.log(error);
+    const payload = {
+      alertOpen: true,
+      istypealert: true,
+      alerttype: 'alert',
+      alerttitle: 'SMTP Email',
+      alertdescription: 'Failed to perform this operation'
+    };
+    yield put(actionCreators.setAlertBox(payload));
+  }
+  finally {
+     yield fetchEmailList();
   }
 }
 
@@ -95,6 +177,14 @@ export function* toggleActiveStatus(action) {
     );
     yield fetchEmailList();
   } catch (error) {
+    const payload = {
+      alertOpen: true,
+      istypealert: true,
+      alerttype: 'alert',
+      alerttitle: 'Toggle Active Status',
+      alertdescription: 'Failed to perform this operation'
+    };
+    yield put(actionCreators.setAlertBox(payload));
     yield fetchEmailList();
   }
 }
@@ -120,7 +210,7 @@ export function* deleteEmailIds(action) {
         istypealert: true,
         alerttype: 'info',
         alerttitle: 'Delete Email',
-        alertdescription: 'Email ID deleted successfully',
+        alertdescription: 'Email ID Deleted Successfully',
       };
       yield put(actionCreators.setAlertBox(payload));
       yield fetchEmailList();
@@ -131,7 +221,7 @@ export function* deleteEmailIds(action) {
       istypealert: true,
       alerttype: 'alert',
       alerttitle: 'Delete Email',
-      alertdescription: 'Error in deleting email id',
+      alertdescription: 'Failed to Delete Email ID',
     };
     yield put(actionCreators.setAlertBox(payload));
   }
@@ -295,5 +385,7 @@ export function* configurationsettingWatcher() {
   yield takeEvery(actionTypes.SAGA_DELETE_EMAIL_IDS, deleteEmailIds);
   yield takeEvery(actionTypes.SAGA_DOWNLOAD_LOGS, downloadLogs);
   yield takeEvery(actionTypes.SAGA_GET_IBOFOS_TIME_INTERVAL, getIbofOSTimeInterval);
-  yield takeEvery(actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, setIbofOSTimeInterval)
+  yield takeEvery(actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, setIbofOSTimeInterval);
+  yield takeEvery(actionTypes.SAGA_GET_SMTP_DETAILS, getSmtpDetails);
+  yield takeEvery(actionTypes.SAGA_DELETE_SMTP_DETAILS, deleteSmtpDetails);
 }

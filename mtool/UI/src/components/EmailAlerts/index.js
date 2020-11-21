@@ -104,18 +104,18 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
       display: "flex",
-      marginLeft: "-8px"
+      // marginLeft: "-8px"
     }
   },
 
   SendEmailAlerts: {
-    marginLeft: "-12px",
+    // marginLeft: "-12px",
     textAlign: "center",
     color: "#151d3b",
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
       display: "flex",
-      marginLeft: "-8px"
+      // marginLeft: "-8px"
     }
   },
 
@@ -274,7 +274,18 @@ class EmailAlerts extends Component {
           title: "Email ID",
           field: "email",
           cellStyle: {
-            fontSize: "12px"
+            fontSize: "12px",
+            minWidth:'33%',
+            maxWidth:'33%',
+            width:'33%'
+          },
+         
+      
+          headerStyle: {
+           
+            minWidth:'33%',
+            maxWidth:'33%',
+            width:'33%'
           },
           render: rowData => {
             return <span id={rowData.email}>{rowData.email}</span>;
@@ -285,6 +296,7 @@ class EmailAlerts extends Component {
           field: "active",
           editable: "never",
           sorting: false,
+          align: 'center',
           render: rowData => {
             const { data } = this.state;
             const index = data.indexOf(rowData);
@@ -308,11 +320,17 @@ class EmailAlerts extends Component {
           cellStyle: {
             maxHeight: "12px",
             paddingTop: "0px",
-            paddingBottom: "0px"
+            paddingBottom: "0px",
+            minWidth:'33%',
+            maxWidth:'33%',
+            width:'33%'
           },
 
           headerStyle: {
-            paddingLeft: "18px"
+            // paddingLeft: "18px",
+            minWidth:'33%',
+            maxWidth:'33%',
+            width:'33%'
           }
         }
       ],
@@ -346,7 +364,7 @@ class EmailAlerts extends Component {
           <Divider />
           <form className={classes.SettingsForm} noValidate autoComplete="off">
             <Grid container>
-              <Grid item xs={12} sm={6} className={classes.gridItem}>
+              <Grid item xs={12} sm={8} className={classes.gridItem}>
                 <form
                   autoComplete="off"
                   onSubmit={event => {
@@ -354,6 +372,7 @@ class EmailAlerts extends Component {
                   }}
                   data-testid="form"
                 >
+                  <Grid item xs={12} sm={6} className={classes.gridItem}>
                   <TextField
                     id="smtp-server"
                     label="SMTP Server"
@@ -369,6 +388,52 @@ class EmailAlerts extends Component {
                     margin="normal"
                     data-testid="smtpServerField"
                   />
+                    <TextField
+                    id="smtp-fromEmail"
+                    label="From Email"
+                    required
+                    className={classes.textField}
+                    placeholder="From Email"
+                    onChange={event => this.props.savesmtpserverdetails(event)}
+                    InputLabelProps={{
+                      className: classes.labelText
+                    }}
+                    name="smtpfromemail"
+                    type="text"
+                    margin="normal"
+                    data-testid="smtpFromEmail"
+                    />
+                  </Grid>
+                  <TextField
+                    id="smtp-username"
+                    label="Username"
+                    required
+                    className={classes.textField}
+                    placeholder="Username"
+                    onChange={event => this.props.savesmtpserverdetails(event)}
+                    InputLabelProps={{
+                      className: classes.labelText
+                    }}
+                    name="smtpusername"
+                    type="text"
+                    margin="normal"
+                    data-testid="smtpUsername"
+                  />
+                    <TextField
+                    id="smtp-password"
+                    label="Password"
+                    required
+                    className={classes.textField}
+                    placeholder="Password"
+                    onChange={event => this.props.savesmtpserverdetails(event)}
+                    InputLabelProps={{
+                      className: classes.labelText
+                    }}
+                    name="smtppassword"
+                    type="password"
+                    margin="normal"
+                    data-testid="smtpPassword"
+                    />
                   <Button
                     variant="contained"
                     color="primary"
@@ -381,7 +446,7 @@ class EmailAlerts extends Component {
                 </form>
               </Grid>
 
-              <Grid item xs={12} sm={6} className={classes.gridItem}>
+              <Grid item xs={12} sm={4} className={classes.gridItem}>
                 <TextField
                   id="smtp-server-display"
                   className={classes.deletetextField}
@@ -503,6 +568,14 @@ class EmailAlerts extends Component {
                   paginationType: "normal",
                   loadingType: "linear",
                   actionsColumnIndex: -1,
+                  actionsCellStyle: {
+                    textAlign: "center",
+                    justifyContent: "center",
+                    minWidth:'33%',
+                    maxWidth:'33%',
+                    width:'33%',
+                    paddingLeft:'12%'
+                  },
                   headerStyle: {
                     // backgroundColor: 'rgb(113, 133, 157)',
                     backgroundColor: "#788595",
@@ -510,7 +583,8 @@ class EmailAlerts extends Component {
                     fontSize: "14px",
                     height: "10%",
                     paddingTop: "2px",
-                    paddingBottom: "2px"
+                    paddingBottom: "2px",
+                    
                   }
                 }}
                 columns={this.state.columns}
