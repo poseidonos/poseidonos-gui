@@ -138,7 +138,6 @@ def get_percentage(usage_percent):
 def process_response(res, rule, field, _id, label):
     try:
         result = {}
-        result["isHealthy"] = False
         arr_len = len(res["result"]["data"])
         if arr_len == 0:
             return result
@@ -164,4 +163,8 @@ def process_response(res, rule, field, _id, label):
 
 
 def get_overall_health(results):
-	return all(results)
+    if len(results) == 0:
+        return False
+    else:
+        return all(results)
+
