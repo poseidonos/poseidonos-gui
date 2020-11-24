@@ -12,6 +12,7 @@ mv dist/app dist/bin
 cp -r public dist
 rm -r public/log
 mkdir public/log
-#touch public/log/README.md
+touch public/log/README.md
 mkdir dist/log
-#touch dist/log/README.md
+touch dist/log/README.md
+touch dist/public/log/README.md
