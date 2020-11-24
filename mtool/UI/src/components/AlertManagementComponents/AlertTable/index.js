@@ -79,22 +79,37 @@ class AlertTable extends Component {
     });
 
     this.state = {
+      data:[],
       alertConditionValue: "",
       columns: [
         {
           title: 'Alert Name',
           field: 'alertName',
           editable: 'never',
-
+          cellStyle: {
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
+          },
         },
         {
           title: 'Alert Type',
-          field: 'alertType',
+          field: 'alertCluster',
           editable: 'never',
+          cellStyle: {
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
+          },
         },
         {
           title: 'Alert Condition',
           field: 'alertCondition',
+          cellStyle: {
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
+          },
           render: rowData =>
             (
               <Select
@@ -145,13 +160,21 @@ class AlertTable extends Component {
             textAlign: 'left'
           },
           cellStyle: {
-            textAlign: 'left'
+            textAlign: 'left',
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
           }
         },
         {
           title: 'Active/Inactive',
           field: 'active',
           editable: 'never',
+          cellStyle: {
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
+          },
           render: row =>
             (
               <Switch
@@ -168,9 +191,19 @@ class AlertTable extends Component {
         {
           title: 'Alert Description',
           field: 'description',
+          cellStyle: {
+            minWidth:'14.28%',
+            maxWidth:'14.28%',
+            width:'14.28%'
+          },
         },
       ]
     }
+  }
+
+   // eslint-disable-next-line camelcase
+   UNSAFE_componentWillReceiveProps(newProps) {
+    this.setState({ data: newProps.alerts });
   }
 
   render() {
@@ -185,14 +218,23 @@ class AlertTable extends Component {
                 onRowUpdate: (newData, oldData) =>
                   new Promise((resolve) => {
                     setTimeout(() => {
+                      {
+                      const { data } = this.state;
+                      const index = data.indexOf(oldData);
+                      data[index] = newData;
+                     
+                      
+                      
                       if (this.state.alertConditionValue === "")
                         newData.alertCondition = oldData.alertCondition;
                       else newData.alertCondition = this.state.alertConditionValue
                       this.props.saveChange(newData);
+                      this.setState({ data }, () => resolve());
                       this.setState({
                         ...this.state,
-                        alertConditionValue: ""
+                        alertConditionValue: "",
                       })
+                    }
                       resolve();
                     }, 1000);
                   }),
@@ -227,14 +269,16 @@ class AlertTable extends Component {
                 Clear,
               }}
               columns={this.state.columns}
-              data={this.props.alerts}
+              // data={this.props.alerts}
+              data = {this.state.data}
               options={{
                 headerStyle: customTheme.table.header,
                 actionsColumnIndex: -1,
                 selection: false,
                 sorting: true,
                 toolbar: false,
-                maxBodyHeight: '200px'
+                loadingType: "linear",
+               // maxBodyHeight: '200px'
               }}
 
             />

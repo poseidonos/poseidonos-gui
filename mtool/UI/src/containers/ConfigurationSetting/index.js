@@ -195,14 +195,16 @@ class ConfigurationSetting extends Component {
   // Delete all selected email ids
   deleteEmails() {
     const ids = [];
+    let toggleFlag = false;
+    let toggleEmail = {}
     this.props.emaillist.forEach((email, index) => {
       if (email.selected) {
         if(email.active === 0){
-          const toggleEmail = {
+          toggleEmail = {
             emailid: email.email,
             status: !email.active,
           };
-          this.props.toggleActiveStatus(toggleEmail);
+          toggleFlag = true;
         }
         ids.push(email.email);
         const emaillist = [...this.props.emaillist];
@@ -214,7 +216,13 @@ class ConfigurationSetting extends Component {
     const data = {
       ids,
     };
-    this.props.deleteEmailIds(data);
+    const deletePayload = {
+      data,
+      toggleFlag,
+      toggleEmail
+    }
+
+    this.props.deleteEmailIds(deletePayload);
   }
 
   // Send email to all the active email ids

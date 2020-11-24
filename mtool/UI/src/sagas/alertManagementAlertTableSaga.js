@@ -25,8 +25,9 @@ DESCRIPTION: <Contains Generator Functions for Alert Table component> *
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
 import axios from 'axios';
-import { call, takeEvery} from 'redux-saga/effects';
+import { call, takeEvery, put} from 'redux-saga/effects';
 import * as actionTypes from "../store/actions/actionTypes";
+import * as actionCreators from '../store/actions/exportActionCreators';
 import {fetchAlertsInfo} from "./alertManagementSaga"
 
 export function* updateAlertsInfo(action) {
@@ -40,11 +41,27 @@ export function* updateAlertsInfo(action) {
         });
         const {status} = response;
         if (status === 200) {
+            const payload = {
+                alertOpen: true,
+                istypealert: true,
+                alerttype: 'info',
+                alerttitle: 'Update Alert',
+                alertdescription: 'Alert Updated Successfully',
+              };
             yield fetchAlertsInfo();
+            yield put(actionCreators.openAlertBox(payload));
+           
         }
     }
     catch (error) {
-       ;
+        const payload = {
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'info',
+            alerttitle: 'Update Alert',
+            alertdescription: 'Failed to Update the Alert',
+          };
+          yield put(actionCreators.openAlertBox(payload));
     }
 }
 
@@ -59,11 +76,26 @@ export function* deleteAlertsInfo(action) {
         });
         const {status} = response;
         if (status === 200) {
+            const payload = {
+                alertOpen: true,
+                istypealert: true,
+                alerttype: 'info',
+                alerttitle: 'Delete Alert',
+                alertdescription: 'Alert Deleted Successfully',
+              };
             yield fetchAlertsInfo();
+            yield put(actionCreators.openAlertBox(payload));
         }
     }
     catch (error) {
-       ;
+        const payload = {
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'info',
+            alerttitle: 'Delete Alert',
+            alertdescription: 'Failed to Delete the Alert',
+          };
+          yield put(actionCreators.openAlertBox(payload));
     }
 }
 
@@ -83,7 +115,14 @@ export function* toggleAlertsInfo(action) {
         }
     }
     catch (error) {
-       ;
+        const payload = {
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'info',
+            alerttitle: 'Toggle Alert Status',
+            alertdescription: 'Failed to Toggle the Alert Status',
+          };
+          yield put(actionCreators.openAlertBox(payload));
     }
 }
 

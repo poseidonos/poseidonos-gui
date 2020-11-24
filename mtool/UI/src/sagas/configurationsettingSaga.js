@@ -177,24 +177,28 @@ export function* toggleActiveStatus(action) {
     );
     yield fetchEmailList();
   } catch (error) {
-    const payload = {
-      alertOpen: true,
-      istypealert: true,
-      alerttype: 'alert',
-      alerttitle: 'Toggle Active Status',
-      alertdescription: 'Failed to perform this operation'
-    };
-    yield put(actionCreators.setAlertBox(payload));
+    ;
+    // const payload = {
+    //   alertOpen: true,
+    //   istypealert: true,
+    //   alerttype: 'alert',
+    //   alerttitle: 'Toggle Active Status',
+    //   alertdescription: 'Failed to perform this operation'
+    // };
+    // yield put(actionCreators.setAlertBox(payload));
     yield fetchEmailList();
   }
 }
 
 export function* deleteEmailIds(action) {
   try {
+    if(action.payload.toggleFlag === true){
+      yield toggleActiveStatus({payload: action.payload.toggleEmail})
+    }
     const response = yield call(
       [axios, axios.post],
       '/api/v1.0/delete_emailids/',
-      action.payload, {
+      action.payload.data, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

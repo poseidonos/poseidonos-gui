@@ -64,13 +64,18 @@ export function* addNewAlertsInfo(action) {
                 alertOpen: true,
                 istypealert: true,
                 alerttype: 'alert',
-                // alerttitle: "Failure",
                 alerttitle: 'Add New Alert',
-                alertdescription: 'Error in adding alert',
+                alertdescription: 'Failed to Add Alert',
             }));
     }
     catch (error) {
-       ;
+        yield put(actionCreators.openAlertBox({
+            alertOpen: true,
+            istypealert: true,
+            alerttype: 'alert',
+            alerttitle: 'Add New Alert',
+            alertdescription: 'Failed to Add Alert',
+        }));
     }
 }
 
