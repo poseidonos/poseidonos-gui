@@ -106,43 +106,43 @@ const alertManagementReducer = (state = initialState, action) => {
                     ...action.alertParam
                 }
             }
-        case actionTypes.ALERT_MANAGEMENT_SET_ALERTS:
-            {
-                const { type, i, j } = action.updatedAlerts;
-                const value1 = i;
-                const value2 = j;
-                const alertClusters = state.alertClusters.map((cluster, Citr) => {
-                    return {
-                        ...cluster,
-                        alertSubCluster: cluster.alertSubCluster.map((subcluster, subCitr) => {
-                            return {
-                                ...subcluster,
-                                alertTypes: subcluster.alertTypes.map(cip => {
-                                    if (type.type === cip.type && Citr === value1 && subCitr === value2) {
-                                        return {
-                                            ...cip,
-                                            selected: !cip.selected,
-                                        };
-                                    }
-                                    if (cip.selected === true && value1 === Citr && subCitr === value2) {
-                                        return {
-                                            ...cip,
-                                        };
-                                    }
-                                    return {
-                                        ...cip,
-                                        selected: false,
-                                    };
-                                }),
-                            };
-                        }),
-                    };
-                });
-                return {
-                    ...state,
-                    alertClusters,
-                };
-            }
+        // case actionTypes.ALERT_MANAGEMENT_SET_ALERTS:
+        //     {
+        //         const { type, i, j } = action.updatedAlerts;
+        //         const value1 = i;
+        //         const value2 = j;
+        //         const alertClusters = state.alertClusters.map((cluster, Citr) => {
+        //             return {
+        //                 ...cluster,
+        //                 alertSubCluster: cluster.alertSubCluster.map((subcluster, subCitr) => {
+        //                     return {
+        //                         ...subcluster,
+        //                         alertTypes: subcluster.alertTypes.map(cip => {
+        //                             if (type.type === cip.type && Citr === value1 && subCitr === value2) {
+        //                                 return {
+        //                                     ...cip,
+        //                                     selected: !cip.selected,
+        //                                 };
+        //                             }
+        //                             if (cip.selected === true && value1 === Citr && subCitr === value2) {
+        //                                 return {
+        //                                     ...cip,
+        //                                 };
+        //                             }
+        //                             return {
+        //                                 ...cip,
+        //                                 selected: false,
+        //                             };
+        //                         }),
+        //                     };
+        //                 }),
+        //             };
+        //         });
+        //         return {
+        //             ...state,
+        //             alertClusters,
+        //         };
+        //     }
         case actionTypes.ALERT_MANAGEMENT_FETCH_ALERTS:
             {
                 const alerts = [];

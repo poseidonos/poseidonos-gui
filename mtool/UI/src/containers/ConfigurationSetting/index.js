@@ -39,8 +39,7 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
-
-import LogConfiguration from '../../components/LogConfiguration';
+//  import LogConfiguration from '../../components/LogConfiguration';
 import AlertManagement from './Alert-Management';
 import UserManagement from './User-Management';
 
@@ -87,9 +86,9 @@ class ConfigurationSetting extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.triggerCommand = this.triggerCommand.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-    this.OnHandleChange = this.OnHandleChange.bind(this);
-    this.applyIbofOSTimeInterval = this.applyIbofOSTimeInterval.bind(this);
-    this.deleteIbofOSTimeInterval = this.deleteIbofOSTimeInterval.bind(this);
+    // this.OnHandleChange = this.OnHandleChange.bind(this);
+    // this.applyIbofOSTimeInterval = this.applyIbofOSTimeInterval.bind(this);
+    // this.deleteIbofOSTimeInterval = this.deleteIbofOSTimeInterval.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.state = {
       add_delete_send: '',
@@ -108,13 +107,13 @@ class ConfigurationSetting extends Component {
     });
   }
 
-  OnHandleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      ...this.state,
-      [name]: value
-    });
-  }
+  // OnHandleChange(event) {
+  //   const { name, value } = event.target;
+  //   this.setState({
+  //     ...this.state,
+  //     [name]: value
+  //   });
+  // }
 
   // Change the checked state after selection
   selectEmail(index) {
@@ -333,6 +332,7 @@ class ConfigurationSetting extends Component {
     this.props.setAlertBox(payload);
   }
 
+  /*  istanbul ignore next  */
   handleClose() {
     this.setState({
       ...this.state,
@@ -357,20 +357,20 @@ class ConfigurationSetting extends Component {
     });
   }
 
-  applyIbofOSTimeInterval() {
-    if(this.state.ibofostimeinterval >= 0) {
-      this.props.setIbofOSTimeInterval({timeinterval:this.state.ibofostimeinterval});
-    } else {
-      this.setState({
-        ...this.state,
-        open: true
-      })
-    }
-  }
+  // applyIbofOSTimeInterval() {
+  //   if(this.state.ibofostimeinterval >= 0) {
+  //     this.props.setIbofOSTimeInterval({timeinterval:this.state.ibofostimeinterval});
+  //   } else {
+  //     this.setState({
+  //       ...this.state,
+  //       open: true
+  //     })
+  //   }
+  // }
 
-  deleteIbofOSTimeInterval() {
-    this.props.setIbofOSTimeInterval({timeinterval:4});
-  }
+  // deleteIbofOSTimeInterval() {
+  //   this.props.setIbofOSTimeInterval({timeinterval:4});
+  // }
 
 
   render() {
@@ -498,10 +498,10 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SAGA_DELETE_SMTP_DETAILS}),
     deleteEmailIds: data =>
       dispatch({ type: actionTypes.SAGA_DELETE_EMAIL_IDS, payload: data }),
-    downloadLogs: data =>
-      dispatch({ type: actionTypes.SAGA_DOWNLOAD_LOGS, payload: data }),
-    setIbofOSTimeInterval: data =>
-      dispatch({ type: actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, payload: data }),
+    // downloadLogs: data =>
+    //   dispatch({ type: actionTypes.SAGA_DOWNLOAD_LOGS, payload: data }),
+    // setIbofOSTimeInterval: data =>
+    //   dispatch({ type: actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, payload: data }),
   };
 };
 

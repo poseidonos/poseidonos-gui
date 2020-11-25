@@ -40,7 +40,7 @@ export {
 } from "./dashboardActions";
 export {
     openAlertBox,
-    setAlertsInfo,
+    // setAlertsInfo,
     fetchAlertsInfo,
     fetchAlertsType,
 } from "./alertManagementActions";

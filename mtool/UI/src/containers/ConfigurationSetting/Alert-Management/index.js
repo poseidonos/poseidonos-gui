@@ -35,8 +35,8 @@ import AddNewAlerts from '../../../components/AlertManagementComponents/AddNewAl
 import './Alert-Management.css';
 import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
-import AlertFields from '../../../components/AlertManagementComponents/AlertFields';
-import AlertTypes from '../../../components/AlertManagementComponents/AlertTypes';
+// import AlertFields from '../../../components/AlertManagementComponents/AlertFields';
+// import AlertTypes from '../../../components/AlertManagementComponents/AlertTypes';
 import AlertDialog from '../../../components/Dialog';
 
 const styles = (theme) => {
@@ -67,8 +67,8 @@ class AlertManagement extends Component {
     // this.selectAllalerts = this.selectAllalerts.bind(this);
     // this.onconditionchange = this.onconditionchange.bind(this);
     this.selectAlertCluster = this.selectAlertCluster.bind(this);
-    this.selectAlertSubCluster = this.selectAlertSubCluster.bind(this);
-    this.alertTypeSelected = this.alertTypeSelected.bind(this);
+    // this.selectAlertSubCluster = this.selectAlertSubCluster.bind(this);
+    // this.alertTypeSelected = this.alertTypeSelected.bind(this);
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onHandleDropdownChange = this.onHandleDropdownChange.bind(this);
     this.addAlerts = this.addAlerts.bind(this);
@@ -76,7 +76,7 @@ class AlertManagement extends Component {
     this.handleAlertClose = this.handleAlertClose.bind(this);
     this.triggerCommand = this.triggerCommand.bind(this);
     // this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-    this.updateAlertsState = this.updateAlertsState.bind(this);
+    // this.updateAlertsState = this.updateAlertsState.bind(this);
     this.state = {
       conditions: [
         'Greater Than',
@@ -192,12 +192,12 @@ class AlertManagement extends Component {
   //   });
   // }
 
-  updateAlertsState(alertsData) {
-    this.setState({
-      ...this.state,
-      alerts: alertsData
-    });
-  }
+  // updateAlertsState(alertsData) {
+  //   this.setState({
+  //     ...this.state,
+  //     alerts: alertsData
+  //   });
+  // }
 
   // update existing alerts with change in fields
   updateAlerts(alerts) {
@@ -223,16 +223,16 @@ class AlertManagement extends Component {
     this.props.alerts.forEach(alerts => {
       if (alerts.selected) ids.push(alerts.alertName);
     });
-    if (ids.length <= 0) {
-      this.props.openAlertBox({
-        alertOpen: true,
-        istypealert: true,
-        alerttype: 'alert',
-        alerttitle: 'Delete Alert',
-        alertdescription: 'Please select an alert to delete',
-      });
-      return;
-    }
+    // if (ids.length <= 0) {
+    //   this.props.openAlertBox({
+    //     alertOpen: true,
+    //     istypealert: true,
+    //     alerttype: 'alert',
+    //     alerttitle: 'Delete Alert',
+    //     alertdescription: 'Please select an alert to delete',
+    //   });
+    //   return;
+    // }
     const data = {
       ids,
     };
@@ -250,24 +250,24 @@ class AlertManagement extends Component {
   }
 
   // API for selecting a alert sub cluster
-  selectAlertSubCluster(clusterName, alertSubCluster, i) {
-    this.setState({
-      ...this.state,
-      selectedAlertSubCluster: alertSubCluster,
-      alertClusterName: clusterName,
-      radioindex: i,
-    });
-  }
+  // selectAlertSubCluster(clusterName, alertSubCluster, i) {
+  //   this.setState({
+  //     ...this.state,
+  //     selectedAlertSubCluster: alertSubCluster,
+  //     alertClusterName: clusterName,
+  //     radioindex: i,
+  //   });
+  // }
 
   // API for selecting a particular alert type
-  alertTypeSelected(type, i, j) {
-    this.setState({
-      ...this.state,
-      radioindex: i,
-      alertType: type.type,
-    });
-    this.props.setAlertsInfo({ type, i, j });
-  }
+  // alertTypeSelected(type, i, j) {
+  //   this.setState({
+  //     ...this.state,
+  //     radioindex: i,
+  //     alertType: type.type,
+  //   });
+  //   this.props.setAlertsInfo({ type, i, j });
+  // }
 
   // Select Alerts from Table
   selectalerts(event, i) {
@@ -420,7 +420,7 @@ class AlertManagement extends Component {
                 // editalerts={this.editalerts}
                 // cancelChange={this.cancelChange}
                 saveChange={this.updateAlerts}
-                updateAlertsState={this.updateAlertsState}
+                // updateAlertsState={this.updateAlertsState}
                 deletealerts={this.deletealerts}
                 // selectAllalerts={this.selectAllalerts}
                 alerts={this.props.alerts}
@@ -496,7 +496,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    setAlertsInfo: (updatedAlerts) => dispatch(actionCreators.setAlertsInfo(updatedAlerts)),
+    // setAlertsInfo: (updatedAlerts) => dispatch(actionCreators.setAlertsInfo(updatedAlerts)),
     openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
     fetchAlertsInfo: () => dispatch({ type: actionTypes.SAGA_ALERT_MANAGEMENT_FETCH_ALERTS }),
     fetchAlertsTypeInfo: () => dispatch({ type: actionTypes.SAGA_ALERT_MANAGEMENT_FETCH_ALERTS_TYPE }),

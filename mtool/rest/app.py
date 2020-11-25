@@ -791,7 +791,7 @@ def delete_smtp_details():
 
 @app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
 def get_smtp_details():
-    print("in get smtppppppppppp")
+    print("in get smtp details")
     try:
         r = requests.get(
         url="http://localhost:9092/kapacitor/v1/config/smtp/")

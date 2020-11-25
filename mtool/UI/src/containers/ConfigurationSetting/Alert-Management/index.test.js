@@ -905,9 +905,9 @@ describe("Alert Management", () => {
       // alert_input = await waitForElement(() => getAllByTestId("alertFieldRadioTag")[0]);
       // fireEvent.click(alert_input);
 
-      let field_input = await waitForElement(() => getByLabelText(/Alert Field/i));
-      fireEvent.click(field_input);
-      fireEvent.change(field_input, { target: { value: "Usage_system" } });
+      // let field_input = await waitForElement(() => getByLabelText(/Alert Field/i));
+      // fireEvent.click(field_input);
+      // fireEvent.change(field_input, { target: { value: "Usage_system" } });
 
       let dropdown_input = await waitForElement(() => getAllByTestId("selectAddNewAlertsTag")[0]);
       fireEvent.click(dropdown_input);

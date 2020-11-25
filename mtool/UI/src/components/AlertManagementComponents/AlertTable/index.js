@@ -134,7 +134,7 @@ class AlertTable extends Component {
                   alertsData = [...this.props.alerts];
                   alertsData[row.rowData.tableData.id].alertCondition = event.target.value;
                   row.rowData.alertCondition = event.target.value;
-                  this.props.updateAlertsState(alertsData);
+                  // this.props.updateAlertsState(alertsData);
                   this.setState({
                     ...this.state,
                     rowid: row.rowData.tableData.id,

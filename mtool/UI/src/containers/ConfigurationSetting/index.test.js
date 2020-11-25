@@ -130,6 +130,21 @@ describe("ConfigurationSetting", () => {
   });
 
   it("deletes configured smtp server", async () => {
+    const mock = new MockAdapter(axios);
+    mock
+    .onGet(/api\/v1.0\/get_smtp_details\/*/)
+    .reply(200, 
+      {
+        smtpserverip: 'smtp.samsung.net',
+        smtpserverport: '25'
+      },
+    )
+    .onPost(/api\/v1.0\/test_smtpserver\/*/)
+    .reply(200, {})
+    .onPost(/api\/v1.0\/delete_smtp_details\/*/)
+    .reply(200, {})
+    .onAny()
+    .reply(200, []);
     renderComponent();
     const { getByTestId } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
@@ -139,16 +154,40 @@ describe("ConfigurationSetting", () => {
       target: { value: "smtp.samsung.net:25" }
     });
     expect(smtpServerField.value).toBe("smtp.samsung.net:25");
-    const mock = new MockAdapter(axios);
-    mock.onPost().reply(200);
+    const smtpFromEmail = getByTestId("smtpFromEmail").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpFromEmail, {
+      target: { value: "MTool@samsung.com" }
+    });
+    const smtpUsername = getByTestId("smtpUsername").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpUsername, {
+      target: { value: "palak.k" }
+    });
+    const smtpPassword = getByTestId("smtpPassword").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpPassword, {
+      target: { value: "abc" }
+    });
+    
+    //const mock = new MockAdapter(axios);
+    //mock.onPost().reply(200);
     fireEvent.click(getByTestId("applyButton"));
-    const alertDescription = await waitForElement(() =>
+    let alertDescription = await waitForElement(() =>
       getByTestId("alertDescription")
     );
     expect(alertDescription.innerHTML).toBe("SMTP server is working");
     const readOnlyField = getByTestId("readOnlyField").querySelector("input");
     expect(readOnlyField.value).toBe("smtp.samsung.net:25");
     fireEvent.click(getByTestId("deleteButton"));
+   
+    alertDescription = await waitForElement(() =>
+      getByTestId("alertDescription")
+    );
+    expect(alertDescription.innerHTML).toBe("SMTP Configuration Deleted Successfully");
     expect(readOnlyField.value).toBe("");
   });
 
@@ -196,16 +235,83 @@ describe("ConfigurationSetting", () => {
     );
   });
 
-  it("configures valid smtp server details and send a test email to a user", async () => {
+  it("should delete one entry in the email list table which is inactive", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet("/api/v1.0/get_email_ids/").reply(200, [
+      {
+        active: 0,
+        edit: false,
+        email: "palak.k@samsung.com",
+        selected: false
+      },
+      {
+        active: 1,
+        edit: false,
+        email: "palak.kapoor1@gmail.com",
+        selected: false
+      }
+    ]);
+    renderComponent();
+    const { getByTestId, getByText, getAllByTitle } = wrapper;
+    const deleteElement = await waitForElement(
+      () => getAllByTitle("Delete")[0]
+    );
+    fireEvent.click(deleteElement);
+    const alertDescription = await waitForElement(() =>
+      getByTestId("alertDescription")
+    );
+    const spy = jest.spyOn(axios, "post");
+    expect(alertDescription.innerHTML).toBe(
+      "Are you sure you want to Delete the email?"
+    );
+    mock.onPost().reply(200);
+    fireEvent.click(getByText("Yes"));
+    expect(spy).toHaveBeenCalledWith(
+      "/api/v1.0/delete_emailids/",
+      { ids: ["palak.k@samsung.com"] },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null
+        }
+      }
+    );
+  });
+
+  it("configures valid smtp server details and send a test email to a user", async () => {
+    const mock = new MockAdapter(axios);
+    mock
+    .onGet(/api\/v1.0\/get_smtp_details\/*/)
+    .reply(200, 
+      {
+        smtpserverip: 'smtp.samsung.net',
+        smtpserverport: '25'
+      },
+    )
+    .onPost(/api\/v1.0\/test_smtpserver\/*/)
+    .reply(200, {})
+    .onPost(/api\/v1.0\/delete_smtp_details\/*/)
+    .reply(200, {})
+    .onGet("/api/v1.0/get_email_ids/").reply(200, [
       {
         active: 1,
         edit: false,
         email: "palak.k@samsung.com",
         selected: true
       }
-    ]);
+    ])
+    .onAny()
+    .reply(200, []);
+    // const mock = new MockAdapter(axios);
+    // mock.onGet("/api/v1.0/get_email_ids/").reply(200, [
+    //   {
+    //     active: 1,
+    //     edit: false,
+    //     email: "palak.k@samsung.com",
+    //     selected: true
+    //   }
+    // ]);
     renderComponent();
     const { getByTestId, getByText, getByTitle } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
@@ -215,7 +321,25 @@ describe("ConfigurationSetting", () => {
       target: { value: "smtp.samsung.net:25" }
     });
     expect(smtpServerField.value).toBe("smtp.samsung.net:25");
-    mock.onPost().reply(200);
+    const smtpFromEmail = getByTestId("smtpFromEmail").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpFromEmail, {
+      target: { value: "MTool@samsung.com" }
+    });
+    const smtpUsername = getByTestId("smtpUsername").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpUsername, {
+      target: { value: "palak.k" }
+    });
+    const smtpPassword = getByTestId("smtpPassword").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpPassword, {
+      target: { value: "abc" }
+    });
+    //mock.onPost().reply(200);
     fireEvent.click(getByTestId("applyButton"));
     const alertDescription = await waitForElement(() =>
       getByTestId("alertDescription")
@@ -239,14 +363,22 @@ describe("ConfigurationSetting", () => {
 
   it("toggles the active status of the entry in the email list table", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet("/api/v1.0/get_email_ids/").reply(200, [
+    mock
+    .onGet("/api/v1.0/get_email_ids/").reply(200, [
       {
         active: 0,
         edit: false,
         email: "palak.k@samsung.com",
         selected: false
       }
-    ]);
+    ])
+    .onGet(/api\/v1.0\/get_smtp_details\/*/)
+    .reply(200, 
+      {
+        smtpserverip: 'smtp.samsung.net',
+        smtpserverport: '25'
+      },
+    );
     renderComponent();
     const { getByTestId, getByText, getByTitle } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
@@ -256,6 +388,24 @@ describe("ConfigurationSetting", () => {
       target: { value: "smtp.samsung.net:25" }
     });
     expect(smtpServerField.value).toBe("smtp.samsung.net:25");
+    const smtpFromEmail = getByTestId("smtpFromEmail").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpFromEmail, {
+      target: { value: "MTool@samsung.com" }
+    });
+    const smtpUsername = getByTestId("smtpUsername").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpUsername, {
+      target: { value: "palak.k" }
+    });
+    const smtpPassword = getByTestId("smtpPassword").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpPassword, {
+      target: { value: "abc" }
+    });
     mock.onPost().reply(200);
     fireEvent.click(getByTestId("applyButton"));
     const alertDescription = await waitForElement(() =>
@@ -415,6 +565,11 @@ describe("ConfigurationSetting", () => {
     });
   });
 
+
+
+
+  
+
   it("should render button on resize", () => {
     // Change the viewport to 500px.
     global.innerWidth = 500;
@@ -469,7 +624,14 @@ describe("ConfigurationSetting", () => {
         email: "palak.k@samsung.com",
         selected: false
       }
-    ]);
+    ])
+    .onGet(/api\/v1.0\/get_smtp_details\/*/)
+    .reply(200, 
+      {
+        smtpserverip: 'smtp.samsung.net',
+        smtpserverport: '25'
+      },
+    );
     renderComponent();
     const { getByTestId, getByText } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
@@ -479,6 +641,24 @@ describe("ConfigurationSetting", () => {
       target: { value: "smtp.samsung.net:25" }
     });
     expect(smtpServerField.value).toBe("smtp.samsung.net:25");
+    const smtpFromEmail = getByTestId("smtpFromEmail").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpFromEmail, {
+      target: { value: "MTool@samsung.com" }
+    });
+    const smtpUsername = getByTestId("smtpUsername").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpUsername, {
+      target: { value: "palak.k" }
+    });
+    const smtpPassword = getByTestId("smtpPassword").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpPassword, {
+      target: { value: "abc" }
+    });
     mock.onPost().reply(200);
     fireEvent.click(getByTestId("applyButton"));
     const alertDescription = await waitForElement(() =>
@@ -552,7 +732,7 @@ describe("ConfigurationSetting", () => {
     const errorDescription = await waitForElement(() =>
       getByTestId("alertDescription")
     );
-    expect(errorDescription.innerHTML).toBe("Error in deleting email id");
+    expect(errorDescription.innerHTML).toBe("Failed to Delete Email ID");
     fireEvent.click(getByTestId("alertCloseButton"));
   });
 
@@ -565,7 +745,14 @@ describe("ConfigurationSetting", () => {
         email: "palak.k@samsung.com",
         selected: false
       }
-    ]);
+    ])
+    .onGet(/api\/v1.0\/get_smtp_details\/*/)
+    .reply(200, 
+      {
+        smtpserverip: 'smtp.samsung.net',
+        smtpserverport: '25'
+      },
+    );
     renderComponent();
     const { getByTestId, getByText, getByTitle } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
@@ -574,7 +761,26 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(smtpServerField, {
       target: { value: "smtp.samsung.net:25" }
     });
+
     expect(smtpServerField.value).toBe("smtp.samsung.net:25");
+    const smtpFromEmail = getByTestId("smtpFromEmail").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpFromEmail, {
+      target: { value: "MTool@samsung.com" }
+    });
+    const smtpUsername = getByTestId("smtpUsername").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpUsername, {
+      target: { value: "palak.k" }
+    });
+    const smtpPassword = getByTestId("smtpPassword").querySelector(
+      "input"
+    );
+    fireEvent.change(smtpPassword, {
+      target: { value: "abc" }
+    });
     mock.onPost().reply(200);
     fireEvent.click(getByTestId("applyButton"));
     const alertDescription = await waitForElement(() =>
@@ -596,57 +802,57 @@ describe("ConfigurationSetting", () => {
     expect(errorDescription.innerHTML).toBe("Email sending failed");
 */
   });
-  it("should download the logs", async () => {
-    renderComponent();
-    const { getByTestId } = wrapper;
-    fireEvent.click(getByTestId("downloadLogsBtn"));
-  });
-  it("should set ibofos time interval", async () => {
+  // it("should download the logs", async () => {
+  //   renderComponent();
+  //   const { getByTestId } = wrapper;
+  //   fireEvent.click(getByTestId("downloadLogsBtn"));
+  // });
+  // it("should set ibofos time interval", async () => {
     
-    renderComponent();
-    const { getByTestId, getByText } = wrapper;
-    const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
-      "input"
-    );
-    fireEvent.change(ibofosTimeIntervalField, {
-      target: { value: "4" }
-    });
-    fireEvent.click(getByTestId("setTimeIntervalButton"));
-    fireEvent.change(ibofosTimeIntervalField, {
-      target: { value: "-1" }
-    });
-    fireEvent.click(getByTestId("setTimeIntervalButton"));
-    const okBtn = getByText("OK");
-    expect(okBtn).toBeDefined();
-    fireEvent.click(okBtn);
-  });
+  //   renderComponent();
+  //   const { getByTestId, getByText } = wrapper;
+  //   const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
+  //     "input"
+  //   );
+  //   fireEvent.change(ibofosTimeIntervalField, {
+  //     target: { value: "4" }
+  //   });
+  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
+  //   fireEvent.change(ibofosTimeIntervalField, {
+  //     target: { value: "-1" }
+  //   });
+  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
+  //   const okBtn = getByText("OK");
+  //   expect(okBtn).toBeDefined();
+  //   fireEvent.click(okBtn);
+  // });
 
-  it("should set default ibofos time interval if the API fails", async () => {
-    const mock = new MockAdapter(axios);
-    mock.onPost('/api/v1.0/set_ibofos_time_interval').reply(500, null)
-    renderComponent();
-    const { getByTestId, getByText } = wrapper;
-    const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
-      "input"
-    );
-    fireEvent.change(ibofosTimeIntervalField, {
-      target: { value: "4" }
-    });
-    fireEvent.click(getByTestId("setTimeIntervalButton"));
-    fireEvent.change(ibofosTimeIntervalField, {
-      target: { value: "-1" }
-    });
-    fireEvent.click(getByTestId("setTimeIntervalButton"));
-    const okBtn = getByText("OK");
-    expect(okBtn).toBeDefined();
-    fireEvent.click(okBtn);
-  });
+  // it("should set default ibofos time interval if the API fails", async () => {
+  //   const mock = new MockAdapter(axios);
+  //   mock.onPost('/api/v1.0/set_ibofos_time_interval').reply(500, null)
+  //   renderComponent();
+  //   const { getByTestId, getByText } = wrapper;
+  //   const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
+  //     "input"
+  //   );
+  //   fireEvent.change(ibofosTimeIntervalField, {
+  //     target: { value: "4" }
+  //   });
+  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
+  //   fireEvent.change(ibofosTimeIntervalField, {
+  //     target: { value: "-1" }
+  //   });
+  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
+  //   const okBtn = getByText("OK");
+  //   expect(okBtn).toBeDefined();
+  //   fireEvent.click(okBtn);
+  // });
 
-  it("should delete ibofos time interval", async () => {
-    renderComponent();
-    const { getByTestId } = wrapper;
-    fireEvent.click(getByTestId("deleteTimeIntervalButton"));
-  });
+  // it("should delete ibofos time interval", async () => {
+  //   renderComponent();
+  //   const { getByTestId } = wrapper;
+  //   fireEvent.click(getByTestId("deleteTimeIntervalButton"));
+  // });
 
   //Disabling for PoC1
 

@@ -100,8 +100,8 @@
       "!src/store/actions/logManagementActions.js",
       
       "!src/store/reducers/logManagementReducer.js",
-      
-     
+      "!src/components/AlertManagementComponents/AlertFields**/*.js",
+      "!src/components/AlertManagementComponents/AlertTypes**/*.js",
      
       "!src/serviceWorker.js"
     ]
@@ -119,7 +119,9 @@
     "*PowerManagementComponents*",
     "*DriveComponents*",
     "*SensorComponents*",
-    "*LogConfiguration"
+    "*LogConfiguration",
+    "*AlertFields",
+    "*AlertTypes"
   ],
 
   "browserslist": [

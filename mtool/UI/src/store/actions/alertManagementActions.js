@@ -33,12 +33,12 @@ export const openAlertBox = (alertParam) => {
     };
 }
 
-export const setAlertsInfo = (updatedAlerts) => {
-    return {
-        type:actionTypes.ALERT_MANAGEMENT_SET_ALERTS,
-        updatedAlerts,
-    };
-}
+// export const setAlertsInfo = (updatedAlerts) => {
+//     return {
+//         type:actionTypes.ALERT_MANAGEMENT_SET_ALERTS,
+//         updatedAlerts,
+//     };
+// }
 
 export const fetchAlertsInfo = (alerts) => {
     return {
