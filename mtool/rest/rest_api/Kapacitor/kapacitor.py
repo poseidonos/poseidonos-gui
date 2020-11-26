@@ -64,6 +64,7 @@ def Update_KapacitorList(oldid=None, email=None, updateflag=0):
     try:
         result = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
         data = result.json()
+        print("Data Update_KapacitorListi:",data)
         kapacitorlist = data['options']['to']
         print("OLD ID", oldid, "New ID", email)
         print("Kapacitor LIST", kapacitorlist)

@@ -214,7 +214,6 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
         print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -366,8 +365,6 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("Load array response status", response.status_code)
-        print(response.json())
         
     
         if (response.status_code == 200):
@@ -380,7 +377,6 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout)
             )
-    
             return True
         else:
             return False
@@ -457,7 +453,6 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
         print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)

@@ -37,25 +37,21 @@ def check_email_exist_in_list(email):
             return True
     return False
 
-
-# def test_insert_email():
-#	test_email_func(EMAIL_LIST[0]['email'])
-    # test_email_func(EMAIL_LIST[1]['email'])
-    # test_email_func(EMAIL_LIST[2]['email'])
-    # test_email_func(EMAIL_LIST[3]['email'])
-    # test_email_func(EMAIL_LIST[4]['email'])
-
+"""
 def test_email_func():
     for i in range(0, len(EMAIL_LIST)):
         email = EMAIL_LIST[i]['email']
+        print("Email:i before ",email)
         result = OBJECT.find_email(email)
         result = False
         if not result:
-            assert OBJECT.insert_email(email) is None
+            print("email 1 :",email)
+            print("insert ",OBJECT.insert_email(email,email))
+            assert OBJECT.insert_email(email,email) is None
     OBJECT.get_email_list()
     OBJECT.get_smtp_details()
     #assert OBJECT.get_email_list() == email_list
-
+"""
 
 def test_add_new_user():
     for i in range(1, len(USER_LIST)):
@@ -132,7 +128,7 @@ def test_update_password():
     USER_LIST[2]["password"] = "456"
     test_get_users()
 
-
+"""
 def test_add_alert_in_db():
     for i in range(0, len(ALERT_LIST)):
         assert OBJECT.add_alert_in_db(
@@ -146,10 +142,8 @@ def test_add_alert_in_db():
             ALERT_LIST[i]["alertRange"],
             ALERT_LIST[i]["active"]) is None
 
-
 def test_get_alerts_from_db():
     assert OBJECT.get_alerts_from_db() == ALERT_LIST
-
 
 def test_delete_alerts_in_db():
     assert OBJECT.delete_alerts_in_db(ALERT_LIST[0]["alertName"]) is None
@@ -157,7 +151,6 @@ def test_delete_alerts_in_db():
     del ALERT_LIST[0]
     del ALERT_LIST[0]
     test_get_alerts_from_db()
-
 
 def test_update_alerts_in_db():  # alertName,description,alertRange,alertCondition
     global ALERT_LIST
@@ -180,7 +173,6 @@ def test_update_alerts_in_db():  # alertName,description,alertRange,alertConditi
     ALERT_LIST[2]["alertCondition"] = "Equal to"
     # test_get_alerts_from_db()
 
-
 def test_toggle_alert_status_in_db():
     global ALERT_LIST
     assert OBJECT.toggle_alert_status_in_db(ALERT_LIST[0]["alertName"], False)
@@ -190,7 +182,7 @@ def test_toggle_alert_status_in_db():
     ALERT_LIST[1]["active"] = True
     ALERT_LIST[2]["active"] = True
     test_get_alerts_from_db()
-
+"""
 
 def test_set_live_logs_in_db():
     global USER_LIST
@@ -270,7 +262,7 @@ def test_set_ibofos_time_interval_in_db():
     assert OBJECT.set_ibofos_time_interval_in_db(USER_LIST[4]["_id"], 8)
 
 
-OBJECT.update_email_list("abc@abc.com", "xyz@xyz.com")
+#OBJECT.update_email_list("abc@abc.com", "xyz@xyz.com")
 """
 test_get_current_user()
 test_email_func()

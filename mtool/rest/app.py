@@ -791,12 +791,10 @@ def delete_smtp_details():
 
 @app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
 def get_smtp_details():
-    print("in get smtp details")
     try:
         r = requests.get(
         url="http://localhost:9092/kapacitor/v1/config/smtp/")
         data = r.json() 
-        print("smtp detailsaaaaa",data['options'])
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
         else:
@@ -1029,7 +1027,6 @@ def get_arrays(current_user):
     #print("result from get array",res)
 
     array_list = list_arr()
-    #print("array list is", array_list.json())
 
     try:
         if array_list.status_code == 200:
