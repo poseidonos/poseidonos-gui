@@ -199,12 +199,20 @@ def test_create_arrays(mock_get_current_user, **kwargs):
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
 
-
+"""
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': '104e2c46-89b3-433d-8f6a-b4f7fa176c27', 'lastSuccessTime': 1606298716, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+	
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/load',json = {'rid': '99b9626b-ca23-4f0e-86bd-643fa4cb8a1c', 'lastSuccessTime': 1606298720, 'result': {'status': {'module': 'Array', 'code': 2500, 'level': 'ERROR', 'description': 'Array is alreday mounted.'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+	
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/',json = {'rid': 'c88db904-79d5-4cc3-9d78-0389af9b6ea8', 'lastSuccessTime': 1606298720, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}, 'data': {'devicelist': [{'name': 'uram0', 'type': 'BUFFER'}, {'name': 'unvme-ns-0', 'type': 'DATA'}, {'name': 'unvme-ns-1', 'type': 'DATA'}, {'name': 'unvme-ns-2', 'type': 'DATA'}, {'name': 'unvme-ns-3', 'type': 'DATA'}]}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+
+
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
         json={
@@ -240,7 +248,7 @@ def test_get_arrays(mock_get_current_user, **kwargs):
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
-
+"""
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
@@ -884,8 +892,7 @@ def test_get_volume(**kwargs):
 @requests_mock.Mocker(kw="mock")
 def test_get_arrays_func(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/devices',
-                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/devices',json = {'rid': 'd0f6fff2-9544-486d-95b4-d2f084af98a9', 'lastSuccessTime': 1606294961, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}, 'data': {'devicelist': [{'name': 'uram0', 'type': 'BUFFER'}, {'name': 'unvme-ns-0', 'type': 'DATA'}, {'name': 'unvme-ns-1', 'type': 'DATA'}, {'name': 'unvme-ns-2', 'type': 'DATA'}, {'name': 'unvme-ns-3', 'type': 'DATA'}]}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
 
     response = app.test_client().get('/api/v1.0/get_arrays/',headers={'x-access-token': json_token})
     assert response.status_code == 200
