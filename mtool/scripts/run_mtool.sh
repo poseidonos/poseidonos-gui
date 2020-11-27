@@ -49,14 +49,18 @@ fi
 sudo chmod +x $currdir/scripts/cleanup.sh
 
 #create a soft link for the folder , to get absolute path for starting service
-sudo rm /usr/local/m9k
+if [ -d "/usr/local/m9k" ]; then
+  sudo rm /usr/local/m9k
+fi
 parentdir="$(dirname $(dirname $ROOT_DIR))"
 #echo $parentdir
 sudo ln -s $parentdir /usr/local
 
 #move the service file  to the /etc/systemd/system/
 echo "Stopping MTool service if already present"
-sudo systemctl stop start-iBofMtool
+if [ -e "/etc/systemd/system/start-iBofMtool.service" ]; then
+  sudo systemctl stop start-iBofMtool
+fi
 
 echo "Starting MTool Service"
 sudo cp $currdir/scripts/start-iBofMtool.service /etc/systemd/system/
@@ -83,6 +87,3 @@ fi
 #echo $currdir      #/mtool
 
 #python3 PreConfiguredAlerts.py #Set Kapacitor Pre-Configured Alerts...Kapacitor takes sometime to load its resources.. Adding this statement at the end...
-#Run sudo -s at the end always
-sudo -s
-. ~/.bashrc

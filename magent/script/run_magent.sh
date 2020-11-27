@@ -2,11 +2,15 @@
 
 SCRIPT_PATH=$(readlink -f $(dirname $0))
 PARENT_SCRIPT_PATH="$(dirname "$SCRIPT_PATH")"
-mkdir -p /var/log/m9k/
-sudo systemctl stop magent
+sudo mkdir -p /var/log/m9k/
+if [ -e "/etc/systemd/system/magent.service" ]; then
+  sudo systemctl stop magent
+fi
 
 #create a soft link of the directory, to get the absolute path for starting the service
-sudo rm /usr/local/magent
+if [ -e "/usr/local/magent" ]; then
+  sudo rm /usr/local/magent
+fi
 sudo ln -s $PARENT_SCRIPT_PATH /usr/local
 
 #move the service file  to the /etc/systemd/system/
@@ -18,9 +22,9 @@ sudo service influxdb start
 
 echo "Starting InfluxDB..."
 sleep 8s
-[ ! -d "/tmp/air_result.json" ] && touch /tmp/air_result.json
-[ ! -d "/var/log/ibofos" ] && mkdir /var/log/ibofos
-touch /var/log/ibofos/report.log
+[ ! -d "/tmp/air_result.json" ] && sudo touch /tmp/air_result.json
+[ ! -d "/var/log/ibofos" ] && sudo mkdir /var/log/ibofos
+sudo touch /var/log/ibofos/report.log
 
 sudo systemctl daemon-reload
 sudo systemctl enable magent.service
