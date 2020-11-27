@@ -115,13 +115,15 @@ class AlertTable extends Component {
               <Select
               SelectDisplayProps={{'data-testid':"SelectEditTag"}}
                 disabled
+               
                 value={((rowData) && (rowData.tableData) && (rowData.tableData.id !== null)) ?
-			((this.props.alerts && this.props.alerts[rowData.tableData.id]) ? this.props.alerts[rowData.tableData.id].alertCondition : 'This is NULL') : 'This is NULL'
+       /* istanbul ignore next */
+			((this.props.alerts && this.props.alerts[rowData.tableData.id]) ? this.props.alerts[rowData.tableData.id].alertCondition : 'This is NULL') : /* istanbul ignore next */ 'This is NULL'
                 }
               >
                 {this.props.dropdownCondition ? this.props.dropdownCondition.map((eachValue) => {
                   return (<MenuItem key={eachValue} value={eachValue} data-testid="SelectEditMenuItemTag">{eachValue}</MenuItem>)
-                }) : null}
+                }) : /* istanbul ignore next */ null}
               </Select>
             )
           ,
@@ -148,7 +150,7 @@ class AlertTable extends Component {
               >
                 {this.props.dropdownCondition ? this.props.dropdownCondition.map((eachValue) => {
                   return (<MenuItem key={eachValue} value={eachValue} data-testid="SelectEditMenuItemTag">{eachValue}</MenuItem>)
-                }) : null}
+                }) : /* istanbul ignore next */ null}
               </Select>
             )
         },
@@ -201,7 +203,9 @@ class AlertTable extends Component {
     }
   }
 
-   // eslint-disable-next-line camelcase
+  
+    // this method is considered legacy and should be avoided in new code
+    // eslint-disable-next-line camelcase
    UNSAFE_componentWillReceiveProps(newProps) {
     this.setState({ data: newProps.alerts });
   }
@@ -224,7 +228,7 @@ class AlertTable extends Component {
                       data[index] = newData;
                      
                       
-                      
+                      // istanbul ignore else
                       if (this.state.alertConditionValue === "")
                         newData.alertCondition = oldData.alertCondition;
                       else newData.alertCondition = this.state.alertConditionValue

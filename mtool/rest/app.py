@@ -758,10 +758,11 @@ def test_smtpserver():
                "password": smtppassword
         }
       }
-        #print("Taks ",tasks)
         r = requests.post(
         url="http://localhost:9092/kapacitor/v1/config/smtp/",
         data=toJson(tasks))
+
+        # Some kapacitor APIs return code 204 for success
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
         return 'SMTP Server is Working'
@@ -792,12 +793,11 @@ def delete_smtp_details():
 
 @app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
 def get_smtp_details():
-    #print("in get smtppppppppppp")
+    print("in get smtp details")
     try:
         r = requests.get(
         url="http://localhost:9092/kapacitor/v1/config/smtp/")
         data = r.json() 
-        print("smtp details -->>>>",data)
         print("smtp detailsaaaaa",data['options'])
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
@@ -841,7 +841,6 @@ def delete_emailids():
     ids = body['ids']
     result = None
     for email_id in ids:
-        #print("in for loop >>>>>>>>>>>>",email_id)
         result = connection_factory.delete_emailids_list(email_id)
     return result 
 
@@ -1032,7 +1031,7 @@ def get_arrays(current_user):
     #print("result from get array",res)
 
     array_list = list_arr()
-    print("array list is", array_list.json())
+    #print("array list is", array_list.json())
 
     try:
         if array_list.status_code == 200:
@@ -1607,7 +1606,6 @@ def addAlert(current_user):
     :param current_user:
     :return:
     """
-    #print("add alertttttt")
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     #print(body)

@@ -123,6 +123,7 @@ class ConfigurationSetting extends Component {
   }
 
   handleTabChange(event, newValue) {
+    /* istanbul ignore if */
     if (newValue === 'general') {
       this.componentDidMount();
     }
@@ -390,9 +391,9 @@ class ConfigurationSetting extends Component {
                 value={this.state.value}
                 onChange={this.handleTabChange}
               >
-                <Tab label="General" key="general" value="general" className={(window.location.href.indexOf('general') > 0 ? classes.selectedTab : null)} />
-                <Tab label="Alert" key="alert" value="alert" className={(window.location.href.indexOf('alert') > 0 ? classes.selectedTab : null)} />
-                <Tab label="User" key="user" value="user" className={(window.location.href.indexOf('user') > 0 ? classes.selectedTab : null)} />
+                <Tab  data-testid="generalTab" label="General" key="general" value="general" className={(window.location.href.indexOf('general') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
+                <Tab data-testid="alertTab" label="Alert" key="alert" value="alert" className={(window.location.href.indexOf('alert') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
+                <Tab  data-testid="userTab" label="User" key="user" value="user" className={(window.location.href.indexOf('user') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
               </Tabs>
             </AppBar>
             <Switch>

@@ -131,7 +131,7 @@ const AddNewAlerts = props => {
           placeholder="Enter Alert Name"
           onChange={props.onHandleChange}
           inputProps={{'data-testid': "alert-create-name"}}
-          onKeyDown={e => /[+-.,#, ,]$/.test(e.key) && e.preventDefault()}
+          onKeyDown={e => /[+-.,#, ,]$/.test(e.key) && /* istanbul ignore next */ e.preventDefault()}
         />
         <Typography className={classes.formLabel} variant="caption"> -Send Alert Where</Typography>
         {/* <TextField
@@ -185,7 +185,7 @@ const AddNewAlerts = props => {
           className={classes.textField}
           label="Value"
           margin="none"
-          onKeyDown={f => /[+-,.,#]$/.test(f.key) && f.preventDefault()}
+          onKeyDown={f => /[+-,.,#]$/.test(f.key) && /* istanbul ignore next */ f.preventDefault()}
         />
       </Grid>
       <Grid sm={6} xs={12} item className={classes.addNewAlertsThirdInnerGrid}>

@@ -185,8 +185,8 @@ def create_kapacitor_alert(
                 "rp": default_rp}],
         "status": "enabled",
         "script": "var db = '{}'\nvar rp = '{}'\nvar measurement = '{}'\nvar groupBy = []\nvar whereFilter = "
-        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = '{}'\n\nvar"
-        " idTag = 'alertID'\n\nvar details = 'The system {} usage is {{{{ index .Fields \"value\" | printf \"%0.2f\" }}}}%'\n\nvar levelTag = 'level'\n\nvar messageField = 'message'\n\n"
+        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = 'Poseidon box {} usage alert: {}'\n\nvar"
+        " idTag = 'alertID'\n\nvar details = 'Hi, this is a {} usage alert. Current usage: {{{{ index .Fields \"value\" | printf \"%0.2f\" }}}}%. Threshold value: {}%'\n\nvar levelTag = 'level'\n\nvar messageField = 'message'\n\n"
         "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
         "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
         "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
@@ -204,8 +204,10 @@ def create_kapacitor_alert(
             alertSubCluster,
             alertType,
             alertName,
+            alertCluster,
             description,
             alertCluster,
+            alertRange,
             chronograf,
             infinite_rp,
             alertRange,
@@ -253,10 +255,9 @@ def update_in_kapacitor(
             {
                 "db": mtool_db,
                 "rp": default_rp}],
-        "status": "enabled",
         "script": "var db = '{}'\nvar rp = '{}'\nvar measurement = '{}'\nvar groupBy = []\nvar whereFilter = "
-        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = '{}'\n\nvar"
-        " idTag = 'alertID'\n\nvar details = 'The system {} usage is {{{{ index .Fields \"value\" | printf \"%0.2f\" }}}}%'var levelTag = 'level'\n\nvar messageField = 'message'\n\n"
+        "lambda: (\"{}\" == '{}')\nvar name = '{}'\nvar idVar = name\nvar message = 'Poseidon box {} usage alert: {}'\n\nvar"
+        " idTag = 'alertID'\n\nvar details = 'Hi, this is a {} usage alert. Current usage: {{{{ index .Fields \"value\" | printf \"%0.2f\" }}}}%. Threshold value: {}%'var levelTag = 'level'\n\nvar messageField = 'message'\n\n"
         "var durationField = 'duration'\n\nvar outputDB = '{}'\n\nvar outputRP = '{}'"
         "\n\nvar outputMeasurement = 'alerts'\n\nvar triggerType = 'threshold'\n\nvar crit = {}\n\n"
         "var data = stream\n    |from()\n        .database(db)\n        .retentionPolicy(rp)\n "
@@ -274,8 +275,10 @@ def update_in_kapacitor(
             alertSubCluster,
             alertType,
             alertName,
+            alertCluster,
             description,
             alertCluster,
+            alertRange,
             chronograf,
             infinite_rp,
             alertRange,

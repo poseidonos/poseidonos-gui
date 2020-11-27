@@ -269,7 +269,7 @@ class SQLiteConnection:
         except DB_CONNECTION.Error:
             print("exception in insert_email:",DB_CONNECTION.Error)
             DB_CONNECTION.rollback()    
-            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+            return make_response(json.dumps({"description": "Failed to update the Email List"}), 500)
     def execute_update_email_query(self, email,oldid):
         cur = DB_CONNECTION.cursor()
         cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
@@ -288,7 +288,7 @@ class SQLiteConnection:
         except DB_CONNECTION.Error:
             print("exception in update_email:",DB_CONNECTION.Error)
             DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+            return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
 
     def execute_email_insert_query(self,user_id):
         cur = DB_CONNECTION.cursor()
@@ -296,6 +296,7 @@ class SQLiteConnection:
         rows = cur.fetchone()
         return rows
     def execute_delete_query(self,user_id):
+        cur = DB_CONNECTION.cursor()
         cur.execute(DELETE_EMAIL_QUERY, (user_id,))
 
     def delete_emailids_list(self, user_id):

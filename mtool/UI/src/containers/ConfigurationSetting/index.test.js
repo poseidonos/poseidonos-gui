@@ -108,6 +108,14 @@ describe("ConfigurationSetting", () => {
     const { asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();
   });
+  it("navigates to alert page", async () => {
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    const alertTab = getByTestId("alertTab")
+    fireEvent.click(alertTab);
+    const generalTab = getByTestId("generalTab")
+    fireEvent.click(generalTab);
+  });
 
   it("throws error on providing invalid smtp server details", async () => {
     renderComponent();
@@ -146,7 +154,7 @@ describe("ConfigurationSetting", () => {
     .onAny()
     .reply(200, []);
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId,getByText } = wrapper;
     const smtpServerField = getByTestId("smtpServerField").querySelector(
       "input"
     );
@@ -183,7 +191,9 @@ describe("ConfigurationSetting", () => {
     const readOnlyField = getByTestId("readOnlyField").querySelector("input");
     expect(readOnlyField.value).toBe("smtp.samsung.net:25");
     fireEvent.click(getByTestId("deleteButton"));
-   
+
+    fireEvent.click(getByText("Yes"));
+  
     alertDescription = await waitForElement(() =>
       getByTestId("alertDescription")
     );

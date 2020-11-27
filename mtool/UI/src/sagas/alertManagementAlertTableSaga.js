@@ -57,7 +57,7 @@ export function* updateAlertsInfo(action) {
         const payload = {
             alertOpen: true,
             istypealert: true,
-            alerttype: 'info',
+            alerttype: 'alert',
             alerttitle: 'Update Alert',
             alertdescription: 'Failed to Update the Alert',
           };
@@ -91,7 +91,7 @@ export function* deleteAlertsInfo(action) {
         const payload = {
             alertOpen: true,
             istypealert: true,
-            alerttype: 'info',
+            alerttype: 'alert',
             alerttitle: 'Delete Alert',
             alertdescription: 'Failed to Delete the Alert',
           };
@@ -118,7 +118,7 @@ export function* toggleAlertsInfo(action) {
         const payload = {
             alertOpen: true,
             istypealert: true,
-            alerttype: 'info',
+            alerttype: 'alert',
             alerttitle: 'Toggle Alert Status',
             alertdescription: 'Failed to Toggle the Alert Status',
           };

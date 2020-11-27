@@ -64,7 +64,6 @@ def Update_KapacitorList(oldid=None, email=None, updateflag=0):
     try:
         result = requests.get(url="http://localhost:9092/kapacitor/v1/config/smtp/")
         data = result.json()
-        print("Data Update_KapacitorListi:",data)
         kapacitorlist = data['options']['to']
         print("OLD ID", oldid, "New ID", email)
         print("Kapacitor LIST", kapacitorlist)
@@ -84,12 +83,12 @@ def Update_KapacitorList(oldid=None, email=None, updateflag=0):
             data=toJson(tasks))
        
         if(result.status_code != 200 and result.status_code != 204):
-            return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+            return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
         else:
             return make_response(json.dumps({"description": "Success"}), 200)
     except BaseException as e:
          print("exception in updating email ids in kapacitor",e)
-         return make_response(json.dumps({"description": "Failed to perform this operation"}), 500)
+         return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
 
 def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
     print("Delete Email IDs")

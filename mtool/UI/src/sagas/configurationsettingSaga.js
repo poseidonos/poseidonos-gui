@@ -153,7 +153,7 @@ export function* updateEmail(action) {
       istypealert: true,
       alerttype: 'alert',
       alerttitle: 'SMTP Email',
-      alertdescription: 'Failed to perform this operation'
+      alertdescription: 'Failed to Update the Email List'
     };
     yield put(actionCreators.setAlertBox(payload));
   }

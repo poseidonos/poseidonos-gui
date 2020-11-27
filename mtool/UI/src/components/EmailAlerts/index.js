@@ -52,7 +52,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Clear from "@material-ui/icons/Clear";
 import Switch from "@material-ui/core/Switch";
-
+import AlertDialog from "../Dialog";
 import "./EmailAlerts.css";
 
 const styles = theme => ({
@@ -269,6 +269,7 @@ class EmailAlerts extends Component {
     });
 
     this.state = {
+      open: false,
       columns: [
         {
           title: "Email ID",
@@ -337,11 +338,27 @@ class EmailAlerts extends Component {
 
       data: []
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(newProps) {
     this.setState({ data: newProps.emailids });
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+    this.setState({
+      open: true,
+    });
+  }
+
+  // istanbul ignore next
+  handleClose() {
+    this.setState({
+      open: false,
+    });
   }
 
   render() {
@@ -373,35 +390,35 @@ class EmailAlerts extends Component {
                   data-testid="form"
                 >
                   <Grid item xs={12} sm={6} className={classes.gridItem}>
-                  <TextField
-                    id="smtp-server"
-                    label="SMTP Server"
-                    required
-                    className={classes.textField}
-                    placeholder="IP:Port"
-                    onChange={event => this.props.savesmtpserverdetails(event)}
-                    InputLabelProps={{
-                      className: classes.labelText
-                    }}
-                    name="smtpserver"
-                    type="text"
-                    margin="normal"
-                    data-testid="smtpServerField"
-                  />
                     <TextField
-                    id="smtp-fromEmail"
-                    label="From Email"
-                    required
-                    className={classes.textField}
-                    placeholder="From Email"
-                    onChange={event => this.props.savesmtpserverdetails(event)}
-                    InputLabelProps={{
-                      className: classes.labelText
-                    }}
-                    name="smtpfromemail"
-                    type="text"
-                    margin="normal"
-                    data-testid="smtpFromEmail"
+                      id="smtp-server"
+                      label="SMTP Server"
+                      required
+                      className={classes.textField}
+                      placeholder="IP:Port"
+                      onChange={event => this.props.savesmtpserverdetails(event)}
+                      InputLabelProps={{
+                        className: classes.labelText
+                      }}
+                      name="smtpserver"
+                      type="text"
+                      margin="normal"
+                      data-testid="smtpServerField"
+                    />
+                    <TextField
+                      id="smtp-fromEmail"
+                      label="From Email"
+                      required
+                      className={classes.textField}
+                      placeholder="From Email"
+                      onChange={event => this.props.savesmtpserverdetails(event)}
+                      InputLabelProps={{
+                        className: classes.labelText
+                      }}
+                      name="smtpfromemail"
+                      type="text"
+                      margin="normal"
+                      data-testid="smtpFromEmail"
                     />
                   </Grid>
                   <TextField
@@ -419,7 +436,7 @@ class EmailAlerts extends Component {
                     margin="normal"
                     data-testid="smtpUsername"
                   />
-                    <TextField
+                  <TextField
                     id="smtp-password"
                     label="Password"
                     required
@@ -433,7 +450,7 @@ class EmailAlerts extends Component {
                     type="password"
                     margin="normal"
                     data-testid="smtpPassword"
-                    />
+                  />
                   <Button
                     variant="contained"
                     color="primary"
@@ -460,9 +477,9 @@ class EmailAlerts extends Component {
                   data-testid="readOnlyField"
                 />
                 <Button
-                  onClick={() => {
-                    this.props.deleteConfiguredSmtpServer();
-                  }}
+                 
+                  disabled={this.props.configuredsmtpserver === ""}
+                  onClick={this.handleClick}
                   variant="contained"
                   color="primary"
                   className={classes.submit}
@@ -473,6 +490,18 @@ class EmailAlerts extends Component {
               </Grid>
             </Grid>
           </form>
+          <AlertDialog
+            title="Delete SMTP Configuration"
+            description="This will delete all the fields in the SMTP Configuration. Are you sure you want to proceed?"
+            open={this.state.open}
+            handleClose={this.handleClose}
+            onConfirm={() => {
+              this.setState({
+                open: false,
+              });
+              this.props.deleteConfiguredSmtpServer();
+            }}
+          />
           <Grid>
             <ThemeProvider theme={this.theme}>
               <MaterialTable
@@ -571,10 +600,10 @@ class EmailAlerts extends Component {
                   actionsCellStyle: {
                     textAlign: "center",
                     justifyContent: "center",
-                    minWidth:'33%',
-                    maxWidth:'33%',
-                    width:'33%',
-                    paddingLeft:'12%'
+                    minWidth: '33%',
+                    maxWidth: '33%',
+                    width: '33%',
+                    paddingLeft: '12%'
                   },
                   headerStyle: {
                     // backgroundColor: 'rgb(113, 133, 157)',
@@ -584,7 +613,7 @@ class EmailAlerts extends Component {
                     height: "10%",
                     paddingTop: "2px",
                     paddingBottom: "2px",
-                    
+
                   }
                 }}
                 columns={this.state.columns}
