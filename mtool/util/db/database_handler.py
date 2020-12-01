@@ -578,15 +578,21 @@ class SQLiteConnection:
             DB_CONNECTION.rollback()
             return make_response(json.dumps({"description":"Failed to Update Alert"}),500) 
 
-    def toggle_alert_status_in_db(self, alert_name, status):
-        try:
+    def execute_toggle_alert_status_select_query(self, alert_name):
             cur = DB_CONNECTION.cursor()
             cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
             rows = cur.fetchone()
-            if rows is None or len(rows) == 0:
-                return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
+            return rows
+    def execute_toggle_alert_status_update_query(self, alert_name, status):
             cur = DB_CONNECTION.cursor()
             cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
+
+    def toggle_alert_status_in_db(self, alert_name, status):
+        try:
+            rows = self.execute_toggle_alert_status_select_query(alert_name)
+            if rows is None or len(rows) == 0:
+                return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
+            self.execute_toggle_alert_status_update_query(alert_name, status)
             result = toggle_in_kapacitor(alert_name, status)
             if(result.status_code == 200):
                 DB_CONNECTION.commit()

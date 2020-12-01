@@ -139,30 +139,36 @@ def test_delete_new_alert(mock_execute_delete_alerts_query, global_data, **kwarg
     print("DATAAA", data)
 
 
-@mock.patch("rest.app.connection_factory.toggle_alert_status_in_db",
-            return_value=True, autospec=True)
-def test_toggle_alert_status_failure(mock_toggle_alert_status_in_db, global_data):
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_toggle_alert_status_update_query", return_value=True, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_toggle_alert_status_select_query", return_value=None, autospec=True)
+def test_toggle_alert_status_failure(mock_execute_toggle_alert_status_update_query, mock_execute_toggle_alert_status_select_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json={"status": True}, status_code=200)
     response = app.test_client().post(
         '/api/v1.0/toggle_alert_status/',
         headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
-        data=json.dumps({"alertName": "new", 'status':True}),
+        data=json.dumps({"alertName": "TESTNEWALERT1", 'status':True}),
         content_type='application/json',
     )
-    assert response.status_code == 500
 
+    assert response.status_code ==500
 
-@mock.patch("rest.app.connection_factory.toggle_alert_status_in_db",
-            return_value=True, autospec=True)
-@mock.patch("rest.app.toggle_in_kapacitor",
-        return_value={'status_code':200}, autospec=True)
-def test_toggle_alert_status(mock_toggle_alert_status_in_db,mock_toggle_in_kapacitor, global_data):
+@requests_mock.Mocker(kw="mock")
+#@mock.patch("rest.app.connection_factory.toggle_alert_status_in_db",
+#            return_value=True, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_toggle_alert_status_update_query", return_value=True, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_toggle_alert_status_select_query", return_value=['abc@abc.com'], autospec=True)
+def test_toggle_alert_status(mock_execute_toggle_alert_status_update_query, mock_execute_toggle_alert_status_select_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json={"status": True}, status_code=200)
     response = app.test_client().post(
         '/api/v1.0/toggle_alert_status/',
         headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
-        data=json.dumps({"alertName": "new", 'status':True}),
+        data=json.dumps({"alertName": "TESTNEWALERT1", 'status':True}),
         content_type='application/json',
     )
-    assert response.status_code == 500
+    assert response.status_code == 200
 
 @mock.patch("rest.app.connection_factory.toggle_alert_status_in_db",
             return_value=False, autospec=True)
