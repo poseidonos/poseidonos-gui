@@ -34,6 +34,7 @@ import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { createMuiTheme, TablePagination } from "@material-ui/core";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -55,15 +56,15 @@ import Switch from "@material-ui/core/Switch";
 import AlertDialog from "../Dialog";
 import "./EmailAlerts.css";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
 
   EmailTableMainHeader: {
@@ -73,11 +74,11 @@ const styles = theme => ({
     borderRadius: "0px",
     width: "100%",
     marginLeft: "10px",
-    lineHeight: "2"
+    lineHeight: "2",
   },
 
   EmailAlertsPaper: {
-    width: "100%"
+    width: "100%",
     // margin: '0px',
     // padding: '0px',
     // boxShadow: 'none',
@@ -86,14 +87,14 @@ const styles = theme => ({
   EmailAlertsCard: {
     // backgroundColor: 'rgb(113, 133, 157)',
     backgroundColor: "#788595",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   SpecifySmtpCard: {
     borderRadius: "0px",
     marginTop: "2px",
     paddingTop: "10px",
-    boxShadow: "none"
+    boxShadow: "none",
   },
 
   SpecifySmtpText: {
@@ -105,7 +106,7 @@ const styles = theme => ({
       justifyContent: "center",
       display: "flex",
       // marginLeft: "-8px"
-    }
+    },
   },
 
   SendEmailAlerts: {
@@ -116,7 +117,7 @@ const styles = theme => ({
       justifyContent: "center",
       display: "flex",
       // marginLeft: "-8px"
-    }
+    },
   },
 
   EmailTableContainer: {
@@ -133,25 +134,25 @@ const styles = theme => ({
     paddingLeft: "0px",
     paddingRight: "0px",
     [theme.breakpoints.down("sm")]: {
-      width: "100%"
-    }
+      width: "100%",
+    },
   },
 
   SettingsForm: {
     display: "flex",
     marginLeft: "4px",
     fontSize: "10px",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 150
+    // width: 150,
   },
 
   divider: {
-    marginBottom: "40px"
+    marginBottom: "40px",
   },
 
   deletetextField: {
@@ -165,8 +166,8 @@ const styles = theme => ({
     borderBottom: "none",
 
     "&>input": {
-      paddingLeft: "4px"
-    }
+      paddingLeft: "4px",
+    },
   },
 
   submit: {
@@ -179,27 +180,40 @@ const styles = theme => ({
     textTransform: "none",
     marginRight: "10px",
     minWidth: "0px",
-    width: "60px"
+    width: "60px",
+  },
+
+  update: {
+    // background: '#007bff',
+    height: "1.8rem",
+    fontSize: "12px",
+    // marginTop: '35px',
+    marginTop: "1.75rem",
+    // lineHeight: '0.5',
+    textTransform: "none",
+    marginRight: "10px",
+    minWidth: "0px",
+    width: "60px",
   },
 
   inputCard: {
     boxShadow: "none",
-    width: "50%"
+    width: "50%",
   },
 
   gridItem: {
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
-      display: "flex"
-    }
+      display: "flex",
+    },
   },
 
   labelText: {
-    fontSize: "12px"
+    fontSize: "12px",
   },
 
   table: {
-    margin: "10px"
+    margin: "10px",
   },
 
   inputText: {
@@ -216,22 +230,22 @@ const styles = theme => ({
       [theme.breakpoints.down("xs")]: {
         justifyContent: "left",
         textAlign: "left",
-        paddingLeft: "1px"
-      }
+        paddingLeft: "1px",
+      },
     },
 
     "&:before": {
-      borderBottom: "none"
+      borderBottom: "none",
     },
 
     "&:hover:not(.Mui-disabled):before": {
-      borderBottom: "none"
+      borderBottom: "none",
     },
 
     "&:after": {
-      borderBottom: "none"
-    }
-  }
+      borderBottom: "none",
+    },
+  },
 });
 
 class EmailAlerts extends Component {
@@ -244,28 +258,28 @@ class EmailAlerts extends Component {
           //  stylesheet name
           root: {
             //  rule name
-            color: "#808080"
-          }
+            color: "#808080",
+          },
         },
         MuiTablePagination: {
           menuItem: {
             fontSize: "12px",
-            minHeight: "0px"
+            minHeight: "0px",
           },
           select: {
-            width: "45px"
-          }
-        }
+            width: "45px",
+          },
+        },
       },
 
       palette: {
         primary: {
-          main: "#4caf50"
+          main: "#4caf50",
         },
         secondary: {
-          main: "#808080"
-        }
-      }
+          main: "#808080",
+        },
+      },
     });
 
     this.state = {
@@ -276,29 +290,27 @@ class EmailAlerts extends Component {
           field: "email",
           cellStyle: {
             fontSize: "12px",
-            minWidth:'33%',
-            maxWidth:'33%',
-            width:'33%'
+            minWidth: "33%",
+            maxWidth: "33%",
+            width: "33%",
           },
-         
-      
+
           headerStyle: {
-           
-            minWidth:'33%',
-            maxWidth:'33%',
-            width:'33%'
+            minWidth: "33%",
+            maxWidth: "33%",
+            width: "33%",
           },
-          render: rowData => {
+          render: (rowData) => {
             return <span id={rowData.email}>{rowData.email}</span>;
-          }
+          },
         },
         {
           title: "Active",
           field: "active",
           editable: "never",
           sorting: false,
-          align: 'center',
-          render: rowData => {
+          align: "center",
+          render: (rowData) => {
             const { data } = this.state;
             const index = data.indexOf(rowData);
             const id = rowData ? `EmailAlerts-togglebtn-${rowData.email}` : "";
@@ -322,21 +334,21 @@ class EmailAlerts extends Component {
             maxHeight: "12px",
             paddingTop: "0px",
             paddingBottom: "0px",
-            minWidth:'33%',
-            maxWidth:'33%',
-            width:'33%'
+            minWidth: "33%",
+            maxWidth: "33%",
+            width: "33%",
           },
 
           headerStyle: {
             // paddingLeft: "18px",
-            minWidth:'33%',
-            maxWidth:'33%',
-            width:'33%'
-          }
-        }
+            minWidth: "33%",
+            maxWidth: "33%",
+            width: "33%",
+          },
+        },
       ],
 
-      data: []
+      data: [],
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -381,88 +393,161 @@ class EmailAlerts extends Component {
           <Divider />
           <form className={classes.SettingsForm} noValidate autoComplete="off">
             <Grid container>
-              <Grid item xs={12} sm={8} className={classes.gridItem}>
+              <Grid item xs={12} md={6} className={classes.gridItem}>
                 <form
                   autoComplete="off"
-                  onSubmit={event => {
+                  onSubmit={(event) => {
                     this.props.testserver(event);
                   }}
                   data-testid="form"
                 >
-                  <Grid item xs={12} sm={6} className={classes.gridItem}>
-                    <TextField
-                      id="smtp-server"
-                      label="SMTP Server"
-                      required
-                      className={classes.textField}
-                      placeholder="IP:Port"
-                      onChange={event => this.props.savesmtpserverdetails(event)}
-                      InputLabelProps={{
-                        className: classes.labelText
-                      }}
-                      name="smtpserver"
-                      type="text"
-                      margin="normal"
-                      data-testid="smtpServerField"
-                    />
-                    <TextField
-                      id="smtp-fromEmail"
-                      label="From Email"
-                      required
-                      className={classes.textField}
-                      placeholder="From Email"
-                      onChange={event => this.props.savesmtpserverdetails(event)}
-                      InputLabelProps={{
-                        className: classes.labelText
-                      }}
-                      name="smtpfromemail"
-                      type="text"
-                      margin="normal"
-                      data-testid="smtpFromEmail"
-                    />
+                  <Grid container>
+                    <Grid item xs={12} md={4} className={classes.gridItem}>
+                      <TextField
+                        id="smtp-server"
+                        label="SMTP Server"
+                        value={this.props.smtpserver}
+                        required
+                        className={classes.textField}
+                        placeholder="IP:Port"
+                        onChange={(event) =>
+                          this.props.savesmtpserverdetails(event)
+                        }
+                        InputLabelProps={{
+                          className: classes.labelText,
+                        }}
+                        name="smtpserver"
+                        type="text"
+                        margin="normal"
+                        data-testid="smtpServerField"
+                      />
+                    </Grid>
+                    {this.props.isPasswordSet === true ? (
+                      <Grid item xs={12} md={8} className={classes.gridItem}>
+                        <Tooltip
+                          title="Click to Update SMTP Server IP and Port"
+                          placement="right-start"
+                        >
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            data-testid="updateSmtpServer"
+                            className={classes.update}
+                            onClick={(event) => {
+                              this.props.updateSmtpServerDetails(event);
+                            }}
+                          >
+                            Update
+                          </Button>
+                        </Tooltip>
+                      </Grid>
+                    ) : null}
                   </Grid>
-                  <TextField
-                    id="smtp-username"
-                    label="Username"
-                    required
-                    className={classes.textField}
-                    placeholder="Username"
-                    onChange={event => this.props.savesmtpserverdetails(event)}
-                    InputLabelProps={{
-                      className: classes.labelText
-                    }}
-                    name="smtpusername"
-                    type="text"
-                    margin="normal"
-                    data-testid="smtpUsername"
-                  />
-                  <TextField
-                    id="smtp-password"
-                    label="Password"
-                    required
-                    className={classes.textField}
-                    placeholder="Password"
-                    onChange={event => this.props.savesmtpserverdetails(event)}
-                    InputLabelProps={{
-                      className: classes.labelText
-                    }}
-                    name="smtppassword"
-                    type="password"
-                    margin="normal"
-                    data-testid="smtpPassword"
-                  />
+                  <Grid container>
+                    <Grid item xs={12} md={3} className={classes.gridItem}>
+                      <TextField
+                        id="smtp-username"
+                        label="Username"
+                        value={this.props.smtpusername}
+                        required
+                        className={classes.textField}
+                        placeholder="Username"
+                        onChange={(event) =>
+                          this.props.savesmtpserverdetails(event)
+                        }
+                        InputLabelProps={{
+                          className: classes.labelText,
+                        }}
+                        name="smtpusername"
+                        type="text"
+                        margin="normal"
+                        data-testid="smtpUsername"
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={3} className={classes.gridItem}>
+                      <TextField
+                        id="smtp-password"
+                        label="Password"
+                        required
+                        className={classes.textField}
+                        placeholder="Password"
+                        onChange={(event) =>
+                          this.props.savesmtpserverdetails(event)
+                        }
+                        InputLabelProps={{
+                          className: classes.labelText,
+                        }}
+                        name="smtppassword"
+                        type="password"
+                        margin="normal"
+                        data-testid="smtpPassword"
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4} className={classes.gridItem}>
+                      <TextField
+                        id="smtp-fromEmail"
+                        label="From Email"
+                        value={this.props.smtpfromemail}
+                        required
+                        className={classes.textField}
+                        placeholder="From Email"
+                        onChange={(event) =>
+                          this.props.savesmtpserverdetails(event)
+                        }
+                        InputLabelProps={{
+                          className: classes.labelText,
+                        }}
+                        name="smtpfromemail"
+                        type="text"
+                        margin="normal"
+                        data-testid="smtpFromEmail"
+                      />
+                    </Grid>
+                    {this.props.isPasswordSet === true ? (
+                      <Grid item xs={12} md={2} className={classes.gridItem}>
+                        <Tooltip
+                          title="Click to Update SMTP Username, Password and From Email Fields"
+                          placement="right-start"
+                        >
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            data-testid="updateSmtpConfig"
+                            className={classes.update}
+                            onClick={(event) => {
+                              this.props.updateSmtpConfig(event);
+                            }}
+                          >
+                            Update
+                          </Button>
+                        </Tooltip>
+                      </Grid>
+                    ) : null}
+                  </Grid>
+                  {this.props.isPasswordSet === false ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className={classes.submit}
+                      data-testid="applyButton"
+                    >
+                      Add
+                    </Button>
+                  ) : null}
                   <Button
+                    disabled={this.props.configuredsmtpserver === ""}
+                    onClick={this.handleClick}
                     variant="contained"
                     color="primary"
-                    type="submit"
                     className={classes.submit}
-                    data-testid="applyButton"
+                    data-testid="deleteButton"
                   >
-                    Apply
+                    Delete
                   </Button>
                 </form>
               </Grid>
-
+              {/* 
               <Grid item xs={12} sm={4} className={classes.gridItem}>
                 <TextField
                   id="smtp-server-display"
@@ -487,12 +572,12 @@ class EmailAlerts extends Component {
                 >
                   Delete
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </form>
           <AlertDialog
             title="Delete SMTP Configuration"
-            description="This will delete all the fields in the SMTP Configuration. Are you sure you want to proceed?"
+            description="This will delete the SMTP server ip and port details, username, password and from email fields. Are you sure you want to proceed?"
             open={this.state.open}
             handleClose={this.handleClose}
             onConfirm={() => {
@@ -502,7 +587,7 @@ class EmailAlerts extends Component {
               this.props.deleteConfiguredSmtpServer();
             }}
           />
-          <Grid>
+          <Grid style={{ marginTop: "1%" }}>
             <ThemeProvider theme={this.theme}>
               <MaterialTable
                 icons={{
@@ -526,26 +611,26 @@ class EmailAlerts extends Component {
                   Edit: () => <EditIcon id="EmailAlerts-icon-editemail" />,
                   Delete: TrashIcon,
                   SortArrow: ArrowUpward,
-                  Clear
+                  Clear,
                 }}
                 components={{
-                  Toolbar: props => (
+                  Toolbar: (props) => (
                     <div style={{ height: "50px", fontSize: "12px" }}>
                       <MTableToolbar {...props} />
                     </div>
                   ),
-                  Pagination: props => (
+                  Pagination: (props) => (
                     <TablePagination
                       {...props}
-                    // labelRowsPerPage={<div style={{fontSize: 12}}>{props.labelRowsPerPage}</div>}
-                    // labelDisplayedRows={row => <div style={{fontSize: 12}}>{props.labelDisplayedRows(row)}</div>}
-                    // SelectProps={{
-                    //   style:{
-                    //     fontSize: 12,
-                    //   }
-                    // }}
+                      // labelRowsPerPage={<div style={{fontSize: 12}}>{props.labelRowsPerPage}</div>}
+                      // labelDisplayedRows={row => <div style={{fontSize: 12}}>{props.labelDisplayedRows(row)}</div>}
+                      // SelectProps={{
+                      //   style:{
+                      //     fontSize: 12,
+                      //   }
+                      // }}
                     />
-                  )
+                  ),
                 }}
                 title={(
                   <div>
@@ -578,7 +663,7 @@ class EmailAlerts extends Component {
                     icon: TrashIcon,
                     iconProps: {
                       color: "secondary",
-                      id: "EmailAlerts-icon-deleteemail"
+                      id: "EmailAlerts-icon-deleteemail",
                     },
                     tooltip: "Delete",
                     onClick: (evt, oldData) => {
@@ -586,12 +671,12 @@ class EmailAlerts extends Component {
                       const index = data.indexOf(oldData);
                       this.props.selectEmail(index);
                       this.props.openAlert("Delete");
-                    }
-                  }
+                    },
+                  },
                 ]}
                 options={{
                   rowStyle: {
-                    fontSize: "4px"
+                    fontSize: "4px",
                   },
                   search: false,
                   paginationType: "normal",
@@ -600,10 +685,10 @@ class EmailAlerts extends Component {
                   actionsCellStyle: {
                     textAlign: "center",
                     justifyContent: "center",
-                    minWidth: '33%',
-                    maxWidth: '33%',
-                    width: '33%',
-                    paddingLeft: '12%'
+                    minWidth: "33%",
+                    maxWidth: "33%",
+                    width: "33%",
+                    paddingLeft: "12%",
                   },
                   headerStyle: {
                     // backgroundColor: 'rgb(113, 133, 157)',
@@ -613,21 +698,20 @@ class EmailAlerts extends Component {
                     height: "10%",
                     paddingTop: "2px",
                     paddingBottom: "2px",
-
-                  }
+                  },
                 }}
                 columns={this.state.columns}
                 data={this.state.data}
                 editable={{
-                  onRowAdd: newData =>
-                    new Promise(resolve => {
+                  onRowAdd: (newData) =>
+                    new Promise((resolve) => {
                       setTimeout(() => {
                         this.props.saveChange(newData, -1, true);
                         resolve();
                       }, 1000);
                     }),
                   onRowUpdate: (newData, oldData) =>
-                    new Promise(resolve => {
+                    new Promise((resolve) => {
                       setTimeout(() => {
                         {
                           const { data } = this.state;
@@ -640,7 +724,7 @@ class EmailAlerts extends Component {
                         }
                         resolve();
                       }, 1000);
-                    })
+                    }),
                 }}
               />
             </ThemeProvider>

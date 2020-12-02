@@ -75,7 +75,10 @@ export function* getSmtpDetails() {
       payload = {
         smtpserverip: result.smtpserverip,
         smtpserverport:result.smtpserverport,
-        smtpserver: `${result.smtpserverip}:${result.smtpserverport}`
+        smtpserver: `${result.smtpserverip}:${result.smtpserverport}`,
+        smtpfromemail: result.smtpfromemail,
+        smtpusername: result.smtpusername,
+        isPasswordSet: result.isPasswordSet,
       };
     }
   } catch (error) {
@@ -118,6 +121,9 @@ export function* deleteSmtpDetails() {
       alertdescription: 'Failed to Delete the SMTP Configuration'
     };
     yield put(actionCreators.setAlertBox(payload));
+  }
+  finally{
+    yield getSmtpDetails();
   }
 }
 
@@ -307,6 +313,9 @@ export function* testEmail(action) {
       alertdescription: 'SMTP server is not working',
     };
     yield put(actionCreators.setAlertBox(payload));
+  }
+  finally{
+    yield getSmtpDetails();
   }
 }
 

@@ -35,6 +35,10 @@ const initialState = {
   alerttitle: '',
   alertdescription: '',
   configuredsmtpserver: '',
+  configuredsmtpserverip:'',
+  configuredsmtpport:'',
+  configuredsmtpfromemail:'',
+  configuredsmtpusername:'',
   smtpserverip: '',
   smtpserverport: '',
   smtpserver: '',
@@ -42,6 +46,7 @@ const initialState = {
   smtpusername:'',
   smtppassword:'',
   timeinterval: null,
+  isPasswordSet: false,
 };
 
 const configurationsettingReducer = (state = initialState, action) => {
@@ -74,12 +79,20 @@ const configurationsettingReducer = (state = initialState, action) => {
       return {
         ...state,
         configuredsmtpserver: state.smtpserver,
+        configuredsmtpserverip:state.smtpserverip,
+        configuredsmtpserverport:state.smtpserverport,
+        configuredsmtpusername:state.smtpusername,
+        configuredsmtpfromemail:state.smtpfromemail,
       };
     }
     case actionTypes.DELETE_CONFIGURED_SMTP_SERVER: {
       return {
         ...state,
         configuredsmtpserver: '',
+        configuredsmtpserverip:'',
+        configuredsmtpserverport:'',
+        configuredsmtpusername:'',
+        configuredsmtpfromemail:'',
       };
     }
     case actionTypes.SET_IBOFOS_TIME_INTERVAL: {

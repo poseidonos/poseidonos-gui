@@ -72,7 +72,7 @@ from bson import json_util
 import traceback
 import requests
 import json
-import threading
+#import threading
 import os
 import eventlet
 import math
@@ -741,23 +741,36 @@ def test_smtpserver():
     serverip = body['smtpserverip']
     serverport = body['smtpserverport']
     smtpusername = body['smtpusername']
-    smtppassword = body['smtppassword']
+    smtppassword = ''
     smtpfromemail = body['smtpfromemail']
     print(serverip)
     print(serverport)
+    if('smtppassword' in body):
+        smtppassword = body['smtppassword']
+
     try:
         s = smtplib.SMTP(serverip, serverport, None, 1)
         s.quit()
-        tasks = {
-           "set": {
+        tasks = {}
+        if('smtppassword' in body):
+            tasks = {
+               "set": {
                "enabled": True,
                "host": serverip,
                "port": serverport,
                "from": smtpfromemail,
                "username": smtpusername,
                "password": smtppassword
-        }
-      }
+            }}
+        else:
+            tasks = {
+               "set": {
+               "enabled": True,
+               "host": serverip,
+               "port": serverport,
+               "from": smtpfromemail,
+               "username": smtpusername,
+            }}
         r = requests.post(
         url="http://localhost:9092/kapacitor/v1/config/smtp/",
         data=toJson(tasks))
@@ -766,7 +779,8 @@ def test_smtpserver():
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
         return 'SMTP Server is Working'
-    except:
+    except BaseException as e:
+        print("exceptttt",e)
         return abort(404)
 
 @app.route('/api/v1.0/delete_smtp_details/', methods=['POST'])
@@ -788,8 +802,9 @@ def delete_smtp_details():
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
         return 'SMTP Configuration Deleted Successfully'
-    except:
-       return abort(404)
+    except BaseException as e:
+        print(e)
+        return abort(404)
 
 @app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
 def get_smtp_details():
@@ -797,13 +812,20 @@ def get_smtp_details():
     try:
         r = requests.get(
         url="http://localhost:9092/kapacitor/v1/config/smtp/")
-        data = r.json() 
+        data = r.json()
+        print("dataaaa",data) 
         print("smtp detailsaaaaa",data['options'])
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
         else:
-            return jsonify({"smtpserverip": data['options']['host'], "smtpserverport":data['options']['port']})
-    except:
+            smtpserverip = data['options']['host']
+            smtpserverport = data['options']['port']
+            smtpfromemail = data['options']['from']
+            smtpusername = data['options']['username']
+            isPasswordSet = data['options']['password']
+            return jsonify({"smtpserverip": smtpserverip, "smtpserverport":smtpserverport, "smtpfromemail":smtpfromemail,"smtpusername":smtpusername, "isPasswordSet":isPasswordSet})
+    except BaseException as e:
+        print(e)
         return abort(404)
 
 @app.route('/api/v1.0/get_email_ids/', methods=['GET'])
@@ -867,13 +889,7 @@ def toggle_email_status():
     print("result toggle",result)
     return result
 
-    """
-    if(status):
-        Update_KapacitorList(None, email_id)
-    else:
-        Delete_MultipleID_From_KapacitorList(email_id, True)
-    return 'Updated'
-    """
+
 
 # Get Devices
 
@@ -1249,7 +1265,6 @@ def bmc_login():
     print("herepp")
     return jsonify({'Login': validation, }), 401
 """
-
 
 @app.route('/api/v1.0/get_ip_and_mac', methods=['GET'])
 def getIpAndMac():

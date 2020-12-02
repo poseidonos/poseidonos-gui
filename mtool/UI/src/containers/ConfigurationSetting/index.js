@@ -78,6 +78,8 @@ class ConfigurationSetting extends Component {
     this.saveEmail = this.saveEmail.bind(this);
     // this.sendEmail = this.sendEmail.bind(this);
     this.testserver = this.testserver.bind(this);
+    this.updateSmtpConfig = this.updateSmtpConfig.bind(this);
+    this.updateSmtpServerDetails = this.updateSmtpServerDetails.bind(this);
     this.deleteConfiguredSmtpServer = this.deleteConfiguredSmtpServer.bind(this);
     this.toggleEmailStatus = this.toggleEmailStatus.bind(this);
     this.savesmtpserverdetails = this.savesmtpserverdetails.bind(this);
@@ -95,7 +97,7 @@ class ConfigurationSetting extends Component {
       mobileOpen: false,
       ibofostimeinterval: this.props.timeinterval,
       open: false,
-      value: 0
+      value: 0,
     };
   }
 
@@ -103,10 +105,10 @@ class ConfigurationSetting extends Component {
     this.props.fetchEmailList();
     this.props.getSmtpDetails();
     this.setState({
-      ibofostimeinterval: this.props.timeinterval
+      ibofostimeinterval: this.props.timeinterval,
     });
   }
-
+  
   // OnHandleChange(event) {
   //   const { name, value } = event.target;
   //   this.setState({
@@ -283,15 +285,71 @@ class ConfigurationSetting extends Component {
     this.props.testEmail(payload);
   }
 
+  updateSmtpServerDetails(event) {
+    event.preventDefault();
+    if(this.props.smtpserverip.length === 0 || this.props.smtpserverport.length === 0)
+    {
+      const alertPayload = {
+        alertOpen: true,
+        istypealert: true,
+        alerttype: 'alert',
+        alerttitle: 'Update SMTP Configuration',
+        alertdescription: 'Please enter all the required fields',
+      };
+      this.props.setAlertBox(alertPayload);
+      return;
+    }
+
+    const payload = {
+      smtpserver: this.props.smtpserver,
+      smtpserverip: this.props.smtpserverip,
+      smtpserverport: this.props.smtpserverport,
+      smtpusername: this.props.configuredsmtpusername,
+      smtpfromemail: this.props.configuredsmtpfromemail,
+    };
+    this.props.testEmail(payload);
+  }
+
+    updateSmtpConfig(event) {
+    event.preventDefault();
+    if(this.props.smtpusername.length === 0 || this.props.smtppassword.length === 0 || this.props.smtpfromemail.length === 0)
+    {
+      const alertPayload = {
+        alertOpen: true,
+        istypealert: true,
+        alerttype: 'alert',
+        alerttitle: 'Update SMTP Configuration',
+        alertdescription: 'Please enter all the required fields',
+      };
+      this.props.setAlertBox(alertPayload);
+      return;
+    }
+
+    const payload = {
+      smtpserver: this.props.configuredsmtpserver,
+      smtpserverip: this.props.configuredsmtpserverip,
+      smtpserverport: this.props.configuredsmtpserverport,
+      smtpusername: this.props.smtpusername,
+      smtppassword: this.props.smtppassword,
+      smtpfromemail: this.props.smtpfromemail,
+    };
+    this.props.testEmail(payload);
+  }
+
+  
+
   savesmtpserverdetails(event) {
     const { value } = event.target;
     let payload = {};
     if(event.target.name === 'smtpserver'){
     const arr = event.target.value.split(':');
+    const ip = arr[0];
+    const port = arr[1] ? arr[1]:'';
+
     payload = {
       smtpserver: value,
-      smtpserverip: arr[0],
-      smtpserverport: arr[1],
+      smtpserverip: ip,
+      smtpserverport: port,
     };
   }
   else{
@@ -414,9 +472,15 @@ class ConfigurationSetting extends Component {
                         configuredsmtpserver={this.props.configuredsmtpserver}
                         deleteConfiguredSmtpServer={this.deleteConfiguredSmtpServer}
                         testserver={this.testserver}
+                        updateSmtpConfig={this.updateSmtpConfig}
+                        updateSmtpServerDetails={this.updateSmtpServerDetails}
                         savesmtpserverdetails={this.savesmtpserverdetails}
                         toggleEmailStatus={this.toggleEmailStatus}
                         openAlert={this.openAlert}
+                        smtpserver={this.props.smtpserver}
+                        smtpusername={this.props.smtpusername}
+                        smtpfromemail={this.props.smtpfromemail}
+                        isPasswordSet={this.props.isPasswordSet}
                       />
                       <AlertDialog
                         title={this.props.alerttitle}
@@ -470,12 +534,21 @@ const mapStateToProps = state => {
     alertdescription: state.configurationsettingReducer.alertdescription,
     configuredsmtpserver:
       state.configurationsettingReducer.configuredsmtpserver,
+    configuredsmtpserverip:
+      state.configurationsettingReducer.configuredsmtpserverip,
+    configuredsmtpserverport:
+      state.configurationsettingReducer.configuredsmtpserverport,
+    configuredsmtpfromemail:
+      state.configurationsettingReducer.configuredsmtpfromemail,
+    configuredsmtpusername:
+      state.configurationsettingReducer.configuredsmtpusername,
     smtpserverip: state.configurationsettingReducer.smtpserverip,
     smtpserverport: state.configurationsettingReducer.smtpserverport,
     smtpserver: state.configurationsettingReducer.smtpserver,
     smtpusername: state.configurationsettingReducer.smtpusername,
     smtppassword: state.configurationsettingReducer.smtppassword,
     smtpfromemail: state.configurationsettingReducer.smtpfromemail,
+    isPasswordSet: state.configurationsettingReducer.isPasswordSet,
     timeinterval: state.configurationsettingReducer.timeinterval,
   };
 };
