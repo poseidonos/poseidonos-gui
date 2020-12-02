@@ -1,7 +1,7 @@
 from database_handler import DBConnection,DBType
 #import database_handler
 import os
-from generate_data import  EMAIL_LIST, USER_LIST, ALERT_LIST
+from generate_data import  EMAIL_LIST, USER_LIST
 
 os.system('rm ibof.db')
 

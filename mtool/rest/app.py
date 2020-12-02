@@ -30,7 +30,7 @@ DESCRIPTION: <File description> *
 
 #!/usr/bin/python
 from rest.swordfish.handler import swordfish_api
-from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb, create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
+from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
@@ -45,7 +45,7 @@ from rest.rest_api.health_status.health_status import process_response, get_over
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_diskio_mbps, get_total_processes,  \
     get_total_disk_used_percent, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
-    get_disk_current_perf, get_input_power_variation 
+    get_disk_current_perf 
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -57,8 +57,6 @@ import time
 from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 #from dateutil import parser
 import smtplib
 import datetime

@@ -87,8 +87,8 @@ def Update_KapacitorList(oldid=None, email=None, updateflag=0):
         else:
             return make_response(json.dumps({"description": "Success"}), 200)
     except BaseException as e:
-         print("exception in updating email ids in kapacitor",e)
-         return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
+        print("exception in updating email ids in kapacitor",e)
+        return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
 
 def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
     print("Delete Email IDs")
@@ -112,5 +112,5 @@ def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
         else:    
             return make_response(json.dumps({"description": "Email ID Deleted Successfully"}), 200)
     except BaseException as e:
-         print("exception in deleting email ids from kapacitor",e)
-         return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
+        print("exception in deleting email ids from kapacitor",e)
+        return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)

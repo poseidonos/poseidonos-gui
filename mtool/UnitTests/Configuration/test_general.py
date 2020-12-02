@@ -223,7 +223,6 @@ def test_add_email(mock_find_email, mock_execute_insert_email_query, mock_execut
         data=json.dumps({'email': "xyz@gmail.com", 'oldid': "xyz@gmail.com"}),
         content_type='application/json',
     )
-    data = (response.get_data(as_text=True))
     assert response.status_code == 200
 
 
@@ -257,7 +256,6 @@ def test_get_version(global_data, **kwargs):
         },
         content_type='application/json',
     )
-    data = (response.get_data(as_text=True))
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -271,7 +269,6 @@ def test_log_collect_get(global_data, **kwargs):
         },
         content_type='application/json',
     )
-    data = (response.get_data(as_text=True))
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -285,6 +282,5 @@ def test_log_collect_post(mock_log_to_influx, global_data, **kwargs):
         },
         content_type='application/json',
     )
-    data = (response.get_data(as_text=True))
     assert response.status_code == 200
 

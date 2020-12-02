@@ -447,8 +447,8 @@ class SQLiteConnection:
             description,
             alert_range,
             active):
-            cur = DB_CONNECTION.cursor()
-            cur.execute(
+        cur = DB_CONNECTION.cursor()
+        cur.execute(
                 ADD_ALERT_QUERY,
                 (alert_name,
                 alert_cluster,
@@ -579,13 +579,13 @@ class SQLiteConnection:
             return make_response(json.dumps({"description":"Failed to Update Alert"}),500) 
 
     def execute_toggle_alert_status_select_query(self, alert_name):
-            cur = DB_CONNECTION.cursor()
-            cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
-            rows = cur.fetchone()
-            return rows
+        cur = DB_CONNECTION.cursor()
+        cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
+        rows = cur.fetchone()
+        return rows
     def execute_toggle_alert_status_update_query(self, alert_name, status):
-            cur = DB_CONNECTION.cursor()
-            cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
+        cur = DB_CONNECTION.cursor()
+        cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
 
     def toggle_alert_status_in_db(self, alert_name, status):
         try:
