@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5fa3e695-25f4-4191-b847-becf05c6a4d2",
+		"_postman_id": "65a3b74d-8c3b-4fc6-863c-084223ae53c9",
 		"name": "MTool_TC95_to_TC105_User_Priveleges",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9c50f5f9-c58f-4a35-9d2f-12cca830926e",
+						"id": "f1857cb6-dafc-4a20-8900-60e16c60f7eb",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -68,7 +68,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1fec6fc2-feb5-48ef-bb82-8d72e8c5e79d",
+						"id": "fb1a9839-43a3-4bec-92f9-bb9092324f7f",
 						"exec": [
 							"pm.test(\"Logged failed with wrong password for admin...\", function () {\r",
 							"    pm.response.to.have.status(401);\r",
@@ -113,7 +113,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "73deded7-4422-48e4-8da6-7a963d6cfe2b",
+						"id": "bd0f2809-8bea-4dee-bef8-be9433096ef2",
 						"exec": [
 							"pm.test(\"Added as custom user admin...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -173,7 +173,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9241a626-3d00-4a76-9bfe-c4280dedad41",
+						"id": "2099e8d9-fbf1-496f-9fda-aece3931ff88",
 						"exec": [
 							"pm.test(\"PKAdmin cannot be logged due to bad password...\", function () {\r",
 							"    pm.response.to.have.status(401);\r",
@@ -218,7 +218,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1cd219cf-68fe-4af2-a8b5-f223403cb937",
+						"id": "d1553646-8b95-4b9b-b33e-329eee38972e",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -278,7 +278,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7afca3a3-9fd6-43ae-aeaa-bef05dfc2ee1",
+						"id": "23235c5b-ac55-4375-8377-ed21361f049e",
 						"exec": [
 							"pm.test(\"Volume Based Perf...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -322,7 +322,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a4e49bc1-9395-43b2-ad02-3ce5c4cb184f",
+						"id": "b08fe696-ad83-49b5-8781-f73826ac3c5f",
 						"exec": [
 							"pm.test(\"Array Based Perf...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -366,7 +366,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "392cba2a-ffac-4f89-822e-56a3b039364d",
+						"id": "ee8341a1-67e7-4459-9190-450ffa5d1bbe",
 						"exec": [
 							"pm.test(\"CPU Perf data...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -379,7 +379,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "5b351b98-6fc0-4ce6-b2f1-af02f3a6bfbf",
+						"id": "277d1583-b0d5-41e5-a85d-6d03c110275b",
 						"exec": [
 							""
 						],
@@ -419,16 +419,29 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c12dd06e-607a-4002-9f6f-48142643f7fe",
+						"id": "796b3a54-6dcb-4635-bf41-18409ad4a621",
 						"exec": [
-							"pm.test(\"Deleted Array, if any...\", function () {\r",
+							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"if (responseCode.code === 200) {\r",
 							"    // Delay for 12 Seconds (set in milliseconds)\r",
 							"    setTimeout(function () {\r",
-							"    }, 12000);\r",
+							"    },4000);\r",
 							"}"
 						],
 						"type": "text/javascript"
@@ -476,23 +489,24 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f2f86823-7f64-443d-ac8b-85c1e0098f2f",
+						"id": "ff8dc1cf-fc63-4b12-9dd0-7dd42cb31dde",
 						"exec": [
-							"pm.test(\"Created an array...\", function () {\r",
+							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json(); \r",
-							"console.log(jsonData.result.status.description)\r",
-							"pm.test(\"Verify Json values\", function () { \r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
-							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
 							"\r",
-							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
-							"    // Delay for 12 Seconds (set in milliseconds)\r",
-							"    setTimeout(function () {\r",
-							"    }, 12000);\r",
-							"}"
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"    \r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -539,7 +553,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "af23e58a-d156-48d5-ac3e-46189050c195",
+						"id": "f69bb2a3-1e95-4391-8505-18752a43bc62",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -597,17 +611,27 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bb6b7a81-619d-4d39-82b7-38f0f0a4ac52",
+						"id": "b9f11cc5-af1c-46ce-9ad5-8cb1864f9140",
 						"exec": [
-							"pm.test(\"Stopped ibofos...\", function () {\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response code\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.response).is.to.equal(\"Success\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not stop POS\") });\r",
+							"    }\r",
+							"});\r",
 							"\r",
 							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
 							"    // Delay for 12 Seconds (set in milliseconds)\r",
 							"    setTimeout(function () {\r",
-							"    }, 15000);\r",
+							"    },30000);\r",
 							"}\r",
 							""
 						],
@@ -617,7 +641,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b6643c38-625f-4e16-9af3-e6b4fc4ea76a",
+						"id": "52b6918c-a153-4daf-8893-5fb1ecc77eca",
 						"exec": [
 							""
 						],
@@ -656,21 +680,20 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "201b52d2-06bb-4736-a8a0-f481555081a0",
+						"id": "983bf989-4064-4a78-af5a-d1e9630d1d27",
 						"exec": [
 							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
-							"    console.log(\"before timeout\")\r",
-							"        setTimeout(function(){\r",
-							"             console.log(\"after timeout\")\r",
-							"        }, 10000);\r",
+							"    setTimeout(function () {\r",
+							"    }, 10000);\r",
 							"}\r",
 							"\r",
-							"console.log(\"pm.response.code \", pm.response.code)\r",
+							"let jsonData = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Successful POST request\", () => {\r",
+							"pm.test(\"DAgent reponse is... \" + jsonData[\"response\"], function () {\r",
 							"    pm.expect(pm.response.code).to.be.oneOf([200, 500]);\r",
 							"\r",
 							"});\r",
+							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -708,10 +731,10 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6c74740e-59de-40a2-af7e-f650e946471b",
+						"id": "01ffc31e-b9a6-4ea0-9154-813c481a97ba",
 						"exec": [
 							"pm.test(\"Duplicate custom user as admin failed...\", function () {\r",
-							"    pm.response.to.have.status(500);\r",
+							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							""
 						],
@@ -760,7 +783,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cbf7e8c8-6a52-4e81-a480-55df9c59da26",
+						"id": "035b1afb-daeb-467d-be61-176f39868e54",
 						"exec": [
 							"pm.test(\"Added as custom user admin with special chars...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -817,7 +840,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b3889b2d-7f6f-42f3-a0dc-e84674e401c9",
+						"id": "440d9041-7c90-40e3-8ee2-e83224f79994",
 						"exec": [
 							"pm.test(\"Deleted custom user admin...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -868,7 +891,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ec6a296c-3a08-4cb6-a002-de8e3b97ed42",
+						"id": "b2159251-c133-4ea7-a936-08c731899d93",
 						"exec": [
 							"pm.test(\"Deleted custom user admin...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -918,7 +941,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "9b69abde-a97b-4281-8721-faa7a12c5e28",
+				"id": "b1203f25-3090-4c17-ba39-c98d77b3f559",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -928,7 +951,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5906b501-f6d7-4b4a-9212-827702c67ab9",
+				"id": "038d45c9-4804-48d5-9ed8-53c1e9395fa3",
 				"type": "text/javascript",
 				"exec": [
 					""
