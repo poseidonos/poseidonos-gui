@@ -73,7 +73,6 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js, jsx}",
-      
       "!src/containers/Log-Management/**/*.js",
       "!src/containers/Hardware/**/*.js",
       "!src/components/DriveComponents/DriveTable/**/*.js",
@@ -93,16 +92,12 @@
       "!src/components/ChangePassword/**/*.js",
       "!src/store/reducers/hardwareOverviewReducer.js",
       "!src/store/reducers/BMCAuthenticationReducer.js",
-    
       "!src/sagas/logManagementSaga.js",
-     
       "!src/store/actions/logManagementActions.js",
       "!src/store/actions/logManagementActions.js",
-      
       "!src/store/reducers/logManagementReducer.js",
       "!src/components/AlertManagementComponents/AlertFields**/*.js",
       "!src/components/AlertManagementComponents/AlertTypes**/*.js",
-     
       "!src/serviceWorker.js"
     ]
   },
@@ -123,7 +118,6 @@
     "*AlertFields",
     "*AlertTypes"
   ],
-
   "browserslist": [
     ">0.2%",
     "not dead",
