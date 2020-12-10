@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "cd2da1a4-4461-45bf-a255-95ddc7207868",
+		"name": "mtool_tc85,tc212,tc217_to_tc225_alert_management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1abbcce9-3440-4844-845a-29d7bf5269fb",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_5_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f23e454a-65f6-44d0-b6e8-8646de227a02",
+						"exec": [
+							"var alertNames = JSON.parse(pm.environment.get(\"alertNames\"))\r",
+							"var alertCluster = JSON.parse(pm.environment.get(\"alertCluster\"))\r",
+							"var counter = parseInt(pm.environment.get(\"addAlertCounter\"))\r",
+							"\r",
+							"var currentalertname = alertNames[counter];\r",
+							"var currentalertcluster = alertCluster[counter];\r",
+							"\r",
+							"pm.environment.set(\"addAlertName\",currentalertname);\r",
+							"pm.environment.set(\"addAlertCluster\",currentalertcluster);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4e2fdeba-88f9-43ec-9886-449c10be2c01",
+						"exec": [
+							"pm.test(\"Create 5 alerts..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var counter = parseInt(pm.environment.get(\"addAlertCounter\"))\r",
+							"\r",
+							"if(counter<4){\r",
+							"    counter = counter+1;\r",
+							"    pm.environment.set(\"addAlertCounter\",counter);\r",
+							"    postman.setNextRequest(\"Create_5_Alerts\");\r",
+							"}\r",
+							"else if(counter>=4){\r",
+							"    counter = 0;\r",
+							"    pm.environment.set(\"addAlertCounter\",counter);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"alertName\": \"{{addAlertName}}\",\r\n    \"alertField\":\"{{addAlertCluster}}\",\r\n    \"alertCluster\":\"{{addAlertCluster}}\",\r\n    \"alertSubCluster\":\"{{addAlertCluster}}\",\r\n    \"alertType\":\"\",\r\n    \"alertCondition\":\"Greater Than\",\r\n    \"alertRange\":\"80\",\r\n    \"description\":\"required alert\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_alert/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_alert",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update_Alert",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dc5151fc-35de-4205-a7e2-a81eaab68bf7",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "96f520a1-05d7-489d-ab36-9bc812e19409",
+						"exec": [
+							"pm.test(\"Update Alert..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"alertName\": \"alert1\",\r\n    \"alertCluster\":\"cpu\",\r\n    \"alertCondition\":\"Less Than\",\r\n    \"alertRange\":\"50\",\r\n    \"description\":\"mandatory alert\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update_alerts/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update_alerts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_5_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "19ea8920-01f8-464c-9b2c-585befcf976d",
+						"exec": [
+							"var alertIDS = JSON.parse(pm.environment.get(\"DeleteAlertIDs\"))\r",
+							"var counter = parseInt(pm.environment.get(\"deleteAlertCounter\"))\r",
+							"\r",
+							"var currentalertid = alertIDS[counter];\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"DeleteAlertID\",JSON.stringify(currentalertid));\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4eef871-a2fc-4b64-9a46-8ab6bbeca4b5",
+						"exec": [
+							"pm.test(\"Delete 5 alerts..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var counter = parseInt(pm.environment.get(\"deleteAlertCounter\"))\r",
+							"\r",
+							"if(counter<4){\r",
+							"    counter = counter+1;\r",
+							"    pm.environment.set(\"deleteAlertCounter\",counter);\r",
+							"    postman.setNextRequest(\"Delete_5_Alerts\");\r",
+							"}\r",
+							"else if(counter>=4){\r",
+							"    counter = 0;\r",
+							"    pm.environment.set(\"deleteAlertCounter\",counter);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": {{DeleteAlertID}}\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_alerts/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_alerts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Alert_Without_Description",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "457a8864-617e-4b89-92f8-b42a3c3eb3ee",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "04d7a27f-f098-45c0-b575-9626379fa270",
+						"exec": [
+							"pm.test(\"Create alert without description..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"alertName\": \"test_alert\",\r\n    \"alertField\":\"cpu\",\r\n    \"alertCluster\":\"cpu\",\r\n    \"alertSubCluster\":\"cpu\",\r\n    \"alertType\":\"\",\r\n    \"alertCondition\":\"Greater Than\",\r\n    \"alertRange\":\"80\",\r\n    \"description\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_alert/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_alert",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Toggle_Alert_Active_Status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8138ee4d-76e4-4309-8993-9453e99a1b06",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c6840c29-fa62-4a5e-81d8-14144f7610e2",
+						"exec": [
+							"pm.test(\"Toggle Alert Active Status..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"alertName\": \"test_alert\",\r\n    \"status\" : false\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/toggle_alert_status/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"toggle_alert_status",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_Alert",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1e2f8ada-5e78-40c4-9c3a-4b02df4ca868",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "74139eb0-8745-4d07-a3c0-e6cd7a4978cf",
+						"exec": [
+							"pm.test(\"Delete alert..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"test_alert\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_alerts/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_alerts",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "dd033e73-04e4-4b7c-9480-f1ea1cec1cd1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ddbbb608-6645-42ec-b3d6-cc82d58c0a80",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "56aaa8df-85f9-47ea-ac2e-ae1b923b2582",
+		"name": "mtool_tc89_to_tc92,tc231_to_tc238,tc283_to_tc289_smtp_configuration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "93254a13-9b6f-43e4-af42-17ee373ca70d",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration_with_Invalid_IP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d485d07b-9594-41a7-aed4-717a9cb6c037",
+						"exec": [
+							"pm.test(\"Unable to set SMTP Configuration with invalid IP...\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"111.111.111.111:10\",\r\n    \"smtpserverip\":\"111.111.111.111\",\r\n    \"smtpserverport\": 10,\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration_with_Valid_Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9424b755-95fd-49f0-b531-fd445a741074",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\",\r\n    \"smtppassword\": \"{{smtppassword}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_5_EmailIDs_For_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cd1e6d57-7645-4f9e-b8d2-b6b0b2aa62f5",
+						"exec": [
+							"var oldids = JSON.parse(pm.environment.get(\"oldAlertEmailIDs\"))\r",
+							"var newids = JSON.parse(pm.environment.get(\"newAlertEmailIDs\"))\r",
+							"var counter = parseInt(pm.environment.get(\"createAlertEmailIDCounter\"))\r",
+							"\r",
+							"// if(oldids.length <1) {\r",
+							"//     oldids = [\"abc@samsung.com\",\"def@samsung.com\",\"ghi@samsung.com\",\"jkl@samsung.com\",\"xyz@samsung.com\"];\r",
+							"// }\r",
+							"\r",
+							"// if(newids.length <1) {\r",
+							"//     newids =  [\"abc@samsung.com\",\"def@samsung.com\",\"ghi@samsung.com\",\"jkl@samsung.com\",\"xyz@samsung.com\"];\r",
+							"// }\r",
+							"\r",
+							"\r",
+							" var currentoldid = oldids[counter];\r",
+							"\r",
+							" var currentnewid = newids[counter];\r",
+							"\r",
+							"pm.environment.set(\"oldAlertEmailID\",currentoldid);\r",
+							"pm.environment.set(\"newAlertEmailID\",currentnewid);\r",
+							"\r",
+							"// pm.environment.set(\"oldAlertEmailIDs\",oldids);\r",
+							"// pm.environment.set(\"newAlertEmailIDs\",newids);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1eaa154d-cb55-40b3-9ab1-d0dede3168ac",
+						"exec": [
+							"pm.test(\"Create 5 email ids for alerts..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var counter = parseInt(pm.environment.get(\"createAlertEmailIDCounter\"))\r",
+							"\r",
+							"// if(oldids && oldids.length > 0) {\r",
+							"//     postman.setNextRequest(\"Create_5_EmailIDs_For_Alerts\");\r",
+							"// }\r",
+							"// else{\r",
+							"//     console.log(\"in else\")\r",
+							"//     postman.setNextRequest(null);\r",
+							"// }\r",
+							"if(counter<4){\r",
+							"    counter = counter+1;\r",
+							"    pm.environment.set(\"createAlertEmailIDCounter\",counter);\r",
+							"    postman.setNextRequest(\"Create_5_EmailIDs_For_Alerts\");\r",
+							"}\r",
+							"else if(counter>=4){\r",
+							"    counter = 0;\r",
+							"    pm.environment.set(\"createAlertEmailIDCounter\",counter);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldid\": \"{{oldAlertEmailID}}\",\r\n    \"email\":\"{{newAlertEmailID}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update_email/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update_email",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_5_EmailIDs_For_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2bba7814-28aa-4357-9097-fcc95daa00f0",
+						"exec": [
+							"var emailIDS = JSON.parse(pm.environment.get(\"DeleteAlertEmailIDs\"))\r",
+							"var counter = parseInt(pm.environment.get(\"deleteAlertEmailIDCounter\"))\r",
+							"\r",
+							"// if(emailIDS.length <1) {\r",
+							"//     emailIDS = [[\"abc@samsung.com\"],[\"def@samsung.com\"],[\"ghi@samsung.com\"],[\"jkl@samsung.com\"],[\"xyz@samsung.com\"]];\r",
+							"// }\r",
+							"\r",
+							"//var currentemailid = emailIDS.shift();\r",
+							"var currentemailid = emailIDS[counter];\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"DeleteAlertEmailID\",JSON.stringify(currentemailid));\r",
+							"//pm.environment.set(\"DeleteAlertEmailIDs\",(emailIDS));\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ab3951bc-1935-4707-8596-03aef771fdd0",
+						"exec": [
+							"pm.test(\"Delete 5 email ids for alerts..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var counter = parseInt(pm.environment.get(\"deleteAlertEmailIDCounter\"))\r",
+							"\r",
+							"// if(emailids && emailids.length > 0) {\r",
+							"//     postman.setNextRequest(\"Delete_5_EmailIDs_For_Alerts\");\r",
+							"// }\r",
+							"// else{\r",
+							"//     console.log(\"in else\")\r",
+							"//     postman.setNextRequest(null);\r",
+							"// }\r",
+							"if(counter<4){\r",
+							"    counter = counter+1;\r",
+							"    pm.environment.set(\"deleteAlertEmailIDCounter\",counter);\r",
+							"    postman.setNextRequest(\"Delete_5_EmailIDs_For_Alerts\");\r",
+							"}\r",
+							"else if(counter>=4){\r",
+							"    counter = 0;\r",
+							"    pm.environment.set(\"deleteAlertEmailIDCounter\",counter);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": {{DeleteAlertEmailID}}\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_emailids/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_emailids",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_SMTP_Server_Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8195bab5-2a64-4f44-833e-f55ed7fc2898",
+						"exec": [
+							"pm.test(\"Delete SMTP Configuration...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_smtp_details/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_smtp_details",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration_with_Valid_Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "289c2dfd-815b-464d-a02e-b9e77a304499",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\",\r\n    \"smtppassword\": \"{{smtppassword}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update_SMTP_Username_Password_FromEmail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b44a7880-6ca3-4b28-b21e-e113e36c9693",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"abc.k\",\r\n    \"smtpfromemail\": \"ssir@samsung.com\",\r\n    \"smtppassword\": \"abc\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration_with_Valid_Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "31e9dccb-6252-4ba5-a8fd-2141577425ff",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\",\r\n    \"smtppassword\": \"{{smtppassword}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3db8f202-3e95-4990-96a3-c0d17c2e2a84",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "07510952-7369-4665-8dd7-8879adc21c29",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
