@@ -26,7 +26,7 @@ DESCRIPTION: <File description> *
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 */
 '''
-
+'''
 ###############################################################################
 #                                                                             #
 #             COPYRIGHT 2009-2020 SAMSUNG ELECTRONICS CO., LTD.               #
@@ -59,7 +59,7 @@ DESCRIPTION: <File description> *
 
 # ! /usr/bin/python
 
-'''
+
 import configparser
 import os
 

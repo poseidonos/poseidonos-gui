@@ -80,7 +80,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
                                                    "ts": str(int(time.time()))},
                                           timeout=(connect_timeout,
                                                    read_timeout))
-        #response = response.json()
+        print("response:",response.status_code, response.json())
         # if "error" in response.json():
         #    logger.error('%s %s', 'ERROR', response)
         #    return {"result": response["error"], "return": -1}
@@ -93,7 +93,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return {"result": "could not get the system state", "return": -1}
 
-
+"""
 def get_dagent_state(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
@@ -114,7 +114,7 @@ def get_dagent_state(auth=BASIC_AUTH_TOKEN):
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
-
+"""
 
 def start_ibofos(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
@@ -213,7 +213,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
+        print("---------------RESPONSE---------------",response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -452,7 +452,7 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
+        print("---------------RESPONSE---------------",response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -498,7 +498,7 @@ def create_volume(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        # print("---------------RESPONSE---------------")
+        print("---------------RESPONSE---------------",response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -577,8 +577,8 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        # print("---------------RESPONSE---------------")
-        #print(response.status_code , response.json())
+        print("---------------RESPONSE---------------")
+        print(response.status_code , response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -630,8 +630,8 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        # print("---------------RESPONSE---------------")
-        #print(response.status_code , response.json())
+        print("---------------RESPONSE---------------")
+        print(response.status_code , response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -653,7 +653,7 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        # print("---------------RESPONSE---------------")
+        print("---------------RESPONSE---------------",response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)
@@ -674,8 +674,8 @@ def list_volumes(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        # print("---------------RESPONSE---------------")
-        #print(response.status_code , response.json())
+        print("---------------RESPONSE---------------")
+        print(response.status_code , response.json())
         return response
     except HTTPError as http_err:
         print('HTTP error occurred: ', http_err)

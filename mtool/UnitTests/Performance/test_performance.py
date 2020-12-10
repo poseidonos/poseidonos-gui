@@ -35,7 +35,7 @@ class InfluxMock:
     def get_points(self):
         if "cpu" in self.dbquery and "1m" in self.dbquery:
             return [{
-                "time": "152635612776125",
+                "time": "152635612776125", #time unit : nano sec
                 "usage_user": 20
             }]
         if "cpu" in self.dbquery and "7d" in self.dbquery:
@@ -67,7 +67,7 @@ class InfluxMock:
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_get_cpu_usage(mock_get_current_user, **kwargs):
+def test_get_cpu_usage(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -99,6 +99,27 @@ def test_get_cpu_usage(mock_get_current_user, **kwargs):
     assert data == []
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_cpu_usage_failure(mock_get_current_user, **kwargs): #time unit : nano sec
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/12h',
+                       json="test",
+                       status_code=200)
+    response = app.test_client().get(
+        '/api/v1.0/usage_user/1',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
 
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
@@ -109,6 +130,16 @@ def test_get_total_processes(mock_get_current_user, mock_influx_db):
         '/api/v1.0/total_processes/1m',
         headers={'x-access-token': json_token})
     assert response.status_code == 200
+
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+@mock.patch("util.db.influx.InfluxDBClient",
+            return_value=InfluxMock(), autospec=True)
+def test_get_total_processes_failure(mock_get_current_user, mock_influx_db):
+    response = app.test_client().get(
+        '/api/v1.0/total_processes/1',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
 
 
 @mock.patch("rest.app.connection_factory.get_current_user",
@@ -121,6 +152,16 @@ def test_get_disk_write_mbps(mock_get_current_user, mock_influx_db):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+@mock.patch("util.db.influx.InfluxDBClient",
+            return_value=InfluxMock(), autospec=True)
+def test_get_disk_write_mbps_failure(mock_get_current_user, mock_influx_db):
+    response = app.test_client().get(
+        '/api/v1.0/disk_write_mbps/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
+
 
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
@@ -132,10 +173,20 @@ def test_get_disk_used_percent(mock_get_current_user, mock_influx_db):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+@mock.patch("util.db.influx.InfluxDBClient",
+            return_value=InfluxMock(), autospec=True)
+def test_get_disk_used_percent_failure(mock_get_current_user, mock_influx_db):
+    response = app.test_client().get(
+        '/api/v1.0/disk_used_percent/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
+
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_get_read_iops(mock_get_current_user, **kwargs):
+def test_get_read_iops(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -171,11 +222,35 @@ def test_get_read_iops(mock_get_current_user, **kwargs):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_read_iops_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/12h',
+                       json="test",
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/30d',
+                       exc=HTTPError)
+    response = app.test_client().get(
+        '/api/v1.0/iops_read/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
+
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_get_vol_read_iops(mock_get_current_user, **kwargs):
+def test_get_vol_read_iops(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -215,7 +290,7 @@ def test_get_vol_read_iops(mock_get_current_user, **kwargs):
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_get_write_iops(mock_get1_current_user, **kwargs):
+def test_get_write_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -251,11 +326,35 @@ def test_get_write_iops(mock_get1_current_user, **kwargs):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_write_iops_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/12h',
+                       json="test",
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/30d',
+                        exc=HTTPError)
+    response = app.test_client().get(
+        '/api/v1.0/iops_write/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
+
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_get_vol_write_iops(mock_get1_current_user, **kwargs):
+def test_get_vol_write_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/1m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -331,6 +430,31 @@ def test_get_read_bw(mock_get_current_user, **kwargs):
         '/api/v1.0/bw_read/30d/array',
         headers={'x-access-token': json_token})
     assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_read_bw_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/12h',
+                       json="test",
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/30d',
+                        exc=HTTPError)
+    response = app.test_client().get(
+        '/api/v1.0/bw_read/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
 
 
 @requests_mock.Mocker(kw="mock")
@@ -413,6 +537,30 @@ def test_get_write_bw(mock_get_current_user, **kwargs):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_write_bw_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/30d',
+                        exc=HTTPError)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/12h',
+                       json="test",
+                       status_code=200)
+    response = app.test_client().get(
+        '/api/v1.0/bw_write/1/array',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
+
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
@@ -493,6 +641,31 @@ def test_get_vol_latency(mock_get_current_user, **kwargs):
         '/api/v1.0/latency/30d/0',
         headers={'x-access-token': json_token})
     assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/1m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/7d',
+                       status_code=500)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/12h',
+                       json="test",
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/30d',
+                        exc=HTTPError)
+    response = app.test_client().get(
+        '/api/v1.0/latency/1/0',
+        headers={'x-access-token': json_token})
+    assert response.status_code == 404
 
 
 @requests_mock.Mocker(kw="mock")

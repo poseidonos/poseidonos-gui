@@ -1,4 +1,5 @@
-from rest.app import app
+from rest.app import app, getHealthStatus
+#from rest.app import getHealthStatus
 import jwt
 import os
 import datetime
@@ -17,7 +18,7 @@ INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)                       
-def test_getHealthStatus(mock_get_current_user, **kwargs):
+def test_getHealthStatus(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -56,22 +57,64 @@ def test_getHealthStatus(mock_get_current_user, **kwargs):
                                             "latency": 565645
                                             }]}}, status_code=200)
 
-    response = app.test_client().get(
+    """response = app.test_client().get(
         '/api/v1.0/health_status/',
-        headers={'x-access-token': json_token})
-
-    data = json.loads(response.get_data(as_text=True))
-    assert response.status_code == 200
-    assert data["statuses"][0]["name"] == "cpu"
-    assert data["statuses"][1]["name"] == "memory"
-    assert data["statuses"][2]["name"] == "latency"
-
-
+        headers={'x-access-token': json_token})"""
+    data = getHealthStatus()
+    assert len(data["statuses"]) > 0
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_getHealthStatus_with_empty_result(mock_get_current_user, **kwargs):
+def test_getHealthStatus_different_values(mock_get_current_user, **kwargs): #time unit : nano sec
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "cpuUsagePercent": 45
+                                            },{"time": 1601531640000000000,"cpuUsagePercent": 49.61057635612553},{
+                "time": 1601531700000000000,
+                "cpuUsagePercent": 49.623660376562308
+            }]}}, status_code=200)
+
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/memory/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "memoryUsagePercent": 55
+                                            },{"time": 1601531640000000000,"memoryUsagePercent": 59.61057635612553},{
+                "time": 1601531700000000000,
+                "memoryUsagePercent": 59.623660376562308
+            }]}}, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/15m',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "latency": 9565645
+                                            },{"time": 1601531640000000000,"latency": 9993434},{
+                "time": 1601531700000000000,
+                "latency": 99900
+            }]}}, status_code=200)
+
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/',
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "latency": 565645
+                                            }]}}, status_code=200)
+
+    """response = app.test_client().get(
+        '/api/v1.0/health_status/',
+        headers={'x-access-token': json_token})"""
+
+    data = getHealthStatus()
+    assert len(data["statuses"]) > 0
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_getHealthStatus_with_empty_result(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
@@ -88,9 +131,21 @@ def test_getHealthStatus_with_empty_result(mock_get_current_user, **kwargs):
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": []}}, status_code=200)
 
+    """response = app.test_client().get(
+        '/api/v1.0/health_status/',
+        headers={'x-access-token': json_token})
+    #data = json.loads(response.get_data(as_text=True))
+    assert response.status_code == 200
+
+    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/memory/15m',
+                       json=None, status_code=200)
+
     response = app.test_client().get(
         '/api/v1.0/health_status/',
         headers={'x-access-token': json_token})
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
+	"""
+    data = getHealthStatus()
+    assert len(data["statuses"]) == 0
 

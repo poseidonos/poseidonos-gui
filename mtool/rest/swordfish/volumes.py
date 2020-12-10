@@ -107,6 +107,7 @@ class Volume():
         try:
             ibof_vols = list_volume()
             for vol in ibof_vols:
+                print("Print:___",vol)
                 if str(vol["id"]) == vol_id:
                     self.volume["Name"] = vol["name"]
                     self.volume["Id"] = vol["id"]

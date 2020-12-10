@@ -21,9 +21,24 @@ def global_data(mock_match_username_from_db):
     return {'token': login_data['token']}
 
 
-@mock.patch("rest.app.connection_factory.get_email_list",
-            return_value=[], autospec=True)
-def test_get_email_ids(mock_get_email_list, global_data):
+#@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_get_email_list_query", return_value=[["abc@abc.com",True]], autospec=True)
+def test_get_email_ids(mock_execute_get_email_list_query, global_data):
+    response = app.test_client().get(
+        '/api/v1.0/get_email_ids/',
+        headers={
+            'x-access-token': global_data['token'],
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+
+    #data = json.dumps(response.get_data(as_text=True))
+    assert response.status_code == 200
+
+#@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_get_email_list_query", return_value=[], autospec=True)
+def test_get_email_ids_emptylist(mock_execute_get_email_list_query, global_data):
     response = app.test_client().get(
         '/api/v1.0/get_email_ids/',
         headers={
@@ -225,6 +240,20 @@ def test_add_email(mock_find_email, mock_execute_insert_email_query, mock_execut
     )
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.find_email", return_value=True, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_insert_email_query", return_value=True, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_update_email_query", return_value=True, autospec=True)
+def test_add_email_with_update(mock_find_email, mock_execute_insert_email_query, mock_execute_update_email_query, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={"options": {"to": ["xyz@gmail.com"]}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={}, status_code=200)
+    response = app.test_client().post(
+        '/api/v1.0/update_email/',
+        data=json.dumps({'email': "xyz@gmail.com", 'oldid': "xyz@gmail.com"}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
 
 
 """
@@ -283,4 +312,30 @@ def test_log_collect_post(mock_log_to_influx, global_data, **kwargs):
         content_type='application/json',
     )
     assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.log_to_influx", autospec=True)
+def test_without_token(mock_log_to_influx, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().get(
+        '/api/v1.0/get_ibofos_time_interval', headers={
+            'x-access-token': '',
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+    assert response.status_code == 401
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.log_to_influx", autospec=True)
+def test_wrong_token(mock_log_to_influx, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().get('/api/v1.0/get_ibofos_time_interval', headers={'x-access-token': 'wrong_token',
+            'Accept': 'application/json',
+        },
+        content_type='application/json',
+    )
+    assert response.status_code == 401
+
+
 

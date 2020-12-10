@@ -81,7 +81,7 @@ def Update_KapacitorList(oldid=None, email=None, updateflag=0):
         result = requests.post(
             url="http://localhost:9092/kapacitor/v1/config/smtp/",
             data=toJson(tasks))
-       
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
         else:
@@ -107,6 +107,7 @@ def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
         result = requests.post(
             url="http://localhost:9092/kapacitor/v1/config/smtp/",
             data=toJson(tasks))
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
         else:    

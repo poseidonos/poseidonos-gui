@@ -215,6 +215,7 @@ def create_kapacitor_alert(
             opertorMAP[alertCondition])}
     try:
         result = requests.post(kapacitorUrl, json=payload)
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Add Alert"}), 500)
         else:
@@ -286,6 +287,7 @@ def update_in_kapacitor(
             opertorMAP[alertCondition])}
     try:
         result = requests.patch(kapacitorUrl, json=payload)
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Update Alert"}), 500)
         else:
@@ -299,6 +301,7 @@ def delete_alert_from_kapacitor(alert_id):
     kapacitorUrl = KAPACITOR_URL + "/tasks/{}".format(alert_id)
     try:
         result = requests.delete(kapacitorUrl)
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Delete Alert"}), 500)
         else:
@@ -327,6 +330,7 @@ def toggle_in_kapacitor(alert_id, status):
                 "status": "{}".format(alertStatus)
             }
         result = requests.patch(kapacitorUrl, json=payload)
+        print("response:",result.json())
         if(result.status_code != 200 and result.status_code != 204):
             return make_response(json.dumps({"description": "Failed to Toggle Alert"}), 500)
         else:

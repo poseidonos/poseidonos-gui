@@ -218,11 +218,13 @@ class SQLiteConnection:
                  serverport,
                  serverip))
         DB_CONNECTION.commit()
-
-    def get_email_list(self):
+    def execute_get_email_list_query(self):
         cur = DB_CONNECTION.cursor()
         cur.execute(EMAILLIST_QUERY)
         rows = cur.fetchall()
+        return rows
+    def get_email_list(self):
+        rows = self.execute_get_email_list_query()
         if rows is None or len(rows) == 0:
             return False
         else:

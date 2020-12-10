@@ -11,6 +11,9 @@ from util.macros.influxdb_config import mtool_db, infinite_rp, default_rp
 
 token = ""
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
+smtp_server = "112.107.220.150"
+smtp_server_ip = "112.107.220.150:25"
+smtp_server_port = "25"
 alertCluster = "cpu"
 alertSubCluster = "cpu"
 alertType = "cpu-total"
@@ -99,10 +102,65 @@ def test_add_new_alert(mock_execute_alert_query, global_data, **kwargs):
                                                        "description": ""}),
                                       content_type='application/json',
                                       )
-    #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
-    #print("DATAAA", data, data['message'])
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_alert_query", autospec=True)
+def test_add_new_alert_failure(mock_execute_alert_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(KAPACITOR_URL + "/tasks", json=payload, status_code=500)
+    response = app.test_client().post('/api/v1.0/add_alert/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT6",
+                                                       "alertField": "usage_system",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu ",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Less Than",
+                                                       "alertRange": "80",
+                                                       "description": ""}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 500
+    kwargs["mock"].post(KAPACITOR_URL + "/tasks", json=None, status_code=500)
+    response = app.test_client().post('/api/v1.0/add_alert/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT6",
+                                                       "alertField": "usage_system",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu ",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Less Than",
+                                                       "alertRange": "80",
+                                                       "description": ""}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_alert_query", autospec=True)
+def test_add_new_alert_failure_2(mock_execute_alert_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(KAPACITOR_URL + "/tasks", json={})
+    response = app.test_client().post('/api/v1.0/add_alert/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT6",
+                                                       "alertField": "usage_system",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu ",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Less Than",
+                                                       "alertRange": "80",
+                                                       "description": ""}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 200
 
 @mock.patch("rest.app.connection_factory.get_alerts_from_db",
             return_value=[], autospec=True)
@@ -138,13 +196,46 @@ def test_delete_new_alert(mock_execute_delete_alerts_query, global_data, **kwarg
     assert response.status_code == 200
     print("DATAAA", data)
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_delete_alerts_query", return_value=True, autospec=True)
+def test_delete_new_alert_failure(mock_execute_delete_alerts_query, global_data, **kwargs):
+    kwargs["mock"].delete(KAPACITOR_URL + "/tasks/TESTNEWALERT_1", json={}, status_code=500)
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().post(
+        '/api/v1.0/delete_alerts/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"ids": ["TESTNEWALERT_1"]}),
+        content_type='application/json',
+    )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 500
+
+    kwargs["mock"].delete(KAPACITOR_URL + "/tasks/TESTNEWALERT_1", json=None, status_code=500)
+    response = app.test_client().post(
+        '/api/v1.0/delete_alerts/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"ids": ["TESTNEWALERT_1"]}),
+        content_type='application/json',
+    )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.execute_toggle_alert_status_update_query", return_value=True, autospec=True)
 @mock.patch("rest.app.connection_factory.execute_toggle_alert_status_select_query", return_value=None, autospec=True)
 def test_toggle_alert_status_failure(mock_execute_toggle_alert_status_update_query, mock_execute_toggle_alert_status_select_query, global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json={"status": True}, status_code=200)
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json={"status": False}, status_code=500)
+    response = app.test_client().post(
+        '/api/v1.0/toggle_alert_status/',
+        headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
+        data=json.dumps({"alertName": "TESTNEWALERT1", 'status':True}),
+        content_type='application/json',
+    )
+
+    assert response.status_code ==500
+
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json=None, status_code=500)
     response = app.test_client().post(
         '/api/v1.0/toggle_alert_status/',
         headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
@@ -170,17 +261,17 @@ def test_toggle_alert_status(mock_execute_toggle_alert_status_update_query, mock
     )
     assert response.status_code == 200
 
-@mock.patch("rest.app.connection_factory.toggle_alert_status_in_db",
-            return_value=False, autospec=True)
-@mock.patch("rest.app.toggle_in_kapacitor",
-        return_value={'status_code':200}, autospec=True)
-def test_toggle_alert_status_db_failure(mock_toggle_alert_status_in_db,mock_toggle_in_kapacitor, global_data):
+#@mock.patch("rest.app.connection_factory.toggle_alert_status_in_db", return_value=False, autospec=True)
+#@mock.patch("rest.app.toggle_in_kapacitor", return_value={'status_code':200}, autospec=True)
+@mock.patch("rest.app.connection_factory.execute_toggle_alert_status_select_query", return_value=None, autospec=True)
+def test_toggle_alert_status_db_failure(mock_execute_toggle_alert_status_select_query, global_data):
     response = app.test_client().post(
         '/api/v1.0/toggle_alert_status/',
         headers={'x-access-token': global_data['token'], 'Accept': 'application/json', },
         data=json.dumps({"alertName": "new", 'status':True}),
         content_type='application/json',
     )
+    print("response.status_code ",response.status_code)
     assert response.status_code == 500
 
 def test_get_alert_types(global_data):
@@ -225,16 +316,108 @@ def test_update_alerts(mock_execute_select_alert_query, mock_execute_delete_aler
     print("DATAAA", data)
 
 @requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_select_alert_query", return_value=['abc@abc.com'], autospec=True)
+@mock.patch("rest.app.connection_factory.execute_update_alert_query", return_value=True, autospec=True)
+def test_update_alerts_failure(mock_execute_select_alert_query, mock_execute_delete_alerts_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json=payload, status_code=500)
+    response = app.test_client().post('/api/v1.0/update_alerts/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT1",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Not Equal To",
+                                                       "alertField": "usage_system",
+                                                       "description": "TEST1Samsple",
+                                                       "alertRange": "67",
+                                                       }),
+                                      content_type='application/json',
+                                      )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.execute_select_alert_query", return_value=['abc@abc.com'], autospec=True)
+@mock.patch("rest.app.connection_factory.execute_update_alert_query", return_value=True, autospec=True)
+def test_update_alerts_failure_2(mock_execute_select_alert_query, mock_execute_delete_alerts_query, global_data, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json=payload)
+    response = app.test_client().post('/api/v1.0/update_alerts/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT1",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Not Equal To",
+                                                       "alertField": "usage_system",
+                                                       "description": "TEST1Samsple",
+                                                       "alertRange": "67",
+                                                       }),
+                                      content_type='application/json',
+                                      )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 200
+
+    kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json=None)
+    response = app.test_client().post('/api/v1.0/update_alerts/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               },
+                                      data=json.dumps({"alertName": "TESTNEWALERT1",
+                                                       "alertCluster": "cpu",
+                                                       "alertSubCluster": "cpu",
+                                                       "alertType": "cpu-total",
+                                                       "alertCondition": "Not Equal To",
+                                                       "alertField": "usage_system",
+                                                       "description": "TEST1Samsple",
+                                                       "alertRange": "67",
+                                                       }),
+                                      content_type='application/json',
+                                      )
+    data = response.get_data(as_text=True)
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
 def test_Test_smtp_server(global_data, **kwargs):
     kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}}, status_code=200)
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().post('/api/v1.0/test_smtpserver/',
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
-                                               }, data=json.dumps({"smtpserver": "112.107.220.150:25", "smtpserverip": "112.107.220.150", "smtpserverport": "25", "smtpusername": "test", "smtppassword": "test", "smtpfromemail": "vishal.s7@samsung.com"}),
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test", "smtppassword": "test", "smtpfromemail": "vishal.s7@samsung.com"}),
                                       content_type='application/json',
                                       )
-    assert response.status_code == 200
+    assert response.status_code == 500
+
+
+@requests_mock.Mocker(kw="mock")
+def test_Test_smtp_server_failure(global_data, **kwargs):
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}}, status_code=500)
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().post('/api/v1.0/test_smtpserver/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test","smtpfromemail": "vishal.s7@samsung.com"}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
+def test_Test_smtp_server_failure_2(global_data, **kwargs):
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}})
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().post('/api/v1.0/test_smtpserver/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpfromemail": "vishal.s7@samsung.com"}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
 def test_delete_smtp_server(global_data, **kwargs):
@@ -247,6 +430,31 @@ def test_delete_smtp_server(global_data, **kwargs):
                                       content_type='application/json',
                                       )
     assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+def test_delete_smtp_server_failure(global_data, **kwargs):
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={"delete": ["enabled","host","port","from","username","password"]}, status_code=500)
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().post('/api/v1.0/delete_smtp_details/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               }, data=json.dumps({}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
+def test_delete_smtp_server_failure_2(global_data, **kwargs):
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={"delete": ["enabled","host","port","from","username","password"]})
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().post('/api/v1.0/delete_smtp_details/',
+                                      headers={'x-access-token': global_data['token'],
+                                               'Accept': 'application/json',
+                                               }, data=json.dumps({}),
+                                      content_type='application/json',
+                                      )
+    assert response.status_code == 200
+
 @requests_mock.Mocker(kw="mock")
 def test_get_smtp_details(global_data, **kwargs):
     kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=200)
@@ -255,7 +463,26 @@ def test_get_smtp_details(global_data, **kwargs):
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
                                       headers={'x-access-token': global_data['token']})
     data = response.get_data(as_text=True)
-    print("data ",data)
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+def test_get_smtp_details_failure(global_data, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=500)
+
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().get('/api/v1.0/get_smtp_details/',
+                                      headers={'x-access-token': global_data['token']})
+    data = response.get_data(as_text=True)
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
+def test_get_smtp_details_failure_2(global_data, **kwargs):
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']})
+
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    response = app.test_client().get('/api/v1.0/get_smtp_details/',
+                                      headers={'x-access-token': global_data['token']})
+    data = response.get_data(as_text=True)
     assert response.status_code == 200
 
 if __name__ == '__main__':

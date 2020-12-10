@@ -69,13 +69,13 @@ def get_total_processes(time):
 
 def get_total_disk_used_percent(time, level):
     connection = get_connection()
-    query = 'SELECT mean("used_percent") AS "used_percent" FROM "telegraf".""."disk" where time > now() - {} group by time({})'.format(
+    query = 'SELECT mean("used_percent") AS "used_percent" FROM '+mtool_db+'.""."disk" where time > now() - {} group by time({})'.format(
             time, time_groups_default[time])
     res = connection.query(query)
     connection.close()
     return res
 
-
+"""
 def get_input_power_variation(time):
     try:
         res_dict = {}
@@ -104,7 +104,7 @@ def get_input_power_variation(time):
         return res_dict
     except Exception as e:
         print(e)
-
+"""
 
 def get_disk_latency(time, level):
     if level == "array":

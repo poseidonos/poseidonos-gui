@@ -220,7 +220,8 @@ def log_collect():
         print(e)
     return "Log written sucessfully"
 
-
+def get_ibof_os_status():
+    return IBOF_OS_Running.Is_Ibof_Os_Running_Flag
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
 @token_required
 def start_ibofos(current_user):
@@ -232,10 +233,9 @@ def start_ibofos(current_user):
     #body_unicode = request.data.decode('utf-8')
     #body = json.loads(body_unicode)
     #script_path = body['path']
-    if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag):
+    if(get_ibof_os_status()):
         return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
-
     if res.status_code == 200:
         res = res.json()
         if res["result"]["status"]["code"] == 0:
@@ -341,7 +341,6 @@ def is_ibofos_running(current_user):
     print("RESPONSE", response)
     if(response != "error"):
         res = list(response.get_points())
-        # print(res)
         if res:
             response = res[0]['last']
             # print(response)
@@ -745,7 +744,6 @@ def test_smtpserver():
     print(serverport)
     if('smtppassword' in body):
         smtppassword = body['smtppassword']
-
     try:
         s = smtplib.SMTP(serverip, serverport, None, 1)
         s.quit()
