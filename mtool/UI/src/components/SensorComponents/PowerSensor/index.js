@@ -46,8 +46,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import TrashIcon from '@material-ui/icons/Delete';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import Health_OK_Icon from '../../../assets/images/Ok14x14.png'
-import Health_NOT_OK_Icon from '../../../assets/images/Not-Ok14x14.png'
+import HealthOKIcon from '../../../assets/images/Ok14x14.png'
+import HealthNotOKIcon from '../../../assets/images/Not-Ok14x14.png'
 import * as actionTypes from '../../../store/actions/actionTypes';
 
 const styles = theme => ({
@@ -137,7 +137,7 @@ class PowerSensor extends Component {
                     },
                     render: rowData =>
                     (
-                        <img src={rowData.Status.Health === 'OK' ? Health_OK_Icon : Health_NOT_OK_Icon} />
+                        <img alt="" src={rowData.Status.Health === 'OK' ? HealthOKIcon : HealthNotOKIcon} />
                     ), 
                 },
                 {

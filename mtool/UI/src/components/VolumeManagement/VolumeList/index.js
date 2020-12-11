@@ -87,6 +87,16 @@ class VolumeList extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
+  handleClose() {
+    this.setState({ open: false });
+  }
+
+  handleClickOpen() {
+    this.setState({
+      open: true,
+    });
+  }
+
   onVolumeEdit(value, name, id) {
     this.props.changeField({
       value,
@@ -99,16 +109,6 @@ class VolumeList extends Component {
     this.setState({
       selectedVolumes: volumes
     })
-  }
-
-  handleClose() {
-    this.setState({ open: false });
-  }
-
-  handleClickOpen() {
-    this.setState({
-      open: true,
-    });
   }
 
   render() {

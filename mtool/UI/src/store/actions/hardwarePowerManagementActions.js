@@ -32,3 +32,5 @@ export const fetchPowerSummary = powersummary => {
     powersummary,
   };
 };
+
+export default fetchPowerSummary;

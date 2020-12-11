@@ -84,9 +84,6 @@ const styles = theme => ({
 });
 
 class PowerSummary extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
        this.props.fetchPowerSummary();

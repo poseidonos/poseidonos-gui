@@ -77,9 +77,9 @@ class HealthMetrics extends Component {
 
     // callback function for health status response
     this.props.healthStatusSocket.on("health_status_response", (result) => {
-      console.log("response for health status", result);
       healthStatus = [];
       healthDetails = result.statuses;
+      /*
       const neededKeys = [
         "id",
         "arcsArr",
@@ -88,8 +88,9 @@ class HealthMetrics extends Component {
         "label",
         "unit",
       ];
+      */
 
-      for(let idx = 0; idx < healthDetails.length; idx++){
+      for(let idx = 0; idx < healthDetails.length; idx += 1){
         try{
           metricDetails = {};
           metricDetails.id = healthDetails[idx].id;
@@ -100,8 +101,8 @@ class HealthMetrics extends Component {
           metricDetails.unit = healthDetails[idx].unit;
           healthStatus.push(metricDetails);
         } 
-        catch{
-          continue;
+        catch(e){
+          console.log("Exception occured while parsing health details", e); // eslint-disable-line no-console
         }
       }
       this.setState({
@@ -109,7 +110,6 @@ class HealthMetrics extends Component {
         healthMetrics: healthStatus,
       });
 
-      console.log("health status res", healthStatus);
     });
   }
 

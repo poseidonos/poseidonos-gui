@@ -46,9 +46,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import TrashIcon from '@material-ui/icons/Delete';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import Health_OK_Icon from '../../../assets/images/Ok14x14.png'
-import Health_NOT_OK_Icon from '../../../assets/images/Not-Ok14x14.png'
-import * as actionTypes from '../../../store/actions/actionTypes';
+import HealthOKIcon from '../../../assets/images/Ok14x14.png'
+import HealthNotOKIcon from '../../../assets/images/Not-Ok14x14.png';
 
 const styles = theme => ({
     multilineColor: {
@@ -140,7 +139,7 @@ class DriveTable extends Component {
                     },
                     render: rowData =>
                     (
-                       <img src={(rowData.Status && rowData.Status.Health === 'OK') ? Health_OK_Icon : Health_NOT_OK_Icon} />
+                       <img alt="health" src={(rowData.Status && rowData.Status.Health === 'OK') ? HealthOKIcon : HealthNotOKIcon} />
                     ), 
                 },
                 {
@@ -203,7 +202,7 @@ class DriveTable extends Component {
                         <Switch
                           size="small"
                           checked={rowData.active}
-                          onChange={() => console.log("Switch")} // this.props.togglealertstatus(row.tableData.id)}
+                        //   onChange={() => console.log("Switch")} // this.props.togglealertstatus(row.tableData.id)}
                           color="primary"
                           inputProps={{ 'aria-label': 'primary checkbox' }}
                         />

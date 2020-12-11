@@ -27,25 +27,9 @@ DESCRIPTION: Overview Page Chassis Component
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
 import { Paper, GridList, Typography, Tooltip, GridListTile , createMuiTheme,InputLabel, } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import Search from '@material-ui/icons/Search';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Add from '@material-ui/icons/Add';
-import Check from '@material-ui/icons/Check';
-import FilterList from '@material-ui/icons/FilterList';
-import Remove from '@material-ui/icons/Remove';
-import EditIcon from '@material-ui/icons/Edit';
-import TrashIcon from '@material-ui/icons/Delete';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Clear from '@material-ui/icons/Clear';
 import './Chassis.css';
 import Legend from '../../Legend'
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -252,6 +236,11 @@ class Chassis extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.fetchChassisFrontInfo();
+    // this.props.fetchChassisRearInfo();
+  }
+
   getDiskDetails(name,slot,disk) {
     this.setState({
       ...this.state,
@@ -274,11 +263,6 @@ class Chassis extends Component {
       ...this.state,
       popupOpen: false,
     });
-  }
-
-  componentDidMount() {
-    this.props.fetchChassisFrontInfo();
-    // this.props.fetchChassisRearInfo();
   }
 
   render() {
@@ -329,7 +313,9 @@ class Chassis extends Component {
                                   </div> */}
                                   
                                   <div
-                                  data-testid="POPUP"
+                                    data-testid="POPUP"
+                                    role="link"
+                                    aria-hidden="true"
                                     onClick={() => this.showPopup('nvme',index,disk)}
                                     style={{
                                       cursor: 'pointer',

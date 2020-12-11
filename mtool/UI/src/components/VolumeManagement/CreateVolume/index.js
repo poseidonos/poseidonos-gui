@@ -189,8 +189,8 @@ class CreateVolume extends Component {
     });
   }
 
-  setUnit(event) {
-    this.setState({ volume_units: event.target.value });
+  handleClose() {
+    this.setState({ open: false, alert_open: false });
   }
 
   handleChange(event) {
@@ -204,8 +204,8 @@ class CreateVolume extends Component {
     } else this.setState({ [name]: value });
   }
 
-  handleClose() {
-    this.setState({ open: false, alert_open: false });
+  setUnit(event) {
+    this.setState({ volume_units: event.target.value });
   }
 
   createVolumeInParent() {

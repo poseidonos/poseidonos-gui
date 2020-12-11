@@ -54,18 +54,20 @@ const hardwareOverviewReducer = (state = initialState, action) => {
                 serialno: action.serverinfo.serialno,
                 hostname: action.serverinfo.host,
             };
-        case actionTypes.HARDWARE_OVERVIEW_FETCH_POWER_INFORMATION:
-            let powerstatus = ''
-            if (action.powerinfo.powerstatus === "On")
-                powerstatus = 'Power On'
-            else
-                powerstatus = action.powerinfo.powerstatus
+        case actionTypes.HARDWARE_OVERVIEW_FETCH_POWER_INFORMATION: {
+            let powerstatus = '';
+            if (action.powerinfo.powerstatus === "On") {
+                powerstatus = 'Power On';
+            } else {
+                powerstatus = action.powerinfo.powerstatus;
+            }
             return {
                 ...state,
                 powerconsumption: action.powerinfo.powerconsumption,
                 powercap: action.powerinfo.powercap,
                 powerstatus,
             };
+        }
         case actionTypes.HARDWARE_OVERVIEW_FETCH_CHASSIS_FRONT_INFORMATION:
             return {
                 ...state,

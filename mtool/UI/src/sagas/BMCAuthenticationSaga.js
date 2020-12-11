@@ -31,7 +31,7 @@ import * as actionCreators from '../store/actions/exportActionCreators';
 
 
 
-export function* bmc_login(action) {
+export function* bmcLogin(action) {
   try {
     const response = yield call(
       [axios, axios.post],
@@ -53,6 +53,6 @@ export function* bmc_login(action) {
 
 
 export function* BMCAuthenticationWatcher() {
-  yield takeEvery(actionTypes.SAGA_BMC_LOGIN, bmc_login);
+  yield takeEvery(actionTypes.SAGA_BMC_LOGIN, bmcLogin);
   
 }

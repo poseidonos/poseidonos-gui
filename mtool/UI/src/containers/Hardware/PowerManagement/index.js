@@ -30,7 +30,6 @@ import { withStyles, Grid, Paper } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import AlertDialog from '../../../components/Dialog';
 import { PageTheme, customTheme } from '../../../theme';
-import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import PowerSummary from '../../../components/PowerManagementComponents/PowerSummary'
 import PowerStateTable from '../../../components/PowerManagementComponents/PowerStateTable'
@@ -68,6 +67,20 @@ class PowerManagement extends Component {
   componentDidMount() {
   }
 
+  handleAlertClose() {
+    this.props.openAlertBox({
+      alertOpen: false
+    });
+  }
+
+  onHandleChange(event){
+      const {name,value} = event.target;
+      this.setState({
+          ...this.state,
+          [name]:value
+      });
+  }
+
   openAlert(operationType) {
     this.props.openAlertBox({
       alertOpen: true,
@@ -88,20 +101,6 @@ class PowerManagement extends Component {
       this.props.shutdownSystem();
       this.handleAlertClose();
     }
-  }
-
-  handleAlertClose() {
-    this.props.openAlertBox({
-      alertOpen: false
-    });
-  }
-
-  onHandleChange(event){
-      const {name,value} = event.target;
-      this.setState({
-          ...this.state,
-          [name]:value
-      });
   }
 
   render() {

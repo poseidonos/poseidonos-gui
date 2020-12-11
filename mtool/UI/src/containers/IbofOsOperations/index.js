@@ -138,6 +138,57 @@ class IbofOsOperations extends Component {
     //         });
     // }
 
+    handleAlertClose(value = /* istanbul ignore next */ "") {
+        if (value !== "YES") {
+            this.setState({
+                ...this.state,
+                alertOpen: false,
+            });
+            return;
+        }
+        // if (this.state.add_delete_send === "Run")
+        //     this.setState({
+        //         ...this.state,
+        //         alertOpen: false,
+        //     });
+        if (this.state.add_delete_send === "Start") {
+            this.setState({
+                ...this.setState,
+                alertOpen: false,
+                isButtonDisabled: true,
+                responseforIbofOS: "Initializing..."
+            });
+        } else if (this.state.add_delete_send === "Stop") {
+        // } else {
+            this.setState({
+                ...this.setState,
+                alertOpen: false,
+                isButtonDisabled: true,
+                responseforIbofOS: "Stopping..."
+            });
+            this.setState({
+                ...this.setState,
+                alertOpen: false,
+                isButtonDisabled: true,
+                responseforIbofOS: "Stopping..."
+            });
+        } else {
+            this.setState({
+                ...this.setState,
+                alertOpen: false,
+                isButtonDisabled: true,
+                responseforIbofOS: "Resetting..."
+            });
+        }
+        // else if (this.state.add_delete_send === "Exit")
+        //     this.setState({
+        //         ...this.setState,
+        //         alertOpen: false,
+        //         isButtonDisabled: true,
+        //         responseforIbofOS: "Exiting..."
+        //     });
+    }
+
     IsIbofOSRunning() {
         this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
     }
@@ -263,57 +314,6 @@ class IbofOsOperations extends Component {
             alerttitle: `${operationType} ${message}`,
             alertdescription: `${alertMessage}Do you want to  ${operationType} the ${message} ?`,
         });
-    }
-
-    handleAlertClose(value = /* istanbul ignore next */ "") {
-        if (value !== "YES") {
-            this.setState({
-                ...this.state,
-                alertOpen: false,
-            });
-            return;
-        }
-        // if (this.state.add_delete_send === "Run")
-        //     this.setState({
-        //         ...this.state,
-        //         alertOpen: false,
-        //     });
-        if (this.state.add_delete_send === "Start") {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Initializing..."
-            });
-        } else if (this.state.add_delete_send === "Stop") {
-        // } else {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Stopping..."
-            });
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Stopping..."
-            });
-        } else {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Resetting..."
-            });
-        }
-        // else if (this.state.add_delete_send === "Exit")
-        //     this.setState({
-        //         ...this.setState,
-        //         alertOpen: false,
-        //         isButtonDisabled: true,
-        //         responseforIbofOS: "Exiting..."
-        //     });
     }
 
     triggerCommand() {

@@ -94,11 +94,11 @@ class Sensors extends Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = () => {
     return {
     };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
     return {
 
     };

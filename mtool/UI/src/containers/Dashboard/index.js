@@ -28,7 +28,6 @@ import React, { Component } from "react";
 import io from "socket.io-client";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
-import GaugeChart from "react-gauge-chart";
 import "react-dropdown/style.css";
 import { withStyles } from "@material-ui/core/styles";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -206,8 +205,8 @@ const icons = {
 
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
-//const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
-//const healthStatusSocketEndPoint = "http://107.122.11.174:3000/health_status";
+// const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
+// const healthStatusSocketEndPoint = "http://107.122.11.174:3000/health_status";
 
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {

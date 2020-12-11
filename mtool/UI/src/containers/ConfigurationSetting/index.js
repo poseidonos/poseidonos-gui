@@ -117,11 +117,25 @@ class ConfigurationSetting extends Component {
   //   });
   // }
 
-  // Change the checked state after selection
-  selectEmail(index) {
-    const emaillist = [...this.props.emaillist];
-    emaillist[index].selected = true;
-    this.props.changeEmailList(emaillist);
+  handleAlertClose() {
+    const payload = {
+      alertOpen: false
+    };
+    this.props.setAlertBox(payload);
+  }
+
+  /*  istanbul ignore next  */
+  handleClose() {
+    this.setState({
+      ...this.state,
+      open: false
+    })
+  }
+
+  handleDrawerToggle() {
+    this.setState({
+      mobileOpen: !this.state.mobileOpen,
+    });
   }
 
   handleTabChange(event, newValue) {
@@ -132,14 +146,62 @@ class ConfigurationSetting extends Component {
     this.props.history.push(`/ConfigurationSetting/${newValue}`);
   }
 
-  deleteConfiguredSmtpServer() {
-    this.props.deleteConfiguredSmtpServer();
-  }
-
   editEmail(i) {
     const emaillist = [...this.props.emaillist];
     emaillist[i].edit = !emaillist[i].edit;
     this.props.changeEmailList(emaillist);
+  }
+
+  // Delete all selected email ids
+  deleteEmails() {
+    const ids = [];
+    let toggleFlag = false;
+    let toggleEmail = {}
+    this.props.emaillist.forEach((email, index) => {
+      if (email.selected) {
+        if(email.active === 0){
+          toggleEmail = {
+            emailid: email.email,
+            status: !email.active,
+          };
+          toggleFlag = true;
+        }
+        ids.push(email.email);
+        const emaillist = [...this.props.emaillist];
+        emaillist[index].selected = false;
+        this.props.changeEmailList(emaillist);
+      }
+    });
+
+    const data = {
+      ids,
+    };
+    const deletePayload = {
+      data,
+      toggleFlag,
+      toggleEmail
+    }
+
+    this.props.deleteEmailIds(deletePayload);
+  }
+
+  deleteConfiguredSmtpServer() {
+    this.props.deleteConfiguredSmtpServer();
+  }
+
+  openAlert(operationType) {
+    this.setState({
+      ...this.state,
+      add_delete_send: operationType,
+    });
+    const payload = {
+      alertOpen: true,
+      istypealert: false,
+      alerttype: 'delete',
+      alerttitle: `${operationType} Email`,
+      alertdescription: `Are you sure you want to ${operationType} the email?`,
+    };
+    this.props.setAlertBox(payload);
   }
 
   // Update an existing email id or add another email id
@@ -194,37 +256,33 @@ class ConfigurationSetting extends Component {
     this.props.fetchEmailList();
   }
 
-  // Delete all selected email ids
-  deleteEmails() {
-    const ids = [];
-    let toggleFlag = false;
-    let toggleEmail = {}
-    this.props.emaillist.forEach((email, index) => {
-      if (email.selected) {
-        if(email.active === 0){
-          toggleEmail = {
-            emailid: email.email,
-            status: !email.active,
-          };
-          toggleFlag = true;
-        }
-        ids.push(email.email);
-        const emaillist = [...this.props.emaillist];
-        emaillist[index].selected = false;
-        this.props.changeEmailList(emaillist);
-      }
-    });
+  savesmtpserverdetails(event) {
+    const { value } = event.target;
+    let payload = {};
+    if(event.target.name === 'smtpserver'){
+    const arr = event.target.value.split(':');
+    const ip = arr[0];
+    const port = arr[1] ? arr[1]:'';
 
-    const data = {
-      ids,
+    payload = {
+      smtpserver: value,
+      smtpserverip: ip,
+      smtpserverport: port,
     };
-    const deletePayload = {
-      data,
-      toggleFlag,
-      toggleEmail
-    }
+  }
+  else{
+     payload = {
+      [event.target.name]:event.target.value
+    };
+  }
+    this.props.setSmtpServer(payload);
+  }
 
-    this.props.deleteEmailIds(deletePayload);
+  // Change the checked state after selection
+  selectEmail(index) {
+    const emaillist = [...this.props.emaillist];
+    emaillist[index].selected = true;
+    this.props.changeEmailList(emaillist);
   }
 
   // Send email to all the active email ids
@@ -285,32 +343,27 @@ class ConfigurationSetting extends Component {
     this.props.testEmail(payload);
   }
 
-  updateSmtpServerDetails(event) {
-    event.preventDefault();
-    if(this.props.smtpserverip.length === 0 || this.props.smtpserverport.length === 0)
-    {
-      const alertPayload = {
-        alertOpen: true,
-        istypealert: true,
-        alerttype: 'alert',
-        alerttitle: 'Update SMTP Configuration',
-        alertdescription: 'Please enter all the required fields',
-      };
-      this.props.setAlertBox(alertPayload);
-      return;
-    }
-
-    const payload = {
-      smtpserver: this.props.smtpserver,
-      smtpserverip: this.props.smtpserverip,
-      smtpserverport: this.props.smtpserverport,
-      smtpusername: this.props.configuredsmtpusername,
-      smtpfromemail: this.props.configuredsmtpfromemail,
+  // Enable/Disable an email id but do not delete from DB
+  toggleEmailStatus(i) {
+    const email = {
+      emailid: this.props.emaillist[i].email,
+      status: !this.props.emaillist[i].active,
     };
-    this.props.testEmail(payload);
+    this.props.toggleActiveStatus(email);
   }
 
-    updateSmtpConfig(event) {
+  triggerCommand() {
+    // if (this.state.add_delete_send === 'Delete') {
+    //   this.deleteEmails();
+    // } 
+    // else if (this.state.add_delete_send === 'Send') {
+    //   this.sendEmail();
+    // }
+
+    this.deleteEmails();
+  }
+
+  updateSmtpConfig(event) {
     event.preventDefault();
     if(this.props.smtpusername.length === 0 || this.props.smtppassword.length === 0 || this.props.smtpfromemail.length === 0)
     {
@@ -336,84 +389,29 @@ class ConfigurationSetting extends Component {
     this.props.testEmail(payload);
   }
 
-  
+  updateSmtpServerDetails(event) {
+    event.preventDefault();
+    if(this.props.smtpserverip.length === 0 || this.props.smtpserverport.length === 0)
+    {
+      const alertPayload = {
+        alertOpen: true,
+        istypealert: true,
+        alerttype: 'alert',
+        alerttitle: 'Update SMTP Configuration',
+        alertdescription: 'Please enter all the required fields',
+      };
+      this.props.setAlertBox(alertPayload);
+      return;
+    }
 
-  savesmtpserverdetails(event) {
-    const { value } = event.target;
-    let payload = {};
-    if(event.target.name === 'smtpserver'){
-    const arr = event.target.value.split(':');
-    const ip = arr[0];
-    const port = arr[1] ? arr[1]:'';
-
-    payload = {
-      smtpserver: value,
-      smtpserverip: ip,
-      smtpserverport: port,
-    };
-  }
-  else{
-     payload = {
-      [event.target.name]:event.target.value
-    };
-  }
-    this.props.setSmtpServer(payload);
-  }
-
-  // Enable/Disable an email id but do not delete from DB
-  toggleEmailStatus(i) {
-    const email = {
-      emailid: this.props.emaillist[i].email,
-      status: !this.props.emaillist[i].active,
-    };
-    this.props.toggleActiveStatus(email);
-  }
-
-  openAlert(operationType) {
-    this.setState({
-      ...this.state,
-      add_delete_send: operationType,
-    });
     const payload = {
-      alertOpen: true,
-      istypealert: false,
-      alerttype: 'delete',
-      alerttitle: `${operationType} Email`,
-      alertdescription: `Are you sure you want to ${operationType} the email?`,
+      smtpserver: this.props.smtpserver,
+      smtpserverip: this.props.smtpserverip,
+      smtpserverport: this.props.smtpserverport,
+      smtpusername: this.props.configuredsmtpusername,
+      smtpfromemail: this.props.configuredsmtpfromemail,
     };
-    this.props.setAlertBox(payload);
-  }
-
-  handleAlertClose() {
-    const payload = {
-      alertOpen: false
-    };
-    this.props.setAlertBox(payload);
-  }
-
-  /*  istanbul ignore next  */
-  handleClose() {
-    this.setState({
-      ...this.state,
-      open: false
-    })
-  }
-
-  triggerCommand() {
-    // if (this.state.add_delete_send === 'Delete') {
-    //   this.deleteEmails();
-    // } 
-    // else if (this.state.add_delete_send === 'Send') {
-    //   this.sendEmail();
-    // }
-
-    this.deleteEmails();
-  }
-
-  handleDrawerToggle() {
-    this.setState({
-      mobileOpen: !this.state.mobileOpen,
-    });
+    this.props.testEmail(payload);
   }
 
   // applyIbofOSTimeInterval() {

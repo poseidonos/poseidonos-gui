@@ -30,7 +30,6 @@ import { withStyles, Grid, Paper } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import AlertDialog from '../../../components/Dialog';
 import { PageTheme, customTheme } from '../../../theme';
-import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import Chassis from '../../../components/OverviewComponents/Chassis'
 import ServiceStatus from '../../../components/HealthComponents/ServiceStatus'
@@ -61,7 +60,10 @@ class HealthTab extends Component {
     this.triggerCommand = this.triggerCommand.bind(this);
   }
 
-  componentDidMount() {
+  handleAlertClose() {
+    this.props.openAlertBox({
+      alertOpen: false
+    });
   }
 
   openAlert(operationType) {
@@ -84,12 +86,6 @@ class HealthTab extends Component {
       this.props.shutdownSystem();
       this.handleAlertClose();
     }
-  }
-
-  handleAlertClose() {
-    this.props.openAlertBox({
-      alertOpen: false
-    });
   }
 
   render() {

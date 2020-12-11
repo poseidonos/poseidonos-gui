@@ -153,6 +153,12 @@ class AlertManagement extends Component {
     this.props.fetchAlertsTypeInfo();
   }
 
+  handleAlertClose() {
+    this.props.openAlertBox({
+      alertOpen: false
+    });
+  }
+
   onHandleDropdownChange(event) {
     this.setState({
       alertCondition: event.target.value,
@@ -382,12 +388,6 @@ class AlertManagement extends Component {
       alertdescription: `Are you sure you want to ${operationType} the alert?`,
     }
     );
-  }
-
-  handleAlertClose() {
-    this.props.openAlertBox({
-      alertOpen: false
-    });
   }
 
   triggerCommand() {

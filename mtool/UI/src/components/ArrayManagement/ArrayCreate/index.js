@@ -241,6 +241,11 @@ class ArrayCreate extends Component {
   //   }
   // }
 
+  handleChange(event) {
+    const { value } = event.target;
+    this.setState({ arrayname: value });
+  }
+
   onSelectDiskType(event) {
     this.setState({
       ...this.state,
@@ -396,11 +401,6 @@ class ArrayCreate extends Component {
       });
       // }
     }
-  }
-
-  handleChange(event) {
-    const { value } = event.target;
-    this.setState({ arrayname: value });
   }
 
   render() {

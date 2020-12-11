@@ -238,10 +238,6 @@ class ArrayShow extends Component {
     this.removeSpareDisk = this.removeSpareDisk.bind(this);
   }
 
-  getDiskDetails(name) {
-    this.props.getDiskDetails({ name });
-  }
-
   handleClick(event) {
     event.preventDefault();
     this.setState({
@@ -264,6 +260,10 @@ class ArrayShow extends Component {
       messageOpen: false,
       diskDetails: { ...defaultDiskDetails },
     });
+  }
+
+  getDiskDetails(name) {
+    this.props.getDiskDetails({ name });
   }
 
   showPopup(name) {

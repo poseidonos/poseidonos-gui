@@ -30,13 +30,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import MToolTheme , { customTheme } from '../../theme';
-import './hardware.css';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
 import Button from '@material-ui/core/Button';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import MToolLoader from '../../components/MToolLoader';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Visibility from '@material-ui/icons/Visibility';
@@ -49,8 +45,12 @@ import OverviewTab from './Overview';
 import HealthTab from './Health';
 import DrivesTab from './Drives';
 import Sensors from './Sensors'
-import PowerManagement from './PowerManagement'
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import PowerManagement from './PowerManagement';
+import MToolTheme , { customTheme } from '../../theme';
+// import MToolLoader from '../../components/MToolLoader';
+import './hardware.css';
+import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
 
@@ -150,14 +150,9 @@ class Hardware extends Component {
     };
   }
 
-  componentDidMount() {
-  }
-
-
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
   };
-
 
   handleSubmit(event) {
     event.preventDefault();
@@ -195,6 +190,7 @@ class Hardware extends Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <ThemeProvider theme={MToolTheme}>
         <div className={classes.configurationContainer} data-testid="HardwareBMCPage">
@@ -212,12 +208,11 @@ class Hardware extends Component {
                   <Input
                     required
                     fullWidth
-                    data-testid= "bmcusernameInput"
                     id="email"
                     placeholder="BMC Username"
-                    InputProps={{
+                    inputProps={{
                       className: classes.input,
-                     // 'data-testid': "usernameInput"
+                     'data-testid': "usernameInput"
                     }}
                     name="bmc_username"
                     className={classes.textField}
@@ -236,11 +231,11 @@ class Hardware extends Component {
                   <Input
                     required
                     fullWidth
-                    data-testid= "passwordInput"
                     placeholder="BMC Password"
                     name="bmc_password"
-                    InputProps={{
+                    inputProps={{
                       className: classes.input,
+                      'data-testid': "passwordInput"
                     }}
                     type={this.state.showPassword ? 'text' : 'password'}
                     id="password"
@@ -276,7 +271,7 @@ class Hardware extends Component {
                     color="primary"
                     className={classes.submit}
                   >
-                    {'Login'}
+                    Login
                   </Button>
                 </form>
                 {this.props.bmc_loginFailed ? (
@@ -284,9 +279,9 @@ class Hardware extends Component {
                     variant="caption"
                     component="span"
                     data-testid = "errorMsg"
-                    style={{ marginLeft: '10%;', color: 'red' }}
+                    style={{ marginLeft: '10%', color: 'red' }}
                   >
-                    {'Login failed! Invalid id or password'}
+                    Login failed! Invalid id or password
                   </Typography>
                 ) : (
                   <span>&nbsp;</span>
@@ -331,7 +326,7 @@ class Hardware extends Component {
           </main>
           )
   }
-          {this.props.loading ? <MToolLoader text={this.props.loadText} /> : null}
+          {/* {this.props.loading ? <MToolLoader text={this.props.loadText} /> : null} */}
         </div>     
       </ThemeProvider>
     );

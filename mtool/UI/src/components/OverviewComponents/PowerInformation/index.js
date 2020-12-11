@@ -90,9 +90,6 @@ const styles = theme => ({
 });
 
 class PowerInformation extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     this.props.fetchPowerInfo();
@@ -229,10 +226,11 @@ class PowerInformation extends Component {
                 className={classes.powerInnerGrid}
                 style={{ textAlign: "center", marginTop: "60px" }}
               >
-                <label>Turn On Server LED</label>
+                <span>Turn On Server LED</span>
                 <Switch
                   size="small"
                   checked
+                  id="serverLED"
                   color="primary"
                   // onClick={() => console.log("here")}
                 />

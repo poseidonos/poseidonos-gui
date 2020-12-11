@@ -77,6 +77,12 @@ class UserManagement extends Component {
     this.props.fetchUsersInfo();
   }
 
+  handleAlertClose() {
+    this.props.openAlertBox({
+      alertOpen: false
+    });
+  }
+
   onCancel() {
     this.setState({
       ...this.state,
@@ -206,12 +212,6 @@ class UserManagement extends Component {
       this.onCancel();
       this.handleAlertClose();
     }
-  }
-
-  handleAlertClose() {
-    this.props.openAlertBox({
-      alertOpen: false
-    });
   }
 
   OnHandleSubmit() {

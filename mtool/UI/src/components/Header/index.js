@@ -202,6 +202,24 @@ class Header extends Component {
     clearInterval(this.interval);
   }
 
+  // istanbul ignore next
+  handleMobileMenuClose() {
+    this.setState({
+      ...this.state,
+      mobileMoreAnchorEl: null,
+      isMobileMenuOpen: false
+    });
+  }
+
+  handleMobileMenuOpen(event) {
+    this.setState({
+      ...this.state,
+      isMobileMenuOpen: true,
+      mobileMoreAnchorEl: event.currentTarget
+    });
+
+  }
+
   // Disabling for PoC1
 
   // onHandleSubmit() {
@@ -334,24 +352,6 @@ class Header extends Component {
     localStorage.setItem("user", null);
     this.props.resetIsLoggedIn();
     this.props.history.push('/');
-  }
-
-  // istanbul ignore next
-  handleMobileMenuClose() {
-    this.setState({
-      ...this.state,
-      mobileMoreAnchorEl: null,
-      isMobileMenuOpen: false
-    });
-  }
-
-  handleMobileMenuOpen(event) {
-    this.setState({
-      ...this.state,
-      isMobileMenuOpen: true,
-      mobileMoreAnchorEl: event.currentTarget
-    });
-
   }
 
   // istanbul ignore next

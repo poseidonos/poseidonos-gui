@@ -59,6 +59,7 @@ const BMCAuthenticationReducer = (state = initialState, action) => {
       }
 
       case actionTypes.BMC_SET_LOGIN_FAILED: {
+        
         return {
           ...state,
         bmc_loginFailed : true,

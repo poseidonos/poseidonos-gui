@@ -29,7 +29,7 @@ import { call, takeEvery, put } from 'redux-saga/effects';
 import * as actionTypes from '../store/actions/actionTypes';
 import * as actionCreators from '../store/actions/exportActionCreators';
 
-export function* fetchChassisFrontInfo(action) {
+export function* fetchChassisFrontInfo() {
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/get_chassis_front_info/', {
             headers: {
@@ -101,7 +101,7 @@ export function* fetchServerInfo() {
     }
 }
 
-export function* fetchPowerInfo(action) {
+export function* fetchPowerInfo() {
     try {
         // if(action.param == null || action.param != "doNotStartLoader")
         //     yield put(actionCreators.startLoader('Fetching BMC Information'));
@@ -125,7 +125,7 @@ export function* fetchPowerInfo(action) {
 }
 
 
-export function* rebootSystem(action) {
+export function* rebootSystem() {
     try {
         const response = yield call([axios, axios.post], '/api/v1.0/reboot_system/', {
             headers: {
@@ -176,7 +176,7 @@ export function* rebootSystem(action) {
     }
 }
 
-export function* shutdownSystem(action) {
+export function* shutdownSystem() {
     try {
         const response = yield call([axios, axios.post], '/api/v1.0/shutdown_system/', {
             headers: {
@@ -223,7 +223,7 @@ export function* shutdownSystem(action) {
     }
 }
 
-export function* powerOnSystem(action) {
+export function* powerOnSystem() {
     try {
         const response = yield call([axios, axios.post], '/api/v1.0/power_on_system/', {
             headers: {
@@ -270,7 +270,7 @@ export function* powerOnSystem(action) {
     }
 }
 
-export function* forceShutdownSystem(action) {
+export function* forceShutdownSystem() {
     try {
         const response = yield call([axios, axios.post], '/api/v1.0/force_shutdown_system/', {
             headers: {

@@ -25,9 +25,8 @@ DESCRIPTION: Configuration Page Component for Adding Email Alerts
 [08/21/2019] [Palak]: Material UI........///////////////////  
 */
 import React, { Component } from "react";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { withStyles } from "@material-ui/core/styles";
-import MaterialTable, { MTableToolbar, MTableBody } from "material-table";
+import MaterialTable, { MTableToolbar } from "material-table";
 import { createMuiTheme , TablePagination } from "@material-ui/core";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import Search from "@material-ui/icons/Search";
@@ -43,15 +42,11 @@ import Remove from "@material-ui/icons/Remove";
 import EditIcon from "@material-ui/icons/Edit";
 import TrashIcon from "@material-ui/icons/Delete";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import Switch from "@material-ui/core/Switch";
 import Clear from "@material-ui/icons/Clear";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
 
 import RefreshIcon from "@material-ui/icons/Refresh";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
@@ -59,11 +54,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import IconButton from "@material-ui/core/IconButton";
-import ClearAll from "@material-ui/icons/ClearAll";
 import { customTheme } from "../../../theme";
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     flexGrow: 1
   }
@@ -207,13 +200,17 @@ class BmcLogTable extends Component {
 
     this.state = {
       component: {
-        Toolbar: props => (
+        Toolbar: toolbarProps => (
           <div style={{ height: "35px", fontSize: "12px" }}>
-            <MTableToolbar {...props} />
+            {/* Ignore props spreading check, as it is used by material-table */}
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <MTableToolbar {...toolbarProps} />
           </div>
         ),
-        Pagination: props => <TablePagination {...props} />,
-        FilterRow: props => (
+        /* Ignore props spreading check, as it is used by material-table */
+        /* eslint-disable-next-line react/jsx-props-no-spreading */
+        Pagination: paginationProps => <TablePagination {...paginationProps} />,
+        FilterRow: () => (
           <tr>
             <td />
             <td>
@@ -349,7 +346,6 @@ class BmcLogTable extends Component {
           </tr>
         )
       },
-      data: [],
       source_filter_array: [],
       sourceFilter: [],
       entryType_filter_array: [],
@@ -357,7 +353,6 @@ class BmcLogTable extends Component {
       severity_filter_array: [],
       severityFilter: [],
       filter_applied: "no",
-      filter_query: "",
       sourceSelectAll: false,
       entryTypeSelectAll: false,
       severitySelectAll: false
@@ -391,14 +386,16 @@ class BmcLogTable extends Component {
       }
     }
     this.setState({ filter_applied: "yes" });
-    this.tableRef.current && this.tableRef.current.onQueryChange();
+    if(this.tableRef.current) {
+      this.tableRef.current.onQueryChange();
+    }
   }
 
   handleSourceChange(event) {
     const { value } = event.target;
     const index = value.indexOf("Select All");
-    const subheader_index = value.indexOf("subheader");
-    if (subheader_index > -1) return;
+    const subheaderIndex = value.indexOf("subheader");
+    if (subheaderIndex > -1) return;
     if (index > -1 && index === value.length - 1) return;
     this.setState({ sourceFilter: value });
     if (value.length === this.state.source_filter_array.length)
@@ -408,14 +405,16 @@ class BmcLogTable extends Component {
       this.setState({ sourceSelectAll: false });
 
     this.setState({ filter_applied: "yes" });
-    this.tableRef.current && this.tableRef.current.onQueryChange();
+    if (this.tableRef.current) {
+      this.tableRef.current.onQueryChange();
+    }
   }
 
   handleEntryTypeChange(event) {
     const { value } = event.target;
     const index = value.indexOf("Select All");
-    const subheader_index = value.indexOf("subheader");
-    if (subheader_index > -1) return;
+    const subheaderIndex = value.indexOf("subheader");
+    if (subheaderIndex > -1) return;
     if (index > -1 && index === value.length - 1) return;
     this.setState({ entryTypeFilter: value });
     if (value.length === this.state.entryType_filter_array.length)
@@ -424,14 +423,16 @@ class BmcLogTable extends Component {
     if (value.length < this.state.entryType_filter_array.length)
       this.setState({ entryTypeSelectAll: false });
     this.setState({ filter_applied: "yes" });
-    this.tableRef.current && this.tableRef.current.onQueryChange();
+    if (this.tableRef.current) {
+      this.tableRef.current.onQueryChange();
+    }
   }
 
   handleSeverityChange(event) {
     const { value } = event.target;
     const index = value.indexOf("Select All");
-    const subheader_index = value.indexOf("subheader");
-    if (subheader_index > -1) return;
+    const subheaderIndex = value.indexOf("subheader");
+    if (subheaderIndex > -1) return;
     if (index > -1 && index === value.length - 1) return;
     if (value.length === this.state.severity_filter_array.length)
       this.setState({ severitySelectAll: true });
@@ -441,11 +442,13 @@ class BmcLogTable extends Component {
 
     this.setState({ severityFilter: value });
     this.setState({ filter_applied: "yes" });
-    this.tableRef.current && this.tableRef.current.onQueryChange();
+    if (this.tableRef.current) {
+      this.tableRef.current.onQueryChange();
+    }
   }
 
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
     return (
       <ThemeProvider theme={this.theme}>
         <MaterialTable
@@ -544,7 +547,7 @@ class BmcLogTable extends Component {
           ]}
           // data={this.state.data}
           data={query =>
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
               const page = this.state.filter_applied === "yes" ? 0 : query.page;
               let url = "/api/v1.0/get_Bmc_Logs/?";
               url += `per_page=${ query.pageSize}`;
@@ -555,7 +558,7 @@ class BmcLogTable extends Component {
                 flag = true;
                 filterSubQuery +=
                   `where (Source = '${ this.state.sourceFilter[0] }'`;
-                for (var i = 1; i < this.state.sourceFilter.length; i += 1 ) {
+                for (let i = 1; i < this.state.sourceFilter.length; i += 1 ) {
                   filterSubQuery +=
                     ` OR Source = '${ this.state.sourceFilter[i] }'`;
                 }
@@ -573,7 +576,7 @@ class BmcLogTable extends Component {
                   filterSubQuery +=
                     `AND (EntryType = '${ this.state.entryTypeFilter[0] }'`;
                 }
-                for (var i = 1; i < this.state.entryTypeFilter.length; i += 1 ) {
+                for (let i = 1; i < this.state.entryTypeFilter.length; i += 1 ) {
                   filterSubQuery +=
                     ` OR EntryType = '${ this.state.entryTypeFilter[i] }'`;
                 }
@@ -589,7 +592,7 @@ class BmcLogTable extends Component {
                   filterSubQuery +=
                     `AND (Severity = '${ this.state.severityFilter[0] }'`;
                 }
-                for (var i = 1; i < this.state.severityFilter.length; i += 1 ) {
+                for (let i = 1; i < this.state.severityFilter.length; i += 1 ) {
                   filterSubQuery +=
                     ` OR Severity = '${ this.state.severityFilter[i] }'`;
                 }

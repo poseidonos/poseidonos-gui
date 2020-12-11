@@ -90,14 +90,14 @@ class LogManagement extends Component {
     clearInterval(this.interval);
   }
 
-  toggleLiveLogs() {
-    this.props.setLiveLogsDb((this.props.showLiveLogs === "yes" ? "no" : "yes"));
-  }
-
   handleDrawerToggle() {
     this.setState({
       mobileOpen: (!this.state.mobileOpen)
     });
+  }
+
+  toggleLiveLogs() {
+    this.props.setLiveLogsDb((this.props.showLiveLogs === "yes" ? "no" : "yes"));
   }
 
   render() {

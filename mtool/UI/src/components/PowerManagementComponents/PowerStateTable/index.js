@@ -46,8 +46,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import TrashIcon from '@material-ui/icons/Delete';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import Health_OK_Icon from '../../../assets/images/Ok14x14.png'
-import Health_NOT_OK_Icon from '../../../assets/images/Not-Ok14x14.png'
+import HealthOKIcon from '../../../assets/images/Ok14x14.png'
+import HealthNotOKIcon from '../../../assets/images/Not-Ok14x14.png'
 import * as actionTypes from '../../../store/actions/actionTypes';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 
@@ -191,7 +191,7 @@ class PowerStateTable extends Component {
                     },
                     render: rowData =>
                         (
-                            <img src={(rowData.Status && rowData.Status.Health === 'OK') ? Health_OK_Icon : Health_NOT_OK_Icon} />
+                            <img alt="" src={(rowData.Status && rowData.Status.Health === 'OK') ? HealthOKIcon : HealthNotOKIcon} />
                         ),
                 },
                 {
@@ -247,7 +247,7 @@ class PowerStateTable extends Component {
                             </Typography>
                         </Grid>
                         <Grid className={classes.ToggleCard}>
-                            <label>Select Power Mode: </label>
+                            <span>Select Power Mode: </span>
                             <RadioGroup
                                 className={classes.radioGroup}
                                 name = "powermode"
@@ -303,17 +303,21 @@ class PowerStateTable extends Component {
                                             Clear,
                                         }}
                                         components={{
-                                            EditField: props => {
+                                            EditField: fieldProps => {
                                                 clearInterval(this.interval);
-                                                if (props.columnDef.required && props.value.length === 0) {
-                                                    return (<MTableEditField {...props} error label="Required" />);
-                                                  }
-                                                  return (<MTableEditField {...props} />);
+                                                if (fieldProps.columnDef.required && fieldProps.value.length === 0) {
+                                                    /* Ignore props spreading check, as it is used by material-table */
+                                                    /* eslint-disable-next-line react/jsx-props-no-spreading */
+                                                    return (<MTableEditField {...fieldProps} error label="Required" />);
+                                                }
+                                                /* Ignore props spreading check, as it is used by material-table */
+                                                /* eslint-disable-next-line react/jsx-props-no-spreading */
+                                                return (<MTableEditField {...fieldProps} />);
                                             }
                                         }}
                                         editable={{
                                             onRowUpdate: (newData, oldData) =>
-                                                new Promise((resolve, reject) => {
+                                                new Promise((resolve) => {
                                                     clearInterval(this.interval);
                                                     clearInterval(this.interval);
                                                     if (newData.PowerState < oldData.MinPowerState || newData.PowerState > oldData.MaxPowerState) {
@@ -339,9 +343,9 @@ class PowerStateTable extends Component {
                                                     }
                                                     else if (newData.PowerState >= oldData.MinPowerState && newData.PowerState <= oldData.MaxPowerState) {
                                                         this.props.changeCurrentPowerState(newData);
-                                                        const interval_alert = setInterval(() => {
-                                                            if (this.props.alertStatus == true) {
-                                                                clearInterval(interval_alert);
+                                                        const intervalAlert = setInterval(() => {
+                                                            if (this.props.alertStatus === true) {
+                                                                clearInterval(intervalAlert);
                                                             }
                                                         }, 1000);
                                                     }

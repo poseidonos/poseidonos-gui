@@ -30,9 +30,9 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import * as actionTypes from '../../../store/actions/actionTypes';
-import Health_OK_Icon from '../../../assets/images/Ok14x14.png'
-import Health_NOT_OK_Icon from '../../../assets/images/Not-Ok14x14.png'
-import Refresh_Icon from '../../../assets/images/Refresh-14x14A.png'
+import HealthOKIcon from '../../../assets/images/Ok14x14.png'
+import HealthNotOKIcon from '../../../assets/images/Not-Ok14x14.png'
+import RefreshIcon from '../../../assets/images/Refresh-14x14A.png'
 
 const styles = theme => ({
     root: {
@@ -100,9 +100,6 @@ const styles = theme => ({
 });
 
 class ServiceStatus extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         this.props.fetchSoftwareDetails();
@@ -120,12 +117,28 @@ class ServiceStatus extends Component {
                             <Typography className={classes.serviceHeader} variant="h6">Software </Typography>
                             <Grid sm={6} xs={12} item container className={classes.serviceRowContainer}>
                                 <Grid sm={6} xs={12} item className={classes.serviceInnerGrid}>
-                                    <img title={(this.props.software_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.software_health.length === 0 ? Refresh_Icon:((this.props.software_health && this.props.software_health[0] && this.props.software_health[0].mgmt_service==="OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Mgmt Service</label>
+                                    {this.props.software_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.software_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.software_health[0] && this.props.software_health[0].mgmt_service==="OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Mgmt Service</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.serviceInnerGrid}>
-                                    <img title={(this.props.software_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.software_health.length === 0 ? Refresh_Icon:((this.props.software_health && this.props.software_health[0] && this.props.software_health[0].data_service==="OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Data Services</label>
+                                {this.props.software_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.software_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.software_health[0] && this.props.software_health[0].data_service==="OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Data Services</span>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -135,24 +148,64 @@ class ServiceStatus extends Component {
                             <Typography className={classes.serviceHeader} variant="h6">Hardware </Typography>
                             <Grid sm={6} xs={12} item container className={classes.serviceRowContainer}>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.hardware_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.hardware_health.length === 0 ? Refresh_Icon:((this.props.hardware_health && this.props.hardware_health[0] && this.props.hardware_health[0].power === "OK") ?Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Power Supplies</label>
+                                    {this.props.hardware_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.hardware_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.hardware_health[0] && this.props.hardware_health[0].power==="OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Power Supplies</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.hardware_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.hardware_health.length === 0 ? Refresh_Icon:((this.props.hardware_health && this.props.hardware_health[0] && this.props.hardware_health[0].fans === "OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Fans</label>
+                                    {this.props.hardware_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.hardware_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.hardware_health[0] && this.props.hardware_health[0].fans==="OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Fans</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.hardware_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.hardware_health.length === 0 ? Refresh_Icon:((this.props.hardware_health && this.props.hardware_health[0] && this.props.hardware_health[0].temperature==="OK") ?Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Temperature Sensors</label>
+                                    {this.props.hardware_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.hardware_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.hardware_health[0] && this.props.hardware_health[0].temperature === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Temperature Sensors</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.hardware_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.hardware_health.length === 0 ? Refresh_Icon:((this.props.hardware_health && this.props.hardware_health[0] && this.props.hardware_health[0].cpu==="OK") ?Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>CPU</label>
+                                    {this.props.hardware_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.hardware_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.hardware_health[0] && this.props.hardware_health[0].cpu === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>CPU</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.hardware_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.hardware_health.length === 0 ? Refresh_Icon:((this.props.hardware_health && this.props.hardware_health[0] && this.props.hardware_health[0].memory==="OK") ?Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Memory</label>
+                                    {this.props.hardware_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.hardware_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.hardware_health[0] && this.props.hardware_health[0].memory === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Memory</span>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -162,16 +215,40 @@ class ServiceStatus extends Component {
                             <Typography className={classes.serviceHeader} variant="h6">Network </Typography>
                             <Grid sm={6} xs={12} item container className={classes.serviceRowContainer}>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.network_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.network_health.length === 0 ? Refresh_Icon:((this.props.network_health && this.props.network_health[0] && this.props.network_health[0].mgmt_network==="OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Management Network</label>
+                                    {this.props.network_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.network_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.network_health[0] && this.props.network_health[0].mgmt_network === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Management Network</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.network_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.network_health.length === 0 ? Refresh_Icon:((this.props.network_health && this.props.network_health[0] && this.props.network_health[0].client_network==="OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Client Network</label>
+                                    {this.props.network_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.network_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.network_health[0] && this.props.network_health[0].client_network === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Client Network</span>
                                 </Grid>
                                 <Grid sm={6} xs={12} item className={classes.hardwareInnerGrid}>
-                                    <img title={(this.props.network_health.length === 0 ? "Refreshing..": "Health Status")} src={(this.props.network_health.length === 0 ? Refresh_Icon:((this.props.network_health && this.props.network_health[0] && this.props.network_health[0].storage_fabric==="OK") ? Health_OK_Icon : Health_NOT_OK_Icon))} className={classes.img} />
-                                    <label>Storage Fabric 1</label>
+                                    {this.props.network_health.length === 0 ? (
+                                      <img alt="" title="Refreshing.." src={RefreshIcon} className={classes.img} />
+                                    ) : null }
+                                    {this.props.network_health.length !== 0 ? (
+                                      <img alt="" title="Health Status"
+                                        src={(this.props.network_health[0] && this.props.network_health[0].storage_fabric === "OK") ? HealthOKIcon : HealthNotOKIcon}
+                                        className={classes.img}
+                                      />
+                                    ) : null }
+                                    <span>Storage Fabric 1</span>
                                 </Grid>
                             </Grid>
                         </Grid>

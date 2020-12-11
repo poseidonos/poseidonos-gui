@@ -122,6 +122,12 @@ class Performance extends Component {
     this.props.Reset_State();
   }
 
+  handleDrawerToggle() {
+    this.setState({
+      mobileOpen: !this.state.mobileOpen
+    });
+  }
+
   setChartWidth() {
     setTimeout(() => {
       const chart = document.getElementById(
@@ -133,12 +139,6 @@ class Performance extends Component {
         chartwidth,
       });
     }, 100);
-  }
-
-  handleDrawerToggle() {
-    this.setState({
-      mobileOpen: !this.state.mobileOpen
-    });
   }
 
   // fetchDiskUsed(t) {
