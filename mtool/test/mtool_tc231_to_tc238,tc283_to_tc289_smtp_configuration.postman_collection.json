@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "56aaa8df-85f9-47ea-ac2e-ae1b923b2582",
-		"name": "mtool_tc89_to_tc92,tc231_to_tc238,tc283_to_tc289_smtp_configuration",
+		"_postman_id": "a81e2bf7-6ae7-40ec-b32b-2a0191b39f13",
+		"name": "mtool_tc231_to_tc238,tc283_to_tc289_smtp_configuration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "93254a13-9b6f-43e4-af42-17ee373ca70d",
+						"id": "379531f4-272d-4ff7-b005-801cb55d3974",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -68,7 +68,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d485d07b-9594-41a7-aed4-717a9cb6c037",
+						"id": "e8c2c9c6-d4a8-40a8-861c-87139610f0e6",
 						"exec": [
 							"pm.test(\"Unable to set SMTP Configuration with invalid IP...\", function () {\r",
 							"    pm.response.to.have.status(500);\r",
@@ -108,7 +108,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9424b755-95fd-49f0-b531-fd445a741074",
+						"id": "d6b0b0bb-f909-4e7d-abe9-fbeb6c3a56ac",
 						"exec": [
 							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -148,7 +148,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "cd1e6d57-7645-4f9e-b8d2-b6b0b2aa62f5",
+						"id": "9af8d65a-4d2b-4dac-a72e-203e6abc8195",
 						"exec": [
 							"var oldids = JSON.parse(pm.environment.get(\"oldAlertEmailIDs\"))\r",
 							"var newids = JSON.parse(pm.environment.get(\"newAlertEmailIDs\"))\r",
@@ -181,7 +181,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1eaa154d-cb55-40b3-9ab1-d0dede3168ac",
+						"id": "682e79f0-fd9b-491b-8867-70fca5b25166",
 						"exec": [
 							"pm.test(\"Create 5 email ids for alerts..\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -241,7 +241,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "2bba7814-28aa-4357-9097-fcc95daa00f0",
+						"id": "3b84329f-7260-4df5-97f8-e4e717b0afa9",
 						"exec": [
 							"var emailIDS = JSON.parse(pm.environment.get(\"DeleteAlertEmailIDs\"))\r",
 							"var counter = parseInt(pm.environment.get(\"deleteAlertEmailIDCounter\"))\r",
@@ -265,7 +265,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ab3951bc-1935-4707-8596-03aef771fdd0",
+						"id": "863e7111-998b-438c-869b-0147ad796e97",
 						"exec": [
 							"pm.test(\"Delete 5 email ids for alerts..\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -324,7 +324,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8195bab5-2a64-4f44-833e-f55ed7fc2898",
+						"id": "014ee4a7-ee2b-415f-87f3-db790952e671",
 						"exec": [
 							"pm.test(\"Delete SMTP Configuration...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -365,7 +365,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "289c2dfd-815b-464d-a02e-b9e77a304499",
+						"id": "4bd5e942-879d-4fea-9108-39e7ad3e9074",
 						"exec": [
 							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -405,7 +405,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b44a7880-6ca3-4b28-b21e-e113e36c9693",
+						"id": "319b4337-f911-4957-a3a8-776215b6e98d",
 						"exec": [
 							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -445,7 +445,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "31e9dccb-6252-4ba5-a8fd-2141577425ff",
+						"id": "e86338ec-a912-4f09-a360-42ee917714ef",
 						"exec": [
 							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -484,7 +484,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3db8f202-3e95-4990-96a3-c0d17c2e2a84",
+				"id": "60c272b0-f3e7-4d2e-a54d-b945e8ef3b13",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -494,7 +494,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "07510952-7369-4665-8dd7-8879adc21c29",
+				"id": "189fa8c3-c1c6-457f-976b-c6d44f2dd011",
 				"type": "text/javascript",
 				"exec": [
 					""

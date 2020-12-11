@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "6e789cf7-5ab6-46f5-a6c5-fe977c81c625",
+		"name": "mtool_tc89_to_tc92_custom_user_smtp_configuration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d70bef18-8a28-445e-bbf0-20cdf8a180ed",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e07b060e-8fa5-4ef9-bc0f-5bc22ee06492",
+						"exec": [
+							"pm.test(\"Added as custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 15 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 15000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Custom Admin user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe24074b-8d3a-4c00-a1fd-b2e2476412a1",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"PKAdmin logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c5728b5-62c6-4f01-badc-bd582c9a1833",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\",\r\n    \"smtppassword\": \"{{smtppassword}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_EmailID_For_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7a480f2b-8a36-4553-bf66-2dec6cecb8e9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "6767c3a2-845a-490e-af2a-bf5ed1838af6",
+						"exec": [
+							"pm.test(\"Create email ids for alert..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldid\": \"test1@samsung.com\",\r\n    \"email\":\"test1@samsung.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update_email/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update_email",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_EmailID_For_Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0a10996e-2386-4ce7-b67d-966d728a555a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "eac18e9d-9bb8-45a3-b19b-2b973f649fc0",
+						"exec": [
+							"pm.test(\"Delete email id for alert..\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"test1@samsung.com\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_emailids/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_emailids",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_SMTP_Server_Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "39445713-72ba-4605-b56b-db3db946735d",
+						"exec": [
+							"pm.test(\"Delete SMTP Configuration...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_smtp_details/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_smtp_details",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac762207-e119-498c-970c-2553c276b8a8",
+						"exec": [
+							"pm.test(\"Deleted custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ids\":[\"pkadmin\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set_SMTP_Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f73b3175-7a1b-4eac-a4e5-2ebc13fb60b9",
+						"exec": [
+							"pm.test(\"Set SMTP Configuration with valid credentials...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"{{smtpusername}}\",\r\n    \"smtpfromemail\": \"{{smtpfromemail}}\",\r\n    \"smtppassword\": \"{{smtppassword}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"test_smtpserver",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "55fc22f1-f9ca-49d0-a01e-fa3a1c27eb32",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0ebfc77c-9fe6-4e5f-93a6-aeb157aedc2e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
