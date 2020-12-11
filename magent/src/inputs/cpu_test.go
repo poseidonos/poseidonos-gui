@@ -127,6 +127,8 @@ func (m magentCPUTest) Times(percpu bool) ([]cpu.TimesStat, error) {
 				GuestNice: 2.524,
 			}}, nil
 		}
+	case 15:
+		return nil, errors.New("Failed to get cpu Time")
 	default:
 		if percpu == false {
 			return []cpu.TimesStat{{
@@ -219,3 +221,32 @@ func TestGetCPUData(t *testing.T) {
 	wg.Wait()
 	close(dataChan)
 }
+
+func TestGetCPUErr(t *testing.T) {
+	magentCPU = magentCPUTest{}
+	var wg sync.WaitGroup
+        dataChan := make(chan models.ClientPoint, 10)
+        ctx, cancel := context.WithCancel(context.Background())
+        wg.Add(1)
+        go func() {
+                defer wg.Done()
+                CollectCPUData(ctx, dataChan)
+        }()
+	/*
+        go func() {
+                for data := range dataChan {
+                        assert.InDelta(t, data.Fields["usage_user"], 7.8, 0.05)
+                }
+        }()
+	*/
+        time.Sleep(2500 * time.Millisecond)
+        cancel()
+        wg.Wait()
+        close(dataChan)
+}
+
+func TestGetCPUActual(t *testing.T) {
+	magentCPUReal := MAgentCPU{}
+	cpuTimes, _ := magentCPUReal.Times(false)
+}
+

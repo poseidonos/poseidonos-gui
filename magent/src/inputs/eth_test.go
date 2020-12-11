@@ -14,10 +14,21 @@ package inputs
 
 import (
 	"context"
+	"errors"
+	"github.com/shirou/gopsutil/net"
+	"github.com/stretchr/testify/assert"
 	"magent/src/models"
 	"testing"
 	"time"
 )
+
+// MAgentEthernet struct implemetns ethernetClient Interface. It has a InterfacesInfo method to fetch Interface names
+type MAgentEthernetTest struct{}
+
+// InterfacesInfo calls net.Interfaces() from net package of gopsutil library
+func (m MAgentEthernetTest) InterfacesInfo() ([]net.InterfaceStat, error) {
+        return nil, errors.New("ConnectionError")
+}
 
 func TestCollectEthernetData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -34,3 +45,13 @@ func TestCollectEthernetData(t *testing.T) {
 		cancel()
 	}
 }
+
+func TestCollectEthernetError(t * testing.T) {
+	ctx, _ := context.WithCancel(context.Background())
+        dataChan := make(chan models.ClientPoint, 1)
+	magentEthernet = MAgentEthernetTest{}
+	CollectEthernetData(ctx, dataChan)
+	assert.Empty(t, dataChan)
+}
+
+

@@ -81,6 +81,16 @@ var (
 	partitionErr error
 )
 
+func TestDiskData(t *testing.T) {
+	magentDiskReal := MAgentDisk{}
+	partitions, _ := magentDiskReal.Partitions(true)
+        for _, d := range partitions {
+                        du, _ := magentDisk.Usage(d.Mountpoint)
+			//fmt.Println(du)
+	}
+//	usage := magentDiskReal.Usage()
+}
+
 func TestCollectDiskData(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	dataChan := make(chan models.ClientPoint, 10)
