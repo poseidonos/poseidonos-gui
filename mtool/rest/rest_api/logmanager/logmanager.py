@@ -42,7 +42,7 @@ def get_ibofos_logs():
     count = connection.query(query)
     connection.close()
     return res, count
-
+"""
 def get_bmc_logs(page, per_page, filterSubQuery):
     offset = int(page, 10) * int(per_page, 10)
     connection = get_connection()
@@ -63,4 +63,4 @@ def get_bmc_logs(page, per_page, filterSubQuery):
     severity_filter = connection.query(query)
     connection.close()
     return res, count, source_filter, entryType_filter, severity_filter
-"""
+

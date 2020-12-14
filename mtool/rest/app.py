@@ -40,7 +40,7 @@ from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
-#from rest.rest_api.logmanager.logmanager import get_bmc_logs
+from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_diskio_mbps, get_total_processes,  \
@@ -48,7 +48,7 @@ from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_u
     get_disk_current_perf 
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
-#import rest.rest_api.dagent.bmc as BMC_agent
+import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
 from util.log.influx_handler import InfluxHandler
@@ -1791,7 +1791,7 @@ def handle_invalid_usage(error):
 
 
 # BMC Rest APIs
-"""
+
 @app.route('/api/v1.0/get_server_info/', methods=['GET'])
 @token_required
 def getServerInfo(current_user):
@@ -2028,7 +2028,7 @@ def activate_power_thread():
         with app.app_context():
             BMC_agent.get_power_sensor_info()
             time.sleep(180)
-"""
+
 
 # app.host='localhost'
 #app.debug = True
@@ -2199,10 +2199,10 @@ def send_health_status_data():
 
 
 if __name__ == '__main__':
-    #bmc_thread = threading.Thread(target=activate_bmc_thread)
-    #bmc_thread.start()
-    #power_thread = threading.Thread(target=activate_power_thread)
-    #power_thread.start()
+    bmc_thread = threading.Thread(target=activate_bmc_thread)
+    bmc_thread.start()
+    power_thread = threading.Thread(target=activate_power_thread)
+    power_thread.start()
 
     #app.run(host='0.0.0.0', debug=True,use_reloader=False, port=5010, threaded=True)
     health_status_thread = threading.Thread(target=send_health_status_data, args=())
