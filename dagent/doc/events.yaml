@@ -627,7 +627,7 @@ modules:
         solution:
       - code: 2522
         level: WARN
-        message: no array exist named "targetarray"
+        message: no array exist
         problem:
         solution:
       - code: 2523
