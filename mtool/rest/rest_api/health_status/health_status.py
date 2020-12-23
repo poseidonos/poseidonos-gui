@@ -26,7 +26,7 @@ DESCRIPTION: <File description> *
 [29/09/2020] [Vishal] : Prototyping..........////////////////////
 */
 '''
-import datetime
+#import datetime
 
 status_list = ["Good", "Fair", "Critical"]
 # 008000:Green, #FFA500:Orange, #FF0000:Red
@@ -80,7 +80,7 @@ def get_json_result(usage_percent, timestamp, rule, _id, label):
     percentage = usage_percent/100
     percentage = round(percentage, 2)
     epoch_time = timestamp
-    utc_time = datetime.datetime.utcfromtimestamp(timestamp / 1000000000)
+    #utc_time = datetime.datetime.utcfromtimestamp(timestamp / 1000000000)
     response = {
         "name": rule,
         "id": _id,

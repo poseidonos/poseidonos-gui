@@ -1255,7 +1255,7 @@ def test_list_devices_failure(global_data, **kwargs):
                        status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
 
-    output = list_devices()
+    #output = list_devices()
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
         headers={

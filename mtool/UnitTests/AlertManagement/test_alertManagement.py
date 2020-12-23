@@ -207,7 +207,7 @@ def test_delete_new_alert_failure(mock_execute_delete_alerts_query, global_data,
         data=json.dumps({"ids": ["TESTNEWALERT_1"]}),
         content_type='application/json',
     )
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 500
 
     kwargs["mock"].delete(KAPACITOR_URL + "/tasks/TESTNEWALERT_1", json=None, status_code=500)
@@ -217,7 +217,7 @@ def test_delete_new_alert_failure(mock_execute_delete_alerts_query, global_data,
         data=json.dumps({"ids": ["TESTNEWALERT_1"]}),
         content_type='application/json',
     )
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -336,7 +336,7 @@ def test_update_alerts_failure(mock_execute_select_alert_query, mock_execute_del
                                                        }),
                                       content_type='application/json',
                                       )
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -360,7 +360,7 @@ def test_update_alerts_failure_2(mock_execute_select_alert_query, mock_execute_d
                                                        }),
                                       content_type='application/json',
                                       )
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 200
 
     kwargs["mock"].patch(KAPACITOR_URL + "/tasks/TESTNEWALERT1", json=None)
@@ -379,7 +379,7 @@ def test_update_alerts_failure_2(mock_execute_select_alert_query, mock_execute_d
                                                        }),
                                       content_type='application/json',
                                       )
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -462,7 +462,7 @@ def test_get_smtp_details(global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
                                       headers={'x-access-token': global_data['token']})
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -472,7 +472,7 @@ def test_get_smtp_details_failure(global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
                                       headers={'x-access-token': global_data['token']})
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -482,7 +482,7 @@ def test_get_smtp_details_failure_2(global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
                                       headers={'x-access-token': global_data['token']})
-    data = response.get_data(as_text=True)
+    #data = response.get_data(as_text=True)
     assert response.status_code == 200
 
 if __name__ == '__main__':

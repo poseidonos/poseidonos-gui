@@ -33,7 +33,7 @@ DESCRIPTION: Files containing influxdb queries related to Performance data
 from util.db.influx import get_connection
 from util.com.time_groups import time_groups_default
 from rest.rest_api.dagent import metrics
-from util.macros.influxdb_config import mtool_db, infinite_rp
+from util.macros.influxdb_config import mtool_db
 
 
 def get_user_cpu_usage(time):

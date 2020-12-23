@@ -437,7 +437,7 @@ def ibofos_logs():
         # "value":value}])
 """
 
-"""
+
 @app.route('/api/v1.0/get_Bmc_Logs/')
 def bmc_logs():
 
@@ -503,7 +503,7 @@ def bmc_logs():
                   }
     except BaseException:
         return toJson(result)
-"""
+
 
 """
 @app.route('/api/v1.0/get_alert_info', methods=['GET'])

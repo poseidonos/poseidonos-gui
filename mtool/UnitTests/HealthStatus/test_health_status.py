@@ -5,7 +5,6 @@ import os
 import datetime
 import requests_mock
 from unittest import mock
-import json
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])

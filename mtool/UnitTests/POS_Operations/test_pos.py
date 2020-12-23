@@ -1,6 +1,6 @@
 import os
 
-from rest.app import app, IBOF_OS_Running
+from rest.app import app
 import requests_mock
 import jwt
 import datetime
