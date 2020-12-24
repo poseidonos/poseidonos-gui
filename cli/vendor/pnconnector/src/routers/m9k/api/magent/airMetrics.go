@@ -46,7 +46,7 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		return nil, nil, errDataCode
+		return nil, nil, 0
 	}
 	return result[0].Series[0].Values, result[0].Series[0].Columns, 0
 }

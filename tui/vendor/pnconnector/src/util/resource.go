@@ -92,7 +92,7 @@ func ResourcesEventsYaml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "../resources/events.yaml", size: 35300, mode: os.FileMode(420), modTime: time.Unix(1607511186, 0)}
+	info := bindataFileInfo{name: "../resources/events.yaml", size: 35300, mode: os.FileMode(420), modTime: time.Unix(1608787876, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
