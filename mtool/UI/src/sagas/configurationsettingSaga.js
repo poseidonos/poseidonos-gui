@@ -58,7 +58,7 @@ export function* fetchEmailList() {
 }
 
 export function* getSmtpDetails() {
-  let payload = { smtpserver:''};
+  let payload = { smtpserver:'',smtpfromemail:'',smtpusername:'',smtppassword:'',isPasswordSet:false};
   try {
     const response = yield call([axios, axios.get], '/api/v1.0/get_smtp_details/', {
       headers: {

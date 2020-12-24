@@ -813,6 +813,8 @@ def get_smtp_details():
         print("smtp detailsaaaaa",data['options'])
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
+        elif (data['options']['enabled'] == False):
+            return abort(404)
         else:
             smtpserverip = data['options']['host']
             smtpserverport = data['options']['port']
