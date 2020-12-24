@@ -1229,7 +1229,7 @@ def login():
                     'username': received_username})
 
 
-"""
+
 @app.route('/api/v1.0/bmc_login/', methods=['POST'])
 def bmc_login():
     body_unicode = request.data.decode('utf-8')
@@ -1262,7 +1262,7 @@ def bmc_login():
         return jsonify({'Login': validation, })
     print("herepp")
     return jsonify({'Login': validation, }), 401
-"""
+
 
 @app.route('/api/v1.0/get_ip_and_mac', methods=['GET'])
 def getIpAndMac():
