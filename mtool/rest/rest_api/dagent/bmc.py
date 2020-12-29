@@ -162,8 +162,8 @@ def get_server_info(auth='Basic cm9vdDowcGVuQm1j'):
         print(f'Other error occurred: {err}')
     return {"result": "could not get the system state", "return": -1}
 
-
-def get_power_info_old(auth='Basic cm9vdDowcGVuQm1j'):
+"""
+def get_power_info_old(auth='Basic QURNSU46QURNSU4='):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse power info...')
@@ -200,7 +200,7 @@ def get_power_info_old(auth='Basic cm9vdDowcGVuQm1j'):
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the power info", "return": -1}
-
+"""
 
 def get_power_info(auth='Basic cm9vdDowcGVuQm1j'):
     #req_headers = get_headers(auth)
@@ -300,8 +300,8 @@ def get_chassis_front_info(auth='Basic cm9vdDowcGVuQm1j'):
         print(f'Other error occurred: {err}')
     return {"result": "could not get the chassis front info", "return": -1}
 
-
-def get_chassis_rear_info(auth='Basic cm9vdDowcGVuQm1j'):
+"""
+def get_chassis_rear_info(auth='Basic QURNSU46QURNSU4='):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse drives info...')
@@ -323,7 +323,7 @@ def get_chassis_rear_info(auth='Basic cm9vdDowcGVuQm1j'):
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the chassis rear info", "return": -1}
-
+"""
 
 def power_on_system(auth='Basic cm9vdDowcGVuQm1j'):
     req_headers = get_headers(auth)

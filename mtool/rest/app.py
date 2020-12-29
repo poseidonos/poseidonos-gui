@@ -1260,7 +1260,6 @@ def bmc_login():
     validation = BMC_agent.check_bmc_login(auth)
     if(validation):
         return jsonify({'Login': validation, })
-    print("herepp")
     return jsonify({'Login': validation, }), 401
 
 
@@ -1823,6 +1822,7 @@ def getChassisFrontInfo(current_user):
     except BaseException:
         return make_response('Could not chassis front info', 500)
 
+"""
 @app.route('/api/v1.0/get_chassis_rear_info/', methods=['GET'])
 @token_required
 def getChassisRearInfo(current_user):
@@ -1831,7 +1831,7 @@ def getChassisRearInfo(current_user):
         return BMC_agent.get_chassis_rear_info()
     except BaseException:
         return make_response('Could not get chassis rear info', 500)
-
+"""
 
 
 @app.route('/api/v1.0/power_on_system/', methods=['POST'])
