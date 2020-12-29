@@ -14,6 +14,7 @@ DAGENT_BMC_URL = 'http://localhost:3000'
 CHASSIS_URL = '/redfish/v1/Chassis'
 SYSTEM_URL = '/redfish/v1/Systems'
 MANAGER_URL = '/redfish/v1/Managers'
+AUTH = 'Basic cm9vdDowcGVuQm1j'
 
 
 class BreakLoopsException(Exception):
@@ -21,7 +22,7 @@ class BreakLoopsException(Exception):
 
 
 def get_headers(
-        auth='Basic cm9vdDowcGVuQm1j',
+        auth=AUTH,
         content_type="application/json"):
     return {"X-Request-Id": str(uuid.uuid4()),
             "Accept": content_type,
@@ -89,7 +90,7 @@ def check_bmc_login(auth):
         return False
 
 
-def get_chassis_info(redfish_url=CHASSIS_URL, auth='Basic cm9vdDowcGVuQm1j'):
+def get_chassis_info(redfish_url=CHASSIS_URL, auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse data members...')
@@ -123,7 +124,7 @@ def get_chassis_info(redfish_url=CHASSIS_URL, auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not parse redfish response", "return": -1}
 
 
-def get_server_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_server_info(auth=AUTH):
     #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse server info...')
@@ -202,7 +203,7 @@ def get_power_info_old(auth='Basic QURNSU46QURNSU4='):
     return {"result": "could not get the power info", "return": -1}
 """
 
-def get_power_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_power_info(auth=AUTH):
     #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse power info...')
@@ -236,7 +237,7 @@ def get_power_info(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not get the power info", "return": -1}
 
 
-def get_basic_redfish_url(auth='Basic cm9vdDowcGVuQm1j'):
+def get_basic_redfish_url(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'get generic url info...')
@@ -262,7 +263,7 @@ def get_basic_redfish_url(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not get generic url info", "return": -1}
 
 
-def get_chassis_front_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_chassis_front_info(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse drives info...')
@@ -325,7 +326,7 @@ def get_chassis_rear_info(auth='Basic QURNSU46QURNSU4='):
     return {"result": "could not get the chassis rear info", "return": -1}
 """
 
-def power_on_system(auth='Basic cm9vdDowcGVuQm1j'):
+def power_on_system(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'power on bmc...')
@@ -365,7 +366,7 @@ def power_on_system(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not power on", "return": -1}
 
 
-def reboot_system(auth='Basic cm9vdDowcGVuQm1j'):
+def reboot_system(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'reboot bmc...')
@@ -405,7 +406,7 @@ def reboot_system(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not reboot", "return": -1}
 
 
-def shutdown_system(auth='Basic cm9vdDowcGVuQm1j'):
+def shutdown_system(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'graceful shutdown...')
@@ -445,7 +446,7 @@ def shutdown_system(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not shutdown", "return": -1}
 
 
-def force_shutdown_system(auth='Basic cm9vdDowcGVuQm1j'):
+def force_shutdown_system(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'force off system...')
@@ -485,7 +486,7 @@ def force_shutdown_system(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not force power off", "return": -1}
 
 
-def get_power_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_power_sensor_info(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse sensor info...')
@@ -541,7 +542,7 @@ def get_power_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not shutdown", "return": -1}
 
 
-def get_fan_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_fan_sensor_info(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse sensor info...')
@@ -572,7 +573,7 @@ def get_fan_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not shutdown", "return": -1}
 
 
-def get_temperature_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
+def get_temperature_sensor_info(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'parse sensor info...')
@@ -603,7 +604,7 @@ def get_temperature_sensor_info(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not shutdown", "return": -1}
 
 
-def getPowerSummary(auth='Basic cm9vdDowcGVuQm1j'):  # GetCurrentPowerMode
+def getPowerSummary(auth=AUTH):  # GetCurrentPowerMode
     #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'get power summary...')
@@ -620,7 +621,7 @@ def getPowerSummary(auth='Basic cm9vdDowcGVuQm1j'):  # GetCurrentPowerMode
     return {"result": "could not shutdown", "return": -1}
 
 
-def setCurrentPowerMode(auth='Basic cm9vdDowcGVuQm1j'):
+def setCurrentPowerMode(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'set current power mode...')
@@ -647,7 +648,7 @@ def setCurrentPowerMode(auth='Basic cm9vdDowcGVuQm1j'):
 def changeCurrentPowerState(
         DriveIndex,
         PowerState,
-        auth='Basic cm9vdDowcGVuQm1j'):
+        auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'update current power state...')
@@ -710,7 +711,7 @@ def changeCurrentPowerState(
     return {"result": "could not update power state", "return": -1}
 
 
-def fetch_event_logs(auth='Basic cm9vdDowcGVuQm1j'):
+def fetch_event_logs(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'fetch all bmc logs...')
@@ -785,7 +786,7 @@ def fetch_event_logs(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not fetch logs", "return": -1}
 
 
-def fetch_crashdump_logs(auth='Basic cm9vdDowcGVuQm1j'):
+def fetch_crashdump_logs(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'fetch all bmc logs...')
@@ -860,7 +861,7 @@ def fetch_crashdump_logs(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not fetch logs", "return": -1}
 
 
-def fetch_journal_logs(auth='Basic cm9vdDowcGVuQm1j'):
+def fetch_journal_logs(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'fetch all bmc logs...')
@@ -954,7 +955,7 @@ def fetch_journal_logs(auth='Basic cm9vdDowcGVuQm1j'):
     return {"result": "could not fetch logs", "return": -1}
 
 
-def fetch_bmc_logs(auth='Basic cm9vdDowcGVuQm1j'):
+def fetch_bmc_logs(auth=AUTH):
     #req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
     logger.info('%s', 'fetch all bmc logs...')
