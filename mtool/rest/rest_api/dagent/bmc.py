@@ -327,6 +327,31 @@ def get_chassis_rear_info(auth='Basic QURNSU46QURNSU4='):
     return {"result": "could not get the chassis rear info", "return": -1}
 """
 
+def process_chassis_info(systems_info, request_body, req_headers, status):
+	try:
+		for i in range(0, len(systems_info)):
+			if "Actions" in systems_info[i] and "#ComputerSystem.Reset" in systems_info[i][
+					'Actions'] and "target" in systems_info[i]['Actions']['#ComputerSystem.Reset']:
+
+				response = send_command_to_bmc(
+					"POST",
+					url=DAGENT_BMC_URL +
+					systems_info[i]['Actions']['#ComputerSystem.Reset']['target'],
+					headers=req_headers,
+					timeout=(
+						20,
+						20),
+					data=request_body)
+				response = response.json()
+				if "@Message.ExtendedInfo" in response:
+					for j in range(0,
+								   len(response['@Message.ExtendedInfo'])):
+						if "Message" in response['@Message.ExtendedInfo'][j] and "Success" in response['@Message.ExtendedInfo'][j]['Message']:
+							return jsonify({status: 'success'})
+						else:
+							return response
+	except BaseException:
+		pass
 def power_on_system(auth=AUTH):
     req_headers = get_headers(auth)
     logger = logging.getLogger(__name__)
@@ -336,30 +361,8 @@ def power_on_system(auth=AUTH):
         systems_info = get_chassis_info(SYSTEM_URL)
         request_body = {"ResetType": 'On'}
         request_body = json.dumps(request_body)
-        try:
-            for i in range(0, len(systems_info)):
-                if "Actions" in systems_info[i] and "#ComputerSystem.Reset" in systems_info[i][
-                        'Actions'] and "target" in systems_info[i]['Actions']['#ComputerSystem.Reset']:
-
-                    response = send_command_to_bmc(
-                        "POST",
-                        url=DAGENT_BMC_URL +
-                        systems_info[i]['Actions']['#ComputerSystem.Reset']['target'],
-                        headers=req_headers,
-                        timeout=(
-                            20,
-                            20),
-                        data=request_body)
-                    response = response.json()
-                    if "@Message.ExtendedInfo" in response:
-                        for j in range(0,
-                                       len(response['@Message.ExtendedInfo'])):
-                            if "Message" in response['@Message.ExtendedInfo'][j] and "Success" in response['@Message.ExtendedInfo'][j]['Message']:
-                                return jsonify({"poweron": 'success'})
-                            else:
-                                return response
-        except BaseException:
-            pass
+        response = process_chassis_info(systems_info, request_body, req_headers,"poweron")
+        return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
@@ -376,30 +379,8 @@ def reboot_system(auth=AUTH):
         systems_info = get_chassis_info(SYSTEM_URL)
         request_body = {"ResetType": 'ForceRestart'}
         request_body = json.dumps(request_body)
-        try:
-            for i in range(0, len(systems_info)):
-                if "Actions" in systems_info[i] and "#ComputerSystem.Reset" in systems_info[i][
-                        'Actions'] and "target" in systems_info[i]['Actions']['#ComputerSystem.Reset']:
-
-                    response = send_command_to_bmc(
-                        "POST",
-                        url=DAGENT_BMC_URL +
-                        systems_info[i]['Actions']['#ComputerSystem.Reset']['target'],
-                        headers=req_headers,
-                        timeout=(
-                            20,
-                            20),
-                        data=request_body)
-                    response = response.json()
-                    if "@Message.ExtendedInfo" in response:
-                        for j in range(0,
-                                       len(response['@Message.ExtendedInfo'])):
-                            if "Message" in response['@Message.ExtendedInfo'][j] and "Success" in response['@Message.ExtendedInfo'][j]['Message']:
-                                return jsonify({"reboot": 'success'})
-                            else:
-                                return response
-        except BaseException:
-            pass
+        response = process_chassis_info(systems_info, request_body, req_headers,"reboot")
+        return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
@@ -416,30 +397,8 @@ def shutdown_system(auth=AUTH):
         systems_info = get_chassis_info(SYSTEM_URL)
         request_body = {"ResetType": 'GracefulShutdown'}
         request_body = json.dumps(request_body)
-        try:
-            for i in range(0, len(systems_info)):
-                if "Actions" in systems_info[i] and "#ComputerSystem.Reset" in systems_info[i][
-                        'Actions'] and "target" in systems_info[i]['Actions']['#ComputerSystem.Reset']:
-
-                    response = send_command_to_bmc(
-                        "POST",
-                        url=DAGENT_BMC_URL +
-                        systems_info[i]['Actions']['#ComputerSystem.Reset']['target'],
-                        headers=req_headers,
-                        timeout=(
-                            20,
-                            20),
-                        data=request_body)
-                    response = response.json()
-                    if "@Message.ExtendedInfo" in response:
-                        for j in range(0,
-                                       len(response['@Message.ExtendedInfo'])):
-                            if "Message" in response['@Message.ExtendedInfo'][j] and "Success" in response['@Message.ExtendedInfo'][j]['Message']:
-                                return jsonify({"shutdown": 'success'})
-                            else:
-                                return response
-        except BaseException:
-            pass
+        response = process_chassis_info(systems_info, request_body, req_headers,"shutdown")
+        return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
@@ -456,30 +415,8 @@ def force_shutdown_system(auth=AUTH):
         systems_info = get_chassis_info(SYSTEM_URL)
         request_body = {"ResetType": 'ForceOff'}
         request_body = json.dumps(request_body)
-        try:
-            for i in range(0, len(systems_info)):
-                if "Actions" in systems_info[i] and "#ComputerSystem.Reset" in systems_info[i][
-                        'Actions'] and "target" in systems_info[i]['Actions']['#ComputerSystem.Reset']:
-
-                    response = send_command_to_bmc(
-                        "POST",
-                        url=DAGENT_BMC_URL +
-                        systems_info[i]['Actions']['#ComputerSystem.Reset']['target'],
-                        headers=req_headers,
-                        timeout=(
-                            20,
-                            20),
-                        data=request_body)
-                    response = response.json()
-                    if "@Message.ExtendedInfo" in response:
-                        for j in range(0,
-                                       len(response['@Message.ExtendedInfo'])):
-                            if "Message" in response['@Message.ExtendedInfo'][j] and "Success" in response['@Message.ExtendedInfo'][j]['Message']:
-                                return jsonify({"ForceOff": 'success'})
-                            else:
-                                return response
-        except BaseException:
-            pass
+        response = process_chassis_info(systems_info, request_body, req_headers,"ForceOff")
+        return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
