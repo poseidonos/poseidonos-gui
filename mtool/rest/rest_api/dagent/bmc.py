@@ -17,6 +17,7 @@ MANAGER_URL = '/redfish/v1/Managers'
 AUTH = 'Basic cm9vdDowcGVuQm1j'
 
 
+
 class BreakLoopsException(Exception):
     pass
 
@@ -710,6 +711,57 @@ def changeCurrentPowerState(
         print(f'Other error occurred: {err}')
     return {"result": "could not update power state", "return": -1}
 
+def write_log_into_db(influx_local_time, Name, EntryType, Severity, Description, t_data):
+	connection = get_connection()
+	connection.write(['bmc_logs Timestamp=' +
+					  "\"" +
+					  influx_local_time +
+					  "\"" +
+					  ',Source=' +
+					  "\"" +
+					  Name +
+					  "\"" +
+					  ',EntryType=' +
+					  "\"" +
+					  EntryType +
+					  "\"" +
+					  ',Severity=' +
+					  "\"" +
+					  Severity +
+					  "\"" +
+					  ',Description=' +
+					  "\"" +
+					  Description +
+					  "\"" +
+					  ' ' +
+					  str(t_data)], {'db': mtool_db}, 204, 'line')
+	connection.close()
+def process_response(response, log_entries):
+	response = response.json()
+	if "Members" in response and 'Members@odata.count' in response:
+		log_entries = response['Members']
+		for j in range(0, response['Members@odata.count']):
+			if "Created" in log_entries[j] and "Name" in log_entries[j] and "EntryType" in log_entries[
+					j] and "Severity" in log_entries[j] and "Message" in log_entries[j]:
+				t_data = log_entries[j]['Created']
+				parsed_t = dp.parse(t_data)
+				t_data = parsed_t.strftime('%s')
+				c_tz = datetime.datetime.now(datetime.timezone(
+					datetime.timedelta(0))).astimezone().tzinfo
+				influx_local_time = str(
+					parsed_t.astimezone(c_tz)) + ' ' + str(c_tz)
+				t_now = datetime.datetime.utcnow().replace(
+					tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
+				parsed_t = dp.parse(t_now)
+				t_now = parsed_t.strftime('%s')
+				if ((int(t_now) - int(t_data)) >= -
+						5 and (int(t_now) - int(t_data)) <= 10):
+					write_log_into_db(influx_local_time, log_entries[j]['Name'], log_entries[j]['EntryType'], log_entries[j]['Severity'], log_entries[j]['Message'], t_data)
+				else:
+					continue
+		 #    break;
+			#i -= 1;
+
 
 def fetch_event_logs(auth=AUTH):
     req_headers = get_headers(auth)
@@ -730,53 +782,7 @@ def fetch_event_logs(auth=AUTH):
                         timeout=(
                             20,
                             20))
-                    response = response.json()
-                    if "Members" in response and 'Members@odata.count' in response:
-                        log_entries = response['Members']
-                        for j in range(0, response['Members@odata.count']):
-                            if "Created" in log_entries[j] and "Name" in log_entries[j] and "EntryType" in log_entries[
-                                    j] and "Severity" in log_entries[j] and "Message" in log_entries[j]:
-                                t_data = log_entries[j]['Created']
-                                parsed_t = dp.parse(t_data)
-                                t_data = parsed_t.strftime('%s')
-                                c_tz = datetime.datetime.now(datetime.timezone(
-                                    datetime.timedelta(0))).astimezone().tzinfo
-                                influx_local_time = str(
-                                    parsed_t.astimezone(c_tz)) + ' ' + str(c_tz)
-                                t_now = datetime.datetime.utcnow().replace(
-                                    tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-                                parsed_t = dp.parse(t_now)
-                                t_now = parsed_t.strftime('%s')
-                                if ((int(t_now) - int(t_data)) >= -
-                                        5 and (int(t_now) - int(t_data)) <= 10):
-                                    connection = get_connection()
-                                    connection.write(['bmc_logs Timestamp=' +
-                                                      "\"" +
-                                                      influx_local_time +
-                                                      "\"" +
-                                                      ',Source=' +
-                                                      "\"" +
-                                                      log_entries[j]['Name'] +
-                                                      "\"" +
-                                                      ',EntryType=' +
-                                                      "\"" +
-                                                      log_entries[j]['EntryType'] +
-                                                      "\"" +
-                                                      ',Severity=' +
-                                                      "\"" +
-                                                      log_entries[j]['Severity'] +
-                                                      "\"" +
-                                                      ',Description=' +
-                                                      "\"" +
-                                                      log_entries[j]['Message'] +
-                                                      "\"" +
-                                                      ' ' +
-                                                      str(t_data)], {'db': mtool_db}, 204, 'line')
-                                    connection.close()
-                                else:
-                                    continue
-                         #    break;
-                            #i -= 1;
+                    process_response(response, log_entries)
         except BaseException:
             pass
     except HTTPError as http_err:
@@ -805,53 +811,7 @@ def fetch_crashdump_logs(auth=AUTH):
                         timeout=(
                             20,
                             20))
-                    response = response.json()
-                    if "Members" in response and "Members@odata.count" in response:
-                        log_entries = response['Members']
-                        for j in range(0, response['Members@odata.count']):
-                            if "Created" in log_entries[j] and "Name" in log_entries[j] and "EntryType" in log_entries[
-                                    j] and "Severity" in log_entries[j] and "Message" in log_entries[j]:
-                                t_data = log_entries[j]['Created']
-                                parsed_t = dp.parse(t_data)
-                                t_data = parsed_t.strftime('%s')
-                                c_tz = datetime.datetime.now(datetime.timezone(
-                                    datetime.timedelta(0))).astimezone().tzinfo
-                                influx_local_time = str(
-                                    parsed_t.astimezone(c_tz)) + ' ' + str(c_tz)
-                                t_now = datetime.datetime.utcnow().replace(
-                                    tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-                                parsed_t = dp.parse(t_now)
-                                t_now = parsed_t.strftime('%s')
-                                if ((int(t_now) - int(t_data)) >= -
-                                        5 and (int(t_now) - int(t_data)) <= 10):
-                                    connection = get_connection()
-                                    connection.write(['bmc_logs Timestamp=' +
-                                                      "\"" +
-                                                      influx_local_time +
-                                                      "\"" +
-                                                      ',Source=' +
-                                                      "\"" +
-                                                      log_entries[j]['Name'] +
-                                                      "\"" +
-                                                      ',EntryType=' +
-                                                      "\"" +
-                                                      log_entries[j]['EntryType'] +
-                                                      "\"" +
-                                                      ',Severity=' +
-                                                      "\"" +
-                                                      log_entries[j]['Severity'] +
-                                                      "\"" +
-                                                      ',Description=' +
-                                                      "\"" +
-                                                      log_entries[j]['Message'] +
-                                                      "\"" +
-                                                      ' ' +
-                                                      str(t_data)], {'db': mtool_db}, 204, 'line')
-                                    connection.close()
-                                else:
-                                    continue
-                         #    break;
-                            #i -= 1;
+                    process_response(response, log_entries)
         except BaseException:
             pass
     except HTTPError as http_err:
@@ -917,31 +877,7 @@ def fetch_journal_logs(auth=AUTH):
                                 print(int(t_now) - int(t_data))
                                 if ((int(t_now) - int(t_data)) >= - \
                                     5 and (int(t_now) - int(t_data)) <= 10):
-                                    print("getting connection")
-                                    connection = get_connection()
-                                    connection.write(['bmc_logs Timestamp=' +
-                                                      "\"" +
-                                                      influx_local_time +
-                                                      "\"" +
-                                                      ',Source=' +
-                                                      "\"" +
-                                                      log_entries[j]['Name'] +
-                                                      "\"" +
-                                                      ',EntryType=' +
-                                                      "\"" +
-                                                      log_entries[j]['EntryType'] +
-                                                      "\"" +
-                                                      ',Severity=' +
-                                                      "\"" +
-                                                      log_entries[j]['Severity'] +
-                                                      "\"" +
-                                                      ',Description=' +
-                                                      "\"" +
-                                                      log_entries[j]['Message'] +
-                                                      "\"" +
-                                                      ' ' +
-                                                      str(t_data)], {'db': mtool_db}, 204, 'line')
-                                    connection.close()
+                                    write_log_into_db(influx_local_time, log_entries[j]['Name'], log_entries[j]['EntryType'], log_entries[j]['Severity'], log_entries[j]['Message'], t_data)
                                 else:
                                     #print("in else")
                                     break
