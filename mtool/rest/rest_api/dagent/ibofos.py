@@ -4,7 +4,6 @@ import uuid
 import time
 import json
 from flask import make_response
-from requests.exceptions import HTTPError
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -87,8 +86,6 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
         # else:
         #    logger.info('%s %s', 'INFO sysstate', json.dumps(response))
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the system state", "return": -1}
@@ -110,8 +107,6 @@ def get_dagent_state(auth=BASIC_AUTH_TOKEN):
         #print(response['result']['status']['code'])
         #print("--------------RESPONSE-------------")
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
 """
@@ -133,10 +128,8 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
         #print(response.status_code, response.json())
         array_exists(array_names[0])
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred start_ibofos: {err}')
 
     return make_failure_response('Could not get ibofos to start...', 500)
 
@@ -166,8 +159,6 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     # finally:
@@ -191,8 +182,6 @@ def exit_system(auth=BASIC_AUTH_TOKEN):
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     # finally:
@@ -215,8 +204,6 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
                 read_timeout))
         print("---------------RESPONSE---------------",response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -239,8 +226,6 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE get devices---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -262,8 +247,6 @@ def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -295,8 +278,6 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -319,8 +300,6 @@ def array_status(auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -431,8 +410,6 @@ def create_array(
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -454,8 +431,6 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
                 read_timeout))
         print("---------------RESPONSE---------------",response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -500,8 +475,6 @@ def create_volume(
             data=request_body)
         print("---------------RESPONSE---------------",response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -526,8 +499,6 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -550,8 +521,6 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
         print("---------------RENAME RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -580,8 +549,6 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code , response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -610,8 +577,6 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -633,8 +598,6 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code , response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -655,8 +618,6 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
 
         print("---------------RESPONSE---------------",response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -677,8 +638,6 @@ def list_volumes(auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code , response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -718,8 +677,6 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -740,8 +697,6 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -777,8 +732,6 @@ def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -799,8 +752,6 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
@@ -821,8 +772,6 @@ def report_test(auth=BASIC_AUTH_TOKEN):
                 read_timeout))
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
-    except HTTPError as http_err:
-        print('HTTP error occurred: ', http_err)
     except Exception as err:
         print(f'Other error occurred: {err}')
 """

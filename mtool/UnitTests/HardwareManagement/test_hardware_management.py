@@ -286,6 +286,149 @@ def test_fetch_bmc_logs(**kwargs):
 
     kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/v1/Managers/1', json= {'@odata.context': '/redfish/v1/$metadata#Manager.Manager', '@odata.type': '#Manager.v1_3_1.Manager', '@odata.id': '/redfish/v1/Managers/1', 'Id': '1', 'Name': 'Manager', 'Description': 'BMC', 'ManagerType': 'BMC', 'UUID': '00000000-0000-0000-0000-AC1F6BC16747', 'Model': 'ASPEED', 'FirmwareVersion': '1.69', 'DateTime': '2020-12-28T18:58:10+00:00', 'DateTimeLocalOffset': '+00:00', 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'GraphicalConsole': {'ServiceEnabled': True, 'MaxConcurrentSessions': 4, 'ConnectTypesSupported': ['KVMIP']}, 'SerialConsole': {'ServiceEnabled': True, 'MaxConcurrentSessions': 1, 'ConnectTypesSupported': ['SSH', 'IPMI']}, 'CommandShell': {'ServiceEnabled': True, 'MaxConcurrentSessions': 0, 'ConnectTypesSupported': ['SSH']}, 'EthernetInterfaces': {'@odata.id': '/redfish/v1/Managers/1/EthernetInterfaces'}, 'SerialInterfaces': {'@odata.id': '/redfish/v1/Managers/1/SerialInterfaces'}, 'NetworkProtocol': {'@odata.id': '/redfish/v1/Managers/1/NetworkProtocol'}, 'LogServices': {'@odata.id': '/redfish/v1/Managers/1/LogServices'}, 'VirtualMedia': {'@odata.id': '/redfish/v1/Managers/1/VM1'}, 'Links': {'ManagerForServers': [{'@odata.id': '/redfish/v1/Systems/1'}], 'ManagerForChassis': [{'@odata.id': '/redfish/v1/Chassis/1'}], 'Oem': {}}, 'Actions': {'Oem': {'#ManagerConfig.Reset': {'target': '/redfish/v1/Managers/1/Actions/Oem/ManagerConfig.Reset'}}, '#Manager.Reset': {'target': '/redfish/v1/Managers/1/Actions/Manager.Reset'}}, 'Oem': {'Supermicro': {'@odata.type': '#SmcManagerExtensions.v1_0_0.Manager', 'ActiveDirectory': {'@odata.id': '/redfish/v1/Managers/1/ActiveDirectory'}, 'SMTP': {'@odata.id': '/redfish/v1/Managers/1/SMTP'}, 'RADIUS': {'@odata.id': '/redfish/v1/Managers/1/RADIUS'}, 'MouseMode': {'@odata.id': '/redfish/v1/Managers/1/MouseMode'}, 'NTP': {'@odata.id': '/redfish/v1/Managers/1/NTP'}, 'LDAP': {'@odata.id': '/redfish/v1/Managers/1/LDAP'}, 'IPAccessControl': {'@odata.id': '/redfish/v1/Managers/1/IPAccessControl'}, 'SMCRAKP': {'@odata.id': '/redfish/v1/Managers/1/SMCRAKP'}, 'SNMP': {'@odata.id': '/redfish/v1/Managers/1/SNMP'}, 'Syslog': {'@odata.id': '/redfish/v1/Managers/1/Syslog'}, 'Snooping': {'@odata.id': '/redfish/v1/Managers/1/Snooping'}, 'FanMode': {'@odata.id': '/redfish/v1/Managers/1/FanMode'}, 'IKVM': {'@odata.id': '/redfish/v1/Managers/1/IKVM'}}}},status_code=200)
 
-
-
     BMC_agent.fetch_bmc_logs()
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getHardwareHealth(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+
+    kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/temp', json={'Members@odata.count':1,'Members':[{'@odata.id':"/redfish/temp2"}]},status_code=200)
+
+    kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/temp2', json={'Name':{'Power':12,'Input':10},'Reading':10},status_code=200)
+    
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, json={'@odata.context': '/redfish/v1/$metadata#ChassisCollection.ChassisCollection', '@odata.type': '#ChassisCollection.ChassisCollection', '@odata.id': '/redfish/v1/Chassis', 'Name': 'Chassis Collection', 'Members': [{'@odata.id': '/redfish/v1/Chassis/1'}], 'Members@odata.count': 1},status_code=200)
+
+    kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/v1/Chassis/1', json={'Sensors':{'@odata.id':'/redfish/temp'},'@odata.context': '/redfish/v1/$metadata#Chassis.Chassis', '@odata.type': '#Chassis.v1_4_0.Chassis', '@odata.id': '/redfish/v1/Chassis/1', 'Id': '1', 'Name': 'Computer System Chassis', 'ChassisType': 'RackMount', 'Manufacturer': 'Supermicro', 'Model': 'X11DPU', 'SKU': '', 'SerialNumber': 'C219UAI02CH0069', 'PartNumber': 'CSE-219UB2TS-R1K62P-TN24', 'AssetTag': '', 'IndicatorLED': 'Off', 'Status': {'State': 'Enabled', 'Health': 'Critical', 'HealthRollup': 'Critical'}, 'PhysicalSecurity': {'IntrusionSensorNumber': 170, 'IntrusionSensor': 'HardwareIntrusion', 'IntrusionSensorReArm': 'Manual'}, 'Power': {'@odata.id': '/redfish/v1/Chassis/1/Power'}, 'Thermal': {'@odata.id': '/redfish/v1/Chassis/1/Thermal'}, 'Links': {'ComputerSystems': [{'@odata.id': '/redfish/v1/Systems/1'}], 'PCIeDevices': [{'@odata.id': '/redfish/v1/Systems/1/PCIeDevices/NIC1'}, {'@odata.id': '/redfish/v1/Systems/1/PCIeDevices/NIC2'}], 'ManagedBy': [{'@odata.id': '/redfish/v1/Managers/1'}]}, 'Oem': {'Supermicro': {'@odata.type': '#SmcChassisExtensions.v1_0_0.Chassis', 'BoardSerialNumber': 'OM196S007316', 'GUID': '34313031-4D53-AC1F-6BC1-674700000000', 'BoardID': '0x91c'}}}, status_code=200)
+
+    kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/v1/Chassis/1/Power', json= {'@odata.context': '/redfish/v1/$metadata#Power.Power', '@odata.type': '#Power.v1_1_0.Power', '@odata.id': '/redfish/v1/Chassis/1/Power', 'Id': 'Power', 'Name': 'Power', 'PowerControl': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/PowerControl/0', '@odata.type': '#Power.v1_0_0.PowerControl', 'MemberId': '0', 'Name': 'System Power Control', 'PowerConsumedWatts': 559, 'PowerMetrics': {'IntervalInMin': 5, 'MinConsumedWatts': 559, 'MaxConsumedWatts': 561, 'AverageConsumedWatts': 560}, 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/1'}, {'@odata.id': '/redfish/v1/Systems/1/Processors/2'}], 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'Oem': {}}], 'Voltages': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/0', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': '12V', 'MemberId': '0', 'SensorNumber': 48, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 12.305, 'UpperThresholdNonCritical': 12.915, 'UpperThresholdCritical': 13.281, 'UpperThresholdFatal': 13.403, 'LowerThresholdNonCritical': 10.78, 'LowerThresholdCritical': 10.536, 'LowerThresholdFatal': 10.17, 'MinReadingRange': 0.166, 'MaxReadingRange': 15.721, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/1', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': '5VCC', 'MemberId': '1', 'SensorNumber': 49, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 4.97, 'UpperThresholdNonCritical': 5.6, 'UpperThresholdCritical': 5.72, 'UpperThresholdFatal': 5.81, 'LowerThresholdNonCritical': 4.52, 'LowerThresholdCritical': 4.28, 'LowerThresholdFatal': 4.16, 'MinReadingRange': 0.08, 'MaxReadingRange': 7.73, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/2', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': '3.3VCC', 'MemberId': '2', 'SensorNumber': 50, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 3.35, 'UpperThresholdNonCritical': 3.707, 'UpperThresholdCritical': 3.775, 'UpperThresholdFatal': 3.843, 'LowerThresholdNonCritical': 2.976, 'LowerThresholdCritical': 2.823, 'LowerThresholdFatal': 2.738, 'MinReadingRange': 0.001, 'MaxReadingRange': 4.336, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/3', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'Vcpu1', 'MemberId': '3', 'SensorNumber': 52, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.737, 'UpperThresholdNonCritical': 1.944, 'UpperThresholdCritical': 1.998, 'UpperThresholdFatal': 2.097, 'LowerThresholdNonCritical': 1.494, 'LowerThresholdCritical': 1.395, 'LowerThresholdFatal': 1.296, 'MinReadingRange': 0.036, 'MaxReadingRange': 2.331, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/4', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'Vcpu2', 'MemberId': '4', 'SensorNumber': 53, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.728, 'UpperThresholdNonCritical': 1.944, 'UpperThresholdCritical': 1.998, 'UpperThresholdFatal': 2.097, 'LowerThresholdNonCritical': 1.494, 'LowerThresholdCritical': 1.395, 'LowerThresholdFatal': 1.296, 'MinReadingRange': 0.036, 'MaxReadingRange': 2.331, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/2'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/5', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'VDimmP1ABC', 'MemberId': '5', 'SensorNumber': 54, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.194, 'UpperThresholdNonCritical': 1.35, 'UpperThresholdCritical': 1.374, 'UpperThresholdFatal': 1.398, 'LowerThresholdNonCritical': 1.086, 'LowerThresholdCritical': 1.026, 'LowerThresholdFatal': 0.996, 'MinReadingRange': 0.15, 'MaxReadingRange': 1.68, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/6', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'VDimmP1DEF', 'MemberId': '6', 'SensorNumber': 55, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.194, 'UpperThresholdNonCritical': 1.35, 'UpperThresholdCritical': 1.374, 'UpperThresholdFatal': 1.398, 'LowerThresholdNonCritical': 1.086, 'LowerThresholdCritical': 1.026, 'LowerThresholdFatal': 0.996, 'MinReadingRange': 0.15, 'MaxReadingRange': 1.68, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/7', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'VDimmP2ABC', 'MemberId': '7', 'SensorNumber': 56, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.2, 'UpperThresholdNonCritical': 1.35, 'UpperThresholdCritical': 1.374, 'UpperThresholdFatal': 1.398, 'LowerThresholdNonCritical': 1.086, 'LowerThresholdCritical': 1.026, 'LowerThresholdFatal': 0.996, 'MinReadingRange': 0.15, 'MaxReadingRange': 1.68, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/2'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/8', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'VDimmP2DEF', 'MemberId': '8', 'SensorNumber': 57, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.2, 'UpperThresholdNonCritical': 1.35, 'UpperThresholdCritical': 1.374, 'UpperThresholdFatal': 1.398, 'LowerThresholdNonCritical': 1.086, 'LowerThresholdCritical': 1.026, 'LowerThresholdFatal': 0.996, 'MinReadingRange': 0.15, 'MaxReadingRange': 1.68, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Systems/1/Processors/2'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/9', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': '12VSB', 'MemberId': '9', 'SensorNumber': 58, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 12.26, 'UpperThresholdNonCritical': 12.91, 'UpperThresholdCritical': 13.3, 'UpperThresholdFatal': 13.43, 'LowerThresholdNonCritical': 10.765, 'LowerThresholdCritical': 10.505, 'LowerThresholdFatal': 10.18, 'MinReadingRange': 0.105, 'MaxReadingRange': 16.68, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/10', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': '3.3VSB', 'MemberId': '10', 'SensorNumber': 59, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 3.395, 'UpperThresholdNonCritical': 3.699, 'UpperThresholdCritical': 3.763, 'UpperThresholdFatal': 3.843, 'LowerThresholdNonCritical': 2.979, 'LowerThresholdCritical': 2.819, 'LowerThresholdFatal': 2.739, 'MinReadingRange': 0.163, 'MaxReadingRange': 4.243, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/11', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'P1V8_PCH', 'MemberId': '11', 'SensorNumber': 60, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.728, 'UpperThresholdNonCritical': 2.025, 'UpperThresholdCritical': 2.061, 'UpperThresholdFatal': 2.097, 'LowerThresholdNonCritical': 1.629, 'LowerThresholdCritical': 1.539, 'LowerThresholdFatal': 1.494, 'MinReadingRange': 0.009, 'MaxReadingRange': 2.304, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/12', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'PVNN_PCH', 'MemberId': '12', 'SensorNumber': 61, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1, 'UpperThresholdNonCritical': 1.12, 'UpperThresholdCritical': 1.144, 'UpperThresholdFatal': 1.162, 'LowerThresholdNonCritical': 0.904, 'LowerThresholdCritical': 0.856, 'LowerThresholdFatal': 0.832, 'MinReadingRange': 0.136, 'MaxReadingRange': 1.666, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/Voltages/13', '@odata.type': '#Power.v1_0_0.Voltage', 'Name': 'P1V05_PCH', 'MemberId': '13', 'SensorNumber': 62, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'ReadingVolts': 1.044, 'UpperThresholdNonCritical': 1.176, 'UpperThresholdCritical': 1.2, 'UpperThresholdFatal': 1.224, 'LowerThresholdNonCritical': 0.948, 'LowerThresholdCritical': 0.9, 'LowerThresholdFatal': 0.87, 'MinReadingRange': 0.138, 'MaxReadingRange': 1.668, 'PhysicalContext': 'VoltageRegulator', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}, {'@odata.id': '/redfish/v1/Systems/1'}]}], 'PowerSupplies': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/PowerSupplies/0', '@odata.type': '#Power.v1_1_0.PowerSupply', 'MemberId': '0', 'Name': 'Power Supply Bay 1', 'SensorNumber': 196, 'Status': {'State': 'Enabled', 'Health': 'Critical'}, 'Oem': {}, 'PowerSupplyType': 'AC', 'LineInputVoltageType': 'ACMidLine', 'LineInputVoltage': 226, 'LastPowerOutputWatts': 199, 'PowerCapacityWatts': 1600, 'InputRanges': [{'InputType': 'AC', 'MinimumVoltage': 200, 'MaximumVoltage': 240, 'OutputWattage': 1600}], 'Model': 'PWS-1K62A-1R', 'FirmwareVersion': '1.2', 'SerialNumber': 'P1K6BCJ19OB2073', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}], 'Redundancy': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/Redundancy/0'}]}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/PowerSupplies/1', '@odata.type': '#Power.v1_1_0.PowerSupply', 'MemberId': '1', 'Name': 'Power Supply Bay 2', 'SensorNumber': 197, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'Oem': {}, 'PowerSupplyType': 'AC', 'LineInputVoltageType': 'ACMidLine', 'LineInputVoltage': 225, 'LastPowerOutputWatts': 369, 'PowerCapacityWatts': 1600, 'InputRanges': [{'InputType': 'AC', 'MinimumVoltage': 200, 'MaximumVoltage': 240, 'OutputWattage': 1600}], 'Model': 'PWS-1K62A-1R', 'FirmwareVersion': '1.2', 'SerialNumber': 'P1K6BCJ19OB2077', 'RelatedItem': [{'@odata.id': '/redfish/v1/Chassis/1'}], 'Redundancy': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/Redundancy/0'}]}], 'Redundancy': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/Redundancy/0', '@odata.type': '#Redundancy.v1_2_0.Redundancy', 'MemberId': '0', 'Name': 'PowerSupply Redundancy Group 1', 'Mode': 'Failover', 'MaxNumSupported': 4, 'MinNumNeeded': 1, 'Status': {'State': 'Enabled', 'Health': 'OK'}, 'RedundancySet': [{'@odata.id': '/redfish/v1/Chassis/1/Power#/PowerSupplies/0'}, {'@odata.id': '/redfish/v1/Chassis/1/Power#/PowerSupplies/1'}]}], 'Oem': {'Supermicro': {'@odata.type': '#SmcPowerExtensions.v1_0_0.Power', 'Battery': {'SensorNumber': 51, 'Name': 'VBAT', 'Status': {'State': 'Enabled', 'Health': 'OK'}}}}}
+,status_code=200)
+
+    kwargs["mock"].get(DAGENT_BMC_URL+'/redfish/v1/Chassis/1/Thermal', json={'Temperatures':[{'Status':{'Health':"NOT_OK"}}],'Fans':[{'Status':{'Health':"NOT_OK"}}]},status_code=200)
+    response = app.test_client().get('/api/v1.0/get_hardware_health/', headers={'x-access-token': json_token})
+    assert response.status_code == 200
+       
+
+@requests_mock.Mocker(kw="mock")
+def test_getServerInfoException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+MANAGER_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_server_info/', headers={'x-access-token': json_token})
+    
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getServerInfoHttpException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+MANAGER_URL, status_code=401)
+
+    response = app.test_client().get('/api/v1.0/get_server_info/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getPowerInfoException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_power_info/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getChassisFrontInfoException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_chassis_front_info/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+"""
+@requests_mock.Mocker(kw="mock")
+def test_powerOnSystemException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+
+    response = app.test_client().post('/api/v1.0/power_on_system/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+def test_rebootSystemException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+
+    response = app.test_client().post('/api/v1.0/reboot_system/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_shutdownSystemException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+
+    response = app.test_client().post('/api/v1.0/shutdown_system/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_forceShutdownSystemException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+
+    response = app.test_client().post('/api/v1.0/force_shutdown_system/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+"""
+
+@requests_mock.Mocker(kw="mock")
+def test_getFanSensorInfoException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_fan_sensor_info/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getTemperatureSensorInfoException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_temperature_sensor_info/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+def test_setCurrentPowerModeException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
+
+    response = app.test_client().post('/api/v1.0/set_current_power_mode/', headers={'x-access-token': json_token})
+
+    assert response.status_code == 500
+
+
+@requests_mock.Mocker(kw="mock")
+def test_changeCurrentPowerStateException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+    response = app.test_client().post('/api/v1.0/update_current_power_state/', headers={'x-access-token': json_token})
+    assert response.status_code == 500
+
+
+@requests_mock.Mocker(kw="mock")
+def test_getBmcLogsException(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
+    BMC_agent.fetch_bmc_logs()
+

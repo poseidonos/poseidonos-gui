@@ -3,7 +3,6 @@ import uuid
 import time
 import datetime
 import json
-from requests.exceptions import HTTPError
 import logging
 import dateutil.parser as dp
 from logging.handlers import RotatingFileHandler
@@ -83,9 +82,6 @@ def check_bmc_login(auth):
         if(response.status_code != 200):
             return False
         return True
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
-        return False
     except Exception as err:
         print(f'Other error occurred: {err}')
         return False
@@ -118,8 +114,6 @@ def get_chassis_info(redfish_url=CHASSIS_URL, auth=AUTH):
             KTNF_response = KTNF_response.json()
             chassis_info.append(KTNF_response)
         return chassis_info
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not parse redfish response", "return": -1}
@@ -158,8 +152,6 @@ def get_server_info(auth=AUTH):
                         "ip": ip,
                         "mac": mac,
                         "host": host})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the system state", "return": -1}
@@ -197,8 +189,6 @@ def get_power_info_old(auth='Basic QURNSU46QURNSU4='):
         powerstatus = str(response['PowerState'])
         return jsonify({"powerconsumption": total_power_consumption,
                         "powercap": "NA", "powerstatus": powerstatus})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the power info", "return": -1}
@@ -231,8 +221,6 @@ def get_power_info(auth=AUTH):
             pass
         return jsonify({"powerconsumption": total_power_consumption,
                         "powercap": "NA", "powerstatus": powerstatus})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the power info", "return": -1}
@@ -257,8 +245,6 @@ def get_basic_redfish_url(auth=AUTH):
         #CHASSIS_URL = response['Chassis']['@odata.id']
         #MANAGER_URL = response['Managers']['@odata.id']
         return jsonify({'response': 'success'})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get generic url info", "return": -1}
@@ -296,8 +282,6 @@ def get_chassis_front_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"front_info": drives_arr})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the chassis front info", "return": -1}
@@ -320,8 +304,6 @@ def get_chassis_rear_info(auth='Basic QURNSU46QURNSU4='):
         response = response.json()
         drive_info = str(response['Drive'])
         return jsonify({"front_info": drive_info})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not get the chassis rear info", "return": -1}
@@ -363,8 +345,6 @@ def power_on_system(auth=AUTH):
         request_body = json.dumps(request_body)
         response = process_chassis_info(systems_info, request_body, req_headers,"poweron")
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not power on", "return": -1}
@@ -381,8 +361,6 @@ def reboot_system(auth=AUTH):
         request_body = json.dumps(request_body)
         response = process_chassis_info(systems_info, request_body, req_headers,"reboot")
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not reboot", "return": -1}
@@ -399,8 +377,6 @@ def shutdown_system(auth=AUTH):
         request_body = json.dumps(request_body)
         response = process_chassis_info(systems_info, request_body, req_headers,"shutdown")
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -417,8 +393,6 @@ def force_shutdown_system(auth=AUTH):
         request_body = json.dumps(request_body)
         response = process_chassis_info(systems_info, request_body, req_headers,"ForceOff")
         return response
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not force power off", "return": -1}
@@ -473,8 +447,6 @@ def get_power_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"power_sensor_info": voltage_arr})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -504,8 +476,6 @@ def get_fan_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"fan_sensor_info": fan_arr})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -535,8 +505,6 @@ def get_temperature_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"temperature_sensor_info": temperature_arr})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -552,8 +520,6 @@ def getPowerSummary(auth=AUTH):  # GetCurrentPowerMode
         #response = response.json();
         #temperature_arr = response['Temperatures'];
         return jsonify({"currentpowermode": 'Manual'})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -576,8 +542,6 @@ def setCurrentPowerMode(auth=AUTH):
         response = response.json()
         temperature_arr = response['Temperatures']
         return jsonify({"temperature_sensor_info": temperature_arr})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not shutdown", "return": -1}
@@ -642,8 +606,6 @@ def changeCurrentPowerState(
                             return response
         except BaseException:
             pass
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not update power state", "return": -1}
@@ -722,8 +684,6 @@ def fetch_event_logs(auth=AUTH):
                     process_response(response, log_entries)
         except BaseException:
             pass
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not fetch logs", "return": -1}
@@ -751,8 +711,6 @@ def fetch_crashdump_logs(auth=AUTH):
                     process_response(response, log_entries)
         except BaseException:
             pass
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not fetch logs", "return": -1}
@@ -821,8 +779,6 @@ def fetch_journal_logs(auth=AUTH):
                             j -= 1
         except BaseException:
             pass
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not fetch logs", "return": -1}
@@ -837,8 +793,6 @@ def fetch_bmc_logs(auth=AUTH):
         fetch_crashdump_logs()
         fetch_journal_logs()
         return jsonify({"logs_fetched": "ok"})
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
     return {"result": "could not fetch logs", "return": -1}
