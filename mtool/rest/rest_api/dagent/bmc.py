@@ -30,15 +30,6 @@ def get_headers(
             "ts": str(int(time.time()))}
 
 
-def make_failure_response(desc='unable to perform the task', code=500):
-    the_response = requests.models.Response()
-    the_response.code = "failed"
-    the_response.error_type = "failed"
-    the_response.status_code = code
-    the_response._content = json.dumps({"error": desc})
-    return the_response
-
-
 def send_command_to_bmc(req_type, url, headers, timeout=None, data=None):
     retry_count = 0
     response = None
@@ -49,12 +40,6 @@ def send_command_to_bmc(req_type, url, headers, timeout=None, data=None):
                     url=url, headers=headers, timeout=timeout)
             elif(req_type == "POST"):
                 response = requests.post(
-                    url=url, headers=headers, timeout=timeout, data=data)
-            elif(req_type == "DELETE"):
-                response = requests.delete(
-                    url=url, headers=headers, timeout=timeout, data=data)
-            elif(req_type == "PUT"):
-                response = requests.put(
                     url=url, headers=headers, timeout=timeout, data=data)
             retry_count = retry_count + 1
             if(response['result'] and response['result']['status'] and response['result']['status']['code'] and response['result']['status']['code'] != '12000'):
@@ -195,10 +180,9 @@ def get_power_info_old(auth='Basic QURNSU46QURNSU4='):
 """
 
 def get_power_info(auth=AUTH):
-    #req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'parse power info...')
-    try:
+        #req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'parse power info...')
         total_power_consumption = 0
         powerstatus = 'Off'
         chassis_info = get_chassis_info()
@@ -221,9 +205,6 @@ def get_power_info(auth=AUTH):
             pass
         return jsonify({"powerconsumption": total_power_consumption,
                         "powercap": "NA", "powerstatus": powerstatus})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not get the power info", "return": -1}
 
 
 def get_basic_redfish_url(auth=AUTH):
@@ -251,10 +232,9 @@ def get_basic_redfish_url(auth=AUTH):
 
 
 def get_chassis_front_info(auth=AUTH):
-    req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'parse drives info...')
-    try:
+        req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'parse drives info...')
         drives_arr = []
         drives = []
         systems_info = get_chassis_info(SYSTEM_URL)
@@ -282,9 +262,6 @@ def get_chassis_front_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"front_info": drives_arr})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not get the chassis front info", "return": -1}
 
 """
 def get_chassis_rear_info(auth='Basic QURNSU46QURNSU4='):
@@ -399,10 +376,9 @@ def force_shutdown_system(auth=AUTH):
 
 
 def get_power_sensor_info(auth=AUTH):
-    req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'parse sensor info...')
-    try:
+        req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'parse sensor info...')
         # To  Do
         power_info_arr = []
         #volatage_arr = []
@@ -447,16 +423,12 @@ def get_power_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"power_sensor_info": voltage_arr})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not shutdown", "return": -1}
 
 
 def get_fan_sensor_info(auth=AUTH):
-    req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'parse sensor info...')
-    try:
+        req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'parse sensor info...')
         fan_arr = []
         chassis_info = get_chassis_info()
         try:
@@ -476,16 +448,12 @@ def get_fan_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"fan_sensor_info": fan_arr})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not shutdown", "return": -1}
 
 
 def get_temperature_sensor_info(auth=AUTH):
-    req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'parse sensor info...')
-    try:
+        req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'parse sensor info...')
         temperature_arr = []
         chassis_info = get_chassis_info()
         try:
@@ -505,31 +473,23 @@ def get_temperature_sensor_info(auth=AUTH):
         except BaseException:
             pass
         return jsonify({"temperature_sensor_info": temperature_arr})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not shutdown", "return": -1}
 
 
 def getPowerSummary(auth=AUTH):  # GetCurrentPowerMode
     #req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'get power summary...')
-    try:
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'get power summary...')
         #chassis_info = get_chassis_info();
         #response = send_command_to_bmc("GET",url=DAGENT_BMC_URL + chassis_info[0]['Thermal']['@odata.id'],headers=req_headers, timeout=(20,20))
         #response = response.json();
         #temperature_arr = response['Temperatures'];
         return jsonify({"currentpowermode": 'Manual'})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not shutdown", "return": -1}
 
 
 def setCurrentPowerMode(auth=AUTH):
-    req_headers = get_headers(auth)
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'set current power mode...')
-    try:
+        req_headers = get_headers(auth)
+        logger = logging.getLogger(__name__)
+        logger.info('%s', 'set current power mode...')
         chassis_info = get_chassis_info()
         response = send_command_to_bmc(
             "GET",
@@ -542,9 +502,6 @@ def setCurrentPowerMode(auth=AUTH):
         response = response.json()
         temperature_arr = response['Temperatures']
         return jsonify({"temperature_sensor_info": temperature_arr})
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return {"result": "could not shutdown", "return": -1}
 
 
 def changeCurrentPowerState(

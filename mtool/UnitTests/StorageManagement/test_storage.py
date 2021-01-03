@@ -1418,4 +1418,21 @@ def test_unmount_array_failure(mock_get_current_user,**kwargs):
         status_code=200)
 
     response = app.test_client().delete('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    
     assert response.status_code == 500
+
+
+
+@requests_mock.Mocker(kw="mock")
+def test_createMultiVolumeCallback(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    app.test_client().post(
+        '/api/v1.0/multi_vol_response/',
+        data='''{
+                "MultiVolArray": [{"result":{"status":{"code":200,"description":"success"}}}],
+                "Pass":1,
+                "TotalCount":1
+                }''',
+        headers={'x-access-token': json_token})
+
+

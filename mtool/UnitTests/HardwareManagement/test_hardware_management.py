@@ -432,3 +432,12 @@ def test_getBmcLogsException(**kwargs):
     kwargs["mock"].get(DAGENT_BMC_URL+SYSTEM_URL, status_code=200)
     BMC_agent.fetch_bmc_logs()
 
+
+@requests_mock.Mocker(kw="mock")
+def test_getBmcLogs(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
+
+    response = app.test_client().get('/api/v1.0/get_Bmc_Logs/', headers={'x-access-token': json_token})
+
