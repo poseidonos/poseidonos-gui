@@ -1,4 +1,3 @@
-sudo python3 ./scripts/nginx_form_conf.py
 sudo service nginx stop
 sudo fuser -k 80/tcp
 sudo fuser -k 8086/tcp

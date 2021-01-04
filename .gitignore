@@ -2,7 +2,6 @@
 **/.DS_Store
 /dagent/dagent
 /dagent/test/result.xml
-/dependency/virtual.conf
 dagent.exe
 /cli/bin/cli
 /tui/tui
