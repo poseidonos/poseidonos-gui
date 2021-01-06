@@ -75,6 +75,7 @@
       "src/**/*.{js, jsx}",
       "!src/containers/Log-Management/**/*.js",
       "!src/components/LogTable/**/*.js",
+      "!src/components/OverviewComponents/BmcLogTable/*.js",
       "!src/components/LogConfiguration/**/*.js",
       "!src/components/ChangePassword/**/*.js",
       "!src/sagas/logManagementSaga.js",

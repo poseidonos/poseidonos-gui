@@ -99,4 +99,74 @@ describe("Health", () => {
       expect(container).toBeDefined();
   });
 
+  it("renders a healthy Health page", async () => { 
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_software_health/')
+    .reply(200, {
+      software_health: [{
+        mgmt_service: "OK",
+        data_service: "OK"
+      }]
+    })
+    .onGet('/api/v1.0/get_hardware_health/')
+    .reply(200, {
+      hardware_health: [{
+        power: "OK",
+        fans: "OK",
+        temperature: "OK",
+        cpu: "OK",
+        memory: "OK"
+      }]
+    })
+    .onGet('/api/v1.0/get_network_health/')
+    .reply(200, {
+      network_health: [{
+        mgmt_network: "OK",
+        client_network: "OK",
+        storage_fabric: "OK"
+      }]
+    })
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const container = await waitForElement(() =>
+        getByTestId("Health-container")
+    );
+    expect(container).toBeDefined();
+  });
+
+  it("renders an unhealthy Health page", async () => { 
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_software_health/')
+    .reply(200, {
+      software_health: [{
+        mgmt_service: "Not OK",
+        data_service: "Not OK"
+      }]
+    })
+    .onGet('/api/v1.0/get_hardware_health/')
+    .reply(200, {
+      hardware_health: [{
+        power: "Not OK",
+        fans: "Not OK",
+        temperature: "Not OK",
+        cpu: "Not OK",
+        memory: "Not OK"
+      }]
+    })
+    .onGet('/api/v1.0/get_network_health/')
+    .reply(200, {
+      network_health: [{
+        mgmt_network: "Not OK",
+        client_network: "Not OK",
+        storage_fabric: "Not OK"
+      }]
+    })
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const container = await waitForElement(() =>
+        getByTestId("Health-container")
+    );
+    expect(container).toBeDefined();
+  });
+
 });

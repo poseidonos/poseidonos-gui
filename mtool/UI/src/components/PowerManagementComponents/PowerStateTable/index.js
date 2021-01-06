@@ -258,20 +258,20 @@ class PowerStateTable extends Component {
                                 <FormControlLabel
                                     value="Manual"
                                     checked={this.props.powermode === "Manual"}
-                                    control={<Radio />}
+                                    control={<Radio inputProps={{"data-testid": "radio-btn-manual"}} />}
                                     label="Manual"
                                 />
                                 <FormControlLabel
                                     value="Power Efficient"
                                     checked={this.props.powermode === "Power Efficient"}
-                                    control={<Radio />}
+                                    control={<Radio inputProps={{"data-testid": "radio-btn-powerefficient"}} />}
                                     label="Power Efficient"
                                 />
 
                                 <FormControlLabel
                                     value="Performance"
                                     checked={this.props.powermode === "Performance"}
-                                    control={<Radio />}
+                                    control={<Radio inputProps={{"data-testid": "radio-btn-performance"}} />}
                                     label="Performance"
                                 />
                             </RadioGroup>
@@ -341,13 +341,13 @@ class PowerStateTable extends Component {
                                                             alertdescription: `Already in Power State ${ oldData.PowerState}`,
                                                         });
                                                     }
-                                                    else if (newData.PowerState >= oldData.MinPowerState && newData.PowerState <= oldData.MaxPowerState) {
+                                                    else {
                                                         this.props.changeCurrentPowerState(newData);
-                                                        const intervalAlert = setInterval(() => {
+                                                        /* const intervalAlert = setInterval(() => {
                                                             if (this.props.alertStatus === true) {
                                                                 clearInterval(intervalAlert);
                                                             }
-                                                        }, 1000);
+                                                        }, 1000); */
                                                     }
                                                     this.interval = setInterval(() => {
                                                         this.props.fetchChassisFrontInfo();
@@ -403,7 +403,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCurrentPowerMode:(param) => dispatch({ type: actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_SET_CURRENT_POWER_MODE,param }),
+        // setCurrentPowerMode:(param) => dispatch({ type: actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_SET_CURRENT_POWER_MODE,param }),
         changeCurrentPowerState:(param) => dispatch({ type: actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_CHANGE_CURRENT_POWER_STATE,param }),
         openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
         fetchChassisFrontInfo: (param) => dispatch({ type: actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_FRONT_INFORMATION, param }),

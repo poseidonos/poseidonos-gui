@@ -49,6 +49,7 @@ import hardwarePowerManagementReducer from "../../../store/reducers/hardwarePowe
 import i18n from "../../../i18n";
 import PowerManagement from './index'
 jest.unmock("axios");
+jest.useFakeTimers();
 
 describe("PowerManagement", () => {
   let wrapper;
@@ -97,6 +98,199 @@ describe("PowerManagement", () => {
           getByTestId("PowerManagement-container")
       );
       expect(table).toBeDefined();
+  });
+
+  it("should render the power state table", async () => {
+      const mock = new MockAdapter(axios);
+       mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{ DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                driveName: "test",
+                tableData: {
+                    "id": 0
+                },
+                Status: {
+                    Health: "OK"
+                },
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA'
+            }]
+        }).onAny().reply(200, []);
+      jest.advanceTimersByTime(6000);
+      renderComponent();
+      jest.advanceTimersByTime(6000);
+      const { getByTestId, asFragment } = wrapper;
+      const table = await waitForElement(() =>
+          getByTestId("PowerManagement-container")
+      );
+      expect(table).toBeDefined();
+      expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should change the power mode", async () => {
+      const mock = new MockAdapter(axios);
+       mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{ DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                driveName: "test",
+                tableData: {
+                    "id": 0
+                },
+                Status: {
+                    Health: "OK"
+                },
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA',
+                MinPowerState: 10,
+                MaxPowerState: 20,
+                PowerState: 15
+            }]
+        }).onAny().reply(200, []);
+      jest.advanceTimersByTime(6000);
+      renderComponent();
+      jest.advanceTimersByTime(6000);
+      const { getByTestId, asFragment, getAllByTitle } = wrapper;
+      const table = await waitForElement(() =>
+          getByTestId("PowerManagement-container")
+      );
+      expect(table).toBeDefined();
+      const radioPerformance = getByTestId("radio-btn-performance");
+      fireEvent.click(radioPerformance);
+      expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should edit and save power table with same power state values", async () => {
+      const mock = new MockAdapter(axios);
+       mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{
+                DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                driveName: "test",
+                tableData: {
+                    "id": 0
+                },
+                Status: {
+                    Health: "Not OK"
+                },
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA',
+                MinPowerState: 10,
+                MaxPowerState: 20,
+                PowerState: 15
+            }]
+        }).onAny().reply(200, []);
+      jest.advanceTimersByTime(6000);
+      renderComponent();
+      jest.advanceTimersByTime(6000);
+      const { getByTestId, asFragment, getByPlaceholderText, getAllByTitle } = wrapper;
+      const table = await waitForElement(() =>
+          getByTestId("PowerManagement-container")
+      );
+      expect(table).toBeDefined();
+      fireEvent.click(getAllByTitle("Edit")[0]);
+      fireEvent.click(getAllByTitle("Save")[0]);
+      expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should not save power table with power state value greater than max", async () => {
+      const mock = new MockAdapter(axios);
+       mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{
+                DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                driveName: "test",
+                tableData: {
+                    "id": 0
+                },
+                Status: {
+                    Health: "Not OK"
+                },
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA',
+                MinPowerState: 10,
+                MaxPowerState: 20,
+                PowerState: 15
+            }]
+        }).onAny().reply(200, []);
+      jest.advanceTimersByTime(6000);
+      renderComponent();
+      jest.advanceTimersByTime(6000);
+      const { getByTestId, asFragment, getByPlaceholderText, getAllByTitle } = wrapper;
+      const table = await waitForElement(() =>
+          getByTestId("PowerManagement-container")
+      );
+      expect(table).toBeDefined();
+      fireEvent.click(getAllByTitle("Edit")[0]);
+      fireEvent.change(getByPlaceholderText("Current Power State"), { target: { value: 25 }});
+      fireEvent.click(getAllByTitle("Save")[0]);
+      expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should save power table with proper power state value", async () => {
+      const mock = new MockAdapter(axios);
+       mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{
+                DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                driveName: "test",
+                tableData: {
+                    "id": 0
+                },
+                Status: {
+                    Health: "Not OK"
+                },
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA',
+                MinPowerState: 10,
+                MaxPowerState: 20
+            }]
+        }).onGet(/\/api\/v1.0\/get_power_info\//).reply(200, {
+            powerstatus: "On",
+            powerconsumption: 0,
+            powercap: 100
+        }).onAny().reply(200, []);
+      jest.advanceTimersByTime(6000);
+      renderComponent();
+      jest.advanceTimersByTime(6000);
+      const { getByTestId, asFragment, getByLabelText, getByPlaceholderText, getAllByTitle } = wrapper;
+      const table = await waitForElement(() =>
+          getByTestId("PowerManagement-container")
+      );
+      expect(table).toBeDefined();
+      fireEvent.click(getAllByTitle("Edit")[0]);
+      fireEvent.change(getByPlaceholderText("Current Power State"), { target: { value: null }});
+      fireEvent.change(getByPlaceholderText("Current Power State"), { target: { value: 16 }});
+      fireEvent.click(getAllByTitle("Save")[0]);
+      jest.advanceTimersByTime(6000);
+      await waitForElement(() =>
+          getAllByTitle("Edit")[0]
+      );
+      expect(asFragment()).toMatchSnapshot();
   });
 
 });

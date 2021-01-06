@@ -1797,6 +1797,7 @@ describe("<Storage Management />", () => {
     fireEvent.click(unmountButton);
   });
   it("should fail to mount the array", async () => {
+    jest.setTimeout(90000);
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {

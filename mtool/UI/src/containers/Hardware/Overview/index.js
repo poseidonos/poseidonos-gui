@@ -35,7 +35,7 @@ import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import Chassis from "../../../components/OverviewComponents/Chassis";
 import PowerInformation from "../../../components/OverviewComponents/PowerInformation";
-import BmcLogTable from "../../../components/OverviewComponents/BmcLogTable";
+// import BmcLogTable from "../../../components/OverviewComponents/BmcLogTable";
 
 const styles = theme => ({
   overviewContainer: {
@@ -93,6 +93,7 @@ class OverviewTab extends Component {
       this.props.forceShutdownSystem();
       this.handleAlertClose();
     }
+    /* istanbul ignore else */
     else if (this.props.addDeleteSend === "Power On Poseidon Box") {
       this.props.powerOnSystem();
       this.handleAlertClose();
@@ -107,9 +108,9 @@ class OverviewTab extends Component {
           <Grid data-testid="OverviewTab-container" container className={classes.overviewContainer}>
             <Grid className={classes.overviewPaper}>
               <Chassis openAlert={this.openAlert} />
-              <BmcLogTable
-                bmclogList={this.props.bmclogList}
-              />
+              {/* <BmcLogTable
+                 bmclogList={this.props.bmclogList}
+              /> */}
               <PowerInformation openAlert={this.openAlert} />
             </Grid>
           </Grid>

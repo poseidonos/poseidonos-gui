@@ -97,4 +97,37 @@ describe("Drives", () => {
       expect(table).toBeDefined();
   });
 
+  it("renders Drives Page", async () => { 
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_chassis_front_info/')
+     .reply(200, {
+       front_info: [{
+         SlotNumber: 1,
+         Status: {
+           Health: 'OK'
+         },
+         SerialNumber: 'ABCD',
+         Firmware: 'AA123',
+         State: 'active',
+         RawCapacity: 100,
+         Capacity: 100,
+         active: true
+       },{
+        Status: {
+          Health: 'NOT OK'
+        },
+        SerialNumber: '',
+        RawCapacity: 100,
+        active: false
+      }
+      ]
+     });
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const table = await waitForElement(() =>
+        getByTestId("DriveTable-table")
+    );
+    expect(table).toBeDefined();
+});
+
 });

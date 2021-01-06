@@ -99,6 +99,7 @@ afterEach(cleanup);
 test('it should show message on successful Volume Creation', async () => {
     const { getByTestId, getByLabelText, asFragment } = wrapper;
     socket.emit("connect", {});
+    socket.emit("reconnect_attempt", {});
     jest.setTimeout(30000);
     const volName = await waitForElement(() => getByTestId('create-vol-name'));
     fireEvent.change(volName, { target: { value: 'vol1' } });

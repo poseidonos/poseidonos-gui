@@ -80,7 +80,7 @@ describe("Sensors", () => {
       composeEnhancers(applyMiddleware(sagaMiddleware))
     );
     sagaMiddleware.run(rootSaga);
-    const route = "/Hardware/Overview";
+    const route = "/Hardware/Sensors";
     history = createMemoryHistory({ initialEntries: [route] });
     // mock = new MockAdapter(axios);
   });
@@ -100,7 +100,7 @@ describe("Sensors", () => {
 
   afterEach(cleanup);
 
-  it("matches snapshot", async () => { 
+  it("matches snapshot", async () => {
     const mock = new MockAdapter(axios);
     renderComponent();
     const { asFragment, getByText, getByTestId} = wrapper;
@@ -113,6 +113,83 @@ describe("Sensors", () => {
   fireEvent.click(getByTestId("Sensors_Fan")),
   fireEvent.click(getByTestId("Sensors_Temperature")), 
   );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("displays fan sensor table", async () => {
+    window.history.pushState({}, 'Sensors', '/Fan');
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_fan_sensor_info/').reply(200, {
+      fan_sensor_info: [{
+        Name: "Fan1",
+        Status: {
+          Health: "OK"
+        },
+        Reading: 10,
+        ReadingUnits: "rpm"
+      }, {
+        Name: "Fan2",
+        Status: {
+          Health: "Not OK"
+        },
+        Reading: 10,
+        ReadingUnits: "rpm"
+      }]
+    });
+    renderComponent();
+    const { asFragment, getByTestId} = wrapper;
+    fireEvent.click(getByTestId("Sensors_Fan"));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("displays power sensor table", async () => {
+    window.history.pushState({}, 'Sensors', '/Power');
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_power_sensor_info/').reply(200, {
+      power_sensor_info: [{
+        Name: "power1",
+        Status: {
+          Health: "OK"
+        },
+        ReadingVolts: 10,
+        PowerInputWatts: 10
+      }, {
+        Name: "power2",
+        Status: {
+          Health: "Not OK"
+        },
+        ReadingVolts: 10,
+        PowerInputWatts: 10
+      }]
+    });
+    renderComponent();
+    const { asFragment, getByTestId} = wrapper;
+    fireEvent.click(getByTestId("Sensors_Power"));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("displays temperature sensor table", async () => {
+    window.history.pushState({}, 'Sensors', '/Temperature');
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_temperature_sensor_info/').reply(200, {
+      temperature_sensor_info: [{
+        Name: "temperature1",
+        Status: {
+          Health: "OK"
+        },
+        ReadingCelsius: 10,
+        UpperThresholdNonCritical: 10
+      }, {
+        Name: "temperature2",
+        Status: {
+          Health: "Not OK"
+        },
+        ReadingCelsius: 10
+      }]
+    });
+    renderComponent();
+    const { asFragment, getByTestId} = wrapper;
+    fireEvent.click(getByTestId("Sensors_Temperature"));
     expect(asFragment()).toMatchSnapshot();
   });
 

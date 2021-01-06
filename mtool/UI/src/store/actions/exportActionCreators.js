@@ -113,7 +113,7 @@ export {
     fetchServerInfo,
     fetchPowerInfo,
     fetchChassisFrontInfo,
-    fetchChassisRearInfo,
+    // fetchChassisRearInfo,
 } from "./hardwareOverviewActions";
 
 export {
@@ -139,7 +139,7 @@ export {
 
 export {
     BMCChangeCredentials,
-    BMCResetIsLoggedIn,
+    // BMCResetIsLoggedIn,
     BMCSetIsLoggedIn,
     BMCSetLoginFailed,
 } from "./BMCAuthenticationActions";

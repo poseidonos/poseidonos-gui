@@ -39,11 +39,13 @@ export const BMCChangeCredentials = payload => {
     };
   };
 
+/*
   export const BMCResetIsLoggedIn = () => {
     return {
       type: actionTypes.BMC_RESET_IS_LOGGED_IN,
     };
   };
+*/
 
   export const BMCSetLoginFailed = () => {
     return {

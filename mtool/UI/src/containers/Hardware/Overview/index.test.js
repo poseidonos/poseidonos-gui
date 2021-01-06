@@ -88,6 +88,7 @@ describe("OverviewTab", () => {
 
     afterEach(cleanup);
 
+/*
     it("renders overview page", async () => {
         renderComponent();
         const { getByTestId } = wrapper;
@@ -95,6 +96,75 @@ describe("OverviewTab", () => {
             getByTestId("OverviewTab-container")
         );
         expect(container).toBeDefined();
+    });
+
+    it("renders overview page power consumption error", async () => {
+        renderComponent();
+        const mock = new MockAdapter(axios);
+        mock.onGet('/api/v1.0/get_software_health/')
+        .reply(200, {
+          software_health: [{
+            mgmt_service: "Not OK",
+            data_service: "Not OK"
+          }]
+        })
+        const { getByTestId } = wrapper;
+        const container = await waitForElement(() =>
+            getByTestId("OverviewTab-container")
+        );
+        expect(container).toBeDefined();
+    });
+*/
+
+    it("renders drives page", async () => {
+        const mock = new MockAdapter(axios);
+        mock.onGet(/\/api\/v1.0\/get_chassis_front_info\//).reply(200, {
+            front_info: [{ DevicePath: 'NA',
+                BuildDate: 'NA',
+                Manufacturer: 'NA',
+                name: "test",
+                slot: 1,
+                PartNumber: 'NA',
+                SerialNumber: 'NA',
+                Model: 'NA',
+                PredictedMediaLifeLeftPercent:'NA'
+            }]
+        }).onGet(/\/api\/v1.0\/get_power_info\//).reply(200, {
+            powerstatus: "On",
+            powerconsumption: 0,
+            powercap: 100
+        }).onAny().reply(200, []);
+        global.document.createRange = (html) => ({
+      setStart: () => {},
+      setEnd: () => {},
+      commonAncestorContainer: {
+        nodeName: "BODY",
+        ownerDocument: document,
+      },
+      createContextualFragment: (html) => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.children[0];
+      },
+    });
+        renderComponent();
+        const { getByTestId, asFragment, getByText } = wrapper;
+        const container = await waitForElement(() =>
+            getByTestId("dev-0")
+        );
+        await act(async () => {
+        fireEvent(
+          getByTestId("dev-0"),
+          new MouseEvent("mouseover", {
+            bubbles: true,
+            cancelable: true,
+          })
+        );
+
+       const moreDetails = await waitForElement(() => getByText("More Details"));
+       fireEvent.click(moreDetails);
+       fireEvent.click(getByTestId("diskdetails-close"))
+})
     });
 /*
     it("should not power on the server", async () => {

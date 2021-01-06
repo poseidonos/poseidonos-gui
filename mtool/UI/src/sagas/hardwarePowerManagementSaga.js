@@ -54,7 +54,7 @@ export function* fetchPowerSummary() {
     }
 }
 
-
+/*
 export function* setCurrentPowerMode(action) {
     try {
         const response = yield call([axios, axios.post], '/api/v1.0/set_current_power_mode/', action.param, {
@@ -97,7 +97,7 @@ export function* setCurrentPowerMode(action) {
         ;
     }
 }
-
+*/
 
 export function* changeCurrentPowerState(action) {
     try {
@@ -153,6 +153,6 @@ export function* changeCurrentPowerState(action) {
 
 export function* hardwarePowerManagementWatcher() {
     yield takeEvery(actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_FETCH_POWER_SUMMARY_INFORMATION, fetchPowerSummary);
-    yield takeEvery(actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_SET_CURRENT_POWER_MODE, setCurrentPowerMode);
+    // yield takeEvery(actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_SET_CURRENT_POWER_MODE, setCurrentPowerMode);
     yield takeEvery(actionTypes.SAGA_HARDWARE_POWER_MANAGEMENT_CHANGE_CURRENT_POWER_STATE,changeCurrentPowerState);
 }

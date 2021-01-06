@@ -28,9 +28,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withStyles, Grid, Paper } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import AlertDialog from '../../../components/Dialog';
+// import AlertDialog from '../../../components/Dialog';
 import { PageTheme, customTheme } from '../../../theme';
-import * as actionCreators from "../../../store/actions/exportActionCreators";
+// import * as actionCreators from "../../../store/actions/exportActionCreators";
 import PowerSummary from '../../../components/PowerManagementComponents/PowerSummary'
 import PowerStateTable from '../../../components/PowerManagementComponents/PowerStateTable'
 
@@ -55,9 +55,9 @@ const styles = (theme) => ({
 class PowerManagement extends Component {
   constructor(props) {
     super(props);
-    this.openAlert = this.openAlert.bind(this);
-    this.handleAlertClose = this.handleAlertClose.bind(this);
-    this.triggerCommand = this.triggerCommand.bind(this);
+    // this.openAlert = this.openAlert.bind(this);
+    // this.handleAlertClose = this.handleAlertClose.bind(this);
+    // this.triggerCommand = this.triggerCommand.bind(this);
     this.onHandleChange = this.onHandleChange.bind(this);
     this.state = {
         powermode:'Manual',
@@ -67,11 +67,11 @@ class PowerManagement extends Component {
   componentDidMount() {
   }
 
-  handleAlertClose() {
-    this.props.openAlertBox({
-      alertOpen: false
-    });
-  }
+  // handleAlertClose() {
+  //   this.props.openAlertBox({
+  //     alertOpen: false
+  //   });
+  // }
 
   onHandleChange(event){
       const {name,value} = event.target;
@@ -81,27 +81,27 @@ class PowerManagement extends Component {
       });
   }
 
-  openAlert(operationType) {
-    this.props.openAlertBox({
-      alertOpen: true,
-      addDeleteSend: operationType,
-      alerttype: 'delete',
-      istypealert: false,
-      alerttitle: `${operationType} System`,
-      alertdescription: `Are you sure you want to ${operationType} the system?`,
-    }
-    );
-  }
+  // openAlert(operationType) {
+  //   this.props.openAlertBox({
+  //     alertOpen: true,
+  //     addDeleteSend: operationType,
+  //     alerttype: 'delete',
+  //     istypealert: false,
+  //     alerttitle: `${operationType} System`,
+  //     alertdescription: `Are you sure you want to ${operationType} the system?`,
+  //   }
+  //   );
+  // }
 
-  triggerCommand() {
-    if (this.props.addDeleteSend === 'Reboot') {
-      this.props.rebootSystem();
-      this.handleAlertClose();
-    } else if (this.props.addDeleteSend === 'Shutdown') {
-      this.props.shutdownSystem();
-      this.handleAlertClose();
-    }
-  }
+  // triggerCommand() {
+  //   if (this.props.addDeleteSend === 'Reboot') {
+  //     this.props.rebootSystem();
+  //     this.handleAlertClose();
+  //   } else if (this.props.addDeleteSend === 'Shutdown') {
+  //     this.props.shutdownSystem();
+  //     this.handleAlertClose();
+  //   }
+  // }
 
   render() {
     const { classes } = this.props;
@@ -115,14 +115,14 @@ class PowerManagement extends Component {
             </Paper>
           </Grid>
         </main>
-        <AlertDialog
+        {/* <AlertDialog
           title={this.props.alerttitle}
           description={this.props.alertdescription}
           open={this.props.alertOpen}
           type={this.props.alerttype}
           handleClose={this.handleAlertClose}
           onConfirm={this.triggerCommand}
-        />
+        /> */}
       </ThemeProvider>
     );
   }
@@ -139,9 +139,9 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
-    openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
+    // openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
   };
 }
 

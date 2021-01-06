@@ -47,9 +47,11 @@ export const fetchChassisFrontInfo = frontinfo => {
   };
 };
 
+/*
 export const fetchChassisRearInfo = rearinfo => {
   return {
     type: actionTypes.HARDWARE_OVERVIEW_FETCH_CHASSIS_REAR_INFORMATION,
     rearinfo,
   };
 };
+*/

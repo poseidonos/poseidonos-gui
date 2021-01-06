@@ -331,7 +331,7 @@ class Chassis extends Component {
                             >
                               <Grid className={`${classes.gridTile} ${classes.gridTileHealthy}`}>
                                 <GridListTile
-
+                                  data-testid={`dev-${index}`}
                                   id={index}
                                 // onClick={() => {
                                 //   this.toggleRowSelect(index, slot);
@@ -440,7 +440,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchChassisFrontInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_FRONT_INFORMATION, }),
-    fetchChassisRearInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_REAR_INFORMATION }),
+    // fetchChassisRearInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_REAR_INFORMATION }),
   };
 }
 

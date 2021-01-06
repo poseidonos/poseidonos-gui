@@ -57,7 +57,7 @@ export function* fetchChassisFrontInfo() {
     }
 }
 
-
+/*
 export function* fetchChassisRearInfo() {
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/get_chassis_rear_info/', {
@@ -82,6 +82,7 @@ export function* fetchChassisRearInfo() {
         yield put(actionCreators.fetchChassisRearInfo([]));
     }
 }
+*/
 
 export function* fetchServerInfo() {
     try {
@@ -145,7 +146,7 @@ export function* rebootSystem() {
                 alertdescription: 'System Reboot Successful',
             }));
         }
-        else if (response === 400)
+        else if (response === 400) {
             yield put(actionCreators.openAlertBox({
                 alertOpen: true,
                 istypealert: true,
@@ -153,7 +154,7 @@ export function* rebootSystem() {
                 alerttitle: 'Reboot System',
                 alertdescription: 'System Reboot Failed',
             }));
-        else
+        } else {
             yield put(actionCreators.openAlertBox({
                 alertOpen: true,
                 istypealert: true,
@@ -164,6 +165,7 @@ export function* rebootSystem() {
             yield put(actionCreators.fetchChassisFrontInfo([]));
             yield put(actionCreators.fetchPowerInfo({powerconsumption:'',powercap:'',powerstatus:'Off'}));
             yield put(actionCreators.fetchServerInfo({model:'',manufacturer:'',mac:'',ip:'',firmwareversion:'',serialno:'',host:'',}));
+        }
     }
     catch (error) {
         yield put(actionCreators.openAlertBox({
@@ -321,7 +323,7 @@ export function* hardwareOverviewWatcher() {
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_SERVER_INFORMATION, fetchServerInfo);
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_POWER_INFORMATION, fetchPowerInfo);
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_FRONT_INFORMATION, fetchChassisFrontInfo);
-    yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_REAR_INFORMATION, fetchChassisRearInfo);
+//    yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FETCH_CHASSIS_REAR_INFORMATION, fetchChassisRearInfo);
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_REBOOT_SYSTEM, rebootSystem);
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_SHUTDOWN_SYSTEM, shutdownSystem);
     yield takeEvery(actionTypes.SAGA_HARDWARE_OVERVIEW_FORCE_SHUTDOWN_SYSTEM, forceShutdownSystem);

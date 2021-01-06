@@ -197,6 +197,32 @@ describe("Hardware", () => {
     expect(getByTestId("help-link")).toHaveTextContent("Help");
   });
 
+  it('should Power On the server', async () => {
+    jest.useFakeTimers();
+    const mock = new MockAdapter(axios);
+    mock.onAny()
+        .reply(200, {});
+    const spy = jest.spyOn(axios, "post");
+    window.history.pushState({}, 'Test Overview', '/Hardware/Overview');
+    renderComponent();
+    const { getByTestId, asFragment, getByText } = wrapper;
+    jest.advanceTimersByTime(300500);
+    expect(asFragment()).toMatchSnapshot();
+    expect(getByText(/Server Information/)).toBeDefined();
+    fireEvent.click(getByTestId("PowerOnButton"));
+    fireEvent.click(getByText(/Yes/));
+    expect(spy).toHaveBeenCalledWith(
+      "/api/v1.0/power_on_system/",
+      {"headers":
+        {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": "true"
+        }
+      }
+    );
+  });
+
   it('should Power Off the server', async () => {
     const mock = new MockAdapter(axios);
     mock.onAny()
@@ -249,15 +275,15 @@ describe("Hardware", () => {
   it('should Force Restart the server', async () => {
     const mock = new MockAdapter(axios);
     mock.onAny()
-        .reply(200, {});
+        .reply(400, {});
     const spy = jest.spyOn(axios, "post");
     renderComponent();
     const { getByTestId, asFragment, getByText } = wrapper;
-    jest.advanceTimersByTime(300500);
     expect(asFragment()).toMatchSnapshot();
     expect(getByText(/Server Information/)).toBeDefined();
     fireEvent.click(getByTestId("ForceRestartButton"));
     fireEvent.click(getByText(/Yes/));
+    expect(spy).toBeCalled();
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/reboot_system/",
       {"headers":

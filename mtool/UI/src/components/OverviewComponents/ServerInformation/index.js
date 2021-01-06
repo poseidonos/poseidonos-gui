@@ -119,9 +119,9 @@ class ServerInformation extends Component {
                         </Typography>
                     </Grid>
                     <TextField
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         className={classes.textField}
                         id="standard-required"
                         margin="none"
@@ -138,9 +138,9 @@ class ServerInformation extends Component {
 
 
                     <TextField className={classes.textField}
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         id="standard-required"
                         margin="none"
                         // disabled
@@ -155,9 +155,9 @@ class ServerInformation extends Component {
                     }}
                     />
                     <TextField className={classes.textField}
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         id="standard-required"
                         margin="none"
                         value={this.props.servermac ===""?"NA":this.props.servermac}
@@ -171,9 +171,9 @@ class ServerInformation extends Component {
                     }}
                     />
                     <TextField className={classes.textField}
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         id="standard-required"
                         margin="none"
                         value={this.props.serverip === "" ? "NA":this.props.serverip}
@@ -187,9 +187,9 @@ class ServerInformation extends Component {
                     }}
                     />
                     <TextField className={classes.textField}
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         id="standard-required"
                         margin="none"
                         value={this.props.firmwareversion==="" ?"NA": this.props.firmwareversion}
@@ -203,9 +203,9 @@ class ServerInformation extends Component {
                     }}
                     />
                     <TextField className={classes.textField}
-                    onFocus={event => {
-        event.target.select()
-      }}
+    //                 onFocus={event => {
+    //     event.target.select()
+    //   }}
                         id="standard-required"
                         margin="none"
                         value={this.props.serialno==="" ? "NA": this.props.serialno}
