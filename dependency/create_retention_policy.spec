@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['create_retention_policy.py'],
-             pathex=['/root/workspace/m9k/dependency'],
+             pathex=['/home/ibof07/palak/m9k/dependency'],
              binaries=[],
              datas=[],
              hiddenimports=[],

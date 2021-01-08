@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['rest/app.py'],
-             pathex=['/root/workspace/m9k/mtool'],
+             pathex=['/home/ibof07/palak/m9k/mtool'],
              binaries=[],
              datas=[],
              hiddenimports=['eventlet.hubs.epolls', 'eventlet.hubs.kqueue', 'eventlet.hubs.selects', 'dns.asyncbackend', 'dns.asyncquery', 'dns.asyncresolver', 'dns.e164', 'dns.namedict', 'dns.tsigkeyring', 'dns.zone', 'engineio.async_drivers.aiohttp', 'engineio.async_drivers.eventlet'],

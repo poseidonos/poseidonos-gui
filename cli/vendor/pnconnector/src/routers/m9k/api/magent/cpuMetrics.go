@@ -57,7 +57,7 @@ func GetCPUData(param interface{}) (model.Response, error) {
 	}
 
 	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status, _ = util.GetStatusInfo(errDataCode)
+		res.Result.Status, _ = util.GetStatusInfo(0)
 		res.Result.Data = make([]string, 0)
 		return res, nil
 	}

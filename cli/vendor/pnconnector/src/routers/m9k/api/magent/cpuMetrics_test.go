@@ -70,7 +70,7 @@ func TestGetCPUDataError(t *testing.T) {
 			input: model.MAgentParam{
 				Time: "60d", //no data
 			},
-			expected: 20313,
+			expected: 0,
 			err:      nil,
 		},
 		{
