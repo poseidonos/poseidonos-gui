@@ -41,8 +41,8 @@ import ConfigurationIconDisabled from '../../assets/images/Configuration-DIS.png
 import ConfigurationIconSelected from '../../assets/images/Configuration-SEL.png';
 import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
 import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
-// import HardwareIconDisabled from '../../assets/images/Hardware_DIS.png';
-// import HardwareIconSelected from '../../assets/images/Hardware_SEL.png';
+import HardwareIconDisabled from '../../assets/images/Hardware_DIS.png';
+import HardwareIconSelected from '../../assets/images/Hardware_SEL.png';
 import MToolTheme from '../../theme';
 
 import './Sidebar.css';
@@ -201,7 +201,7 @@ const Sidebar = (props) => {
             <Typography className={classes.sidebarText}>Performance</Typography>
           </ListItem>
         </NavLink>
-        {/* <Divider className={classes.listDivider} />
+        <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/Hardware/Overview">
             <ListItem className={classes.sidebarLink}>
               <span>
@@ -217,7 +217,7 @@ const Sidebar = (props) => {
               </span>
               <Typography className={classes.sidebarText}>Hardware</Typography>
             </ListItem>
-          </NavLink> */}
+          </NavLink>
 
         <Divider className={classes.listDivider} /> 
         <NavLink
