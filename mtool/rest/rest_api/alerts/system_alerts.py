@@ -194,7 +194,7 @@ def create_kapacitor_alert(
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
-        " .durationField(durationField)\n .details(details)\n .email()\n  .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
+        " .durationField(durationField)\n .details(details)\n .email()\n .noRecoveries()\n .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
         "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
         "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
         "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
@@ -266,7 +266,7 @@ def update_in_kapacitor(
         " |eval(lambda: \"{}\")\n        .as('value')\n\nvar trigger = data\n    |alert()\n  "
         "      .crit(lambda: \"value\" {} crit)\n        .message(message)\n        .id(idVar)\n   "
         "     .idTag(idTag)\n        .levelTag(levelTag)\n        .messageField(messageField)\n       "
-        " .durationField(durationField)\n .details(details)\n .email()\n      .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
+        " .durationField(durationField)\n .details(details)\n .email()\n .noRecoveries()\n .stateChangesOnly()\n\ntrigger\n    |eval(lambda: float(\"value\"))\n "
         "       .as('value')\n        .keep()\n    |influxDBOut()\n        .create()\n        .database(outputDB)\n"
         "        .retentionPolicy(outputRP)\n        .measurement(outputMeasurement)\n        .tag('alertName', name)\n "
         "       .tag('triggerType', triggerType)\n\ntrigger\n    |httpOut('output')\n".format(
