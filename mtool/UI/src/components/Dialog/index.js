@@ -230,7 +230,7 @@ class AlertDialog extends React.Component {
                 color: '#000',
                 fontSize: '12px',
                 padding: '0px 0px 0px 61px',
-                whiteSpace: 'pre',
+                whiteSpace: 'normal',
                 display: 'block',
                 marginTop: '0px',
               }}

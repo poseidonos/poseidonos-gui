@@ -208,6 +208,7 @@ function* fetchDevices() {
 function* createVolume(action) {
   try {
     const arrayName = yield select(arrayname)
+    const requestAcceptedCode = 10202
         // for multi-volume creation
     if (action.payload.count < 2)
       yield put(actionCreators.startStorageLoader("Creating Volume"));
@@ -229,7 +230,26 @@ function* createVolume(action) {
     /* istanbul ignore else */
     if (action.payload.count > 1) {
       if (response.status === 200) {
-        yield put(actionCreators.toggleCreateVolumeButton(true));
+        // Create Multi-Volume request accepted and passed to POS
+        if(response.data.result.status.code === requestAcceptedCode){
+          yield put(actionCreators.toggleCreateVolumeButton(true));
+        }
+        // error code : 11050, volume count exceeds limit
+        // error code : 11040, associated POS call failed
+        else{
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "alert",
+              alertTitle: "Create Volume",
+              errorMsg: "Volume(s) creation failed",
+              errorCode: `Description: ${
+                response.data.result && response.data.result.status
+                  ? `${response.data.result.status.problem} , Error code:${response.data.result.status.code}`
+                  : ""
+              }`,
+            })
+          );
+        }
       } else {
         yield put(
           actionCreators.showStorageAlert({
