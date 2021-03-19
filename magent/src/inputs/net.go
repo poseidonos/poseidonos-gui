@@ -17,11 +17,11 @@ import (
 	"github.com/shirou/gopsutil/net"
 	"io"
 	"log"
+	"magent/src/config"
+	"magent/src/models"
 	"os/exec"
 	"strings"
 	"time"
-	"magent/src/models"
-	"magent/src/config"
 )
 
 // lsPCI executes the lspci command and returns the data in a list

@@ -6,14 +6,14 @@ import (
 	"fmt"
 	client1 "github.com/influxdata/influxdb1-client"
 	"log"
+	"magent/src/config"
+	"magent/src/models"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"path"
 	"time"
-	"magent/src/models"
-	"magent/src/config"
 )
 
 var ip = "127.0.0.1"
@@ -88,7 +88,7 @@ func NewHTTPClient(dbConfig *HTTPConfig) (*http.Client, error) {
 	}
 
 	client := &http.Client{
-		Timeout:   5 * time.Second,
+		Timeout:   20 * time.Second,
 		Transport: transport,
 	}
 	return client, nil
@@ -132,8 +132,7 @@ func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.Ba
 	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
 	resp, err := client.Do(req.WithContext(ctx))
 	if resp != nil && resp.StatusCode != http.StatusOK && resp.StatusCode != 204 && resp.StatusCode != 200 {
-		log.Println(bp.Points)
-		log.Println(resp)
+        log.Println("Data Write Error: ", resp.StatusCode)
 		return fmt.Errorf("Data Write Error")
 	}
 	if err != nil {
@@ -146,7 +145,7 @@ func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.Ba
 // WriteToDB writes the data it receives in dataChan to InfluxDB
 func WriteToDB(ctx context.Context, mode string, dataChan chan models.ClientPoint) {
 	// Create a new HTTPClient
-	bufSize := 1
+	bufSize := 100
 	influxdb := Init(mode)
 	client, err := influxdb.CreateHTTPClient(dbConfig)
 	if err != nil {

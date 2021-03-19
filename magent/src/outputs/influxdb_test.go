@@ -6,6 +6,7 @@ import (
 	client1 "github.com/influxdata/influxdb1-client"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
+	"magent/src/models"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,6 @@ import (
 	"path"
 	"testing"
 	"time"
-	"magent/src/models"
 )
 
 //Should not raise an error if the data to be written to DB is valid
@@ -92,7 +92,7 @@ func TestWriteToDBHTTP(t *testing.T) {
 		Fields: map[string]interface{}{
 			"cpu": 10,
 		},
-		Tags:            map[string]string{
+		Tags: map[string]string{
 			"cpu_name": "cpu0",
 		},
 		Measurement:     "cpu_magent",
@@ -106,7 +106,7 @@ func TestWriteToDBHTTP(t *testing.T) {
 		cancel()
 	}()
 	dbConfig.URLString = u.String()
-	WriteToDB(ctx,"http", dataChan)
+	WriteToDB(ctx, "http", dataChan)
 
 	//Should send an http request when the time interval for flushing is exceeded
 	ctx, cancel = context.WithCancel(context.Background())

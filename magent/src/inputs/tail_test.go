@@ -6,10 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
+	"magent/src/models"
 	"os"
 	"testing"
 	"time"
-	"magent/src/models"
 )
 
 //Should start reading from the beginning of the file

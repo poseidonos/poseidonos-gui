@@ -13,8 +13,8 @@ package inputs
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
-	"testing"
 	"magent/src/models"
+	"testing"
 )
 
 // TestGetNetworkData tests if the data collected is from an RNIC

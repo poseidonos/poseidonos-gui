@@ -5,9 +5,9 @@ import (
 	"errors"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
+	"magent/src/models"
 	"testing"
 	"time"
-	"magent/src/models"
 )
 
 type magentDiskTest struct{}
@@ -28,11 +28,11 @@ func (d magentDiskTest) Usage(path string) (*disk.UsageStat, error) {
 type magentDiskTestErr struct{}
 
 func (d magentDiskTestErr) Partitions(all bool) ([]disk.PartitionStat, error) {
-        return nil, errors.New("Fetch Partition Error")
+	return nil, errors.New("Fetch Partition Error")
 }
 
 func (d magentDiskTestErr) Usage(path string) (*disk.UsageStat, error) {
-        return nil, errors.New("Invalid Mount Path")
+	return nil, errors.New("Invalid Mount Path")
 }
 
 var (
@@ -49,12 +49,12 @@ var (
 			Fstype:     "ext4",
 			Opts:       "rw,noatime,nodiratime,errors=remount-ro",
 		},
-                {
-                        Device:     "/dev/sda",
-                        Mountpoint: "/err",
-                        Fstype:     "ext4",
-                        Opts:       "ro,noatime,nodiratime",
-                },
+		{
+			Device:     "/dev/sda",
+			Mountpoint: "/err",
+			Fstype:     "ext4",
+			Opts:       "ro,noatime,nodiratime",
+		},
 	}
 	usage = []disk.UsageStat{
 		{
@@ -102,6 +102,6 @@ func TestCollectDiskData(t *testing.T) {
 	dataChanErr := make(chan models.ClientPoint, 10)
 	go CollectDiskData(ctxErr, dataChanErr)
 	time.Sleep(2 * time.Second)
-        assert.Equal(t, len(dataChanErr), 0)
+	assert.Equal(t, len(dataChanErr), 0)
 	cancelErr()
 }

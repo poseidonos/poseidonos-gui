@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/shirou/gopsutil/disk"
 	"log"
-	"time"
-	"magent/src/models"
 	"magent/src/config"
+	"magent/src/models"
+	"time"
 )
 
 type diskClient interface {

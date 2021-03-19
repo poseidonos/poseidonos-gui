@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/shirou/gopsutil/cpu"
 	"log"
-	"time"
 	"magent/src/models"
+	"time"
 )
 
 type cpuClient interface {

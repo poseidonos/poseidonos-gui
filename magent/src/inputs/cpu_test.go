@@ -2,13 +2,13 @@ package inputs
 
 import (
 	"context"
+	"errors"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/stretchr/testify/assert"
+	"magent/src/models"
 	"sync"
-	"errors"
 	"testing"
 	"time"
-	"magent/src/models"
 )
 
 type magentCPUTest struct {

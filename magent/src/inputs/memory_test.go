@@ -2,12 +2,12 @@ package inputs
 
 import (
 	"context"
+	"errors"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"errors"
-	"time"
 	"magent/src/models"
+	"testing"
+	"time"
 )
 
 type magentMemTest struct{}
@@ -53,28 +53,28 @@ func (m magentMemTest) VirtualMemory() (*mem.VirtualMemoryStat, error) {
 type magentMemTestErr struct{}
 
 func (m magentMemTestErr) VirtualMemory() (*mem.VirtualMemoryStat, error) {
-        return nil,  errors.New("Unable to fetch Memory details")
+	return nil, errors.New("Unable to fetch Memory details")
 }
 
 var memError error
 
 func TestCollectMemoryData(t *testing.T) {
-        ctx, cancel := context.WithCancel(context.Background())
-        dataChan := make(chan models.ClientPoint, 10)
-        magentMem = magentMemTest{}
-        go CollectMemoryData(ctx, dataChan)
-        data := <-dataChan
-        assert.Equal(t, 5000, data.Fields["used"])
-        assert.Equal(t, 1235, data.Fields["free"])
-        cancel()
-        //Testing Error Scenario
-        ctxErr, cancelErr := context.WithCancel(context.Background())
-        dataChanErr := make (chan models.ClientPoint, 10)
-        magentMem = magentMemTestErr{}
-        go CollectMemoryData(ctxErr, dataChanErr)
-        time.Sleep(time.Second)
-        assert.Equal(t, len(dataChanErr), 0)
-        cancelErr()
+	ctx, cancel := context.WithCancel(context.Background())
+	dataChan := make(chan models.ClientPoint, 10)
+	magentMem = magentMemTest{}
+	go CollectMemoryData(ctx, dataChan)
+	data := <-dataChan
+	assert.Equal(t, 5000, data.Fields["used"])
+	assert.Equal(t, 1235, data.Fields["free"])
+	cancel()
+	//Testing Error Scenario
+	ctxErr, cancelErr := context.WithCancel(context.Background())
+	dataChanErr := make(chan models.ClientPoint, 10)
+	magentMem = magentMemTestErr{}
+	go CollectMemoryData(ctxErr, dataChanErr)
+	time.Sleep(time.Second)
+	assert.Equal(t, len(dataChanErr), 0)
+	cancelErr()
 	//Actual Test should return at least 1 value
 	ctxAct, cancelAct := context.WithCancel(context.Background())
 	dataChanAct := make(chan models.ClientPoint, 10)
@@ -84,4 +84,3 @@ func TestCollectMemoryData(t *testing.T) {
 	assert.NotNil(t, data)
 	cancelAct()
 }
-
