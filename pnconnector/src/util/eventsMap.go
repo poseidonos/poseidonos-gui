@@ -1,11 +1,11 @@
 package util
 
 import (
+	_ "fmt"
+	"gopkg.in/yaml.v2"
 	"pnconnector/src/errors"
 	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/model"
-	_"fmt"
-	"gopkg.in/yaml.v2"
 )
 
 var eventsmap PosEvents
@@ -19,10 +19,10 @@ type info2 struct {
 }
 
 type module struct {
-	Name    string `yaml:"name"`
-	Count   int    `yaml:"count"`
-	Idstart int    `yaml:"idStart"`
-	Idend   int    `yaml:"idEnd"`
+	Name    string  `yaml:"name"`
+	Count   int     `yaml:"count"`
+	Idstart int     `yaml:"idStart"`
+	Idend   int     `yaml:"idEnd"`
 	Info    []info2 `yaml:"info"`
 }
 type PosEvents struct {

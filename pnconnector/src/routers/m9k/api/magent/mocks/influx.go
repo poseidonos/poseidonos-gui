@@ -26,28 +26,27 @@ var VolumeQuery = "SELECT * from poseidon.default_rp.volumes where volid=0 order
 
 var VolumeQueryNoData = "SELECT * from poseidon.default_rp.volumes where volid=101 order by time desc limit 1"
 
-var LastReadBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_read$/, /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/ as "bw", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
+var LastReadBandwidthQuery = `SELECT read_bw as "bw", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
 
-var ArrayReadBandwidthQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var ArrayReadBandwidthQuery = `SELECT mean(read_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var VolReadBandwidthQuery = `SELECT mean(read_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
 
-var AggregatedReadBandwidthQuery = `SELECT /^mean_perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_read$/, /^mean_perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/ as "bw" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - 30d and time > 0 FILL(null)`
+var AggregatedReadBandwidthQuery = `SELECT read_bw as "bw" FROM "poseidon"."default_rp"."mean_air" WHERE time > now() - 15m and time > 0 FILL(null)`
+var VolAggregatedReadBandwidthQuery = `SELECT read_bw as "bw" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - 30d and time > 0 FILL(null) and vol_id = '0'`
+var ReadBandwidthDefaultRPQArr = `SELECT mean(read_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(%s) FILL(null)`
 
-var LastReadIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_read$/, /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/ as "iops", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
-
-var ArrayReadIOPSQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
-
-var LastWriteBandwidthQuery = `SELECT /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_write$/, /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/ as "bw", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
-
-var ArrayWriteBandwidthQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_write$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
-
-var LastWriteIOPSQuery = `SELECT /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_write$/, /^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/ as "iops", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
-
-var ArrayWriteIOPSQuery = `SELECT mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
-
-var LatencyQuery = `SELECT mean(/^lat_data_[\S]+_aid_arr_[\S]+_sid_arr_0_mean$/), mean(/^lat_data_[\S]+_aid_arr_[\S]+_aid$/) as "latency", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
-
-var LastLatencyQuery = `SELECT /^lat_data_[\S]+_aid_arr_[\S]+_sid_arr_0_mean$/, /^lat_data_[\S]+_aid_arr_[\S]+_aid$/ as "latency", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
-
+var LastReadIOPSQuery = `SELECT read_iops as "iops", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
+var ArrayReadIOPSQuery = `SELECT mean(read_iops) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var VolReadIOPSQuery = `SELECT mean(read_iops) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
+var LastWriteBandwidthQuery = `SELECT write_bw as "bw", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
+var ArrayWriteBandwidthQuery = `SELECT mean(write_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var VolWriteBandwidthQuery = `SELECT mean(write_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
+var LastWriteIOPSQuery = `SELECT write_iops as "iops", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
+var ArrayWriteIOPSQuery = `SELECT mean(write_iops) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var VolWriteIOPSQuery = `SELECT mean(write_iops) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
+var LatencyQuery = `SELECT mean(write_latency) as "latency", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 GROUP BY time(1m) FILL(null)`
+var LastLatencyQuery = `SELECT write_latency as "latency", timestamp FROM "poseidon"."default_rp"."air" order by time desc limit 1`
+var VolLatencyQuery = `SELECT mean(write_latency) as "latency", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
 var MemoryLastQuery = "SELECT last(used_percent) AS mean_used_percent FROM poseidon.default_rp.mem LIMIT 1"
 
 var MemoryDefaultQuery = "SELECT mean(used_percent) AS mean_used_percent FROM poseidon.default_rp.mem WHERE time > now() - 15m GROUP BY time(1m)"
@@ -116,13 +115,10 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"perf_data_0_tid_arr_0_aid_arr_0_bw_read",
-				"perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"perf_data_0_tid_arr_1_aid_arr_0_bw_read",
-				"perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"read_bw",
 			},
 			Values: [][]interface{}{
-				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483860738"), json.Number("300")},
 			},
 		}
 		rows = append(rows, row)
@@ -130,14 +126,35 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_bw_read",
-				"bw_perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_bw_read",
-				"bw_perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"read_bw",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
+	case VolReadBandwidthQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_bw",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
+	case VolAggregatedReadBandwidthQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_bw",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)
@@ -145,10 +162,7 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_bw_read",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_bw_read",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"read_bw",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
@@ -160,13 +174,10 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"perf_data_0_tid_arr_0_aid_arr_0_bw_write",
-				"perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"perf_data_0_tid_arr_1_aid_arr_0_bw_write",
-				"perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"write_bw",
 			},
 			Values: [][]interface{}{
-				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
 			},
 		}
 		rows = append(rows, row)
@@ -174,14 +185,11 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_bw_write",
-				"bw_perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_bw_write",
-				"bw_perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"write_bw",
 			},
 			Values: [][]interface{}{
-				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)
@@ -189,13 +197,10 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"perf_data_0_tid_arr_0_aid_arr_0_iops_read",
-				"perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"perf_data_0_tid_arr_1_aid_arr_0_iops_read",
-				"perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"read_iops",
 			},
 			Values: [][]interface{}{
-				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
 			},
 		}
 		rows = append(rows, row)
@@ -203,14 +208,23 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_iops_read",
-				"iops_perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_iops_read",
-				"iops_perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"read_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
+	case VolReadIOPSQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_iops",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)
@@ -218,13 +232,22 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"perf_data_0_tid_arr_0_aid_arr_0_iops_write",
-				"perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"perf_data_0_tid_arr_1_aid_arr_0_iops_write",
-				"perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"write_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
+	case VolWriteBandwidthQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_bw",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)
@@ -232,14 +255,23 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_perf_data_0_tid_arr_0_aid_arr_0_iops_write",
-				"iops_perf_data_0_tid_arr_0_aid_arr_0_aid",
-				"mean_perf_data_0_tid_arr_1_aid_arr_0_iops_write",
-				"iops_perf_data_0_tid_arr_1_aid_arr_0_aid",
+				"write_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
+	case VolWriteIOPSQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_iops",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)
@@ -247,13 +279,22 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"lat_data_0_aid_arr_0_sid_arr_0_mean",
-				"latency_lat_data_0_aid_arr_0_aid",
-				"lat_data_0_aid_arr_0_sid_arr_0_mean",
-				"latency_lat_data_0_aid_arr_0_aid",
+				"read_latency",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
+	case VolLatencyQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_latency",
 			},
 			Values: [][]interface{}{
 				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("200"), json.Number("1")},
 			},
 		}
 		rows = append(rows, row)
@@ -261,14 +302,11 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		row := models.Row{
 			Columns: []string{
 				"time",
-				"mean_lat_data_0_aid_arr_0_sid_arr_0_mean",
-				"latency_lat_data_0_aid_arr_0_aid",
-				"mean_lat_data_1_aid_arr_0_sid_arr_0_mean",
-				"latency_lat_data_1_aid_arr_0_aid",
+				"write_latency",
 			},
 			Values: [][]interface{}{
-				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
 			},
 		}
 		rows = append(rows, row)

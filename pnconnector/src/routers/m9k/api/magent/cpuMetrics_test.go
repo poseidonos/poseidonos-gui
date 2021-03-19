@@ -1,9 +1,9 @@
 package magent
 
 import (
+	"encoding/json"
 	"pnconnector/src/routers/m9k/api/magent/mocks"
 	"pnconnector/src/routers/m9k/model"
-	"encoding/json"
 	"reflect"
 	"testing"
 )

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"reflect"
 	"testing"
+	"fmt"
 )
 
 func TestGetReadBandwidth(t *testing.T) {
@@ -95,6 +96,7 @@ func TestGetReadBandwidth(t *testing.T) {
 		result, err := GetReadBandwidth(test.input)
 		output := result.Result.Data
 		if !reflect.DeepEqual(output, test.expected) || err != test.err {
+			fmt.Println("Output -->",output)
 			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
 		}
 	}

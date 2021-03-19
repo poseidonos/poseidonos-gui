@@ -1,10 +1,10 @@
 package magent
 
 import (
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 	"encoding/json"
 	"fmt"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 )
 
 type DiskField struct {

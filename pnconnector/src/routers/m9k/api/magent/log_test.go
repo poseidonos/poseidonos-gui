@@ -1,9 +1,9 @@
 package magent
 
 import (
+	"encoding/json"
 	"pnconnector/src/routers/m9k/api/magent/mocks"
 	"pnconnector/src/routers/m9k/model"
-	"encoding/json"
 	"reflect"
 	"testing"
 )
@@ -26,7 +26,7 @@ func TestGetRebuildLogs(t *testing.T) {
 				},
 			},
 			status: 0,
-			err: nil,
+			err:    nil,
 		},
 		{
 			// Error while Querying
@@ -34,7 +34,7 @@ func TestGetRebuildLogs(t *testing.T) {
 				Time: "2h",
 			},
 			expected: []string{},
-			status: 21000,
+			status:   21000,
 			err:      nil,
 		},
 		{
@@ -42,7 +42,7 @@ func TestGetRebuildLogs(t *testing.T) {
 			input: model.MAgentParam{
 				Time: "1d",
 			},
-			status: 0,
+			status:   0,
 			expected: []string{},
 			err:      nil,
 		},

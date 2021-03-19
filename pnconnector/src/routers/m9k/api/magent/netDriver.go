@@ -1,9 +1,9 @@
 package magent
 
 import (
+	"fmt"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
-	"fmt"
 )
 
 type NetDriverField struct {

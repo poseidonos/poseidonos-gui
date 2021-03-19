@@ -15,10 +15,10 @@ NAME : logs.go
 package magent
 
 import (
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 	"encoding/json"
 	"fmt"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 )
 
 // LogsField defines the structure in which log data is returned

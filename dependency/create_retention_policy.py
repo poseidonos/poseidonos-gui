@@ -18,7 +18,7 @@ client = InfluxDBClient(host=influxdb_host, port=influxdb_port, use_udp=True)
 #client = None
 
 air_cq_name = 'air_cq_hourly'
-air_cq_select_clause = r'select mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_read$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_iops_write$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_read$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_bw_write$/), mean(/^lat_data_0_tid_arr_[\S]+_aid_arr_[\S]+_timelag_arr_0_mean$/), mean(/^perf_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/), mean(/^lat_data_0_tid_arr_[\S]+_aid_arr_[\S]+_aid$/) into "poseidon"."agg_rp"."mean_air" from air group by time(1h)'
+air_cq_select_clause = r'select mean(read_iops), mean(write_iops), mean(read_bw), mean(write_bw), mean(read_latency), mean(write_latency) into "poseidon"."agg_rp"."mean_air" from air group by time(1h),vol_id'
 
 cpu_cq_name = 'cpu_cq_hourly'
 cpu_cq_select_clause = 'select mean("usage_user") as "usage_user" into "poseidon"."agg_rp"."mean_cpu" from cpu group by time(1h)'

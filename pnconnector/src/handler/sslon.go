@@ -3,10 +3,10 @@
 package handler
 
 import (
-	"pnconnector/src/log"
 	"crypto/tls"
 	"crypto/x509"
 	"io/ioutil"
+	"pnconnector/src/log"
 )
 
 func Dial(network, addr string) (*tls.Conn, error) {

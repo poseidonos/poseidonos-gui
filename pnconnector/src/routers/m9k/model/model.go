@@ -40,13 +40,13 @@ type LoggerParam struct {
 }
 
 type ArrayParam struct {
-	FtType      int      `json:"fttype,omitempty"`
-	Name        string   `json:"name,omitempty"`
-	RaidType    string   `json:"raidtype,omitempty"`
-	Buffer      []Device `json:"buffer,omitempty"`
-	Data        []Device `json:"data,omitempty"`
-	Spare       []Device `json:"spare,omitempty"`
-	Array       string   `json:"array,omitempty"`
+	FtType   int      `json:"fttype,omitempty"`
+	Name     string   `json:"name,omitempty"`
+	RaidType string   `json:"raidtype,omitempty"`
+	Buffer   []Device `json:"buffer,omitempty"`
+	Data     []Device `json:"data,omitempty"`
+	Spare    []Device `json:"spare,omitempty"`
+	Array    string   `json:"array,omitempty"`
 }
 
 type MAgentParam struct {
@@ -55,9 +55,9 @@ type MAgentParam struct {
 }
 
 type DeviceParam struct {
-	Name        string `json:"name,omitempty"`
-	Spare       string `json:"spare,omitempty"`
-	Array       string `json:"array,omitempty"`
+	Name  string `json:"name,omitempty"`
+	Spare string `json:"spare,omitempty"`
+	Array string `json:"array,omitempty"`
 }
 type VolumeParam struct {
 	Name        string `json:"name,omitempty"`

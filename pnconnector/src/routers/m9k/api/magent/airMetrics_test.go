@@ -1,9 +1,10 @@
 package magent
 
 import (
+	"encoding/json"
+	"fmt"
 	"pnconnector/src/routers/m9k/api/magent/mocks"
 	"pnconnector/src/routers/m9k/model"
-	"encoding/json"
 	"reflect"
 	"testing"
 )
@@ -95,6 +96,7 @@ func TestGetReadBandwidth(t *testing.T) {
 		result, err := GetReadBandwidth(test.input)
 		output := result.Result.Data
 		if !reflect.DeepEqual(output, test.expected) || err != test.err {
+			fmt.Println("Output -->", output)
 			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
 		}
 	}
