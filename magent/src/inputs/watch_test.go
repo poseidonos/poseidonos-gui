@@ -2,6 +2,7 @@ package inputs
 
 import (
 	"context"
+	"github.com/radovskyb/watcher"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
@@ -44,4 +45,22 @@ func TestWatchFile(t *testing.T) {
 	cancel()
 	time.Sleep(5 * time.Second)
 	os.Remove(tmpFile.Name())
+}
+
+func TestCleanup(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	w := watcher.New()
+	tmpFile, err := ioutil.TempFile("/tmp", "test*.json")
+	if err != nil {
+		require.NoError(t, err)
+	}
+
+	fileMap := map[string]interface{}{
+		tmpFile.Name(): cancel,
+	}
+	err = w.Add("/tmp")
+	require.NoError(t, err)
+	ticker := time.NewTicker(3 * time.Second)
+	cleanupFiles(ctx, ticker, w, &fileMap, 1*time.Second)
+	assert.Equal(t, fileMap, map[string]interface{}{})
 }

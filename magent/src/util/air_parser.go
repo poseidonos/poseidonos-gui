@@ -15,6 +15,7 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	if err != nil {
 		return err
 	}
+	arrayId := "0"
 	timestamp := airData["timestamp"]
 	node := airData["group"].(map[string]interface{})["Mgmt"].(map[string]interface{})["node"].(map[string]interface{})
 	writeLatency := node["LAT_BDEV_WRITE"].(map[string]interface{})["objs"].([]interface{})
@@ -34,7 +35,7 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 		airPoint := models.AIRPoint{}
 		airPoint.Tags = map[string]string{
 			"vol_id": k,
-			"arr_id": "0",
+			"arr_id": arrayId,
 		}
 		airPoint.Timestamp = timestamp.(float64)
 		airPoint.Fields = v

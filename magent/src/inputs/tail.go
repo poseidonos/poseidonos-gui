@@ -36,10 +36,11 @@ func TailFile(ctx context.Context, fromBeginning bool, name string, format strin
 			tags := map[string]string{}
 			fields := map[string]interface{}{}
 			points := []models.AIRPoint{}
-			switch format {
+			switch strings.ToLower(format) {
 			case "air":
 				err := formatAIRJSON(line, &points)
 				if err != nil {
+					log.Println("Error in formatting AIR data: ", err)
 					continue
 				}
 				for _, pt := range points {
@@ -52,7 +53,7 @@ func TailFile(ctx context.Context, fromBeginning bool, name string, format strin
 					}
 					dataChan <- newPoint
 				}
-			case "json", "JSON":
+			case "json":
 				err := formatJSON(line, &fields, &tags)
 				if err != nil {
 					continue

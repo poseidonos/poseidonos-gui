@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -17,4 +18,19 @@ func TestJSONParse(t *testing.T) {
 	fmt.Println(err)
 	err = Parse([]byte(`{"test": 0xFF}`), &fields, &tags)
 	fmt.Println(err)
+}
+
+func TestParseObject(t *testing.T) {
+	var d int64 = 20
+	data := []map[string]interface{}{
+		{
+			"t": map[string]interface{}{
+				"test": d,
+			},
+		},
+	}
+	fields := map[string]interface{}{}
+	tags := map[string]string{}
+	parseObject("", data, &fields, &tags)
+	assert.Equal(t, fields, map[string]interface{}{})
 }

@@ -132,7 +132,7 @@ func (i *InfluxDB) Write(ctx context.Context, client *http.Client, bp client1.Ba
 	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
 	resp, err := client.Do(req.WithContext(ctx))
 	if resp != nil && resp.StatusCode != http.StatusOK && resp.StatusCode != 204 && resp.StatusCode != 200 {
-        log.Println("Data Write Error: ", resp.StatusCode)
+		log.Println("Data Write Error: ", resp.StatusCode)
 		return fmt.Errorf("Data Write Error")
 	}
 	if err != nil {

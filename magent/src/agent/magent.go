@@ -33,7 +33,7 @@ func Start() {
 
 func startInputs(ctx context.Context, dataChan chan models.ClientPoint) {
 	defer log.Println("All inputs Closed")
-	go inputs.WatchFiles(ctx, "/tmp", `^air_[\S]+\.json$`, "air", "air", "default_rp", dataChan)
+	go inputs.WatchFiles(ctx, "/tmp", `(?i)^air_[\S]+\.json$`, "air", "air", "default_rp", dataChan)
 	go inputs.TailFile(ctx, false, "/var/log/ibofos/report.log", "text", "rebuilding_status", "autogen", dataChan)
 	go inputs.CollectCPUData(ctx, dataChan)
 	go inputs.CollectMemoryData(ctx, dataChan)
