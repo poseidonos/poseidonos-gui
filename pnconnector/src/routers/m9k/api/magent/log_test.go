@@ -34,7 +34,7 @@ func TestGetRebuildLogs(t *testing.T) {
 				Time: "2h",
 			},
 			expected: []string{},
-			status:   21000,
+			status:   21010,
 			err:      nil,
 		},
 		{
@@ -42,7 +42,7 @@ func TestGetRebuildLogs(t *testing.T) {
 			input: model.MAgentParam{
 				Time: "1d",
 			},
-			status:   0,
+			status:   21010,
 			expected: []string{},
 			err:      nil,
 		},

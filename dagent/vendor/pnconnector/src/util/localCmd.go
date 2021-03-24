@@ -1,9 +1,9 @@
 package util
 
 import (
-	"pnconnector/src/log"
 	"fmt"
 	"os/exec"
+	"pnconnector/src/log"
 )
 
 func ExecCmd(cmd string, background bool) error {

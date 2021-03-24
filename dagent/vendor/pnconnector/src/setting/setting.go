@@ -1,11 +1,11 @@
 package setting
 
 import (
-	"pnconnector/src/log"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"pnconnector/src/log"
 )
 
 var Config ConfigScheme

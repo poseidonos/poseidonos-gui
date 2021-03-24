@@ -1,13 +1,13 @@
 package ibofos
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/setting"
 	"pnconnector/src/util"
-	"fmt"
-	"os"
-	"path/filepath"
 	"time"
 )
 

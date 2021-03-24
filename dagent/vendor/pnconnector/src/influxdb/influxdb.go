@@ -1,13 +1,13 @@
 package influxdb
 
 import (
+	"encoding/json"
+	"github.com/google/uuid"
+	"github.com/influxdata/influxdb/client/v2"
 	"pnconnector/src/errors"
 	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/api/magent"
 	"pnconnector/src/routers/m9k/model"
-	"encoding/json"
-	"github.com/google/uuid"
-	"github.com/influxdata/influxdb/client/v2"
 	"time"
 )
 

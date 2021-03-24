@@ -19,6 +19,7 @@ import (
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
 	"strconv"
+	"strings"
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
@@ -31,13 +32,13 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 			return nil, nil, errEndPointCode
 		}
 		if Contains(AggTime, timeInterval) {
-			if level == "array" {
+			if strings.ToLower(level) == "array" {
 				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime)
 			} else {
 				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime, level)
 			}
 		} else {
-			if level == "array" {
+			if strings.ToLower(level) == "array" {
 				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 			} else {
 				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, startingTime, level, TimeGroupsDefault[timeInterval])
@@ -45,11 +46,11 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 		}
 
 	} else {
-		if level == "array" {
+		if strings.ToLower(level) == "array" {
 			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP)
 		} else {
 			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, level)
-		}
+		}	
 	}
 	result, err := ExecuteQuery(query)
 	if err != nil {
@@ -99,7 +100,7 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQArr, ReadBandwidthDefaultRPQArr, ReadBandwidthLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQVol, ReadBandwidthDefaultRPQVol, ReadBandwidthLastRecordQVol, startingTime, level)
@@ -122,7 +123,7 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQArr, WriteBandwidthDefaultRPQArr, WriteBandwidthLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQVol, WriteBandwidthDefaultRPQVol, WriteBandwidthLastRecordQVol, startingTime, level)
@@ -145,7 +146,7 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQArr, ReadIOPSDefaultRPQArr, ReadIOPSLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQVol, ReadIOPSDefaultRPQVol, ReadIOPSLastRecordQVol, startingTime, level)
@@ -168,7 +169,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQArr, WriteIOPSDefaultRPQArr, WriteIOPSLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQVol, WriteIOPSDefaultRPQVol, WriteIOPSLastRecordQVol, startingTime, level)
@@ -192,7 +193,7 @@ func GetLatency(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, LatencyAggRPQArr, LatencyDefaultRPQArr, LatencyLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, LatencyAggRPQVol, LatencyDefaultRPQVol, LatencyLastRecordQVol, startingTime, level)

@@ -18,7 +18,7 @@ client = InfluxDBClient(host=influxdb_host, port=influxdb_port, use_udp=True)
 #client = None
 
 air_cq_name = 'air_cq_hourly'
-air_cq_select_clause = r'select mean(read_iops), mean(write_iops), mean(read_bw), mean(write_bw), mean(read_latency), mean(write_latency) into "poseidon"."agg_rp"."mean_air" from air group by time(1h),vol_id'
+air_cq_select_clause = r'select mean(read_iops) as read_iops, mean(write_iops) as write_iops, mean(read_bw) as read_bw, mean(write_bw) as write_bw, mean(read_latency) as read_latency, mean(write_latency) as write_latency into "poseidon"."agg_rp"."mean_air" from air group by time(1h),vol_id'
 
 cpu_cq_name = 'cpu_cq_hourly'
 cpu_cq_select_clause = 'select mean("usage_user") as "usage_user" into "poseidon"."agg_rp"."mean_cpu" from cpu group by time(1h)'

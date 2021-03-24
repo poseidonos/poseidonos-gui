@@ -14,11 +14,12 @@ NAME : airMetrics.go
 package magent
 
 import (
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 	"encoding/json"
 	"fmt"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 	"strconv"
+	"strings"
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
@@ -30,14 +31,15 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			return nil, nil, errEndPointCode
 		}
+		fmt.Println("strings.ToLower(str1)",strings.ToLower(level))
 		if Contains(AggTime, timeInterval) {
-			if level == "array" {
+			if strings.ToLower(level) == "array" {
 				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime)
 			} else {
 				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime, level)
 			}
 		} else {
-			if level == "array" {
+			if strings.ToLower(level) == "array" {
 				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
 			} else {
 				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, startingTime, level, TimeGroupsDefault[timeInterval])
@@ -45,12 +47,13 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 		}
 
 	} else {
-		if level == "array" {
+		if strings.ToLower(level) == "array" {
 			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP)
 		} else {
 			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, level)
-		}
+		}	
 	}
+	fmt.Println("Query ",query)
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		return nil, nil, errQueryCode
@@ -65,20 +68,15 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 // extractValues contains the parsing logic for extracting array level and volume level data
 func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps, level string) []map[string]interface{} {
 	result := []map[string]interface{}{}
-	/*_, err := strconv.Atoi(level)
-		if err != nil {
-			return result
-		}*/
-		fmt.Println("Values :::::---",values)
-		for _, val := range values {
-			currentValue := make(map[string]interface{})
-			currentValue["time"] = val[0]
-			if val[1] ==nil {
-                val[1] = json.Number(strconv.FormatInt(0,10))
-            }
-			currentValue[key] = val[1].(json.Number)
-			result = append(result, currentValue)
+	for _, val := range values {
+		currentValue := make(map[string]interface{})
+		currentValue["time"] = val[0]
+		if val[1] == nil {
+			val[1] = json.Number(strconv.FormatInt(0, 10))
 		}
+		currentValue[key] = val[1].(json.Number)
+		result = append(result, currentValue)
+	}
 	return result
 }
 
@@ -104,7 +102,7 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
+	if strings.ToLower(level) == "array" {
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQArr, ReadBandwidthDefaultRPQArr, ReadBandwidthLastRecordQArr, startingTime, level)
 	} else {
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQVol, ReadBandwidthDefaultRPQVol, ReadBandwidthLastRecordQVol, startingTime, level)
@@ -122,9 +120,9 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 // GetWriteBandwidth returns the metrics related to Write Bandwidth
 func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
-    var values [][]interface{}
-    var columns []string
-    var statusCode int
+	var values [][]interface{}
+	var columns []string
+	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
 	if level == "array" {
@@ -145,9 +143,9 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 // GetReadIOPS returns the metrics related to Read IOPS
 func GetReadIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
-    var values [][]interface{}
-    var columns []string
-    var statusCode int
+	var values [][]interface{}
+	var columns []string
+	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
 	if level == "array" {
@@ -168,9 +166,9 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 // GetWriteIOPS returns the metrics related to Write IOPS
 func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var result model.Response
-    var values [][]interface{}
-    var columns []string
-    var statusCode int
+	var values [][]interface{}
+	var columns []string
+	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
 	if level == "array" {
@@ -192,9 +190,9 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 // GetLatency collects the latency metrics from influxdb
 func GetLatency(param interface{}) (model.Response, error) {
 	var result model.Response
-    var values [][]interface{}
-    var columns []string
-    var statusCode int
+	var values [][]interface{}
+	var columns []string
+	var statusCode int
 	level := param.(model.MAgentParam).Level
 	startingTime := getVolumeCreationTime(level)
 	if level == "array" {

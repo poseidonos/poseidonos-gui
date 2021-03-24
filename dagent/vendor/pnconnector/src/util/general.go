@@ -1,9 +1,9 @@
 package util
 
 import (
-	"pnconnector/src/log"
 	"encoding/json"
 	"github.com/google/uuid"
+	"pnconnector/src/log"
 )
 
 func PrettyJson(jsonByte interface{}) []byte {

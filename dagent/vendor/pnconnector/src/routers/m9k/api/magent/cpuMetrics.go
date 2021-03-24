@@ -1,10 +1,10 @@
 package magent
 
 import (
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 	"encoding/json"
 	"fmt"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 )
 
 // Contains function chcks if a string is present in an array of strings

@@ -33,8 +33,14 @@ type LogsFields []LogsField
 // GetRebuildLogs gets the logs from influxdb and returns a JSON response
 func GetRebuildLogs(param interface{}) (model.Response, error) {
 	var res model.Response
-	fieldsList := make(LogsFields, 0)
+	var resp model.Response
 	timeInterval := param.(model.MAgentParam).Time
+    if _, found := TimeGroupsDefault[timeInterval]; !found {
+		resp.Result.Status, _ = util.GetStatusInfo(errEndPointCode)
+        resp.Result.Data = make([]string, 0)
+        return resp, nil
+    }
+	fieldsList := make(LogsFields, 0)
 	query := fmt.Sprintf(RebuildingLogQ, DBName, timeInterval)
 	result, err := ExecuteQuery(query)
 	if err != nil {
