@@ -50,8 +50,9 @@ type ArrayParam struct {
 }
 
 type MAgentParam struct {
-	Time  string
-	Level string
+    ArrayIds    string  `form:"arrayids"`
+    VolumeIds   string  `form:"volumeids"`
+    Time        string	`form:"time"`
 }
 
 type DeviceParam struct {

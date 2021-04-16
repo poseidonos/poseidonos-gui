@@ -16,6 +16,7 @@ import (
 	"strings"
 )
 
+
 func Route(router *gin.Engine) {
 	uri := router.Group("/api")
 
@@ -248,131 +249,87 @@ func Route(router *gin.Engine) {
 				magent.CallMagent(ctx, amoduleMagent.GetNetData, param)
 			}
 		})
-
-		mAgentPath.GET("/readbw/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time, Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
-		})
-
-		mAgentPath.GET("/readbw/", func(ctx *gin.Context) {
-			param := model.MAgentParam{Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/readbw/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Time: time, Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/readbw/", func(ctx *gin.Context) {
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
-		})
-
-		mAgentPath.GET("/writebw/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time, Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
-		})
-
-		mAgentPath.GET("/writebw/", func(ctx *gin.Context) {
-			param := model.MAgentParam{Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/writebw/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Time: time, Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/writebw/", func(ctx *gin.Context) {
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
-		})
-
-		mAgentPath.GET("/readiops/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time, Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
-		})
-
-		mAgentPath.GET("/readiops/", func(ctx *gin.Context) {
-			param := model.MAgentParam{Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/readiops/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Time: time, Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/readiops/", func(ctx *gin.Context) {
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
-		})
-
-		mAgentPath.GET("/writeiops/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time, Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
-		})
-
-		mAgentPath.GET("/writeiops/", func(ctx *gin.Context) {
-			param := model.MAgentParam{Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/writeiops/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Time: time, Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/writeiops/", func(ctx *gin.Context) {
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
-		})
-
-		mAgentPath.GET("/latency/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time, Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
-		})
-
-		mAgentPath.GET("/latency/", func(ctx *gin.Context) {
-			param := model.MAgentParam{Level: "array"}
-			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/latency/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Time: time, Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
-		})
-
-		mAgentPath.GET("/volumes/:volid/latency/", func(ctx *gin.Context) {
-			volid := ctx.Param("volid")
-			param := model.MAgentParam{Level: volid}
-			magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
-		})
-
+		//readbw
+        mAgentPath.GET("/readbw/arrays", func(ctx *gin.Context) {
+			var params model.MAgentParam
+			if ctx.ShouldBindQuery(&params) == nil {
+				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+				magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
+			}
+        })
+        mAgentPath.GET("/readbw/arrays/volumes", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+				magent.CallMagent(ctx, amoduleMagent.GetReadBandwidth, param)
+            }
+        })
+		//writebw
+        mAgentPath.GET("/writebw/arrays", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+                magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
+            }
+        })
+        mAgentPath.GET("/writebw/arrays/volumes", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+                magent.CallMagent(ctx, amoduleMagent.GetWriteBandwidth, param)
+            }
+        })
+        //readiops
+        mAgentPath.GET("/readiops/arrays", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+                magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
+            }
+        })
+        mAgentPath.GET("/readiops/arrays/volumes", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+                magent.CallMagent(ctx, amoduleMagent.GetReadIOPS, param)
+            }
+        })
+        //writeiops
+        mAgentPath.GET("/writeiops/arrays", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+                magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
+            }
+        })
+        mAgentPath.GET("/writeiops/arrays/volumes", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+                magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
+            }
+        })
+        //latency
+        mAgentPath.GET("/latency/arrays", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+                magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
+            }
+        })
+        mAgentPath.GET("/latency/arrays/volumes", func(ctx *gin.Context) {
+            var params model.MAgentParam
+            if ctx.ShouldBindQuery(&params) == nil {
+                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+                magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
+            }
+        })
+		//rebuildlogs
 		mAgentPath.GET("/rebuildlogs/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")
 			param := model.MAgentParam{Time: time}
 			magent.CallMagent(ctx, amoduleMagent.GetRebuildLogs, param)
 		})
+
 	}
 }

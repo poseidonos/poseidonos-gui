@@ -31,6 +31,8 @@ from requests.exceptions import HTTPError
 from rest.rest_api.dagent.ibofos import get_headers, send_command_to_dagent, DAGENT_URL, BASIC_AUTH_TOKEN, connect_timeout, read_timeout
 
 METRIC_PATH = '/api/metric/v1'
+ARRAY_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays?arrayIds={}&time={}'
+VOLUME_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays/volumes?arrayIds={}&volumeIds={}&time={}'
 
 def get_cpu_usage(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -62,12 +64,12 @@ def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 
-def get_read_iops(time, auth = BASIC_AUTH_TOKEN):
+def get_read_iops(time, arr_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/readiops/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = ARRAY_PATH.format("readiops",arr_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -77,12 +79,12 @@ def get_read_iops(time, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_vol_read_iops(time, level, auth = BASIC_AUTH_TOKEN):
+def get_vol_read_iops(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/readiops/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = VOLUME_PATH.format("readiops",arr_id,vol_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -92,12 +94,12 @@ def get_vol_read_iops(time, level, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_iops(time, auth = BASIC_AUTH_TOKEN):
+def get_write_iops(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/writeiops/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = ARRAY_PATH.format("writeiops",arr_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -107,12 +109,12 @@ def get_write_iops(time, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_vol_write_iops(time, level, auth = BASIC_AUTH_TOKEN):
+def get_vol_write_iops(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/writeiops/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = VOLUME_PATH.format("writeiops", arr_id,vol_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -122,12 +124,12 @@ def get_vol_write_iops(time, level, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_read_bw(time, auth = BASIC_AUTH_TOKEN):
+def get_read_bw(time, arr_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/readbw/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = ARRAY_PATH.format("readbw",arr_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         #print(response)
         response = response.json()
@@ -138,14 +140,13 @@ def get_read_bw(time, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_vol_read_bw(time, level, auth = BASIC_AUTH_TOKEN):
+def get_vol_read_bw(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/readbw/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = VOLUME_PATH.format("readbw",arr_id,vol_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
-        #print(DAGENT_URL + '/api/metric/v1/readbw/volumes/' + level + '/' + time)
         #print(response)
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -155,12 +156,12 @@ def get_vol_read_bw(time, level, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_bw(time, auth = BASIC_AUTH_TOKEN):
+def get_write_bw(time, arr_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/writebw/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = ARRAY_PATH.format("writebw",arr_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -170,12 +171,12 @@ def get_write_bw(time, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_vol_write_bw(time, level, auth = BASIC_AUTH_TOKEN):
+def get_vol_write_bw(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/writebw/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = VOLUME_PATH.format("writebw",arr_id,vol_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -185,12 +186,12 @@ def get_vol_write_bw(time, level, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_latency(time, auth = BASIC_AUTH_TOKEN):
+def get_latency(time, arr_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/latency/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = ARRAY_PATH.format("latency",arr_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")
@@ -200,12 +201,12 @@ def get_latency(time, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_vol_latency(time, level, auth = BASIC_AUTH_TOKEN):
+def get_vol_latency(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        response = send_command_to_dagent("GET",url=DAGENT_URL + METRIC_PATH + '/volumes/' + level + '/latency/' + time, \
-        headers= req_headers,timeout=(connect_timeout,read_timeout))
+        PATH = VOLUME_PATH.format("latency",arr_id,vol_id,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
         #print("--------------RESPONSE-------------")

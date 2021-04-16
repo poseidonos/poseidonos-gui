@@ -23,7 +23,7 @@ import (
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
-func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime string, level string) ([][]interface{}, []string, int) {
+func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime string, volumeIds string, arrayId string) ([][]interface{}, []string, int) {
 	var query string
 	paramStruct := param.(model.MAgentParam)
 	if paramStruct.Time != "" {
@@ -31,29 +31,27 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
 			return nil, nil, errEndPointCode
 		}
-		fmt.Println("strings.ToLower(str1)",strings.ToLower(level))
 		if Contains(AggTime, timeInterval) {
-			if strings.ToLower(level) == "array" {
-				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime)
+			if volumeIds== "" {
+				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime, arrayId)
 			} else {
-				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime, level)
+				query = fmt.Sprintf(AggRPQ, DBName, AggRP, timeInterval, startingTime, volumeIds, arrayId)
 			}
 		} else {
-			if strings.ToLower(level) == "array" {
-				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, TimeGroupsDefault[timeInterval])
+			if volumeIds == "" {
+				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, arrayId, TimeGroupsDefault[timeInterval])
 			} else {
-				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, startingTime, level, TimeGroupsDefault[timeInterval])
+				query = fmt.Sprintf(DefaultRPQ, DBName, DefaultRP, timeInterval, startingTime, volumeIds, arrayId, TimeGroupsDefault[timeInterval])
 			}
 		}
 
 	} else {
-		if strings.ToLower(level) == "array" {
-			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP)
+		if volumeIds == "" {
+			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, arrayId)
 		} else {
-			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, level)
-		}	
+			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, volumeIds, arrayId)
+		}
 	}
-	fmt.Println("Query ",query)
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		return nil, nil, errQueryCode
@@ -66,7 +64,7 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 }
 
 // extractValues contains the parsing logic for extracting array level and volume level data
-func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps, level string) []map[string]interface{} {
+func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps string) []map[string]interface{} {
 	result := []map[string]interface{}{}
 	for _, val := range values {
 		currentValue := make(map[string]interface{})
@@ -80,8 +78,8 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 	return result
 }
 
-func getVolumeCreationTime(level string) string {
-	volQuery := fmt.Sprintf(VolumeQuery, DBName, DefaultRP, level)
+func getVolumeCreationTime(volumeId string) string {
+	volQuery := fmt.Sprintf(VolumeQuery, DBName, DefaultRP, volumeId)
 	result, err := ExecuteQuery(volQuery)
 	if err != nil || len(result) == 0 || len(result[0].Series) == 0 {
 		return "0"
@@ -100,19 +98,24 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	level := param.(model.MAgentParam).Level
-	startingTime := getVolumeCreationTime(level)
-	if strings.ToLower(level) == "array" {
-		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQArr, ReadBandwidthDefaultRPQArr, ReadBandwidthLastRecordQArr, startingTime, level)
+	volumeIds := param.(model.MAgentParam).VolumeIds
+	arrayIds := param.(model.MAgentParam).ArrayIds
+	startingTime := getVolumeCreationTime(volumeIds)
+    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+    arrayIds = "/"+arrayIds+"/"
+	if volumeIds == "" {
+		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQArr, ReadBandwidthDefaultRPQArr, ReadBandwidthLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQVol, ReadBandwidthDefaultRPQVol, ReadBandwidthLastRecordQVol, startingTime, level)
+	    volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+	    volumeIds = "/"+volumeIds+"/"
+		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQVol, ReadBandwidthDefaultRPQVol, ReadBandwidthLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", BWReadField, level)
+	res := extractValues(values, columns, "bw", "bw", BWReadField)
 	result.Result.Data = res
 	return result, nil
 }
@@ -123,19 +126,24 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	level := param.(model.MAgentParam).Level
-	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
-		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQArr, WriteBandwidthDefaultRPQArr, WriteBandwidthLastRecordQArr, startingTime, level)
+    volumeIds := param.(model.MAgentParam).VolumeIds
+    arrayIds := param.(model.MAgentParam).ArrayIds
+	startingTime := getVolumeCreationTime(volumeIds)
+    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+    arrayIds = "/"+arrayIds+"/"
+	if volumeIds == "" {
+		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQArr, WriteBandwidthDefaultRPQArr, WriteBandwidthLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQVol, WriteBandwidthDefaultRPQVol, WriteBandwidthLastRecordQVol, startingTime, level)
+        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+        volumeIds = "/"+volumeIds+"/"
+		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQVol, WriteBandwidthDefaultRPQVol, WriteBandwidthLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", BWWriteField, level)
+	res := extractValues(values, columns, "bw", "bw", BWWriteField)
 	result.Result.Data = res
 	return result, nil
 }
@@ -146,19 +154,24 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	level := param.(model.MAgentParam).Level
-	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
-		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQArr, ReadIOPSDefaultRPQArr, ReadIOPSLastRecordQArr, startingTime, level)
+    volumeIds := param.(model.MAgentParam).VolumeIds
+    arrayIds := param.(model.MAgentParam).ArrayIds
+	startingTime := getVolumeCreationTime(volumeIds)
+    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+    arrayIds = "/"+arrayIds+"/"
+	if volumeIds == "" {
+		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQArr, ReadIOPSDefaultRPQArr, ReadIOPSLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQVol, ReadIOPSDefaultRPQVol, ReadIOPSLastRecordQVol, startingTime, level)
+        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+        volumeIds = "/"+volumeIds+"/"
+		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQVol, ReadIOPSDefaultRPQVol, ReadIOPSLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", IOPSReadField, level)
+	res := extractValues(values, columns, "iops", "iops", IOPSReadField)
 	result.Result.Data = res
 	return result, nil
 }
@@ -169,12 +182,17 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	level := param.(model.MAgentParam).Level
-	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
-		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQArr, WriteIOPSDefaultRPQArr, WriteIOPSLastRecordQArr, startingTime, level)
+    volumeIds := param.(model.MAgentParam).VolumeIds
+    arrayIds := param.(model.MAgentParam).ArrayIds
+	startingTime := getVolumeCreationTime(volumeIds)
+    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+    arrayIds = "/"+arrayIds+"/"
+	if volumeIds == "" {
+		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQArr, WriteIOPSDefaultRPQArr, WriteIOPSLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQVol, WriteIOPSDefaultRPQVol, WriteIOPSLastRecordQVol, startingTime, level)
+        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+        volumeIds = "/"+volumeIds+"/"
+		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQVol, WriteIOPSDefaultRPQVol, WriteIOPSLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
@@ -182,7 +200,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 		result.Result.Status, _ = util.GetStatusInfo(statusCode)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", IOPSWriteField, level)
+	res := extractValues(values, columns, "iops", "iops", IOPSWriteField)
 	result.Result.Data = res
 	return result, nil
 }
@@ -193,19 +211,24 @@ func GetLatency(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	level := param.(model.MAgentParam).Level
-	startingTime := getVolumeCreationTime(level)
-	if level == "array" {
-		values, columns, statusCode = GetAIRData(param, LatencyAggRPQArr, LatencyDefaultRPQArr, LatencyLastRecordQArr, startingTime, level)
+    volumeIds := param.(model.MAgentParam).VolumeIds
+    arrayIds := param.(model.MAgentParam).ArrayIds
+	startingTime := getVolumeCreationTime(volumeIds)
+    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+    arrayIds = "/"+arrayIds+"/"
+	if volumeIds == "" {
+		values, columns, statusCode = GetAIRData(param, LatencyAggRPQArr, LatencyDefaultRPQArr, LatencyLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, LatencyAggRPQVol, LatencyDefaultRPQVol, LatencyLastRecordQVol, startingTime, level)
+        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+        volumeIds = "/"+volumeIds+"/"
+		values, columns, statusCode = GetAIRData(param, LatencyAggRPQVol, LatencyDefaultRPQVol, LatencyLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "latency", "latency", LatencyField, level)
+	res := extractValues(values, columns, "latency", "latency", LatencyField)
 	result.Result.Data = res
 	return result, nil
 }

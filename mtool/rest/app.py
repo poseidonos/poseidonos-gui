@@ -43,8 +43,7 @@ from rest.rest_api.health_status.health_status import process_response, get_over
 from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_diskio_mbps, get_total_processes,  \
-    get_total_disk_used_percent, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
     get_disk_current_perf 
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
@@ -581,116 +580,145 @@ def get_user_cpu_use(time_interval):
         return jsonify([])
 
 
-@app.route('/api/v1.0/disk_write_mbps/<time_interval>/<level>',
-           methods=['GET'])
-def get_user_disk_write_mbps(time_interval, level):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    res = get_diskio_mbps(time_interval, level)
-    val = list(res.get_points())
-    # print(val)
-    return jsonify(val)
-
-
-@app.route('/api/v1.0/total_processes/<time_interval>', methods=['GET'])
-def get_user_total_processes(time_interval):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    res = get_total_processes(time_interval)
-    val = list(res.get_points())
-    return jsonify(val)
-
-
-@app.route('/api/v1.0/disk_used_percent/<time_interval>/<level>',
-           methods=['GET'])
-def get_user_total_disk_used_percent(time_interval, level):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    res = get_total_disk_used_percent(time_interval, level)
-    val = list(res.get_points())
-    return jsonify(val)
-
-
-@app.route('/api/v1.0/iops_read/<time_interval>/<level>', methods=['GET'])
-def get_read_iops(time_interval, level):
+def get_read_iops(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_read_iops(time_interval, level)
+        res = get_disk_read_iops(time_interval, arr_id, vol_id)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
         return jsonify({"res": []})
 
+@app.route('/api/v1/readiops/arrays', methods=['GET'])
+def get_array_read_iops():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_read_iops(time_interval, arr_ids, "")
 
-@app.route('/api/v1.0/iops_write/<time_interval>/<level>', methods=['GET'])
-def get_write_iops(time_interval, level):
+@app.route('/api/v1/readiops/arrays/volumes', methods=['GET'])
+def get_volume_read_iops():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_read_iops(time_interval, arr_ids, vol_ids)
+
+
+def get_write_iops(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_write_iops(time_interval, level)
+        res = get_disk_write_iops(time_interval, arr_id, vol_id)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+@app.route('/api/v1/writeiops/arrays', methods=['GET'])
+def get_array_write_iops():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_write_iops(time_interval, arr_ids, "")
 
+@app.route('/api/v1/writeiops/arrays/volumes', methods=['GET'])
+def get_volume_write_iops():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_write_iops(time_interval, arr_ids, vol_ids)
 
-@app.route('/api/v1.0/latency/<time_interval>/<level>', methods=['GET'])
-def get_latency(time_interval, level):
+def get_latency(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_latency(time_interval, level)
+        res = get_disk_latency(time_interval, arr_id, vol_id)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+
+@app.route('/api/v1/latency/arrays', methods=['GET'])
+def get_array_latency():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_latency(time_interval, arr_ids, "")
+
+@app.route('/api/v1/latency/arrays/volumes', methods=['GET'])
+def get_volume_latency():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_latency(time_interval, arr_id, vol_id)
+
 
 
 @app.route('/api/v1.0/perf/all', methods=['GET'])
 def get_current_iops():
     res = get_disk_current_perf()
     return jsonify(res)
-
-
-@app.route('/api/v1.0/bw_read/<time_interval>/<level>', methods=['GET'])
-def get_read_bw(time_interval, level):
+def get_read_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_read_bw(time_interval, level)
+        res = get_disk_read_bw(time_interval, arr_id, vol_id)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+@app.route('/api/v1/readbw/arrays', methods=['GET'])
+def get_array_read_bw():
+	params = request.args.to_dict()
+	arr_ids = params["arrayids"]
+	time_interval = params["time"]
+	return get_read_bw(time_interval, arr_ids, "")
 
+@app.route('/api/v1/readbw/arrays/volumes', methods=['GET'])
+def get_volume_read_bw():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_read_bw(time_interval, arr_ids, vol_ids)
 
-@app.route('/api/v1.0/bw_write/<time_interval>/<level>', methods=['GET'])
-def get_write_bw(time_interval, level):
+def get_write_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_write_bw(time_interval, level)
+        res = get_disk_write_bw(time_interval, arr_id, vol_id)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+@app.route('/api/v1/writebw/arrays', methods=['GET'])
+def get_array_write_bw():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_write_bw(time_interval, arr_ids, "")
+
+@app.route('/api/v1/writebw/arrays/volumes', methods=['GET'])
+def get_volume_write_bw():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_write_bw(time_interval, arr_ids, vol_ids)
+
 
 
 """
@@ -2206,7 +2234,6 @@ if __name__ == '__main__':
     power_thread = threading.Thread(target=activate_power_thread)
     power_thread.start()
 
-    #app.run(host='0.0.0.0', debug=True,use_reloader=False, port=5010, threaded=True)
     health_status_thread = threading.Thread(target=send_health_status_data, args=())
     health_status_thread.start()
 

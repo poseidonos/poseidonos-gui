@@ -45,35 +45,6 @@ def get_user_memory_usage(time):
 def get_latency_usage(time):
     return metrics.get_latency(time)
 
-def get_diskio_mbps(time, level):
-    connection = get_connection()
-    if level == "array":
-        query = 'SELECT non_negative_derivative(max("write_bytes"), 1s) / 1000000 AS "write_megabytes_per_second" FROM "telegraf".""."diskio" where time > now() - {} group by time({})'.format(
-            time, time_groups_default[time])
-    else:
-        query = 'SELECT non_negative_derivative(max("write_bytes"), 1s) / 1000000 AS "write_megabytes_per_second" FROM "telegraf".""."diskio" where time > now() - {} AND "name"!=\'{}\' group by time({})'.format(
-            time, level, time_groups_default[time])
-    res = connection.query(query)
-    connection.close()
-    return res
-
-
-def get_total_processes(time):
-    connection = get_connection()
-    query = 'SELECT mean("total") AS "total" FROM "telegraf".""."processes" where time > now() - {} group by time({})'.format(
-        time, time_groups_default[time])
-    res = connection.query(query)
-    connection.close()
-    return res
-
-
-def get_total_disk_used_percent(time, level):
-    connection = get_connection()
-    query = 'SELECT mean("used_percent") AS "used_percent" FROM '+mtool_db+'.""."disk" where time > now() - {} group by time({})'.format(
-            time, time_groups_default[time])
-    res = connection.query(query)
-    connection.close()
-    return res
 
 """
 def get_input_power_variation(time):
@@ -106,35 +77,35 @@ def get_input_power_variation(time):
         print(e)
 """
 
-def get_disk_latency(time, level):
-    if level == "array":
-        return metrics.get_latency(time)
+def get_disk_latency(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_latency(time, arr_id, vol_id)
     else:
-        return metrics.get_vol_latency(time, level)
+        return metrics.get_vol_latency(time, arr_id, vol_id)
 
-def get_disk_read_iops(time, level):
-    if level == "array":
-        return metrics.get_read_iops(time)
+def get_disk_read_iops(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_read_iops(time, arr_id, vol_id)
     else:
-        return metrics.get_vol_read_iops(time, level)
+        return metrics.get_vol_read_iops(time, arr_id, vol_id)
 
-def get_disk_write_iops(time, level):
-    if level == "array":
-        return metrics.get_write_iops(time)
+def get_disk_write_iops(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_write_iops(time, arr_id, vol_id)
     else:
-        return metrics.get_vol_write_iops(time, level)
+        return metrics.get_vol_write_iops(time, arr_id, vol_id)
 
-def get_disk_read_bw(time, level):
-    if level == "array":
-        return metrics.get_read_bw(time)
+def get_disk_read_bw(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_read_bw(time, arr_id)
     else:
-        return metrics.get_vol_read_bw(time, level)
+        return metrics.get_vol_read_bw(time, arr_id, vol_id)
 
-def get_disk_write_bw(time, level):
-    if level == "array":
-        return metrics.get_write_bw(time)
+def get_disk_write_bw(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_write_bw(time, arr_id)
     else:
-        return metrics.get_vol_write_bw(time, level)
+        return metrics.get_vol_write_bw(time, arr_id, vol_id)
 """
 def get_perf_from_influx(query):
     connection = get_connection()
