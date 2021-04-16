@@ -49,6 +49,7 @@ export const initialState = {
     writebufferdisks: [],
     metadiskpath: '',
     slots: [],
+    arrays: [],
     arrayExists: false,
     RAIDLevel: '',
     loadText: 'Loading...',
@@ -108,13 +109,29 @@ const storageReducer = (state = initialState, action) => {
                 ...state,
                 createVolumeButton: action.payload
             }
-        case actionTypes.FETCH_ARRAY:
+        case actionTypes.FETCH_ARRAY: {
+            let arraySize = 0;
+            let totalVolSize = 0;
+            for(let i = 0; i < action.payload.length; i += 1) {
+                arraySize += action.payload[i].totalsize;
+                totalVolSize += action.payload[i].usedspace;
+            }
+            const arrayname = state.arrayname || !action.payload.length ? state.arrayname : action.payload[0].arrayname;
             return {
                 ...state,
                 ...action.payload,
+                arrays: action.payload,
+                ...action.payload[0],
+                arrayname,
                 arrayExists: true,
-                arraySize: action.payload.totalsize,
-                totalVolSize: action.payload.usedspace
+                arraySize,
+                totalVolSize
+            }
+        }
+        case actionTypes.SET_ARRAY:
+            return {
+                ...state,
+                arrayname: action.payload
             }
         case actionTypes.SET_NO_ARRAY:
             return {

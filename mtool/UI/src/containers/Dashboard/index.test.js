@@ -15,6 +15,7 @@ import { Router } from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "../../sagas/indexSaga"
+import storageReducer from "../../store/reducers/storageReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import dashboardReducer from "../../store/reducers/dashboardReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
@@ -53,6 +54,7 @@ describe("Dashboard", () => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
       headerReducer,
+      storageReducer,
       dashboardReducer,
       configurationsettingReducer,
       BMCAuthenticationReducer

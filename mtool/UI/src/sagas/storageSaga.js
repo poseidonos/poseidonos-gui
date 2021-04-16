@@ -80,12 +80,12 @@ function* fetchVolumeDetails(action) {
   }
 }
 
-function* fetchVolumes() {
+function* fetchVolumes(action) {
   try {
     yield put(actionCreators.clearVolumes());
     const response = yield call(
       [axios, axios.get],
-      "/redfish/v1/StorageServices/1/Volumes",
+      `/redfish/v1/StorageServices/${action.payload.array}/Volumes`,
       {
         headers: {
           Accept: "application/json",
@@ -129,7 +129,7 @@ function* fetchArray(action) {
       }
     );
     if (response.status === 200 && response.data && response.data.length > 0) {
-      yield put(actionCreators.fetchArray(response.data[0]));
+      yield put(actionCreators.fetchArray(response.data));
       yield fetchArraySize();
     } else if (response.status === 401) {
       action.payload.push("/login");
@@ -139,8 +139,9 @@ function* fetchArray(action) {
   } catch (e) {
     yield put(actionCreators.setNoArray());
   } finally {
+    yield select(arrayname);
     yield put(actionCreators.stopStorageLoader());
-    yield fetchVolumes();
+    yield fetchVolumes({payload: {array: yield select(arrayname)}});
   }
 }
 
@@ -291,7 +292,7 @@ function* createVolume(action) {
           })
         );
       }
-      yield fetchVolumes();
+      yield fetchVolumes({payload: {array: arrayname}});
     } else {
       yield put(
         actionCreators.showStorageAlert({
@@ -808,7 +809,7 @@ function* deleteVolumes(action) {
         })
       );
     }
-    yield fetchVolumes();
+    yield fetchVolumes({payload: {array: arrayname}});
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -1273,7 +1274,6 @@ function* unmountPOS() {
       })
     );
   } finally {
-    yield fetchVolumes();
     yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
   }
@@ -1335,7 +1335,7 @@ function* mountPOS() {
       })
     );
   } finally {
-    yield fetchVolumes();
+    yield fetchVolumes({payload: {array: yield select(arrayname)}});
     yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
   }

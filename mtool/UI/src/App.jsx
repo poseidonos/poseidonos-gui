@@ -74,7 +74,7 @@ const App = () => {
         />
         <PrivateRoute
           className="App-content"
-          path="/volume"
+          path="/storage/array/*"
           exact
           component={() => (
             <ErrorBoundary>

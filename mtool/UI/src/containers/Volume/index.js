@@ -27,10 +27,11 @@ DESCRIPTION: <File description> *
 [05/05/2020] [Palak] : Multi-Volume Creation
 */
 import React, { Component } from "react";
-import { Box, Grid, Typography, Paper } from "@material-ui/core";
+import { Box, Grid, Typography, Paper, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import { connect } from "react-redux";
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import io from "socket.io-client";
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
@@ -46,7 +47,6 @@ import "./Volume.css";
 import MToolTheme, { customTheme } from "../../theme";
 import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
-// import bytesToTB from '../../utils/bytes-to-tb';
 import formatBytes from "../../utils/format-bytes";
 
 const styles = (theme) => ({
@@ -86,6 +86,15 @@ const styles = (theme) => ({
     border: "0px solid gray",
     height: 50,
   },
+  arraySelect: {
+    minWidth: 170
+  },
+  selectForm: {
+    margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 4)}`,
+    [theme.breakpoints.down("sm")]: {
+      margin: theme.spacing(0, 1),
+    }
+  },
   toolbar: customTheme.toolbar,
   titleContainer: {
     marginTop: theme.spacing(1),
@@ -101,6 +110,11 @@ const styles = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       height: 220,
     },
+  },
+  selectedTab: {
+    color: 'rgb(33, 34, 37)',
+    borderBottom: `2px solid ${'rgb(33, 34, 37)'}`,
+    fontWeight: 600
   },
   pageHeader: customTheme.page.title,
   cardHeader: customTheme.card.header,
@@ -131,9 +145,15 @@ class Volume extends Component {
     this.deleteArray = this.deleteArray.bind(this);
     this.alertConfirm = this.alertConfirm.bind(this);
     this.fetchDevices = this.fetchDevices.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.fetchStorageInfo = this.fetchStorageInfo.bind(this);
     this.fetchMaxVolumeCount = this.fetchMaxVolumeCount.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    const urlParams = new URLSearchParams(window.location.search);
+    const array = urlParams.get("array");
+    if(array) {
+      this.props.Set_Array(array)
+    }
   }
 
   componentDidMount() {
@@ -142,10 +162,25 @@ class Volume extends Component {
     this.fetchMaxVolumeCount();
   }
 
+  componentDidUpdate() {
+    if(window.location.href.indexOf('manage') > 0 && this.props.selectedArray
+      && window.location.href.indexOf(`array=${this.props.selectedArray}`) < 0) {
+      this.props.history.push(`/storage/array/manage?array=${this.props.selectedArray}`);
+    }
+  }
+
   handleDrawerToggle() {
     this.setState({
       mobileOpen: !this.state.mobileOpen,
     });
+  }
+
+  handleTabChange(event, newValue) {
+    if(newValue === "manage") {
+      this.props.history.push(`/storage/array/${newValue}?array=${this.props.selectedArray}`);
+    } else {
+      this.props.history.push(`/storage/array/${newValue}`);
+    }
   }
 
   createVolume(volume) {
@@ -203,11 +238,10 @@ class Volume extends Component {
 
   render() {
     const volumeFilledStyle = {
-      width: `${
-        this.props.arraySize !== 0
-          ? (100 * this.props.totalVolSize) / this.props.arraySize
-          : 0
-      }%`,
+      width: `${this.props.arraySize !== 0
+        ? (100 * this.props.totalVolSize) / this.props.arraySize
+        : 0
+        }%`,
       height: "100%",
       backgroundColor: "rgba(51, 158, 255,0.6)",
       float: "left",
@@ -217,11 +251,10 @@ class Volume extends Component {
       justifyContent: "center",
     };
     const volumeFreeStyle = {
-      width: `${
-        this.props.arraySize !== 0
-          ? 100 - (100 * this.props.totalVolSize) / this.props.arraySize
-          : 100
-      }%`,
+      width: `${this.props.arraySize !== 0
+        ? 100 - (100 * this.props.totalVolSize) / this.props.arraySize
+        : 100
+        }%`,
       height: "100%",
       color: "white",
       backgroundColor: "rgba(0, 186, 0, 0.6)",
@@ -251,157 +284,203 @@ class Volume extends Component {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid container xs={12} spacing={1} className={classes.card}>
-                <Grid item xs={12}>
-                  <Paper spacing={3} className={classes.spaced}>
-                    <Grid container justify="space-between">
-                      <Grid item xs={12}>
-                        <Typography
-                          className={classes.cardHeader}
-                          data-testid="title"
-                        >
-                          Array Management
-                        </Typography>
-                      </Grid>
-                      {this.props.arrayExists ? (
-                        <ArrayShow
-                          RAIDLevel={this.props.RAIDLevel}
-                          slots={this.props.ssds}
-                          corrupted={this.props.corrupted}
-                          storagedisks={this.props.storagedisks}
-                          sparedisks={this.props.sparedisks}
-                          metadiskpath={this.props.metadiskpath}
-                          writebufferdisks={this.props.writebufferdisks}
-                          deleteArray={this.deleteArray}
-                          diskDetails={this.props.diskDetails}
-                          getDiskDetails={this.props.Get_Disk_Details}
-                          // detachDisk={this.props.Detach_Disk}
-                          // attachDisk={this.props.Attach_Disk}
-                          addSpareDisk={this.props.Add_Spare_Disk}
-                          removeSpareDisk={this.props.Remove_Spare_Disk}
-                          mountStatus={this.props.mountStatus}
-                          handleUnmountPOS={this.props.Unmount_POS}
-                          handleMountPOS={this.props.Mount_POS}
-                        />
-                      ) : (
-                        <ArrayCreate
-                          createArray={this.createArray}
-                          disks={this.props.ssds}
-                          data-testid="arraycreate"
-                          metadisks={this.props.metadisks}
-                          diskDetails={this.props.diskDetails}
-                          getDiskDetails={this.props.Get_Disk_Details}
-                        />
-                      )}
-                    </Grid>
-                  </Paper>
-                </Grid>
-              </Grid>
-              {this.props.arrayExists ? (
-                <React.Fragment>
-                  <Grid
-                    container
-                    xs={12}
-                    spacing={1}
-                    className={classes.card}
-                    style={{
-                      opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
-                      pointerEvents:
-                        this.props.mountStatus === "OFFLINE"
-                          ? "none"
-                          : "initial",
-                    }}
-                  >
-                    <Grid item xs={12} md={6} className={classes.spaced}>
-                      <CreateVolume
-                        data-testid="createvolume"
-                        createVolume={this.createVolume}
-                        maxVolumeCount={this.props.maxVolumeCount}
-                        volCount={this.props.volumes.length}
-                        maxAvailableSize={
-                          this.props.arraySize - this.props.totalVolSize
-                        }
-                        createVolSocket={this.state.createVolSocket}
-                      />
-                    </Grid>
 
-                    <Grid item xs={12} md={6}>
-                      <Paper className={classes.volumeStatsPaper}>
-                        <Grid item xs={12}>
-                          <Typography className={classes.cardHeader}>
-                            Volume Statistics
-                          </Typography>
+              <AppBar style={{ zIndex: 50 }} position="relative" color="default">
+                <Tabs
+                  value={this.state.value}
+                  onChange={this.handleTabChange}
+                >
+                  <Tab
+                    label="create"
+                    value="create"
+                    className={(window.location.href.indexOf('create') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}
+                  >
+                    CREATE ARRAY
+                  </Tab>
+                  <Tab
+                    label="manage"
+                    value="manage"
+                    className={(window.location.href.indexOf('manage') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}
+                  >
+                    ARRAY MANAGEMENT
+                  </Tab>
+                </Tabs>
+              </AppBar>
+              <Switch>
+                <Redirect exact from="/storage/array/" to="/storage/array/create" />
+                <Route path="/storage/array/create">
+                  <Grid container xs={12} spacing={1} className={classes.card}>
+                    <Grid item xs={12}>
+                      <Paper spacing={3} className={classes.spaced}>
+                        <Grid container justify="space-between">
+                          <ArrayCreate
+                            createArray={this.createArray}
+                            disks={this.props.ssds}
+                            data-testid="arraycreate"
+                            metadisks={this.props.metadisks}
+                            diskDetails={this.props.diskDetails}
+                            getDiskDetails={this.props.Get_Disk_Details}
+                          />
                         </Grid>
-                        <div className={classes.statsWrapper}>
-                          <Grid item xs={12}>
-                            <Typography variant="span" color="secondary">
-                              Number of volumes: {this.props.volumes.length}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12} className={classes.statsContainer}>
-                            <Box className={classes.volumeStats}>
-                              <div style={volumeFilledStyle} />
-                              <div style={volumeFreeStyle} />
-                            </Box>
-                            <Grid
-                              item
-                              container
-                              xs={12}
-                              wrap="wrap"
-                              className={classes.legendContainer}
-                            >
-                              <Legend
-                                bgColor="rgba(51, 158, 255,0.6)"
-                                title={`
-                          Used Space :
-                          ${formatBytes(this.props.totalVolSize)}
-                        `}
-                              />
-                              <Legend
-                                bgColor="rgba(0, 186, 0, 0.6)"
-                                title={`
-                          Available for Volume Creation :
-                          ${formatBytes(
-                            this.props.arraySize - this.props.totalVolSize
-                          )}
-                        `}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
                       </Paper>
                     </Grid>
                   </Grid>
+                </Route>
+                <Route path="/storage/array/manage*">
 
-                  <Grid
-                    container
-                    xs={12}
-                    spacing={1}
-                    className={classes.card}
-                    style={{
-                      opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
-                      pointerEvents:
-                        this.props.mountStatus === "OFFLINE"
-                          ? "none"
-                          : "initial",
-                    }}
-                  >
-                    <Grid item xs={12}>
-                      <VolumeList
-                        ref={this.child}
-                        volumeFetch={this.fetchVolumes}
-                        volumes={this.props.volumes}
-                        deleteVolumes={this.deleteVolumes}
-                        editVolume={this.props.Edit_Volume}
-                        changeField={this.props.Change_Volume_Field}
-                        fetchVolumes={this.fetchVolumes}
-                        saveVolume={this.props.Update_Volume}
-                        changeMountStatus={this.props.Change_Mount_Status}
-                      />
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              ) : null}
+
+                  {this.props.arrayExists ? (
+                    <React.Fragment>
+                      <Grid container xs={12} spacing={1} className={classes.card}>
+                        <Grid item xs={12}>
+                          <Paper spacing={3} className={classes.spaced}>
+                            <Grid container justify="space-between">
+                              <FormControl
+                                className={classes.selectForm}
+                              >
+                                <InputLabel htmlFor="select-array">Select Array</InputLabel>
+                                <Select
+                                  inputProps={{
+                                    id: "select-array"
+                                  }}
+                                  value={this.props.selectedArray}
+                                  className={classes.arraySelect}
+                                >
+                                  {this.props.arrays.map((array) => (
+                                    <MenuItem value={array.arrayname}>
+                                      <Typography color="secondary">{array.arrayname}</Typography>
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                              <ArrayShow
+                                RAIDLevel={this.props.RAIDLevel}
+                                slots={this.props.ssds}
+                                corrupted={this.props.corrupted}
+                                storagedisks={this.props.storagedisks}
+                                sparedisks={this.props.sparedisks}
+                                metadiskpath={this.props.metadiskpath}
+                                writebufferdisks={this.props.writebufferdisks}
+                                deleteArray={this.deleteArray}
+                                diskDetails={this.props.diskDetails}
+                                getDiskDetails={this.props.Get_Disk_Details}
+                                // detachDisk={this.props.Detach_Disk}
+                                // attachDisk={this.props.Attach_Disk}
+                                addSpareDisk={this.props.Add_Spare_Disk}
+                                removeSpareDisk={this.props.Remove_Spare_Disk}
+                                mountStatus={this.props.mountStatus}
+                                handleUnmountPOS={this.props.Unmount_POS}
+                                handleMountPOS={this.props.Mount_POS}
+                              />
+                            </Grid>
+                          </Paper>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        xs={12}
+                        spacing={1}
+                        className={classes.card}
+                        style={{
+                          opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                          pointerEvents:
+                            this.props.mountStatus === "OFFLINE"
+                              ? "none"
+                              : "initial",
+                        }}
+                      >
+                        <Grid item xs={12} md={6} className={classes.spaced}>
+                          <CreateVolume
+                            data-testid="createvolume"
+                            createVolume={this.createVolume}
+                            maxVolumeCount={this.props.maxVolumeCount}
+                            volCount={this.props.volumes.length}
+                            maxAvailableSize={
+                              this.props.arraySize - this.props.totalVolSize
+                            }
+                            createVolSocket={this.state.createVolSocket}
+                          />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                          <Paper className={classes.volumeStatsPaper}>
+                            <Grid item xs={12}>
+                              <Typography className={classes.cardHeader}>
+                                Volume Statistics
+                              </Typography>
+                            </Grid>
+                            <div className={classes.statsWrapper}>
+                              <Grid item xs={12}>
+                                <Typography variant="span" color="secondary">
+                                  Number of volumes: {this.props.volumes.length}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} className={classes.statsContainer}>
+                                <Box className={classes.volumeStats}>
+                                  <div style={volumeFilledStyle} />
+                                  <div style={volumeFreeStyle} />
+                                </Box>
+                                <Grid
+                                  item
+                                  container
+                                  xs={12}
+                                  wrap="wrap"
+                                  className={classes.legendContainer}
+                                >
+                                  <Legend
+                                    bgColor="rgba(51, 158, 255,0.6)"
+                                    title={`
+                          Used Space :
+                          ${formatBytes(this.props.totalVolSize)}
+                        `}
+                                  />
+                                  <Legend
+                                    bgColor="rgba(0, 186, 0, 0.6)"
+                                    title={`
+                          Available for Volume Creation :
+                          ${formatBytes(
+                                      this.props.arraySize - this.props.totalVolSize
+                                    )}
+                        `}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </div>
+                          </Paper>
+                        </Grid>
+                      </Grid>
+
+                      <Grid
+                        container
+                        xs={12}
+                        spacing={1}
+                        className={classes.card}
+                        style={{
+                          opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                          pointerEvents:
+                            this.props.mountStatus === "OFFLINE"
+                              ? "none"
+                              : "initial",
+                        }}
+                      >
+                        <Grid item xs={12}>
+                          <VolumeList
+                            ref={this.child}
+                            volumeFetch={this.fetchVolumes}
+                            volumes={this.props.volumes}
+                            deleteVolumes={this.deleteVolumes}
+                            editVolume={this.props.Edit_Volume}
+                            changeField={this.props.Change_Volume_Field}
+                            fetchVolumes={this.fetchVolumes}
+                            saveVolume={this.props.Update_Volume}
+                            changeMountStatus={this.props.Change_Mount_Status}
+                          />
+                        </Grid>
+                      </Grid>
+                    </React.Fragment>
+                  ) : null}
+                </Route>
+              </Switch>
               {this.props.loading ? (
                 <MToolLoader text={this.props.loadText} />
               ) : null}
@@ -427,6 +506,8 @@ const mapStateToProps = (state) => {
     ssds: state.storageReducer.ssds,
     metadisks: state.storageReducer.metadisks,
     volumes: state.storageReducer.volumes,
+    arrays: state.storageReducer.arrays,
+    selectedArray: state.storageReducer.arrayname,
     loading: state.storageReducer.loading,
     alertOpen: state.storageReducer.alertOpen,
     alertType: state.storageReducer.alertType,
@@ -483,6 +564,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
     Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
+    Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload})
   };
 };
 
@@ -490,5 +572,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Volume)
+  )(withRouter(Volume))
 );

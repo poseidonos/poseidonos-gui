@@ -400,7 +400,7 @@ class ArrayShow extends Component {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
               <Select
-                value={this.props.metadiskpath[0].deviceName}
+                value={this.props.metadiskpath && this.props.metadiskpath.length > 0 ? this.props.metadiskpath[0].deviceName : ""}
                 inputProps={{
                   name: "Write Buffer Path",
                   id: "writebuffer",

@@ -39,7 +39,7 @@ import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography } from "@material-ui/core";
+import { Paper, Grid, Typography, Link } from "@material-ui/core";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
@@ -228,6 +228,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.fetchVolumes();
+    this.props.fetchArrays();
     this.props.fetchStorageInfo();
     this.props.fetchPerformance();
     this.props.fetchIpAndMacInfo();
@@ -353,6 +354,27 @@ class Dashboard extends Component {
     //     // sorting: false,
     //  // },
     // ];
+    const arrayTableColumns = [
+      {
+        title: "Name",
+        field: "arrayname",
+        render: (rowData) => (
+          <Link href={`/storage/array/manage?array=${rowData.arrayname}`}>{rowData.arrayname}</Link>
+        )
+      },
+      {
+        title: "RAID",
+        render: (rowData) => `RAID ${rowData.RAIDLevel}`
+      },
+      {
+        title: "Total Space",
+        render: (rowData) => formatBytes(rowData.totalsize)
+      },
+      {
+        title: "Number of Volumes",
+        field: "volumes",
+      }
+    ];
     const volumeTableColumns = [
       {
         title: "Name",
@@ -367,6 +389,10 @@ class Dashboard extends Component {
         title: "Total Space",
         render: (rowData) => (rowData.total ? formatBytes(rowData.total) : 0),
       },
+      {
+        title: "Array",
+        field: "array"
+      }
     ];
     const { classes } = this.props;
 
@@ -755,7 +781,37 @@ class Dashboard extends Component {
                 <Grid xs={12} md={12} container spacing={1}>
                   <Grid
                     xs={12}
-                    md={12}
+                    md={6}
+                    item
+                    className={classes.volumeContainer}
+                  >
+                    <Paper spacing={3} className={classes.volumeSummary}>
+                      <MaterialTable
+                        title={(
+                          <Typography className={classes.cardHeader}>
+                            Array Summary
+                          </Typography>
+                        )}
+                        columns={arrayTableColumns}
+                        data={this.props.arrays}
+                        options={{
+                          headerStyle: {
+                            backgroundColor: "#788595",
+                            color: "#FFF",
+                          },
+                          minBodyHeight: 342,
+                          maxBodyHeight: 342,
+                          search: false,
+                        }}
+                        style={{ height: "100%" }}
+                        isLoading={this.props.arrayLoading}
+                        icons={icons}
+                      />
+                    </Paper>
+                  </Grid>
+                  <Grid
+                    xs={12}
+                    md={6}
                     item
                     className={classes.volumeContainer}
                   >
@@ -828,6 +884,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     volumes: state.dashboardReducer.volumes,
+    arrays: state.storageReducer.arrays,
+    arrayLoading: state.storageReducer.loading,
     alerts: state.dashboardReducer.alerts,
     ibofs: state.dashboardReducer.ibofs,
     unusedSpace: state.dashboardReducer.unusedSpace,
@@ -857,6 +915,7 @@ const mapDispatchToProps = (dispatch) => {
     enableFetchingAlerts: (flag) =>
       dispatch(actionCreators.enableFetchingAlerts(flag)),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
+    fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     fetchAlertsInfo: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_ALERTS_INFO }),
     fetchStorageInfo: () =>

@@ -154,6 +154,8 @@ export const SAGA_UNMOUNT_POS = "SAGA_UNMOUNT_POS"
 
 export const SAGA_MOUNT_POS = "SAGA_MOUNT_POS"
 
+export const SET_ARRAY = "SET_ARRAY"
+
 // Performance Page Actions
 export const FETCH_DISK_USED = "FETCH_DISK_USED"
 

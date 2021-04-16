@@ -168,13 +168,17 @@ const Sidebar = (props) => {
           </ListItem>
         </NavLink>
         <Divider className={classes.listDivider} />
-        <NavLink style={ulStyle} to="/volume" className={classes.link} activeClassName={classes.activeLink}>
+        <NavLink style={ulStyle} to="/storage/array/"
+          exact={false}
+          className={classes.link}
+          activeClassName={classes.activeLink}
+        >
           <ListItem className={classes.sidebarLink}>
             <span>
               <img
                  className={classes.sidebarIcon}
                 src={
-                  window.location.href.indexOf('volume') > 0
+                  window.location.href.indexOf('storage') > 0
                     ? StorageIconSelected
                     : StorageIconDisabled
                 }
@@ -203,21 +207,21 @@ const Sidebar = (props) => {
         </NavLink>
         <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/Hardware/Overview">
-            <ListItem className={classes.sidebarLink}>
-              <span>
-                <img
-                  className={classes.sidebarIcon}
-                  src={
-                    window.location.href.indexOf('Hardware') > 0
-                      ? HardwareIconSelected
-                      : HardwareIconDisabled
-                  }
-                  alt="l"
-                />
-              </span>
-              <Typography className={classes.sidebarText}>Hardware</Typography>
-            </ListItem>
-          </NavLink>
+          <ListItem className={classes.sidebarLink}>
+            <span>
+              <img
+                className={classes.sidebarIcon}
+                src={
+                  window.location.href.indexOf('Hardware') > 0
+                    ? HardwareIconSelected
+                    : HardwareIconDisabled
+                }
+                alt="l"
+              />
+            </span>
+            <Typography className={classes.sidebarText}>Hardware</Typography>
+          </ListItem>
+        </NavLink>
 
         <Divider className={classes.listDivider} /> 
         <NavLink
