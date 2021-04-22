@@ -1078,12 +1078,14 @@ def get_arrays(current_user):
 
     try:
         if array_list.status_code == 200:
+            output = list_volume(dagent.array_names[0])
             array = array_list.json()
             res = array
             # convert to format expected by UI
             array = get_mod_array(array)
             array['totalsize'] = int(res["info"]["capacity"])
             array['usedspace'] = int(res["info"]["used"])
+            array['volumeCount'] = len(output)
             return jsonify([array])
 
         return toJson([])

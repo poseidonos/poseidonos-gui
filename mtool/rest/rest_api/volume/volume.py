@@ -79,19 +79,22 @@ def delete_volume(vol_name, array_name):
 
 def list_volume(arr_name):
     vols = dagent.list_volumes()
-    #print('*************volumes in rest_api****', vols.json())
-    if vols.status_code == 200:
-        vols = vols.json()
-        return vols['result']['data']['volumes']
-    elif "data" in vols.json()["result"]:
-        # print(vols.content)
-        if "volumes" in vols["result"]["data"]:
-            return vols["result"]["data"]["volumes"]
+    try:
+        #print('*************volumes in rest_api****', vols.json())
+        if vols.status_code == 200:
+            vols = vols.json()
+            return vols['result']['data']['volumes']
+        elif "data" in vols.json()["result"]:
+            # print(vols.content)
+            if "volumes" in vols["result"]["data"]:
+                return vols["result"]["data"]["volumes"]
+            else:
+                return []
+        # if not "data" in vols["result"] and "status" in vols["result"] and
+        # vols["result"]["status"]["code"] == "200000":
         else:
             return []
-    # if not "data" in vols["result"] and "status" in vols["result"] and
-    # vols["result"]["status"]["code"] == "200000":
-    else:
+    except Exception as e:
         return []
     # return list_vol()
 
