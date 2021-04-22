@@ -45,17 +45,18 @@ class VolumeCollection():
                     {"Write": "True"}
             ]
         }
-        self.base_url = "/redfish/v1/StorageServices/1/Volumes/"
+        self.base_url = "/redfish/v1/StorageServices/{}/Volumes/"
 
     # Get the volume list
     # Return list of volumes in Swordfish Response format
-    def get(self):
+    def get(self, array_name):
         try:
-            res = list_volume()
+            res = list_volume(array_name)
             self.volumes_list["Members@odata.count"] = len(res)
+            url = self.base_url.format(array_name)
             for vol in res:
                 self.volumes_list["Members"].append({
-                    "@odata.id": self.base_url + str(vol["id"])
+                    "@odata.id": url + str(vol["id"])
                 })
             return json_util.dumps(self.volumes_list)
         except Exception as e:
@@ -98,14 +99,15 @@ class Volume():
                 "NQN": "NA"
             }
         }
-
+        self.base_url = "/redfish/v1/StorageServices/{}/Volumes/"
     # Get the volume details
     # Params:
     #       vol_id: Id of the volume
     # Return details the of specified volume in Swordfish Response format
-    def get(self, vol_id):
+    def get(self, vol_id, array_name):
         try:
-            ibof_vols = list_volume()
+            ibof_vols = list_volume(array_name)
+            url = self.base_url.format(array_name)
             for vol in ibof_vols:
                 print("Print:___",vol)
                 if str(vol["id"]) == vol_id:
@@ -116,8 +118,7 @@ class Volume():
                     self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
-                    self.volume["@odata.id"] = "/redfish/v1/StorageServices/1/Volumes/" + \
-                        str(vol["id"])
+                    self.volume["@odata.id"] = url + str(vol["id"])
                     return json_util.dumps(self.volume)
         except Exception as e:
             print("Exception in getting Volume Details", e)

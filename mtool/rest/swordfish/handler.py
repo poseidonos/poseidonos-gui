@@ -35,15 +35,15 @@ swordfish_api = Blueprint('swordfish_api', __name__, template_folder='templates'
 # Params: 
 #       serviceId: Id of the storage service
 # Returns a list of Volumes in Swordfish response format
-@swordfish_api.route('/redfish/v1/StorageServices/<serviceId>/Volumes')
-def get_volume_collection(serviceId):
-    return VolumeCollection().get()
+@swordfish_api.route('/redfish/v1/StorageServices/<array_name>/Volumes')
+def get_volume_collection(array_name):
+    return VolumeCollection().get(array_name)
 
 # Handler function for getting volume details
 # Params: 
 #       serviceId: Id of the storage service
 #       volumeId: Id of the Volume
 # Returns the details of a volume in Swordfish response format
-@swordfish_api.route('/redfish/v1/StorageServices/<serviceId>/Volumes/<volumeId>')
-def get_volume(serviceId, volumeId):
-    return Volume().get(volumeId)
+@swordfish_api.route('/redfish/v1/StorageServices/<array_name>/Volumes/<volumeId>')
+def get_volume(array_name, volumeId):
+    return Volume().get(volumeId, array_name)

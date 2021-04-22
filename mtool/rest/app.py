@@ -663,9 +663,10 @@ def get_volume_latency():
 
 
 
-@app.route('/api/v1.0/perf/all', methods=['GET'])
+@app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
-    res = get_disk_current_perf()
+    array_ids = "0" # will add code to get all array ids
+    res = get_disk_current_perf(array_ids)
     return jsonify(res)
 def get_read_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
@@ -1595,16 +1596,15 @@ def getMaxVolCount():
     return jsonify(max_vol_count)
 
 
-@app.route('/api/v1.0/get_volumes/', methods=['GET'])
-def getVolumes():
-    print('came here in get vols')
+@app.route('/api/v1/<array_name>/get_volumes/', methods=['GET'])
+def getVolumes(array_name):
     # col = db['volume']
     # arrays=db.array.find()
     # if not arrays:
     #    return jsonify([])
     # arrayname=arrays[0]['_id']
     #volumes = col.find()
-    volumes = list_volume()
+    volumes = list_volume(array_name)
     # if not volumes:
     #     return jsonify({'message': 'no volumes found'})
     ip = get_ip_address()
@@ -2229,10 +2229,10 @@ def send_health_status_data():
 
 
 if __name__ == '__main__':
-    bmc_thread = threading.Thread(target=activate_bmc_thread)
-    bmc_thread.start()
-    power_thread = threading.Thread(target=activate_power_thread)
-    power_thread.start()
+    #bmc_thread = threading.Thread(target=activate_bmc_thread)
+    #bmc_thread.start()
+    #power_thread = threading.Thread(target=activate_power_thread)
+    #power_thread.start()
 
     health_status_thread = threading.Thread(target=send_health_status_data, args=())
     health_status_thread.start()

@@ -94,7 +94,7 @@ def get_vol_read_iops(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_iops(time, arr_id, vol_id, auth = BASIC_AUTH_TOKEN):
+def get_write_iops(time, arr_id, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
