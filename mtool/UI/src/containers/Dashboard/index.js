@@ -372,7 +372,7 @@ class Dashboard extends Component {
       },
       {
         title: "Number of Volumes",
-        field: "volumes",
+        render: (rowData) => this.props.arrayVolCount[rowData.arrayname] ? this.props.arrayVolCount[rowData.arrayname] : 0
       }
     ];
     const volumeTableColumns = [
@@ -888,9 +888,6 @@ const mapStateToProps = (state) => {
     arrayLoading: state.storageReducer.loading,
     alerts: state.dashboardReducer.alerts,
     ibofs: state.dashboardReducer.ibofs,
-    unusedSpace: state.dashboardReducer.unusedSpace,
-    used: state.dashboardReducer.used,
-    unused: state.dashboardReducer.unused,
     readIOPS: state.dashboardReducer.readIOPS,
     writeIOPS: state.dashboardReducer.writeIOPS,
     readBW: state.dashboardReducer.readBW,
@@ -898,6 +895,7 @@ const mapStateToProps = (state) => {
     latency: state.dashboardReducer.latency,
     fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
+    arrayVolCount: state.dashboardReducer.arrayVols,
     mac: state.dashboardReducer.mac,
     host: state.dashboardReducer.host,
     arraySize: state.dashboardReducer.arraySize,

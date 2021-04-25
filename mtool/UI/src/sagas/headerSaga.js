@@ -80,6 +80,102 @@ function* CallIsiBOFOSRunning(action) {
 
 }
 
+function* startIBOFOs() {
+    yield put(actionCreators.setOperationsMessage("Starting Poseidon OS"));
+    try {
+        const response = yield call([axios, axios.get], '/api/v1.0/start_ibofos', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage("Poseidon OS Started Successfully"));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage("Error in Starting Poseidon OS: ", e));
+    }
+}
+
+
+function* stopIBOFOs() {
+    yield put(actionCreators.setOperationsMessage("Stopping Poseidon OS"));
+    try {
+        const response = yield call([axios, axios.get], '/api/v1.0/stop_ibofos', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage("Poseidon OS Stopped Successfully"));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage("Error in Stopping Poseidon OS: ", e));
+    }
+}
+
+function* resetIBOFOs() {
+    yield put(actionCreators.setOperationsMessage("Resetting Poseidon OS"));
+    try {
+        const response = yield call([axios, axios.get], '/api/v1.0/cleanup', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage("Poseidon OS Reset Successful"));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage("Error in Resetiing Poseidon OS: ", e));
+    }
+}
+
+function* mountIBOFOs() {
+    yield put(actionCreators.setOperationsMessage("Mounting Poseidon OS"));
+    try {
+        const response = yield call([axios, axios.post], '/api/v1.0/ibofos/mount', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage("Poseidon OS Mount Successful"));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage("Error in Mounting Poseidon OS: ", e));
+    }
+}
+
+function* unmountIBOFOs() {
+    yield put(actionCreators.setOperationsMessage("Unmounting Poseidon OS"));
+    try {
+        const response = yield call([axios, axios.delete], '/api/v1.0/ibofos/mount', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage("Poseidon OS Unmount Successful"));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage("Error in Unmounting Poseidon Os: ", e));
+    }
+}
+
 export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, CallIsiBOFOSRunning);
+    yield takeEvery(actionTypes.SAGA_START_IBOFOS, startIBOFOs);
+    yield takeEvery(actionTypes.SAGA_STOP_IBOFOS, stopIBOFOs);
+    yield takeEvery(actionTypes.SAGA_RESET_IBOFOS, resetIBOFOs);
+    yield takeEvery(actionTypes.SAGA_MOUNT_IBOFOS, mountIBOFOs);
+    yield takeEvery(actionTypes.SAGA_UNMOUNT_IBOFOS, unmountIBOFOs);
 }

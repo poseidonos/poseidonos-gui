@@ -86,6 +86,7 @@ class Performance extends Component {
     this.fetchDetails = this.fetchDetails.bind(this);
     this.levelChanged = this.levelChanged.bind(this);
     this.volumeChanged = this.volumeChanged.bind(this);
+    this.arrayChanged = this.arrayChanged.bind(this);
     this.measurementChanged = this.measurementChanged.bind(this);
     this.setChartWidth = this.setChartWidth.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
@@ -95,11 +96,12 @@ class Performance extends Component {
       mobileOpen: false,
       intervalTime: '1m',
       level: 'array',
-      volume: '',
+      volume: 'all-volumes',
+      array: '',
       chartContent: ['array'],
       maxIops: null,
       maxBw: null,
-      maxLatency:null,
+      maxLatency: null,
       vols: [],
       selectedMeasurement: [READ_BANDWIDTH]
     };
@@ -108,12 +110,22 @@ class Performance extends Component {
   componentDidMount() {
     this.fetchDetails();
     this.fetchVolumeNames();
+    this.props.Get_Arrays();
     // this.props.fetchPowerSensorInfo();
     this.interval = setInterval(() => {
       this.fetchDetails();
     }, 2000);
     this.setChartWidth();
     window.addEventListener("resize", this.setChartWidth);
+  }
+
+  componentDidUpdate() {
+    if (this.state.array === "" && this.props.arrays.length > 0) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        array: this.props.arrays[0].arrayname
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -158,48 +170,50 @@ class Performance extends Component {
   // }
 
   fetchReadBandwidth(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
-      if (this.state.level === "array")
-        this.props.Get_Read_Bandwidth({ time: t, level: this.state.chartContent[i] });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_BANDWIDTH))
-        this.props.Get_Read_Bandwidth({ time: t, level: this.state.chartContent[i], ...this.state.vols[i] });
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      if (this.state.level === "array") {
+        this.props.Get_Read_Bandwidth({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
+      }
+      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_BANDWIDTH)) {
+        this.props.Get_Read_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
+      }
     }
   }
 
   fetchWriteBandwidth(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
       if (this.state.level === "array")
-        this.props.Get_Write_Bandwidth({ time: t, level: this.state.chartContent[i] });
+        this.props.Get_Write_Bandwidth({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
       else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_BANDWIDTH))
-        this.props.Get_Write_Bandwidth({ time: t, level: this.state.chartContent[i], ...this.state.vols[i] });
+        this.props.Get_Write_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
     }
   }
 
   fetchWriteIOPS(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
       if (this.state.level === "array")
-        this.props.Get_Write_IOPS({ time: t, level: this.state.chartContent[i] });
+        this.props.Get_Write_IOPS({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
       else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_IOPS))
-        this.props.Get_Write_IOPS({ time: t, level: this.state.chartContent[i], ...this.state.vols[i] });
+        this.props.Get_Write_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
     }
   }
 
   fetchReadIOPS(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
       if (this.state.level === "array")
-        this.props.Get_Read_IOPS({ time: t, level: this.state.chartContent[i] });
+        this.props.Get_Read_IOPS({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
       else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_IOPS))
-        this.props.Get_Read_IOPS({ time: t, level: this.state.chartContent[i], ...this.state.vols[i] });
+        this.props.Get_Read_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
     }
   }
 
-  
+
   fetchLatency(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1 ) {
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
       if (this.state.level === "array")
-        this.props.Get_Latency({ time: t, level: this.state.chartContent[i] });
+        this.props.Get_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
       else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(LATENCY))
-        this.props.Get_Latency({ time: t, level: this.state.chartContent[i], ...this.state.vols[i] });
+        this.props.Get_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
     }
   }
 
@@ -243,7 +257,7 @@ class Performance extends Component {
       });
     } else if (event.target.value === 'volume') {
       const vols = []; const chartContent = [];
-      for (let i = 0; i < this.props.volumes.length; i += 1 ) {
+      for (let i = 0; i < this.props.volumes.length; i += 1) {
         chartContent.push(this.props.volumes[i].id);
         vols.push(this.props.volumes[i]);
       }
@@ -275,12 +289,12 @@ class Performance extends Component {
     //   setTimeout(() => {
     //     this.fetchDetails();
     //   });
-      // this.props.fetchPowerSensorInfo();
+    // this.props.fetchPowerSensorInfo();
     // }
   }
 
   fetchVolumeNames() {
-    this.props.Get_Volumes();
+    this.props.Get_Volumes({ array: this.state.array });
   }
 
   measurementChanged(event) {
@@ -291,10 +305,17 @@ class Performance extends Component {
     this.props.Reset_State();
   }
 
+  arrayChanged(event) {
+    this.setState({
+      array: event.target.value,
+      volume: 'all-volumes'
+    })
+  }
+
   volumeChanged(event) {
     let vol; const chartContent = []; const vols = [];
     if (event.target.value === 'all-volumes') {
-      for (let i = 0; i < this.props.volumes.length; i += 1 ) {
+      for (let i = 0; i < this.props.volumes.length; i += 1) {
         chartContent.push(this.props.volumes[i].id);
         vols.push(this.props.volumes[i]);
       }
@@ -305,7 +326,7 @@ class Performance extends Component {
         vols
       });
     } else {
-      for (let i = 0; i < this.props.volumes.length; i += 1 ) {
+      for (let i = 0; i < this.props.volumes.length; i += 1) {
         /* istanbul ignore else */
         if (event.target.value === this.props.volumes[i].id) {
           vol = this.props.volumes[i];
@@ -367,10 +388,10 @@ class Performance extends Component {
             <div className={classes.toolbar} />
             <Grid container spacing={3}>
               <Grid container spacing={3} className={classes.titleContainer}>
-                <Grid sm={6} xs={12} item>
+                <Grid sm={4} xs={12} item>
                   <Typography className={classes.pageHeader} variant="h6">Performance</Typography>
                 </Grid>
-                <Grid sm={6} xs={12} item container direction="row" alignItems="center" justify="flex-end" className={classes.operationContainer}>
+                <Grid sm={8} xs={12} item container direction="row" alignItems="center" justify="flex-end" className={classes.operationContainer}>
                   <Typography className={classes.selectLabel}>Level:</Typography>
                   <FormControl>
                     <Select
@@ -400,6 +421,39 @@ class Performance extends Component {
                       </MenuItem> */}
                     </Select>
                   </FormControl>
+                  {(this.state.level === 'array' || this.state.level === 'volume') ? (
+                    <React.Fragment>
+                      <Typography className={classes.selectLabel}>Array:</Typography>
+                      <FormControl>
+                        <Select
+                          value={this.state.array}
+                          onChange={this.arrayChanged}
+                          inputProps={{
+                            name: 'Array',
+                            id: 'array',
+                            'data-testid': "arrayInput",
+                          }}
+                          SelectDisplayProps={{
+                            'data-testid': 'arraySelect'
+                          }}
+                          id="array"
+                          ref={(r) => {
+                            this.arrayRef = r
+                          }}
+                          disabled={this.props.arrays &&
+                            this.props.arrays.length < 1}
+                        >
+                          {this.props.arrays.map((array) => (
+                            <MenuItem value={array.arrayname} data-testid={array.arrayname}>
+                              <Typography color="secondary">
+                                {array.arrayname}
+                              </Typography>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </React.Fragment>
+                  ) : null}
                   {(this.state.level === 'volume') ? (
                     <React.Fragment>
                       <Typography className={classes.selectLabel}>Volume:</Typography>
@@ -422,7 +476,6 @@ class Performance extends Component {
                           disabled={this.props.volumes &&
                             this.props.volumes.length < 1}
                         >
-                          {/* {console.log("ref",this.volumeRef)} */}
                           <MenuItem value="all-volumes" data-testid="all-volume">
                             <Typography color="secondary">
                               All Volumes
@@ -439,7 +492,7 @@ class Performance extends Component {
                       </FormControl>
                     </React.Fragment>
                   ) : null}
-                  {(this.state.level === 'volume') && (this.state.volume === 'all-volumes') ? (
+                  {((this.state.level === 'volume') && (this.state.volume === 'all-volumes')) ? (
                     <React.Fragment>
                       <Typography className={classes.selectLabel}>Measurement:</Typography>
                       <Select
@@ -769,6 +822,7 @@ const mapStateToProps = state => {
     writeBandwidth: state.performanceReducer.writeBandwidth,
     latency: state.performanceReducer.latency,
     volumes: state.storageReducer.volumes,
+    arrays: state.storageReducer.arrays,
     power_sensor_info: state.hardwareSensorReducer.power_sensor_info,
   }
 }
@@ -783,7 +837,8 @@ const mapDispatchToProps = dispatch => {
     Get_Write_IOPS: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_WRITE_IOPS, payload }),
     Get_Latency: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_LATENCY, payload }),
     // fetchInputPower: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION,payload }),
-    Get_Volumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
+    Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
+    Get_Arrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     Reset_State: () => dispatch({ type: actionTypes.RESET_PERF_STATE }),
     // fetchPowerSensorInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION, }),
   }

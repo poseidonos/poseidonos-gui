@@ -170,6 +170,9 @@ const styles = (theme) => ({
   corrupted: {
     backgroundColor: "rgb(232, 114, 114)",
   },
+  usedDisk: {
+    backgroundColor: "darkgray"
+  }
 });
 const removeA = (slot, disk) => {
   const arr = [];
@@ -190,7 +193,7 @@ class ArrayCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      arrayname: "POSArray",
+      arrayname: "",
       raids: [
         {
           label: "RAID-5",
@@ -285,6 +288,15 @@ class ArrayCreate extends Component {
 
   createArray(event) {
     event.preventDefault();
+    if (this.state.arrayname === "") {
+      this.setState({
+        ...this.state,
+        alertType: "alert",
+        errorMsg: "Please provide a valid Array name",
+        alertOpen: true,
+      });
+      return;
+    }
     if (this.state.minStorage > this.state.slots["Storage Disk"].length) {
       this.setState({
         ...this.state,
@@ -335,6 +347,9 @@ class ArrayCreate extends Component {
       "Spare Disk": "#339EFF",
       "Write Buffer Disk": "#FFEC33",
     };
+    if (!disk.isAvailable) {
+      return;
+    }
     const el = document.getElementById(position);
     if (
       (el.style.backgroundColor === "white" ||
@@ -425,6 +440,20 @@ class ArrayCreate extends Component {
         <form className={classes.root} data-testid="arraycreate">
           <Grid item xs={12} sm={6} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
+              <TextField
+                id="array-name"
+                name="arrayname"
+                label="Array Name"
+                value={this.state.arrayname}
+                onChange={this.handleChange}
+                inputProps={{
+                  "data-testid": "array-name",
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
                 value={this.state.raid}
@@ -448,32 +477,6 @@ class ArrayCreate extends Component {
           </Grid>
           <Grid item xs={12} sm={6} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
-              <Select
-                value={this.state.metaDisk}
-                onChange={this.onSelectWriteBuffer}
-                inputProps={{
-                  name: "Write Buffer Path",
-                  id: "writebuffer",
-                  "data-testid": "writebuffer-input",
-                }}
-                SelectDisplayProps={{
-                  "data-testid": "writebuffer",
-                }}
-                disabled={!this.props.metadisks}
-              >
-                {this.props.metadisks
-                  ? this.props.metadisks.map((disk) => (
-                      <MenuItem value={disk}>
-                        <Typography color="secondary">{disk}</Typography>
-                      </MenuItem>
-                    ))
-                  : null}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} className={classes.inputGrid}>
-            <FormControl className={classes.formControl}>
               <InputLabel htmlFor="disktype">Disk Type</InputLabel>
               <Select
                 value={this.state.diskType}
@@ -495,20 +498,31 @@ class ArrayCreate extends Component {
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={12} sm={6} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
-              <TextField
-                id="array-name"
-                name="arrayname"
-                label="Array Name"
-                value={this.state.arrayname}
-                onChange={this.handleChange}
-                required="true"
-                style={{ display: "none" }}
+              <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
+              <Select
+                value={this.state.metaDisk}
+                onChange={this.onSelectWriteBuffer}
                 inputProps={{
-                  "data-testid": "array-name",
+                  name: "Write Buffer Path",
+                  id: "writebuffer",
+                  "data-testid": "writebuffer-input",
                 }}
-              />
+                SelectDisplayProps={{
+                  "data-testid": "writebuffer",
+                }}
+                disabled={!this.props.metadisks}
+              >
+                {this.props.metadisks
+                  ? this.props.metadisks.map((disk) => (
+                    <MenuItem value={disk}>
+                      <Typography color="secondary">{disk}</Typography>
+                    </MenuItem>
+                  ))
+                  : null}
+              </Select>
             </FormControl>
           </Grid>
           <div className={classes.diskGridContainer}>
@@ -516,48 +530,48 @@ class ArrayCreate extends Component {
               <GridList cellHeight={110} className={classes.gridList} cols={32}>
                 {this.props.disks
                   ? this.props.disks.map((disk, i) => {
-                      return (
-                        <Tooltip
-                          classes={{
-                            tooltip: classes.tooltip,
-                          }}
-                          title={(
-<React.Fragment>
-                              <div style={{ margin: "10px" }}>
-                                Name:
+                    return (
+                      <Tooltip
+                        classes={{
+                          tooltip: classes.tooltip,
+                        }}
+                        title={(
+                          <React.Fragment>
+                            <div style={{ margin: "10px" }}>
+                              Name:
                                 {disk.name}
-                              </div>
-                              <div style={{ margin: "10px" }}>
-                                Size: {formatBytes(disk.size)}
-                              </div>
-                              <div
-                                onClick={() => this.showPopup(disk.name)}
-                                aria-hidden="true"
-                                style={{
-                                  cursor: "pointer",
-                                  textAlign: "right",
-                                  margin: "10px",
-                                }}
-                              >
-                                <u>More Details</u>
-                              </div>
-</React.Fragment>
-)}
-                          interactive
+                            </div>
+                            <div style={{ margin: "10px" }}>
+                              Size: {formatBytes(disk.size)}
+                            </div>
+                            <div
+                              onClick={() => this.showPopup(disk.name)}
+                              aria-hidden="true"
+                              style={{
+                                cursor: "pointer",
+                                textAlign: "right",
+                                margin: "10px",
+                              }}
+                            >
+                              <u>More Details</u>
+                            </div>
+                          </React.Fragment>
+                        )}
+                        interactive
+                      >
+                        <GridListTile
+                          className={`${classes.gridTile} ${disk.isAvailable ? {} : classes.usedDisk}`}
+                          id={i}
+                          onClick={() => {
+                            this.toggleRowSelect(i, disk);
+                          }}
+                          data-testid={`diskselect-${i}`}
                         >
-                          <GridListTile
-                            className={classes.gridTile}
-                            id={i}
-                            onClick={() => {
-                              this.toggleRowSelect(i, disk);
-                            }}
-                            data-testid={`diskselect-${i}`}
-                          >
-                            <Typography color="secondary">{i + 1}</Typography>
-                          </GridListTile>
-                        </Tooltip>
-                      );
-                    })
+                          <Typography color="secondary">{i + 1}</Typography>
+                        </GridListTile>
+                      </Tooltip>
+                    );
+                  })
                   : null}
                 {freedisks}
               </GridList>
@@ -575,6 +589,7 @@ class ArrayCreate extends Component {
               <Legend bgColor="#51ce46" title="Selected Storage disk" />
               <Legend bgColor="#339eff" title="Selected Spare disk" />
               <Legend bgColor="#ffffff" title="Not Selected" />
+              <Legend bgColor="darkgray" title="Used Disk" />
               <Legend bgColor="#e2e1e1" title="Empty Slot" />
             </Grid>
             <Grid

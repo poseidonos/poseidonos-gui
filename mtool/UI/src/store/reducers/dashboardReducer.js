@@ -31,9 +31,6 @@ const initialState = {
     volumes: [],
     alerts: [],
     ibofs: ['None'],
-    unusedSpace: 100,
-    used: 0,
-    unused: 100,
     readIOPS: 0,
     writeIOPS: 0,
     readBW: 0,
@@ -44,6 +41,7 @@ const initialState = {
     mac: 'NA',
     host: '',
     arraySize: 0,
+    arrayVols: {}
 }
 
 
@@ -54,11 +52,24 @@ const dashboardReducer = (state = initialState, action) => {
                 ...state,
                 fetchingAlerts: action.fetchingAlerts,
             };
-        case actionTypes.FETCH_VOLUME_INFO:
+        case actionTypes.FETCH_VOLUME_INFO:{
+            const volumes = [];
+            const arrayVols = {};
+            Object.keys(action.volumes).forEach((array) => {
+                arrayVols[array] = action.volumes[array].length;
+                action.volumes[array].forEach((vol) => {
+                    volumes.push({
+                        ...vol,
+                        array
+                    });
+                });
+            });
             return {
                 ...state,
-                volumes: action.volumes,
+                volumes,
+                arrayVols
             };
+        }
         case actionTypes.FETCH_ALERTS_INFO:
             return {
                 ...state,
@@ -67,9 +78,6 @@ const dashboardReducer = (state = initialState, action) => {
         case actionTypes.FETCH_STORAGE_INFO:
             return {
                 ...state,
-                unusedSpace: action.unusedSpace,
-                used: action.used,
-                unused: action.unused,
                 arraySize: action.arraySize
             };
         case actionTypes.FETCH_PERFORMANCE_INFO:

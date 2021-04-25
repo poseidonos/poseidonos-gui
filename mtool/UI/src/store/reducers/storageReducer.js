@@ -31,6 +31,7 @@ import formatBytes from '../../utils/format-bytes';
 export const initialState = {
     ssds: [],
     arrayname: "",
+    arrayMap: {},
     volumes: [],
     metadisks: [],
     loading: false,
@@ -39,6 +40,8 @@ export const initialState = {
     alertTitle: '',
     errorMsg: '',
     errorCode: '',
+    alertLink: null,
+    alertlinktext: null,
     arraySize: 0,
     maxVolumeCount: 256,
     volumeMap: {},
@@ -83,14 +86,19 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_DEVICE_INFO:
             return {
                 ...state,
-                ssds: action.ssds,
+                // ssds: action.ssds,
+                ssds: action.ssds ? action.ssds.map((ssd) => {
+                    return {...ssd, isAvailable: true}
+                }) : [],
                 metadisks: action.metadisks
             }
         case actionTypes.STORAGE_SHOW_ALERT:
             return {
                 ...state,
                 alertOpen: true,
-                ...action.payload
+                ...action.payload,
+                alertLink: action.payload.link,
+                alertLinkText: action.payload.linkText
             }
         case actionTypes.FETCH_ARRAY_SIZE:
             return {
@@ -112,16 +120,20 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_ARRAY: {
             let arraySize = 0;
             let totalVolSize = 0;
+            const arrayMap = {};
             for(let i = 0; i < action.payload.length; i += 1) {
                 arraySize += action.payload[i].totalsize;
                 totalVolSize += action.payload[i].usedspace;
+                arrayMap[action.payload[i].arrayname] = action.payload[i];
             }
-            const arrayname = state.arrayname || !action.payload.length ? state.arrayname : action.payload[0].arrayname;
+            let arrayname = state.arrayname && arrayMap[state.arrayName] ? state.arrayname : '';
+            if(!arrayname && action.payload.length > 0) {
+                arrayname = action.payload[0].arrayname;
+            }
             return {
                 ...state,
-                ...action.payload,
                 arrays: action.payload,
-                ...action.payload[0],
+                arrayMap,
                 arrayname,
                 arrayExists: true,
                 arraySize,

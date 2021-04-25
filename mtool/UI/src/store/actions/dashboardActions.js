@@ -65,12 +65,9 @@ export const fetchPerformance = (
 
 
 
-export const fetchStorage = (unusedSpace, used, unused, arraySize) => {
+export const fetchStorage = (arraySize) => {
   return {
     type: actionTypes.FETCH_STORAGE_INFO,
-    unusedSpace,
-    used,
-    unused,
     arraySize,
   };
 };

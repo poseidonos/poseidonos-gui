@@ -116,10 +116,10 @@ function* fetchVolumes(action) {
 
 function* fetchArray(action) {
   try {
-    yield put(actionCreators.startStorageLoader("Fetching Devices"));
+    yield put(actionCreators.startStorageLoader("Fetching Arrays"));
     const response = yield call(
       [axios, axios.get],
-      `/api/v1.0/get_arrays/?ts=${Date.now()}`,
+      `/api/v1/get_arrays/?ts=${Date.now()}`,
       {
         headers: {
           Accept: "application/json",
@@ -128,7 +128,7 @@ function* fetchArray(action) {
         },
       }
     );
-    if (response.status === 200 && response.data && response.data.length > 0) {
+    if (response.status === 200 && response.data) {
       yield put(actionCreators.fetchArray(response.data));
       yield fetchArraySize();
     } else if (response.status === 401) {
@@ -292,7 +292,7 @@ function* createVolume(action) {
           })
         );
       }
-      yield fetchVolumes({payload: {array: arrayname}});
+      yield fetchVolumes({payload: {array: arrayName}});
     } else {
       yield put(
         actionCreators.showStorageAlert({
@@ -745,7 +745,6 @@ function* deleteArray(action) {
         })
       );
     }
-    yield fetchArray();
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -756,6 +755,7 @@ function* deleteArray(action) {
       })
     );
   } finally {
+    yield fetchArray();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -853,6 +853,8 @@ function* createArray(action) {
             alertTitle: "Create Array",
             alertType: "info",
             errorCode: "",
+            link: `/storage/array/manage?array=${action.payload.arrayname}`,
+            linkText: "Manage Array"
           })
         );
       } else {
@@ -878,7 +880,6 @@ function* createArray(action) {
         })
       );
     }
-    yield fetchArray();
     yield fetchMaxVolumeCount();
   } catch (error) {
     yield put(
@@ -890,6 +891,8 @@ function* createArray(action) {
       })
     );
   } finally {
+    yield fetchDevices();
+    yield fetchArray();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1221,17 +1224,20 @@ function* unmountPOS() {
   const message = "Unmount";
   try {
     let response = {};
-      yield put(actionCreators.startStorageLoader("Unmounting Array"));
-      response = yield call([axios, axios.delete], "/api/v1.0/ibofos/mount", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
+    yield put(actionCreators.startStorageLoader("Unmounting Array"));
+    response = yield call([axios, axios.delete], "/api/v1/array/mount", {
+      data: {
+        array: yield select(arrayname),
+      },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     /* istanbul ignore else */
     if (response.status === 200) {
-       /* istanbul ignore else */
+      /* istanbul ignore else */
       if (response.data && response.data.result.status.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
@@ -1275,6 +1281,7 @@ function* unmountPOS() {
     );
   } finally {
     yield fetchArraySize();
+    yield fetchArray();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1284,7 +1291,9 @@ function* mountPOS() {
   try {
     let response = {};
       yield put(actionCreators.startStorageLoader("Mounting Array"));
-      response = yield call([axios, axios.post], "/api/v1.0/ibofos/mount", {
+      response = yield call([axios, axios.post], "/api/v1/array/mount", {
+        array: yield select(arrayname),
+      },{
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -1336,6 +1345,7 @@ function* mountPOS() {
     );
   } finally {
     yield fetchVolumes({payload: {array: yield select(arrayname)}});
+    yield fetchArray();
     yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
   }

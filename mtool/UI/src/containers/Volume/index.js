@@ -149,6 +149,7 @@ class Volume extends Component {
     this.fetchStorageInfo = this.fetchStorageInfo.bind(this);
     this.fetchMaxVolumeCount = this.fetchMaxVolumeCount.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.changeArray = this.changeArray.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if(array) {
@@ -163,9 +164,10 @@ class Volume extends Component {
   }
 
   componentDidUpdate() {
-    if(window.location.href.indexOf('manage') > 0 && this.props.selectedArray
+    if(window.location.href.indexOf('manage') > 0
       && window.location.href.indexOf(`array=${this.props.selectedArray}`) < 0) {
       this.props.history.push(`/storage/array/manage?array=${this.props.selectedArray}`);
+      this.fetchVolumes();
     }
   }
 
@@ -179,6 +181,7 @@ class Volume extends Component {
     if(newValue === "manage") {
       this.props.history.push(`/storage/array/${newValue}?array=${this.props.selectedArray}`);
     } else {
+      this.fetchDevices();
       this.props.history.push(`/storage/array/${newValue}`);
     }
   }
@@ -200,8 +203,15 @@ class Volume extends Component {
     });
   }
 
+  changeArray(event) {
+    const {value} = event.target;
+    this.props.history.push(`/storage/array/manage?array=${value}`);
+    this.props.Set_Array(value);
+    this.fetchVolumes();
+  }
+
   fetchVolumes() {
-    this.props.Get_Volumes();
+    this.props.Get_Volumes({array: this.props.selectedArray});
   }
 
   fetchStorageInfo() {
@@ -329,7 +339,7 @@ class Volume extends Component {
                 <Route path="/storage/array/manage*">
 
 
-                  {this.props.arrayExists ? (
+                  {this.props.arrayMap[this.props.selectedArray] ? (
                     <React.Fragment>
                       <Grid container xs={12} spacing={1} className={classes.card}>
                         <Grid item xs={12}>
@@ -343,6 +353,7 @@ class Volume extends Component {
                                   inputProps={{
                                     id: "select-array"
                                   }}
+                                  onChange={this.changeArray}
                                   value={this.props.selectedArray}
                                   className={classes.arraySelect}
                                 >
@@ -354,13 +365,13 @@ class Volume extends Component {
                                 </Select>
                               </FormControl>
                               <ArrayShow
-                                RAIDLevel={this.props.RAIDLevel}
+                                RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
                                 slots={this.props.ssds}
-                                corrupted={this.props.corrupted}
-                                storagedisks={this.props.storagedisks}
-                                sparedisks={this.props.sparedisks}
-                                metadiskpath={this.props.metadiskpath}
-                                writebufferdisks={this.props.writebufferdisks}
+                                corrupted={this.props.arrayMap[this.props.selectedArray].corrupted}
+                                storagedisks={this.props.arrayMap[this.props.selectedArray].storagedisks}
+                                sparedisks={this.props.arrayMap[this.props.selectedArray].sparedisks}
+                                metadiskpath={this.props.arrayMap[this.props.selectedArray].metadiskpath}
+                                writebufferdisks={this.props.arrayMap[this.props.selectedArray].writebufferdisks}
                                 deleteArray={this.deleteArray}
                                 diskDetails={this.props.diskDetails}
                                 getDiskDetails={this.props.Get_Disk_Details}
@@ -368,7 +379,7 @@ class Volume extends Component {
                                 // attachDisk={this.props.Attach_Disk}
                                 addSpareDisk={this.props.Add_Spare_Disk}
                                 removeSpareDisk={this.props.Remove_Spare_Disk}
-                                mountStatus={this.props.mountStatus}
+                                mountStatus={this.props.arrayMap[this.props.selectedArray].state}
                                 handleUnmountPOS={this.props.Unmount_POS}
                                 handleMountPOS={this.props.Mount_POS}
                               />
@@ -382,9 +393,9 @@ class Volume extends Component {
                         spacing={1}
                         className={classes.card}
                         style={{
-                          opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                          opacity: this.props.arrayMap[this.props.selectedArray].state === "OFFLINE" ? 0.5 : 1,
                           pointerEvents:
-                            this.props.mountStatus === "OFFLINE"
+                            this.props.arrayMap[this.props.selectedArray].state === "OFFLINE"
                               ? "none"
                               : "initial",
                         }}
@@ -456,9 +467,9 @@ class Volume extends Component {
                         spacing={1}
                         className={classes.card}
                         style={{
-                          opacity: this.props.mountStatus === "OFFLINE" ? 0.5 : 1,
+                          opacity: this.props.arrayMap[this.props.selectedArray].state === "OFFLINE" ? 0.5 : 1,
                           pointerEvents:
-                            this.props.mountStatus === "OFFLINE"
+                            this.props.arrayMap[this.props.selectedArray].state === "OFFLINE"
                               ? "none"
                               : "initial",
                         }}
@@ -489,6 +500,8 @@ class Volume extends Component {
                 description={this.props.errorMsg}
                 open={this.props.alertOpen}
                 type={this.props.alertType}
+                link={this.props.alertLink}
+                linkText={this.props.alertLinkText}
                 onConfirm={this.alertConfirm}
                 handleClose={this.alertConfirm}
                 errCode={this.props.errorCode}
@@ -507,20 +520,19 @@ const mapStateToProps = (state) => {
     metadisks: state.storageReducer.metadisks,
     volumes: state.storageReducer.volumes,
     arrays: state.storageReducer.arrays,
+    arrayMap: state.storageReducer.arrayMap,
     selectedArray: state.storageReducer.arrayname,
     loading: state.storageReducer.loading,
     alertOpen: state.storageReducer.alertOpen,
     alertType: state.storageReducer.alertType,
     alertTitle: state.storageReducer.alertTitle,
+    alertLink: state.storageReducer.alertLink,
+    alertLinkText: state.storageReducer.alertLinkText,
     errorMsg: state.storageReducer.errorMsg,
     errorCode: state.storageReducer.errorCode,
     arraySize: state.storageReducer.arraySize,
     maxVolumeCount: state.storageReducer.maxVolumeCount,
     totalVolSize: state.storageReducer.totalVolSize,
-    storagedisks: state.storageReducer.storagedisks,
-    sparedisks: state.storageReducer.sparedisks,
-    writebufferdisks: state.storageReducer.writebufferdisks,
-    metadiskpath: state.storageReducer.metadiskpath,
     slots: state.storageReducer.slots,
     arrayExists: state.storageReducer.arrayExists,
     RAIDLevel: state.storageReducer.RAIDLevel,
@@ -538,7 +550,7 @@ const mapDispatchToProps = (dispatch) => {
     Get_Array_Size: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY_SIZE }),
     Delete_Array: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),
-    Get_Volumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
+    Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
     Delete_Volumes: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),

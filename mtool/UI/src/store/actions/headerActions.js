@@ -31,7 +31,7 @@ export const updateTimestamp = (timestamp) => {
         type:actionTypes.UPDATE_TIMESTAMP,
         timestamp
     };
-}
+};
 
 export const asyncIsiBOFOSRunning = (status,OS_RUNNING_STATUS) => {
     return {
@@ -39,6 +39,12 @@ export const asyncIsiBOFOSRunning = (status,OS_RUNNING_STATUS) => {
         OS_Running_Status: OS_RUNNING_STATUS,
         status,
     };
-}
+};
 
+export const setOperationsMessage = (message) => {
+    return {
+        type: actionTypes.SET_OPERATIONS_MESSAGE,
+        message
+    };
+};
 

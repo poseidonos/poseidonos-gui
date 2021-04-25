@@ -57,9 +57,6 @@ class IbofOsOperations extends Component {
         };
         this.IsIbofOSRunning = this.IsIbofOSRunning.bind(this);
         this.triggerCommand = this.triggerCommand.bind(this);
-        this.OnHandleStart = this.OnHandleStart.bind(this);
-        this.OnHandleShutdown = this.OnHandleShutdown.bind(this);
-        this.OnHandleReset = this.OnHandleReset.bind(this);
         // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
         // this.OnHandleChange = this.OnHandleChange.bind(this);
         // this.validate = this.validate.bind(this);
@@ -69,211 +66,12 @@ class IbofOsOperations extends Component {
         this.interval = null;
     }
 
+    componentDidMount() {
+        this.props.Set_Message("");
+    }
 
     componentWillUnmount() {
         clearInterval(this.interval);
-    }
-
-    // onClickRunCommand() {
-    //     const isValid = this.validate();
-    //     if (isValid) {
-    //         this.handleAlertClose("YES");
-    //         const filepath = {
-    //             path: this.state.filepath
-    //         };
-    //         fetch('/api/v1.0/run_ibof_os_command/', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json',
-    //                 'x-access-token': localStorage.getItem('token')
-    //             },
-    //             body: JSON.stringify(filepath)
-    //         }).then((res) => {
-    //             if (res.status === 200) {
-    //                 return res.json();
-    //             }
-    //             return [];
-    //         })
-    //             .then((result) => {
-    //                 this.setState({
-    //                     ...this.state,
-    //                     responseforRunCommand: result.response,
-    //                 });
-    //             });
-    //     }
-    // }
-
-    // onHandleExitIbofOS() {
-    //     this.setState({
-    //         ...this.state,
-    //         isButtonDisabled: true
-    //     });
-    //     fetch('/api/v1.0/exit_ibofos', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'x-access-token': localStorage.getItem('token')
-    //         },
-    //     }).then((res) => {
-    //         if (res.status === 200) {
-    //             return res.json();
-    //         }
-    //         return [];
-    //     })
-    //         .then((result) => {
-    //             if (result && result.result && result.result.status && result.result.status.description)
-    //                 this.setState({
-    //                     ...this.state,
-    //                     responseforIbofOS: result.result.status.description,// result.response
-    //                     isButtonDisabled: false
-    //                 });
-    //             else
-    //                 this.setState({
-    //                     ...this.state,
-    //                     // responseforIbofOS: result.result.status.description,// result.response
-    //                     isButtonDisabled: false
-    //                 });
-    //         });
-    // }
-
-    handleAlertClose(value = /* istanbul ignore next */ "") {
-        if (value !== "YES") {
-            this.setState({
-                ...this.state,
-                alertOpen: false,
-            });
-            return;
-        }
-        // if (this.state.add_delete_send === "Run")
-        //     this.setState({
-        //         ...this.state,
-        //         alertOpen: false,
-        //     });
-        if (this.state.add_delete_send === "Start") {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Initializing..."
-            });
-        } else if (this.state.add_delete_send === "Stop") {
-        // } else {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Stopping..."
-            });
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Stopping..."
-            });
-        } else {
-            this.setState({
-                ...this.setState,
-                alertOpen: false,
-                isButtonDisabled: true,
-                responseforIbofOS: "Resetting..."
-            });
-        }
-        // else if (this.state.add_delete_send === "Exit")
-        //     this.setState({
-        //         ...this.setState,
-        //         alertOpen: false,
-        //         isButtonDisabled: true,
-        //         responseforIbofOS: "Exiting..."
-        //     });
-    }
-
-    IsIbofOSRunning() {
-        this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
-    }
-
-    OnHandleStart() {
-        fetch('/api/v1.0/start_ibofos', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
-            },
-        }).then((res) => {
-            this.IsIbofOSRunning();
-            if (res.status === 200) {
-                return res.json();
-            }
-            return [];
-        })
-            .then((result) => {
-                this.setState({
-                    ...this.state,
-                    responseforIbofOS: result.response,// result.response
-                    isButtonDisabled: false
-                });
-            });
-    }
-
-    // istanbul ignore next: cannot click as it is hidden
-    OnHandleReset() {
-        fetch('/api/v1.0/cleanup/', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
-            },
-        }).then((res) => {
-            this.IsIbofOSRunning();
-            if (res.status === 200) {
-                return res.json();
-            }
-            return [];
-        })
-            .then((result) => {
-                this.setState({
-                    ...this.state,
-                    responseforIbofOS: result.response,// result.response
-                    isButtonDisabled: false
-                });
-            });
-    }
-
-
-    // OnHandleChange(event) {
-    //     const { name, value } = event.target
-    //     this.setState({ [name]: value });
-    // }
-
-    OnHandleShutdown() {
-        this.setState({
-            ...this.state,
-            isButtonDisabled: true
-        });
-        fetch('/api/v1.0/stop_ibofos', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
-            },
-        }).then((res) => {
-            this.IsIbofOSRunning();
-            if (res.status === 200) {
-                return res.json();
-            }
-            return [];
-        })
-            .then((result) => {
-                this.setState({
-                    ...this.state,
-                    responseforIbofOS: result.response,// result.response
-                    isButtonDisabled: false
-                });
-            });
     }
 
     // validate() {
@@ -292,6 +90,16 @@ class IbofOsOperations extends Component {
     //     }
     //     return false;
     // }
+
+    handleAlertClose() {
+        this.setState({
+            alertOpen: false
+        })
+    }
+
+    IsIbofOSRunning() {
+        this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
+    }
 
     openAlert(operationType) {
         let message = "";
@@ -321,15 +129,17 @@ class IbofOsOperations extends Component {
         //     this.onClickRunCommand();
         // }
         if (this.state.add_delete_send === "Start") {
-            this.OnHandleStart();
-            this.handleAlertClose("YES");
+            this.props.Start_POS();
         } else if (this.state.add_delete_send === "Stop") {
-            this.OnHandleShutdown();
-            this.handleAlertClose("YES");
+            this.props.Stop_POS();
+        } else if (this.state.add_delete_send === "Mount") {
+            this.props.Mount_POS();
+        } else if (this.state.add_delete_send === "Unmount") {
+            this.props.Unmount_POS()
         } else {
-            this.OnHandleReset();
-            this.handleAlertClose("YES");
+            this.props.Reset_POS();
         }
+        this.handleAlertClose();
         // else if (this.state.add_delete_send === "Exit") {
         //     this.onHandleExitIbofOS();
         //     this.handleAlertClose("YES");
@@ -345,7 +155,7 @@ class IbofOsOperations extends Component {
                 <div className="IbofOsOperations">
                     <RunIbofOs
                         status={this.props.bool_status}
-                        responsefromos={this.state.responseforIbofOS}
+                        responsefromos={this.props.operationsMessage}
                         openAlert={this.openAlert}
                         OS_Running_Status={this.props.OS_Running}
                         isButtonDisabled={this.state.isButtonDisabled}
@@ -367,13 +177,20 @@ class IbofOsOperations extends Component {
 const mapStateToProps = state => {
     return {
         OS_Running: state.headerReducer.OS_Running_Status,
-        bool_status: state.headerReducer.status
+        bool_status: state.headerReducer.status,
+        operationsMessage: state.headerReducer.operationsMessage
     };
 }
 const mapDispatchToProps = dispatch => {
     return {
         Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
         resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),
+        Stop_POS: () => dispatch({type: actionTypes.SAGA_STOP_IBOFOS}),
+        Start_POS: () => dispatch({type: actionTypes.SAGA_START_IBOFOS}),
+        Reset_POS: () => dispatch({type: actionTypes.SAGA_RESET_IBOFOS}),
+        Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_IBOFOS}),
+        Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_IBOFOS}),
+        Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message})
     };
 }
 export default ((connect(mapStateToProps, mapDispatchToProps))(withRouter(IbofOsOperations)));

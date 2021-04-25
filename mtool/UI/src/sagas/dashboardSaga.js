@@ -33,7 +33,7 @@ import { formatNanoSeconds } from "../utils/format-bytes";
 
 export function* fetchVolumeInfo() {
   try {
-    const response = yield call([axios, axios.get], "/api/v1.0/get_volumes/", {
+    const response = yield call([axios, axios.get], "/api/v1/get_all_volumes/", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -101,12 +101,13 @@ function* fetchStorageInfo() {
     const result = response.data;
     /* istanbul ignore else */
     if (result) {
+      let arraySize = 0;
+      result.forEach((array) => {
+        arraySize += array.arraySize
+      });
       yield put(
         actionCreators.fetchStorage(
-          result[0] ? (result[0].avail_size / result[0].total_size) * 100 : 0,
-          result[0].total_size - result[0].avail_size,
-          result[0].avail_size,
-          result[0].arraySize
+          arraySize
         )
       );
     }
@@ -119,7 +120,7 @@ function* fetchPerformanceInfo() {
   try {
     const response = yield call(
       [axios, axios.get],
-      `/api/v1.0/perf/all?ts=${Date.now()}`,
+      `/api/v1/perf/all?ts=${Date.now()}`,
       {
         headers: {
           Accept: "application/json",

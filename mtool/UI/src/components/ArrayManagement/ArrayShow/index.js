@@ -184,6 +184,9 @@ const styles = (theme) => ({
   diskNo: {
     position: "absolute",
   },
+  usedDisk: {
+    backgroundColor: "darkgray"
+  }
 });
 
 const defaultDiskDetails = {
@@ -374,6 +377,11 @@ class ArrayShow extends Component {
       if (this.props.sparedisks.find(findDisk(disk.name))) {
         return classes.sparedisk;
       }
+
+      if(!disk.isAvailable) {
+        return classes.usedDisk;
+      }
+
       return classes.freedisk;
     };
     return (
@@ -510,6 +518,7 @@ class ArrayShow extends Component {
             >
               <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
               <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
+              <Legend bgColor="darkgray" title="Used by Another Array" />
               <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
               <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
             </Grid>

@@ -34,6 +34,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import DeleteIcon from '../../assets/images/Delete-ICON.png';
 import ErrorIcon from '../../assets/images/ERROR-ICON.png';
 import AlertIcon from '../../assets/images/ERROR-ICON_old.png';
@@ -101,25 +102,24 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-class AlertDialog extends React.Component {
+const AlertDialog = (props) => {
+    const { classes } = props;
+    const history = useHistory();
 
-  // handleClickOpen = () => {
-  //   this.setState({ open: true });
-  // };
+    const handleConfirm = () => {
+      if(props.link) {
+        history.push(props.link);
+      }
+      props.handleClose();
+    }
 
-  // handleClose = () => {
-  //   this.setState({ open: false });
-  // };
-
-  render() {
-    const { classes } = this.props;
     const actions =
-      this.props.type !== 'alert' && this.props.type !== 'info' && this.props.type !== 'partialError' ? (
+      props.type !== 'alert' && props.type !== 'info' && props.type !== 'partialError' ? (
         <DialogActions className={classes.actions}>
           <Button
             color="primary"
             variant="contained"
-            onClick={this.props.handleClose}
+            onClick={props.handleClose}
             className={classes.submit}
             autoFocus
             data-testid="alertbox-no"
@@ -129,7 +129,7 @@ class AlertDialog extends React.Component {
           <Button
             color="primary"
             variant="contained"
-            onClick={this.props.onConfirm}
+            onClick={props.onConfirm}
             className={classes.submit}
             data-testid="alertbox-yes"
           >
@@ -141,13 +141,16 @@ class AlertDialog extends React.Component {
           <Button
             color="primary"
             variant="contained"
-            onClick={this.props.handleClose}
+            onClick={handleConfirm}
             className={classes.submit}
             autoFocus
             data-testid="alertbox-ok"
           >
             OK
           </Button>
+          {/* {props.link ? (
+            <Link to={props.link}>{props.linkText}</Link>
+          ) : null} */}
         </DialogActions>
       );
       const getIcon = (type) => {
@@ -167,14 +170,15 @@ class AlertDialog extends React.Component {
         <Dialog
           // minWidth="xs"
           maxWidth="xs"
+          disableBackdropClick
           // fullWidth="false"
-          open={this.props.open ? this.props.open : false}
-          onClose={this.props.handleClose}
+          open={props.open ? props.open : false}
+          onClose={props.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle
-            onClose={this.props.handleClose}
+            onClose={props.handleClose}
             id="alert-dialog-title"
             className={classes.title}
           >
@@ -189,7 +193,7 @@ class AlertDialog extends React.Component {
                 alignItems: 'center',
               }}
             >
-              {this.props.title}
+              {props.title}
             </span>
           </DialogTitle>
           <DialogContent>
@@ -209,7 +213,7 @@ class AlertDialog extends React.Component {
                   style={{ height: '20px', marginRight: '7px' }}
                   alt="icon"
                   src={
-                    getIcon(this.props.type)
+                    getIcon(props.type)
                   }
                 />
               </span>
@@ -222,7 +226,7 @@ class AlertDialog extends React.Component {
                 }}
                 data-testid = "alertDescription"
               >
-                {this.props.description}
+                {props.description}
               </span>
             </DialogContentText>
             <p
@@ -235,16 +239,15 @@ class AlertDialog extends React.Component {
                 marginTop: '0px',
               }}
             >
-              {this.props.errCode}
+              {props.errCode}
             </p>
-            {/* <p style={{color: "#000", fontSize: "12px", display: "block", width: "100%", textAlign: "center", marginTop: "0px"}}>{this.props.errCode}</p>            */}
+            {/* <p style={{color: "#000", fontSize: "12px", display: "block", width: "100%", textAlign: "center", marginTop: "0px"}}>{props.errCode}</p>            */}
           </DialogContent>
 
           {actions}
         </Dialog>
       </div>
     );
-  }
 }
 
 export default withStyles(styles)(AlertDialog);
