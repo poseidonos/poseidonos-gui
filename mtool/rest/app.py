@@ -1094,6 +1094,27 @@ def get_arrays(current_user):
             return toJson([])
     return jsonify(arrays_info)
 
+@app.route('/api/v1/array/mount', methods=['POST'])
+def mount_arr():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        mount_array_res = dagent.mount_array(body.get("array"))
+        return toJson(mount_array_res.json())
+    except Exception as e:
+        print("In exception mount_arr(): ", e)
+        return make_response('Could not mount array', 500)
+@app.route('/api/v1/array/mount', methods=['DELETE'])
+def unmount_arr():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        unmount_array_res = dagent.unmount_array(body.get("array"))
+        return toJson(unmount_array_res.json())
+    except Exception as e:
+        print("In exception unmount_arr(): ", e)
+        return make_response('Could not Unmount array', 500)
+
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
 def add_new_user(current_user):

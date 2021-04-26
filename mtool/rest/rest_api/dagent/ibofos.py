@@ -414,6 +414,56 @@ def create_array(
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
+def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = {
+            "param": {
+                "array": arrayname
+            }
+    }
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/array/' + arrayname + '/mount',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        print("---------------RESPONSE---------------")
+        print(response.status_code , response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to scan devices...', 500)
+def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = {
+            "param": {
+                "array": arrayname
+            }
+    }
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/array/' + arrayname + '/mount',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        print("---------------RESPONSE---------------")
+        print(response.status_code, response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to unmount volumes...', 500)
 
 
 def array_info(array_name, auth=BASIC_AUTH_TOKEN):
