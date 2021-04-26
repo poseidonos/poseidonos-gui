@@ -174,8 +174,10 @@ func Route(router *gin.Engine) {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateVolume)
 			}
 		})
-		iBoFOSPath.GET("/volumes", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListVolume)
+    iBoFOSPath.GET("/volumelist/:arrayName", func(ctx *gin.Context) {
+      arrayName := ctx.Param("arrayName")
+      param := model.VolumeParam{Array: arrayName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListVolume, param)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")

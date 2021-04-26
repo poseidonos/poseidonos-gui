@@ -1600,18 +1600,19 @@ def getMaxVolCount():
 
 @app.route('/api/v1/<array_name>/get_volumes/', methods=['GET'])
 def getVolumes(array_name):
+    print("IN getVolumes ......")
     volumes = list_volume(array_name)
     return toJson(volumes)
 
 @app.route('/api/v1/get_all_volumes/', methods=['GET'])
 def get_all_volumes():
-    volumes_list = []
+    volumes_list = {}
     try:
         arrays = dagent.list_arrays()
         arrays = arrays.json()["result"]["data"]["arrayList"]
         for array in arrays:
             volumes = list_volume(array["name"])
-            volumes_list.append(volumes)
+            volumes_list[array["name"]] = volumes
     except Exception as e:
         print("Exception in /api/v1/get_all_volumes/ ", e)
     return toJson(volumes_list)

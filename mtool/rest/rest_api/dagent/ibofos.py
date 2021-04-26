@@ -643,13 +643,13 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
         'Could not unmount POS...', 500)
 
 
-def list_volumes(auth=BASIC_AUTH_TOKEN):
+def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/volumes',
+            '/api/ibofos/v1/volumelist/'+array_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,

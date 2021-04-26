@@ -78,7 +78,7 @@ def delete_volume(vol_name, array_name):
 
 
 def list_volume(arr_name):
-    vols = dagent.list_volumes()
+    vols = dagent.list_volumes(arr_name)
     try:
         #print('*************volumes in rest_api****', vols.json())
         if vols.status_code == 200:
