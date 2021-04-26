@@ -35,7 +35,7 @@ from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
 from rest.rest_api.logmanager.logmanager import download_logs
-from rest.rest_api.array.array import create_arr, list_arr, get_arr_status, check_arr_exists
+from rest.rest_api.array.array import create_arr, arr_info, get_arr_status, check_arr_exists
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
@@ -1067,32 +1067,32 @@ def get_mod_array(array):
 # Fetch all arrays
 
 
-@app.route('/api/v1.0/get_arrays/', methods=['GET'])
+@app.route('/api/v1/get_arrays/', methods=['GET'])
 @token_required
 def get_arrays(current_user):
-    res = check_arr_exists(dagent.array_names[0])
+    #res = check_arr_exists(dagent.array_names[0])
     #print("result from get array",res)
-
-    array_list = list_arr()
-    #print("array list is", array_list.json())
-
-    try:
-        if array_list.status_code == 200:
-            output = list_volume(dagent.array_names[0])
-            array = array_list.json()
-            res = array
-            # convert to format expected by UI
-            array = get_mod_array(array)
-            array['totalsize'] = int(res["info"]["capacity"])
-            array['usedspace'] = int(res["info"]["used"])
-            array['volumeCount'] = len(output)
-            return jsonify([array])
-
+    arrays = dagent.list_arrays()
+    arrays = arrays.json()["result"]["data"]["arrayList"]
+    if type(arrays) != list:
         return toJson([])
-    except BaseException:
-        return toJson([])
-
-
+    arrays_info = []
+    for array in arrays:
+        a_info = arr_info(array["name"])
+        try:
+            if a_info.status_code == 200:
+                vol_list = list_volume(array["name"])
+                a_info = a_info.json()
+                res = a_info
+                # convert to format expected by UI
+                a_info = get_mod_array(a_info)
+                a_info['totalsize'] = int(res["info"]["capacity"])
+                a_info['usedspace'] = int(res["info"]["used"])
+                a_info['volumeCount'] = len(vol_list)
+                arrays_info.append(a_info)
+        except BaseException:
+            return toJson([])
+    return jsonify(arrays_info)
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
@@ -1600,40 +1600,21 @@ def getMaxVolCount():
 
 @app.route('/api/v1/<array_name>/get_volumes/', methods=['GET'])
 def getVolumes(array_name):
-    # col = db['volume']
-    # arrays=db.array.find()
-    # if not arrays:
-    #    return jsonify([])
-    # arrayname=arrays[0]['_id']
-    #volumes = col.find()
     volumes = list_volume(array_name)
-    # if not volumes:
-    #     return jsonify({'message': 'no volumes found'})
-    ip = get_ip_address()
-    for vol in volumes:
-        #     db_vol = col.find_one({'name': vol['name']})
-        #     if db_vol:
-        #         vol['ip'] = db_vol['ip']
-        #         vol['port'] = db_vol['port']
-        #         vol['subnqn'] = 'NA'
-        #         vol['description'] = db_vol['description']
-        #         vol['status'] = db_vol['status']
-        #         vol['size'] = db_vol['size']
-        #         vol['unit'] = db_vol['unit']
-        #         vol['vol_id'] = db_vol['vol_id']
-        #         vol['usedspace'] = 'NA'
-        #     else:
-        vol['ip'] = ip
-        vol['port'] = 'NA'
-        vol['subnqn'] = 'NA'
-        vol['description'] = ''
-        vol['unit'] = 'GB'
-        vol['size'] = float(vol['total']) / (1024 * 1024 * 1024)
-        vol['usedspace'] = (float(vol['total']) - float(vol['remain'])) / \
-            (1024 * 1024 * 1024)
-    # print(vols)
     return toJson(volumes)
 
+@app.route('/api/v1/get_all_volumes/', methods=['GET'])
+def get_all_volumes():
+    volumes_list = []
+    try:
+        arrays = dagent.list_arrays()
+        arrays = arrays.json()["result"]["data"]["arrayList"]
+        for array in arrays:
+            volumes = list_volume(array["name"])
+            volumes_list.append(volumes)
+    except Exception as e:
+        print("Exception in /api/v1/get_all_volumes/ ", e)
+    return toJson(volumes_list)
 
 '''
 <pre>{&apos;alertName&apos;: &apos;sdfsdf&apos;, &apos;alertType&apos;: &apos;&apos;, &apos;alertCondition&apos;: &apos;Greater Than&apos;, &apos;alertRange&apos;: &apos;7&apos;, &apos;description&apos;: &apos;sdfgsee eee&apos;}

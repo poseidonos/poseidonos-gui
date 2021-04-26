@@ -416,7 +416,7 @@ def create_array(
         'Could not get ibofos to scan devices...', 500)
 
 
-def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
+def array_info(array_name, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get list array...')
     req_headers = get_headers(auth)
@@ -424,7 +424,26 @@ def list_array(arrayname, auth=BASIC_AUTH_TOKEN):
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + arrayname + '/devices',
+            '/api/ibofos/v1/array/' + array_name,
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        print("---------------RESPONSE---------------",response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to get list array...', 500)
+def list_arrays(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to get list arrays...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL +
+            '/api/ibofos/v1/arraylist',
             headers=req_headers,
             timeout=(
                 connect_timeout,

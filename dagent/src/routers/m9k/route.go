@@ -123,6 +123,20 @@ func Route(router *gin.Engine) {
 			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ArrayInfo, param)
 		})
+    iBoFOSPath.GET("/arraylist", func(ctx *gin.Context) {
+        param := model.ArrayParam{}
+        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListArray, param)
+    })
+    iBoFOSPath.GET("/array/:arrayName/mount", func(ctx *gin.Context) {
+        param := model.ArrayParam{}
+        param.Name = ctx.Param("arrayName")
+        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountArray, param)
+    })
+    iBoFOSPath.GET("/array/:arrayName/unmount", func(ctx *gin.Context) {
+        param := model.ArrayParam{}
+        param.Name = ctx.Param("arrayName")
+        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UnmountArray, param)
+    })
 		iBoFOSPath.DELETE("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Name = ctx.Param("arrayName")

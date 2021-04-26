@@ -4,6 +4,10 @@ import (
 	"pnconnector/src/routers/m9k/model"
 )
 
+func ListArray(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return arraySender(xrId, param, "LISTARRAY")
+}
+
 func ListArrayDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return arraySender(xrId, param, "LISTARRAYDEVICE")
 }

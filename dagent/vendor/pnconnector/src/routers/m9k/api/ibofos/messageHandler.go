@@ -82,7 +82,6 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 	defer handler.DisconnectToIBoFOS(conn)
 
 	log.Infof("sendIBoF : %+v", iBoFRequest)
-
 	marshaled, _ := json.Marshal(iBoFRequest)
 	err = handler.WriteToIBoFSocket(conn, marshaled)
 
