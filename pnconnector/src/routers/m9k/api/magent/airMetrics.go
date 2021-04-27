@@ -91,23 +91,29 @@ func getVolumeCreationTime(volumeId string) string {
 	}
 	return "0"
 }
+func parseIds(param interface{}) (string, string) {
+  volumeIds := param.(model.MAgentParam).VolumeIds
+  arrayIds := param.(model.MAgentParam).ArrayIds
+  arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
+  arrayIds = "/"+arrayIds+"/"
+  if volumeIds != "" {
+    volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
+    volumeIds = "/"+volumeIds+"/"
+  }
+  return arrayIds, volumeIds
 
+}
 // GetReadBandwidth returns metrics related to Read Bandwidth
 func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var result model.Response
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-	volumeIds := param.(model.MAgentParam).VolumeIds
-	arrayIds := param.(model.MAgentParam).ArrayIds
-	startingTime := getVolumeCreationTime(volumeIds)
-    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
-    arrayIds = "/"+arrayIds+"/"
+  arrayIds, volumeIds := parseIds(param)
+  startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQArr, ReadBandwidthDefaultRPQArr, ReadBandwidthLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-	    volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
-	    volumeIds = "/"+volumeIds+"/"
 		values, columns, statusCode = GetAIRData(param, ReadBandwidthAggRPQVol, ReadBandwidthDefaultRPQVol, ReadBandwidthLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
@@ -126,16 +132,11 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-    volumeIds := param.(model.MAgentParam).VolumeIds
-    arrayIds := param.(model.MAgentParam).ArrayIds
+  arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
-    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
-    arrayIds = "/"+arrayIds+"/"
 	if volumeIds == "" {
 		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQArr, WriteBandwidthDefaultRPQArr, WriteBandwidthLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
-        volumeIds = "/"+volumeIds+"/"
 		values, columns, statusCode = GetAIRData(param, WriteBandwidthAggRPQVol, WriteBandwidthDefaultRPQVol, WriteBandwidthLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
@@ -154,16 +155,11 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-    volumeIds := param.(model.MAgentParam).VolumeIds
-    arrayIds := param.(model.MAgentParam).ArrayIds
+  arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
-    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
-    arrayIds = "/"+arrayIds+"/"
 	if volumeIds == "" {
 		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQArr, ReadIOPSDefaultRPQArr, ReadIOPSLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
-        volumeIds = "/"+volumeIds+"/"
 		values, columns, statusCode = GetAIRData(param, ReadIOPSAggRPQVol, ReadIOPSDefaultRPQVol, ReadIOPSLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
@@ -182,16 +178,11 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-    volumeIds := param.(model.MAgentParam).VolumeIds
-    arrayIds := param.(model.MAgentParam).ArrayIds
+  arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
-    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
-    arrayIds = "/"+arrayIds+"/"
 	if volumeIds == "" {
 		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQArr, WriteIOPSDefaultRPQArr, WriteIOPSLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
-        volumeIds = "/"+volumeIds+"/"
 		values, columns, statusCode = GetAIRData(param, WriteIOPSAggRPQVol, WriteIOPSDefaultRPQVol, WriteIOPSLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
@@ -211,16 +202,11 @@ func GetLatency(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
-    volumeIds := param.(model.MAgentParam).VolumeIds
-    arrayIds := param.(model.MAgentParam).ArrayIds
+  arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
-    arrayIds = strings.ReplaceAll(arrayIds, ",", "|")
-    arrayIds = "/"+arrayIds+"/"
 	if volumeIds == "" {
 		values, columns, statusCode = GetAIRData(param, LatencyAggRPQArr, LatencyDefaultRPQArr, LatencyLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-        volumeIds = strings.ReplaceAll(volumeIds, ",", "|")
-        volumeIds = "/"+volumeIds+"/"
 		values, columns, statusCode = GetAIRData(param, LatencyAggRPQVol, LatencyDefaultRPQVol, LatencyLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)

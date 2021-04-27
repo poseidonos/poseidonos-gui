@@ -80,32 +80,27 @@ def get_input_power_variation(time):
 def get_disk_latency(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_latency(time, arr_id)
-    else:
-        return metrics.get_vol_latency(time, arr_id, vol_id)
+    return metrics.get_vol_latency(time, arr_id, vol_id)
 
 def get_disk_read_iops(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_read_iops(time, arr_id)
-    else:
-        return metrics.get_vol_read_iops(time, arr_id, vol_id)
+    return metrics.get_vol_read_iops(time, arr_id, vol_id)
 
 def get_disk_write_iops(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_write_iops(time, arr_id)
-    else:
-        return metrics.get_vol_write_iops(time, arr_id, vol_id)
+    return metrics.get_vol_write_iops(time, arr_id, vol_id)
 
 def get_disk_read_bw(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_read_bw(time, arr_id)
-    else:
-        return metrics.get_vol_read_bw(time, arr_id, vol_id)
+    return metrics.get_vol_read_bw(time, arr_id, vol_id)
 
 def get_disk_write_bw(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_write_bw(time, arr_id)
-    else:
-        return metrics.get_vol_write_bw(time, arr_id, vol_id)
+    return metrics.get_vol_write_bw(time, arr_id, vol_id)
 """
 def get_perf_from_influx(query):
     connection = get_connection()

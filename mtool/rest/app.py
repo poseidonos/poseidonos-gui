@@ -1047,7 +1047,6 @@ def create_arrays(current_user):
 
 def get_mod_array(array):
     _array = {}
-    _array["arrayname"] = dagent.array_names[0]
     _array["RAIDLevel"] = "5"
     _array["storagedisks"] = []
     _array["writebufferdisks"] = []
@@ -1088,9 +1087,14 @@ def get_arrays(current_user):
                 a_info = get_mod_array(a_info)
                 a_info['totalsize'] = int(res["info"]["capacity"])
                 a_info['usedspace'] = int(res["info"]["used"])
-                a_info['volumeCount'] = len(vol_list)
+                a_info['volumecount'] = len(vol_list)
+                a_info["arrayname"] = res["result"]["data"]["name"]
+                a_info["situation"] = res["result"]["data"]["situation"]
+                a_info["state"] = res["result"]["data"]["state"]
+                a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)
-        except BaseException:
+        except Exception as e:
+            print("Exception in /api/v1/get_arrays/ API:", e)
             return toJson([])
     return jsonify(arrays_info)
 
