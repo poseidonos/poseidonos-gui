@@ -114,7 +114,8 @@ class Volume():
                     self.volume["Name"] = vol["name"]
                     self.volume["Id"] = vol["id"]
                     self.volume["Status"]["Oem"]["VolumeStatus"] = vol["status"]
-                    self.volume["Capacity"]["Data"]["ConsumedBytes"] = float(vol["total"]) - float(vol["remain"])
+                    if "remain" in vol:
+                        self.volume["Capacity"]["Data"]["ConsumedBytes"] = float(vol["total"]) - float(vol["remain"])
                     self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
