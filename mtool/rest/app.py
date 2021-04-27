@@ -1089,6 +1089,7 @@ def get_arrays(current_user):
                 a_info['usedspace'] = int(res["info"]["used"])
                 a_info['volumecount'] = len(vol_list)
                 a_info["arrayname"] = res["result"]["data"]["name"]
+                a_info["status"] = array["status"]
                 a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
