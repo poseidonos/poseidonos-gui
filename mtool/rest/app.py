@@ -939,7 +939,7 @@ def getDevices(current_user):
     arrays = dagent.list_arrays()
     arrays = arrays.json()["result"]["data"]["arrayList"]
     if type(arrays) != list:
-        return toJson({})
+        return toJson(devices)
     for array in arrays:
         a_info = arr_info(array["name"])
         try:
