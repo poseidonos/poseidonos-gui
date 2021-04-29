@@ -71,7 +71,9 @@ def list_devices():
                 "name": device["name"],
                 "size": device["size"],
                 "mn": device["mn"],
-                "sn": device["sn"]
+                "sn": device["sn"],
+                "isAvailable":True,
+                "arrayName" : ""
             })
     return res
 

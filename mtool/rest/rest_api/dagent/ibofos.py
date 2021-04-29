@@ -72,7 +72,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     logger.info('%s', 'Get system state...')
     try:
         response = send_command_to_dagent("GET",
-                                          url=DAGENT_URL + '/api/dagent/v1/heartbeat',
+                                          url=DAGENT_URL + '/api/ibofos/v1/system',
                                           headers={"X-Request-Id": str(uuid.uuid4()),
                                                    "Accept": "application/json",
                                                    "Authorization": auth,
@@ -258,15 +258,9 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
     logger.info('%s', 'Sending command to D-Agent to delete array...')
     req_headers = get_headers(auth)
     try:
-        response = send_command_to_dagent(
-            "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout))
-
+        response = unmount_array(name)
+        if response.status_code != 200:
+            return response
         response = send_command_to_dagent(
                 "DELETE",
                 url=DAGENT_URL +
@@ -398,15 +392,24 @@ def create_array(
                 read_timeout),
             data=request_body)
         print("resp for create array",response.json())
+        if response.status_code != 200:
+            return response
+        """request_body = {
+                        "param": {
+                            "array": name
+                            }
+                        }
+        request_body = json.dumps(request_body)
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
+            '/api/ibofos/v1/array/'+name+'/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
-            data=request_body)
+            data=request_body)"""
+        response = mount_array(name)
         print("---------------RESPONSE---------------")
         print(response.status_code, response.json())
         return response

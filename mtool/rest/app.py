@@ -338,6 +338,8 @@ def is_ibofos_running(current_user):
     timestamp = code = level = value = ""
     response = get_rebuilding_status()
     print("RESPONSE", response)
+    state = ""
+    situation = ""
     if(response != "error"):
         res = list(response.get_points())
         if res:
@@ -368,18 +370,25 @@ def is_ibofos_running(current_user):
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = True
         else:
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = False
+        if('result' in response and 'data' in response['result']):
+            state = response['result']['data']['state']
+            situation = response['result']['data']['situation']
     except BaseException:
         return toJson({"RESULT": response,
                        "lastRunningTime": lastRunningTime,
                        "timestamp": timestamp,
                        "code": code,
                        "level": level,
+                       "state": state,
+                       "situation": situation,
                        "value": value})
     return toJson({"RESULT": response,
                    "lastRunningTime": lastRunningTime,
                    "timestamp": timestamp,
                    "code": code,
                    "level": level,
+                   "state": state,
+                   "situation": situation,
                    "value": value})
 
 
@@ -925,11 +934,25 @@ def toggle_email_status():
 @token_required
 def getDevices(current_user):
     devices = list_devices()
-
-    if(isinstance(devices, dict)):
-        return toJson(devices)
-
-    devices = devices.json()
+    if(not isinstance(devices, dict)):
+         devices = devices.json()
+    arrays = dagent.list_arrays()
+    arrays = arrays.json()["result"]["data"]["arrayList"]
+    if type(arrays) != list:
+        return toJson({})
+    for array in arrays:
+        a_info = arr_info(array["name"])
+        try:
+            if a_info.status_code == 200:
+                a_info = a_info.json()
+                for device in devices["devices"]:
+                    for arr_dev in a_info["result"]["data"]["devicelist"]:
+                        if arr_dev["name"] == device["name"]:
+                            device["isAvailable"] = False
+                            device["arrayName"] = array["name"]
+                            break
+        except Exception as e:
+            print("Exception in array_info() in /api/v1.0/get_devices/ ",e)
     return toJson(devices)
 
 
