@@ -30,6 +30,7 @@ import * as actionTypes from "../actions/actionTypes"
 export const initialState = {
     timestamp:"",
     status:false,
+    state: "",
     OS_Running_Status: "...",
     operationsMessage: ""
 }
@@ -42,6 +43,7 @@ const headerReducer = (state = initialState, action) => {
                 ...state,
                 status: action.status,
                 OS_Running_Status: action.OS_Running_Status,
+                state: action.state
             };
         case actionTypes.UPDATE_TIMESTAMP:
             return {

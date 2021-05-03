@@ -47,7 +47,6 @@ import "../../../containers/Volume/Volume.css";
 import "./CreateVolume.css";
 import AlertDialog from "../../Dialog";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
-import * as actionTypes from "../../../store/actions/actionTypes";
 import formatBytes from "../../../utils/format-bytes";
 
 const styles = (theme) => ({
@@ -634,8 +633,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleCreateVolumeButton: (flag) =>
       dispatch(actionCreators.toggleCreateVolumeButton(flag)),
     showStorageAlert: (alertParams) =>
-      dispatch(actionCreators.showStorageAlert(alertParams)),
-    fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES }),
+      dispatch(actionCreators.showStorageAlert(alertParams))
   };
 };
 

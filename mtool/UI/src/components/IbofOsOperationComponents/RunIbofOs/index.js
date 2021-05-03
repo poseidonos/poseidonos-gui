@@ -49,7 +49,7 @@ const RunIbofOs = props => {
             >
               {props.status ? "Running" : props.OS_Running_Status}
             </span>
-            {props.OS_Running_Status !== 'Not Running' ? (
+            {props.OS_Running_Status !== 'Not Running' && localStorage.getItem('Rebuilding_Value') ? (
               <LinearProgressBarComponent
                 percent={localStorage.getItem('Rebuilding_Value')}
               />
@@ -118,7 +118,7 @@ const RunIbofOs = props => {
                   color="primary"
                   title="Mount Poseidon OS"
                   data-testid="btn-mount"
-                  disabled={!props.status}
+                  disabled={!props.status || props.mountState === "NORMAL"}
                   onClick={() => {
                     props.openAlert('Mount');
                   }}
@@ -132,7 +132,7 @@ const RunIbofOs = props => {
                   color="primary"
                   title="Unmount Poseidon OS"
                   data-testid="btn-unmount"
-                  disabled={!props.status}
+                  disabled={!props.status || props.mountState === "EXIST_NORMAL"}
                   onClick={() => {
                     props.openAlert('Unmount');
                   }}

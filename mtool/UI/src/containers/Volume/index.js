@@ -316,6 +316,7 @@ class Volume extends Component {
                   </Tab>
                 </Tabs>
               </AppBar>
+
               <Switch>
                 <Redirect exact from="/storage/array/" to="/storage/array/create" />
                 <Route path="/storage/array/create">
@@ -333,6 +334,9 @@ class Volume extends Component {
                           />
                         </Grid>
                       </Paper>
+                        {(this.props.posMountStatus === "EXIST_NORMAL") ? (
+                          <Typography style={{color: "#b11b1b"}} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
+                        ): null}
                     </Grid>
                   </Grid>
                 </Route>
@@ -410,6 +414,7 @@ class Volume extends Component {
                               this.props.arraySize - this.props.totalVolSize
                             }
                             createVolSocket={this.state.createVolSocket}
+                            fetchVolumes={this.fetchVolumes}
                           />
                         </Grid>
 
@@ -539,6 +544,7 @@ const mapStateToProps = (state) => {
     diskDetails: state.storageReducer.diskDetails,
     loadText: state.storageReducer.loadText,
     mountStatus: state.storageReducer.mountStatus,
+    posMountStatus: state.headerReducer.state
   };
 };
 const mapDispatchToProps = (dispatch) => {

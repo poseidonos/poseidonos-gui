@@ -86,10 +86,7 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_DEVICE_INFO:
             return {
                 ...state,
-                // ssds: action.ssds,
-                ssds: action.ssds ? action.ssds.map((ssd) => {
-                    return {...ssd, isAvailable: true}
-                }) : [],
+                ssds: action.ssds,
                 metadisks: action.metadisks
             }
         case actionTypes.STORAGE_SHOW_ALERT:

@@ -159,6 +159,7 @@ class IbofOsOperations extends Component {
                         openAlert={this.openAlert}
                         OS_Running_Status={this.props.OS_Running}
                         isButtonDisabled={this.state.isButtonDisabled}
+                        mountState={this.props.posMountStatus}
                     />
                     <AlertDialog
                         title={this.state.alerttitle}
@@ -178,7 +179,8 @@ const mapStateToProps = state => {
     return {
         OS_Running: state.headerReducer.OS_Running_Status,
         bool_status: state.headerReducer.status,
-        operationsMessage: state.headerReducer.operationsMessage
+        operationsMessage: state.headerReducer.operationsMessage,
+        posMountStatus: state.headerReducer.state
     };
 }
 const mapDispatchToProps = dispatch => {

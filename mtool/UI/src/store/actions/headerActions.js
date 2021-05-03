@@ -33,11 +33,12 @@ export const updateTimestamp = (timestamp) => {
     };
 };
 
-export const asyncIsiBOFOSRunning = (status,OS_RUNNING_STATUS) => {
+export const asyncIsiBOFOSRunning = (status,OS_RUNNING_STATUS, state) => {
     return {
         type:actionTypes.GET_IS_IBOF_OS_RUNNING,
         OS_Running_Status: OS_RUNNING_STATUS,
         status,
+        state
     };
 };
 

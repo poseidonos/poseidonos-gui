@@ -570,7 +570,7 @@ class Performance extends Component {
                       columns={this.props.readBandwidth}
                       loaded={this.props.readBandwidth.loaded}
                       yLabel={this.props.readBandwidth.yLabel}
-                      chartName={this.props.readBandwidth.name}
+                      chartName={`${this.props.readBandwidth.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
                       constValue={this.state.maxBw}
@@ -587,7 +587,7 @@ class Performance extends Component {
                       columns={this.props.writeBandwidth}
                       loaded={this.props.writeBandwidth.loaded}
                       yLabel={this.props.writeBandwidth.yLabel}
-                      chartName={this.props.writeBandwidth.name}
+                      chartName={`${this.props.writeBandwidth.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
                       constValue={this.state.maxBw}
@@ -604,7 +604,7 @@ class Performance extends Component {
                       columns={this.props.readIOPS}
                       loaded={this.props.readIOPS.loaded}
                       yLabel={this.props.readIOPS.yLabel}
-                      chartName={this.props.readIOPS.name}
+                      chartName={`${this.props.readIOPS.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
                       constValue={this.state.maxIops}
@@ -621,7 +621,7 @@ class Performance extends Component {
                       columns={this.props.writeIOPS}
                       loaded={this.props.writeIOPS.loaded}
                       yLabel={this.props.writeIOPS.yLabel}
-                      chartName={this.props.writeIOPS.name}
+                      chartName={`${this.props.writeIOPS.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
                       constValue={this.state.maxIops}
@@ -637,7 +637,7 @@ class Performance extends Component {
                       columns={this.props.latency}
                       loaded={this.props.latency.loaded}
                       yLabel={this.props.latency.yLabel}
-                      chartName={this.props.latency.name}
+                      chartName={`${this.props.latency.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
                       constValue={this.state.maxLatency}
@@ -706,7 +706,7 @@ class Performance extends Component {
                             columns={this.props.vols[content].readBandwidth}
                             loaded={this.props.vols[content].readBandwidth.loaded}
                             yLabel={this.props.vols[content].readBandwidth.yLabel}
-                            chartName={this.props.vols[content].readBandwidth.name}
+                            chartName={`${this.props.vols[content].readBandwidth.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].readBandwidth.maxbw}
@@ -725,7 +725,7 @@ class Performance extends Component {
                             columns={this.props.vols[content].writeBandwidth}
                             loaded={this.props.vols[content].writeBandwidth.loaded}
                             yLabel={this.props.vols[content].writeBandwidth.yLabel}
-                            chartName={this.props.vols[content].writeBandwidth.name}
+                            chartName={`${this.props.vols[content].writeBandwidth.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].writeBandwidth.maxbw}
@@ -743,7 +743,7 @@ class Performance extends Component {
                             columns={this.props.vols[content].readIOPS}
                             loaded={this.props.vols[content].readIOPS.loaded}
                             yLabel={this.props.vols[content].readIOPS.yLabel}
-                            chartName={this.props.vols[content].readIOPS.name}
+                            chartName={`${this.props.vols[content].readIOPS.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].readIOPS.maxiops}
@@ -761,7 +761,7 @@ class Performance extends Component {
                             columns={this.props.vols[content].writeIOPS}
                             loaded={this.props.vols[content].writeIOPS.loaded}
                             yLabel={this.props.vols[content].writeIOPS.yLabel}
-                            chartName={this.props.vols[content].writeIOPS.name}
+                            chartName={`${this.props.vols[content].writeIOPS.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].writeIOPS.maxiops}
@@ -780,7 +780,7 @@ class Performance extends Component {
                             columns={this.props.vols[content].latency}
                             loaded={this.props.vols[content].latency.loaded}
                             yLabel={this.props.vols[content].latency.yLabel}
-                            chartName={this.props.vols[content].latency.name}
+                            chartName={`${this.props.vols[content].latency.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
                             constValue={this.props.vols[content].latency.maxLatency}

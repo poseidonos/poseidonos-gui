@@ -809,7 +809,6 @@ function* deleteVolumes(action) {
         })
       );
     }
-    yield fetchVolumes({payload: {array: arrayname}});
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -820,6 +819,7 @@ function* deleteVolumes(action) {
       })
     );
   } finally {
+    yield fetchVolumes({payload: {array: yield select(arrayname)}});
     yield put(actionCreators.stopStorageLoader());
   }
 }

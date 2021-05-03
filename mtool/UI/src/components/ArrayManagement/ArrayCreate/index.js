@@ -171,7 +171,7 @@ const styles = (theme) => ({
     backgroundColor: "rgb(232, 114, 114)",
   },
   usedDisk: {
-    backgroundColor: "darkgray"
+    backgroundColor: "#8c6b5d"
   }
 });
 const removeA = (slot, disk) => {
@@ -589,7 +589,7 @@ class ArrayCreate extends Component {
               <Legend bgColor="#51ce46" title="Selected Storage disk" />
               <Legend bgColor="#339eff" title="Selected Spare disk" />
               <Legend bgColor="#ffffff" title="Not Selected" />
-              <Legend bgColor="darkgray" title="Used Disk" />
+              <Legend bgColor="#8c6b5d" title="Used Disk" />
               <Legend bgColor="#e2e1e1" title="Empty Slot" />
             </Grid>
             <Grid
