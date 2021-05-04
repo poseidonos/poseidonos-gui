@@ -79,7 +79,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
                                                    "ts": str(int(time.time()))},
                                           timeout=(connect_timeout,
                                                    read_timeout))
-        print("response:",response.status_code, response.json())
+        #print("response:",response.status_code, response.json())
         # if "error" in response.json():
         #    logger.error('%s %s', 'ERROR', response)
         #    return {"result": response["error"], "return": -1}
@@ -202,7 +202,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------",response.json())
+        #print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -223,8 +223,8 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE get devices---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE get devices---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -244,8 +244,8 @@ def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -269,8 +269,8 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
                 timeout=(
                     connect_timeout,
                     read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -291,8 +291,8 @@ def array_status(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -302,7 +302,7 @@ def array_status(auth=BASIC_AUTH_TOKEN):
 
 def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
-        print("LOAD ARRAY")
+        #print("LOAD ARRAY")
         req_headers = get_headers(auth)
         response = send_command_to_dagent(
             "GET",
@@ -312,7 +312,7 @@ def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("Load array response status", response.status_code)
+        #print("Load array response status", response.status_code)
         if (response.status_code == 200):
             return True
         return False
@@ -323,7 +323,7 @@ def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
 
 
 def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
-    print("in array exists")
+    #print("in array exists")
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get array status...')
     req_headers = get_headers(auth)
@@ -379,9 +379,9 @@ def create_array(
             "data": data_devices,
             "spare": spare_devices}}
     request_body = json.dumps(request_body)
-    print(request_body)
+    #print(request_body)
     try:
-        print("request body create array ", request_body)
+        #print("request body create array ", request_body)
         response = send_command_to_dagent(
             "POST",
             url=DAGENT_URL +
@@ -391,7 +391,7 @@ def create_array(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("resp for create array",response.json())
+        #print("resp for create array",response.json())
         if response.status_code != 200:
             return response
         """request_body = {
@@ -410,8 +410,8 @@ def create_array(
                 read_timeout),
             data=request_body)"""
         response = mount_array(name)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -435,8 +435,8 @@ def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code , response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -460,8 +460,8 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -482,7 +482,7 @@ def array_info(array_name, auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------",response.json())
+        #print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -501,7 +501,7 @@ def list_arrays(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------",response.json())
+        #print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -534,7 +534,7 @@ def create_volume(
             "mountall": mount_all}}
 
     request_body = json.dumps(request_body)
-    print("volume bodyyyy",request_body)
+    #print("volume bodyyyy",request_body)
     try:
         response = send_command_to_dagent(
             "POST",
@@ -545,7 +545,7 @@ def create_volume(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------",response.json())
+        #print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -557,7 +557,7 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {"param": params}
     request_body = json.dumps(request_body)
-    print(request_body)
+    #print(request_body)
     try:
         response = send_command_to_dagent(
             "PATCH",
@@ -568,8 +568,8 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -590,8 +590,8 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RENAME RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RENAME RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -607,7 +607,7 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
             }
     }
     request_body = json.dumps(request_body)
-    print(request_body)
+    #print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
@@ -618,8 +618,8 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code , response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -635,7 +635,7 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
             }
     }
     request_body = json.dumps(request_body)
-    print(request_body)
+    #print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
@@ -646,8 +646,8 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -667,8 +667,8 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        print("---------------RESPONSE---------------")
-        print(response.status_code , response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -688,7 +688,7 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        print("---------------RESPONSE---------------",response.json())
+        #print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -707,8 +707,8 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code , response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -746,8 +746,8 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -766,8 +766,8 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -790,7 +790,7 @@ def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
             }
     }
     request_body = json.dumps(request_body)
-    print(request_body)
+    #print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
@@ -801,8 +801,8 @@ def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -821,8 +821,8 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        print("---------------RESPONSE---------------")
-        print(response.status_code, response.json())
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')

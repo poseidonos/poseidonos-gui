@@ -43,7 +43,7 @@ def get_user_memory_usage(time):
     return metrics.get_memory_usage(time)
 
 def get_latency_usage(time):
-    return metrics.get_latency(time)
+    return metrics.get_latency(time, 0)
 
 
 """
@@ -177,7 +177,7 @@ def get_alerts_from_influx():
     # '"."alerts"'#where "alertName"=\'PostRule\'
     query = 'SELECT * FROM "alerts" ORDER BY DESC'
     res = connection.query(query)
-    print(res)
+    #print(res)
     connection.close()
     return res
 """

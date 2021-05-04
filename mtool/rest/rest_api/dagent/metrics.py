@@ -31,8 +31,8 @@ from requests.exceptions import HTTPError
 from rest.rest_api.dagent.ibofos import get_headers, send_command_to_dagent, DAGENT_URL, BASIC_AUTH_TOKEN, connect_timeout, read_timeout
 
 METRIC_PATH = '/api/metric/v1'
-ARRAY_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays?arrayIds={}&time={}'
-VOLUME_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays/volumes?arrayIds={}&volumeIds={}&time={}'
+ARRAY_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays?arrayids={}&time={}'
+VOLUME_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays/volumes?arrayids={}&volumeids={}&time={}'
 
 def get_cpu_usage(time, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)

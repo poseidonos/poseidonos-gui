@@ -643,13 +643,13 @@ def get_volume_write_iops():
     time_interval = params["time"]
     return get_write_iops(time_interval, arr_ids, vol_ids)
 
-def get_latency(time_interval, arr_id, vol_id):
+def get_latency(time_interval, arr_ids, vol_ids):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
             'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
             status_code=404)
     try:
-        res = get_disk_latency(time_interval, arr_id, vol_id)
+        res = get_disk_latency(time_interval, arr_ids, vol_ids)
         return jsonify({"res": res["result"]["data"]})
     except Exception as e:
         print(e)
@@ -668,7 +668,7 @@ def get_volume_latency():
     arr_ids = params["arrayids"]
     vol_ids = params["volumeids"]
     time_interval = params["time"]
-    return get_latency(time_interval, arr_id, vol_id)
+    return get_latency(time_interval, arr_ids, vol_ids)
 
 
 
@@ -690,10 +690,10 @@ def get_read_bw(time_interval, arr_id, vol_id):
         return jsonify({"res": []})
 @app.route('/api/v1/readbw/arrays', methods=['GET'])
 def get_array_read_bw():
-	params = request.args.to_dict()
-	arr_ids = params["arrayids"]
-	time_interval = params["time"]
-	return get_read_bw(time_interval, arr_ids, "")
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_read_bw(time_interval, arr_ids, "")
 
 @app.route('/api/v1/readbw/arrays/volumes', methods=['GET'])
 def get_volume_read_bw():
@@ -2243,7 +2243,6 @@ def compare_result(prev_result,curr_result):
                 return True
             return False
         except Exception as e:
-            print("In health status comparision exception: ",e)
             return False
 
 def send_health_status_data():
@@ -2255,7 +2254,7 @@ def send_health_status_data():
                 old_result = result
                 socketIo.emit('health_status_response', result, namespace='/health_status')
                 #print("!!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>   Data sent <<<<<<<<<<<<<<<<<<<<<<<<<< !!!!", threading.currentThread().ident)
-            time.sleep(2)
+                time.sleep(2)
     except Exception as e:
         print("Exception in health status polling: ",e)
 
