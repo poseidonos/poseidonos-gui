@@ -1,13 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
 
 a = Analysis(['rest/app.py'],
-             pathex=['/home/ibof07/palak/m9k/mtool'],
+             pathex=['/root/workspace/m9k/mtool'],
              binaries=[],
              datas=[],
-             hiddenimports=['eventlet.hubs.epolls', 'eventlet.hubs.kqueue', 'eventlet.hubs.selects', 'dns.asyncbackend', 'dns.asyncquery', 'dns.asyncresolver', 'dns.e164', 'dns.namedict', 'dns.tsigkeyring', 'dns.zone', 'engineio.async_drivers.aiohttp', 'engineio.async_drivers.eventlet'],
+             hiddenimports=['eventlet.hubs.epolls', 'eventlet.hubs.kqueue', 'eventlet.hubs.selects', 'dns.asyncbackend', 'dns.asyncquery', 'dns.asyncresolver', 'dns.e164', 'dns.namedict', 'dns.tsigkeyring', 'dns.zone', 'dns.versioned', 'engineio.async_drivers.aiohttp', 'engineio.async_drivers.eventlet'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

@@ -1,10 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
 
 a = Analysis(['create_retention_policy.py'],
-             pathex=['/home/ibof07/palak/m9k/dependency'],
+             pathex=['/root/workspace/m9k/dependency'],
              binaries=[],
              datas=[],
              hiddenimports=[],
