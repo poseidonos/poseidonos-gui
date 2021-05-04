@@ -170,9 +170,9 @@ export function* fetchReadBandwidth(action) {
     try {
         let endpoint = "/api/v1/readbw/arrays";
         if(action.payload.volume === null) {
-            endpoint += `?arrayids=${action.payload.array}&time=${action.payload.time}`;
+            endpoint += `?arrayids=0&time=${action.payload.time}`;
         } else {
-            endpoint += `/volumes?arrayids=${action.payload.array}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+            endpoint += `/volumes?arrayids=0&volumeids=${action.payload.volume}&time=${action.payload.time}`
         }
         const response = yield call(
             [axios, axios.get],
@@ -217,9 +217,9 @@ function* fetchWriteBandwidth(action) {
 
         let endpoint = "/api/v1/writebw/arrays";
         if(action.payload.volume === null) {
-            endpoint += `?arrayids=${action.payload.array}&time=${action.payload.time}`;
+            endpoint += `?arrayids=0&time=${action.payload.time}`;
         } else {
-            endpoint += `/volumes?arrayids=${action.payload.array}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+            endpoint += `/volumes?arrayids=0&volumeids=${action.payload.volume}&time=${action.payload.time}`
         }
         const response = yield call([axios, axios.get], endpoint);
 
@@ -261,9 +261,9 @@ export function* fetchReadIops(action) {
     try {
         let endpoint = "/api/v1/readiops/arrays";
         if(action.payload.volume === null) {
-            endpoint += `?arrayids=${action.payload.array}&time=${action.payload.time}`;
+            endpoint += `?arrayids=0&time=${action.payload.time}`;
         } else {
-            endpoint += `/volumes?arrayids=${action.payload.array}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+            endpoint += `/volumes?arrayids=0&volumeids=${action.payload.volume}&time=${action.payload.time}`
         }
         const response = yield call(
             [axios, axios.get],
@@ -307,9 +307,9 @@ export function* fetchWriteIops(action) {
     try {
         let endpoint = "/api/v1/writeiops/arrays";
         if(action.payload.volume === null) {
-            endpoint += `?arrayids=${action.payload.array}&time=${action.payload.time}`;
+            endpoint += `?arrayids=0&time=${action.payload.time}`;
         } else {
-            endpoint += `/volumes?arrayids=${action.payload.array}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+            endpoint += `/volumes?arrayids=0&volumeids=${action.payload.volume}&time=${action.payload.time}`
         }
         const response = yield call(
             [axios, axios.get],
@@ -354,9 +354,9 @@ export function* fetchLatency(action) {
     try {
         let endpoint = "/api/v1/latency/arrays";
         if(action.payload.volume === null) {
-            endpoint += `?arrayids=${action.payload.array}&time=${action.payload.time}`;
+            endpoint += `?arrayids=0&time=${action.payload.time}`;
         } else {
-            endpoint += `/volumes?arrayids=${action.payload.array}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+            endpoint += `/volumes?arrayids=0&volumeids=${action.payload.volume}&time=${action.payload.time}`
         }
         const response = yield call(
             [axios, axios.get],
