@@ -1067,6 +1067,18 @@ def create_arrays(current_user):
         print('came in else of found')
         return abort(404)
 
+@app.route('/api/v1/get_array_config/', methods=['GET'])
+@token_required
+def get_array_config(current_user):
+    return toJson({
+    "raidTypes": ["RAID5"],
+    "minStorageDisks": 3,
+    "maxStorageDisks": 32,
+    "minSpareDisks": 0,
+    "maxSpareDisks": 29,
+	"totalDisks": 32
+    })
+
 
 def get_mod_array(array):
     _array = {}
