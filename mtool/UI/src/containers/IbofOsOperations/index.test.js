@@ -171,7 +171,7 @@ describe("IbofOsOperations", () => {
             { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
-        const { getByTestId, getByText, asFragment } = wrapper;
+        const { getByTestId, getByText, getAllByText } = wrapper;
         const response = {
             "code": -1, "response": "POS is already stopped..."
         };
@@ -181,8 +181,8 @@ describe("IbofOsOperations", () => {
                 status: 200
             })
         );
-        expect(asFragment()).toMatchSnapshot();
-        fireEvent.click(await waitForElement(() => getByTestId("stopButtonRunning")));
+        await waitForElement(() => getAllByText("Running"));
+        fireEvent.click(await waitForElement(() => getByTestId("stopButton")));
         fireEvent.click(getByText("Yes"));
         global.fetch.mockRestore();
     });
@@ -193,7 +193,7 @@ describe("IbofOsOperations", () => {
             { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
-        const { getByTestId, getByText, asFragment } = wrapper;
+        const { getByTestId, getAllByText, getByText } = wrapper;
         const response = {
             "code": -1, "response": "POS is already stopped..."
         };
@@ -203,8 +203,8 @@ describe("IbofOsOperations", () => {
                 status: 400
             })
         );
-        expect(asFragment()).toMatchSnapshot();
-        fireEvent.click(await waitForElement(() => getByTestId("stopButtonRunning")));
+        await waitForElement(() => getAllByText("Running"));
+        fireEvent.click(await waitForElement(() => getByTestId("stopButton")));
         fireEvent.click(getByText("Yes"));
         global.fetch.mockRestore();
     });
@@ -212,11 +212,12 @@ describe("IbofOsOperations", () => {
     it("closes the POS stop alert box", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, state: "NORMAL", "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
-        const { getByTestId, getByText } = wrapper;
-        fireEvent.click(await waitForElement(() => getByTestId("stopButtonRunning")));
+        const { getByTestId, getByText, getAllByText  } = wrapper;
+        await waitForElement(() => getAllByText("Running"));
+        fireEvent.click(await waitForElement(() => getByTestId("stopButton")));
         fireEvent.click(getByText("No"));
     });
 
@@ -235,7 +236,7 @@ describe("IbofOsOperations", () => {
             })
         );
         renderComponent();
-        const { getByTestId, getByText, asFragment } = wrapper;
+        const { getByTestId, getByText } = wrapper;
         const startButtonElement = await waitForElement(() => getByTestId("startButton"));
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(401);
         fireEvent.click(startButtonElement);
@@ -258,7 +259,7 @@ describe("IbofOsOperations", () => {
             })
         );
         renderComponent();
-        const { getByTestId, getByText, asFragment } = wrapper;
+        const { getByTestId, getByText } = wrapper;
         const startButtonElement = await waitForElement(() => getByTestId("startButton"));
         fireEvent.click(startButtonElement);
         fireEvent.click(getByText("Yes"));
@@ -274,8 +275,7 @@ describe("IbofOsOperations", () => {
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
             { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
-        const { asFragment, getByTestId, getByText } = wrapper;
-        expect(asFragment()).toMatchSnapshot();
+        const { getByTestId, getByText } = wrapper;
 
         const response = {
             "code": -1, "response": "POS is Already Running..."
@@ -287,10 +287,10 @@ describe("IbofOsOperations", () => {
             })
         );
         await wait(async () => {
-            const startButtonElement = getByTestId("startButtonRunning");
+            const startButtonElement = getByTestId("startButton");
             expect(startButtonElement.closest('button')).toBeDisabled();
 
-            const stopButtonElement = getByTestId("stopButtonRunning");
+            const stopButtonElement = getByTestId("stopButton");
             fireEvent.click(stopButtonElement);
             fireEvent.click(getByText("Yes"));
             global.fetch.mockRestore();
@@ -307,8 +307,7 @@ describe("IbofOsOperations", () => {
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
             { "RESULT": { "result": { "data": { "type": "" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "", "code": "2804", "level": "", "value": "99" }
         );
-        const { asFragment, getByTestId, getByText } = wrapper;
-        expect(asFragment()).toMatchSnapshot();
+        const { getByTestId, getByText } = wrapper;
 
         const response = {
             "code": -1, "response": "POS is Already Running..."

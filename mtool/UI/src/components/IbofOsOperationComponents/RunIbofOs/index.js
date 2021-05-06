@@ -32,7 +32,6 @@ import './RunIbofOs.css';
 import LinearProgressBarComponent from '../LinearProgressBarComponent';
 
 const RunIbofOs = props => {
-
   // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div>
@@ -67,8 +66,11 @@ const RunIbofOs = props => {
                   variant="contained"
                   color="primary"
                   title="Force Start Poseidon OS"
-                  data-testid="startButtonRunning"
+                  data-testid="startButton"
                   disabled={props.status}
+	           onClick={() => {
+                    props.openAlert('Start');
+                  }}
                 >
                   Start
                 </Button>
@@ -78,7 +80,7 @@ const RunIbofOs = props => {
                   variant="contained"
                   color="primary"
                   title="Force Stop Poseidon OS"
-                  data-testid="stopButtonRunning"
+                  data-testid="stopButton"
                   disabled={!props.status}
                   onClick={() => {
                     props.openAlert('Stop');

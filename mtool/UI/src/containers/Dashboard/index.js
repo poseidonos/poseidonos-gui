@@ -582,7 +582,7 @@ class Dashboard extends Component {
                               data-testid="write-iops"
                               className={classes.metricTxt}
                             >
-                              {this.props.readIOPS}
+                              {this.props.writeIOPS}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -610,7 +610,7 @@ class Dashboard extends Component {
                               data-testid="read-iops"
                               className={classes.metricTxt}
                             >
-                              {this.props.writeIOPS}
+                              {this.props.readIOPS}
                             </Typography>
                           </Grid>
                         </Grid>

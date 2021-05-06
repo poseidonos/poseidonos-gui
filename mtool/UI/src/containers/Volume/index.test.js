@@ -14,6 +14,7 @@ import {
   cleanup,
   waitForElement,
   wait,
+  getByText,
 } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import "@testing-library/jest-dom/extend-expect";
@@ -48,7 +49,7 @@ describe("<Storage Management />", () => {
       composeEnhancers(applyMiddleware(sagaMiddleware))
     );
     sagaMiddleware.run(rootSaga);
-    const route = "/volume";
+    const route = "/storage/array/manage?array=POSArray";
     history = createMemoryHistory({ initialEntries: [route] });
     mock = new MockAdapter(axios);
   });
@@ -71,7 +72,7 @@ describe("<Storage Management />", () => {
       .reply(200, [])
       .onAny()
       .reply(200, []);
-    mock.onGet(/api\/v1.0\/get_arrays\/*/).reply(200, []);
+    mock.onGet(/api\/v1\/get_arrays\/*/).reply(200, []);
     renderComponent();
     const { getByTestId } = wrapper;
     expect(getByTestId("title")).toHaveTextContent("Array Management");
@@ -83,36 +84,49 @@ describe("<Storage Management />", () => {
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500037",
+      isAvailable: true
     },
     {
       name: "intel-unvmens-1",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500027",
+      isAvailable: true
     },
     {
       name: "intel-unvmens-2",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500044",
+      isAvailable: true
     },
     {
       name: "intel-unvmens-3",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500031",
+      isAvailable: true
     },
     {
       name: "intel-unvmens-4",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500041",
+      isAvailable: true
     },
     {
       name: "intel-unvmens-5",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500042",
+      isAvailable: true
+    },
+    {
+      name: "intel-unvmens-6",
+      size: 390703446,
+      mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+      sn: "S4C9NF0M500043",
+      isAvailable: true
     },
   ];
 
@@ -143,6 +157,8 @@ describe("<Storage Management />", () => {
         deviceName: "intel-unvmens-4",
       },
     ],
+    status: "Mounted",
+    state: "EXIST",
     totalsize: 6357625339904,
     usedspace: 0,
   };
@@ -154,7 +170,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -189,7 +205,8 @@ describe("<Storage Management />", () => {
       .onAny()
       .reply(200, []);
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
     await waitForElement(() => getByTestId("arraycreate"));
   });
 
@@ -220,6 +237,7 @@ describe("<Storage Management />", () => {
       .reply(200, []);
     renderComponent();
     const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    fireEvent.click(getByText("create"));
     fireEvent.click(getByTestId("raid-select"));
     fireEvent.click(getByTestId("raid-select").querySelector("p"));
     const wb = await waitForElement(() => getByTestId("writebuffer-input"));
@@ -261,6 +279,7 @@ describe("<Storage Management />", () => {
     renderComponent();
     const getSpy = jest.spyOn(axios, "post");
     const { getByTestId, getByText, getAllByText, queryByText } = wrapper;
+    fireEvent.click(getByText("create"));
     const raidSelect = await waitForElement(() =>
       getByTestId("raid-select-input")
     );
@@ -288,9 +307,11 @@ describe("<Storage Management />", () => {
     renderComponent();
     const getSpy = jest.spyOn(axios, "post");
     const { getByTestId, getByText, getAllByText, queryByText } = wrapper;
+    fireEvent.click(getByText("create"));
     const raidSelect = await waitForElement(() =>
       getByTestId("raid-select-input")
     );
+    fireEvent.click(getByText("create"));
     fireEvent.change(raidSelect, { target: { value: "5" } });
     fireEvent.change(getByTestId("writebuffer-input"), {
       target: { value: "uram0" },
@@ -325,6 +346,7 @@ describe("<Storage Management />", () => {
     renderComponent();
     const getSpy = jest.spyOn(axios, "post");
     const { getByTestId, getByText, getAllByText, queryByText } = wrapper;
+    fireEvent.click(getByText("create"));
     const raidSelect = await waitForElement(() =>
       getByTestId("raid-select-input")
     );
@@ -367,13 +389,15 @@ describe("<Storage Management />", () => {
       getByTestId,
       getByText,
       getAllByText,
-      getByDisplayValue,
+      getByLabelText,
       asFragment,
     } = wrapper;
+    fireEvent.click(getByText("create"));
     const raidSelect = await waitForElement(() =>
       getByTestId("raid-select-input")
     );
     fireEvent.change(raidSelect, { target: { value: "5" } });
+    fireEvent.change(getByLabelText("Array Name"), {target: {value: "POSArray"}});
     const wb = await waitForElement(() => getByTestId("writebuffer"));
     wb.value = "uram0";
     fireEvent.change(wb);
@@ -408,6 +432,7 @@ describe("<Storage Management />", () => {
     }
     fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
     fireEvent.click(getByTestId("createarray-btn"));
+    expect(asFragment()).toMatchSnapshot();
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/create_arrays/",
       {
@@ -447,7 +472,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -463,7 +488,9 @@ describe("<Storage Management />", () => {
       .reply(200, []);
     const getSpy = jest.spyOn(axios, "post");
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, asFragment, getByText } = wrapper;
+    await waitForElement(() => getByText("Unmount Array"))
+    expect(asFragment()).toMatchSnapshot();
     const attachButton = await waitForElement(() =>
       getByTestId("attachdisk-5")
     );
@@ -492,7 +519,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -537,7 +564,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -566,7 +593,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -628,7 +655,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -638,7 +665,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -761,7 +788,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -771,7 +798,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -848,7 +875,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -858,7 +885,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -932,7 +959,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -942,7 +969,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -1032,7 +1059,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1042,7 +1069,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -1130,7 +1157,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1140,7 +1167,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -1219,7 +1246,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1229,7 +1256,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -1325,7 +1352,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1335,7 +1362,7 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
@@ -1433,7 +1460,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1443,16 +1470,16 @@ describe("<Storage Management />", () => {
       ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, {
         Members: [
           {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+            "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/1",
           },
         ],
       })
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
@@ -1472,7 +1499,7 @@ describe("<Storage Management />", () => {
           },
         },
       })
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
@@ -1525,7 +1552,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1566,6 +1593,9 @@ describe("<Storage Management />", () => {
   });
 
   it("should show device details when array is not created", async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { ...location, href: "http://localhost/storage/array/create" };
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
@@ -1589,6 +1619,7 @@ describe("<Storage Management />", () => {
         return div.children[0];
       },
     });
+    fireEvent.click(getByText("create"));
     await waitForElement(() => getByTestId("arraycreate"));
     await act(async () => {
       fireEvent(
@@ -1611,7 +1642,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
       .reply(200, [
@@ -1630,7 +1661,7 @@ describe("<Storage Management />", () => {
   it("should display the storage page with path", async () => {
     const { location } = window;
     delete window.location;
-    window.location = { ...location, href: "http://localhost/volume" };
+    window.location = { ...location, href: "http://localhost/storage/array/manage?array=POSArray" };
     renderComponent();
     const { getByText } = wrapper;
     expect(
@@ -1646,7 +1677,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -1715,7 +1746,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -1744,8 +1775,8 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
-      .reply(200, [array])
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [{...array, state: "OFFLINE"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onGet(/api\/v1.0\/available_storage\/*/)
@@ -1774,7 +1805,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
@@ -1797,15 +1828,14 @@ describe("<Storage Management />", () => {
     fireEvent.click(unmountButton);
   });
   it("should fail to mount the array", async () => {
-    jest.setTimeout(90000);
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
         metadevices: ["uram0"],
       })
-      .onGet(/api\/v1.0\/get_arrays\/*/)
-      .reply(200, [array])
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [{...array, state: "OFFLINE"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onGet(/api\/v1.0\/available_storage\/*/)
@@ -1820,7 +1850,10 @@ describe("<Storage Management />", () => {
       .onAny()
       .reply(200, []);
     renderComponent();
-    const { getByText } = wrapper;
+    const { getByText, getByLabelText, getByTestId, asFragment } = wrapper;
+    await waitForElement(() =>
+      getByTestId("arrayshow")
+    );
     const mountButton = await waitForElement(() =>
       getByText("Mount Array")
     );

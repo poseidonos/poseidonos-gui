@@ -71,6 +71,7 @@ global.document.createRange= () => ({
     }
 });
 
+const fetchVolumesMock = () => {};
 
 beforeEach(() => {
 
@@ -88,6 +89,7 @@ beforeEach(() => {
                 <CreateVolume
                     maxVolumeCount={1024}
                     volCount={3}
+                    fetchVolumes={fetchVolumesMock}
                     createVolume={createVolume}
                     createVolSocket={socket}
                 />

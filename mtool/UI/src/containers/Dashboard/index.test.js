@@ -152,8 +152,9 @@ describe("Dashboard", () => {
 
   it("should display volumes", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1.0/get_volumes/`)
-      .reply(200, [
+    mock.onGet(`/api/v1/get_all_volumes/`)
+      .reply(200, {
+        "POSArray": [
         {
           id: '0',
           maxbw: 0,
@@ -187,7 +188,7 @@ describe("Dashboard", () => {
           usedspace: 5
         }
       ]
-      );
+    });
     renderComponent();
     const { getByText } = wrapper;
     const hostElement = await waitForElement(() => getByText("vol2"));
@@ -241,7 +242,7 @@ describe("Dashboard", () => {
   it("should display iops value as received from API", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(/\/api\/v1\.0\/perf\/all\?ts=*/)
+    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
       .reply(200,
         {
           bw_read: 0,
@@ -256,7 +257,7 @@ describe("Dashboard", () => {
     jest.advanceTimersByTime(2000);
     const { getByTestId } = wrapper;
     const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
-    expect(readIopsElement.innerHTML).toBe("0");
+    expect(readIopsElement.innerHTML).toBe("200");
   });
 
   it("should display the dashboard page with path", async () => {

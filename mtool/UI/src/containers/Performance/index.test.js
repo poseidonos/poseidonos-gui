@@ -115,102 +115,98 @@ describe("Performance", () => {
 
   afterEach(cleanup);
 
+  const array = {
+    RAIDLevel: "5",
+    arrayname: "POSArray",
+    metadiskpath: [
+      {
+        deviceName: "uram0",
+      },
+    ],
+    sparedisks: [
+      {
+        deviceName: "intel-unvmens-3",
+      },
+    ],
+    storagedisks: [
+      {
+        deviceName: "intel-unvmens-0",
+      },
+      {
+        deviceName: "intel-unvmens-1",
+      },
+      {
+        deviceName: "intel-unvmens-2",
+      },
+      {
+        deviceName: "intel-unvmens-4",
+      },
+    ],
+    status: "Mounted",
+    state: "EXIST",
+    totalsize: 6357625339904,
+    usedspace: 0,
+  };
+
   it("renders array level graphs for last 1m", async () => {
-    mock
-      .onGet(`/api/v1.0/iops_read/1m/array`)
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+    .reply(200, [array])
+      .onGet(`/api/v1/readiops/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
             time: 12345,
-            perf_data_0_tid_arr_0_aid_arr_0_iops_read: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_iops_read: 0
+            value: 20
           },
           {
             time: 12346,
-            perf_data_0_tid_arr_0_aid_arr_0_iops_read: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_iops_read: 0
+            value: 20
           },
           {
             time: 12347,
-            perf_data_0_tid_arr_0_aid_arr_0_iops_read: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_iops_read: 0
+            value: 20
           },
           {
             time: 12348,
-            perf_data_0_tid_arr_0_aid_arr_0_iops_read: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_iops_read: 0
-          }
-        ],
-        aid: [
-          {
-            perf_data_0_tid_arr_0_aid: 0,
-            perf_data_1_tid_arr_1_aid: 1
+            value: 20
           }
         ]
       })
-      .onGet(`/api/v1.0/iops_write/1m/array`)
+      .onGet(`/api/v1/writeiops/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
             time: 123456,
-            perf_data_0_tid_arr_0_aid_arr_0_iops_write: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_iops_write: 0
-          }
-        ],
-        aid: [
-          {
-            perf_data_0_tid_arr_0_aid: 0,
-            perf_data_1_tid_arr_1_aid: 1
+            value: 10
           }
         ]
       })
-      .onGet(`/api/v1.0/bw_read/1m/array`)
+      .onGet(`/api/v1/readbw/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
             time: 123456,
-            perf_data_0_tid_arr_0_aid_arr_0_bw_read: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_bw_read: 0
-          }
-        ],
-        aid: [
-          {
-            perf_data_0_tid_arr_0_aid: 0,
-            perf_data_1_tid_arr_1_aid: 1
+            value: 100
           }
         ]
       })
 
-      .onGet(`/api/v1.0/latency/1m/array`)
+      .onGet(`/api/v1/latency/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
             time: 123456,
-            lat_data_0_tid_arr_0_aid_arr_0_timelag_arr_0_mean: 0,
-            lat_data_1_tid_arr_1_aid_arr_1_timelag_arr_0_mean: 0
-          }
-        ],
-        aid: [
-          {
-            lat_data_0_tid_arr_0_aid_arr_0_aid: 0,
-            lat_data_1_tid_arr_1_aid_arr_1_aid: 1
+            value: 30
           }
         ]
       })
 
-      .onGet(`/api/v1.0/bw_write/1m/array`)
+      .onGet(`/api/v1/writebw/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
             time: 123456,
-            perf_data_0_tid_arr_0_aid_arr_0_bw_write: 0,
-            perf_data_1_tid_arr_1_aid_arr_1_bw_write: 0
-          }
-        ],
-        aid: [
-          {
-            perf_data_0_tid_arr_0_aid: 0,
-            perf_data_1_tid_arr_1_aid: 1
+            value: 35
           }
         ]
       });
@@ -246,7 +242,9 @@ describe("Performance", () => {
   });
 
   it("renders volume level read bandwidth graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+    .reply(200, [array])
+    .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
       Members: [{
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
@@ -290,7 +288,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/bw_read/1m/0`)
+      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -299,7 +297,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/bw_read/1m/1`)
+      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
           {
@@ -327,7 +325,9 @@ describe("Performance", () => {
   });
 
   it("renders volume level, all volume and array level graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+    .reply(200, [array])
+    .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
       Members: [{
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
@@ -371,7 +371,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/bw_read/1m/0`)
+      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -380,7 +380,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/bw_read/1m/1`)
+      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
           {
@@ -389,7 +389,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/bw_read/1m/array`)
+      .onGet(`/api/v1/readbw/arrays?arrayids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -444,7 +444,9 @@ describe("Performance", () => {
 
 
   it("renders volume level write bandwidth graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+    .reply(200, [array])
+    .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
       Members: [{
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
@@ -488,7 +490,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/bw_write/1m/0`)
+      .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -497,7 +499,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/bw_write/1m/1`)
+      .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
           {
@@ -534,7 +536,9 @@ describe("Performance", () => {
   });
 
   it("renders volume level read iops graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+    .reply(200, [array])
+    .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
       Members: [{
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
@@ -578,7 +582,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/iops_read/1m/0`)
+      .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -587,7 +591,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/iops_read/1m/1`)
+      .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
           {
@@ -624,12 +628,14 @@ describe("Performance", () => {
   });
 
   it("renders volume level write iops graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
-      Members: [{
-        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
-      }]
-    })
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
+        Members: [{
+          "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+          "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+        }]
+      })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
         Name: "vol1",
         Id: "0",
@@ -668,7 +674,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/iops_write/1m/0`)
+      .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
           {
@@ -677,7 +683,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/iops_write/1m/1`)
+      .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
           {
@@ -701,25 +707,27 @@ describe("Performance", () => {
     }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
-    expect(asFragment()).toMatchSnapshot();
     try {
       fireEvent.click(await waitForElement(() => getByTestId("write_iops")));
     } catch {
       const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-      fireEvent.change(measurementInput, {target: {value: 'write_iops'}});
+      fireEvent.change(measurementInput, { target: { value: 'write_iops' } });
     }
-    
+    expect(asFragment()).toMatchSnapshot();
+
     const volWriteIOPS = await waitForElement(() => getByTestId("writeIOPS-vol"));
     expect(volWriteIOPS).toBeDefined();
   });
 
   it("renders volume level latency graphs for last 1m", async () => {
-    mock.onGet(/redfish\/v1\/StorageServices\/1\/Volumes$/).reply(200, {
-      Members: [{
-        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
-      }]
-    })
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
+        Members: [{
+          "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+          "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1"
+        }]
+      })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/).reply(200, {
         Name: "vol1",
         Id: "0",
@@ -758,7 +766,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1.0/latency/1m/0`)
+      .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=1m')
       .reply(200, {
         res: [
           {
@@ -767,7 +775,7 @@ describe("Performance", () => {
           }
         ]
       })
-      .onGet(`/api/v1.0/latency/1m/1`)
+      .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=1&time=1m')
       .reply(200, {
         res: [
           {
@@ -791,14 +799,13 @@ describe("Performance", () => {
     }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
-    expect(asFragment()).toMatchSnapshot();
     try {
       fireEvent.click(await waitForElement(() => getByTestId("latency")));
     } catch {
       const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-      fireEvent.change(measurementInput, {target: {value: 'latency'}});
+      fireEvent.change(measurementInput, { target: { value: 'latency' } });
     }
-    
+    expect(asFragment()).toMatchSnapshot();
     const volLatency = await waitForElement(() => getByTestId("latency-vol"));
     expect(volLatency).toBeDefined();
   });
