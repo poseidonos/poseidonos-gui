@@ -52,6 +52,7 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 			query = fmt.Sprintf(LastRecordQ, DBName, DefaultRP, volumeIds, arrayId)
 		}
 	}
+  fmt.Println("query ",query)
 	result, err := ExecuteQuery(query)
 	if err != nil {
 		return nil, nil, errQueryCode
