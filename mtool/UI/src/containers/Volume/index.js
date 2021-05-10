@@ -158,6 +158,7 @@ class Volume extends Component {
   }
 
   componentDidMount() {
+    this.props.Get_Config();
     this.fetchDevices();
     this.fetchStorageInfo();
     this.fetchMaxVolumeCount();
@@ -326,6 +327,9 @@ class Volume extends Component {
                         <Grid container justify="space-between">
                           <ArrayCreate
                             createArray={this.createArray}
+                            config={this.props.config}
+                            selectedRaid={this.props.selectedRaid}
+                            selectRaid={this.props.Select_Raid}
                             disks={this.props.ssds}
                             data-testid="arraycreate"
                             metadisks={this.props.metadisks}
@@ -526,6 +530,7 @@ const mapStateToProps = (state) => {
     volumes: state.storageReducer.volumes,
     arrays: state.storageReducer.arrays,
     arrayMap: state.storageReducer.arrayMap,
+    config: state.storageReducer.config,
     selectedArray: state.storageReducer.arrayname,
     loading: state.storageReducer.loading,
     alertOpen: state.storageReducer.alertOpen,
@@ -540,6 +545,7 @@ const mapStateToProps = (state) => {
     totalVolSize: state.storageReducer.totalVolSize,
     slots: state.storageReducer.slots,
     arrayExists: state.storageReducer.arrayExists,
+    selectedRaid: state.storageReducer.selectedRaid,
     RAIDLevel: state.storageReducer.RAIDLevel,
     diskDetails: state.storageReducer.diskDetails,
     loadText: state.storageReducer.loadText,
@@ -557,6 +563,7 @@ const mapDispatchToProps = (dispatch) => {
     Delete_Array: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),
     Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
+    Get_Config: () => dispatch({ type: actionTypes.SAGA_FETCH_CONFIG }),
     Delete_Volumes: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
@@ -582,7 +589,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
     Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
-    Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload})
+    Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
+    Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload})
   };
 };
 

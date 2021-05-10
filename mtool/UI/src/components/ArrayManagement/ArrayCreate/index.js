@@ -220,7 +220,7 @@ class ArrayCreate extends Component {
     };
     this.toggleRowSelect = this.toggleRowSelect.bind(this);
     this.createArray = this.createArray.bind(this);
-    // // this.onSelectRaid = this.onSelectRaid.bind(this);
+    this.onSelectRaid = this.onSelectRaid.bind(this);
     this.onSelectDiskType = this.onSelectDiskType.bind(this);
     this.onSelectWriteBuffer = this.onSelectWriteBuffer.bind(this);
     this.showPopup = this.showPopup.bind(this);
@@ -229,24 +229,13 @@ class ArrayCreate extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  // onSelectRaid(event) {
-  //   for (let i = 0; i < this.state.raids.length; i += 1) {
-  //     if (this.state.raids[i].value === event.target.value) {
-  //       this.setState({
-  //         ...this.state,
-  //         raid: event.target.value,
-  //         minStorage: this.state.raids[i].minStorage,
-  //         minSpare: this.state.raids[i].minSpare,
-  //         minWriteBUffer: this.state.raids[i].minWriteBUffer,
-  //       });
-  //       return;
-  //     }
-  //   }
-  // }
-
   handleChange(event) {
     const { value } = event.target;
     this.setState({ arrayname: value });
+  }
+
+  onSelectRaid(event) {
+    this.props.selectRaid(event.target.value);
   }
 
   onSelectDiskType(event) {
@@ -297,24 +286,24 @@ class ArrayCreate extends Component {
       });
       return;
     }
-    if (this.state.minStorage > this.state.slots["Storage Disk"].length) {
+    if (this.props.config.minStorageDisks > this.state.slots["Storage Disk"].length) {
       this.setState({
         ...this.state,
         alertType: "alert",
-        errorMsg: `Select at least ${this.state.minStorage} storage disk`,
+        errorMsg: `Select at least ${this.props.config.minStorageDisks} storage disk`,
         alertOpen: true,
       });
       return;
     }
-    // if (this.state.minSpare > this.state.slots['Spare Disk'].length) {
-    //   this.setState({
-    //     ...this.state,
-    //     alertType: 'alert',
-    //     errorMsg: `Select at least ${this.state.minSpare} Spare disk`,
-    //     alertOpen: true,
-    //   });
-    //   return;
-    // }
+    if (this.props.config.minSpareDisks > this.state.slots['Spare Disk'].length) {
+      this.setState({
+        ...this.state,
+        alertType: 'alert',
+        errorMsg: `Select at least ${this.props.config.minSpareDisks} Spare disk`,
+        alertOpen: true,
+      });
+      return;
+    }
     if (this.state.metaDisk === "") {
       this.setState({
         ...this.state,
@@ -332,7 +321,7 @@ class ArrayCreate extends Component {
     this.props.createArray({
       size: this.state.totalSize,
       arrayname: this.state.arrayname,
-      raidtype: this.state.raid,
+      raidtype: this.props.selectedRaid,
       storageDisks: this.state.slots["Storage Disk"],
       spareDisks: this.state.slots["Spare Disk"],
       writeBufferDisk: this.state.slots["Write Buffer Disk"],
@@ -424,7 +413,7 @@ class ArrayCreate extends Component {
 
     const freedisks = [];
     if (this.props.disks) {
-      for (let i = this.props.disks.length; i < 32; i += 1) {
+      for (let i = this.props.disks.length; i < this.props.config.totalDisks; i += 1) {
         freedisks.push(
           <GridListTile
             className={`${classes.gridTile} ${classes.gridTileDisabled}`}
@@ -456,8 +445,8 @@ class ArrayCreate extends Component {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
-                value={this.state.raid}
-                // onChange={this.onSelectRaid}
+                value={this.props.selectedRaid}
+                onChange={this.onSelectRaid}
                 inputProps={{
                   name: "Fault Tolerance Type",
                   id: "raid",
@@ -467,7 +456,7 @@ class ArrayCreate extends Component {
                   "data-testid": "raid-select",
                 }}
               >
-                {this.state.raids.map((raid) => (
+                {this.props.config.raidTypes && this.props.config.raidTypes.map((raid) => (
                   <MenuItem value={raid.value}>
                     <Typography color="secondary">{raid.label}</Typography>
                   </MenuItem>
@@ -527,7 +516,7 @@ class ArrayCreate extends Component {
           </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
-              <GridList cellHeight={110} className={classes.gridList} cols={32}>
+              <GridList cellHeight={110} className={classes.gridList} cols={this.props.config.totalDisks}>
                 {this.props.disks
                   ? this.props.disks.map((disk, i) => {
                     return (

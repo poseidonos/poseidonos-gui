@@ -32,6 +32,7 @@ export const initialState = {
     ssds: [],
     arrayname: "",
     arrayMap: {},
+    config: {},
     volumes: [],
     metadisks: [],
     loading: false,
@@ -51,6 +52,7 @@ export const initialState = {
     sparedisks: [],
     writebufferdisks: [],
     metadiskpath: '',
+    selectedRaid: '',
     slots: [],
     arrays: [],
     arrayExists: false,
@@ -135,6 +137,24 @@ const storageReducer = (state = initialState, action) => {
                 arrayExists: true,
                 arraySize,
                 totalVolSize
+            }
+        }
+        case actionTypes.FETCH_CONFIG:
+            return {
+                ...state,
+                config: {
+                    ...action.payload,
+                    raidTypes: action.payload.raidTypes.map((type) => ({
+                        value: type,
+                        label: type
+                    }))
+                },
+                selectedRaid: action.payload.raidTypes.length ? action.payload.raidTypes[0] : ""
+            }
+        case actionTypes.SELECT_RAID:{
+            return {
+                ...state,
+                selectedRaid: action.payload
             }
         }
         case actionTypes.SET_ARRAY:

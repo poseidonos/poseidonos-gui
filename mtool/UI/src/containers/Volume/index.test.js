@@ -74,8 +74,9 @@ describe("<Storage Management />", () => {
       .reply(200, []);
     mock.onGet(/api\/v1\/get_arrays\/*/).reply(200, []);
     renderComponent();
-    const { getByTestId } = wrapper;
-    expect(getByTestId("title")).toHaveTextContent("Array Management");
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
+    expect(waitForElement(() => getByTestId("arraycreate"))).toBeDefined();
   });
 
   const devices = [
@@ -233,13 +234,22 @@ describe("<Storage Management />", () => {
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, {
+        "raidTypes": ["raid5"],
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        "totalDisks": 32
+      })
       .onAny()
       .reply(200, []);
     renderComponent();
     const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
     fireEvent.click(getByText("create"));
     fireEvent.click(getByTestId("raid-select"));
-    fireEvent.click(getByTestId("raid-select").querySelector("p"));
+    fireEvent.click(await waitForElement(() => getByTestId("raid-select").querySelector("p")));
     const wb = await waitForElement(() => getByTestId("writebuffer-input"));
     fireEvent.change(wb, {
       target: { value: "uram0" },
@@ -380,6 +390,15 @@ describe("<Storage Management />", () => {
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, {
+        "raidTypes": ["raid5"],
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        "totalDisks": 32
+      })
       .onAny()
       .reply(200, []);
     renderComponent();
@@ -1661,12 +1680,35 @@ describe("<Storage Management />", () => {
   it("should display the storage page with path", async () => {
     const { location } = window;
     delete window.location;
-    window.location = { ...location, href: "http://localhost/storage/array/manage?array=POSArray" };
+    window.location = { ...location, href: "http://localhost/storage/array/create" };
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices: ["uram0", "uram1"],
+      })
+      .onAny()
+      .reply(200, []);
     renderComponent();
-    const { getByText } = wrapper;
+    const { getByTestId, queryByTestId, getByText, asFragment } = wrapper;
+    global.document.createRange = (html) => ({
+      setStart: () => {},
+      setEnd: () => {},
+      commonAncestorContainer: {
+        nodeName: "BODY",
+        ownerDocument: document,
+      },
+      createContextualFragment: (html) => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.children[0];
+      },
+    });
+    fireEvent.click(getByText("create"));
     expect(
-      await waitForElement(() => getByText("Array Management"))
+      await waitForElement(() => getByTestId("arraycreate"))
     ).toBeDefined();
+    expect(asFragment()).toMatchSnapshot();
     window.location = location;
   });
 

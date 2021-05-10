@@ -145,6 +145,27 @@ function* fetchArray(action) {
   }
 }
 
+function* fetchConfig() {
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1/get_array_config/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.status === 200 && response.data) {
+      yield put(actionCreators.fetchConfig(response.data));
+    }
+  } catch (e) {
+    yield put(actionCreators.fetchConfig({raidTypes: []}));
+  }
+}
+
 function* fetchDevices() {
   const defaultResponse = {
     devices: [],
@@ -1440,6 +1461,7 @@ export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_SAVE_VOLUME, createVolume);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY_SIZE, fetchArraySize);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY, fetchArray);
+  yield takeEvery(actionTypes.SAGA_FETCH_CONFIG, fetchConfig);
   yield takeEvery(actionTypes.SAGA_DELETE_ARRAY, deleteArray);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUMES, fetchVolumes);
   yield takeEvery(actionTypes.SAGA_DELETE_VOLUMES, deleteVolumes);

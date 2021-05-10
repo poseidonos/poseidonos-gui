@@ -55,6 +55,20 @@ export const fetchArray = (payload) => {
     }
 }
 
+export const fetchConfig = (payload) => {
+    return {
+        type: actionTypes.FETCH_CONFIG,
+        payload
+    }
+}
+
+export const selectRaid = (payload) => {
+    return {
+        type: actionTypes.SELECT_RAID,
+        payload
+    }
+}
+
 export const setNoArray = () => {
     return {
         type: actionTypes.SET_NO_ARRAY

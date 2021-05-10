@@ -69,6 +69,7 @@ export {
     fetchDevices,
     fetchDeviceDetails,
     fetchArray,
+    fetchConfig,
     fetchArraySize,
     setNoArray,
     showStorageAlert,
