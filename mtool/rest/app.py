@@ -1120,8 +1120,8 @@ def get_arrays(current_user):
                 res = a_info
                 # convert to format expected by UI
                 a_info = get_mod_array(a_info)
-                a_info['totalsize'] = int(res["info"]["capacity"])
-                a_info['usedspace'] = int(res["info"]["used"])
+                a_info['totalsize'] = int(res["result"]["data"]["capacity"])
+                a_info['usedspace'] = int(res["result"]["data"]["used"])
                 a_info['volumecount'] = len(vol_list)
                 a_info["arrayname"] = res["result"]["data"]["name"]
                 a_info["status"] = array["status"]
