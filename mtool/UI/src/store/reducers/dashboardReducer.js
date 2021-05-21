@@ -29,7 +29,9 @@ import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
     volumes: [],
+    arrayVolumes: [],
     alerts: [],
+    selectedArray: 'all',
     ibofs: ['None'],
     readIOPS: 0,
     writeIOPS: 0,
@@ -52,9 +54,29 @@ const dashboardReducer = (state = initialState, action) => {
                 ...state,
                 fetchingAlerts: action.fetchingAlerts,
             };
+        case actionTypes.SELECT_ARRAY: {
+            let arrayVolumes = [];
+            if(action.array === "all") {
+                arrayVolumes = [...state.volumes]
+            } else {
+                state.volumes.forEach((volume) => {
+                    if(volume.array === action.array) {
+                        arrayVolumes.push({
+                            ...volume
+                        });
+                    }
+                });
+            }
+            return {
+                ...state,
+                selectedArray: action.array,
+                arrayVolumes
+            }
+        }
         case actionTypes.FETCH_VOLUME_INFO:{
             const volumes = [];
             const arrayVols = {};
+            let arrayVolumes = [];
             Object.keys(action.volumes).forEach((array) => {
                 arrayVols[array] = action.volumes[array].length;
                 action.volumes[array].forEach((vol) => {
@@ -62,12 +84,21 @@ const dashboardReducer = (state = initialState, action) => {
                         ...vol,
                         array
                     });
+                    if(state.selectedArray !== "all" && array === state.selectedArray) {
+                        arrayVolumes.push({
+                            ...volumes[volumes.length - 1]
+                        })
+                    }
                 });
             });
+            if(state.selectedArray === "all") {
+                arrayVolumes = [...volumes];
+            }
             return {
                 ...state,
                 volumes,
-                arrayVols
+                arrayVols,
+                arrayVolumes
             };
         }
         case actionTypes.FETCH_ALERTS_INFO:

@@ -32,7 +32,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { connect } from 'react-redux';
 
-import SamsungLogo from '../../assets/images/Samsung-logo-blue.png';
+import PoseidonLogo from '../../assets/images/Poseidon.png';
 import DashboardIconDisabled from '../../assets/images/Dashboard-DIS.png';
 import DashboardIconSelected from '../../assets/images/Dashboard-SEL.png';
 import StorageIconDisabled from '../../assets/images/Storage-DIS.png';
@@ -272,9 +272,9 @@ const Sidebar = (props) => {
       <div className={classes.logoContainer}>
         <Paper className={classes.logoPaper}>
           <img
-            src={SamsungLogo}
+            src={PoseidonLogo}
             style={{ width: '170px' }}
-            alt="Samsung Logo"
+            alt="Poseidon Logo"
           />
         </Paper>
       </div>

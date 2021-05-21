@@ -935,8 +935,10 @@ def toggle_email_status():
 def getDevices(current_user):
     devices = list_devices()
     if(not isinstance(devices, dict)):
-         devices = devices.json()
+        devices = devices.json()
     arrays = dagent.list_arrays()
+    if arrays.status_code >= 400:
+        return toJson(devices)
     arrays = arrays.json()["result"]["data"]["arrayList"]
     if type(arrays) != list:
         return toJson(devices)
@@ -1120,12 +1122,12 @@ def get_arrays(current_user):
                 res = a_info
                 # convert to format expected by UI
                 a_info = get_mod_array(a_info)
-                a_info['totalsize'] = int(res["result"]["data"]["capacity"])
-                a_info['usedspace'] = int(res["result"]["data"]["used"])
+                #a_info['totalsize'] = int(res["result"]["data"]["capacity"])
+                #a_info['usedspace'] = int(res["result"]["data"]["used"])
                 a_info['volumecount'] = len(vol_list)
                 a_info["arrayname"] = res["result"]["data"]["name"]
                 a_info["status"] = array["status"]
-                a_info["situation"] = res["result"]["data"]["situation"]
+                #a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)

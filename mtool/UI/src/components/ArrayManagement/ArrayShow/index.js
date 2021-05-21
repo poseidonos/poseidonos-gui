@@ -184,6 +184,16 @@ const styles = (theme) => ({
   diskNo: {
     position: "absolute",
   },
+  diskTextNuma: {
+    top: 8,
+    position: "absolute",
+    background: "#087575",
+    textAlign: "center",
+    color: "white",
+    width: 20,
+    height: 20,
+    borderRadius: 100
+  },
   usedDisk: {
     backgroundColor: "#8c6b5d"
   }
@@ -441,6 +451,9 @@ class ArrayShow extends Component {
                                 Size:
                                 {formatBytes(slot.size)}
                               </div>
+                              <div>
+                                NUMA: {slot.numa}
+                              </div>
                               <div
                                 onClick={() => this.showPopup(slot.name)}
                                 aria-hidden="true"
@@ -461,6 +474,7 @@ class ArrayShow extends Component {
                             id={index}
                             data-testid={`diskshow-${index}`}
                           >
+                            <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
                             <Typography
                               color="secondary"
                               className={classes.diskNo}
@@ -483,7 +497,7 @@ class ArrayShow extends Component {
                               >
                                 Remove Spare Disk
                               </Button>
-                            ) : null}
+                            ) : <p />}
 
                             {/* {(getClass(slot) === classes.freedisk) ? (
                         <Button
@@ -521,6 +535,7 @@ class ArrayShow extends Component {
               <Legend bgColor="#8c6b5d" title="Used by Another Array" />
               <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
               <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
+              <Legend bgColor="#087575" title="NUMA" />
             </Grid>
             <Grid
               item
@@ -529,7 +544,7 @@ class ArrayShow extends Component {
               xs={12}
               className={classes.buttonContainer}
             >
-              {this.props.mountStatus === "OFFLINE" ? (
+              {this.props.mountStatus !== "Mounted" ? (
                 <Tooltip
                   title="Mount the array to perform volume level operations"
                   placement="bottom-start"

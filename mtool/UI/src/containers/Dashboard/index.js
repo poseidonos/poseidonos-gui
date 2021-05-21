@@ -39,7 +39,7 @@ import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography, Link } from "@material-ui/core";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
@@ -171,6 +171,18 @@ const styles = (theme) => {
       textOverflow: "ellipsis",
       overflow: "hidden",
     },
+    volumeHeader: {
+      minHeight: 64,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingLeft: 24,
+      paddingRight: 24,
+    },
+    arraySelect: {
+      textAlign: "center",
+      minWidth: 100
+    },
     metricsPaper: {
       minHeight: 250,
       display: "flex",
@@ -224,6 +236,7 @@ class Dashboard extends Component {
     };
     this.interval = null;
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.selectArray = this.selectArray.bind(this);
   }
 
   componentDidMount() {
@@ -269,6 +282,11 @@ class Dashboard extends Component {
     this.setState({
       mobileOpen: !this.state.mobileOpen,
     });
+  }
+
+  selectArray(event) {
+    const {value} = event.target;
+    this.props.selectArray(value);
   }
 
   render() {
@@ -378,7 +396,7 @@ class Dashboard extends Component {
     const volumeTableColumns = [
       {
         title: "Name",
-        field: "name",
+        field: "name"
       },
       {
         title: "Used Space (GB)",
@@ -817,13 +835,8 @@ class Dashboard extends Component {
                   >
                     <Paper spacing={3} className={classes.volumeSummary}>
                       <MaterialTable
-                        title={(
-                          <Typography className={classes.cardHeader}>
-                            Volume Summary
-                          </Typography>
-                        )}
                         columns={volumeTableColumns}
-                        data={this.props.volumes}
+                        data={this.props.arrayVolumes}
                         options={{
                           headerStyle: {
                             backgroundColor: "#788595",
@@ -831,7 +844,32 @@ class Dashboard extends Component {
                           },
                           minBodyHeight: 342,
                           maxBodyHeight: 342,
-                          search: false,
+                          search: false
+                        }}
+                        components={{
+                          Toolbar: () => (
+                            <Grid xs={12} className={classes.volumeHeader}>
+                              <Typography className={classes.cardHeader}>
+                                Volume Summary
+                              </Typography>
+                              <FormControl className={classes.volumeUnit}>
+                              <InputLabel htmlFor="select-array">Array</InputLabel>
+                              <Select
+                                value={this.props.selectedArray}
+                                onChange={this.selectArray}
+                                inputProps={{
+                                  id: "select-array",
+                                }}
+                                className={classes.arraySelect}
+                              >
+                                <MenuItem value="all">All</MenuItem>
+                                {this.props.arrays.map((array) => (
+                                  <MenuItem value={array.arrayname}>{array.arrayname}</MenuItem>
+                                ))};
+                              </Select>
+                              </FormControl>
+                            </Grid>
+                          )
                         }}
                         style={{ height: "100%" }}
                         icons={icons}
@@ -884,6 +922,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     volumes: state.dashboardReducer.volumes,
+    arrayVolumes: state.dashboardReducer.arrayVolumes,
+    selectedArray: state.dashboardReducer.selectedArray,
     arrays: state.storageReducer.arrays,
     arrayLoading: state.storageReducer.loading,
     alerts: state.dashboardReducer.alerts,
@@ -922,6 +962,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
     fetchIpAndMacInfo: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
+    selectArray: (array) =>
+      dispatch({ type: actionTypes.SELECT_ARRAY, array}),
   };
 };
 export default withStyles(styles)(

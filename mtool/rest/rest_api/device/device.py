@@ -70,9 +70,12 @@ def list_devices():
             res['devices'].append({
                 "name": device["name"],
                 "size": device["size"],
+                "addr": device["addr"],
+                "class": device["class"],
                 "mn": device["mn"],
                 "sn": device["sn"],
                 "isAvailable":True,
+                "numa": device["numa"],
                 "arrayName" : ""
             })
     return res

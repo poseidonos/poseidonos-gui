@@ -99,6 +99,11 @@ const styles = (theme) => ({
   titleContainer: {
     marginTop: theme.spacing(1),
   },
+  statusText: {
+    display: "flex",
+    alignItems: "center",
+    margin: theme.spacing(0.5, 2)
+  },
   volumeStatsPaper: {
     height: 350,
     display: "flex",
@@ -193,7 +198,6 @@ class Volume extends Component {
       size: volume.volume_size,
       description: volume.volume_description,
       unit: volume.volume_units,
-      // arrayname: "POSArray",
       maxbw: volume.maxbw,
       maxiops: volume.maxiops,
       count: volume.volume_count,
@@ -208,7 +212,7 @@ class Volume extends Component {
     const {value} = event.target;
     this.props.history.push(`/storage/array/manage?array=${value}`);
     this.props.Set_Array(value);
-    this.fetchVolumes();
+    this.props.Get_Volumes({array: value});
   }
 
   fetchVolumes() {
@@ -353,6 +357,8 @@ class Volume extends Component {
                         <Grid item xs={12}>
                           <Paper spacing={3} className={classes.spaced}>
                             <Grid container justify="space-between">
+                              <Grid container>
+                              <Grid item sm={6}>
                               <FormControl
                                 className={classes.selectForm}
                               >
@@ -372,6 +378,18 @@ class Volume extends Component {
                                   ))}
                                 </Select>
                               </FormControl>
+                              </Grid>
+                              <Typography className={classes.statusText}>Status:
+                              <span
+                                style={{
+                                  fontWeight: 600,
+                                  color: this.props.arrayMap[this.props.selectedArray].status === "Mounted" ? "green" : "orange"
+                                }}
+                              >
+                                {this.props.arrayMap[this.props.selectedArray].status}
+                              </span>
+                              </Typography>
+                              </Grid>
                               <ArrayShow
                                 RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
                                 slots={this.props.ssds}
@@ -387,7 +405,7 @@ class Volume extends Component {
                                 // attachDisk={this.props.Attach_Disk}
                                 addSpareDisk={this.props.Add_Spare_Disk}
                                 removeSpareDisk={this.props.Remove_Spare_Disk}
-                                mountStatus={this.props.arrayMap[this.props.selectedArray].state}
+                                mountStatus={this.props.arrayMap[this.props.selectedArray].status}
                                 handleUnmountPOS={this.props.Unmount_POS}
                                 handleMountPOS={this.props.Mount_POS}
                               />
@@ -401,9 +419,9 @@ class Volume extends Component {
                         spacing={1}
                         className={classes.card}
                         style={{
-                          opacity: this.props.arrayMap[this.props.selectedArray].state === "OFFLINE" ? 0.5 : 1,
+                          opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
                           pointerEvents:
-                            this.props.arrayMap[this.props.selectedArray].state === "OFFLINE"
+                            this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
                               ? "none"
                               : "initial",
                         }}
@@ -476,9 +494,9 @@ class Volume extends Component {
                         spacing={1}
                         className={classes.card}
                         style={{
-                          opacity: this.props.arrayMap[this.props.selectedArray].state === "OFFLINE" ? 0.5 : 1,
+                          opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
                           pointerEvents:
-                            this.props.arrayMap[this.props.selectedArray].state === "OFFLINE"
+                            this.props.arrayMap[this.props.selectedArray].status === "Mounted"
                               ? "none"
                               : "initial",
                         }}

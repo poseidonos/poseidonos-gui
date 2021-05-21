@@ -45,7 +45,7 @@ import { connect } from 'react-redux';
 import Heading from '../../assets/images/Header-logo.png';
 import MToolTheme from '../../theme';
 import './Authentication.css';
-import SamsungLogo from '../../assets/images/Samsung-logo-blue.png';
+import PoseidonLogo from '../../assets/images/Poseidon.png';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
 
@@ -97,10 +97,10 @@ const styles = theme => ({
     marginBottom: '0px',
   },
 
-  samsungLogo: {
+  poseidonLogo: {
     margin: 'auto',
     position: 'absolute',
-    height: '50px',
+    height: 75,
     width: 'auto',
     marginBottom: '0',
     left: '0',
@@ -401,7 +401,7 @@ class Authentication extends Component {
                 )}
               </div>
             </Container>
-            <CardMedia image={SamsungLogo} className={classes.samsungLogo} />
+            <CardMedia image={PoseidonLogo} className={classes.poseidonLogo} />
           </Paper>
         </Container>
       </ThemeProvider>

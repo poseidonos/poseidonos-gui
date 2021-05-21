@@ -24,7 +24,7 @@ DESCRIPTION: <File description> *
 @REVISION HISTORY
 [03/06/2019] [Jay] : Prototyping..........////////////////////
 [11/06/2019] [Aswin] : Removed Write Buffer disk from dropdown
-[12/06/2019] [Aswin] : Fixed Spare disk selection bug. Default disk details set to NA
+[12/06/2019] [Aswin] : Fixed Spare Disk selection bug. Default disk details set to NA
 */
 import React, { Component } from "react";
 import "react-dropdown/style.css";
@@ -108,10 +108,14 @@ const styles = (theme) => ({
     width: 200,
     border: "2px solid lightgray",
     display: "flex",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
     "&>div": {
-      height: "auto",
+      display: "flex",
+      height: "100%",
+      justifyContent: "space-evenly",
+      flexDirection: "column"
     },
   },
   gridTileDisabled: {
@@ -135,6 +139,19 @@ const styles = (theme) => ({
   },
   legendButtonGrid: {
     marginBottom: theme.spacing(1),
+  },
+  diskText: {
+    textAlign: "center",
+    fontSize: 12
+  },
+  diskTextNuma: {
+    top: 8,
+    background: "#087575",
+    textAlign: "center",
+    color: "white",
+    width: 20,
+    height: 20,
+    borderRadius: 100
   },
   legendContainer: {
     padding: theme.spacing(0, 2),
@@ -189,6 +206,9 @@ const removeA = (slot, disk) => {
   };
 };
 
+const SPARE_DISK = "SPARE DISK";
+const STORAGE_DISK = "STORAGE DISK";
+
 class ArrayCreate extends Component {
   constructor(props) {
     super(props);
@@ -207,8 +227,8 @@ class ArrayCreate extends Component {
       minSpare: 1,
       minWriteBUffer: 1,
       raid: "raid5",
-      slots: { "Storage Disk": [], "Write Buffer Disk": [], "Spare Disk": [] },
-      diskType: "Storage Disk",
+      slots: { [STORAGE_DISK]: [], "Write Buffer Disk": [], [SPARE_DISK]: [] },
+      diskType: STORAGE_DISK,
       metaDisk: "",
       loading: false,
       errorMsg: "",
@@ -216,6 +236,8 @@ class ArrayCreate extends Component {
       popupOpen: false,
       totalSize: 0,
       alertType: "error",
+      confirmOpen: false,
+      createMsg: "Do you want to proceed and create Array?",
       diskDetails: { ...defaultDiskDetails },
     };
     this.toggleRowSelect = this.toggleRowSelect.bind(this);
@@ -227,6 +249,7 @@ class ArrayCreate extends Component {
     this.closePopup = this.closePopup.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.openCreatePopup = this.openCreatePopup.bind(this);
   }
 
   handleChange(event) {
@@ -272,11 +295,45 @@ class ArrayCreate extends Component {
       ...this.state,
       popupOpen: false,
       alertOpen: false,
+      confirmOpen: false
     });
   }
 
-  createArray(event) {
+  openCreatePopup(event) {
     event.preventDefault();
+    const numas = [];
+    const numaMap = {};
+    const spareDisks = this.state.slots[SPARE_DISK];
+    for(let i = 0; i < spareDisks.length; i += 1) {
+      if(!numaMap[spareDisks[i].numa]) {
+        numaMap[spareDisks[i].numa] = true;
+        numas.push(spareDisks[i].numa);
+      }
+    }
+    const storageDisks = this.state.slots[STORAGE_DISK];
+    for(let i = 0; i < storageDisks.length; i += 1) {
+      if(!numaMap[storageDisks[i].numa]) {
+        numas.push(storageDisks[i].numa);
+        numaMap[storageDisks[i].numa] = true;
+      }
+    }
+    if(numas.length > 1) {
+      this.setState({
+        ...this.state,
+        confirmOpen: true,
+        createMsg: "Selecting Disks of Different NUMA will cause performance degradation. Do you want to proceed and create Array?"
+      })
+    } else {
+      this.setState({
+        ...this.state,
+        confirmOpen: true,
+        createMsg: "Do you want to proceed and create Array?"
+      })
+    }
+  }
+
+  createArray() {
+    this.closePopup();
     if (this.state.arrayname === "") {
       this.setState({
         ...this.state,
@@ -286,20 +343,20 @@ class ArrayCreate extends Component {
       });
       return;
     }
-    if (this.props.config.minStorageDisks > this.state.slots["Storage Disk"].length) {
+    if (this.props.config.minStorageDisks > this.state.slots[STORAGE_DISK].length) {
       this.setState({
         ...this.state,
         alertType: "alert",
-        errorMsg: `Select at least ${this.props.config.minStorageDisks} storage disk`,
+        errorMsg: `Select at least ${this.props.config.minStorageDisks} Storage Disk`,
         alertOpen: true,
       });
       return;
     }
-    if (this.props.config.minSpareDisks > this.state.slots['Spare Disk'].length) {
+    if (this.props.config.minSpareDisks > this.state.slots[SPARE_DISK].length) {
       this.setState({
         ...this.state,
         alertType: 'alert',
-        errorMsg: `Select at least ${this.props.config.minSpareDisks} Spare disk`,
+        errorMsg: `Select at least ${this.props.config.minSpareDisks} spare disk`,
         alertOpen: true,
       });
       return;
@@ -322,8 +379,8 @@ class ArrayCreate extends Component {
       size: this.state.totalSize,
       arrayname: this.state.arrayname,
       raidtype: this.props.selectedRaid,
-      storageDisks: this.state.slots["Storage Disk"],
-      spareDisks: this.state.slots["Spare Disk"],
+      storageDisks: this.state.slots[STORAGE_DISK],
+      spareDisks: this.state.slots[SPARE_DISK],
       writeBufferDisk: this.state.slots["Write Buffer Disk"],
       metaDisk: this.state.metaDisk,
     });
@@ -331,9 +388,9 @@ class ArrayCreate extends Component {
 
   toggleRowSelect(position, disk) {
     const diskColorMap = {
-      "Storage Disk": "#51ce46",
+      [STORAGE_DISK]: "#51ce46",
       "": "white",
-      "Spare Disk": "#339EFF",
+      [SPARE_DISK]: "#339EFF",
       "Write Buffer Disk": "#FFEC33",
     };
     if (!disk.isAvailable) {
@@ -345,26 +402,26 @@ class ArrayCreate extends Component {
         el.style.backgroundColor === "") &&
       this.state.diskType !== ""
     ) {
-      if (this.state.diskType === "Spare Disk") {
+      if (this.state.diskType === SPARE_DISK) {
         el.style.backgroundColor = diskColorMap[this.state.diskType];
         const spareSlots = [...this.state.slots[this.state.diskType]];
-        spareSlots.push({ deviceName: disk.name });
+        spareSlots.push({ deviceName: disk.name, numa: disk.numa });
         this.setState({
           ...this.state,
           slots: {
             ...this.state.slots,
-            "Spare Disk": spareSlots,
+            [SPARE_DISK]: spareSlots,
           },
         });
-      } else if (this.state.diskType === "Storage Disk") {
+      } else if (this.state.diskType === STORAGE_DISK) {
         el.style.backgroundColor = diskColorMap[this.state.diskType];
         const storageSlots = [...this.state.slots[this.state.diskType]];
-        storageSlots.push({ deviceName: disk.name });
+        storageSlots.push({ deviceName: disk.name, numa: disk.numa });
         this.setState({
           ...this.state,
           slots: {
             ...this.state.slots,
-            "Storage Disk": storageSlots,
+            [STORAGE_DISK]: storageSlots,
           },
           totalSize: this.state.totalSize + disk.size,
         });
@@ -392,7 +449,7 @@ class ArrayCreate extends Component {
       Object.keys(this.state.slots).forEach((key) => {
         const x = removeA(this.state.slots[key], disk);
         updatedSlots[key] = x.arr;
-        if (key === "Storage Disk") {
+        if (key === STORAGE_DISK) {
           size = x.size;
         }
       });
@@ -409,7 +466,7 @@ class ArrayCreate extends Component {
 
   render() {
     const { classes } = this.props;
-    const diskTypes = ["Storage Disk", "Spare Disk"];
+    const diskTypes = [STORAGE_DISK, SPARE_DISK];
 
     const freedisks = [];
     if (this.props.disks) {
@@ -533,6 +590,9 @@ class ArrayCreate extends Component {
                             <div style={{ margin: "10px" }}>
                               Size: {formatBytes(disk.size)}
                             </div>
+                            <div>
+                                NUMA: {disk.numa}
+                            </div>
                             <div
                               onClick={() => this.showPopup(disk.name)}
                               aria-hidden="true"
@@ -553,10 +613,12 @@ class ArrayCreate extends Component {
                           id={i}
                           onClick={() => {
                             this.toggleRowSelect(i, disk);
-                          }}
+                          }}d
                           data-testid={`diskselect-${i}`}
                         >
-                          <Typography color="secondary">{i + 1}</Typography>
+                          <Typography className={classes.diskTextNuma}>{disk.numa}</Typography>
+                          <Typography className={classes.diskText} color="secondary">{i + 1}</Typography>
+                          <p />
                         </GridListTile>
                       </Tooltip>
                     );
@@ -575,11 +637,12 @@ class ArrayCreate extends Component {
               wrap="wrap"
               className={classes.legendContainer}
             >
-              <Legend bgColor="#51ce46" title="Selected Storage disk" />
-              <Legend bgColor="#339eff" title="Selected Spare disk" />
+              <Legend bgColor="#51ce46" title="Selected Storage Disk" />
+              <Legend bgColor="#339eff" title="Selected Spare Disk" />
               <Legend bgColor="#ffffff" title="Not Selected" />
               <Legend bgColor="#8c6b5d" title="Used Disk" />
               <Legend bgColor="#e2e1e1" title="Empty Slot" />
+              <Legend bgColor="#087575" title="NUMA" />
             </Grid>
             <Grid
               item
@@ -589,7 +652,7 @@ class ArrayCreate extends Component {
               className={classes.buttonContainer}
             >
               <Button
-                onClick={this.createArray}
+                onClick={this.openCreatePopup}
                 variant="contained"
                 color="primary"
                 data-testid="createarray-btn"
@@ -597,6 +660,20 @@ class ArrayCreate extends Component {
               >
                 Create Array
               </Button>
+              <AlertDialog
+                type="confirm"
+                title="Create Array"
+                description={this.state.createMsg}
+                open={this.state.confirmOpen}
+                onConfirm={() => {
+                  this.setState({
+                    confirmOpen: false
+                  }, () => {
+                    this.createArray();
+                  })
+                }}
+                handleClose={this.closePopup}
+              />
             </Grid>
           </Grid>
           {this.props.loading /* istanbul ignore next */ ? (
