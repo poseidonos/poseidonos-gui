@@ -142,6 +142,9 @@ const useStyles = makeStyles((theme) => ({
     float: 'left',
     marginRight: theme.spacing(1),
     opacity: 1,
+  },
+  iconLeft: {
+    width: 40
   }
 }));
 const Sidebar = (props) => {
@@ -153,7 +156,7 @@ const Sidebar = (props) => {
       <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/dashboard">
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                 className={classes.sidebarIcon}
                 src={
@@ -174,7 +177,7 @@ const Sidebar = (props) => {
           activeClassName={classes.activeLink}
         >
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                  className={classes.sidebarIcon}
                 src={
@@ -191,7 +194,7 @@ const Sidebar = (props) => {
         <Divider className={classes.listDivider} />
         <NavLink style={ulStyle} to="/performance" className={classes.link} activeClassName={classes.activeLink}>
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                 className={classes.sidebarIcon}
                 src={
@@ -208,7 +211,7 @@ const Sidebar = (props) => {
         <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/Hardware/Overview">
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                 className={classes.sidebarIcon}
                 src={
@@ -230,7 +233,7 @@ const Sidebar = (props) => {
           to="/ConfigurationSetting/general"
         >
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                  className={classes.sidebarIcon}
                 src={
@@ -253,7 +256,7 @@ const Sidebar = (props) => {
           to="/LogManagement"
         >
           <ListItem className={classes.sidebarLink}>
-            <span>
+            <span className={classes.iconLeft}>
               <img
                  className={classes.sidebarIcon}
                 src={

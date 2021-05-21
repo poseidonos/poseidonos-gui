@@ -137,6 +137,9 @@ const styles = (theme) => ({
     padding: theme.spacing(2, 2, 0, 2),
     minWidth: 800,
   },
+  tooltipText: {
+    margin: 10
+  },
   legendButtonGrid: {
     marginBottom: theme.spacing(1),
   },
@@ -583,14 +586,14 @@ class ArrayCreate extends Component {
                         }}
                         title={(
                           <React.Fragment>
-                            <div style={{ margin: "10px" }}>
+                            <div className={classes.tooltipText}>
                               Name:
                                 {disk.name}
                             </div>
-                            <div style={{ margin: "10px" }}>
+                            <div className={classes.tooltipText}>
                               Size: {formatBytes(disk.size)}
                             </div>
-                            <div>
+                            <div className={classes.tooltipText}>
                                 NUMA: {disk.numa}
                             </div>
                             <div
