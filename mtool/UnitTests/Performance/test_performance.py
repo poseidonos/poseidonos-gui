@@ -15,6 +15,10 @@ port = '3000'
 
 DAGENT_URL = 'http://' + ip + ':' + port
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
+DAGENT_ARRAY_URL = DAGENT_URL + '/api/metric/v1/{}/arrays?arrayids=0&time={}'
+MTOOL_ARRAY_URL = '/api/v1/{}/arrays?arrayids=0&time={}'
+DAGENT_VOLUME_URL = DAGENT_URL + '/api/metric/v1/{}/arrays/volumes?arrayids=0&volumeids=0&time={}'
+MTOOL_VOLUME_URL = '/api/v1/{}/arrays/volumes?arrayids=0&volumeids=0&time={}'
 
 class InfluxMock:
     '''
@@ -121,105 +125,37 @@ def test_get_cpu_usage_failure(mock_get_current_user, **kwargs): #time unit : na
         headers={'x-access-token': json_token})
     assert response.status_code == 404
 
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_total_processes(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/total_processes/1m',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 200
 
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_total_processes_failure(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/total_processes/1',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 404
-
-
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_disk_write_mbps(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/disk_write_mbps/1m/array',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 200
-
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_disk_write_mbps_failure(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/disk_write_mbps/1/array',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 404
-
-
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_disk_used_percent(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/disk_used_percent/1m/array',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 200
-
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-@mock.patch("util.db.influx.InfluxDBClient",
-            return_value=InfluxMock(), autospec=True)
-def test_get_disk_used_percent_failure(mock_get_current_user, mock_influx_db):
-    response = app.test_client().get(
-        '/api/v1.0/disk_used_percent/1/array',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 404
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_read_iops(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","30d"),
                        exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/1m/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readiops","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/7d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readiops","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/12h/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readiops","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/30d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readiops","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -227,23 +163,19 @@ def test_get_read_iops(mock_get_current_user, **kwargs): #time unit : nano sec
             return_value="test", autospec=True)
 def test_get_read_iops_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/12h',
-                       json="test",
-                       status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/30d',
-                       exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/1/array',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","12d"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops","30d"), exc=HTTPError)
+    response = app.test_client().get('/api/v1/readiops/1/arrays?arrayids=0',
         headers={'x-access-token': json_token})
+    print("response ",response)
     assert response.status_code == 404
 
 
@@ -252,38 +184,30 @@ def test_get_read_iops_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_read_iops(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/7d',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readiops","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/12h',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readiops","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readiops/30d',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readiops","30d"),
                         exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/1m/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readiops","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/7d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readiops","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/12h/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readiops","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_read/30d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readiops","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -292,38 +216,30 @@ def test_get_vol_read_iops(mock_get_current_user, **kwargs): #time unit : nano s
             return_value="test", autospec=True)
 def test_get_write_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","30d"),
                         exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/1m/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writeiops","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/7d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writeiops","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/12h/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writeiops","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/30d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writeiops","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -331,19 +247,19 @@ def test_get_write_iops(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_write_iops_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops","30d"),
                         exc=HTTPError)
     response = app.test_client().get(
         '/api/v1.0/iops_write/1/array',
@@ -356,39 +272,27 @@ def test_get_write_iops_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_write_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writeiops","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/12h',
-                       json="test",
-                       status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writeiops/30d',
-                        exc=HTTPError)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writeiops","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writeiops","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writeiops","30d"), exc=HTTPError)
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/1m/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writeiops","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/7d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writeiops","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/12h/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writeiops","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/iops_write/30d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writeiops","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -397,37 +301,33 @@ def test_get_vol_write_iops(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_read_bw(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","30d"),
                         exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/1m/array',
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readbw","1m"),
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/7d/array',
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readbw","7d"),
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/12h/array',
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readbw","12h"),
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/30d/array',
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readbw","30d"),
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
@@ -437,19 +337,19 @@ def test_get_read_bw(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_read_bw_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw","30d"),
                         exc=HTTPError)
     response = app.test_client().get(
         '/api/v1.0/bw_read/1/array',
@@ -462,38 +362,30 @@ def test_get_read_bw_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_read_bw(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readbw/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readbw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readbw/7d',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readbw","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readbw/12h',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readbw","12h"),
                        json="test",
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/readbw/30d',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readbw","30d"),
                        exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/1m/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readbw","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/7d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readbw","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/12h/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readbw","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_read/30d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readbw","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -503,38 +395,26 @@ def test_get_vol_read_bw(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_write_bw(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/30d',
-                        exc=HTTPError)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/12h',
-                       json="test",
-                       status_code=200)
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/1m/array',
-        headers={'x-access-token': json_token})
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","30d"), exc=HTTPError)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","12h"), json="test", status_code=200)
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writebw","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/7d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writebw","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/12h/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writebw","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/30d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writebw","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -542,18 +422,18 @@ def test_get_write_bw(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_write_bw_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","30d"),
                         exc=HTTPError)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw","12h"),
                        json="test",
                        status_code=200)
     response = app.test_client().get(
@@ -567,38 +447,26 @@ def test_get_write_bw_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_write_bw(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writebw/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writebw","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writebw/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writebw/12h',
-                       json="test",
-                       status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/writebw/30d',
-                        exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/1m/0',
-        headers={'x-access-token': json_token})
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writebw","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writebw","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writebw","30d"), exc=HTTPError)
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writebw","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/7d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writebw","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/12h/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writebw","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/bw_write/30d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writebw","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -608,38 +476,26 @@ def test_get_vol_write_bw(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_latency(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/12h',
-                       json="test",
-                       status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/30d',
-                        exc=HTTPError)
-    response = app.test_client().get(
-        '/api/v1.0/latency/1m/0',
-        headers={'x-access-token': json_token})
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","30d"), exc=HTTPError)
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/7d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/12h/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/30d/0',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -648,22 +504,18 @@ def test_get_vol_latency(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/1m',
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/7d',
-                       status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/12h',
-                       json="test",
-                       status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/volumes/0/latency/30d',
-                        exc=HTTPError)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","30d"), exc=HTTPError)
     response = app.test_client().get(
-        '/api/v1.0/latency/1/0',
+        '/api/v1/latency/1/0',
         headers={'x-access-token': json_token})
     assert response.status_code == 404
 
@@ -673,38 +525,30 @@ def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_latency(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/1m',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/7d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/30d',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","30d"),
                         exc=HTTPError)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/12h',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","12h"),
                        json="test",
                        status_code=200)
-    response = app.test_client().get(
-        '/api/v1.0/latency/1m/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/7d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/12h/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(
-        '/api/v1.0/latency/30d/array',
-        headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -713,35 +557,35 @@ def test_get_latency(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_current_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readbw/',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "bw": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writebw/',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "bw": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "latency": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/readiops/',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "iops": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/writeiops/',
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
@@ -749,6 +593,6 @@ def test_get_current_iops(mock_get_current_user, **kwargs):
                                             }]}},
                        status_code=200)
     response = app.test_client().get(
-        '/api/v1.0/perf/all',
+        '/api/v1/perf/all',
         headers={'x-access-token': json_token})
     assert response.status_code == 200

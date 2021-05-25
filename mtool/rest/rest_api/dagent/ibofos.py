@@ -72,7 +72,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     logger.info('%s', 'Get system state...')
     try:
         response = send_command_to_dagent("GET",
-                                          url=DAGENT_URL + '/api/ibofos/v1/system',
+                                          url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
                                           headers={"X-Request-Id": str(uuid.uuid4()),
                                                    "Accept": "application/json",
                                                    "Authorization": auth,
@@ -118,8 +118,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -141,8 +140,7 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+'system/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -150,8 +148,7 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
 
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system',
+            url=DAGENT_URL ++ '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -196,8 +193,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/devices/all/scan',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'devices/all/scan',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -217,8 +213,7 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/devices',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'devices',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -238,8 +233,7 @@ def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/devices/' + name + '/smart',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'devices/' + name + '/smart',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -263,8 +257,7 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
             return response
         response = send_command_to_dagent(
                 "DELETE",
-                url=DAGENT_URL +
-                '/api/ibofos/v1/array/' + name,
+                url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + name,
                 headers=req_headers,
                 timeout=(
                     connect_timeout,
@@ -285,8 +278,7 @@ def array_status(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -306,8 +298,7 @@ def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
         req_headers = get_headers(auth)
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + arrayname + 'load',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + 'load',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -332,8 +323,7 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
 
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + arrayname + '/load',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'array/' + arrayname + '/load',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -343,8 +333,7 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
         if (response.status_code == 200):
             response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/system/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -384,8 +373,7 @@ def create_array(
         #print("request body create array ", request_body)
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -394,21 +382,6 @@ def create_array(
         #print("resp for create array",response.json())
         if response.status_code != 200:
             return response
-        """request_body = {
-                        "param": {
-                            "array": name
-                            }
-                        }
-        request_body = json.dumps(request_body)
-        response = send_command_to_dagent(
-            "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/'+name+'/mount',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout),
-            data=request_body)"""
         response = mount_array(name)
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
@@ -428,8 +401,7 @@ def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + arrayname + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -441,7 +413,7 @@ def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
-        'Could not get ibofos to scan devices...', 500)
+        'Could not mount array.', 500)
 def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
@@ -453,8 +425,7 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + arrayname + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -466,7 +437,7 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
-        'Could not get ibofos to unmount volumes...', 500)
+        'Could not unmount array', 500)
 
 
 def array_info(array_name, auth=BASIC_AUTH_TOKEN):
@@ -476,8 +447,7 @@ def array_info(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/array/' + array_name,
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + array_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -495,8 +465,7 @@ def list_arrays(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/arraylist',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'arrays',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -538,8 +507,7 @@ def create_volume(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -561,8 +529,7 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "PATCH",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + params["name"] + '/qos',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + params["name"] + '/qos',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -583,8 +550,7 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "PATCH",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + params["param"]["name"],
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + params["param"]["name"],
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -611,8 +577,7 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + name + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -639,8 +604,7 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + name + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -701,8 +665,7 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumelist/'+array_name,
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'volumelist/'+array_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -729,8 +692,7 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + name + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -739,8 +701,7 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
 
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/' + name,
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -760,8 +721,7 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/api/ibofos/v1/volumes/maxcount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/maxcount',
             headers=req_headers,
             timeout=(
                 connect_timeout,

@@ -6,6 +6,7 @@ import jwt
 import datetime
 from unittest import mock
 from rest.rest_api.dagent.ibofos import start_ibofos
+from bson import json_util
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
@@ -137,7 +138,6 @@ def test_start_ibofos_failure(mock_get_current_user,**kwargs):
     response = app.test_client().get(
         '/api/v1.0/start_ibofos',
         headers={'x-access-token': json_token})
-
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/system', json=None, status_code=400)
@@ -146,9 +146,8 @@ def test_start_ibofos_failure(mock_get_current_user,**kwargs):
     response = app.test_client().get(
         '/api/v1.0/start_ibofos',
         headers={'x-access-token': json_token})
-
     #data = json.loads(response.get_data(as_text=True))
-    assert response.status_code == 200
+    assert response.status_code == 500
 
 
 
