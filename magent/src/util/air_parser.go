@@ -44,7 +44,7 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	return err
 }
 
-func parseData(data []interface{}, dataKey, mapKey string, valMap *map[string]map[string]interface{}) error {
+func parseData(data []interface{}, dataKey, mapKey string, valMap *map[string]map[string]interface{}) {
 	for i := 0; i < len(data); i++ {
 		d := data[i].(map[string]interface{})
 		volId := fmt.Sprintf("%.0f", d["app_id"])
@@ -59,5 +59,4 @@ func parseData(data []interface{}, dataKey, mapKey string, valMap *map[string]ma
 			(*valMap)[volId][mapKey] = d[dataKey]
 		}
 	}
-	return nil
 }

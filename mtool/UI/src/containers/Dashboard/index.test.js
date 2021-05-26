@@ -252,10 +252,12 @@ describe("Dashboard", () => {
           iops_total: 0,
           iops_write: 154
         }
-      ).onAny().reply(200, {});
+      ).onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [])
+      .onAny().reply(200, {});
     renderComponent();
-    jest.advanceTimersByTime(2000);
     const { getByTestId } = wrapper;
+    jest.advanceTimersByTime(2000);
     const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
     expect(readIopsElement.innerHTML).toBe("200");
   });

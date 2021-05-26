@@ -255,7 +255,7 @@ describe("<Storage Management />", () => {
       target: { value: "uram0" },
     });
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Storage Disk")[0]);
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     fireEvent.click(dev1);
     const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
@@ -263,13 +263,14 @@ describe("<Storage Management />", () => {
     const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
     fireEvent.click(dev3);
     fireEvent.change(getByTestId("disktype-input"), {
-      target: { value: "Spare Disk" },
+      target: { value: "SPARE DISK" },
     });
     const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
     fireEvent.click(dev4);
     const arrayname = getByTestId('array-name');
     fireEvent.change(arrayname, { target: { value: 'POSArray2' } });
     fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
     const success = await waitForElement(() => getByTestId("alertDescription"));
     expect(success).toBeDefined();
     fireEvent.click(getByText("OK"));
@@ -298,7 +299,7 @@ describe("<Storage Management />", () => {
       target: { value: "uram0" },
     });
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Storage Disk")[0]);
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
     fireEvent.click(getByTestId("createarray-btn"));
     expect(queryByText(/Select at least/i)).toBeDefined();
   });
@@ -327,7 +328,7 @@ describe("<Storage Management />", () => {
       target: { value: "uram0" },
     });
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Storage Disk")[0]);
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     fireEvent.click(dev1);
     const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
@@ -362,7 +363,7 @@ describe("<Storage Management />", () => {
     );
     fireEvent.change(raidSelect, { target: { value: "5" } });
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Storage Disk")[0]);
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     fireEvent.click(dev1);
     const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
@@ -374,7 +375,7 @@ describe("<Storage Management />", () => {
     const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
     fireEvent.click(dev4);
     fireEvent.change(getByTestId("disktype-input"), {
-      target: { value: "Spare Disk" },
+      target: { value: "SPARE DISK" },
     });
     fireEvent.click(dev2);
     fireEvent.click(getByTestId("createarray-btn"));
@@ -428,7 +429,7 @@ describe("<Storage Management />", () => {
       fireEvent.change(wbInput, {target: {value: "uram0"}});
     }
     fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("Storage Disk")[0]);
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     fireEvent.click(dev1);
     const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
@@ -440,17 +441,18 @@ describe("<Storage Management />", () => {
     fireEvent.click(dev4);
     //fireEvent.click(getByTestId('disktype'));
     const disktype = await waitForElement(() => getByTestId("disktype"));
-    disktype.value = "Spare Disk";
+    disktype.value = "SPARE DISK";
     fireEvent.change(disktype);
     fireEvent.click(getByTestId("disktype"));
     try {
-      fireEvent.click(getAllByText("Spare Disk")[0]);
+      fireEvent.click(getAllByText("SPARE DISK")[0]);
     } catch {
       const diskTypeInput = await waitForElement(() => getByTestId("disktype-input"));
-      fireEvent.change(diskTypeInput, {target: {value: "Spare Disk"}})
+      fireEvent.change(diskTypeInput, {target: {value: "SPARE DISK"}})
     }
     fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
     fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
     expect(asFragment()).toMatchSnapshot();
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/create_arrays/",
@@ -1818,7 +1820,7 @@ describe("<Storage Management />", () => {
         metadevices: ["uram0"],
       })
       .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [{...array, state: "OFFLINE"}])
+      .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onGet(/api\/v1.0\/available_storage\/*/)
@@ -1877,7 +1879,7 @@ describe("<Storage Management />", () => {
         metadevices: ["uram0"],
       })
       .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [{...array, state: "OFFLINE"}])
+      .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onGet(/api\/v1.0\/available_storage\/*/)

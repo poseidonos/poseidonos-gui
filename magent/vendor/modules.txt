@@ -9,6 +9,8 @@ github.com/davecgh/go-spew/spew
 ## explicit
 github.com/go-ole/go-ole
 github.com/go-ole/go-ole/oleutil
+# github.com/google/uuid v1.2.0
+## explicit
 # github.com/hpcloud/tail v1.0.0
 ## explicit
 github.com/hpcloud/tail
@@ -31,6 +33,8 @@ github.com/radovskyb/watcher
 # github.com/safchain/ethtool v0.0.0-20200218184317-f459e2d13664
 ## explicit
 github.com/safchain/ethtool
+# github.com/securego/gosec/v2 v2.8.0
+## explicit
 # github.com/shirou/gopsutil v2.20.2+incompatible
 ## explicit
 github.com/shirou/gopsutil/cpu
@@ -40,15 +44,16 @@ github.com/shirou/gopsutil/mem
 github.com/shirou/gopsutil/net
 # github.com/stretchr/objx v0.2.0
 ## explicit
-# github.com/stretchr/testify v1.5.1
+# github.com/stretchr/testify v1.6.1
 ## explicit
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
-# golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527
+# golang.org/x/sys v0.0.0-20210525143221-35b2ab0089ea
 ## explicit
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/tools v0.0.0-20200428211428-0c9eba77bc32
+# golang.org/x/tools v0.1.2
 ## explicit
 # gopkg.in/fsnotify.v1 v1.4.7
 ## explicit
@@ -56,6 +61,5 @@ gopkg.in/fsnotify.v1
 # gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7
 ## explicit
 gopkg.in/tomb.v1
-# gopkg.in/yaml.v2 v2.2.8
-## explicit
-gopkg.in/yaml.v2
+# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+gopkg.in/yaml.v3

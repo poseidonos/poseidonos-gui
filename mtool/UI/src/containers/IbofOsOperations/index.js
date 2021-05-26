@@ -55,7 +55,6 @@ class IbofOsOperations extends Component {
             alerttitle: "",
             alertdescription: "",
         };
-        this.IsIbofOSRunning = this.IsIbofOSRunning.bind(this);
         this.triggerCommand = this.triggerCommand.bind(this);
         // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
         // this.OnHandleChange = this.OnHandleChange.bind(this);
@@ -95,10 +94,6 @@ class IbofOsOperations extends Component {
         this.setState({
             alertOpen: false
         })
-    }
-
-    IsIbofOSRunning() {
-        this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
     }
 
     openAlert(operationType) {
