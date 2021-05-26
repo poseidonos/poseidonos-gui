@@ -290,7 +290,7 @@ def test_get_version(global_data, **kwargs):
 @requests_mock.Mocker(kw="mock")
 def test_log_collect_get(global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    response = app.test_client().get(
+    response = app.test_client().post(
         '/api/v1.0/logger',
         headers={
             'x-access-token': global_data['token'],
@@ -298,6 +298,7 @@ def test_log_collect_get(global_data, **kwargs):
         },
         content_type='application/json',
     )
+    print("response ",response.data)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")

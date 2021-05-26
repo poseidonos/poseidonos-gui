@@ -211,6 +211,7 @@ def test_stop_ibofos(mock_get_current_user,mock_Is_Ibof_Os_Running_Flag,**kwargs
         headers={'x-access-token': json_token})
 
     #data = json.loads(response.get_data(as_text=True))
+    print("response ",response.data)
     assert response.status_code == 200
 
 
@@ -233,12 +234,12 @@ def test_stop_ibofos_failure(mock_get_current_user,mock_Is_Ibof_Os_Running_Flag,
     assert response.status_code == 200
 
     kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/system',
-                       json=None, status_code=200)
+                       json=None, status_code=500)
 
     response = app.test_client().get(
         '/api/v1.0/stop_ibofos',
         headers={'x-access-token': json_token})
 
     #data = json.loads(response.get_data(as_text=True))
-    assert response.status_code == 500
+    assert response.status_code == 200
 

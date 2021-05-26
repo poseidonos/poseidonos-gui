@@ -121,6 +121,7 @@ class Volume():
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
                     self.volume["@odata.id"] = url + str(vol["id"])
                     return json_util.dumps(self.volume)
+            return json_util.dumps({})
         except Exception as e:
             print("Exception in getting Volume Details", e)
             return json_util.dumps({})

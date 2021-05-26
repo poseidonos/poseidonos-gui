@@ -44,12 +44,29 @@ def test_get_devices(mock_get_current_user, **kwargs):
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
                                                                  "mn": "DEFG",
-                                                                 "sn": "SN"},
+                                                                 "sn": "SN",
+                                                                 "addr":
+                                                                 "0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa":
+                                                                 "0",
+                                                                 "arrayName" : ""
+                                                                 },
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
                                                                  "mn": "ABCD",
-                                                                 "sn": "SN!"}]}},
+                                                                 "sn": "SN!",
+                                                                 "addr":
+                                                                 "0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa":
+                                                                 "0",
+                                                                 "arrayName" : ""}]}},
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
@@ -529,7 +546,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL +
-        '/api/ibofos/v1/system',
+        '/api/ibofos/v1/system/mount',
         json={
             "result": {
                 "status": {
@@ -540,7 +557,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/array'+ARRAY_NAME+'/load',
+        '/api/ibofos/v1/array/'+ARRAY_NAME+'/load',
         json={
             "result": {
                 "status": {
@@ -549,7 +566,17 @@ def test_create_arrays(mock_get_current_user, **kwargs):
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/system/mount',
+        '/api/ibofos/v1/array',
+        json={
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}}},
+        status_code=200)
+
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/array/'+ARRAY_NAME+'/mount',
         json={
             "result": {
                 "status": {
@@ -1464,12 +1491,26 @@ def test_list_devices(global_data, **kwargs):
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
                                                                  "mn": "DEFG",
-                                                                 "sn": "SN"},
+                                                                 "sn": "SN",
+                                                                 "addr":"0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa":
+                                                                 "0",
+                                                                 "arrayName" : ""},
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
                                                                  "mn": "ABCD",
-                                                                 "sn": "SN!"}]}},
+                                                                 "sn": "SN",
+                                                                 "addr":"0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa": "0",
+                                                                 "arrayName"
+                                                                 : ""}]}},
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
@@ -1612,7 +1653,7 @@ def test_list_devices(global_data, **kwargs):
         content_type='application/json',
     )
     response = json.loads(response.data)
-    assert len(response["devices"][0]) == 6
+    assert len(response["devices"][0]) == 9
 
 @requests_mock.Mocker(kw="mock")
 def test_list_devices_failure(global_data, **kwargs):
@@ -1623,12 +1664,26 @@ def test_list_devices_failure(global_data, **kwargs):
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
                                                                  "mn": "DEFG",
-                                                                 "sn": "SN"},
+                                                                 "sn": "SN",
+                                                                 "addr":"0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa":
+                                                                 "0",
+                                                                 "arrayName" : ""},
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
                                                                  "mn": "ABCD",
-                                                                 "sn": "SN!"}]}},
+                                                                 "sn": "SN!",
+                                                                 "addr":"0000:68:00.0",
+                                                                 "class":
+                                                                 "SYSTEM",
+                                                                 "isAvailable":True,
+                                                                 "numa":
+                                                                 "0",
+                                                                 "arrayName" : ""}]}},
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
@@ -1643,7 +1698,7 @@ def test_list_devices_failure(global_data, **kwargs):
         },
         content_type='application/json',
     )
-    assert response.status_code == 200
+    assert response.status_code == 500
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices', json=None, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = None, status_code=200)
 
@@ -1690,11 +1745,10 @@ def test_get_volume_collection_failure(**kwargs):
 @requests_mock.Mocker(kw="mock")
 def test_get_volume_failure(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumes',
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
                        status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes/0',headers={'x-access-token': json_token})
-
+    response = app.test_client().get('/redfish/v1/StorageServices/'+ARRAY_NAME+'/Volumes/0',headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -1874,9 +1928,156 @@ def test_get_arrays_func(**kwargs):
 @requests_mock.Mocker(kw="mock")
 def test_get_arrays_func_failure(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/devices',json = None, status_code=200)
+    kwargs["mock"].get(ARRAY_LIST_URL,
+                       json={
+    "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
+    "lastSuccessTime": 1621261763,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
+        },
+        "data": {
+            "arrayList": [
+                {
+                    "createDatetime": "2021-05-06 23:53:26 +0530",
+                    "devicelist": [
+                        {
+                            "name": "uram0",
+                            "type": "BUFFER"
+                        },
+                        {
+                            "name": "S439NA0MB02505      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02476      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02503      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02514      ",
+                            "type": "DATA"
+                        }
+                    ],
+                    "name": "POSArray",
+                    "status": "Mounted",
+                    "updateDatetime": "2021-05-06 23:53:26 +0530"
+                },
+				{
+                    "createDatetime": "2021-05-06 23:53:26 +0530",
+                    "devicelist": [
+                        {
+                            "name": "uram0",
+                            "type": "BUFFER"
+                        },
+                        {
+                            "name": "S439NA0MB02505      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02476      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02503      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02514      ",
+                            "type": "DATA"
+                        }
+                    ],
+                    "name": "POSArray2",
+                    "status": "Mounted",
+                    "updateDatetime": "2021-05-06 23:53:26 +0530"
+                }
+            ]
+        }
+    },
+    "info": {
+        "capacity": 0,
+        "rebuildingProgress": "0",
+        "state": "EXIST_NORMAL",
+        "used": 0
+    }
+}, status_code=200)
 
-    response = app.test_client().get('/api/v1.0/get_arrays/',headers={'x-access-token': json_token})
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
+                       json={
+    "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
+    "lastSuccessTime": 1620717645,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
+        },
+        "data": {
+            "capacity": 0,
+            "createDatetime": "2021-05-10 19:41:08 +0530",
+            "devicelist": [
+                {
+                    "name": "uram0",
+                    "type": "BUFFER"
+                },
+                {
+                    "name": "unvme-ns-0",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-1",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-2",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-3",
+                    "type": "SPARE"
+                }
+            ],
+            "name": "POSArray",
+            "rebuildingProgress": "0",
+            "situation": "DEFAULT",
+            "state": "OFFLINE",
+            "updateDatetime": "2021-05-10 19:41:08 +0530",
+            "used": 0
+        }
+    },
+    "info": {
+        "version": "pos-0.8.0-alpha1"
+    }
+}, status_code=200)
+
+    kwargs["mock"].get(
+        DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
+        json={
+            "result": {
+                "status": {
+                    "description": "SUCCESS"},
+                "data": {
+                    "volumes": [
+                        {
+                            "name": "vol1",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678},
+							{
+                            "name": "vol2",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678}]}}},
+        status_code=200)
+
+    response = app.test_client().get('/api/v1/get_arrays/',headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 

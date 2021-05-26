@@ -214,12 +214,14 @@ def get_version():
 @app.route('/api/v1.0/logger', methods=['POST'])
 def log_collect():
     body_unicode = request.data.decode('utf-8')
-    body=json.loads(body_unicode)
-    try:
-        log_to_influx(body)
-    except Exception as e:
-        print(e)
-    return "Log written sucessfully"
+    if len(body_unicode) > 0:
+        body=json.loads(body_unicode)
+        try:
+            log_to_influx(body)
+        except Exception as e:
+            print(e)
+        return "Log written sucessfully"
+    return make_response("Received null log value", 200)
 
 def get_ibof_os_status():
     return IBOF_OS_Running.Is_Ibof_Os_Running_Flag
@@ -285,21 +287,22 @@ def stop_ibofos(current_user):
     if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
         return jsonify({"response": "POS has already stopped...", "code": -1})
     res = dagent.stop_ibofos()
-
-    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            description = res["result"]["status"]["description"]
-            return jsonify({"response": description})
-    else:
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            description = res["result"]["status"]["description"]
-            description += ", Error Code:"
-            description += str(res["result"]["status"]["code"])
-            return jsonify({"response": description})
-
-    return jsonify({"response": "unable to stop ibofos", "code": -1})
+    try:
+        if res.status_code == 200:
+            res = res.json()
+            if res["result"]["status"]["code"] == 0:
+                description = res["result"]["status"]["description"]
+                return jsonify({"response": description})
+        else:
+            res = res.json()
+            if ("result" in res and "status" in res["result"]):
+                description = res["result"]["status"]["description"]
+                description += ", Error Code:"
+                description += str(res["result"]["status"]["code"])
+                return jsonify({"response": description})
+            return jsonify({"response": "unable to stop ibofos", "code": -1})
+    except BaseException:
+        return jsonify({"response": "unable to stop ibofos", "code": -1})
 
 
 """

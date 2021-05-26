@@ -64,7 +64,7 @@ def test_get_live_logs_no(mock_get_live_logs_from_db, global_data):
     #data = (response.get_data(as_text=True))
     assert response.status_code == 200
 
-
+"""
 def test_ibofos_logs(global_data):
     response = app.test_client().get(
         '/api/v1.0/get_Ibof_OS_Logs/',
@@ -77,3 +77,4 @@ def test_ibofos_logs(global_data):
 
     #data = (response.get_data(as_text=True))
     assert response.status_code == 200
+"""
