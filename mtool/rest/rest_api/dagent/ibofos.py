@@ -145,10 +145,9 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL ++ '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,

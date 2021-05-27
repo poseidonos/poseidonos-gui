@@ -236,6 +236,7 @@ def start_ibofos(current_user):
     #body_unicode = request.data.decode('utf-8')
     #body = json.loads(body_unicode)
     #script_path = body['path']
+    is_ibofos_running()
     if(get_ibof_os_status()):
         return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
@@ -284,6 +285,7 @@ def stop_ibofos(current_user):
     :param current_user:
     :return: status
     """
+    is_ibofos_running()
     if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
         return jsonify({"response": "POS has already stopped...", "code": -1})
     res = dagent.stop_ibofos()
@@ -942,7 +944,11 @@ def getDevices(current_user):
     if(not isinstance(devices, dict)):
          devices = devices.json()
     arrays = dagent.list_arrays()
-    arrays = arrays.json()["result"]["data"]["arrayList"]
+    arrays = arrays.json()
+    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
+        arrays = arrays["result"]["data"]["arrayList"]
+    else:
+        return toJson([])
     if type(arrays) != list:
         return toJson(devices)
     for array in arrays:
@@ -1112,7 +1118,11 @@ def get_arrays(current_user):
     #res = check_arr_exists(dagent.array_names[0])
     #print("result from get array",res)
     arrays = dagent.list_arrays()
-    arrays = arrays.json()["result"]["data"]["arrayList"]
+    arrays = arrays.json()
+    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
+        arrays = arrays["result"]["data"]["arrayList"]
+    else:
+        return toJson([])
     if type(arrays) != list:
         return toJson([])
     arrays_info = []
@@ -1674,7 +1684,11 @@ def get_all_volumes():
     volumes_list = {}
     try:
         arrays = dagent.list_arrays()
-        arrays = arrays.json()["result"]["data"]["arrayList"]
+        arrays = arrays.json()
+        if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
+            arrays = arrays["result"]["data"]["arrayList"]
+        else:
+            return toJson([])
         for array in arrays:
             volumes = list_volume(array["name"])
             volumes_list[array["name"]] = volumes
