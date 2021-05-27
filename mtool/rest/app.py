@@ -1054,28 +1054,18 @@ def create_arrays(current_user):
         return abort(404)
     if arrayname is None:
         arrayname = dagent.array_names[0]
-
-    print('storageDisks: ', storageDisks)
-    print('metaDisk: ', metaDisk)
-
-    # check if array exists
-    found = False
-    res = check_arr_exists(arrayname)
-    #print("res from get array",res)
-
-    if res:
-        found = True
-
-    if not found:
-        print("going in create array")
+    try:
+        a_info = arr_info(arrayname)
+        if a_info.status_code == 200:
+            a_info = a_info.json()
+            if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
+                return make_response(arrayname+' already exists', 200)
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
-                                  {"deviceName": metaDisk}])
+                                      {"deviceName": metaDisk}])
         array_create = array_create.json()
-        #   col.insert_one({ "_id": arrayname,"RAIDLevel": RAIDLevel,"storagedisks":storageDisks,"sparedisks":spareDisks,"writebufferdisks":writeBufferDisk,"metadiskpath":metaDisk,"totalsize":arraySize,"usedspace":0})
-        # connection_factory.update_counters_in_db()
         return toJson(array_create)
-    else:
-        print('came in else of found')
+    except Exception as e:
+        print("Exception in creating array: "+e)
         return abort(404)
 
 @app.route('/api/v1/get_array_config/', methods=['GET'])

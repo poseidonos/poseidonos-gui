@@ -252,8 +252,6 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = unmount_array(name)
-        if response.status_code != 200:
-            return response
         response = send_command_to_dagent(
                 "DELETE",
                 url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + name,
