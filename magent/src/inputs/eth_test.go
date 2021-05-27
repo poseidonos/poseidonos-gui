@@ -27,7 +27,7 @@ type MAgentEthernetTest struct{}
 
 // InterfacesInfo calls net.Interfaces() from net package of gopsutil library
 func (m MAgentEthernetTest) InterfacesInfo() ([]net.InterfaceStat, error) {
-        return nil, errors.New("ConnectionError")
+	return nil, errors.New("ConnectionError")
 }
 
 func TestCollectEthernetData(t *testing.T) {
@@ -46,12 +46,10 @@ func TestCollectEthernetData(t *testing.T) {
 	}
 }
 
-func TestCollectEthernetError(t * testing.T) {
+func TestCollectEthernetError(t *testing.T) {
 	ctx, _ := context.WithCancel(context.Background())
-        dataChan := make(chan models.ClientPoint, 1)
+	dataChan := make(chan models.ClientPoint, 1)
 	magentEthernet = MAgentEthernetTest{}
 	CollectEthernetData(ctx, dataChan)
 	assert.Empty(t, dataChan)
 }
-
-

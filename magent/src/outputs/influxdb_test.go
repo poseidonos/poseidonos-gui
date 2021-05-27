@@ -31,12 +31,12 @@ func TestCheckPointTypes(t *testing.T) {
 	err := checkPointTypes(pt)
 	require.NoError(t, err)
 	ptNil := client1.Point{
-                Measurement: "air",
-                Tags:        map[string]string{},
-                Fields: map[string]interface{}{},
-                Time: time.Now()}
-        err = checkPointTypes(ptNil)
-        require.NoError(t, err)
+		Measurement: "air",
+		Tags:        map[string]string{},
+		Fields:      map[string]interface{}{},
+		Time:        time.Now()}
+	err = checkPointTypes(ptNil)
+	require.NoError(t, err)
 
 }
 
@@ -117,10 +117,10 @@ func TestWriteToDBHTTP(t *testing.T) {
 
 	ctx, cancel = context.WithCancel(context.Background())
 	dataChan <- clientPoint
-        go func() {
-                time.Sleep(500 * time.Millisecond)
-                cancel()
-        }()
+	go func() {
+		time.Sleep(500 * time.Millisecond)
+		cancel()
+	}()
 	writeToInfluxDB(ctx, dataChan, client, dbConfig, 10, influxdb)
 
 	//Should send an http request when the time interval for flushing is exceeded
@@ -225,42 +225,42 @@ func TestWriteToDBUnix(t *testing.T) {
 	err = influxdb.Write(ctx, client, bp, dbConfig)
 	require.Error(t, err)
 
-        // Should send request if poitns contain Raw field
+	// Should send request if poitns contain Raw field
 	nbp := client1.BatchPoints{
-                Precision:        "ms",
-                WriteConsistency: "one",
-                RetentionPolicy:  "autogen",
-        }
+		Precision:        "ms",
+		WriteConsistency: "one",
+		RetentionPolicy:  "autogen",
+	}
 	npoint := client1.Point{
-                Fields: map[string]interface{}{
+		Fields: map[string]interface{}{
 			"cpu": 25,
-                },
-                Tags:        nil,
-                Measurement: "cpu_magent",
-                Time:        time.Now(),
-		Raw: "test",
-        }
+		},
+		Tags:        nil,
+		Measurement: "cpu_magent",
+		Time:        time.Now(),
+		Raw:         "test",
+	}
 	fmt.Println("Printing Point")
 	fmt.Println(npoint)
-        nbp.Points = append(nbp.Points, npoint)
+	nbp.Points = append(nbp.Points, npoint)
 	nbp.Tags = map[string]string{
 		"test": "test",
 	}
 	fmt.Println(nbp.Points)
-        err = influxdb.Write(ctx, client, nbp, dbConfig)
-        require.Error(t, err)
+	err = influxdb.Write(ctx, client, nbp, dbConfig)
+	require.Error(t, err)
 }
 
 func TestNewHttpConfig(t *testing.T) {
-        dbConfig = &HTTPConfig{
+	dbConfig = &HTTPConfig{
 		URLString:     "udp://test:8086",
 		TransportType: "udp",
 	}
 	_, err := NewHTTPClient(dbConfig)
 	require.Error(t, err)
-        /*	
-        ctx, _ := context.WithCancel(context.Background())
-        dataChan := make(chan models.ClientPoint, 100)
-	WriteToDB(ctx, "udp", dataChan)
+	/*
+	        ctx, _ := context.WithCancel(context.Background())
+	        dataChan := make(chan models.ClientPoint, 100)
+		WriteToDB(ctx, "udp", dataChan)
 	*/
 }

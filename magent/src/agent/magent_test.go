@@ -14,4 +14,3 @@ func TestStartInputs(t *testing.T) {
 	go startInputs(ctx, dataChan)
 	cancel()
 }
-

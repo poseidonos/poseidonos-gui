@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
+  "github.com/stretchr/testify/require"
 	"magent/src/models"
 	"testing"
 	"time"
@@ -84,11 +85,12 @@ var (
 func TestDiskData(t *testing.T) {
 	magentDiskReal := MAgentDisk{}
 	partitions, _ := magentDiskReal.Partitions(true)
-        for _, d := range partitions {
-                        du, _ := magentDisk.Usage(d.Mountpoint)
-			//fmt.Println(du)
+	for _, d := range partitions {
+		_, err := magentDisk.Usage(d.Mountpoint)
+		require.NoError(t, err)
+		//fmt.Println(du)
 	}
-//	usage := magentDiskReal.Usage()
+	//	usage := magentDiskReal.Usage()
 }
 
 func TestCollectDiskData(t *testing.T) {

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"magent/src/models"
 	"sync"
 	"testing"
@@ -225,28 +226,28 @@ func TestGetCPUData(t *testing.T) {
 func TestGetCPUErr(t *testing.T) {
 	magentCPU = magentCPUTest{}
 	var wg sync.WaitGroup
-        dataChan := make(chan models.ClientPoint, 10)
-        ctx, cancel := context.WithCancel(context.Background())
-        wg.Add(1)
-        go func() {
-                defer wg.Done()
-                CollectCPUData(ctx, dataChan)
-        }()
+	dataChan := make(chan models.ClientPoint, 10)
+	ctx, cancel := context.WithCancel(context.Background())
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		CollectCPUData(ctx, dataChan)
+	}()
 	/*
-        go func() {
-                for data := range dataChan {
-                        assert.InDelta(t, data.Fields["usage_user"], 7.8, 0.05)
-                }
-        }()
+	   go func() {
+	           for data := range dataChan {
+	                   assert.InDelta(t, data.Fields["usage_user"], 7.8, 0.05)
+	           }
+	   }()
 	*/
-        time.Sleep(2500 * time.Millisecond)
-        cancel()
-        wg.Wait()
-        close(dataChan)
+	time.Sleep(2500 * time.Millisecond)
+	cancel()
+	wg.Wait()
+	close(dataChan)
 }
 
 func TestGetCPUActual(t *testing.T) {
 	magentCPUReal := MAgentCPU{}
-	cpuTimes, _ := magentCPUReal.Times(false)
+	_, err := magentCPUReal.Times(false)
+	require.NoError(t, err)
 }
-
