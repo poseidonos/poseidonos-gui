@@ -496,7 +496,7 @@ class Volume extends Component {
                         style={{
                           opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
                           pointerEvents:
-                            this.props.arrayMap[this.props.selectedArray].status === "Mounted"
+                            this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
                               ? "none"
                               : "initial",
                         }}
