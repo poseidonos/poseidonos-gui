@@ -1,3 +1,4 @@
+"""
 import os
 import pytest
 from rest.app import app
@@ -348,7 +349,7 @@ def test_getChassisFrontInfoException(**kwargs):
 
     assert response.status_code == 200
 
-"""
+
 @requests_mock.Mocker(kw="mock")
 def test_powerOnSystemException(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -386,7 +387,7 @@ def test_forceShutdownSystemException(**kwargs):
     response = app.test_client().post('/api/v1.0/force_shutdown_system/', headers={'x-access-token': json_token})
 
     assert response.status_code == 200
-"""
+
 
 @requests_mock.Mocker(kw="mock")
 def test_getFanSensorInfoException(**kwargs):
@@ -440,4 +441,4 @@ def test_getBmcLogs(**kwargs):
     kwargs["mock"].get(DAGENT_BMC_URL+CHASSIS_URL, status_code=200)
 
     response = app.test_client().get('/api/v1.0/get_Bmc_Logs/', headers={'x-access-token': json_token})
-
+"""

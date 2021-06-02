@@ -37,47 +37,48 @@ def list_devices():
     #scan_dev = scan_devices()
     # if scan_dev.status_code != 200:
     #    return scan_dev
+    scan_dev = scan_devices()
+    print("scan_dev >>>",scan_dev.json())
     devices = get_devices()
     devices = devices.json()
+    print("devices>>>",devices)
     if "return" in devices and devices["return"] == -1:
         return devices
-    elif ("result" in devices and devices["result"]["status"]["description"] == "NO DEVICE EXIST") or \
+    """elif ("result" in devices and devices["result"]["status"]["description"] == "NO DEVICE EXIST") or \
         ("result" in devices and "data" in devices["result"] and len(devices["result"]["data"]["devicelist"]) == 0) or \
             ("result" in devices and not("data" in devices)):
         scan_dev = scan_devices()
         if scan_dev.status_code != 200:
             return scan_dev
         else:
-            devices = get_devices()
-            if devices.status_code != 200:
-                return devices
-            devices = devices.json()
+    """
+    devices = get_devices()
+    if devices.status_code != 200:
+        return devices
+    devices = devices.json()
     res = {
         'devices': [],
         'metadevices': []
     }
-    for device in devices["result"]["data"]["devicelist"]:
-        if device["type"] == 'NVRAM':  # and device["class"] !=  'SYSTEM':
-            res['metadevices'].append(device["name"])
-      # if device["type"] ==  'NVRAM' or "ram" in device["name"]:
-      #    res['metadevices'].append({
-      #        "name" : device["name"],
-      #        "size" : device["size"],
-      #        "mn" : device["mn"],
-      #        "sn" : device["sn"]
-      #        })
-        elif device["type"] == 'SSD':  # and device["class"] !=  'SYSTEM':
-            res['devices'].append({
-                "name": device["name"],
-                "size": device["size"],
-                "addr": device["addr"],
-                "class": device["class"],
-                "mn": device["mn"],
-                "sn": device["sn"],
-                "isAvailable":True,
-                "numa": device["numa"],
-                "arrayName" : ""
-            })
+    print("devices i>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ???  ",devices)
+    if "result" in devices and "data" in devices["result"] and "devicelist" in devices["result"]["data"]:
+        for device in devices["result"]["data"]["devicelist"]:
+            if device["type"] == 'NVRAM':  # and device["class"] !=  'SYSTEM':
+                res['metadevices'].append(device["name"])
+            elif device["type"] == 'SSD':  # and device["class"] !=  'SYSTEM':
+                res['devices'].append({
+                    "name": device["name"],
+                    "size": device["size"],
+                    "addr": device["addr"],
+                    "class": device["class"],
+                    "mn": device["mn"],
+                    "sn": device["sn"],
+                    "isAvailable":True,
+                    "numa": device["numa"],
+                    "arrayName" : ""
+                })
+    else:
+        print("DDDDDDDDDDDDDDDDDDD else        DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD ")
     return res
 
 """

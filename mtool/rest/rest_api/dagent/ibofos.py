@@ -87,7 +87,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
         #    logger.info('%s %s', 'INFO sysstate', json.dumps(response))
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred in get_system_state : {err}', err)
     return {"result": "could not get the system state", "return": -1}
 
 """
@@ -287,27 +287,6 @@ def array_status(auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to get array status...', 500)
-
-
-def load_array(arrayname, auth=BASIC_AUTH_TOKEN):
-    try:
-        #print("LOAD ARRAY")
-        req_headers = get_headers(auth)
-        response = send_command_to_dagent(
-            "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + 'load',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout))
-        #print("Load array response status", response.status_code)
-        if (response.status_code == 200):
-            return True
-        return False
-    except Exception as e:
-        print("LOAD", e)
-        return False
-
 
 
 def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):

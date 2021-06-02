@@ -40,14 +40,14 @@ from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
-from rest.rest_api.logmanager.logmanager import get_bmc_logs
+#from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, \
     get_disk_current_perf 
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
-import rest.rest_api.dagent.bmc as BMC_agent
+#import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
 from util.log.influx_handler import InfluxHandler
@@ -344,7 +344,7 @@ def is_ibofos_running(current_user):
     # print(datetime.datetime.now())
     timestamp = code = level = value = ""
     response = get_rebuilding_status()
-    print("RESPONSE", response)
+    #print("get_rebuilding_status RESPONSE", response)
     state = ""
     situation = ""
     if(response != "error"):
@@ -369,7 +369,9 @@ def is_ibofos_running(current_user):
     try:
         #col = db['iBOFOS_Timestamp']
         response = fetch_system_state()
+        #print("response 1 :",response,type(response))
         response = response.json()
+        #print("response 2 : ",response.json())
         if 'lastSuccessTime' in response and response['lastSuccessTime'] != 0:
             lastRunningTime = datetime.datetime.fromtimestamp(
                 response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
@@ -380,7 +382,7 @@ def is_ibofos_running(current_user):
         if('result' in response and 'data' in response['result']):
             state = response['result']['data']['state']
             situation = response['result']['data']['situation']
-    except BaseException:
+    except Exception as e:
         return toJson({"RESULT": response,
                        "lastRunningTime": lastRunningTime,
                        "timestamp": timestamp,
@@ -450,7 +452,7 @@ def ibofos_logs():
         return toJson(data)
         # return toJson([{"timestamp": timestamp, "code":code, "level":level,
         # "value":value}])
-"""
+
 
 
 @app.route('/api/v1.0/get_Bmc_Logs/')
@@ -518,7 +520,7 @@ def bmc_logs():
                   }
     except BaseException:
         return toJson(result)
-
+"""
 
 """
 @app.route('/api/v1.0/get_alert_info', methods=['GET'])
@@ -948,7 +950,7 @@ def getDevices(current_user):
     if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
         arrays = arrays["result"]["data"]["arrayList"]
     else:
-        return toJson([])
+        return toJson(devices)
     if type(arrays) != list:
         return toJson(devices)
     for array in arrays:
@@ -1326,7 +1328,7 @@ def login():
                     'username': received_username})
 
 
-
+"""
 @app.route('/api/v1.0/bmc_login/', methods=['POST'])
 def bmc_login():
     body_unicode = request.data.decode('utf-8')
@@ -1358,7 +1360,7 @@ def bmc_login():
     if(validation):
         return jsonify({'Login': validation, })
     return jsonify({'Login': validation, }), 401
-
+"""
 
 @app.route('/api/v1.0/get_ip_and_mac', methods=['GET'])
 def getIpAndMac():
@@ -1873,7 +1875,7 @@ def handle_invalid_usage(error):
 
 
 # BMC Rest APIs
-
+'''
 @app.route('/api/v1.0/get_server_info/', methods=['GET'])
 @token_required
 def getServerInfo(current_user):
@@ -2118,7 +2120,7 @@ def activate_power_thread():
 # app.use_reloader=False
 # app.port=5010
 # app.Threaded=True
-
+'''
 
 socketIo = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
