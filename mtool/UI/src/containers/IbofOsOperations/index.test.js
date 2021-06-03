@@ -187,30 +187,30 @@ describe("IbofOsOperations", () => {
         global.fetch.mockRestore();
     });
 
-    it("mounts POS", async () => {
-        const mock = new MockAdapter(axios);
-        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
-        ).onAny().reply(200, {});
-        const getSpy = jest.spyOn(axios, "post");
-        renderComponent();
-        const { getByTestId, getByText, getAllByText } = wrapper;
-        await waitForElement(() => getAllByText("Running"));
-        fireEvent.click(await waitForElement(() => getByTestId("btn-unmount")));
-        fireEvent.click(getByText("Yes"));
-    });
+    // it("mounts POS", async () => {
+    //     const mock = new MockAdapter(axios);
+    //     mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+    //         { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+    //     ).onAny().reply(200, {});
+    //     const getSpy = jest.spyOn(axios, "post");
+    //     renderComponent();
+    //     const { getByTestId, getByText, getAllByText } = wrapper;
+    //     await waitForElement(() => getAllByText("Running"));
+    //     fireEvent.click(await waitForElement(() => getByTestId("btn-unmount")));
+    //     fireEvent.click(getByText("Yes"));
+    // });
 
-    it("Unmounts POS", async () => {
-        const mock = new MockAdapter(axios);
-        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
-        ).onAny().reply(200, {});
-        renderComponent();
-        const { getByTestId, getByText, getAllByText } = wrapper;
-        await waitForElement(() => getAllByText("Running"));
-        fireEvent.click(await waitForElement(() => getByTestId("btn-mount")));
-        fireEvent.click(getByText("Yes"));
-    });
+    // it("Unmounts POS", async () => {
+    //     const mock = new MockAdapter(axios);
+    //     mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+    //         { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+    //     ).onAny().reply(200, {});
+    //     renderComponent();
+    //     const { getByTestId, getByText, getAllByText } = wrapper;
+    //     await waitForElement(() => getAllByText("Running"));
+    //     fireEvent.click(await waitForElement(() => getByTestId("btn-mount")));
+    //     fireEvent.click(getByText("Yes"));
+    // });
 
     it("fails stopping POS", async () => {
         const mock = new MockAdapter(axios);

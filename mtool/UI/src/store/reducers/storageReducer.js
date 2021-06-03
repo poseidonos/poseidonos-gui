@@ -34,6 +34,7 @@ export const initialState = {
     arrayMap: {},
     config: {},
     volumes: [],
+    volSpace: 0,
     metadisks: [],
     loading: false,
     alertOpen: false,
@@ -102,9 +103,9 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_ARRAY_SIZE:
             return {
                 ...state,
-                arraySize: action.payload.totalsize,
-                totalVolSize: action.payload.usedspace,
-                mountStatus: action.payload.mountStatus,
+                // arraySize: action.payload.totalsize,
+                // totalVolSize: action.payload.usedspace,
+                // mountStatus: action.payload.mountStatus,
             }
         case actionTypes.FETCH_MAX_VOLUME_COUNT:
             return {
@@ -125,7 +126,7 @@ const storageReducer = (state = initialState, action) => {
                 totalVolSize += action.payload[i].usedspace;
                 arrayMap[action.payload[i].arrayname] = action.payload[i];
             }
-            let arrayname = state.arrayname && arrayMap[state.arrayName] ? state.arrayname : '';
+            let arrayname = state.arrayname && arrayMap[state.arrayname] ? state.arrayname : '';
             if(!arrayname && action.payload.length > 0) {
                 arrayname = action.payload[0].arrayname;
             }
@@ -170,7 +171,7 @@ const storageReducer = (state = initialState, action) => {
         case actionTypes.FETCH_VOLUMES: {
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             }
         }
         case actionTypes.CLEAR_VOLUMES: {
@@ -191,7 +192,7 @@ const storageReducer = (state = initialState, action) => {
                             name: action.volume.Name,
                             id: action.volume.Id,
                             newName: action.volume.Name,
-                            size: formatBytes(action.volume.Capacity.Data.AllocatedBytes),
+                            size: action.volume.Capacity.Data.AllocatedBytes,
                             usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
                             maxiops: action.volume.Oem.MaxIOPS,
                             maxbw: action.volume.Oem.MaxBandwidth,
@@ -212,7 +213,7 @@ const storageReducer = (state = initialState, action) => {
                         name: action.volume.Name,
                         newName: action.volume.Name,
                         id: action.volume.Id,
-                        size: formatBytes(action.volume.Capacity.Data.AllocatedBytes),
+                        size: action.volume.Capacity.Data.AllocatedBytes,
                         usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
                         maxiops: action.volume.Oem.MaxIOPS,
                         maxbw: action.volume.Oem.MaxBandwidth,

@@ -108,14 +108,14 @@ describe("ConfigurationSetting", () => {
     const { asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();
   });
-  it("navigates to alert page", async () => {
-    renderComponent();
-    const { getByTestId, getByText } = wrapper;
-    const alertTab = getByTestId("alertTab")
-    fireEvent.click(alertTab);
-    const generalTab = getByTestId("generalTab")
-    fireEvent.click(generalTab);
-  });
+  // it("navigates to alert page", async () => {
+  //   renderComponent();
+  //   const { getByTestId, getByText } = wrapper;
+  //   const alertTab = getByTestId("alertTab")
+  //   fireEvent.click(alertTab);
+  //   const generalTab = getByTestId("generalTab")
+  //   fireEvent.click(generalTab);
+  // });
 
   it("throws error on providing invalid smtp server details", async () => {
     renderComponent();

@@ -314,6 +314,7 @@ function* createVolume(action) {
         );
       }
       yield fetchVolumes({payload: {array: arrayName}});
+      yield fetchArray();
     } else {
       yield put(
         actionCreators.showStorageAlert({

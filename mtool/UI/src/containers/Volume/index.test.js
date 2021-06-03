@@ -1779,8 +1779,8 @@ describe("<Storage Management />", () => {
     const alertDescription = await waitForElement(() =>
       getByTestId("alertDescription")
     );
-    fireEvent.click(getByText("Yes"));
-    //expect(getAllByTitle(/Creation is in progress/)).toBeDefined();
+    // fireEvent.click(getByText("Yes"));
+    expect(getAllByTitle(/Creation is in progress/)).toBeDefined();
   });
 
   it("should unmount the array", async () => {

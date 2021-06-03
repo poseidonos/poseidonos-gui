@@ -107,7 +107,7 @@ const RunIbofOs = props => {
               </div>
             </div>
           </div>
-          <div className="IBOFOSCommandWrapper">
+          {/* <div className="IBOFOSCommandWrapper">
             <span className="IBOFOSStartLabel">
               <span style={{ float: 'left' }}>
                 Mount/Unmount Poseidon OS
@@ -143,7 +143,7 @@ const RunIbofOs = props => {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <span className="IBOFOSStatusLabel">
           <span>Response</span>

@@ -252,9 +252,13 @@ class Volume extends Component {
   }
 
   render() {
+    let totalVolSize = 0;
+    for(let i = 0; i < this.props.volumes.length; i += 1) {
+      totalVolSize += this.props.volumes[i].size;
+    }
     const volumeFilledStyle = {
-      width: `${this.props.arraySize !== 0
-        ? (100 * this.props.totalVolSize) / this.props.arraySize
+      width: `${this.props.arrayMap[this.props.selectedArray] && this.props.arrayMap[this.props.selectedArray].totalsize !== 0
+        ? (100 * totalVolSize) / this.props.arrayMap[this.props.selectedArray].totalsize
         : 0
         }%`,
       height: "100%",
@@ -266,8 +270,8 @@ class Volume extends Component {
       justifyContent: "center",
     };
     const volumeFreeStyle = {
-      width: `${this.props.arraySize !== 0
-        ? 100 - (100 * this.props.totalVolSize) / this.props.arraySize
+      width: `${this.props.arrayMap[this.props.selectedArray] && this.props.arrayMap[this.props.selectedArray].totalsize !== 0
+        ? 100 - (100 * totalVolSize) / this.props.arrayMap[this.props.selectedArray].totalsize
         : 100
         }%`,
       height: "100%",
@@ -433,10 +437,11 @@ class Volume extends Component {
                             maxVolumeCount={this.props.maxVolumeCount}
                             volCount={this.props.volumes.length}
                             maxAvailableSize={
-                              this.props.arraySize - this.props.totalVolSize
+                              this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
                             }
                             createVolSocket={this.state.createVolSocket}
                             fetchVolumes={this.fetchVolumes}
+                            fetchArray={this.props.Get_Array}
                           />
                         </Grid>
 
@@ -469,7 +474,7 @@ class Volume extends Component {
                                     bgColor="rgba(51, 158, 255,0.6)"
                                     title={`
                           Used Space :
-                          ${formatBytes(this.props.totalVolSize)}
+                          ${formatBytes(totalVolSize)}
                         `}
                                   />
                                   <Legend
@@ -477,7 +482,7 @@ class Volume extends Component {
                                     title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                      this.props.arraySize - this.props.totalVolSize
+                            this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
                                     )}
                         `}
                                   />
@@ -578,6 +583,7 @@ const mapDispatchToProps = (dispatch) => {
     Create_Volume: (payload) =>
       dispatch({ type: actionTypes.SAGA_SAVE_VOLUME, payload }),
     Get_Array_Size: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY_SIZE }),
+    Get_Array: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     Delete_Array: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),
     Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),

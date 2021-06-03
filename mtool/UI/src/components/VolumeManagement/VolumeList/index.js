@@ -48,6 +48,7 @@ import MaterialTable from 'material-table';
 import { Done } from '@material-ui/icons';
 import AlertDialog from '../../Dialog';
 import { customTheme } from '../../../theme';
+import formatBytes from '../../../utils/format-bytes';
 
 
 const styles = () => ({
@@ -141,7 +142,7 @@ class VolumeList extends Component {
       },
       {
         title: 'Total Size',
-        field: 'size',
+        render: rowData => formatBytes(rowData.size),
         cellStyle: cellText
       },
       {

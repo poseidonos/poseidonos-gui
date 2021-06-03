@@ -183,6 +183,7 @@ class CreateVolume extends Component {
         });
 
         this.props.fetchVolumes();
+        this.props.fetchArray();
       }
       /* eslint-enable camelcase */
     });

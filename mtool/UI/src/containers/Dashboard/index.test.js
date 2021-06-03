@@ -82,6 +82,39 @@ describe("Dashboard", () => {
     );
   };
 
+  const array = {
+    RAIDLevel: "5",
+    arrayname: "POSArray",
+    metadiskpath: [
+      {
+        deviceName: "uram0",
+      },
+    ],
+    sparedisks: [
+      {
+        deviceName: "intel-unvmens-3",
+      },
+    ],
+    storagedisks: [
+      {
+        deviceName: "intel-unvmens-0",
+      },
+      {
+        deviceName: "intel-unvmens-1",
+      },
+      {
+        deviceName: "intel-unvmens-2",
+      },
+      {
+        deviceName: "intel-unvmens-4",
+      },
+    ],
+    status: "Mounted",
+    state: "EXIST",
+    totalsize: 6357625339904,
+    usedspace: 0,
+  };
+
   afterEach(cleanup);
 
   it("matches snapshot", () => {
@@ -143,11 +176,13 @@ describe("Dashboard", () => {
         {
           arraySize: 4768219004928
         }
-      ]);
+      ]).onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
     renderComponent();
-    const { getByText } = wrapper;
-    const hostElement = await waitForElement(() => getByText("4.34 TB"));
+    const { getByText, asFragment } = wrapper;
+    const hostElement = await waitForElement(() => getByText("Available for Volume Creation: 5.78 TB"));
     expect(hostElement).toBeDefined();
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("should display volumes", async () => {
