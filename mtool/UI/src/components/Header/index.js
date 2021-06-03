@@ -397,9 +397,9 @@ class Header extends Component {
               style={{ cursor: 'default', marginBottom: '0.4rem' }}
               alt="Samsung iBOF Management Tool"
             />
-            {/* <Typography className={classes.version} variant="caption" display="block">
-              Version 0.1, Release - a4c0bf15e06
-            </Typography> */}
+            <Typography className={classes.version} variant="caption" display="block">
+              Version 0.2.96
+            </Typography>
             <div className={classes.grow} />
               <span
                 className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
