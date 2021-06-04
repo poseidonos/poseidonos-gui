@@ -704,6 +704,10 @@ modules:
       - code: 2558
         level: INFO
         message: "Array State : Stop"
+      - code: 2580
+        level: INFO
+        message: "Mounted Array Exist"
+        solution: "Unmount Array"
   - name: "Rebuild"
     count: 100
     idStart: 2800

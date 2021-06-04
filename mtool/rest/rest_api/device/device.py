@@ -38,10 +38,8 @@ def list_devices():
     # if scan_dev.status_code != 200:
     #    return scan_dev
     scan_dev = scan_devices()
-    print("scan_dev >>>",scan_dev.json())
     devices = get_devices()
     devices = devices.json()
-    print("devices>>>",devices)
     if "return" in devices and devices["return"] == -1:
         return devices
     """elif ("result" in devices and devices["result"]["status"]["description"] == "NO DEVICE EXIST") or \

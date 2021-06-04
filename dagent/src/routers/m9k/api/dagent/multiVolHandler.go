@@ -224,14 +224,14 @@ func maxCountExceeded(count int) (int, bool) {
 	}
 	volCount := 0
 	maxCount := 0
-	if volList.Info.(map[string]interface{})["state"].(string) != "NORMAL" {
+	/*if volList.Info.(map[string]interface{})["state"].(string) != "NORMAL" {
 		return 12090, true
-	}
+	}*/
 	if volList.Result.Data != nil {
 		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
 		volCount = len(volumes.([]interface{}))
 	}
-	maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["count"].(string))
+  maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
 	if err != nil {
 		return POS_API_ERROR, true
 	}

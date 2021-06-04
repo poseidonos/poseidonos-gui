@@ -28,7 +28,7 @@ DESCRIPTION: <File description> *
 */
 '''
 
-
+"""
 from pymodm import fields, MongoModel
 
 
@@ -86,3 +86,4 @@ class array(MongoModel):
 class Counters(MongoModel):
     _id = fields.CharField(primary_key=True)
     count = fields.IntegerField()
+"""

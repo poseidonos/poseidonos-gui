@@ -38,6 +38,7 @@ def global_data(mock_match_username_from_db):
             return_value="test", autospec=True)
 def test_get_devices(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": {"devicelist": [{"name": "uram0",
@@ -202,7 +203,8 @@ def test_get_devices(mock_get_current_user, **kwargs):
         '/api/v1.0/get_devices/',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
+    data = json.loads(response.get_data(as_text=True))
+    print("data :",data)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")

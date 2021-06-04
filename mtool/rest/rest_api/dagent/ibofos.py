@@ -125,7 +125,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
                 read_timeout))
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
-        array_exists(array_names[0])
+        #array_exists(array_names[0])
         return response
     except Exception as err:
         print(f'Other error occurred start_ibofos: {err}')
@@ -138,13 +138,6 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
     logger.info('%s', 'Sending command to D-Agent to stop ibofos...')
     req_headers = get_headers(auth)
     try:
-        response = send_command_to_dagent(
-            "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+'system/mount',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout))
         response = send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
