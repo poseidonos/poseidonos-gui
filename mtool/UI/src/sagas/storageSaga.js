@@ -1022,7 +1022,6 @@ function* addSpareDisk(action) {
         })
       );
     }
-    yield fetchArray();
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -1034,6 +1033,7 @@ function* addSpareDisk(action) {
     );
   } finally {
     yield put(actionCreators.stopStorageLoader());
+    yield fetchDevices();
   }
 }
 
@@ -1140,7 +1140,6 @@ function* removeSpareDisk(action) {
         })
       );
     }
-    yield fetchArray();
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -1152,6 +1151,7 @@ function* removeSpareDisk(action) {
     );
   } finally {
     yield put(actionCreators.stopStorageLoader());
+    yield fetchDevices();
   }
 }
 
