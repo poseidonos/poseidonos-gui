@@ -1322,7 +1322,7 @@ def login():
             "utf-8")).decode("ascii")
     print("auth:", auth)
     token = jwt.encode({'_id': received_username, 'exp': datetime.datetime.utcnow(
-    ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
+    ) + datetime.timedelta(minutes=1440)}, app.config['SECRET_KEY'])
     print(token)
     return jsonify({'token': token.decode('UTF-8'),
                     'Authorization': auth,
