@@ -2252,7 +2252,7 @@ def handleHealthStatusConn():
         old_result = ""
 
 @socketIo.on('disconnect', namespace='/health_status')
-def disconnect():
+def disconnectHealthStatusSocket():
     print("Health status websocket client disconnected!")
 def compare_result(prev_result,curr_result):
     if prev_result == "":

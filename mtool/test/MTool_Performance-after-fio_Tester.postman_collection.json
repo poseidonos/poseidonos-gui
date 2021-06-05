@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0525ea5e-b364-4054-9934-2e11a45b3fba",
+		"_postman_id": "b4e99fba-2015-490d-848d-c829a18c01e7",
 		"name": "MTool_Performance-after-fio_Tester",
 		"description": "MTool simple workflow - from login, start pos, create array, create vol, perf charts and stop pos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12,7 +12,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6d362f7e-74b0-49af-958e-7eb781e8e7d1",
+						"id": "e35994da-1fed-48d9-aa1d-358ed15fc9b3",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -70,12 +70,14 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ecb0e87e-92f9-41d3-ada1-1ec3b08c2967",
+						"id": "e7c25c23-aa8d-4ef3-b6f0-63f9a844adba",
 						"exec": [
 							"pm.test(\"Data received \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							""
+							"setTimeout(function () {\r",
+							"        console.log(\" in timeout \")\r",
+							"    }, 1000);"
 						],
 						"type": "text/javascript"
 					}
@@ -83,7 +85,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "ebeafda8-f841-47e9-ae6f-e6d1dc85b571",
+						"id": "b8b09e3a-5dd9-4389-8a2b-f432f2161fa7",
 						"exec": [
 							""
 						],
@@ -123,63 +125,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7fcaf48f-9492-4bd9-8cfb-500d91300861",
-						"exec": [
-							"pm.test(\"Data received\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json(); \r",
-							"data = jsonData.res\r",
-							"bw_sum = 0 \r",
-							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
-							"}\r",
-							"console.log(\"bw_sum  \",bw_sum)\r",
-							"pm.test(\"Verify Json values\", function () { \r",
-							"   pm.expect(bw_sum).to.be.above(0); \r",
-							"});\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/array",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"bw_read",
-						"1m",
-						"array"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "array_bw_write",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "a87e18cb-2527-4ebd-b4a5-220a7b749409",
+						"id": "6fcfa621-4a4c-4cdc-8c15-b53a59537784",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -213,7 +159,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/array",
+					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays?arrayids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -221,10 +167,85 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"bw_write",
-						"1m",
-						"array"
+						"v1",
+						"readbw",
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "array_bw_write",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8871aa84-a1b3-4aff-9201-3b78d49dbc82",
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json(); \r",
+							"data = jsonData.res\r",
+							"bw_sum = 0 \r",
+							"for( i= 0; i<data.length;i++) {\r",
+							"    bw_sum = bw_sum + data[i].bw\r",
+							"}\r",
+							"console.log(\"bw_sum  \",bw_sum)\r",
+							"pm.test(\"Verify Json values\", function () { \r",
+							"   pm.expect(bw_sum).to.be.above(0); \r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays?arrayids=0&time=5m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"writebw",
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -236,7 +257,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7cab76af-f7d8-45c7-81ac-d0cc5013f012",
+						"id": "d27a1f48-cddf-4ece-b7f4-23eeb0a859cf",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -269,7 +290,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/array",
+					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays?arrayids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -277,10 +298,19 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"iops_read",
-						"1m",
-						"array"
+						"v1",
+						"readiops",
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -292,7 +322,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e1617043-f8d1-456c-94df-03e5545aa896",
+						"id": "f9003dcf-2e73-4767-b7bf-674568f29e0e",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -324,7 +354,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/array",
+					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays?arrayids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -332,10 +362,19 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"iops_write",
-						"1m",
-						"array"
+						"v1",
+						"writeiops",
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -347,7 +386,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "308da822-c94f-41ae-84c2-7b79f763a14f",
+						"id": "11e376cf-0513-4ccd-a125-77f3431a8a24",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -368,7 +407,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/array",
+					"raw": "http://{{host}}:{{port}}/api/v1/latency/arrays?arrayids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -376,10 +415,19 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
+						"v1",
 						"latency",
-						"1m",
-						"array"
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -391,7 +439,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "adb46be5-fd52-4ef3-b539-343a59efab0e",
+						"id": "7c16ce12-8493-4e4f-b52c-cc7efed5883a",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -423,7 +471,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_read/1m/0",
+					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -431,10 +479,24 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"bw_read",
-						"1m",
-						"0"
+						"v1",
+						"readbw",
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -446,7 +508,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "fd676341-fda9-4aa4-9a8a-b5d314effc29",
+						"id": "5e5dd6cb-a768-4ef8-877b-234690c05f41",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -480,7 +542,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/bw_write/1m/0",
+					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -488,10 +550,24 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"bw_write",
-						"1m",
-						"0"
+						"v1",
+						"writebw",
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -503,7 +579,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "62594646-9401-4e1f-bb4d-006aaddbc513",
+						"id": "e00b7d98-72b1-49c5-84ff-45ef1abee018",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -536,7 +612,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_read/1m/0",
+					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -544,10 +620,24 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"iops_read",
-						"1m",
-						"0"
+						"v1",
+						"readiops",
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -559,21 +649,21 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a4c86696-6ff2-4a13-a529-91d6595d8197",
+						"id": "d930de72-9679-4f57-8b5b-1d6d630c13d6",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json(); \r",
+							"var jsonData = pm.response.json();\r",
 							"data = jsonData.res\r",
-							"iops_sum = 0 \r",
-							"for( i= 0; i<data.length;i++) {\r",
+							"iops_sum = 0\r",
+							"for (i = 0; i < data.length; i++) {\r",
 							"    iops_sum = iops_sum + data[i].iops\r",
 							"}\r",
-							"console.log(\"iops_sum  \",iops_sum)\r",
-							"pm.test(\"Verify Json values\", function () { \r",
-							"   pm.expect(iops_sum).to.be.above(0); \r",
+							"console.log(\"iops_sum  \", iops_sum)\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    pm.expect(iops_sum).to.be.above(0);\r",
 							"});\r",
 							""
 						],
@@ -591,7 +681,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/iops_write/1m/0",
+					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -599,10 +689,24 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"iops_write",
-						"1m",
-						"0"
+						"v1",
+						"writeiops",
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -614,7 +718,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "453290b2-3af5-4e99-af7f-cb479a4dbc78",
+						"id": "d09e9d70-703e-4d9a-9b96-769353ffe668",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -635,7 +739,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/latency/1m/0",
+					"raw": "http://{{host}}:{{port}}/api/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=5m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -643,10 +747,24 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
+						"v1",
 						"latency",
-						"1m",
-						"0"
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
 					]
 				}
 			},
@@ -657,7 +775,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f8844c00-4a15-4350-bd63-462e27c5081d",
+				"id": "a64b5034-f3e7-4dd6-8ea4-eac96d59cafb",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -667,7 +785,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0d5372f7-477a-4465-884b-097770187365",
+				"id": "2233a08c-6495-4237-a310-dd0a37d48312",
 				"type": "text/javascript",
 				"exec": [
 					""
