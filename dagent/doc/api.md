@@ -11,7 +11,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [D-Agent](#d-agent)
 
-  * [HEARTBEAT](#1-heartbeat)
+  * ~~[HEARTBEAT](#1-heartbeat)~~
   * [VERSION](#2-version)
 
 * [Internal](#internal)
@@ -59,8 +59,11 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE ARRAY](#3-create-array)
   * [DELETE ARRAY](#4-delete-array)
   * [LIST ARRAY DEVICE](#5-list-array-device)
-  * [LOAD ARRAY](#6-load-array)
+  * ~~[LOAD ARRAY](#6-load-array)~~
   * [REMOVE DEVICE](#7-remove-device)
+  * [MOUNT ARRAY](#8-mount-array)
+  * [UNMOUNT ARRAY](#9-unmount-array)
+  * [ARRAY LIST](#10-array-list)
 
 * [POS/Devices](#posdevices)
 
@@ -71,9 +74,9 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 * [POS/System](#possystem)
 
   * [EXITIBOFOS](#1-exitibofos)
-  * [MOUNTIBOFOS](#2-mountibofos)
+  * ~~[MOUNTIBOFOS](#2-mountibofos)~~
   * [RUNIBOFOS](#3-runibofos)
-  * [UNMOUNTIBOFOS](#4-unmountibofos)
+  * ~~[UNMOUNTIBOFOS](#4-unmountibofos)~~
   * [iBOFOSINFO](#5-ibofosinfo)
 
 * [POS/Volume](#posvolume)
@@ -195,7 +198,7 @@ The most biz-logic executes in D-Agent own module
 
 
 
-### 1. HEARTBEAT
+### ~~1. HEARTBEAT~~ (DEPRECATED)
 
 
 It will check POS status.
@@ -4533,9 +4536,16 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 
 <br>
 
+### 8. MOUNT ARRAY
 
 
-##### II. Example Request: Fail - 2501
+***Endpoint:***
+
+```bash
+Method: POST
+Type: 
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
+```
 
 
 ***Headers:***
@@ -4549,43 +4559,317 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 
 
 
-***Body:***
+***More example Requests/Responses:***
 
-```js        
+
+##### I. Example Request: Fail - 1022
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Fail - 1022
+```js
 {
-    "param": {
-        "array": "{{arrayName}}"
+    "rid": "85b04f05-e5d7-46c8-aa75-192f35a58a21",
+    "lastSuccessTime": 1588920703,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 1022,
+            "description": "TIMED OUT"
+        }
     }
 }
 ```
 
 
+***Status Code:*** 200
 
-##### II. Example Response: Fail - 2501
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Success
 ```js
 {
-    "rid": "6827ac78-40e2-47f6-a3b9-1a10224e694c",
-    "lastSuccessTime": 1597910302,
+    "rid": "8f5ecc2c-7772-4081-b3b8-e0e52822dcdb",
+    "lastSuccessTime": 1597819990,
     "result": {
         "status": {
-            "module": "Array",
-            "code": 2501,
-            "level": "ERROR",
-            "description": "Array is already umounted."
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.8.2"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### III. Example Request: Fail - 10050
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### III. Example Response: Fail - 10050
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "D-Agent",
+            "code": 10050,
+            "level": "ERROR",
+            "description": "Receiving error from POS"
+        }
     }
 }
 ```
 
 
 ***Status Code:*** 400
+
+<br>
+### 9. UNMOUNT ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: 
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 2522
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Fail - 2522
+```js
+{
+    "rid": "44f1280b-982e-4d2e-ab14-fe9eb2022045",
+    "lastSuccessTime": 1622986144,
+    "result": {
+        "status": {
+            "module": "Array",
+            "code": 2522,
+            "level": "WARN",
+            "description": "no array exist"
+        }
+    },
+    "info": {
+        "version": "pos-0.8.2"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "44f1280b-982e-4d2e-ab14-fe9eb2022045",
+    "lastSuccessTime": 1622987052,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
+        }
+    },
+    "info": {
+        "version": "pos-0.8.2"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+### 10. LIST ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: http://{{host}}/api/ibofos/v1/arrays
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "44f1280b-982e-4d2e-ab14-fe9eb2022045",
+    "lastSuccessTime": 1622985867,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success"
+        },
+        "data": {
+            "arrayList": [
+                {
+                    "createDatetime": "2021-06-06 16:20:48 +0530",
+                    "devicelist": [
+                        {
+                            "name": "uram0",
+                            "type": "BUFFER"
+                        },
+                        {
+                            "name": "S45ANY0K100220      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S45ANY0K300748      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S45ANY0K300762      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S45ANY0K300769      ",
+                            "type": "SPARE"
+                        }
+                    ],
+                    "name": "POSArray",
+                    "status": "Mounted",
+                    "updateDatetime": "2021-06-06 16:20:48 +0530"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "pos-0.8.2"
+    }
+}
+```
+
+
+***Status Code:*** 200
 
 <br>
 
@@ -5000,7 +5284,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 2. MOUNTIBOFOS
+### ~~2. MOUNTIBOFOS~~
 
 
 
@@ -5265,7 +5549,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 4. UNMOUNTIBOFOS
+### ~~4. UNMOUNTIBOFOS~~
 
 
 
