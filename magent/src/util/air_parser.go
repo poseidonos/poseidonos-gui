@@ -5,7 +5,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"magent/src/models"
+  "strconv"
 )
+func parseIds(k string)(string, string){
+    if k == "" {
+      return "0","0"
+    }
+    index, err := strconv.Atoi(k) //string to int
+    if err != nil {
+        fmt.Println(err)
+    }
+    var aId = index & 65280 // masking last 16 bits
+    var vId = index & 255   // masking first 16 bits
+    aId = aId >> 8
+    arrId := strconv.Itoa(aId) // int to string
+    volId := strconv.Itoa(vId) // int to string
+    return arrId, volId
+}
+
 
 func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	var airData map[string]interface{}
@@ -15,15 +32,15 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	if err != nil {
 		return err
 	}
-	arrayId := "0"
+	//arrayId := "0"
 	timestamp := airData["timestamp"]
-	node := airData["group"].(map[string]interface{})["Mgmt"].(map[string]interface{})["node"].(map[string]interface{})
-	writeLatency := node["LAT_BDEV_WRITE"].(map[string]interface{})["objs"].([]interface{})
-	readLatency := node["LAT_BDEV_READ"].(map[string]interface{})["objs"].([]interface{})
-	readBandwidth := node["PERF_VOLUME"].(map[string]interface{})["objs"].([]interface{})
-	writeBandwidth := node["PERF_VOLUME"].(map[string]interface{})["objs"].([]interface{})
-	readIOPS := node["PERF_VOLUME"].(map[string]interface{})["objs"].([]interface{})
-	writeIOPS := node["PERF_VOLUME"].(map[string]interface{})["objs"].([]interface{})
+	node := airData["group"].(map[string]interface{})["M9K"].(map[string]interface{})["node"].(map[string]interface{})
+	writeLatency := node["LAT_ARR_VOL_WRITE"].(map[string]interface{})["objs"].([]interface{})
+	readLatency := node["LAT_ARR_VOL_READ"].(map[string]interface{})["objs"].([]interface{})
+	readBandwidth := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})
+	writeBandwidth := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})
+	readIOPS := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})
+	writeIOPS := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})
 	valMap := make(map[string]map[string]interface{})
 	parseData(writeLatency, "mean", "write_latency", &valMap)
 	parseData(readLatency, "mean", "read_latency", &valMap)
@@ -31,11 +48,13 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	parseData(readBandwidth, "bw_read", "read_bw", &valMap)
 	parseData(writeIOPS, "iops_write", "write_iops", &valMap)
 	parseData(readIOPS, "iops_read", "read_iops", &valMap)
+
 	for k, v := range valMap {
 		airPoint := models.AIRPoint{}
+    arrId,volId := parseIds(k)
 		airPoint.Tags = map[string]string{
-			"vol_id": k,
-			"arr_id": arrayId,
+			"vol_id": volId,
+			"arr_id": arrId,
 		}
 		airPoint.Timestamp = timestamp.(float64)
 		airPoint.Fields = v
@@ -47,7 +66,8 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 func parseData(data []interface{}, dataKey, mapKey string, valMap *map[string]map[string]interface{}) {
 	for i := 0; i < len(data); i++ {
 		d := data[i].(map[string]interface{})
-		volId := fmt.Sprintf("%.0f", d["app_id"])
+    if d[dataKey] !=nil {
+		volId := fmt.Sprintf("%.0f", d["index"])
 		if val, ok := (*valMap)[volId]; ok {
 			if _, valOK := val[mapKey]; valOK {
 				(*valMap)[volId][mapKey] = (val[mapKey].(float64) + d[dataKey].(float64))
@@ -58,5 +78,6 @@ func parseData(data []interface{}, dataKey, mapKey string, valMap *map[string]ma
 			(*valMap)[volId] = map[string]interface{}{}
 			(*valMap)[volId][mapKey] = d[dataKey]
 		}
+  }
 	}
 }

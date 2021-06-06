@@ -8,7 +8,7 @@ then
   if [ $1 = "nas" ]
   then
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/libcurl4_7.58.0-2ubuntu3_amd64.deb
-    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/influxdb_1.7.5_amd64.deb
+    sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/influxdb_1.7.6_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/kapacitor_1.5.2_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/chronograf_1.7.9_amd64.deb
     sudo dpkg -i $SCRIPT_PATH/ubuntu-packages/nginx-common_1.14.0-0ubuntu1_all.deb
