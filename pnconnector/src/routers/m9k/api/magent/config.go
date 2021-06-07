@@ -8,8 +8,8 @@ var AggTime = []string{"7d", "30d"}
 var AggRP = "agg_rp"
 var DefaultRP = "default_rp"
 var TimeGroupsDefault = map[string]string{
-	"1m":  "1s",
-	"5m":  "1s",
+	"1m":  "3s",
+	"5m":  "3s",
 	"15m": "1m",
 	"1h":  "1m",
 	"6h":  "1m",
