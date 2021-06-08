@@ -14,7 +14,4 @@ sudo cp $SCRIPT_PATH/virtual.conf /etc/nginx/conf.d/
 
 sudo nginx -t
 sudo systemctl restart nginx
-~
-~
-~
 
