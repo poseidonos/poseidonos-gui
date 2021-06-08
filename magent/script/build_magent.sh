@@ -4,7 +4,9 @@ cd $SCRIPT_PATH
 
 cd ..
 go build -mod vendor
-
-rm -rf ./bin
+if [ -d "bin" ]
+then
+   rm -rf ./bin
+fi
 mkdir bin
 mv magent ./bin

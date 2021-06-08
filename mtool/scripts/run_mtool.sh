@@ -70,6 +70,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable start-iBofMtool.service
 sudo systemctl start start-iBofMtool
 
+if [ ! -d "public/log" ]
+then
+   sudo mkdir public/log
+   sudo touch public/log/README.md
+fi
+
 echo "Starting MTOOL...."
 sleep 8s
 echo "checking status..."

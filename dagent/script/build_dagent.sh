@@ -13,7 +13,10 @@ export BUILD_TIME_DAGENT=$(date +%s)
 
 go build -mod vendor -tags ssloff -ldflags "-X dagent/src/routers/m9k/api/dagent.GitCommit=$GIT_COMMIT_DAGENT -X dagent/src/routers/m9k/api/dagent.BuildTime=$BUILD_TIME_DAGENT"
 
-rm -rf ./bin
+if [ -d "bin" ]
+then
+   rm -rf ./bin
+fi
 mkdir bin
 mv dagent ./bin
 cp config.yaml ./bin
