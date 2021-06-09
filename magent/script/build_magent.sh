@@ -3,6 +3,7 @@ SCRIPT_PATH=$(readlink -f $(dirname $0))/
 cd $SCRIPT_PATH
 
 cd ..
+go mod vendor
 go build -mod vendor
 if [ -d "bin" ]
 then

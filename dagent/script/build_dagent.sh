@@ -10,7 +10,7 @@ cp ../pnconnector/resources/events.yaml ./doc
 
 export GIT_COMMIT_DAGENT=$(git rev-list -1 HEAD)
 export BUILD_TIME_DAGENT=$(date +%s)
-
+go mod vendor
 go build -mod vendor -tags ssloff -ldflags "-X dagent/src/routers/m9k/api/dagent.GitCommit=$GIT_COMMIT_DAGENT -X dagent/src/routers/m9k/api/dagent.BuildTime=$BUILD_TIME_DAGENT"
 
 if [ -d "bin" ]
