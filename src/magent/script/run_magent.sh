@@ -8,7 +8,7 @@ if [ -e "/etc/systemd/system/magent.service" ]; then
 fi
 
 #create a soft link of the directory, to get the absolute path for starting the service
-if [ -e "/usr/local/magent" ]; then
+if [ -L "/usr/local/magent" ]; then
   sudo rm /usr/local/magent
 fi
 sudo ln -s $PARENT_SCRIPT_PATH /usr/local

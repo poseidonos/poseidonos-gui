@@ -1,0 +1,8 @@
+Flask==1.0.2
+Flask-SocketIO==4.3.0
+eventlet==0.25.2
+requests==2.21.0
+Influxdb>=5.2.1
+pymongo>=3.7
+pymodm==0.4.1
+PyJWT==1.7.1

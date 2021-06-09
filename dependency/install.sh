@@ -23,7 +23,7 @@ sudo chown -R influxdb:influxdb /var/lib/influxdb
 sudo $SCRIPT_PATH/setup_nginx.sh
 sudo $SCRIPT_PATH/change_influx_conf.sh
 sudo echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf/resources/influx.src
-pip3 install -r $SCRIPT_PATH/../mtool/requirements.txt
+pip3 install -r $SCRIPT_PATH/requirements.txt
 python3 $SCRIPT_PATH/create_retention_policy.py
 
 # For uninstalling, comment out the above lines and uncomment below lines

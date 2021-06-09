@@ -9,7 +9,7 @@ if [ -e "/etc/systemd/system/dagent.service" ]; then
 fi
 
 #create a soft link of the directory, to get the absolute path for starting the service
-if [ -e "/usr/local/dagent" ]; then
+if [ -L "/usr/local/dagent" ]; then
   sudo rm /usr/local/dagent
 fi
 sudo ln -s $PARENT_SCRIPT_PATH /usr/local

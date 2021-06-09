@@ -6,7 +6,7 @@ cd ..
 export PYTHONPATH=$PYTHONPATH:$PWD
 echo #PWD
 #/home/ibofmtool/plugin/net-socket &
-. ./scripts/ProcessorAffinitySet.sh
+. ./script/ProcessorAffinitySet.sh
 #echo "Selected Core"
 #echo $CoresSel
 #python3 PreConfiguredAlerts.py

@@ -46,14 +46,14 @@ if [ -e "$currdir/dist/ibof.db" ]; then
 fi
 
 #give permission to cleanup.sh
-sudo chmod +x $currdir/scripts/cleanup.sh
+sudo chmod +x $currdir/script/cleanup.sh
 
 #create a soft link for the folder , to get absolute path for starting service
-if [ -d "/usr/local/m9k" ]; then
+if [ -L "/usr/local/m9k" ]; then
   sudo rm /usr/local/m9k
 fi
 parentdir="$(dirname $(dirname $ROOT_DIR))"
-#echo $parentdir
+parentdir="$(dirname $parentdir)"
 sudo ln -s $parentdir /usr/local
 
 #move the service file  to the /etc/systemd/system/
@@ -63,7 +63,7 @@ if [ -e "/etc/systemd/system/start-iBofMtool.service" ]; then
 fi
 
 echo "Starting MTool Service"
-sudo cp $currdir/scripts/start-iBofMtool.service /etc/systemd/system/
+sudo cp $currdir/script/start-iBofMtool.service /etc/systemd/system/
 sudo chmod 664 /etc/systemd/system/start-iBofMtool.service
 
 sudo systemctl daemon-reload
