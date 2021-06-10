@@ -13,6 +13,7 @@ sudo apt-get install -y influxdb
 sudo apt-get install -y kapacitor
 sudo apt-get install -y chronograf
 sudo apt-get install -y nginx
+sudo apt-get install -y python3-pip
 
 sudo service influxdb start
 sudo service chronograf start

@@ -10,4 +10,5 @@ echo #PWD
 #echo "Selected Core"
 #echo $CoresSel
 #python3 PreConfiguredAlerts.py
+cd api
 taskset -c $CoresSel python3 rest/app.py

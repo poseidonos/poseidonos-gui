@@ -18,6 +18,11 @@ currdir=$ROOT_DIR/..        #/mtool
 sudo service influxdb start
 sudo service kapacitor start
 
+if [ ! -d $currdir"/api/public" ]
+then
+    mkdir $currdir"/api/public"
+fi
+
 #Configuring nginx
 sudo find /usr/share/nginx/html/ ! -name 'index.nginx-debian.html' -type f -exec rm -f {} +
 if [ -d "/usr/share/nginx/html/static" ]
@@ -26,7 +31,7 @@ sudo rm -r /usr/share/nginx/html/static
 fi
 if [ -d "/usr/share/nginx/html" ]
 then
-    sudo cp -r $currdir/public/* /usr/share/nginx/html/
+    sudo cp -r $currdir/api/public/* /usr/share/nginx/html/
 fi
 #python3 scripts/nginx_form_conf.py
 #sudo cp virtual.conf /etc/nginx/conf.d/
@@ -41,8 +46,8 @@ sudo chmod 777 /var/log/logmtool1.log
 sudo chmod 777 /var/log/logmtool2.log
 
 #give permission to sqlite db
-if [ -e "$currdir/dist/ibof.db" ]; then
-   sudo chmod 777 $currdir/dist/ibof.db
+if [ -e "$currdir/api/dist/ibof.db" ]; then
+   sudo chmod 777 $currdir/api/dist/ibof.db
 fi
 
 #give permission to cleanup.sh
@@ -55,6 +60,11 @@ fi
 parentdir="$(dirname $(dirname $ROOT_DIR))"
 parentdir="$(dirname $parentdir)"
 sudo ln -s $parentdir /usr/local
+
+if [ ! -d $currdir"/api/public/log" ]
+then
+   sudo mkdir $currdir/api/public/log
+fi
 
 #move the service file  to the /etc/systemd/system/
 echo "Stopping MTool service if already present"
@@ -69,11 +79,6 @@ sudo chmod 664 /etc/systemd/system/start-iBofMtool.service
 sudo systemctl daemon-reload
 sudo systemctl enable start-iBofMtool.service
 sudo systemctl start start-iBofMtool
-
-if [ ! -d $currdir"/public/log" ]
-then
-   sudo mkdir $currdir/public/log
-fi
 
 echo "Starting MTOOL...."
 sleep 8s
