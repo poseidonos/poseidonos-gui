@@ -209,7 +209,7 @@ def token_required(f):
 
 @app.route('/api/v1.0/version', methods=['GET'])
 def get_version():
-    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../UI/package.json"))
+    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ui/package.json"))
     with open(package_json_path) as f:
         data = json.load(f)
         return toJson({"version": data["version"]})
