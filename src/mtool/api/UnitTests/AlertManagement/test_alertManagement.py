@@ -417,12 +417,12 @@ def test_update_alerts_failure_2(mock_execute_select_alert_query, mock_execute_d
 
 @requests_mock.Mocker(kw="mock")
 def test_Test_smtp_server(global_data, **kwargs):
-    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}}, status_code=200)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'your_email@company_xyz.com', 'username': 'test', 'password': 'test'}}, status_code=200)
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().post('/api/v1.0/test_smtpserver/',
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
-                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test", "smtppassword": "test", "smtpfromemail": "vishal.s7@samsung.com"}),
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test", "smtppassword": "test", "smtpfromemail": "your_email@company_xyz.com"}),
                                       content_type='application/json',
                                       )
     assert response.status_code == 500
@@ -430,24 +430,24 @@ def test_Test_smtp_server(global_data, **kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_Test_smtp_server_failure(global_data, **kwargs):
-    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}}, status_code=500)
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'your_email@company_xyz.com', 'username': 'test', 'password': 'test'}}, status_code=500)
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().post('/api/v1.0/test_smtpserver/',
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
-                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test","smtpfromemail": "vishal.s7@samsung.com"}),
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpusername": "test","smtpfromemail": "your_email@company_xyz.com"}),
                                       content_type='application/json',
                                       )
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
 def test_Test_smtp_server_failure_2(global_data, **kwargs):
-    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'vishal.s7@samsung.com', 'username': 'test', 'password': 'test'}})
+    kwargs["mock"].post("http://localhost:9092/kapacitor/v1/config/smtp/", json={'set': {'enabled': True, 'host': '112.107.220.150', 'port': '25', 'from': 'your_email@company_xyz.com', 'username': 'test', 'password': 'test'}})
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().post('/api/v1.0/test_smtpserver/',
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
-                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpfromemail": "vishal.s7@samsung.com"}),
+                                               }, data=json.dumps({"smtpserver": smtp_server, "smtpserverip": smtp_server_ip, "smtpserverport": smtp_server_port, "smtpfromemail": "your_email@company_xyz.com"}),
                                       content_type='application/json',
                                       )
     assert response.status_code == 500
@@ -490,7 +490,7 @@ def test_delete_smtp_server_failure_2(global_data, **kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_smtp_details(global_data, **kwargs):
-    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=200)
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'your_email@company_xyz.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['your_email@company_xyz.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=200)
 
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
@@ -500,7 +500,7 @@ def test_get_smtp_details(global_data, **kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_smtp_details_failure(global_data, **kwargs):
-    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=500)
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'your_email@company_xyz.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['your_email@company_xyz.com'], 'username': 'test'}, 'redacted': ['password']}, status_code=500)
 
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',
@@ -510,7 +510,7 @@ def test_get_smtp_details_failure(global_data, **kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_get_smtp_details_failure_2(global_data, **kwargs):
-    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'vishal.s7@samsung.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['palak.k2@samsung.com'], 'username': 'test'}, 'redacted': ['password']})
+    kwargs["mock"].get("http://localhost:9092/kapacitor/v1/config/smtp/", json={'link': {'rel': 'self', 'href': '/kapacitor/v1/config/smtp/'}, 'options': {'enabled': True, 'from': 'your_email@company_xyz.com', 'global': False, 'host': '112.107.220.150', 'idle-timeout': '30s', 'no-verify': False, 'password': True, 'port': 25, 'state-changes-only': False, 'to': ['your_email@company_xyz.com'], 'username': 'test'}, 'redacted': ['password']})
 
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get('/api/v1.0/get_smtp_details/',

@@ -104,7 +104,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -171,13 +171,13 @@ describe("ConfigurationSetting", () => {
       "input"
     );
     fireEvent.change(smtpFromEmail, {
-      target: { value: "MTool@samsung.com" }
+      target: { value: "your_project_email@company_xyz.com" }
     });
     const smtpUsername = getByTestId("smtpUsername").querySelector(
       "input"
     );
     fireEvent.change(smtpUsername, {
-      target: { value: "palak.k" }
+      target: { value: "username" }
     });
     const smtpPassword = getByTestId("smtpPassword").querySelector(
       "input"
@@ -212,13 +212,13 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       },
       {
         active: 1,
         edit: false,
-        email: "palak.kapoor1@gmail.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -239,7 +239,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(getByText("Yes"));
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/delete_emailids/",
-      { ids: ["palak.k@samsung.com"] },
+      { ids: ["your_email@company_xyz.com"] },
       {
         headers: {
           Accept: "application/json",
@@ -256,13 +256,13 @@ describe("ConfigurationSetting", () => {
       {
         active: 0,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       },
       {
         active: 1,
         edit: false,
-        email: "palak.kapoor1@gmail.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -283,7 +283,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(getByText("Yes"));
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/delete_emailids/",
-      { ids: ["palak.k@samsung.com"] },
+      { ids: ["your_email@company_xyz.com"] },
       {
         headers: {
           Accept: "application/json",
@@ -312,7 +312,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: true
       }
     ])
@@ -323,7 +323,7 @@ describe("ConfigurationSetting", () => {
     //   {
     //     active: 1,
     //     edit: false,
-    //     email: "palak.k@samsung.com",
+    //     email: "your_email@company_xyz.com",
     //     selected: true
     //   }
     // ]);
@@ -340,13 +340,13 @@ describe("ConfigurationSetting", () => {
       "input"
     );
     fireEvent.change(smtpFromEmail, {
-      target: { value: "MTool@samsung.com" }
+      target: { value: "your_project_email@company_xyz.com" }
     });
     const smtpUsername = getByTestId("smtpUsername").querySelector(
       "input"
     );
     fireEvent.change(smtpUsername, {
-      target: { value: "palak.k" }
+      target: { value: "username" }
     });
     const smtpPassword = getByTestId("smtpPassword").querySelector(
       "input"
@@ -383,7 +383,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 0,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ])
@@ -407,13 +407,13 @@ describe("ConfigurationSetting", () => {
       "input"
     );
     fireEvent.change(smtpFromEmail, {
-      target: { value: "MTool@samsung.com" }
+      target: { value: "your_project_email@company_xyz.com" }
     });
     const smtpUsername = getByTestId("smtpUsername").querySelector(
       "input"
     );
     fireEvent.change(smtpUsername, {
-      target: { value: "palak.k" }
+      target: { value: "username" }
     });
     const smtpPassword = getByTestId("smtpPassword").querySelector(
       "input"
@@ -437,7 +437,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(toggleButton);
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/toggle_email_status/",
-      { emailid: "palak.k@samsung.com", status: true },
+      { emailid: "your_email@company_xyz.com", status: true },
       {
         headers: {
           Accept: "application/json",
@@ -466,7 +466,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -488,7 +488,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -507,7 +507,7 @@ describe("ConfigurationSetting", () => {
       expect(asFragment()).toMatchSnapshot();
       const inputNode = getByPlaceholderText("Email ID");
       fireEvent.change(inputNode, {
-        target: { value: "palak.k@samsung.com" }
+        target: { value: "your_email@company_xyz.com" }
       });
       fireEvent.click(saveElement);
 
@@ -541,7 +541,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -555,7 +555,7 @@ describe("ConfigurationSetting", () => {
       const saveElement = await waitForElement(() => getByTitle("Save"));
       const inputNode = getByPlaceholderText("Email ID");
       fireEvent.change(inputNode, {
-        target: { value: "palak.k1@samsung.com" }
+        target: { value: "your_email@company_xyz.com" }
       });
       const spy = jest.spyOn(axios, "post");
       fireEvent.click(saveElement);
@@ -565,8 +565,8 @@ describe("ConfigurationSetting", () => {
         {
           active: 1,
           edit: false,
-          email: "palak.k1@samsung.com",
-          oldid: "palak.k@samsung.com",
+          email: "your_email@company_xyz.com",
+          oldid: "your_email@company_xyz.com",
           selected: false
         },
         {
@@ -609,7 +609,7 @@ describe("ConfigurationSetting", () => {
       expect(asFragment()).toMatchSnapshot();
       const inputNode = getByPlaceholderText("Email ID");
       fireEvent.change(inputNode, {
-        target: { value: "palak@samsung.com" }
+        target: { value: "your_email@company_xyz.com" }
       });
       const spy = jest.spyOn(axios, "post");
       const mock = new MockAdapter(axios);
@@ -618,7 +618,7 @@ describe("ConfigurationSetting", () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(spy).toHaveBeenCalledWith(
         "/api/v1.0/update_email/",
-        { email: "palak@samsung.com", oldid: "palak@samsung.com" },
+        { email: "your_email@company_xyz.com", oldid: "your_email@company_xyz.com" },
         {
           headers: {
             Accept: "application/json",
@@ -636,7 +636,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 0,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ])
@@ -660,13 +660,13 @@ describe("ConfigurationSetting", () => {
       "input"
     );
     fireEvent.change(smtpFromEmail, {
-      target: { value: "MTool@samsung.com" }
+      target: { value: "your_project_email@company_xyz.com" }
     });
     const smtpUsername = getByTestId("smtpUsername").querySelector(
       "input"
     );
     fireEvent.change(smtpUsername, {
-      target: { value: "palak.k" }
+      target: { value: "username" }
     });
     const smtpPassword = getByTestId("smtpPassword").querySelector(
       "input"
@@ -691,7 +691,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(toggleButton);
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/toggle_email_status/",
-      { emailid: "palak.k@samsung.com", status: true },
+      { emailid: "your_email@company_xyz.com", status: true },
       {
         headers: {
           Accept: "application/json",
@@ -708,13 +708,13 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       },
       {
         active: 1,
         edit: false,
-        email: "palak.kapoor1@gmail.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ]);
@@ -735,7 +735,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(getByText("Yes"));
     expect(spy).toHaveBeenCalledWith(
       "/api/v1.0/delete_emailids/",
-      { ids: ["palak.k@samsung.com"] },
+      { ids: ["your_email@company_xyz.com"] },
       {
         headers: {
           Accept: "application/json",
@@ -757,7 +757,7 @@ describe("ConfigurationSetting", () => {
       {
         active: 1,
         edit: false,
-        email: "palak.k@samsung.com",
+        email: "your_email@company_xyz.com",
         selected: false
       }
     ])
@@ -782,13 +782,13 @@ describe("ConfigurationSetting", () => {
       "input"
     );
     fireEvent.change(smtpFromEmail, {
-      target: { value: "MTool@samsung.com" }
+      target: { value: "your_project_email@company_xyz.com" }
     });
     const smtpUsername = getByTestId("smtpUsername").querySelector(
       "input"
     );
     fireEvent.change(smtpUsername, {
-      target: { value: "palak.k" }
+      target: { value: "username" }
     });
     const smtpPassword = getByTestId("smtpPassword").querySelector(
       "input"

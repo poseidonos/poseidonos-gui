@@ -155,11 +155,11 @@
 							"var counter = parseInt(pm.environment.get(\"createAlertEmailIDCounter\"))\r",
 							"\r",
 							"// if(oldids.length <1) {\r",
-							"//     oldids = [\"abc@samsung.com\",\"def@samsung.com\",\"ghi@samsung.com\",\"jkl@samsung.com\",\"xyz@samsung.com\"];\r",
+							"//     oldids = [\"abc@company_xyz.com\",\"def@company_xyz.com\",\"ghi@company_xyz.com\",\"jkl@company_xyz.com\",\"xyz@company_xyz.com\"];\r",
 							"// }\r",
 							"\r",
 							"// if(newids.length <1) {\r",
-							"//     newids =  [\"abc@samsung.com\",\"def@samsung.com\",\"ghi@samsung.com\",\"jkl@samsung.com\",\"xyz@samsung.com\"];\r",
+							"//     newids =  [\"abc@company_xyz.com\",\"def@company_xyz.com\",\"ghi@company_xyz.com\",\"jkl@company_xyz.com\",\"xyz@company_xyz.com\"];\r",
 							"// }\r",
 							"\r",
 							"\r",
@@ -247,7 +247,7 @@
 							"var counter = parseInt(pm.environment.get(\"deleteAlertEmailIDCounter\"))\r",
 							"\r",
 							"// if(emailIDS.length <1) {\r",
-							"//     emailIDS = [[\"abc@samsung.com\"],[\"def@samsung.com\"],[\"ghi@samsung.com\"],[\"jkl@samsung.com\"],[\"xyz@samsung.com\"]];\r",
+							"//     emailIDS = [[\"abc@company_xyz.com\"],[\"def@company_xyz.com\"],[\"ghi@company_xyz.com\"],[\"jkl@company_xyz.com\"],[\"xyz@company_xyz.com\"]];\r",
 							"// }\r",
 							"\r",
 							"//var currentemailid = emailIDS.shift();\r",
@@ -420,7 +420,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"abc.k\",\r\n    \"smtpfromemail\": \"ssir@samsung.com\",\r\n    \"smtppassword\": \"abc\"\r\n}"
+					"raw": "{\r\n    \"smtpserver\":\"{{smtpserver}}\",\r\n    \"smtpserverip\":\"{{smtpserverip}}\",\r\n    \"smtpserverport\": {{smtpserverport}},\r\n    \"smtpusername\":\"abc.k\",\r\n    \"smtpfromemail\": \"ssir@company_xyz.com\",\r\n    \"smtppassword\": \"abc\"\r\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}:{{port}}/api/v1.0/test_smtpserver/",

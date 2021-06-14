@@ -1048,7 +1048,7 @@ describe("Performance", () => {
           size: "10",
           unit: "GB",
           usedspace: 8,
-          ip: "107.101.123.123",
+          ip: "IP",
           subnqn: "NA",
           status: "Active",
           id: 1

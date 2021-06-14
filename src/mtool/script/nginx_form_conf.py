@@ -47,7 +47,7 @@ f = open("virtual.conf",'w+')
 """
 server {
     listen       80;
-    server_name  107.108.221.146;
+    server_name  server_ip;
 
     location / {
         proxy_pass http://0.0.0.0:5000;

@@ -224,7 +224,7 @@ const icons = {
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
 // const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
-// const healthStatusSocketEndPoint = "http://107.122.11.174:3000/health_status";
+
 
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {

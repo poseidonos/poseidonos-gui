@@ -255,7 +255,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"oldid\": \"test1@samsung.com\",\r\n    \"email\":\"test1@samsung.com\"\r\n}"
+					"raw": "{\r\n    \"oldid\": \"test1@company_xyz.com\",\r\n    \"email\":\"test1@company_xyz.com\"\r\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}:{{port}}/api/v1.0/update_email/",
@@ -306,7 +306,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"ids\": [\"test1@samsung.com\"]\r\n}"
+					"raw": "{\r\n    \"ids\": [\"test1@company_xyz.com\"]\r\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_emailids/",

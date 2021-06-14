@@ -167,7 +167,7 @@ def test_smtpserver(mock_insert_smtp_ip,mock_SMTP, global_data, **kwargs):
 def test_send_email(mock_SMTP, global_data):
     response = app.test_client().post(
         '/api/v1.0/send_email/',
-        data=json.dumps({'smtpserverip': "10.10.10.10", 'smtpserverport': "6002", 'ids':['palak.k@samsung.com']}),
+        data=json.dumps({'smtpserverip': "10.10.10.10", 'smtpserverport': "6002", 'ids':['your_email@company_xyz.com']}),
         headers={
             'x-access-token': global_data['token'],
             'Accept': 'application/json',
