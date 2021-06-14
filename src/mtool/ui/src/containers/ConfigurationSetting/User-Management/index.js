@@ -30,16 +30,6 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-DESCRIPTION: Component corresponding to User Management Page
-@NAME : index.js
-@AUTHORS: Jay Hitesh Sanghavi 
-@Version : 1.0 *
-@REVISION HISTORY
-[03/06/2019] [Jay] : Prototyping..........////////////////////
-[04/06/2019] [Aswin] : Changes for adding custom alert
-*/
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withStyles, Grid } from '@material-ui/core';
