@@ -81,7 +81,7 @@ const styles = theme => ({
 
   cardmedia: {
     backgroundSize: 'auto',
-    alt: 'Samsung iBoF Management Tool',
+    alt: 'Poseidon Management Tool',
     width: 'auto',
     height: '50px',
     clear: 'right',

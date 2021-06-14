@@ -400,7 +400,7 @@ class Header extends Component {
             <img
               src={Heading}
               style={{ cursor: 'default', marginBottom: '0.4rem' }}
-              alt="Samsung iBOF Management Tool"
+              alt="Poseidon Management Tool"
             />
             <Typography className={classes.version} variant="caption" display="block">
               Version 0.2.96

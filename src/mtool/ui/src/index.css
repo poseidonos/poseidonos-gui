@@ -1,32 +1,3 @@
-/* @font-face {
-  font-family: 'SamsungOneUI';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Samsung One'), local('SamsungOneUI'),
-       url('./assets/fonts/SamsungOneUI-400.ttf') format('truetype'), /* Safari, Android, iOS 
-}
-@font-face {
-  font-family: 'SamsungOneUI';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Samsung One'), local('SamsungOneUI'),
-       url('./assets/fonts/SamsungOneUI-600.ttf') format('truetype'), /* Safari, Android, iOS 
-}
-@font-face {
-  font-family: 'SamsungOneUI';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Samsung One'), local('SamsungOneUI'),
-       url('./assets/fonts/SamsungOneUI-700.ttf') format('truetype'), /* Safari, Android, iOS 
-}
-@font-face {
-  font-family: 'Samsung One';
-  font-style: normal;
-  font-weight: 800;
-  src: local('Samsung One'), local('SamsungOne'),
-       url('./assets/fonts/SamsungOneUI-800.ttf') format('truetype'), /* Safari, Android, iOS
-} */
-
 body {
   margin: 0;
   padding: 0;

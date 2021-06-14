@@ -10,7 +10,7 @@
     ],
     "jsx-a11y/label-has-associated-control": [ 2, {
       "assert": "both",
-      "depth": 3,
+      "depth": 3
     }],
     "import/imports-first": ["error", "absolute-first"],
     "no-underscore-dangle": ["error", { "allow": ["_id", "__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] }],
