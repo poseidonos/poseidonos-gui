@@ -1,5 +1,5 @@
-# MTool 
-M-Tool is a Management tool for Posiedon. It gives the ability to configure available Poseidon boxes, aggregate events and represent a big picture of operations. In the event of a failure, MTool has the capabilities to alert users about the problem, and allow them to take necessary actions.
+# POS Management Stack - Client (called MTool) 
+MTool acts as client in the POS Management Stack. It provides UI to configure available Poseidon boxes, aggregate events and represent a big picture of operations.
 
 MTool exposes REST APIs with JWT authentication for secured communication with Poseidon Management UI or any third party UI applications.
 
@@ -32,40 +32,23 @@ MTool exposes REST APIs with JWT authentication for secured communication with P
    - Run command to run and bash files  
 
 # System Requirements: 
-- Ubuntu 18.04 with python 3.5+. 
-- SMTP port access for triggering emails. 
+- Ubuntu 18.04 with python3 
 - Best Resolution: 1920 x 1080 (currently tested in Mozilla Firefox and Chrome with 100% zoom level)
 
 # Dev 
 ## Source 
-> git clone http://10.227.30.174:7990/scm/ibof/m9k.git --branch devel
-### Change the branch as per the current need   
-### After cloning, MTool code is found under `/m9k/mtool/`
+> git clone http://github.com/poseidonos/poseidonos.git 
+### MTool code is found under `tool/m9k/src/mtool/`
 
-## Code Directory
-`
-cd m9k
-`
-
-## Setting up and running the iBOF management tool
+## Setting up and running MTool
 
 ### 1. Install Packages
-
-These packages are required for proper working of the Management tool.
-
-This will install required packages such as influxdb, telegraf, chronograf, kapacitor on the host.
-
-`
-./install_all.sh
-`
+This step is performed along with installation of other components  
 
 ### 2. Run application
-To run various applications, use this command below.
+This step is performed along with running of other components  
 
-`
-./run_all.sh
-`
-
+### 3. Access application
 The server will run on localhost and will be accessible from the browser
 
 `
