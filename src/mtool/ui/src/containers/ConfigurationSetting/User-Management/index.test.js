@@ -31,15 +31,6 @@
  */
 
 
-
-DESCRIPTION: User Management Test File
-@NAME : index.test.js
-@AUTHORS: Aswin K K
-@Version : 1.0 *
-@REVISION HISTORY
-[29/11/2019] [Aswin K K] : Prototyping..........////////////////////
-*/
-
 import React from "react";
 import {
   render,
