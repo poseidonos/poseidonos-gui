@@ -63,11 +63,11 @@ def list_devices():
         'devices': [],
         'metadevices': []
     }
-    print("devices i>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ???  ",devices)
     if "result" in devices and "data" in devices["result"] and "devicelist" in devices["result"]["data"]:
         for device in devices["result"]["data"]["devicelist"]:
             if device["type"] == 'NVRAM':  # and device["class"] !=  'SYSTEM':
-                res['metadevices'].append(device["name"])
+                meta_device = {"name":device["name"], "isAvailable":True,"arrayName":"","displayMsg":device["name"],"trimmedDisplayMsg":device["name"]}
+                res['metadevices'].append(meta_device)
             elif device["type"] == 'SSD':  # and device["class"] !=  'SYSTEM':
                 res['devices'].append({
                     "name": device["name"],

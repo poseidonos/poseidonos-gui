@@ -78,6 +78,8 @@ import threading
 import os
 import eventlet
 import math
+from itertools import chain
+
 eventlet.monkey_patch()
 
 BLOCK_SIZE = 1024 * 1024
@@ -964,11 +966,14 @@ def getDevices(current_user):
         try:
             if a_info.status_code == 200:
                 a_info = a_info.json()
-                for device in devices["devices"]:
+                for device in chain(devices["devices"],devices["metadevices"]):
                     for arr_dev in a_info["result"]["data"]["devicelist"]:
                         if arr_dev["name"] == device["name"]:
                             device["isAvailable"] = False
                             device["arrayName"] = array["name"]
+                            if "displayMsg" in device:
+                                device["displayMsg"] = device["name"] + " (used by "+array["name"]+")"
+                                device["trimmedDisplayMsg"] = device["name"] + " (used)"
                             break
         except Exception as e:
             print("Exception in array_info() in /api/v1.0/get_devices/ ",e)
