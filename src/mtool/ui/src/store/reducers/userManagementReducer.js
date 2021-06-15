@@ -56,6 +56,35 @@ const userManagementReducer = (state = initialState, action) => {
                     users,
                 };
             }
+        case actionTypes.USER_MANAGEMENT_UPDATE_USER: {
+            const users = state.users.map((user) => {
+                return user._id === action.user.id ? {
+                    ...user,
+                    [action.user.name]: action.user.value
+                } /* istanbul ignore next */ : {
+                        ...user,
+                    };
+            });
+            return {
+                ...state,
+                users
+            }
+        }
+        case actionTypes.USER_MANAGEMENT_EDIT_USER: {
+            const users = state.users.map((user) => {
+                return user._id === action.user._id ? {
+                    ...user,
+                    edit: true
+                } /* istanbul ignore next */ : {
+                        ...user,
+                        edit: false
+                    };
+            });
+            return {
+                ...state,
+                users
+            }
+        }
         default:
             return state;
     }

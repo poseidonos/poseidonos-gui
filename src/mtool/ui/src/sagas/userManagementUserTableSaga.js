@@ -38,7 +38,10 @@ import { fetchUsersInfo } from "./userManagementSaga"
 
 export function* updateUsersInfo(action) {
     try {
-        const response = yield call([axios, axios.post], '/api/v1.0/update_user/', action.newUsers, {
+        const response = yield call([axios, axios.post], '/api/v1.0/update_user/', {
+            ...action.newUsers,
+            oldid: action.newUsers._id
+        }, {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

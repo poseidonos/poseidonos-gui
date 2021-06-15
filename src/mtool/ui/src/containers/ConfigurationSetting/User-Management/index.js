@@ -118,24 +118,20 @@ class UserManagement extends Component {
     });
   }
 
-  saveUser(user, i) {
-    const newUser = {
-      ...user,
-      oldid: this.props.users[i]._id,
-    };
-    this.props.updateUsersInfo(newUser);
+  saveUser(user) {
+    this.props.updateUsersInfo(user);
   }
 
-  deleteUsers() {
+  deleteUsers(users) {
     const ids = [];
     const currentUser = localStorage.getItem('userid');
-    this.props.users.forEach(user => {
-      if (user.selected && user._id !== currentUser) {
+    [users].forEach(user => {
+      if (user._id !== currentUser) {
         ids.push(user._id);
         // Uncomment below line when multiple user selection is enabled
         // } else if (user.selected && user._id === currentUser) {
       }
-      if (user.selected && user._id === currentUser) {
+      if (user._id === currentUser) {
         this.props.openAlertBox({
           istypealert: true,
           alerttype: 'alert',
@@ -143,6 +139,7 @@ class UserManagement extends Component {
           alerttitle: 'Delete User',
           alertdescription: 'Current user cannot be deleted'
         });
+        return;
       }
     });
     // if (ids.length === 0) {
@@ -247,8 +244,10 @@ class UserManagement extends Component {
                 saveChange={this.saveUser}
                 deleteUsers={this.deleteUsers}
                 users={this.props.users}
+                fetchUsers={this.props.fetchUsersInfo}
+                editUser={this.props.editUser}
                 phone_number={this.state.phone_number}
-                OnHandleChange={this.OnHandleChange}
+                OnChangeRow={this.props.updateUserRow}
                 openAlertBox = {this.props.openAlertBox}
               />
               <AddNewUser
@@ -292,9 +291,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     // setUsersInfo: (updatedUsers) => dispatch(actionCreators.setUsersInfo(updatedUsers)),
+    editUser: (user) => dispatch({type: actionTypes.USER_MANAGEMENT_EDIT_USER, user}),
     openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
     fetchUsersInfo: () => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_FETCH_USERS }),
     updateUsersInfo: (newUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_UPDATE_USERS, newUsers, }),
+    updateUserRow: (user) => dispatch({ type: actionTypes.USER_MANAGEMENT_UPDATE_USER, user}),
     deleteUsersInfo: (deleteUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_DELETE_USERS, deleteUsers, }),
     // toggleUsersInfo: (toggleUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsers, }),
     addNewUserInfo: (addNewUser) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_ADD_NEW_USERS, addNewUser, }),

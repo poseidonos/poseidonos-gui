@@ -617,8 +617,13 @@ describe("ConfigurationSetting", () => {
       fireEvent.click(saveElement);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(spy).toHaveBeenCalledWith(
-        "/api/v1.0/update_email/",
-        { email: "your_email@company_xyz.com", oldid: "your_email@company_xyz.com" },
+        "/api/v1.0/update_email/", {
+          active: 1,
+          edit: false,
+          email: "your_email@company_xyz.com",
+          oldid: "your_email@company_xyz.com",
+          selected: false
+        },
         {
           headers: {
             Accept: "application/json",

@@ -30,16 +30,6 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-DESCRIPTION: Hardware Container Test File
-@NAME : index.test.js
-@AUTHORS: Jay Sanghavi
-@Version : 1.0 *
-@REVISION HISTORY
-[03/06/2019] [Jay] : Prototyping..........////////////////////
-*/
-
 import React from "react";
 import {
   render,

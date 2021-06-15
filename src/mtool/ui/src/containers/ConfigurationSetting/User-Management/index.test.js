@@ -372,8 +372,8 @@ describe("ConfigurationSetting", () => {
       expect(nameElement).toBeDefined();
       const deleteBtn = await waitForElement(() => getAllByTitle("Delete")[0]);
       fireEvent.click(deleteBtn);
-      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
-      fireEvent.click(saveBtn);
+      const yesBtn = await waitForElement(() => getByText("Yes"));
+      fireEvent.click(yesBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
         "ids": ["abcd"],
@@ -411,7 +411,7 @@ describe("ConfigurationSetting", () => {
       expect(nameElement).toBeDefined();
       const deleteBtn = await waitForElement(() => getAllByTitle("Delete")[0]);
       fireEvent.click(deleteBtn);
-      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
+      const saveBtn = await waitForElement(() => getByText("Yes"));
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
@@ -454,7 +454,7 @@ describe("ConfigurationSetting", () => {
       fireEvent.change(phno, {
         target: { value: "+1 (702) 123-4578" }
       });
-      const email = await waitForElement(() => getAllByPlaceholderText("Email")[0]);
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
       fireEvent.change(email, {
         target: { value: "test@abc.com" }
       });
@@ -462,16 +462,17 @@ describe("ConfigurationSetting", () => {
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/', {
-        "_id": "abcd",
-        "active": true,
-        "edit": false,
-        "email": "test@abc.com",
-        "oldid": "abcd",
-        "password": "Defg",
-        "phone_number": "+1 (702) 123-4578",
-        "privileges": "Create, Read, Edit, Delete",
-        "role": "admin",
-        "selected": false,
+        _id: 'abcd',
+        email: 'test@abc.com',
+        password: 'Defg',
+        phone_number: '+1 (702) 123-4578',
+        role: 'admin',
+        active: true,
+        privileges: 'Create, Read, Edit, Delete',
+        selected: false,
+        edit: true,
+        tableData: { id: 0 },
+        oldid: 'abcd'
       }, {
         "headers": {
           "Accept": "application/json",
@@ -509,7 +510,7 @@ describe("ConfigurationSetting", () => {
       fireEvent.change(phno, {
         target: { value: "+1 (702) 123-4578" }
       });
-      const email = await waitForElement(() => getAllByPlaceholderText("Email")[0]);
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
       fireEvent.change(email, {
         target: { value: "test@abc.com" }
       });
@@ -517,16 +518,17 @@ describe("ConfigurationSetting", () => {
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/', {
-        "_id": "abcd",
-        "active": true,
-        "edit": false,
-        "email": "test@abc.com",
-        "oldid": "abcd",
-        "password": "Defg",
-        "phone_number": "+1 (702) 123-4578",
-        "privileges": "Create, Read, Edit, Delete",
-        "role": "admin",
-        "selected": false,
+          _id: 'abcd',
+          email: 'test@abc.com',
+          password: 'Defg',
+          phone_number: '+1 (702) 123-4578',
+          role: 'admin',
+          active: true,
+          privileges: 'Create, Read, Edit, Delete',
+          selected: false,
+          edit: true,
+          tableData: { id: 0 },
+          oldid: 'abcd'
       }, {
         "headers": {
           "Accept": "application/json",
@@ -562,7 +564,8 @@ describe("ConfigurationSetting", () => {
       fireEvent.change(phno, {
         target: { value: "+1 (702) 123-4578" }
       });
-      const email = await waitForElement(() => getAllByPlaceholderText("Email")[0]);
+      expect(asFragment()).toMatchSnapshot();
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
       fireEvent.change(email, {
         target: { value: "test" }
       });
@@ -602,7 +605,7 @@ describe("ConfigurationSetting", () => {
       expect(nameElement).toBeDefined();
       const deleteBtn = await waitForElement(() => getAllByTitle("Delete")[0]);
       fireEvent.click(deleteBtn);
-      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
+      const saveBtn = await waitForElement(() => getByText("Yes"));
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(await waitForElement(() => getByText("Current user cannot be deleted")));
