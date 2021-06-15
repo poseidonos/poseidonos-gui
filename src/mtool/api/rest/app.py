@@ -300,14 +300,14 @@ def stop_ibofos(current_user):
             res = res.json()
             if res["result"]["status"]["code"] == 0:
                 description = res["result"]["status"]["description"]
-                return jsonify({"response": description})
+                return jsonify({"response": description, "code": 0})
         else:
             res = res.json()
             if ("result" in res and "status" in res["result"]):
                 description = res["result"]["status"]["description"]
                 description += ", Error Code:"
                 description += str(res["result"]["status"]["code"])
-                return jsonify({"response": description})
+                return jsonify({"response": description, "code": res["result"]["status"]["code"]})
             return jsonify({"response": "unable to stop ibofos", "code": -1})
     except BaseException:
         return jsonify({"response": "unable to stop ibofos", "code": -1})

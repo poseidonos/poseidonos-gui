@@ -116,12 +116,17 @@ function* stopIBOFOs() {
             },
         });
         if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage("Poseidon OS Stopped Successfully"));
+            if(response.data.code === 0) {
+                yield put(actionCreators.setOperationsMessage("Poseidon OS Stopped Successfully"));
+            } else {
+                yield put(actionCreators.setOperationsMessage(`Error in Stopping Poseidon OS: ${response.data.response}`));
+            }
         }
     } catch (e) {
-        yield put(actionCreators.setOperationsMessage("Error in Stopping Poseidon OS: ", e));
+        yield put(actionCreators.setOperationsMessage(`Error in Stopping Poseidon OS: ${e}`));
     }
 }
+
 
 function* resetIBOFOs() {
     yield put(actionCreators.setOperationsMessage("Resetting Poseidon OS"));
