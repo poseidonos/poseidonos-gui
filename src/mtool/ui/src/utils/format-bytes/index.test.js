@@ -30,7 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import formatBytes, {formatNanoSeconds} from "./index";
+import formatBytes, {formatBebiBytes, formatNanoSeconds} from "./index";
 
 describe("formatBytes", () => {
     it("should return 0 when zero is passed", () => {
@@ -38,8 +38,13 @@ describe("formatBytes", () => {
         expect(value).toBe('0 Bytes');
     });
 
+    it("hsould convert 1024 to 1 KiB", () => {
+        const value = formatBebiBytes(1024)
+        expect(value).toBe('1 KiB');
+    });
+
     it("should not return decimal places when the second parameter passed is less than zero", () => {
-        const value = formatBytes(1500, -1);
+        const value = formatBytes(1400, -1);
         expect(value).toBe('1 KB');
     });
 

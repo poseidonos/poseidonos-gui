@@ -55,7 +55,6 @@ import "./Dashboard.css";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
-import bytesToTB from "../../utils/bytes-to-tb";
 import HealthMetrics from "../../components/HealthMetrics";
 
 const styles = (theme) => {
@@ -738,7 +737,7 @@ class Dashboard extends Component {
                             <div className="dashboard-size-label-container">
                               <span className="dashboard-min-label">0TB</span>
                               <span className="dashboard-max-label">
-                                {bytesToTB(this.props.arraySize)}
+                                {formatBytes(this.props.arraySize)}
                               </span>
                             </div>
                             <div className="storage-detail-container">
@@ -763,19 +762,19 @@ class Dashboard extends Component {
                               <Grid item container xs={12} wrap="wrap">
                                 <Legend
                                   bgColor="rgba(0, 186, 0, 0.6)"
-                                  title={`Data Written: ${bytesToTB(
+                                  title={`Data Written: ${formatBytes(
                                     volUsedSpace
                                   )}`}
                                 />
                                 <Legend
                                   bgColor="#e0e0e0"
-                                  title={`Volume Space Allocated: ${bytesToTB(
+                                  title={`Volume Space Allocated: ${formatBytes(
                                     volSpace
                                   )}`}
                                 />
                                 <Legend
                                   bgColor="#fff"
-                                  title={`Available for Volume Creation: ${bytesToTB(
+                                  title={`Available for Volume Creation: ${formatBytes(
                                     this.props.arraySize - volSpace
                                   )}`}
                                 />

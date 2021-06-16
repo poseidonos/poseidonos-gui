@@ -31,6 +31,7 @@
  */
 
 import * as actionTypes from "../actions/actionTypes";
+import { BYTE_FACTOR } from "../../utils/constants";
 
 export const initialState = {
     cpuUsage: {
@@ -179,7 +180,7 @@ const performanceReducer = (state = initialState, action) => {
                             values: action.bw,
                             name: `Read Bandwidth ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
+                            maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -196,7 +197,7 @@ const performanceReducer = (state = initialState, action) => {
                             values: action.bw,
                             name: `Write Bandwidth ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
+                            maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -213,7 +214,7 @@ const performanceReducer = (state = initialState, action) => {
                             values: action.iops,
                             name: `Read IOPS ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
+                            maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
                         }
                     }
                 }
@@ -231,7 +232,7 @@ const performanceReducer = (state = initialState, action) => {
                             values: action.iops,
                             name: `Write IOPS ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
-                            maxbw: action.maxbw !== 0 ? action.maxbw * 1024 * 1024 /* istanbul ignore next */: null
+                            maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
                         }
                     }
                 }

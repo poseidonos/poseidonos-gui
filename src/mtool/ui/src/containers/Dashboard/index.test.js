@@ -211,7 +211,7 @@ describe("Dashboard", () => {
       .reply(200, [array]);
     renderComponent();
     const { getByText, asFragment } = wrapper;
-    const hostElement = await waitForElement(() => getByText("Available for Volume Creation: 5.78 TB"));
+    const hostElement = await waitForElement(() => getByText("Available for Volume Creation: 6.36 TB"));
     expect(hostElement).toBeDefined();
     expect(asFragment()).toMatchSnapshot();
   });

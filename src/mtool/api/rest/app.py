@@ -83,6 +83,7 @@ from itertools import chain
 eventlet.monkey_patch()
 
 BLOCK_SIZE = 1024 * 1024
+BYTE_FACTOR = 1000
 
 
 # Connect to MongoDB first. PyMODM supports all URI options supported by
@@ -1405,8 +1406,8 @@ def make_block_aligned(size):
     """
     Example:
     size = 8.13 GB
-    size = floor( 8.13 * 1024 * 1024 * 1024) =  floor(8729521029.12) = 8729521029
-    floor(8729521029 / (1024 * 1024)) * (1024 * 1024) = 8325* (1024 * 1024) = 8729395200 → Pass to POS
+    size = floor( 8.13 * 1000 * 1000 * 1000) =  floor(8130000000) = 8130000000
+    floor(8130000000 / (1024 * 1024)) * (1024 * 1024) = 7753 * (1024 * 1024) = 8129609728 → Pass to POS
     """
 
     size = math.floor(size)
@@ -1440,14 +1441,14 @@ def saveVolume():
         size = int(max_available_size)
     else:
         if unit == "GB":
-            size = vol_size * 1024 * 1024 * 1024
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         elif unit == 'TB':
-            size = vol_size * 1024 * 1024 * 1024 * 1024
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         elif unit == 'PB':
-            size = vol_size * 1024 * 1024 * 1024 * 1024 * 1024
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         else:
             # default case assuming the unit is TB
-            size = vol_size * 1024 * 1024 * 1024 * 1024
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         size = make_block_aligned(size)
 
     create_vol_res = create_volume(
