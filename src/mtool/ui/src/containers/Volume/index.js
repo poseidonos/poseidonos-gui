@@ -91,12 +91,32 @@ const styles = (theme) => ({
     height: 50,
   },
   arraySelect: {
-    minWidth: 170
+    minWidth: 170,
+    "&>div>p": {
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    }
+  },
+  arraySelectStatus: {
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      justifyContent: "center"
+    }
+  },
+  arraySelectGrid: {
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
+      width: "100%"
+    }
   },
   selectForm: {
     margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 4)}`,
+    maxWidth: "30%",
     [theme.breakpoints.down("sm")]: {
-      margin: theme.spacing(0, 1),
+      margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 3)}`,
+    },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "50%"
     }
   },
   toolbar: customTheme.toolbar,
@@ -106,7 +126,10 @@ const styles = (theme) => ({
   statusText: {
     display: "flex",
     alignItems: "center",
-    margin: theme.spacing(0.5, 2)
+    margin: theme.spacing(0.5, 2),
+    [theme.breakpoints.down("xs")]: {
+      justifyContent: "center"
+    }
   },
   volumeStatsPaper: {
     height: 350,
@@ -365,8 +388,8 @@ class Volume extends Component {
                         <Grid item xs={12}>
                           <Paper spacing={3} className={classes.spaced}>
                             <Grid container justify="space-between">
-                              <Grid container>
-                              <Grid item sm={6}>
+                              <Grid container className={classes.arraySelectStatus}>
+                              <Grid item sm={6} className={classes.arraySelectGrid}>
                               <FormControl
                                 className={classes.selectForm}
                               >
@@ -374,6 +397,12 @@ class Volume extends Component {
                                 <Select
                                   inputProps={{
                                     id: "select-array"
+                                  }}
+                                  SelectDisplayProps={{
+                                    style: {
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis"
+                                    }
                                   }}
                                   onChange={this.changeArray}
                                   value={this.props.selectedArray}
