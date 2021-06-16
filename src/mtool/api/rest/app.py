@@ -1173,6 +1173,13 @@ def unmount_arr():
         print("In exception unmount_arr(): ", e)
         return make_response('Could not Unmount array', 500)
 
+def validate_email(email):
+    regex = "^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+    if(re.search(regex,email)):
+        return True
+    else:
+        return False
+
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
 def add_new_user(current_user):
@@ -1184,6 +1191,8 @@ def add_new_user(current_user):
     role = body['user_role']
     mobilenumber = body['mobilenumber']
     email = body['emailid']
+    if not validate_email(email):
+        return make_response("Please Enter a Valid Email ID", 400)
     print('username', username, '\n', 'password', hashed_password)
     result = connection_factory.add_new_user_in_db(
         username,
