@@ -442,6 +442,7 @@ class CreateVolume extends Component {
                     type="number"
                     inputProps={{
                       "data-testid": "create-vol-size",
+                      min: 0
                     }}
                     required="true"
                   />
