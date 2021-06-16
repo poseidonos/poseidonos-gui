@@ -407,7 +407,7 @@ class Dashboard extends Component {
       {
         title: "Used Space (GB)",
         render: (rowData) =>
-          rowData.usedspace ? formatBytes(rowData.total - rowData.remain) : 0,
+          rowData ? formatBytes(rowData.total - rowData.remain) : 0,
       },
       {
         title: "Total Space",
