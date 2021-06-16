@@ -53,6 +53,8 @@ const styles = (theme) => ({
   cardHeader: customTheme.card.header
 });
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 class UserManagement extends Component {
   constructor(props) {
     super(props);
@@ -139,9 +141,11 @@ class UserManagement extends Component {
           alerttitle: 'Delete User',
           alertdescription: 'Current user cannot be deleted'
         });
-        return;
       }
     });
+    if(!ids.length) {
+      return;
+    }
     // if (ids.length === 0) {
     //   this.setState({
     //     istypealert: true,
@@ -181,7 +185,7 @@ class UserManagement extends Component {
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Passwords do not match" })
     else if (!this.state.mobilenumber || this.state.mobilenumber.length < 4)
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Mobile Number" })
-    else if (!this.state.emailid || !(this.state.emailid.indexOf('@') > -1) || !(this.state.emailid.indexOf('.') > -1))
+    else if (!(EMAIL_REGEX.test(this.state.emailid)))
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Email ID" })
     else {
       this.setState({ ...this.state, error: "" })

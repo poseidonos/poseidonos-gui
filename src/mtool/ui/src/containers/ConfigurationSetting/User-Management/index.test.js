@@ -281,11 +281,10 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(phno, { target: { value: '22' } });
     fireEvent.click(confirmBtn);
     await waitForElement(() => getByText("OK"));
-    expect(asFragment()).toMatchSnapshot();
     expect(getByText("Please Enter a Valid Mobile Number")).toBeDefined();
     fireEvent.click(getByText("OK"));
     fireEvent.change(phno, { target: { value: '223456789' } });
-    fireEvent.change(email, { target: { value: 'abcd@abc' } });
+    fireEvent.change(email, { target: { value: 'abcd@.abc' } });
     fireEvent.click(confirmBtn);
     expect(getByText("Please Enter a Valid Email ID")).toBeDefined();
     // expect(username.value).toBe('');

@@ -77,8 +77,10 @@ const styles = (theme) => {
   })
 };
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 function validate(newData) {
-  if (!(/^\S+@\S+\.\S+$/.test(newData.email)))
+  if (!(EMAIL_REGEX.test(newData.email)))
     return false;
   return true;
 }
