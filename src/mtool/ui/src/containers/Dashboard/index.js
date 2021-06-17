@@ -128,6 +128,28 @@ const styles = (theme) => {
         minHeight: 460,
       },
     },
+    volName: {
+      display: "inline-block",
+      width: "inherit",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      [theme.breakpoints.down("md")]: {
+        maxWidth: 150,
+      },
+      [theme.breakpoints.down(1150)]: {
+        maxWidth: 100,
+      },
+      "&:hover": {
+        width: "calc(100% - 100px)",
+        maxWidth: "calc(100% - 100px)",
+        backgroundColor: "white",
+        position: "absolute",
+        margin: -theme.spacing(1),
+        zIndex: 1000,
+        overflow: "visible",
+        wordBreak: "break-all"
+      }
+    },
     volumeContainer: {
       marginTop: theme.spacing(1),
     },
@@ -297,6 +319,7 @@ class Dashboard extends Component {
   render() {
     let volUsedSpace = 0;
     let volSpace = 0;
+    const { classes } = this.props;
     this.props.volumes.forEach((vol) => {
       volUsedSpace += Number(vol.total) - Number(vol.remain);
       volSpace += Number(vol.total);
@@ -382,7 +405,7 @@ class Dashboard extends Component {
         title: "Name",
         field: "arrayname",
         render: (rowData) => (
-          <Link href={`/storage/array/manage?array=${rowData.arrayname}`}>{rowData.arrayname}</Link>
+          <Link className={classes.volName} href={`/storage/array/manage?array=${rowData.arrayname}`}>{rowData.arrayname}</Link>
         )
       },
       {
@@ -401,7 +424,7 @@ class Dashboard extends Component {
     const volumeTableColumns = [
       {
         title: "Name",
-        field: "name"
+        render: (rowData) => <Typography className={classes.volName}>{rowData.name}</Typography>
       },
       {
         title: "Used Space (GB)",
@@ -417,7 +440,6 @@ class Dashboard extends Component {
         field: "array"
       }
     ];
-    const { classes } = this.props;
 
     return (
       <ThemeProvider theme={PageTheme}>
@@ -730,7 +752,7 @@ class Dashboard extends Component {
                             data-testid="dashboard-no-array"
                             color="secondary"
                           >
-                            No Array Created
+                            No Mounted Arrays
                           </Typography>
                         ) : (
                           <React.Fragment>

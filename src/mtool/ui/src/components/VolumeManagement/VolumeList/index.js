@@ -57,7 +57,7 @@ import { customTheme } from '../../../theme';
 import formatBytes from '../../../utils/format-bytes';
 
 
-const styles = () => ({
+const styles = (theme) => ({
   cardHeader: {
     ...customTheme.card.header,
     marginLeft: 0
@@ -65,6 +65,24 @@ const styles = () => ({
   editBtn: {
     minWidth: 24,
     borderRadius: 100
+  },
+  volName: {
+    width: "inherit",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    [theme.breakpoints.down("md")]: {
+      maxWidth: 150,
+    },
+    "&:hover": {
+      width: "calc(100% - 100px)",
+      maxWidth: "calc(100% - 100px)",
+      backgroundColor: "white",
+      position: "absolute",
+      margin: -theme.spacing(2),
+      zIndex: 1000,
+      overflow: "visible",
+      wordBreak: "break-all"
+    }
   }
 });
 
@@ -142,7 +160,11 @@ class VolumeList extends Component {
               />
             )
           }
-          return rowData.name;
+          return (
+            <Typography className={classes.volName}>
+              {rowData.name}
+            </Typography>
+          );
 
         }
       },

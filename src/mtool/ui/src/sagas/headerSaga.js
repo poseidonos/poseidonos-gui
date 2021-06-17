@@ -97,10 +97,10 @@ function* startIBOFOs() {
             },
         });
         if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage("Poseidon OS Started Successfully"));
+            yield put(actionCreators.setOperationsMessage(response.data.response));
         }
     } catch (e) {
-        yield put(actionCreators.setOperationsMessage("Error in Starting Poseidon OS: ", e));
+        yield put(actionCreators.setOperationsMessage(`Error in Starting Poseidon OS: ${e}`));
     }
 }
 
