@@ -97,9 +97,10 @@ const styles = (theme) => ({
   formControl: {
     margin: theme.spacing(0.5, 2),
     minWidth: 170,
+    maxWidth: "80%",
     [theme.breakpoints.down("xs")]: {
       margin: theme.spacing(1, 0),
-    },
+    }
   },
   gridList: {
     flexWrap: "nowrap",
@@ -131,6 +132,12 @@ const styles = (theme) => ({
     [theme.breakpoints.down("xs")]: {
       width: "calc(100% - 32px)",
     },
+  },
+  writeBufferSelect: {
+    "&>div>p": {
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    }
   },
   diskContainer: {
     display: "flex",
@@ -566,12 +573,13 @@ class ArrayCreate extends Component {
                 SelectDisplayProps={{
                   "data-testid": "writebuffer",
                 }}
+                className={classes.writeBufferSelect}
                 disabled={!this.props.metadisks}
               >
                 {this.props.metadisks
                   ? this.props.metadisks.map((disk) => (
-                    <MenuItem value={disk}>
-                      <Typography color="secondary">{disk}</Typography>
+                    <MenuItem value={disk.name}>
+                      <Typography color="secondary">{disk.displayMsg}</Typography>
                     </MenuItem>
                   ))
                   : null}

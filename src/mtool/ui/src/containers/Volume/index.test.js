@@ -163,6 +163,20 @@ describe("<Storage Management />", () => {
     },
   ];
 
+  const metadevices = [{
+    name: "uram0",
+    isAvailable: false,
+    arrayName: "",
+    displayMsg: "uram0",
+    trimmedDisplayMsg: "uram0"
+  }, {
+    name: "uram1",
+    isAvailable: false,
+    arrayName: "",
+    displayMsg: "uram1",
+    trimmedDisplayMsg: "uram1"
+  }];
+
   const array = {
     RAIDLevel: "5",
     arrayname: "POSArray",
@@ -201,7 +215,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -233,7 +247,7 @@ describe("<Storage Management />", () => {
           { name: "intel-unvmens-0", size: 100 },
           { name: "intel-unvmens-1", size: 100 },
         ],
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onAny()
       .reply(200, []);
@@ -262,7 +276,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
@@ -313,7 +327,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
@@ -341,7 +355,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
@@ -380,7 +394,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
@@ -419,7 +433,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
@@ -523,7 +537,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -570,7 +584,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -615,7 +629,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -644,7 +658,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -706,7 +720,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -839,7 +853,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -926,7 +940,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1010,7 +1024,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1110,7 +1124,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1208,7 +1222,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1297,7 +1311,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1403,7 +1417,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1511,7 +1525,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1603,7 +1617,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1653,7 +1667,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onAny()
       .reply(200, []);
@@ -1693,7 +1707,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1719,7 +1733,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0", "uram1"],
+        metadevices,
       })
       .onAny()
       .reply(200, []);
@@ -1751,7 +1765,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1820,7 +1834,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1849,7 +1863,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
@@ -1879,7 +1893,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -1908,7 +1922,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
-        metadevices: ["uram0"],
+        metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])

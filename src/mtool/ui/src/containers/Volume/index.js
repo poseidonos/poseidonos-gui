@@ -111,12 +111,12 @@ const styles = (theme) => ({
   },
   selectForm: {
     margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 4)}`,
-    maxWidth: "30%",
+    maxWidth: "80%",
     [theme.breakpoints.down("sm")]: {
       margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 3)}`,
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: "50%"
+      maxWidth: "80%"
     }
   },
   toolbar: customTheme.toolbar,
