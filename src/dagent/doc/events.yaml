@@ -142,6 +142,21 @@ modules:
         message: state changed
         problem:
         solution:
+      - code: 1103
+        level: INFO
+        message: state added
+        problem:
+        solution:
+      - code: 1104
+        level: INFO
+        message: state removed
+        problem:
+        solution:
+      - code: 1105
+        level: INFO
+        message: state debugged
+        problem:
+        solution:
       - code: 1234
         level: REPORT_TRACE
         message: iBoFOS System Recovery Inprogress
@@ -292,6 +307,11 @@ modules:
         message: The same ID volume exists
         problem: A case that should never occur - A volume with the same ID already exists
         solution: Internal logic error
+      - code: 2074
+        level: Error
+        message: Volume unexpected pending IO count
+        problem: 
+        solution: Internal logic error
       - code: 2080
         level: Warning
         message: Out of qos range
@@ -325,6 +345,14 @@ modules:
         level: Warning
         message: Fail to attach namespace to subsystem
         solution: Check if max namespaces was specified during subsystem creation (ex. -m 256)
+      - code: 2103
+        level: Warning
+        message: Volume unmount failed
+        solution: 
+      - code: 2104
+        level: Warning
+        message: Volume detach failed
+        solution:
   - name: "MBR Manager"
     count: 100
     idStart: 2300
@@ -378,6 +406,16 @@ modules:
       - code: 2314
         level: WARN
         message: mbr key not found
+        problem:
+        solution:
+      - code: 2320
+        level: ERROR
+        message: mbr wrong array index map
+        problem:
+        solution:
+      - code: 2321
+        level: ERROR
+        message: mbr device already in array
         problem:
         solution:
       - code: 2330
@@ -635,6 +673,31 @@ modules:
         message: need mount first add or remove device
         problem:
         solution:
+      - code: 2524
+        level: WARN
+        message: Array count exceeded
+        problem:
+        solution:
+      - code: 2525
+        level: WARN
+        message: Array already exist
+        problem:
+        solution:
+      - code: 2526
+        level: WARN
+        message: Array not found
+        problem:
+        solution:
+      - code: 2527
+        level: WARN
+        message: Array shutdown takes too long
+        problem:
+        solution:
+      - code: 2528
+        level: WARN
+        message: Array load failed
+        problem:
+        solution:
       - code: 2530
         level: INFO
         message: the array device has been added
@@ -704,10 +767,43 @@ modules:
       - code: 2558
         level: INFO
         message: "Array State : Stop"
+      - code: 2560
+        level: INFO
+        message: "Array name too short"
+      - code: 2561
+        level: INFO
+        message: "Array name too long"
+      - code: 2562
+        level: INFO
+        message: "Array name not allowed"
       - code: 2580
         level: INFO
         message: "Mounted Array Exist"
         solution: "Unmount Array"
+      - code: 2581
+        level: INFO
+        message: "Array already unmounted"
+        solution:
+      - code: 2582
+        level: INFO
+        message: "Array mount priority error"
+        solution:
+      - code: 2583
+        level: INFO
+        message: "Array unmount priority error"
+        solution: 
+      - code: 2584
+        level: INFO
+        message: "Array unmounting"
+        solution: 
+      - code: 2585
+        level: INFO
+        message: "Array mounting"
+        solution:
+      - code: 2586
+        level: INFO
+        message: "Array already mounted"
+        solution:
   - name: "Rebuild"
     count: 100
     idStart: 2800

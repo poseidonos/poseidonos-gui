@@ -408,6 +408,16 @@ modules:
         message: mbr key not found
         problem:
         solution:
+      - code: 2320
+        level: ERROR
+        message: mbr wrong array index map
+        problem:
+        solution:
+      - code: 2321
+        level: ERROR
+        message: mbr device already in array
+        problem:
+        solution:
       - code: 2330
         level: ERROR
         message: Allocate memory fail

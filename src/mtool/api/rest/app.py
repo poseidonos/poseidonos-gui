@@ -1073,7 +1073,7 @@ def create_arrays(current_user):
         if a_info.status_code == 200:
             a_info = a_info.json()
             if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
-                return make_response(arrayname+' already exists', 200)
+                return make_response(arrayname+' already exists', 400)
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
                                       {"deviceName": metaDisk}])
         array_create = array_create.json()
