@@ -62,7 +62,24 @@ const styles = (theme) => ({
   },
   title: {
     paddingTop: theme.spacing(1),
+    paddingLeft: "10%",
+    overflow: "hidden",
+    maxWidth: "80%",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    "&:hover": {
+      overflow: "visible",
+      wordBreak: "break-all",
+      position: "absolute",
+      whiteSpace: "break-spaces",
+      left: 0,
+      right: 0
+    }
   },
+  titleWrap: {
+    height: 30,
+    position: "relative"
+  }
 });
 
 class Chart extends Component {
@@ -261,13 +278,15 @@ class Chart extends Component {
     return (
       <React.Fragment>
         <Paper className={classes.root}>
-          <Typography
-            variant="caption"
-            className={classes.title}
-            align="center"
-          >
-            {this.props.chartName}
-          </Typography>
+          <div className={classes.titleWrap}>
+            <Typography
+              variant="body1"
+              className={classes.title}
+              align="center"
+            >
+              {this.props.chartName}
+            </Typography>
+          </div>
           {this.state.linePath !== null || this.state.rectangles !== null ? (
             <svg
               className="container"

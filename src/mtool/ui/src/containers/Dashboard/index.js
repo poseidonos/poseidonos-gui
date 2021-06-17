@@ -427,9 +427,9 @@ class Dashboard extends Component {
         render: (rowData) => <Typography className={classes.volName}>{rowData.name}</Typography>
       },
       {
-        title: "Used Space (GB)",
+        title: "Used Space",
         render: (rowData) =>
-          rowData ? formatBytes(rowData.total - rowData.remain) : 0,
+          rowData.total && rowData.remain ? formatBytes(rowData.total - rowData.remain) : 0,
       },
       {
         title: "Total Space",
