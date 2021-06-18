@@ -78,3 +78,6 @@ func MountArray(xrId string, param interface{}) (model.Request, model.Response, 
 func UnmountArray(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return systemSender(xrId, param, "UNMOUNTARRAY")
 }
+func ArrayReset(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return systemSender(xrId, param, "RESETMBR")
+}

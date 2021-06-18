@@ -169,6 +169,11 @@ func Route(router *gin.Engine) {
         param := model.ArrayParam{Name:arrayName}
         ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UnmountArray, param)
     })
+    iBoFOSPath.GET("/arrays/reset", func(ctx *gin.Context) {
+        param := model.ArrayParam{}
+        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ArrayReset, param)
+    })
+
 		iBoFOSPath.DELETE("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Name = ctx.Param("arrayName")
