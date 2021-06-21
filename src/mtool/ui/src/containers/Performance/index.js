@@ -298,8 +298,8 @@ class Performance extends Component {
     // }
   }
 
-  fetchVolumeNames() {
-    this.props.Get_Volumes({ array: this.state.array });
+  fetchVolumeNames(callback) {
+    this.props.Get_Volumes({ array: this.state.array, callback});
   }
 
   measurementChanged(event) {
@@ -314,7 +314,9 @@ class Performance extends Component {
     this.setState({
       array: event.target.value,
       volume: 'all-volumes'
-    })
+    }, () => {
+      this.fetchVolumeNames(() => this.volumeChanged({target: {value: 'all-volumes'}}));
+    });
   }
 
   volumeChanged(event) {

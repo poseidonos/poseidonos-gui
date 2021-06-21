@@ -116,6 +116,10 @@ function* fetchVolumes(action) {
     yield put(
       actionCreators.fetchStorageVolumes({ volumes: [], totalVolSize: 0 })
     );
+  } finally {
+    if(action.payload.callback) {
+      action.payload.callback();
+    }
   }
 }
 
