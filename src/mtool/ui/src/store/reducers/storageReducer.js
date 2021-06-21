@@ -201,6 +201,8 @@ const storageReducer = (state = initialState, action) => {
                             usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
                             maxiops: action.volume.Oem.MaxIOPS,
                             maxbw: action.volume.Oem.MaxBandwidth,
+                            oldMaxiops: action.volume.Oem.MaxIOPS,
+                            oldMaxbw: action.volume.Oem.MaxBandwidth,
                             status: action.volume.Status.Oem.VolumeStatus,
                             url: action.volume["@odata.id"],
                             edit: false
@@ -222,6 +224,8 @@ const storageReducer = (state = initialState, action) => {
                         usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
                         maxiops: action.volume.Oem.MaxIOPS,
                         maxbw: action.volume.Oem.MaxBandwidth,
+                        oldMaxiops: action.volume.Oem.MaxIOPS,
+                        oldMaxbw: action.volume.Oem.MaxBandwidth,
                         status: action.volume.Status.Oem.VolumeStatus,
                         url: action.volume["@odata.id"]
                     }

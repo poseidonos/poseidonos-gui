@@ -34,7 +34,7 @@ import axios from "axios";
 import { call, takeEvery, put, select } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
-import {arrayname} from "../store/reducers/storageReducer";
+import { arrayname } from "../store/reducers/storageReducer";
 
 
 function* fetchArraySize() {
@@ -150,7 +150,7 @@ function* fetchArray(action) {
   } finally {
     yield select(arrayname);
     yield put(actionCreators.stopStorageLoader());
-    yield fetchVolumes({payload: {array: yield select(arrayname)}});
+    yield fetchVolumes({ payload: { array: yield select(arrayname) } });
   }
 }
 
@@ -171,7 +171,7 @@ function* fetchConfig() {
       yield put(actionCreators.fetchConfig(response.data));
     }
   } catch (e) {
-    yield put(actionCreators.fetchConfig({raidTypes: []}));
+    yield put(actionCreators.fetchConfig({ raidTypes: [] }));
   }
 }
 
@@ -203,11 +203,10 @@ function* fetchDevices() {
           alertType: "alert",
           alertTitle: "Fetch Devices",
           errorMsg: "Unable to get devices!",
-          errorCode: `Description: ${
-            response.data.result && response.data.result.status
+          errorCode: `Description: ${response.data.result && response.data.result.status
               ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
               : ""
-          }`,
+            }`,
         })
       );
     } else if (result && typeof result !== "string" && result.return !== -1) {
@@ -215,16 +214,15 @@ function* fetchDevices() {
     } else {
       yield put(actionCreators.showStorageAlert({
         ...alertDetails,
-        errorCode: `Description: ${
-          response.data && response.data.result && response.data.result.status
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
             ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
             : "Agent Communication Error"
-        }`
+          }`
       }));
       yield put(actionCreators.fetchDevices(defaultResponse));
     }
   } catch (error) {
-    
+
     yield put(actionCreators.showStorageAlert({
       ...alertDetails,
       errorCode: `Agent Communication Error - ${error.message}`
@@ -240,7 +238,7 @@ function* createVolume(action) {
   try {
     const arrayName = yield select(arrayname)
     const requestAcceptedCode = 10202
-        // for multi-volume creation
+    // for multi-volume creation
     if (action.payload.count < 2)
       yield put(actionCreators.startStorageLoader("Creating Volume"));
     const response = yield call(
@@ -262,22 +260,21 @@ function* createVolume(action) {
     if (action.payload.count > 1) {
       if (response.status === 200) {
         // Create Multi-Volume request accepted and passed to POS
-        if(response.data.result.status.code === requestAcceptedCode){
+        if (response.data.result.status.code === requestAcceptedCode) {
           yield put(actionCreators.toggleCreateVolumeButton(true));
         }
         // error code : 11050, volume count exceeds limit
         // error code : 11040, associated POS call failed
-        else{
+        else {
           yield put(
             actionCreators.showStorageAlert({
               alertType: "alert",
               alertTitle: "Create Volume",
               errorMsg: "Volume(s) creation failed",
-              errorCode: `Description: ${
-                response.data.result && response.data.result.status
+              errorCode: `Description: ${response.data.result && response.data.result.status
                   ? `${response.data.result.status.problem} , Error code:${response.data.result.status.code}`
                   : ""
-              }`,
+                }`,
             })
           );
         }
@@ -314,15 +311,14 @@ function* createVolume(action) {
             alertType: "alert",
             alertTitle: "Create Volume",
             errorMsg: "Volume(s) creation failed",
-            errorCode: `Description: ${
-              response.data.result && response.data.result.status
+            errorCode: `Description: ${response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
-            }`,
+              }`,
           })
         );
       }
-      yield fetchVolumes({payload: {array: arrayName}});
+      yield fetchVolumes({ payload: { array: arrayName } });
       yield fetchArray();
     } else {
       yield put(
@@ -330,9 +326,8 @@ function* createVolume(action) {
           alertType: "alert",
           alertTitle: "Create Volume",
           errorMsg: "Volume(s) creation failed",
-          errorCode: `Message from server: ${
-            response.data ? response.data.result : ""
-          }`,
+          errorCode: `Message from server: ${response.data ? response.data.result : ""
+            }`,
         })
       );
     }
@@ -546,44 +541,42 @@ function* renameVolume(action) {
         }
       } else if (action.payload.error === "") {
 
-          yield put(
-            actionCreators.showStorageAlert({
-              alertType: "partialError",
-              alertTitle: "Update Volume",
-              errorMsg: "Volume Updation Succeeded partially",
-              errorCode: `Error in Renaming volume: ${
-                response.data.result && response.data.result.status
-                  ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-                  : ""
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "partialError",
+            alertTitle: "Update Volume",
+            errorMsg: "Volume Updation Succeeded partially",
+            errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
+                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                : ""
               }`
-            })
-          );
+          })
+        );
 
-        } else {
+      } else {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "partialError",
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
-            errorCode: `${action.payload.error}\nError in updating Volume name: ${
-              response.data.result && response.data.result.status
+            errorCode: `${action.payload.error}\nError in updating Volume name: ${response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
-            }`,
+              }`,
           })
         );
-        }
+      }
     }
   } catch (error) {
     if (action.payload.error === "") {
-    yield put(
-      actionCreators.showStorageAlert({
-        alertType: "alert",
-        alertTitle: "Update Volume Name",
-        errorMsg: "Volume Name Updation failed",
-        errorCode: `${action.payload.error}\nError in updating Volume name: ${error ? error.message : ''}`,
-      })
-    );
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Update Volume Name",
+          errorMsg: "Volume Name Updation failed",
+          errorCode: `${action.payload.error}\nError in updating Volume name: ${error ? error.message : ''}`,
+        })
+      );
     } else {
       yield put(
         actionCreators.showStorageAlert({
@@ -614,6 +607,23 @@ function* updateVolume(action) {
           errorCode: "",
         })
       );
+      return;
+    }
+    if(
+      action.payload.maxiops === action.payload.oldMaxiops &&
+      action.payload.maxbw === action.payload.oldMaxbw
+    ) {
+      if(action.payload.name !== action.payload.newName) {
+        yield renameVolume({
+          payload: {
+            name: action.payload.name,
+            newName: action.payload.newName,
+            array: arrayName,
+            error: ""
+          },
+        });
+      }
+      yield fetchVolumeDetails({ payload: action.payload.url });
       return;
     }
     const data = {
@@ -662,33 +672,53 @@ function* updateVolume(action) {
             })
           );
         }
-      } else {
+      } else if (action.payload.newName !== action.payload.name) {
         yield renameVolume({
           payload: {
             name: action.payload.name,
             newName: action.payload.newName,
             array: arrayName,
-            error: `Max IOPS and Bandwidth update failed: ${
-              response.data.result && response.data.result.status
+            error: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
-            }`
+              }`
           },
         });
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            alertTitle: "Update Volume",
+            errorMsg: "Volume Updation failed",
+            errorCode: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
+              ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+              : ""
+            }`
+          })
+        );
       }
       yield fetchVolumeDetails({ payload: action.payload.url });
-    } else {
+    } else if (action.payload.newName !== action.payload.name) {
       yield renameVolume({
         payload: {
           name: action.payload.name,
           newName: action.payload.newName,
           array: arrayName,
-          error: `Max IOPS and Bandwidth update failed: ${
-            response.data}, Error code:${response.status}\n`
+          error: `Max IOPS and Bandwidth update failed: ${response.data}, Error code:${response.status}\n`
         },
       });
-    }
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            alertTitle: "Update Volume",
+            errorMsg: "Volume Updation failed",
+            errorCode: `Max IOPS and Bandwidth update failed: ${response.data}, Error code:${response.status}\n`
+          })
+        );
+      }
   } catch (error) {
+    if (action.payload.newName !== action.payload.name) {
     yield renameVolume({
       payload: {
         name: action.payload.name,
@@ -697,6 +727,16 @@ function* updateVolume(action) {
         error: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
       },
     });
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Update Volume",
+          errorMsg: "Volume Updation failed",
+          errorCode: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
+        })
+      );
+    }
   } finally {
     yield put(actionCreators.stopStorageLoader());
   }
@@ -850,7 +890,7 @@ function* deleteVolumes(action) {
       })
     );
   } finally {
-    yield fetchVolumes({payload: {array: yield select(arrayname)}});
+    yield fetchVolumes({ payload: { array: yield select(arrayname) } });
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1203,7 +1243,7 @@ function* changeVolumeMountStatus(action) {
     }
     /* istanbul ignore else */
     if (response.status === 200) {
-       /* istanbul ignore else */
+      /* istanbul ignore else */
       if (response.data && response.data.result.status.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
@@ -1321,16 +1361,16 @@ function* mountPOS() {
   const message = "Mount";
   try {
     let response = {};
-      yield put(actionCreators.startStorageLoader("Mounting Array"));
-      response = yield call([axios, axios.post], "/api/v1/array/mount", {
-        array: yield select(arrayname),
-      },{
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
+    yield put(actionCreators.startStorageLoader("Mounting Array"));
+    response = yield call([axios, axios.post], "/api/v1/array/mount", {
+      array: yield select(arrayname),
+    }, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     /* istanbul ignore else */
     if (response.status === 200) {
       if (response.data && response.data.result.status.code === 0) {
@@ -1375,7 +1415,7 @@ function* mountPOS() {
       })
     );
   } finally {
-    yield fetchVolumes({payload: {array: yield select(arrayname)}});
+    yield fetchVolumes({ payload: { array: yield select(arrayname) } });
     yield fetchArray();
     yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
