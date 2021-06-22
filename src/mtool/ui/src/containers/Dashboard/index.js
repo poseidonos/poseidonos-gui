@@ -140,11 +140,11 @@ const styles = (theme) => {
         maxWidth: 100,
       },
       "&:hover": {
-        width: "calc(100% - 100px)",
+        width: "auto",
         maxWidth: "calc(100% - 100px)",
         backgroundColor: "white",
         position: "absolute",
-        margin: -theme.spacing(1),
+        marginTop: -theme.spacing(1),
         zIndex: 1000,
         overflow: "visible",
         wordBreak: "break-all"
