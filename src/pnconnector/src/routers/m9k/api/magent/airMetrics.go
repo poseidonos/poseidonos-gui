@@ -39,6 +39,7 @@ import (
 	"pnconnector/src/util"
 	"strconv"
 	"strings"
+  "time"
 )
 
 // GetAIRData fetches AIR data from influx db based on time parameter and returns the values and fields
@@ -83,8 +84,15 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 }
 
 // extractValues contains the parsing logic for extracting array level and volume level data
-func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps string) []map[string]interface{} {
+func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps string, timeInterval string) [][]map[string]interface{} {
 	result := []map[string]interface{}{}
+  timeMap := []map[string]interface{}{}
+  m := map[string]interface{}{}
+  currentTime := time.Now().UnixNano()
+  m["startTime"] = currentTime - TimeSecondsMap[timeInterval]
+  m["endTime"] = currentTime
+  timeMap = append(timeMap,m)
+  var resultList [][]map[string]interface{}
 	for _, val := range values {
 		currentValue := make(map[string]interface{})
 		currentValue["time"] = val[0]
@@ -94,7 +102,9 @@ func extractValues(values [][]interface{}, columns []string, key, metrics, metri
 		currentValue[key] = val[1].(json.Number)
 		result = append(result, currentValue)
 	}
-	return result
+  resultList = append(resultList,result)
+  resultList = append(resultList,timeMap)
+	return resultList
 }
 
 func getVolumeCreationTime(volumeId string) string {
@@ -140,8 +150,9 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", BWReadField)
-	result.Result.Data = res
+  timeInterval := param.(model.MAgentParam).Time
+	res := extractValues(values, columns, "bw", "bw", BWReadField,timeInterval)
+  result.Result.Data = res
 	return result, nil
 }
 
@@ -163,7 +174,8 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "bw", "bw", BWWriteField)
+  timeInterval := param.(model.MAgentParam).Time
+	res := extractValues(values, columns, "bw", "bw", BWWriteField, timeInterval)
 	result.Result.Data = res
 	return result, nil
 }
@@ -186,7 +198,8 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", IOPSReadField)
+  timeInterval := param.(model.MAgentParam).Time
+	res := extractValues(values, columns, "iops", "iops", IOPSReadField,timeInterval)
 	result.Result.Data = res
 	return result, nil
 }
@@ -210,7 +223,8 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 		result.Result.Status, _ = util.GetStatusInfo(statusCode)
 		return result, nil
 	}
-	res := extractValues(values, columns, "iops", "iops", IOPSWriteField)
+  timeInterval := param.(model.MAgentParam).Time
+	res := extractValues(values, columns, "iops", "iops", IOPSWriteField,timeInterval)
 	result.Result.Data = res
 	return result, nil
 }
@@ -233,7 +247,8 @@ func GetLatency(param interface{}) (model.Response, error) {
 		result.Result.Data = make([]string, 0)
 		return result, nil
 	}
-	res := extractValues(values, columns, "latency", "latency", LatencyField)
+  timeInterval := param.(model.MAgentParam).Time
+	res := extractValues(values, columns, "latency", "latency", LatencyField,timeInterval)
 	result.Result.Data = res
 	return result, nil
 }
