@@ -1195,6 +1195,10 @@ def add_new_user(current_user):
     if not validate_email(email):
         return make_response("Please Enter a Valid Email ID", 400)
     print('username', username, '\n', 'password', hashed_password)
+    if not connection_factory.check_user_id_exist(username):
+        return make_response("User Already Exists", 400)
+    if not connection_factory.check_email_exist(email):
+        return make_response("Email Already Exists", 400)
     result = connection_factory.add_new_user_in_db(
         username,
         password,
@@ -1208,7 +1212,7 @@ def add_new_user(current_user):
     if result:
         return jsonify({"message": "NEW USER CREATED"})
     else:
-        message = "User Already Exists"
+        message = "Could Not Created User"
         return make_response(message, 400)
 # To Do - 1. Check if username exists in DB. If yes, return failure.
 # 2. Hash the password using bcrypt library

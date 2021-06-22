@@ -119,44 +119,45 @@ TIMESTAMP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
     IBOFOS_TIMESTAMP_TABLE + " (_id text,lastRunningTime text);"
 
 USER_QUERY = "SELECT _id FROM " + \
-    USER_TABLE + " WHERE _id = ? and password = ?"
+    USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 PREV_TIME_QUERY = "SELECT _id,lastRunningTime FROM " + \
-    IBOFOS_TIMESTAMP_TABLE + " WHERE _id=?"
+    IBOFOS_TIMESTAMP_TABLE + " WHERE lower(_id)=?"
 INSERT_TIME_QUERY = "INSERT INTO " + IBOFOS_TIMESTAMP_TABLE + \
     " (_id,lastRunningTime) VALUES(?,?)"
 UPDATE_TIME_QUERY = "UPDATE " + IBOFOS_TIMESTAMP_TABLE + \
-    " SET lastRunningTime = ? where _id = 'TIMESTAMP'"
-SELECT_SMTP_QUERY = "SELECT _id FROM " + SMTP_TABLE + " WHERE _id=?"
+    " SET lastRunningTime = ? where lower(_id) = 'TIMESTAMP'"
+SELECT_SMTP_QUERY = "SELECT _id FROM " + SMTP_TABLE + " WHERE lower(_id)=?"
 INSERT_SMTP_IP_QUERY = "INSERT INTO " + SMTP_TABLE + \
     " (_id,serverip,serverport) VALUES(?,?,?)"
 UPDATE_SMTP_QUERY = "UPDATE " + SMTP_TABLE + \
-    " SET _id = ?, serverip = ?, serverport = ? where _id = ?"
+    " SET _id = ?, serverip = ?, serverport = ? where lower(_id) = ?"
 EMAILLIST_QUERY = "SELECT * FROM " + EMAILLIST_TABLE
 SMTP_QUERY = "SELECT * FROM " + SMTP_TABLE
-FIND_EMAIL_QUERY = "SELECT email FROM " + EMAILLIST_TABLE + " WHERE email = ?"
+FIND_EMAIL_QUERY = "SELECT email FROM " + EMAILLIST_TABLE + " WHERE lower(email) = ?"
 INSERT_EMAIL_QUERY = "INSERT INTO " + \
     EMAILLIST_TABLE + " (email,active) VALUES(?,?)"
-UPDATE_EMAIL_QUERY = "UPDATE " + EMAILLIST_TABLE + " SET email = ? where email = ?"
-SELECT_EMAIL_QUERY = "SELECT email FROM " + EMAILLIST_TABLE + " WHERE email=?"
-DELETE_EMAIL_QUERY = "DELETE FROM " + EMAILLIST_TABLE + " WHERE email=?"
+UPDATE_EMAIL_QUERY = "UPDATE " + EMAILLIST_TABLE + " SET email = ? where lower(email) = ?"
+SELECT_EMAIL_QUERY = "SELECT email FROM " + EMAILLIST_TABLE + " WHERE lower(email)=?"
+DELETE_EMAIL_QUERY = "DELETE FROM " + EMAILLIST_TABLE + " WHERE lower(email)=?"
 TOGGLE_EMAIL_UPDATE_QUERY = "UPDATE " + \
-    EMAILLIST_TABLE + " SET active = ? where email = ?"
+    EMAILLIST_TABLE + " SET active = ? where lower(email) = ?"
 ADD_USER_QUERY = "INSERT INTO " + USER_TABLE + " " + \
     str(USER_TABLE_COLUMNS) + " VALUES(?,?,?,?,?,?,?,?,?)"
 IBOFOS_TIME_INTERVAL_QUERY = "SELECT ibofostimeinterval FROM " + \
-    USER_TABLE + " WHERE _id = ? LIMIT 1"
+    USER_TABLE + " WHERE lower(_id) = ? LIMIT 1"
 SET_IBOFOS_TIME_INTERVAL_QUERY = "UPDATE " + USER_TABLE + \
-    " SET ibofostimeinterval = ? where _id = ?"
-DELETE_USER_QUERY = "DELETE FROM " + USER_TABLE + " WHERE _id=?"
+    " SET ibofostimeinterval = ? where lower(_id) = ?"
+DELETE_USER_QUERY = "DELETE FROM " + USER_TABLE + " WHERE lower(_id)=?"
 USERS_QUERY = "SELECT * FROM " + USER_TABLE
-CHECK_USER_QUERY = "SELECT _id FROM " + USER_TABLE + " WHERE _id = ?"
+CHECK_USER_QUERY = "SELECT _id FROM " + USER_TABLE + " WHERE lower(_id) = ?"
+CHECK_EMAIL_QUERY = "SELECT _id FROM " + USER_TABLE + " WHERE lower(email) = ?"
 TOGGLE_STATUS_UPDATE_QUERY = "UPDATE " + \
-    USER_TABLE + " SET active = ? where _id = ?"
+    USER_TABLE + " SET active = ? where lower(_id) = ?"
 UPDATE_USER_QUERY = "UPDATE " + USER_TABLE + \
-    " SET _id = ?, email = ?, phone_number = ? where _id = ?"
+    " SET _id = ?, lower(email) = ?, phone_number = ? where lower(_id) = ?"
 SELECT_PASSWORD_QUERY = "SELECT _id FROM " + \
-    USER_TABLE + " WHERE _id = ? and password = ?"
-UPDATE_PASSWORD_QUERY = "UPDATE " + USER_TABLE + " SET password = ? where _id = ?"
+    USER_TABLE + " WHERE lower(_id) = ? and password = ?"
+UPDATE_PASSWORD_QUERY = "UPDATE " + USER_TABLE + " SET password = ? where lower(_id) = ?"
 ADD_ALERT_QUERY = "INSERT INTO " + USER_ALERTS_TABLE + " " + \
     str(USER_ALERTS_TABLE_COLUMNS) + " VALUES(?,?,?,?,?,?,?,?,?)"
 GET_ALERTS_QUERY = "SELECT * FROM " + USER_ALERTS_TABLE
@@ -170,13 +171,13 @@ TOGGLE_ALERT_STATUS_QUERY = "SELECT alertName FROM " + \
 UPDATE_TOGGLE_ALERT_QUERY = "UPDATE " + \
     USER_ALERTS_TABLE + " SET active = ? where alertName = ?"
 UPDATE_LIVELOG_STATUS_QUERY = "UPDATE " + \
-    USER_TABLE + " SET livedata = ? where _id = ?"
+    USER_TABLE + " SET livedata = ? where lower(_id) = ?"
 SELECT_LIVELOG_STATUS_QUERY = "SELECT livedata FROM " + \
-    USER_TABLE + " WHERE _id = ? LIMIT 1"
+    USER_TABLE + " WHERE lower(_id) = ? LIMIT 1"
 MATCH_USERNAME_QUERY = "SELECT _id FROM " + USER_TABLE + \
-    " WHERE _id = ? and password = ? and active = 1 LIMIT 1"
+    " WHERE lower(_id) = ? and password = ? and active = 1 LIMIT 1"
 MATCH_EMAIL_QUERY = "SELECT _id FROM " + USER_TABLE + \
-    " WHERE email = ? and password = ? and active = 1 LIMIT 1"
+    " WHERE lower(email) = ? and password = ? and active = 1 LIMIT 1"
 
 
 class SQLiteConnection:
@@ -281,7 +282,7 @@ class SQLiteConnection:
 
     def find_email(self, oldid):
         cur = DB_CONNECTION.cursor()
-        cur.execute(FIND_EMAIL_QUERY, (oldid,))
+        cur.execute(FIND_EMAIL_QUERY, (oldid.lower(),))
         rows = cur.fetchall()
         if rows is None or len(rows) == 0:
             return False
@@ -308,14 +309,14 @@ class SQLiteConnection:
             return make_response(json.dumps({"description": "Failed to update the Email List"}), 500)
     def execute_update_email_query(self, email,oldid):
         cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
+        cur.execute(UPDATE_EMAIL_QUERY, (email, oldid.lower()))
 
     def update_email_list(self, oldid, email):
         try:
             #cur = DB_CONNECTION.cursor()
             #cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
             self.execute_update_email_query(email,oldid)
-            result = Update_KapacitorList(oldid, email)
+            result = Update_KapacitorList(oldid.lower(), email)
             if(result.status_code == 200):
                 DB_CONNECTION.commit()
             else:
@@ -328,26 +329,24 @@ class SQLiteConnection:
 
     def execute_email_insert_query(self,user_id):
         cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_EMAIL_QUERY, (user_id,))
+        cur.execute(SELECT_EMAIL_QUERY, (user_id.lower(),))
         rows = cur.fetchone()
         return rows
     def execute_delete_query(self,user_id):
         cur = DB_CONNECTION.cursor()
-        cur.execute(DELETE_EMAIL_QUERY, (user_id,))
+        cur.execute(DELETE_EMAIL_QUERY, (user_id.lower(),))
 
     def delete_emailids_list(self, user_id):
         try:
-            print("In delete_emailids_list func >>>>>>>>>>>>>>>>>>>>>>>>")
             result = None
             rows = self.execute_email_insert_query(user_id)
-            print("After select query >>>>>>>>>>>>>>>>>>>>>",rows)
             if rows is None or len(rows) == 0:
                 return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
             else:
                 #cur.execute(DELETE_EMAIL_QUERY, (user_id,))
                 self.execute_delete_query(user_id)
                 print("after delete query >>>>>>")
-                result = Delete_MultipleID_From_KapacitorList(user_id, True)
+                result = Delete_MultipleID_From_KapacitorList(user_id.lower(), True)
 
             if(result.status_code == 200):
                 DB_CONNECTION.commit()
@@ -360,7 +359,7 @@ class SQLiteConnection:
             return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
     def execute_toggle_email_update_query(self, status, email_id):
         cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_EMAIL_UPDATE_QUERY, (status, email_id))
+        cur.execute(TOGGLE_EMAIL_UPDATE_QUERY, (status, email_id.lower()))
 
 
     def toggle_email_update(self, status, email_id):
@@ -370,7 +369,7 @@ class SQLiteConnection:
             if(status):
                 result = Update_KapacitorList(None, email_id)
             else:
-                result = Delete_MultipleID_From_KapacitorList(email_id, True)
+                result = Delete_MultipleID_From_KapacitorList(email_id.lower(), True)
             if(result.status_code == 200):
                 DB_CONNECTION.commit()
                 return make_response(json.dumps({"description":"Success"}), 200)
@@ -384,6 +383,22 @@ class SQLiteConnection:
 
 
 
+    def check_user_id_exist(self,username):
+        cur = DB_CONNECTION.cursor()
+        cur.execute(CHECK_USER_QUERY, (username.lower(),))
+        rows = cur.fetchall()
+        if rows is None or len(rows) == 0:
+            return True
+        else:
+            return False
+    def check_email_exist(self,email):
+        cur = DB_CONNECTION.cursor()
+        cur.execute(CHECK_EMAIL_QUERY, (email.lower(),))
+        rows = cur.fetchall()
+        if rows is None or len(rows) == 0:
+            return True
+        else:
+            return False
     def add_new_user_in_db(
             self,
             username,
@@ -396,11 +411,7 @@ class SQLiteConnection:
             ibofostimeinterval,
             livedata):
         cur = DB_CONNECTION.cursor()
-        cur.execute(CHECK_USER_QUERY, (username,))
-        rows = cur.fetchall()
-        if rows is None or len(rows) == 0:
-            cur.execute(
-                ADD_USER_QUERY,
+        cur.execute(ADD_USER_QUERY,
                 (username,
                  password,
                  email,
@@ -410,14 +421,12 @@ class SQLiteConnection:
                  privileges,
                  ibofostimeinterval,
                  livedata))
-            DB_CONNECTION.commit()
-        else:
-            return False
+        DB_CONNECTION.commit()
         return True
 
     def get_ibofos_time_interval_from_db(self, username):
         cur = DB_CONNECTION.cursor()
-        cur.execute(IBOFOS_TIME_INTERVAL_QUERY, (username,))
+        cur.execute(IBOFOS_TIME_INTERVAL_QUERY, (username.lower(),))
         rows = cur.fetchone()
         if rows is None or len(rows) == 0:
             return False
@@ -426,7 +435,7 @@ class SQLiteConnection:
     def set_ibofos_time_interval_in_db(self, username, timeinterval):
         cur = DB_CONNECTION.cursor()
         cur.execute(SET_IBOFOS_TIME_INTERVAL_QUERY,
-                    (str(timeinterval), username))
+                    (str(timeinterval), username.lower()))
         DB_CONNECTION.commit()
         return True
 
@@ -434,7 +443,7 @@ class SQLiteConnection:
         cur = DB_CONNECTION.cursor()
         for username in username_list:
             if username != "admin":
-                cur.execute(DELETE_USER_QUERY, (username,))
+                cur.execute(DELETE_USER_QUERY, (username.lower(),))
         DB_CONNECTION.commit()
 
     def get_users_from_db(self):
@@ -448,7 +457,7 @@ class SQLiteConnection:
 
     def toggle_status_from_db(self, username, status):
         cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_STATUS_UPDATE_QUERY, (status, username))
+        cur.execute(TOGGLE_STATUS_UPDATE_QUERY, (status, username.lower()))
         DB_CONNECTION.commit()
         return True
 
@@ -457,20 +466,20 @@ class SQLiteConnection:
         cur.execute(
             UPDATE_USER_QUERY,
             (username,
-             email,
+             email.lower(),
              phone_number,
-             old_username))
+             old_username.lower()))
         DB_CONNECTION.commit()
         return True
 
     def update_password_in_db(self, username, old_password, new_password):
         cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_PASSWORD_QUERY, (username, old_password))
+        cur.execute(SELECT_PASSWORD_QUERY, (username.lower(), old_password))
         rows = cur.fetchone()
         if rows is None or len(rows) == 0:
             return False
         cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_PASSWORD_QUERY, (new_password, username))
+        cur.execute(UPDATE_PASSWORD_QUERY, (new_password, username.lower()))
         DB_CONNECTION.commit()
         return True
     def execute_alert_query(self,
@@ -643,12 +652,12 @@ class SQLiteConnection:
 
     def set_live_logs_in_db(self, data, username):
         cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_LIVELOG_STATUS_QUERY, (data, username))
+        cur.execute(UPDATE_LIVELOG_STATUS_QUERY, (data, username.lower()))
         DB_CONNECTION.commit()
 
     def get_live_logs_from_db(self, username):
         cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_LIVELOG_STATUS_QUERY, (username,))
+        cur.execute(SELECT_LIVELOG_STATUS_QUERY, (username.lower(),))
         rows = cur.fetchall()
         if rows is None or len(rows) == 0:
             return False
@@ -656,7 +665,7 @@ class SQLiteConnection:
 
     def match_username_from_db(self, username, password):
         cur = DB_CONNECTION.cursor()
-        cur.execute(MATCH_USERNAME_QUERY, (username, password))
+        cur.execute(MATCH_USERNAME_QUERY, (username.lower(), password))
         rows = cur.fetchone()
         # print("match::",rows)
         if rows is None or len(rows) == 0:
@@ -666,7 +675,7 @@ class SQLiteConnection:
 
     def match_email_from_db(self, email, password):
         cur = DB_CONNECTION.cursor()
-        cur.execute(MATCH_EMAIL_QUERY, (email, password))
+        cur.execute(MATCH_EMAIL_QUERY, (email.lower(), password))
         rows = cur.fetchone()
         if rows is None or len(rows) == 0:
             return ""
