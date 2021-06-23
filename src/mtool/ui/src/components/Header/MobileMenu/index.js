@@ -93,8 +93,8 @@ const MobileMenu = (props) => {
                 <MenuItem className={classes.nestedMenuItem}>User Management</MenuItem>
               </NavLink>
               <Divider />
-              {/* <MenuItem className={classes.nestedMenuItem} onClick={props.renderPopup}>Change Password</MenuItem>
-              <Divider /> */}
+              <MenuItem className={classes.nestedMenuItem} onClick={props.renderPopup}>Change Password</MenuItem>
+              <Divider />
               <MenuItem className={classes.nestedMenuItem} onClick={props.userLogout}>Logout</MenuItem>
               <Divider />
             </MenuList>

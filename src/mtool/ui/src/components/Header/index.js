@@ -150,15 +150,15 @@ class Header extends Component {
     this.renderDropDown = this.renderDropDown.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
     this.closeDropdown = this.closeDropdown.bind(this);
-    // this.alertClose = this.alertClose.bind(this);
-    // this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    this.alertClose = this.alertClose.bind(this);
+    this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.updateDropdown = this.updateDropdown.bind(this);
     // this.printLastTimestamp = this.printLastTimestamp.bind(this);
     this.userLogout = this.userLogout.bind(this);
     // this.goHome = this.goHome.bind(this);
     this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
-    // this.OnHandleChange = this.OnHandleChange.bind(this);
+    this.OnHandleChange = this.OnHandleChange.bind(this);
     this.state = {
       dropdown: false,
       popup: false,
@@ -227,88 +227,97 @@ class Header extends Component {
 
   // Disabling for PoC1
 
-  // onHandleSubmit() {
-  //   if (!this.state.oldPassword) {
-  //     this.setState({
-  //       ...this.state,
-  //       msg: 'Enter your old Password',
-  //       alertOpen: true,
-  //       // title: "Error",
-  //       title: 'Change Password',
-  //       alertType: 'alert',
-  //     });
-  //   } else if (!this.state.newPassword || !this.state.confirmPassword) {
-  //     this.setState({
-  //       ...this.state,
-  //       msg: 'Enter a valid Password',
-  //       alertOpen: true,
-  //       // title: "Error",
-  //       title: 'Change Password',
-  //       alertType: 'alert',
-  //     });
-  //   } else if (this.state.newPassword !== this.state.confirmPassword) {
-  //     this.setState({
-  //       ...this.state,
-  //       msg: 'Passwords do not match',
-  //       alertOpen: true,
-  //       // title: "Error",
-  //       title: 'Change Password',
-  //       alertType: 'alert',
-  //     });
-  //   } else {
-  //     fetch('/api/v1.0/update_password/', {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         oldPassword: this.state.oldPassword,
-  //         newPassword: this.state.newPassword,
-  //         confirmPassword: this.state.confirmPassword,
-  //         userid: this.state.userid
-  //       }),
-  //     }).then(result => {
-  //       if (result.status === 200) {
-  //         this.setState({
-  //           ...this.state,
-  //           msg: 'Password changed successfully',
-  //           alertOpen: true,
-  //           // title: "Success",
-  //           title: 'Change Password',
-  //           alertType: 'info',
-  //         });
-  //         this.setState({
-  //           dropdown: false,
-  //           popup: false,
-  //           oldPassword: '',
-  //           newPassword: '',
-  //           confirmPassword: '',
-  //         });
-  //       } else if (result.status === 401) {
-  //         this.props.history.push('/');
-  //       } else {
-  //         this.setState({
-  //           ...this.state,
-  //           msg: 'Error in setting Password',
-  //           alertOpen: true,
-  //           alertType: 'alert',
-  //           // title: "Error"
-  //           title: 'Change Password',
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
+  onHandleSubmit() {
+    if (!this.state.oldPassword) {
+      this.setState({
+        ...this.state,
+        msg: 'Enter your old Password',
+        alertOpen: true,
+        // title: "Error",
+        title: 'Change Password',
+        alertType: 'alert',
+      });
+    } else if (!this.state.newPassword || !this.state.confirmPassword) {
+      this.setState({
+        ...this.state,
+        msg: 'Enter a valid Password',
+        alertOpen: true,
+        // title: "Error",
+        title: 'Change Password',
+        alertType: 'alert',
+      });
+    } else if (this.state.newPassword !== this.state.confirmPassword) {
+      this.setState({
+        ...this.state,
+        msg: 'Passwords do not match',
+        alertOpen: true,
+        // title: "Error",
+        title: 'Change Password',
+        alertType: 'alert',
+      });
+    } else if (this.state.newPassword.length < 8 || this.state.newPassword.length > 64) {
+      this.setState({
+        ...this.state,
+        msg: 'Password length should be between 8-64 characters',
+        alertOpen: true,
+        // title: "Error",
+        title: 'Change Password',
+        alertType: 'alert',
+      });
+    } else {
+      fetch('/api/v1.0/update_password/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          oldPassword: this.state.oldPassword,
+          newPassword: this.state.newPassword,
+          confirmPassword: this.state.confirmPassword,
+          userid: this.state.userid
+        }),
+      }).then(result => {
+        if (result.status === 200) {
+          this.setState({
+            ...this.state,
+            msg: 'Password changed successfully',
+            alertOpen: true,
+            // title: "Success",
+            title: 'Change Password',
+            alertType: 'info',
+          });
+          this.setState({
+            dropdown: false,
+            popup: false,
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+          });
+        } else if (result.status === 401) {
+          this.props.history.push('/');
+        } else {
+          this.setState({
+            ...this.state,
+            msg: 'Error in setting Password',
+            alertOpen: true,
+            alertType: 'alert',
+            // title: "Error"
+            title: 'Change Password',
+          });
+        }
+      });
+    }
+  }
 
   // Disabling For PoC1
-  // OnHandleChange(event) {
-  //   const { name, value } = event.target;
-  //   this.setState({ 
-  //     ...this.state, 
-  //     [name]: value 
-  //   });
-  // }
+  OnHandleChange(event) {
+    const { name, value } = event.target;
+    this.setState({
+      ...this.state,
+      [name]: value
+    });
+  }
 
   IsIbofOSRunning() {
     this.props.Get_Is_iBOFOS_Running_Status({push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn});
@@ -335,12 +344,12 @@ class Header extends Component {
   }
 
   // Disabling for PoC1
-  // alertClose() {
-  //   this.setState({
-  //     ...this.state,
-  //     alertOpen: false,
-  //   });
-  // }
+  alertClose() {
+    this.setState({
+      ...this.state,
+      alertOpen: false,
+    });
+  }
 
   // goHome() {
   //   this.props.history.push('/dashboard');
@@ -366,7 +375,10 @@ class Header extends Component {
       ...this.state,
       popup,
       dropdown: false,
-      isMobileMenuOpen: false
+      isMobileMenuOpen: false,
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: ''
     });
   }
 

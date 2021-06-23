@@ -30,17 +30,17 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const bytesToTB = (bytes, decimals = 2) => {
-    if (bytes === 0 || !bytes) return '0 TB';
+// const bytesToTB = (bytes, decimals = 2) => {
+//     if (bytes === 0 || !bytes) return '0 TB';
   
-    const k = 1024;
-    const dm = decimals < 0 /* istanbul ignore next */? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+//     const k = 1024;
+//     const dm = decimals < 0 /* istanbul ignore next */? 0 : decimals;
+//     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   
-    const i = 4;
+//     const i = 4;
   
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
-  };
+//     return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+//   };
   
-  export default bytesToTB;
+//   export default bytesToTB;
   

@@ -169,7 +169,7 @@ describe("Dashboard", () => {
     renderComponent();
     const { getByTestId } = wrapper;
     const readStorageElement = await waitForElement(() => getByTestId("dashboard-no-array"));
-    expect(readStorageElement.innerHTML).toBe("No Array Created");
+    expect(readStorageElement.innerHTML).toBe("No Mounted Arrays");
 
   });
 

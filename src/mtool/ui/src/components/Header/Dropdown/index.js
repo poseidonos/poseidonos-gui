@@ -68,12 +68,12 @@ const Dropdown = (props) => {
       <Divider />
       <MenuItem className={classes.menuItem}><NavLink to="/ConfigurationSetting/user">User Management</NavLink></MenuItem>
       <Divider />
+      <MenuItem className={classes.menuItem} onClick={props.renderPopup}>Change Password</MenuItem>
+      <Divider />
       <MenuItem className={classes.menuItem}>
         <a href={PDF} target="_blank" type="application/pdf" className={classes.optionItem} rel="noopener noreferrer">Help</a>
       </MenuItem>
       <Divider />
-      {/* <MenuItem className={classes.menuItem} onClick={props.renderPopup}>Change Password</MenuItem>
-      <Divider /> */}
       <MenuItem className={classes.menuItem} onClick={props.userLogout} data-testid="logoutButton">Logout</MenuItem>
     </Menu>
     );

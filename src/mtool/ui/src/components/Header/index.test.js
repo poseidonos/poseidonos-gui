@@ -86,138 +86,156 @@ describe('<Header />', () => {
   
   //Disabling for PoC1
 
-  // it("should render Change Password dialogue", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   expect(oldPwd).toBeDefined();
-  //   // expect(asFragment()).toMatchSnapshot();
-  //   fireEvent.click(await waitForElement(() => getByText('Status:')));
-  // });
+  it("should render Change Password dialogue", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    expect(oldPwd).toBeDefined();
+    // expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(await waitForElement(() => getByText('Status:')));
+  });
 
-  // it("should change the Password", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
-  //   fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(newPwd, {target: {value: "defg"}});
-  //   const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
-  //   fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(confPwd, {target: {value: "defg"}});
-  //   jest.spyOn(global, 'fetch')
-  //   .mockImplementation(() => Promise.resolve({
-  //     status: 200,
-  //     json: () => Promise.resolve({
-  //       value: ""
-  //     })
-  //   }));
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  // });
+  it("should change the Password", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(newPwd, {target: {value: "defg"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(confPwd, {target: {value: "defg"}});
+    jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({
+        value: ""
+      })
+    }));
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+  });
 
-  // it("should redirect if user session ended", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
-  //   fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(newPwd, {target: {value: "defg"}});
-  //   const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
-  //   fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(confPwd, {target: {value: "defg"}});
-  //   jest.spyOn(global, 'fetch')
-  //   .mockImplementation(() => Promise.resolve({
-  //     status: 401,
-  //     json: () => Promise.resolve({
-  //       value: ""
-  //     })
-  //   }));
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  // });
+  it("should redirect if user session ended", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(newPwd, {target: {value: "defg"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(confPwd, {target: {value: "defg"}});
+    jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      status: 401,
+      json: () => Promise.resolve({
+        value: ""
+      })
+    }));
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+  });
 
-  // it("should throw error if password change failed", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
-  //   fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(newPwd, {target: {value: "defg"}});
-  //   const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
-  //   fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
-  //   fireEvent.change(confPwd, {target: {value: "defg"}});
-  //   jest.spyOn(global, 'fetch')
-  //   .mockImplementation(() => Promise.resolve({
-  //     status: 400,
-  //     json: () => Promise.resolve({
-  //       value: ""
-  //     })
-  //   }));
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  //   expect(await waitForElement(() => getByText("Error in setting Password"))).toBeDefined();
-  // });
+  it("should throw error if password contraints are not met", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(newPwd, {target: {value: "defg"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(confPwd, {target: {value: "defg"}});
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    expect(await waitForElement(() => getByText("Password length should be between 8-64 characters"))).toBeDefined();
+  });
 
-  // it("should show error when old password is not entered", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  //   fireEvent.click(await waitForElement(() => getByText('OK')));
-  // });
+  it("should throw error if password change failed", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.keyDown(oldPwd, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.keyDown(newPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(newPwd, {target: {value: "defghijk"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.keyDown(confPwd, { key: 'D', code: 68, charCode: 68 });
+    fireEvent.change(confPwd, {target: {value: "defghijk"}});
+    jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      status: 400,
+      json: () => Promise.resolve({
+        value: ""
+      })
+    }));
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    expect(await waitForElement(() => getByText("Error in setting Password"))).toBeDefined();
+  });
 
-  // it("should show error when new password is not entered", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  //   fireEvent.click(await waitForElement(() => getByText('OK')));
-  // });
+  it("should show error when old password is not entered", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    fireEvent.click(await waitForElement(() => getByText('OK')));
+  });
 
-  // it("should show error when confirm password is not entered", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
-  //   fireEvent.change(newPwd, {target: {value: "defg"}});
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  //   fireEvent.click(await waitForElement(() => getByText('OK')));
-  // });
+  it("should show error when new password is not entered", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    fireEvent.click(await waitForElement(() => getByText('OK')));
+  });
 
-  // it("should show error when new password and confirm password do not match", async () => {
-  //   renderComponent();
-  //   const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
-  //   fireEvent.click(getByTestId('header-dropdown'));
-  //   fireEvent.click(await waitForElement(() => getByText('Change Password')));
-  //   const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
-  //   fireEvent.change(oldPwd, {target: {value: "abcd"}});
-  //   const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
-  //   fireEvent.change(newPwd, {target: {value: "deg"}});
-  //   const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
-  //   fireEvent.change(confPwd, {target: {value: "defg"}});
-  //   fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
-  //   expect(await waitForElement(() => getByText("Passwords do not match"))).toBeDefined();
-  // });
+  it("should show error when confirm password is not entered", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.change(newPwd, {target: {value: "defg"}});
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    fireEvent.click(await waitForElement(() => getByText('OK')));
+  });
+
+  it("should show error when new password and confirm password do not match", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.change(oldPwd, {target: {value: "abcd"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.change(newPwd, {target: {value: "deg"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.change(confPwd, {target: {value: "defg"}});
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    expect(await waitForElement(() => getByText("Passwords do not match"))).toBeDefined();
+  });
 
   it("should toggle the menu", async () => {
     window.innerWidth = 500
