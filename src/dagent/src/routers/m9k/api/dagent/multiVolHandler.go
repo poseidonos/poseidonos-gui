@@ -245,12 +245,12 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 	}
 }
 
-func maxCountExceeded(count int) (int, bool) {
-	req := model.Request{}
+func maxCountExceeded(count int, array string) (int, bool) {
+  param := model.VolumeParam{Array: array}
 	listXrid, _ := uuid.NewUUID()
 	countXrid, _ := uuid.NewUUID()
-	_, volList, err := iBoFOS.ListVolume(listXrid.String(), req.Param)
-	_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), req.Param)
+  _, volList, err := iBoFOS.ListVolume(listXrid.String(), param)
+  _, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -277,7 +277,7 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (mo
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
 
-	if status, ok := maxCountExceeded(int(volParam.TotalCount)); ok {
+	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
