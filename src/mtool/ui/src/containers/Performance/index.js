@@ -127,6 +127,7 @@ class Performance extends Component {
   componentDidUpdate() {
     if (this.state.array === "" && this.props.arrays.length > 0) {
       // eslint-disable-next-line react/no-did-update-set-state
+      this.props.Set_Array(this.props.arrays[0].arrayname);
       this.setState({
         array: this.props.arrays[0].arrayname
       })
@@ -311,6 +312,7 @@ class Performance extends Component {
   }
 
   arrayChanged(event) {
+    this.props.Set_Array(event.target.value);
     this.setState({
       array: event.target.value,
       volume: 'all-volumes'
@@ -846,6 +848,7 @@ const mapDispatchToProps = dispatch => {
     // fetchInputPower: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION,payload }),
     Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
     Get_Arrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
+    Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
     Reset_State: () => dispatch({ type: actionTypes.RESET_PERF_STATE }),
     // fetchPowerSensorInfo: () => dispatch({ type: actionTypes.SAGA_HARDWARE_SENSORS_FETCH_POWER_SENSOR_INFORMATION, }),
   }

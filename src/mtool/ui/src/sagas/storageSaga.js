@@ -69,7 +69,7 @@ function* fetchArraySize() {
 
 function* fetchVolumeDetails(action) {
   try {
-    const response = yield call([axios, axios.get], action.payload, {
+    const response = yield call([axios, axios.get], action.payload.url, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -78,7 +78,9 @@ function* fetchVolumeDetails(action) {
     });
     /* istanbul ignore else */
     if (response.status === 200) {
-      yield put(actionCreators.addVolumeDetails(response.data));
+      if((yield select(arrayname)) === action.payload.array) {
+        yield put(actionCreators.addVolumeDetails(response.data));
+      }
     }
   } catch (e) {
     // console.log(e)
@@ -102,9 +104,16 @@ function* fetchVolumes(action) {
     /* istanbul ignore else */
     if (response.status === 200) {
       for (let i = response.data.Members.length - 1; i >= 0; i -= 1) {
-        yield fetchVolumeDetails({
-          payload: response.data.Members[i]["@odata.id"],
-        });
+        if((yield select(arrayname)) === action.payload.array) {
+          yield fetchVolumeDetails({
+            payload: {
+              url: response.data.Members[i]["@odata.id"],
+              array: action.payload.array
+            }
+          });
+        } else {
+          break;
+        }
       }
       yield fetchArraySize();
     } else {
@@ -623,7 +632,12 @@ function* updateVolume(action) {
           },
         });
       }
-      yield fetchVolumeDetails({ payload: action.payload.url });
+      yield fetchVolumeDetails({
+        payload: {
+          url: action.payload.url,
+          array: arrayName
+        }
+      });
       return;
     }
     const data = {
@@ -697,7 +711,12 @@ function* updateVolume(action) {
           })
         );
       }
-      yield fetchVolumeDetails({ payload: action.payload.url });
+      yield fetchVolumeDetails({
+        payload: {
+          url: action.payload.url,
+          array: arrayName
+        }
+      });
     } else if (action.payload.newName !== action.payload.name) {
       yield renameVolume({
         payload: {
@@ -1206,8 +1225,8 @@ function* removeSpareDisk(action) {
 
 function* changeVolumeMountStatus(action) {
   let message = "Mount";
+  const arrayName = yield select(arrayname)
   try {
-    const arrayName = yield select(arrayname)
     let response = {};
     if (action.payload.status === "Mounted") {
       message = "Unmount";
@@ -1286,7 +1305,12 @@ function* changeVolumeMountStatus(action) {
       })
     );
   } finally {
-    yield fetchVolumeDetails({ payload: action.payload.url });
+    yield fetchVolumeDetails({
+      payload: {
+        url: action.payload.url,
+        array: arrayName
+      }
+    });
     yield put(actionCreators.stopStorageLoader());
   }
 }
