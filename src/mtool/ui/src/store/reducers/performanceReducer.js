@@ -114,7 +114,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 cpuUsage: {
                     ...state.cpuUsage,
-                    values: action.cpuUsage
+                    values: action.cpuUsage,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         case actionTypes.FETCH_READ_BANDWIDTH:
@@ -122,7 +124,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 readBandwidth: {
                     ...state.readBandwidth,
-                    values: action.bw
+                    values: action.bw,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         case actionTypes.FETCH_WRITE_BANDWIDTH:
@@ -130,7 +134,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 writeBandwidth: {
                     ...state.writeBandwidth,
-                    values: action.bw
+                    values: action.bw,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         case actionTypes.FETCH_LATENCY:
@@ -138,7 +144,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 latency: {
                     ...state.latency,
-                    values: action.latency
+                    values: action.latency,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         case actionTypes.FETCH_READ_IOPS: {
@@ -146,7 +154,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 readIOPS: {
                     ...state.readIOPS,
-                    values: action.iops
+                    values: action.iops,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         }
@@ -155,7 +165,9 @@ const performanceReducer = (state = initialState, action) => {
                 ...state,
                 writeIOPS: {
                     ...state.writeIOPS,
-                    values: action.iops
+                    values: action.iops,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
                 }
             }
         }
@@ -178,6 +190,8 @@ const performanceReducer = (state = initialState, action) => {
                         readBandwidth: {
                             yLabel: 'Bandwidth (Bytes/s)',
                             values: action.bw,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
                             name: `Read Bandwidth ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
                             maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
@@ -195,6 +209,8 @@ const performanceReducer = (state = initialState, action) => {
                         writeBandwidth: {
                             yLabel: 'Bandwidth (Bytes/s)',
                             values: action.bw,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
                             name: `Write Bandwidth ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
                             maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
@@ -212,6 +228,8 @@ const performanceReducer = (state = initialState, action) => {
                         readIOPS: {
                             yLabel: 'IOPS',
                             values: action.iops,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
                             name: `Read IOPS ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000 /* istanbul ignore next */: null,
                             maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
@@ -230,6 +248,8 @@ const performanceReducer = (state = initialState, action) => {
                         writeIOPS: {
                             yLabel: 'IOPS',
                             values: action.iops,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
                             name: `Write IOPS ${action.name}`,
                             maxiops: action.maxiops !== 0 ? action.maxiops * 1000/* istanbul ignore next */: null,
                             maxbw: action.maxbw !== 0 ? action.maxbw * BYTE_FACTOR * BYTE_FACTOR /* istanbul ignore next */: null
@@ -248,6 +268,8 @@ const performanceReducer = (state = initialState, action) => {
                         latency: {
                             yLabel: 'Latency (ns)',
                             values: action.latency,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
                             name: `Latency ${action.name}`,
                            // maxiops: action.maxiops !== 0 ? action.maxiops: null,
                            // maxbw: action.maxbw !== 0 ? action.maxbw : null

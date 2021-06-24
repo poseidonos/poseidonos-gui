@@ -126,8 +126,8 @@ class Performance extends Component {
 
   componentDidUpdate() {
     if (this.state.array === "" && this.props.arrays.length > 0) {
-      // eslint-disable-next-line react/no-did-update-set-state
       this.props.Set_Array(this.props.arrays[0].arrayname);
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         array: this.props.arrays[0].arrayname
       })
@@ -582,6 +582,8 @@ class Performance extends Component {
                       chartName={`${this.props.readBandwidth.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
+                      startTime={this.props.readBandwidth.startTime}
+                      endTime={this.props.readBandwidth.endTime}
                       constValue={this.state.maxBw}
                       style={style}
                       field="bw"
@@ -599,6 +601,8 @@ class Performance extends Component {
                       chartName={`${this.props.writeBandwidth.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
+                      startTime={this.props.writeBandwidth.startTime}
+                      endTime={this.props.writeBandwidth.endTime}
                       constValue={this.state.maxBw}
                       style={style}
                       field="bw"
@@ -616,6 +620,8 @@ class Performance extends Component {
                       chartName={`${this.props.readIOPS.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
+                      startTime={this.props.readIOPS.startTime}
+                      endTime={this.props.readIOPS.endTime}
                       constValue={this.state.maxIops}
                       style={style}
                       field="iops"
@@ -633,6 +639,8 @@ class Performance extends Component {
                       chartName={`${this.props.writeIOPS.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
+                      startTime={this.props.writeIOPS.startTime}
+                      endTime={this.props.writeIOPS.endTime}
                       constValue={this.state.maxIops}
                       style={style}
                       field="iops"
@@ -649,6 +657,8 @@ class Performance extends Component {
                       chartName={`${this.props.latency.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
+                      startTime={this.props.latency.startTime}
+                      endTime={this.props.latency.endTime}
                       constValue={this.state.maxLatency}
                       style={style}
                       field="latency"
@@ -670,6 +680,8 @@ class Performance extends Component {
                       width={this.state.chartwidth}
                       maxValue={100}
                       interval={this.state.intervalTime}
+                      startTime={this.props.cpuUsage.startTime}
+                      endTime={this.props.cpuUsage.endTime}
                       style={style}
                       field="value"
                       datatestid="cpuusage"
@@ -718,6 +730,8 @@ class Performance extends Component {
                             chartName={`${this.props.vols[content].readBandwidth.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].readBandwidth.startTime}
+                            endTime={this.props.vols[content].readBandwidth.endTime}
                             constValue={this.props.vols[content].readBandwidth.maxbw}
                             style={style}
                             field="bw"
@@ -737,6 +751,8 @@ class Performance extends Component {
                             chartName={`${this.props.vols[content].writeBandwidth.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].writeBandwidth.startTime}
+                            endTime={this.props.vols[content].writeBandwidth.endTime}
                             constValue={this.props.vols[content].writeBandwidth.maxbw}
                             style={style}
                             field="bw"
@@ -755,6 +771,8 @@ class Performance extends Component {
                             chartName={`${this.props.vols[content].readIOPS.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].readIOPS.startTime}
+                            endTime={this.props.vols[content].readIOPS.endTime}
                             constValue={this.props.vols[content].readIOPS.maxiops}
                             style={style}
                             field="iops"
@@ -773,6 +791,8 @@ class Performance extends Component {
                             chartName={`${this.props.vols[content].writeIOPS.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].writeIOPS.startTime}
+                            endTime={this.props.vols[content].writeIOPS.endTime}
                             constValue={this.props.vols[content].writeIOPS.maxiops}
                             style={style}
                             field="iops"
@@ -792,6 +812,8 @@ class Performance extends Component {
                             chartName={`${this.props.vols[content].latency.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].latency.startTime}
+                            endTime={this.props.vols[content].latency.endTime}
                             constValue={this.props.vols[content].latency.maxLatency}
                             style={style}
                             field="latency"

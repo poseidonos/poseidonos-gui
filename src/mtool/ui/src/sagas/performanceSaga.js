@@ -123,7 +123,7 @@ function extractValues(data) {
 //       );
 //       const result = response.data;
 //       if (result && !result.message) {
-//         yield put(actionCreators.fetchInputPowerVariation(extractValues(result.res)));
+//         yield put(actionCreators.fetchInputPowerVariation(extractValues(result.res[0])));
 //       } else {
 //         yield put(actionCreators.fetchInputPowerVariation([]));
 //       }
@@ -146,9 +146,9 @@ export function* fetchCpuUsage(action) {
         const result = response.data;
 
         /* istanbul ignore else */
-        if (result && !result.message) {
+        if (result && !result.message && result.length) {
             const values = [];
-            result.forEach(r => {
+            result[0].forEach(r => {
                 /* istanbul ignore else */
                 if (r.cpuUsagePercent !== null) {
                     values.push({
@@ -157,16 +157,17 @@ export function* fetchCpuUsage(action) {
                     });
                 }
             });
-            yield put(actionCreators.fetchCpuUsage(values));
+            console.log(result[1])
+            yield put(actionCreators.fetchCpuUsage(values, result[1][0]));
         } else {
-            yield put(actionCreators.fetchCpuUsage([]));
+            yield put(actionCreators.fetchCpuUsage([], {}));
         }
     } catch (error) {
-        yield put(actionCreators.fetchCpuUsage([]));
+        yield put(actionCreators.fetchCpuUsage([], {}));
     } finally {
         /* istanbul ignore if */
         if (yield cancelled()) {
-            yield put(actionCreators.fetchCpuUsage([]));
+            yield put(actionCreators.fetchCpuUsage([], {}));
         }
     }
 }
@@ -192,19 +193,19 @@ export function* fetchReadBandwidth(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchReadBandwidth(extractValues(result.res)));
+                yield put(actionCreators.fetchReadBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolReadBandwidth({ values: extractValues(result.res), ...action.payload }));
+                yield put(actionCreators.fetchVolReadBandwidth({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         } else if (action.payload.level === "array") {
-            yield put(actionCreators.fetchReadBandwidth([]));
+            yield put(actionCreators.fetchReadBandwidth([], {}));
         } else {
             yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
         }
     }
     catch (error) {
         if (action.payload.level === "array") {
-            yield put(actionCreators.fetchReadBandwidth([]));
+            yield put(actionCreators.fetchReadBandwidth([], {}));
         } else {
             yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
         }
@@ -213,7 +214,7 @@ export function* fetchReadBandwidth(action) {
          /* istanbul ignore if */
         if (yield cancelled()) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchReadBandwidth([]));
+                yield put(actionCreators.fetchReadBandwidth([], {}));
             } else {
                 yield put(actionCreators.fetchVolReadBandwidth({ values: [], ...action.payload }));
             }
@@ -240,9 +241,9 @@ function* fetchWriteBandwidth(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchWriteBandwidth(extractValues(result.res)));
+                yield put(actionCreators.fetchWriteBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolWriteBandwidth({ values: extractValues(result.res), ...action.payload }));
+                yield put(actionCreators.fetchVolWriteBandwidth({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         }
         else if (action.payload.level === "array") {
@@ -291,9 +292,9 @@ export function* fetchReadIops(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchReadIops(extractValues(result.res)));
+                yield put(actionCreators.fetchReadIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolReadIops({ values: extractValues(result.res), ...action.payload }));
+                yield put(actionCreators.fetchVolReadIops({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchReadIops([]));
@@ -341,19 +342,19 @@ export function* fetchWriteIops(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchWriteIops(extractValues(result.res)));
+                yield put(actionCreators.fetchWriteIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolWriteIops({ values: extractValues(result.res), ...action.payload }));
+                yield put(actionCreators.fetchVolWriteIops({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         } else if (action.payload.level === "array") {
-            yield put(actionCreators.fetchWriteIops([]));
+            yield put(actionCreators.fetchWriteIops([], {}));
         } else {
             yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
         }
     }
     catch (error) {
         if (action.payload.level === "array") {
-            yield put(actionCreators.fetchWriteIops([]));
+            yield put(actionCreators.fetchWriteIops([], {}));
         } else {
             yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
         }
@@ -362,7 +363,7 @@ export function* fetchWriteIops(action) {
          /* istanbul ignore if */
         if (yield cancelled()) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchWriteIops([]));
+                yield put(actionCreators.fetchWriteIops([], {}));
             } else {
                 yield put(actionCreators.fetchVolWriteIops({ values: [], ...action.payload }))
             }
@@ -392,20 +393,20 @@ export function* fetchLatency(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchLatency(extractValues(result.res)));
+                yield put(actionCreators.fetchLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolLatency({ values: extractValues(result.res), ...action.payload }));
+                yield put(actionCreators.fetchVolLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         }
         else if (action.payload.level === "array") {
-            yield put(actionCreators.fetchLatency([]));
+            yield put(actionCreators.fetchLatency([], {}));
         } else {
             yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
         }
     }
     catch (error) {
         if (action.payload.level === "array") {
-            yield put(actionCreators.fetchLatency([]));
+            yield put(actionCreators.fetchLatency([], {}));
         } else {
             yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
         }
@@ -414,7 +415,7 @@ export function* fetchLatency(action) {
          /* istanbul ignore if */
         if (yield cancelled()) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchLatency([]));
+                yield put(actionCreators.fetchLatency([], {}));
             } else {
                 yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
             }

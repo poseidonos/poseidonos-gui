@@ -46,45 +46,52 @@ import * as actionTypes from "./actionTypes";
 //     }
 // }
 
-export const fetchCpuUsage = (cpuUsage) => {
+export const fetchCpuUsage = (cpuUsage, interval) => {
+    console.log(interval)
     return {
         type: actionTypes.FETCH_CPU_USAGE,
-        cpuUsage
+        cpuUsage,
+        interval
     }
 }
 
-export const fetchReadBandwidth = (bw) => {
+export const fetchReadBandwidth = (bw, interval) => {
     return {
         type: actionTypes.FETCH_READ_BANDWIDTH,
-        bw
+        bw,
+        interval
     }
 }
 
-export const fetchWriteBandwidth = (bw) => {
+export const fetchWriteBandwidth = (bw, interval) => {
     return {
         type: actionTypes.FETCH_WRITE_BANDWIDTH,
-        bw
+        bw,
+        interval
     }
 }
 
-export const fetchReadIops = (iops) => {
+export const fetchReadIops = (iops, interval) => {
     return {
         type: actionTypes.FETCH_READ_IOPS,
-        iops
+        iops,
+        interval
     }
 }
 
-export const fetchWriteIops = (iops) => {
+export const fetchWriteIops = (iops, interval) => {
     return {
         type: actionTypes.FETCH_WRITE_IOPS,
-        iops
+        iops,
+        interval
     }
 }
 
-export const fetchLatency = (latency) => {
+export const fetchLatency = (latency, interval) => {
     return {
         type: actionTypes.FETCH_LATENCY,
-        latency
+        latency,
+        interval
     }
 }
 
@@ -102,7 +109,9 @@ export const fetchVolReadBandwidth = (payload) => {
         level: payload.level,
         name: payload.name,
         maxiops: payload.maxiops,
-        maxbw: payload.maxbw
+        maxbw: payload.maxbw,
+        startTime: payload.startTime,
+        endTime: payload.endTime
     }
 }
 
@@ -113,7 +122,9 @@ export const fetchVolWriteBandwidth = (payload) => {
         level: payload.level,
         name: payload.name,
         maxiops: payload.maxiops,
-        maxbw: payload.maxbw
+        maxbw: payload.maxbw,
+        startTime: payload.startTime,
+        endTime: payload.endTime
     }
 }
 
@@ -124,7 +135,9 @@ export const fetchVolReadIops = (payload) => {
         level: payload.level,
         name: payload.name,
         maxiops: payload.maxiops,
-        maxbw: payload.maxiops
+        maxbw: payload.maxiops,
+        startTime: payload.startTime,
+        endTime: payload.endTime
     }
 }
 
@@ -135,7 +148,9 @@ export const fetchVolWriteIops = (payload) => {
         level: payload.level,
         name: payload.name,
         maxiops: payload.maxiops,
-        maxbw: payload.maxiops
+        maxbw: payload.maxiops,
+        startTime: payload.startTime,
+        endTime: payload.endTime
     }
 }
 
@@ -146,6 +161,8 @@ export const fetchVolLatency = (payload) => {
         level: payload.level,
         name: payload.name,
         maxiops: payload.maxiops,
-        maxbw: payload.maxiops
+        maxbw: payload.maxiops,
+        startTime: payload.startTime,
+        endTime: payload.endTime
     }
 }

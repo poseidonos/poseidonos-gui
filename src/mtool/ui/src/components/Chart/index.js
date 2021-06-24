@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from "react";
-import { extent as d3ArrayExtent, max as d3ArrayMax } from "d3-array";
+import { extent as d3ArrayExtent, max as d3ArrayMax, min as d3ArrayMin } from "d3-array";
 import { timeFormat as d3timeFormat } from "d3-time-format";
 import { format as d3Format } from "d3-format";
 import {
@@ -81,6 +81,49 @@ const styles = (theme) => ({
     position: "relative"
   }
 });
+
+const domainSelect = (timeInterval) => {
+
+  const dt = new Date();
+  switch(timeInterval) {
+    case "30d": {
+      dt.setDate(dt.getDate() - 30);
+      return [dt, new Date()];
+    }
+    case "7d": {
+      dt.setDate(dt.getDate() - 7);
+      return [dt, new Date()];
+    }
+    case "24h": {
+      dt.setHours(dt.getHours() - 24);
+      return [dt, new Date()];
+    }
+    case "12h": {
+      dt.setHours(dt.getHours() - 12);
+      return [dt, new Date()];
+    }
+    case "6h": {
+      dt.setHours(dt.getHours() - 6);
+      return [dt, new Date()];
+    }
+    case "1h": {
+      dt.setHours(dt.getHours() - 1);
+      return [dt, new Date()];
+    }
+    case "15m": {
+      dt.setMinutes(dt.getMinutes() - 15);
+      return [dt, new Date()];
+    }
+    case "5m": {
+      dt.setMinutes(dt.getMinutes() - 5);
+      return [dt, new Date()];
+    }
+    default: {
+      dt.setMinutes(dt.getMinutes() - 1);
+      return [dt, new Date()];
+    }
+  }
+}
 
 class Chart extends Component {
   data = [];
@@ -176,7 +219,11 @@ class Chart extends Component {
         valMax = nextProps.constValue;
       }
     }
-    xScale.domain(timeDomain);
+    if(nextProps.startTime && nextProps.endTime) {
+      xScale.domain([Math.min(d3ArrayMin(data, (datum) => (datum.time/1e6)), parseInt(nextProps.startTime/1e6)), nextProps.endTime/1e6]);
+    } else {
+      xScale.domain(domainSelect(nextProps.interval, timeDomain));
+    }
     if (maxValue) {
       yScale.domain([0, 100]);
     } else {
