@@ -529,12 +529,12 @@ function* renameVolume(action) {
         (response.data.result.status.code === 2000 ||
           response.data.result.status.code === 0)
       ) {
-        if (action.payload.error === "") {
+        if (action.payload.noError) {
           yield put(
             actionCreators.showStorageAlert({
               alertType: "info",
               alertTitle: "Update Volume",
-              errorMsg: "Volume Updated successfully",
+              errorMsg: `${action.payload.error}\nVolume Updated successfully`,
               errorCode: "",
             })
           );
@@ -548,14 +548,26 @@ function* renameVolume(action) {
             })
           );
         }
-      } else if (action.payload.error === "") {
+      } else if(action.payload.qosSame) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            alertTitle: "Update Volume",
+            errorMsg: "Volume Updation Failed",
+            errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
+                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                : ""
+              }`
+          })
+        );
+      } else if (action.payload.noError) {
 
         yield put(
           actionCreators.showStorageAlert({
             alertType: "partialError",
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Succeeded partially",
-            errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
+            errorCode: `${action.payload.error}\nError in Renaming volume: ${response.data.result && response.data.result.status
                 ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
                 : ""
               }`
@@ -577,7 +589,7 @@ function* renameVolume(action) {
       }
     }
   } catch (error) {
-    if (action.payload.error === "") {
+    if (action.payload.noError) {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
@@ -628,7 +640,9 @@ function* updateVolume(action) {
             name: action.payload.name,
             newName: action.payload.newName,
             array: arrayName,
-            error: ""
+            noError: true,
+            error: "",
+            qosSame: true
           },
         });
       }
@@ -673,7 +687,8 @@ function* updateVolume(action) {
               name: action.payload.name,
               newName: action.payload.newName,
               array: arrayName,
-              error: ""
+              noError: true,
+              error: response.data.result.status.posDescription,
             },
           });
         } else {
@@ -681,7 +696,8 @@ function* updateVolume(action) {
             actionCreators.showStorageAlert({
               alertType: "info",
               alertTitle: "Update Volume",
-              errorMsg: "Volume Updated successfully",
+              errorMsg: response.data.result.status.posDescription,
+              noError: true,
               errorCode: "",
             })
           );
