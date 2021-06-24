@@ -117,7 +117,7 @@ const styles = theme => ({
     marginTop: '-2px',
   },
   username: {
-    width: 150,
+    maxWidth: 250,
     overflow: "hidden",
     textOverflow: "ellipsis"
   },
