@@ -643,12 +643,12 @@ function* updateVolume(action) {
     const data = {
       maxiops: parseInt(action.payload.maxiops, 10),
       maxbw: parseInt(action.payload.maxbw, 10),
-      name: action.payload.name,
+      volumes: [{"volumeName":action.payload.name}],
       array: arrayName,
     };
     const response = yield call(
-      [axios, axios.put],
-      "/api/v1.0/update-volume/",
+      [axios, axios.post],
+      "/api/v1/qos",
       data,
       {
         headers: {

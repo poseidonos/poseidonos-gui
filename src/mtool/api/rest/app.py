@@ -1173,6 +1173,67 @@ def unmount_arr():
     except Exception as e:
         print("In exception unmount_arr(): ", e)
         return make_response('Could not Unmount array', 500)
+@app.route('/api/v1/qos', methods=['POST'])
+def qos_create_policies():
+    try:
+        print("in qos_create_policies ",json.loads(request.data.decode('utf-8')))
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        array_name = body.get("array")
+        vol_names = body.get("volumes")
+        max_bw = body.get("maxbw")
+        max_iops = body.get("maxiops")
+        request_body = {
+		"param": {
+			"array": array_name,
+                        "vol":vol_names,
+                        "maxbw":max_bw,
+                        "maxiops":max_iops
+		}
+        }
+        response = dagent.qos_create_volume_policies(request_body)
+        return toJson(response.json())
+    except Exception as e:
+        print("In exception qos_create_policies(): ", e)
+        return make_response('Could not create volume policies', 500)
+
+@app.route('/api/v1/qos/reset', methods=['POST'])
+def qos_reset_policies():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        array_name = body.get("array")
+        vol_names = body.get("volumes")
+        request_body = {
+                "param": {
+                        "array": array_name,
+                        "vol":vol_names
+                }
+        }
+        response = dagent.qos_reset_volume_policies(request_body)
+        return toJson(response.json())
+    except Exception as e:
+        print("In exception qos_reset_volume_policies(): ", e)
+        return make_response('Could not reset volume policies', 500)
+
+@app.route('/api/v1/qos/policies', methods=['POST'])
+def qos_policies():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        array_name = body.get("array")
+        vol_names = body.get("volumes")
+        request_body = {
+                "param": {
+                        "array": array_name,
+                        "vol":vol_names
+                }
+        }
+        response = dagent.qos_list_volume_policies(request_body)
+        return toJson(response.json())
+    except Exception as e:
+        print("In exception qos_list_volume_policies(): ", e)
+        return make_response('Could not get volume policies', 500)
 
 def validate_email(email):
     regex = "^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"

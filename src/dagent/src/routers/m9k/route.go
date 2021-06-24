@@ -249,6 +249,17 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
 		})
 	}
+  //QOS
+    iBoFOSPath.POST("/qos", func(ctx *gin.Context) {
+        ibofos.CalliBoFOS(ctx, amoduleIBoFOS.QOSCreateVolumePolicies)
+    })
+    iBoFOSPath.POST("/qos/reset", func(ctx *gin.Context) {
+        ibofos.CalliBoFOS(ctx, amoduleIBoFOS.QOSResetVolumePolicies)
+    })
+    iBoFOSPath.POST("/qos/policies", func(ctx *gin.Context) {
+        ibofos.CalliBoFOS(ctx, amoduleIBoFOS.QOSListPolicies)
+    })
+
 
 	// MAgentPath
 	mAgentPath := uri.Group("/metric/v1")

@@ -441,6 +441,65 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not unmount array', 500)
 
+def qos_create_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/qos',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not create qos policies', 500)
+def qos_reset_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/qos/reset',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not reset qos policies', 500)
+
+def qos_list_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/qos/policies',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code, response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get qos policies', 500)
+
 
 def array_info(array_name, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)

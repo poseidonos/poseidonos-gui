@@ -51,12 +51,13 @@ type Result struct {
 }
 
 type Status struct {
-	Module      string `json:"module"`
-	Code        int    `json:"code"`
-	Level       string `json:"level,omitempty"`
-	Description string `json:"description"`
-	Problem     string `json:"problem,omitempty"`
-	Solution    string `json:"solution,omitempty"`
+	Module      	string `json:"module"`
+	Code        	int    `json:"code"`
+	Level       	string `json:"level,omitempty"`
+	Description 	string `json:"description"`
+	PosDescription 	string `json:"posDescription"`
+	Problem     	string `json:"problem,omitempty"`
+	Solution    	string `json:"solution,omitempty"`
 }
 
 type Device struct {
@@ -98,7 +99,9 @@ type VolumeParam struct {
 	Array       string `json:"array,omitempty"`
 	SubNQN      string `json:"subnqn,omitempty"`
 	Size        uint64 `json:"size,omitempty"`
+  Miniops     uint64 `json:"miniops,omitempty"`
 	Maxiops     uint64 `json:"maxiops,omitempty"`
+  Minbw       uint64 `json:"minbw,omitempty"`
 	Maxbw       uint64 `json:"maxbw,omitempty"`
 	NameSuffix  uint64 `json:"namesuffix,omitempty"`
 	TotalCount  uint64 `json:"totalcount,omitempty"`
