@@ -37,6 +37,7 @@ import (
 	"fmt"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
+	"time"
 )
 
 type MemoryField struct {
@@ -52,7 +53,10 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 	var query string
 	fieldsList := make(MemoryFields, 0)
 	paramStruct := param.(model.MAgentParam)
-
+        timeVal := make(Times,0)
+        currentTime := time.Now().UnixNano()
+        timeVal = append(timeVal,Time{currentTime - TimeSecondsMap[paramStruct.Time],currentTime})
+        var resultList []interface{}
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
@@ -89,6 +93,8 @@ func GetMemoryData(param interface{}) (model.Response, error) {
 	}
 
 	res.Result.Status, _ = util.GetStatusInfo(0)
-	res.Result.Data = fieldsList
+        resultList = append(resultList,fieldsList)
+        resultList = append(resultList,timeVal)
+        res.Result.Data = resultList
 	return res, nil
 }
