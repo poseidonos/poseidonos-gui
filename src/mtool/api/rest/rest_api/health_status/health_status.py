@@ -108,24 +108,24 @@ def get_json_result(usage_percent, timestamp, rule, _id, label):
 def get_avg(res, arr_len, field):
     sum_usage_percent = 0
     for i in range(0, arr_len):
-        sum_usage_percent += res["result"]["data"][i][field]
+        sum_usage_percent += res["result"]["data"][0][i][field]
     avg_usage_percent = sum_usage_percent / arr_len
     return avg_usage_percent
 
 def get_last_result(res, arr_len, field):
     if arr_len > 0:
-        return res["result"]["data"][arr_len-1][field]
+        return res["result"]["data"][0][arr_len-1][field]
     else:
         return 0
 
 def set_max_latency(res, field):
     global max_latency
     max_usage_percent = 0
-    arr_len = len(res["result"]["data"])
+    arr_len = len(res["result"]["data"][0])
     if arr_len != 0:
         for i in range(0, arr_len):
-            if res["result"]["data"][i][field] > max_usage_percent:
-                max_usage_percent = res["result"]["data"][i][field]
+            if res["result"]["data"][0][i][field] > max_usage_percent:
+                max_usage_percent = res["result"]["data"][0][i][field]
     max_latency = max_usage_percent
 
 
@@ -142,11 +142,11 @@ def get_percentage(usage_percent):
 def process_response(res, rule, field, _id, label):
     try:
         result = {}
-        arr_len = len(res["result"]["data"])
+        arr_len = len(res["result"]["data"][0])
         if arr_len == 0:
             return result
         else:
-            time = res["result"]["data"][arr_len - 1]["time"]
+            time = res["result"]["data"][0][arr_len - 1]["time"]
             if rule == "latency":
                 #latency = get_avg(res, arr_len, field)
                 latency = get_last_result(res, arr_len, field)

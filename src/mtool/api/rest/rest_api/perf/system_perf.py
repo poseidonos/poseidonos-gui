@@ -123,12 +123,12 @@ def get_disk_current_perf(array_ids):
     write_bw = 0
     read_bw_res = metrics.get_read_bw("", array_ids)
     if "result" in read_bw_res and "data" in read_bw_res["result"] and \
-        len(read_bw_res["result"]["data"]) > 0:
-        read_bw = read_bw_res["result"]["data"][0]["bw"]
+        len(read_bw_res["result"]["data"][0]) > 0:
+        read_bw = read_bw_res["result"]["data"][0][0]["bw"]
     write_bw_res = metrics.get_write_bw("", array_ids)
     if "result" in write_bw_res and "data" in write_bw_res["result"] and \
-        len(write_bw_res["result"]["data"]) > 0:
-        write_bw = write_bw_res["result"]["data"][0]["bw"]
+        len(write_bw_res["result"]["data"][0]) > 0:
+        write_bw = write_bw_res["result"]["data"][0][0]["bw"]
     res_dict['bw_total'] = read_bw + write_bw
     res_dict['bw_read'] = read_bw
     res_dict['bw_write'] = write_bw
@@ -136,20 +136,20 @@ def get_disk_current_perf(array_ids):
     write_iops = 0
     read_iops_res = metrics.get_read_iops("", array_ids)
     if "result" in read_iops_res and "data" in read_iops_res["result"] and \
-        len(read_iops_res["result"]["data"]) > 0:
-        read_iops = read_iops_res["result"]["data"][0]["iops"]
+        len(read_iops_res["result"]["data"][0]) > 0:
+        read_iops = read_iops_res["result"]["data"][0][0]["iops"]
     write_iops_res = metrics.get_write_iops("", array_ids)
     if "result" in write_iops_res and "data" in write_iops_res["result"] and \
-        len(write_iops_res["result"]["data"]) > 0:
-        write_iops = write_iops_res["result"]["data"][0]["iops"]
+        len(write_iops_res["result"]["data"][0]) > 0:
+        write_iops = write_iops_res["result"]["data"][0][0]["iops"]
     res_dict['iops_total'] = read_iops + write_iops
     res_dict['iops_read'] = read_iops
     res_dict['iops_write'] = write_iops
     latency = 0
     latency_res = metrics.get_latency("", array_ids)
     if "result" in latency_res and "data" in latency_res["result"] and \
-        len(latency_res["result"]["data"]) > 0:
-        latency = latency_res["result"]["data"][0]["latency"]
+        len(latency_res["result"]["data"][0]) > 0:
+        latency = latency_res["result"]["data"][0][0]["latency"]
     res_dict['latency'] = latency
     return res_dict
 
