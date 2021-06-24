@@ -38,6 +38,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Tooltip
 } from '@material-ui/core';
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { withStyles } from '@material-ui/core/styles';
@@ -114,6 +115,11 @@ const styles = theme => ({
   nextSeparator: {
     padding: '0 3px',
     marginTop: '-2px',
+  },
+  username: {
+    width: 150,
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   caret: {
     position: 'relative',
@@ -469,7 +475,9 @@ class Header extends Component {
                 data-testid="header-dropdown"
                 onClick={this.renderDropDown}
               >
-                <Typography>{username}</Typography>
+                <Tooltip title={username}>
+                  <Typography className={classes.username}>{username}</Typography>
+                </Tooltip>
                 <ArrowDropDown />
               </span>
               <Dropdown
