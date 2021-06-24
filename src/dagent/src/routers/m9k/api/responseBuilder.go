@@ -84,7 +84,9 @@ func Success(ctx *gin.Context, res model.Response, code int) {
 }
 
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
+	posDescription := res.Result.Status.Description
 	res.Result.Status, _ = util.GetStatusInfo(code)
+	res.Result.Status.PosDescription = posDescription
 	log.Infof("makeResponse : %+v", res)
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }

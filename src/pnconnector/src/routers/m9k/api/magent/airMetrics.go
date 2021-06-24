@@ -84,11 +84,10 @@ func GetAIRData(param interface{}, AggRPQ, DefaultRPQ, LastRecordQ, startingTime
 }
 
 // extractValues contains the parsing logic for extracting array level and volume level data
-func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps string, timeInterval string) [][]map[string]interface{} {
+func extractValues(values [][]interface{}, columns []string, key, metrics, metricOps string, timeInterval string,currentTime int64) [][]map[string]interface{} {
 	result := []map[string]interface{}{}
   timeMap := []map[string]interface{}{}
   m := map[string]interface{}{}
-  currentTime := time.Now().UnixNano()
   m["startTime"] = currentTime - TimeSecondsMap[timeInterval]
   m["endTime"] = currentTime
   timeMap = append(timeMap,m)
@@ -138,6 +137,7 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
+	currentTime := time.Now().UnixNano()
   arrayIds, volumeIds := parseIds(param)
   startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
@@ -151,7 +151,7 @@ func GetReadBandwidth(param interface{}) (model.Response, error) {
 		return result, nil
 	}
   timeInterval := param.(model.MAgentParam).Time
-	res := extractValues(values, columns, "bw", "bw", BWReadField,timeInterval)
+	res := extractValues(values, columns, "bw", "bw", BWReadField,timeInterval,currentTime)
   result.Result.Data = res
 	return result, nil
 }
@@ -162,6 +162,7 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
+        currentTime := time.Now().UnixNano()
   arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
@@ -175,7 +176,7 @@ func GetWriteBandwidth(param interface{}) (model.Response, error) {
 		return result, nil
 	}
   timeInterval := param.(model.MAgentParam).Time
-	res := extractValues(values, columns, "bw", "bw", BWWriteField, timeInterval)
+	res := extractValues(values, columns, "bw", "bw", BWWriteField, timeInterval,currentTime)
 	result.Result.Data = res
 	return result, nil
 }
@@ -186,6 +187,7 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
+        currentTime := time.Now().UnixNano()
   arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
@@ -199,7 +201,7 @@ func GetReadIOPS(param interface{}) (model.Response, error) {
 		return result, nil
 	}
   timeInterval := param.(model.MAgentParam).Time
-	res := extractValues(values, columns, "iops", "iops", IOPSReadField,timeInterval)
+	res := extractValues(values, columns, "iops", "iops", IOPSReadField,timeInterval,currentTime)
 	result.Result.Data = res
 	return result, nil
 }
@@ -210,6 +212,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
+        currentTime := time.Now().UnixNano()
   arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
@@ -224,7 +227,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 		return result, nil
 	}
   timeInterval := param.(model.MAgentParam).Time
-	res := extractValues(values, columns, "iops", "iops", IOPSWriteField,timeInterval)
+	res := extractValues(values, columns, "iops", "iops", IOPSWriteField,timeInterval,currentTime)
 	result.Result.Data = res
 	return result, nil
 }
@@ -235,6 +238,7 @@ func GetLatency(param interface{}) (model.Response, error) {
 	var values [][]interface{}
 	var columns []string
 	var statusCode int
+        currentTime := time.Now().UnixNano()
   arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
@@ -248,7 +252,7 @@ func GetLatency(param interface{}) (model.Response, error) {
 		return result, nil
 	}
   timeInterval := param.(model.MAgentParam).Time
-	res := extractValues(values, columns, "latency", "latency", LatencyField,timeInterval)
+	res := extractValues(values, columns, "latency", "latency", LatencyField,timeInterval,currentTime)
 	result.Result.Data = res
 	return result, nil
 }
