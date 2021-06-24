@@ -183,6 +183,8 @@ class UserManagement extends Component {
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Password" })
     else if (this.state.password !== this.state.confirmpassword)
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Passwords do not match" })
+    else if (this.state.password.length < 8 || this.state.password.length > 64)
+    this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Password length should be between 8-64 characters" })
     else if (!this.state.mobilenumber || this.state.mobilenumber.length < 4)
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Mobile Number" })
     else if (!(EMAIL_REGEX.test(this.state.emailid)))
