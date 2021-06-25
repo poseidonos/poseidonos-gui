@@ -156,63 +156,71 @@ describe("Performance", () => {
   it("renders array level graphs for last 1m", async () => {
     mock.onGet(/api\/v1\/get_arrays\/*/)
     .reply(200, [array])
-      .onGet(`/api/v1/readiops/arrays?arrayids=0&time=1m`)
+    .onGet(/api\/v1\/readiops\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 12345,
             value: 20
-          },
-          {
-            time: 12346,
-            value: 20
-          },
-          {
-            time: 12347,
-            value: 20
-          },
-          {
-            time: 12348,
-            value: 20
-          }
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
-      .onGet(`/api/v1/writeiops/arrays?arrayids=0&time=1m`)
+      .onGet(/api\/v1\/writeiops\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 10
-          }
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
-      .onGet(`/api/v1/readbw/arrays?arrayids=0&time=1m`)
+      .onGet(/api\/v1\/readbw\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 100
-          }
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
 
-      .onGet(`/api/v1/latency/arrays?arrayids=0&time=1m`)
+      .onGet(/api\/v1\/latency\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 30
-          }
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
 
-      .onGet(`/api/v1/writebw/arrays?arrayids=0&time=1m`)
+      .onGet(/api\/v1\/writebw\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 35
-          }
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       });
 
@@ -293,24 +301,73 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
+      .onGet(/api\/v1\/readiops\/arrays*/)
       .reply(200, {
         res: [
-          {
-            time: 123456,
-            value: 0
-          }
+          [{
+            time: 12345,
+            value: 20
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
-      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
+      .onGet(/api\/v1\/writeiops\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
-            value: 0
-          }
+            value: 10
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
         ]
       })
+      .onGet(/api\/v1\/readbw\/arrays*/)
+      .reply(200, {
+        res: [
+          [{
+            time: 123456,
+            value: 100
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
+        ]
+      })
+
+      .onGet(/api\/v1\/latency\/arrays*/)
+      .reply(200, {
+        res: [
+          [{
+            time: 123456,
+            value: 30
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
+        ]
+      })
+
+      .onGet(/api\/v1\/writebw\/arrays*/)
+      .reply(200, {
+        res: [
+          [{
+            time: 123456,
+            value: 35
+          }],
+          [{
+            startTime: 12344,
+            endTime: 12349
+          }]
+        ]
+      });
 
     renderComponent();
     jest.setTimeout(30000);
@@ -376,33 +433,19 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
+      .onGet(/api\/v1\/readbw\/arrays*/)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }], [{
+            startTime: 123454,
+            endTime: 123457
+          }]
         ]
       })
-      .onGet(`/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
-      .reply(200, {
-        res: [
-          {
-            time: 123456,
-            value: 0
-          }
-        ]
-      })
-      .onGet(`/api/v1/readbw/arrays?arrayids=0&time=1m`)
-      .reply(200, {
-        res: [
-          {
-            time: 123456,
-            value: 0
-          }
-        ]
-      });
+      .onAny().reply(500);
 
     renderComponent();
     jest.setTimeout(30000);
@@ -498,19 +541,40 @@ describe("Performance", () => {
       .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
       .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
+        ]
+      })
+      .onGet(/api\/v1\/writebw\/*/)
+      .reply(200, {
+        res: [
+          [{
+            time: 123456,
+            value: 0
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
 
@@ -528,16 +592,15 @@ describe("Performance", () => {
     }
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
-    expect(asFragment()).toMatchSnapshot();
     try {
       fireEvent.click(await waitForElement(() => getByTestId("write_bw")));
     } catch {
       const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
       fireEvent.change(measurementInput, {target: {value: 'write_bw'}});
     }
-    
-    const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
-    expect(volWriteBw).toBeDefined();
+    expect(asFragment()).toMatchSnapshot();
+    // const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
+    // expect(volWriteBw).toBeDefined();
   });
 
   it("renders volume level read iops graphs for last 1m", async () => {
@@ -590,19 +653,27 @@ describe("Performance", () => {
       .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
       .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
 
@@ -682,19 +753,27 @@ describe("Performance", () => {
       .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
       .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
 
@@ -774,19 +853,27 @@ describe("Performance", () => {
       .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=1m')
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
       .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=1&time=1m')
       .reply(200, {
         res: [
-          {
+          [{
             time: 123456,
             value: 0
-          }
+          }],
+          [{
+            startTime: 123455,
+            endTime: 123457
+          }]
         ]
       })
 
@@ -818,15 +905,10 @@ describe("Performance", () => {
   it("renders system level cpu graphs for last 1m", async () => {
     mock.onGet('/api/v1.0/usage_user/1m')
       .reply(200, [
-          {
-            time: 123456,
-            mean_usage_user: 0
-          },
-          {
-            time: 123457,
-            mean_usage_user: 10
-          }
-        ]);
+        [{"cpuUsagePercent":10.332944480921938,"time":1624553769000000000},
+        {"cpuUsagePercent":11.382541850481546,"time":1624553826000000000}],
+        [{"endTime":1624553828839543903,"startTime":1624553768839543903}]
+      ]);
 
     renderComponent();
     jest.setTimeout(30000);

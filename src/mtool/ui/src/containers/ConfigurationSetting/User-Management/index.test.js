@@ -132,10 +132,10 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(username, { target: { value: 'abcd' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(password, { target: { value: 'test' } });
+    fireEvent.change(password, { target: { value: 'test1234' } });
     fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(confirmPassword, { target: { value: 'test' } });
+    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
     fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
@@ -144,11 +144,11 @@ describe("ConfigurationSetting", () => {
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
     expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', {
-      "confirmpassword": "test",
+      "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
       "mobilenumber": "+1 (234) 578-90",
-      "password": "test",
+      "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
       "username": "abcd"
@@ -179,10 +179,10 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(username, { target: { value: 'abcd' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(password, { target: { value: 'test' } });
+    fireEvent.change(password, { target: { value: 'test1234' } });
     fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(confirmPassword, { target: { value: 'test' } });
+    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
     fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
@@ -191,11 +191,11 @@ describe("ConfigurationSetting", () => {
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
     expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', {
-      "confirmpassword": "test",
+      "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
       "mobilenumber": "+1 (234) 578-90",
-      "password": "test",
+      "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
       "username": "abcd"
@@ -226,10 +226,10 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(username, { target: { value: 'abcd' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(password, { target: { value: 'test' } });
+    fireEvent.change(password, { target: { value: 'test1234' } });
     fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(confirmPassword, { target: { value: 'test' } });
+    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
     fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
@@ -238,11 +238,11 @@ describe("ConfigurationSetting", () => {
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
     expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', {
-      "confirmpassword": "test",
+      "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
       "mobilenumber": "+1 (234) 578-90",
-      "password": "test",
+      "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
       "username": "abcd"
@@ -272,12 +272,14 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(confirmBtn);
     expect(getByText("Please Enter a Valid Password")).toBeDefined();
     fireEvent.click(getByText("OK"));
+    fireEvent.change(password, { target: { value: 'test1234' } });
+    fireEvent.click(confirmBtn);
     fireEvent.keyDown(confirmPassword, { key: 'B', code: 65, charCode: 65 });
     fireEvent.change(confirmPassword, { target: { value: 'test2' } });
     fireEvent.click(confirmBtn);
     expect(getByText("Passwords do not match")).toBeDefined();
     fireEvent.click(getByText("OK"));
-    fireEvent.change(confirmPassword, { target: { value: 'test' } });
+    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
     fireEvent.change(phno, { target: { value: '22' } });
     fireEvent.click(confirmBtn);
     await waitForElement(() => getByText("OK"));
