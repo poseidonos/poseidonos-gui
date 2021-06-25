@@ -618,6 +618,8 @@ function* updateVolume(action) {
     if (
       action.payload.maxiops < 0 ||
       action.payload.maxbw < 0 ||
+      (action.payload.maxbw % 1) !== 0 ||
+      (action.payload.maxiops % 1) !== 0 ||
       (action.payload.maxiops > 0 && action.payload.maxiops < 10)
     ) {
       yield put(
