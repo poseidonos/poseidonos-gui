@@ -352,10 +352,10 @@ def is_ibofos_running(current_user="admin"):
     # print(time.ctime())
     # print(datetime.datetime.now())
     timestamp = code = level = value = ""
-    response = get_rebuilding_status()
-    #print("get_rebuilding_status RESPONSE", response)
     state = ""
     situation = ""
+    """response = get_rebuilding_status()
+    print("get_rebuilding_status RESPONSE", response)
     if(response != "error"):
         res = list(response.get_points())
         if res:
@@ -374,6 +374,7 @@ def is_ibofos_running(current_user="admin"):
                 time.localtime(
                     int(timestamp)))
         #print(timestamp,code, level, value)
+    """
     lastRunningTime = ""
     try:
         #col = db['iBOFOS_Timestamp']
@@ -385,8 +386,20 @@ def is_ibofos_running(current_user="admin"):
             lastRunningTime = datetime.datetime.fromtimestamp(
                 response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
         if('result' in response and 'status' in response['result'] and 'code' in response['result']['status'] and response['result']['status']['code'] == 0):
+            timestamp = connection_factory.get_prev_time_stamp()
+            #lastRunningTime = strftime("%a, %d %b %Y %I:%M:%S %p %Z")
+            if not timestamp:
+                connection_factory.insert_time_stamp(lastRunningTime)
+            else:
+                connection_factory.update_time_stamp(lastRunningTime)
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = True
+            #response = {"result": {"data": {"type": "NORMAL"}}}
         else:
+            timestampvalue = connection_factory.get_prev_time_stamp()
+            if not timestampvalue:
+                lastRunningTime = ""
+            else:
+                lastRunningTime = timestampvalue
             IBOF_OS_Running.Is_Ibof_Os_Running_Flag = False
         if('result' in response and 'data' in response['result']):
             state = response['result']['data']['state']
@@ -2303,7 +2316,7 @@ def getHealthStatus():
         if res is not None:
             set_max_latency(res, "latency")
         res = get_latency_usage("")
-        latency_result = process_response(res, "latency", "latency", "lat-status","LATENCY")
+        latency_result = process_response(res, "latency", "latency", "lat-status","IO LATENCY")
         if len(latency_result) > 0:
             statuses.append(latency_result)
         health_list = []

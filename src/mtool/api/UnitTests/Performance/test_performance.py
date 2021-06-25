@@ -592,38 +592,38 @@ def test_get_current_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw",""),
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "bw": 10
-                                            }]}},
+                                            }]]}},
                        status_code=200)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("writebw",""),
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "bw": 10
-                                            }]}},
+                                            }]]}},
                        status_code=200)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency",""),
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "latency": 10
-                                            }]}},
+                                            }]]}},
                        status_code=200)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("readiops",""),
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "iops": 10
-                                            }]}},
+                                            }]]}},
                        status_code=200)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("writeiops",""),
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "iops": 10
-                                            }]}},
+                                            }]]}},
                        status_code=200)
     response = app.test_client().get(
         '/api/v1/perf/all',

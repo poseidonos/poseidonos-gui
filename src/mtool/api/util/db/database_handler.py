@@ -121,11 +121,11 @@ TIMESTAMP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
 USER_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 PREV_TIME_QUERY = "SELECT _id,lastRunningTime FROM " + \
-    IBOFOS_TIMESTAMP_TABLE + " WHERE lower(_id)=?"
+    IBOFOS_TIMESTAMP_TABLE + " WHERE _id=?"
 INSERT_TIME_QUERY = "INSERT INTO " + IBOFOS_TIMESTAMP_TABLE + \
     " (_id,lastRunningTime) VALUES(?,?)"
 UPDATE_TIME_QUERY = "UPDATE " + IBOFOS_TIMESTAMP_TABLE + \
-    " SET lastRunningTime = ? where lower(_id) = 'TIMESTAMP'"
+    " SET lastRunningTime = ? where _id = 'TIMESTAMP'"
 SELECT_SMTP_QUERY = "SELECT _id FROM " + SMTP_TABLE + " WHERE lower(_id)=?"
 INSERT_SMTP_IP_QUERY = "INSERT INTO " + SMTP_TABLE + \
     " (_id,serverip,serverport) VALUES(?,?,?)"

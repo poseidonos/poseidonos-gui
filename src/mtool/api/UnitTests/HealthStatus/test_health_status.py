@@ -55,40 +55,40 @@ def test_getHealthStatus(mock_get_current_user, **kwargs): #time unit : nano sec
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "cpuUsagePercent": 10
                                             },{"time": 1601531640000000000,"cpuUsagePercent": 9.61057635612553},{
                 "time": 1601531700000000000,
                 "cpuUsagePercent": 9.623660376562308
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/memory/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "memoryUsagePercent": 10
                                             },{"time": 1601531640000000000,"memoryUsagePercent": 9.61057635612553},{
                 "time": 1601531700000000000,
                 "memoryUsagePercent": 9.623660376562308
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data":[ [{
                                             "time": 123456789,
                                             "latency": 565645
                                             },{"time": 1601531640000000000,"latency": 93434},{
                 "time": 1601531700000000000,
                 "latency": 900
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "latency": 565645
-                                            }]}}, status_code=200)
+                                            }]]}}, status_code=200)
 
     """response = app.test_client().get(
         '/api/v1.0/health_status/',
@@ -103,39 +103,39 @@ def test_getHealthStatus_different_values(mock_get_current_user, **kwargs): #tim
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/cpu/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "cpuUsagePercent": 45
                                             },{"time": 1601531640000000000,"cpuUsagePercent": 49.61057635612553},{
                 "time": 1601531700000000000,
                 "cpuUsagePercent": 49.623660376562308
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/memory/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "memoryUsagePercent": 55
                                             },{"time": 1601531640000000000,"memoryUsagePercent": 59.61057635612553},{
                 "time": 1601531700000000000,
                 "memoryUsagePercent": 59.623660376562308
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/15m',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "latency": 9565645
                                             },{"time": 1601531640000000000,"latency": 9993434},{
                 "time": 1601531700000000000,
                 "latency": 99900
-            }]}}, status_code=200)
+            }]]}}, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/metric/v1/latency/',
                        json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": [{
+                                        "data": [[{
                                             "time": 123456789,
                                             "latency": 565645
-                                            }]}}, status_code=200)
+                                            }]]}}, status_code=200)
 
     """response = app.test_client().get(
         '/api/v1.0/health_status/',

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "83865246-3f30-4c84-a695-5afbe218a0e9",
+		"_postman_id": "404b9e42-d87c-4c06-98c5-65fdce4231c1",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -26,7 +26,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "2732950a-5d92-4c92-9abd-d5c3f4716f18",
+						"id": "d4a85b46-439c-4208-9504-26f22cc266d8",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -36,7 +36,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4163e5f7-0b2b-4415-88ac-c2191a841a6f",
+						"id": "c139a143-aeb0-414a-a863-29ded443eed6",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -55,7 +55,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "c2b97164-a2cc-4824-afd9-295a03d869ba",
+								"id": "e7ade95e-0363-401c-9fe1-ac1104ad3969",
 								"exec": [
 									""
 								],
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "aebd9a99-8ec5-45e9-ac88-f7575b91d6ea",
+								"id": "08bd42f8-55bb-4e22-b9d1-b0b30af8a26e",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -167,7 +167,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f89abe5c-8df2-41c1-a632-e7812a7f7e05",
+								"id": "9609993d-d772-43cb-b0c6-ee6e0762ee66",
 								"exec": [
 									""
 								],
@@ -177,7 +177,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1aa9d380-1ffe-4487-8deb-287c3cf7a22c",
+								"id": "6facd03a-83fb-478a-a25b-1ef32efea10f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -213,7 +213,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b4e204a3-09f9-4631-b74f-bea9f0f6de80",
+								"id": "ed4410fc-8591-4bbd-9466-317c7dc33d2d",
 								"exec": [
 									""
 								],
@@ -223,7 +223,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0f1b028f-59bd-43e8-b82a-5796e2984bfe",
+								"id": "9dcf6555-4242-40ff-92a7-70fba0992f33",
 								"exec": [
 									"pm.test(\"STATUS CODE\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -343,7 +343,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "52e18b5d-e0f2-4023-91ad-4cefcda899d8",
+								"id": "c7d41784-5a82-4abe-9fc3-8a749f40a91a",
 								"exec": [
 									""
 								],
@@ -353,7 +353,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b121e6de-7e9f-46d3-99c5-542ae13b5962",
+								"id": "db89a5eb-d2f4-4b5f-a879-adf8361b8df9",
 								"exec": [
 									"pm.test(\"FORCEKILLIBOFOS\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -480,7 +480,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8c27839f-2d79-4a9c-b2c0-3bfbe71826e8",
+								"id": "f626b427-197a-422e-a358-d2e84f20d5db",
 								"exec": [
 									""
 								],
@@ -490,7 +490,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "986258f4-9062-481e-be9a-e167831541f6",
+								"id": "9ab1b025-abb4-4f91-9e7e-c499f23a89b5",
 								"exec": [
 									"pm.test(\"KILLDAGENT\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -617,7 +617,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "8fc51018-3daf-4d5e-bdbe-ebc6c630d553",
+						"id": "1e256ea7-7890-4f18-8f27-f62e3911d6ba",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -627,7 +627,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "246b7893-89d8-416a-ac76-e82eb92610fc",
+						"id": "e6b292b3-457c-4b4e-935b-51c99b063f24",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -646,7 +646,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e79b36a5-9741-4f4c-a1a4-5a4605bcf870",
+								"id": "5ec0604d-ed01-4018-85c8-c1b30b520f00",
 								"exec": [
 									""
 								],
@@ -656,7 +656,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8d236842-96dd-46ec-ab3c-d97ff108189e",
+								"id": "51c7ae23-bf40-4960-886a-dfd31784e203",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -701,67 +701,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"dagent",
-										"v1",
-										"version"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 12020,\n            \"level\": \"ERROR\",\n            \"description\": \"could not find build info\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -826,6 +765,67 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"3c25b82ae226af620a99fd8e42b921662a658219\",\n            \"buildTime\": \"1597889522\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 12020,\n            \"level\": \"ERROR\",\n            \"description\": \"could not find build info\"\n        },\n        \"data\": {\n            \"githash\": \"\",\n            \"build_time\": \"\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
 						}
 					]
 				},
@@ -835,7 +835,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d23bfd5d-b25f-4e75-8d92-fc6c6271c795",
+								"id": "7078a82b-0358-4ffb-9047-ae21449da142",
 								"exec": [
 									""
 								],
@@ -845,7 +845,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "112a4c80-a96b-42d3-9450-5d2c7ed2161e",
+								"id": "2d1d7df0-1f9e-419d-978c-f74cf4cc9ec9",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1028,7 +1028,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "c908e0b7-c923-4155-9041-2b14016de1f6",
+						"id": "2abed88f-f960-4d48-8c67-5b03909bfdec",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1038,7 +1038,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "30038fee-2ef4-46f8-8380-f5a622beb1e5",
+						"id": "ff868d84-d13f-4c30-9507-e451045d03ed",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1060,7 +1060,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e5e49c2c-0fd8-4ae2-a988-641d74f20bc1",
+										"id": "73ee9552-8f5e-467b-aa8d-7c053d70159f",
 										"exec": [
 											""
 										],
@@ -1070,7 +1070,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "98fbdb34-cc59-45ce-b9d4-abc0f7162aac",
+										"id": "cb6ca303-37a8-4dd0-9b3d-f4b0695a47bd",
 										"exec": [
 											"pm.test(\"RUNIBOFOS\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1115,70 +1115,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/system",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"system"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Wed, 19 Aug 2020 06:49:22 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "127"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "e995210c-87fa-4253-a320-302583c8ad6d"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 1597819762,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    }\n}"
-								},
 								{
 									"name": "Fail",
 									"originalRequest": {
@@ -1244,6 +1180,70 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 11000,\n            \"description\": \"Exec command error\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/system",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"system"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 19 Aug 2020 06:49:22 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "127"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "e995210c-87fa-4253-a320-302583c8ad6d"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 1597819762,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    }\n}"
 								}
 							]
 						},
@@ -1253,7 +1253,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "daa44b0d-1714-4bd2-a04d-1e011929f55a",
+										"id": "1304a97c-1b8e-4855-a0e7-9f0a125063ff",
 										"exec": [
 											""
 										],
@@ -1263,7 +1263,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "eb37b928-6b84-4de0-b4bd-6b5e78e8aba6",
+										"id": "ca4b8e7c-8db5-4251-9475-b87d2fbffa27",
 										"exec": [
 											"pm.test(\"iBOFOSINFO\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1387,7 +1387,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ec033e35-d82c-44f7-a08c-fe124e07f679",
+										"id": "138bbcdb-fefc-416a-9e3f-7ac58cc26179",
 										"exec": [
 											""
 										],
@@ -1397,7 +1397,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6a176801-4673-411f-b7f7-eb8e480dbeb6",
+										"id": "26d7c7ee-fd29-4bff-b2fb-4ccffe76f5b7",
 										"exec": [
 											"pm.test(\"EXITIBOFOS\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1585,7 +1585,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "5767f51e-63de-4fa0-947f-c90dde9fd07b",
+										"id": "e84dd8d1-ebba-418c-8a01-84f7841babf5",
 										"exec": [
 											""
 										],
@@ -1595,7 +1595,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0acd209c-551d-4b85-8fb3-82c1afb7d13a",
+										"id": "303e173a-b898-4d90-ada2-6c03fa32c364",
 										"exec": [
 											"pm.test(\"SCAN DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1716,7 +1716,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dcf73225-c0ec-4ef3-9fd2-10e58e79fc56",
+										"id": "13ed0cc8-928e-486b-8ef5-a563ccf2e28a",
 										"exec": [
 											""
 										],
@@ -1726,7 +1726,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ce5a1118-2b40-4372-9cbf-6b47f9852667",
+										"id": "26b99df7-efc4-4ded-9c42-d71d4c5aef0d",
 										"exec": [
 											"pm.test(\"SMART\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1847,7 +1847,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "91cfc133-7dd7-415c-a2af-e621493ef5d9",
+										"id": "85ef544a-e545-4e47-952f-ed51fe81961e",
 										"exec": [
 											""
 										],
@@ -1857,7 +1857,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "64c76f78-1d29-469e-9fd7-a1468d1bd3c1",
+										"id": "00429610-209c-49b5-8242-4996ff357d19",
 										"exec": [
 											"pm.test(\"LIST DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -1982,7 +1982,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c0c3e7e8-afe5-47a9-83d8-02265237d511",
+										"id": "8ed6204b-3442-46d1-848a-ad6fb1b3079a",
 										"exec": [
 											""
 										],
@@ -1992,7 +1992,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cd2a1efe-cd1f-4e49-96a7-9e7c56f34a3a",
+										"id": "0210ad8c-8c9e-412d-a80b-509b08d4af5a",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2119,7 +2119,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "cf706ecd-f53e-4f86-a3f5-97f7b78231c0",
+										"id": "7f8d4b02-3c8a-466a-9248-f396947150f5",
 										"exec": [
 											""
 										],
@@ -2129,7 +2129,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ab5ab4d8-6d7a-437c-b72f-8fda8d5515cb",
+										"id": "7ce2d475-683b-4b3b-847f-ddd3ad778ecc",
 										"exec": [
 											"pm.test(\"CREATE ARRAY\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2178,74 +2178,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/array",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"array"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Wed, 19 Aug 2020 06:52:48 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "259"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "cc3eed56-3478-4180-af0b-eac6b88f264f"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"cc3eed56-3478-4180-af0b-eac6b88f264f\",\n    \"lastSuccessTime\": 1597819968,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
-								},
 								{
 									"name": "Fail - 2504",
 									"originalRequest": {
@@ -2313,6 +2245,74 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"3cfc6d1e-6595-4aad-829a-bfca0d831069\",\n    \"lastSuccessTime\": 1597819934,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2504,\n            \"level\": \"ERROR\",\n            \"description\": \"Device not found\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/array",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"array"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 19 Aug 2020 06:52:48 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "259"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "cc3eed56-3478-4180-af0b-eac6b88f264f"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"cc3eed56-3478-4180-af0b-eac6b88f264f\",\n    \"lastSuccessTime\": 1597819968,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
 								}
 							]
 						},
@@ -2322,7 +2322,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ca6a9e29-c80d-4151-9bb6-a2954a836af9",
+										"id": "14153eac-a1a9-4739-ac18-7c54bed65ce5",
 										"exec": [
 											""
 										],
@@ -2332,7 +2332,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "df502186-3cb8-4843-a9ba-145ee2731852",
+										"id": "74b2d986-b378-4f42-a242-0f7e5a5c0394",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2457,7 +2457,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7a0031a0-284e-47dc-bca2-0aec0735cc70",
+										"id": "5bc9d6d4-a8ae-4978-ba7a-f857d1ceb1b0",
 										"exec": [
 											""
 										],
@@ -2467,7 +2467,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f18183c-f5f1-4785-9347-412fdecfa0a5",
+										"id": "4ef9f17c-1a78-4486-801d-c0f8baa26467",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2592,7 +2592,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dc436207-b2c4-4eab-bd24-cf2d1264fd86",
+										"id": "badd9019-e476-45c1-9f11-c5f093e4b02c",
 										"exec": [
 											""
 										],
@@ -2602,7 +2602,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fefe4eb5-6c0c-4179-bd73-0c9d6cca3e70",
+										"id": "62a58afc-c8a0-4a06-a958-5fcd08d88ae6",
 										"exec": [
 											"pm.test(\"CREATE ARRAY\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2651,74 +2651,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Fail - 2504",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/array",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"array"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Wed, 19 Aug 2020 06:52:14 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "271"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "3cfc6d1e-6595-4aad-829a-bfca0d831069"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"3cfc6d1e-6595-4aad-829a-bfca0d831069\",\n    \"lastSuccessTime\": 1597819934,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2504,\n            \"level\": \"ERROR\",\n            \"description\": \"Device not found\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
-								},
 								{
 									"name": "Success",
 									"originalRequest": {
@@ -2786,6 +2718,74 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"cc3eed56-3478-4180-af0b-eac6b88f264f\",\n    \"lastSuccessTime\": 1597819968,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Fail - 2504",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/array",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"array"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 19 Aug 2020 06:52:14 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "271"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "3cfc6d1e-6595-4aad-829a-bfca0d831069"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"3cfc6d1e-6595-4aad-829a-bfca0d831069\",\n    \"lastSuccessTime\": 1597819934,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2504,\n            \"level\": \"ERROR\",\n            \"description\": \"Device not found\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
 								}
 							]
 						},
@@ -2795,7 +2795,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a72c7669-ec16-4a34-a205-d2abef4e0f8a",
+										"id": "684f9a85-1eaa-412e-ae21-d3d4c6050519",
 										"exec": [
 											""
 										],
@@ -2805,7 +2805,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6d576d17-432d-4801-b4df-266c2fa016c2",
+										"id": "8d550cfd-5660-433e-a4ab-f860deccfc77",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2930,7 +2930,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "201527ae-45ff-4bb5-8f7b-2ebe4ece36eb",
+										"id": "8a087436-7d35-47fd-be7f-b9f121476e6b",
 										"exec": [
 											""
 										],
@@ -2940,7 +2940,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8688b676-8704-4e7e-858d-f4981082166f",
+										"id": "39e8e4bc-e928-4454-89f4-f09ff237d1ce",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3065,7 +3065,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "26a82117-87a9-4fdf-9211-56c39798bc41",
+										"id": "a4324692-aa33-47a3-947e-b3aac126b1c0",
 										"exec": [
 											""
 										],
@@ -3075,7 +3075,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7becc667-37a8-4727-af79-9e9cda4169ca",
+										"id": "7fd05eb4-d4eb-4181-bbc6-cb71dac488dc",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3203,7 +3203,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "79f43f04-7af4-499e-9634-fe59b37ce3e8",
+										"id": "60d7b250-655a-4447-83fe-7c27cc2d286f",
 										"exec": [
 											""
 										],
@@ -3213,7 +3213,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f891ae72-1fa2-4812-a05c-edcd77c1cac1",
+										"id": "d90c327d-607e-4ab0-b06e-5c968e19cf13",
 										"exec": [
 											"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3339,7 +3339,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ac1ab112-4372-4c7b-97e6-49f53b61078e",
+										"id": "c2b4e4ac-e838-461a-ba3e-97884129fa88",
 										"exec": [
 											""
 										],
@@ -3349,7 +3349,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2a69de69-6cdb-4298-8f55-c8f460a4af0b",
+										"id": "a55e8152-f345-482d-ae0d-a50d6ad3431c",
 										"exec": [
 											"pm.test(\"ARRAY INFO\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3476,7 +3476,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0d1ca306-6f12-4307-a582-69887a541d4e",
+										"id": "0edae557-1599-444c-af59-b0979488618f",
 										"exec": [
 											""
 										],
@@ -3486,7 +3486,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3675a5e7-ec9e-4318-8d46-2331e548604b",
+										"id": "856fb4c4-ed0d-440a-972d-3060eb32446c",
 										"exec": [
 											"pm.test(\"ADD DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3537,74 +3537,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:00:36 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "268"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "5794b792-4506-4323-a51c-59a26c064d8e"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"5794b792-4506-4323-a51c-59a26c064d8e\",\n    \"lastSuccessTime\": 1597910436,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
-								},
 								{
 									"name": "Fail - 2501",
 									"originalRequest": {
@@ -3672,6 +3604,74 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"51cb31eb-35a1-4bf7-87e9-b33bcef2b066\",\n    \"lastSuccessTime\": 1597910351,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:00:36 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "268"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "5794b792-4506-4323-a51c-59a26c064d8e"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"5794b792-4506-4323-a51c-59a26c064d8e\",\n    \"lastSuccessTime\": 1597910436,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
 								}
 							]
 						},
@@ -3681,7 +3681,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "182935ed-89a7-4aee-9c0f-74f06b97ff14",
+										"id": "2ba02cf4-46e0-4aed-8142-183de68bb2e6",
 										"exec": [
 											""
 										],
@@ -3691,7 +3691,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a04e9636-1e1c-4687-b055-04fbe63c97ae",
+										"id": "57840721-cf0f-4525-8303-1dc2791fc900",
 										"exec": [
 											"pm.test(\"REMOVE DEVICE\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -3743,75 +3743,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"devices",
-												"{{deviceName4}}"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:00:17 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "268"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "2e7818c7-34e4-4668-9663-b5670a4678a1"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"2e7818c7-34e4-4668-9663-b5670a4678a1\",\n    \"lastSuccessTime\": 1597910417,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
-								},
 								{
 									"name": "Fail - 2501",
 									"originalRequest": {
@@ -3880,6 +3811,75 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"6827ac78-40e2-47f6-a3b9-1a10224e694c\",\n    \"lastSuccessTime\": 1597910302,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2501,\n            \"level\": \"ERROR\",\n            \"description\": \"Array is already umounted.\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 0,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"DEFAULT\",\n        \"state\": \"OFFLINE\",\n        \"used\": 0\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"devices",
+												"{{deviceName4}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:00:17 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "268"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "2e7818c7-34e4-4668-9663-b5670a4678a1"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"2e7818c7-34e4-4668-9663-b5670a4678a1\",\n    \"lastSuccessTime\": 1597910417,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 0\n    }\n}"
 								}
 							]
 						},
@@ -3889,7 +3889,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "2020e3be-e25f-4652-b763-8394ed067c95",
+										"id": "7ee0c060-06b7-4576-a4d8-e1be94d15bab",
 										"exec": [
 											""
 										],
@@ -3899,7 +3899,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cca8c9e3-c3ef-4589-81a2-c422a4a843c3",
+										"id": "aa7ab220-3590-4b9e-9a91-9b36cb30a5c9",
 										"exec": [
 											"pm.test(\"DELETE ARRAY\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4102,7 +4102,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ea041dd2-8d55-49e3-b45e-090a28f7cb80",
+										"id": "9e0ba46f-6566-4a88-b816-894e5728885f",
 										"exec": [
 											""
 										],
@@ -4112,7 +4112,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2fb1e12e-38e5-4523-b665-2fc2db716718",
+										"id": "c997f19a-d215-40f7-ab52-a50fbab71eb6",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4161,74 +4161,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Fail - 2022",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:05:44 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "403"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d\",\n    \"lastSuccessTime\": 1597910744,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2022,\n            \"level\": \"WARN\",\n            \"description\": \"Volume name is duplicated\",\n            \"problem\": \"A volume with a duplicate name already exists\",\n            \"solution\": \"Enter a different volume name\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
-								},
 								{
 									"name": "Success",
 									"originalRequest": {
@@ -4296,6 +4228,74 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"bde37273-adc4-459f-883b-cf5ea2542134\",\n    \"lastSuccessTime\": 1597910684,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
+								},
+								{
+									"name": "Fail - 2022",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/volumes",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"volumes"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:05:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "403"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d\",\n    \"lastSuccessTime\": 1597910744,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2022,\n            \"level\": \"WARN\",\n            \"description\": \"Volume name is duplicated\",\n            \"problem\": \"A volume with a duplicate name already exists\",\n            \"solution\": \"Enter a different volume name\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
 								}
 							]
 						},
@@ -4305,7 +4305,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "41eaad50-85ec-4c76-bee7-f193cb49e8a3",
+										"id": "10fd2109-cda1-4f97-9c3c-7d69b91ab031",
 										"exec": [
 											""
 										],
@@ -4315,7 +4315,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2945bf17-dfaa-45f5-a932-8292b638b740",
+										"id": "89781856-7658-4420-8f73-462dba6b8ce1",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4371,7 +4371,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "59c8aa6b-58b3-4c5e-82da-11e04b317901",
+										"id": "1e812ba8-ef63-4b31-b162-fef723e52c1c",
 										"exec": [
 											""
 										],
@@ -4381,7 +4381,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5da31d76-bb96-4903-8e8e-e91c1930c9aa",
+										"id": "dcef2afc-50d5-4422-992d-04515ce0ad46",
 										"exec": [
 											"pm.test(\"LIST VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4506,7 +4506,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9218caea-92b6-4e15-8607-aaf9f6ab208c",
+										"id": "d7a1c901-7b6f-436a-aa85-3f2560261e82",
 										"exec": [
 											""
 										],
@@ -4516,7 +4516,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "27ee1a8d-70d7-4e8e-b7d3-b6ebc14462e7",
+										"id": "4e959098-f6d2-4d7d-ad31-276f28e7e362",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4709,7 +4709,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4dfdccf3-f724-4871-8ba9-0c8622071299",
+										"id": "ed24dab8-9b2f-42c5-9e28-73ff9a2efacc",
 										"exec": [
 											""
 										],
@@ -4719,7 +4719,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f683b7d3-e8d2-4311-abf9-f0d22a948ff2",
+										"id": "5d8b3d8b-361e-4ff0-93f9-27444565167e",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -4913,7 +4913,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ad8fb3d7-989a-48ca-a89e-596bdc7c49b3",
+										"id": "2b72a373-c420-4085-8e32-93417325b1a2",
 										"exec": [
 											""
 										],
@@ -4923,7 +4923,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6ea19c47-3e76-4ece-a0d3-650cb617475c",
+										"id": "d2dd34d2-794f-4a78-bc96-7b5692abc302",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -5117,7 +5117,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "64e58aaa-58e6-4dc2-9b97-10cdc1182502",
+										"id": "48e7da29-cfca-49d1-9f96-067b899b06a4",
 										"exec": [
 											""
 										],
@@ -5127,7 +5127,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "59a4550b-6389-4b50-8144-c79aaabcfb72",
+										"id": "8eea9f96-70b0-4973-bc0c-37081e84b454",
 										"exec": [
 											"pm.test(\"RENAME VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -5179,77 +5179,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Fail - 2010",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"name": "Content-Type",
-												"type": "text",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes",
-												"{{volumeName1}}"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:06:12 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "481"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "1530cced-60d1-4623-b670-8854a089eb79"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"1530cced-60d1-4623-b670-8854a089eb79\",\n    \"lastSuccessTime\": 1597910772,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
-								},
 								{
 									"name": "Success",
 									"originalRequest": {
@@ -5320,6 +5249,77 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"d30a0f60-fceb-4652-889e-3dc4b374ac83\",\n    \"lastSuccessTime\": 1597910761,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
+								},
+								{
+									"name": "Fail - 2010",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"volumes",
+												"{{volumeName1}}"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:06:12 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "481"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "1530cced-60d1-4623-b670-8854a089eb79"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"1530cced-60d1-4623-b670-8854a089eb79\",\n    \"lastSuccessTime\": 1597910772,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
 								}
 							]
 						},
@@ -5329,7 +5329,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "609c17e7-073c-4ab0-b62f-56b10595d933",
+										"id": "2a62ae75-8a54-44e9-8169-666b08315aad",
 										"exec": [
 											""
 										],
@@ -5339,7 +5339,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "27d60ada-d36c-4abf-91c9-70967c69824d",
+										"id": "f1760b33-0916-40ec-ae4a-76ce5b5951b9",
 										"exec": [
 											"pm.test(\"MOUNT VOULUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -5390,76 +5390,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes",
-												"{{volumeName1}}",
-												"mount"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:06:40 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "274"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "964d431e-ac03-4920-b94a-86c33c1ecacc"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"964d431e-ac03-4920-b94a-86c33c1ecacc\",\n    \"lastSuccessTime\": 1597910800,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 8388608\n    }\n}"
-								},
 								{
 									"name": "Fail - 2040",
 									"originalRequest": {
@@ -5529,6 +5459,76 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"83447d87-e5a9-4f5a-bee8-a857cb8b9aa3\",\n    \"lastSuccessTime\": 1597910808,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2040,\n            \"level\": \"WARN\",\n            \"description\": \"Volume already mounted\",\n            \"problem\": \"Attempt to mount a volume that is already mounted\",\n            \"solution\": \"Nothing to do\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 8388608\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"volumes",
+												"{{volumeName1}}",
+												"mount"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:06:40 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "274"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "964d431e-ac03-4920-b94a-86c33c1ecacc"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"964d431e-ac03-4920-b94a-86c33c1ecacc\",\n    \"lastSuccessTime\": 1597910800,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 8388608\n    }\n}"
 								}
 							]
 						},
@@ -5538,7 +5538,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0502d388-999a-4356-9b80-c961f3322fd9",
+										"id": "a40034b5-446d-4d93-beb5-fae25946e409",
 										"exec": [
 											""
 										],
@@ -5548,7 +5548,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "16aaee17-b874-4cf9-9204-33ac95af9846",
+										"id": "dae455e0-f4a1-47a3-bebf-0128050b762f",
 										"exec": [
 											"pm.test(\"UNMOUNT VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -5747,7 +5747,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ef4af608-b7a6-498e-838f-62c6ae3a9297",
+										"id": "819f7477-106e-4c6a-985a-7b69a4a5b1a8",
 										"exec": [
 											""
 										],
@@ -5757,7 +5757,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c2b6ac04-e32d-4ca1-8027-cbe0bcf8e95d",
+										"id": "7f2f1b96-763b-4f97-90a5-fa57b370f385",
 										"exec": [
 											"pm.test(\"DELETE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -5807,75 +5807,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes",
-												"{{volumeName1}}"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:07:18 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "274"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "805514bf-445b-40b6-9b84-b33a6d07e409"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"805514bf-445b-40b6-9b84-b33a6d07e409\",\n    \"lastSuccessTime\": 1597910838,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
-								},
 								{
 									"name": "Fail - 2010",
 									"originalRequest": {
@@ -5944,6 +5875,75 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"rid\": \"9139d5fa-f93f-4ecb-a9f4-5fe9cc553a9d\",\n    \"lastSuccessTime\": 1597910848,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "X-Request-Id",
+												"value": "{{$guid}}"
+											},
+											{
+												"key": "ts",
+												"value": "{{$timestamp}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{basic_auth}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ibofos",
+												"v1",
+												"volumes",
+												"{{volumeName1}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 20 Aug 2020 08:07:18 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "274"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "805514bf-445b-40b6-9b84-b33a6d07e409"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"rid\": \"805514bf-445b-40b6-9b84-b33a6d07e409\",\n    \"lastSuccessTime\": 1597910838,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
 								}
 							]
 						},
@@ -5953,7 +5953,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d08f6e00-72f1-4dc5-b953-545c408251dc",
+										"id": "46203b73-c367-4c3c-91a5-2eeb20f6463a",
 										"exec": [
 											""
 										],
@@ -5963,7 +5963,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "29d34d6a-25a1-4ad5-ae99-1c404b0b2058",
+										"id": "9b95fa46-a0c5-4e48-a4ad-7426b77a6ab1",
 										"exec": [
 											"pm.test(\"CREATE VOLUME\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -6093,7 +6093,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "1aa0160f-93a3-4bb3-99b6-a067378750fc",
+						"id": "f816b1b8-14b6-4705-8c86-10709d70d2ef",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -6103,7 +6103,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e1316118-3be6-4abf-9a7c-ef8164933bed",
+						"id": "daefb419-0dcc-4cb2-b151-c8e6629c2575",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -6122,7 +6122,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "855ac51b-5a03-4e46-b2b3-31cb54f42623",
+								"id": "80edacc9-3fec-46ce-8ab4-35e1cecd03e9",
 								"exec": [
 									""
 								],
@@ -6132,7 +6132,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f9a5a715-c289-46ec-be9c-29f9db783829",
+								"id": "bbe8ba98-d579-44d0-8033-33cb2affe106",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6249,7 +6249,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9632e627-0b30-4d54-838d-e4f243232d34",
+								"id": "2cd1dd5a-3bbc-4ec5-a5a4-6fc72e5398d1",
 								"exec": [
 									""
 								],
@@ -6259,7 +6259,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "27fa93e7-c03c-40ef-bc0f-866d20e25f51",
+								"id": "0025435a-6929-4f6f-8219-dceadda0902f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6290,7 +6290,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/cpu/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/cpu/15m",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -6300,7 +6300,7 @@
 								"metric",
 								"v1",
 								"cpu",
-								"{{period}}"
+								"15m"
 							]
 						}
 					},
@@ -6439,7 +6439,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ac579077-c30c-4ed6-a2df-5aefd604bf99",
+								"id": "4b4363a1-c7a7-4680-ac47-d92d66fe1875",
 								"exec": [
 									""
 								],
@@ -6449,7 +6449,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5a9ba167-8ffe-44c9-9615-205d3014065c",
+								"id": "32115053-e2eb-4ee1-8cd2-c470e7e551d1",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6566,7 +6566,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "15acce3e-55da-43b5-91b0-b8a3db859e34",
+								"id": "afafc3c8-89b2-434d-9667-61769f0876a0",
 								"exec": [
 									""
 								],
@@ -6576,7 +6576,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1254deb3-4fe9-466c-87f6-ed2b191b9fa0",
+								"id": "08f89e9d-3bf8-4854-be4c-ab8a546b8079",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6622,67 +6622,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/memory/20",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"memory",
-										"20"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "223"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -6747,6 +6686,67 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"time\": 1597734590000000000,\r\n                \"usageUser\": 58.280068777146624\r\n            },\r\n            {\r\n                \"time\": 1597734591000000000,\r\n                \"usageUser\": 58.27984921332723\r\n            },\r\n            {\r\n                \"time\": 1597734592000000000,\r\n                \"usageUser\": 58.27962964950783\r\n            },\r\n            {\r\n                \"time\": 1597734593000000000,\r\n                \"usageUser\": 58.282093643481055\r\n            },\r\n            {\r\n                \"time\": 1597734594000000000,\r\n                \"usageUser\": 58.281190992223536\r\n            },\r\n            {\r\n                \"time\": 1597734595000000000,\r\n                \"usageUser\": 58.28163011986233\r\n            },\r\n            {\r\n                \"time\": 1597734596000000000,\r\n                \"usageUser\": 58.281386160063\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory",
+										"20"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -6756,7 +6756,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "5a093c4d-a929-455b-839a-ab915d2967dd",
+								"id": "09bd0ea3-f665-4a02-a5b6-05e4899331d4",
 								"exec": [
 									""
 								],
@@ -6766,7 +6766,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "df4d98a3-d6cd-4dc4-9f41-a7a90a4ae7b5",
+								"id": "e64097f0-12aa-4eb9-9dc9-9454ce699e1f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -6883,7 +6883,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "432cb7e7-c625-4d29-b689-4f6f0928b9d9",
+								"id": "61cd964a-bdd3-4c5d-995c-e1c5532c9c2f",
 								"exec": [
 									""
 								],
@@ -6893,7 +6893,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "313fd761-97da-4cbf-bf20-dd320e1ca123",
+								"id": "351ecadb-7fc3-4e91-9bce-113e85dcb1fa",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7073,7 +7073,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cef1f5a3-acc8-4a9e-be70-87388031aa24",
+								"id": "19ec1860-a81a-4f4e-92f2-4bca1f27197c",
 								"exec": [
 									""
 								],
@@ -7083,7 +7083,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "651db5b4-c4be-47a5-8f38-182c5ebf2751",
+								"id": "ea900d8e-b36c-489e-8819-98e955161a3a",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7211,7 +7211,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "38ad0f18-3377-4409-bfe9-a25ae0f0fc6c",
+								"id": "e471a077-0b9b-4938-9d0d-e609f1461863",
 								"exec": [
 									""
 								],
@@ -7221,7 +7221,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7e492ff2-ac5f-4c60-8644-a2b4908037df",
+								"id": "63a5b189-4362-43bf-ba8c-058723bb1ce0",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7411,7 +7411,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "800ff852-8acf-4467-9fec-0933e21de568",
+								"id": "3f79e7ee-24f1-4f90-a46e-399500528e72",
 								"exec": [
 									""
 								],
@@ -7421,7 +7421,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "df689b73-ac08-4c83-9781-45c4cdd3256f",
+								"id": "3e3f4e57-b916-45cd-9d8b-be95fbec384d",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7556,7 +7556,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2c6b751f-f882-46a1-aaca-55be8b29133a",
+								"id": "6dac69f4-3b3e-4e87-98ec-0a74e4537da9",
 								"exec": [
 									""
 								],
@@ -7566,7 +7566,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "278034c6-f583-4094-bf70-8a23fe3c7aa4",
+								"id": "bbe21c17-873b-489c-8cfe-b40ae529a421",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7627,6 +7627,69 @@
 						}
 					},
 					"response": [
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readbw",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "4360d852-cd5e-4dd5-a4c8-cb0015bd6a36"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:54:35 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -7693,69 +7756,6 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735678000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735679000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597735680000000000\r\n            },\r\n            {\r\n                \"bw\": 28773888,\r\n                \"time\": 1597735681000000000\r\n            },\r\n            {\r\n                \"bw\": 53703680,\r\n                \"time\": 1597735682000000000\r\n            }\r\n        ]\r\n    }\r\n}"
-						},
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"readbw",
-										"20hours"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "4360d852-cd5e-4dd5-a4c8-cb0015bd6a36"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:54:35 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -7765,7 +7765,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b5d5d2cc-1e2a-45d0-8460-c40c53c34cd0",
+								"id": "12a2981c-c42f-41ed-a118-ef84ac26df3e",
 								"exec": [
 									""
 								],
@@ -7775,7 +7775,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9318dd6b-69d1-461c-aec2-9db1c910880a",
+								"id": "28a00a55-f5dc-4f1e-aa3e-de96163f18c0",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -7903,7 +7903,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8cf16bce-9f7c-4f7c-b788-4b26c9eee9d4",
+								"id": "4d01ddf7-79d6-4094-8150-75ea2dd99650",
 								"exec": [
 									""
 								],
@@ -7913,7 +7913,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ead7fa7a-1838-4221-8aee-39bffe2ccc3b",
+								"id": "f9a7f9a1-680d-497e-9e1e-3128a92faa3f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8103,7 +8103,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "27790a87-d79d-4925-9ac4-d45433b43616",
+								"id": "b112a7f9-d1ea-4471-9751-d7ede4eabd0c",
 								"exec": [
 									""
 								],
@@ -8113,7 +8113,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c506998b-5f1f-4ef1-9c4b-ac0564763f2b",
+								"id": "96de9eac-92dd-4789-9fe5-c1a307f3e6a6",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8248,7 +8248,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "bb1a51f8-b23f-4ca1-a74d-eb5609558619",
+								"id": "a984bc7a-744c-4e0d-9198-3d1149cf0376",
 								"exec": [
 									""
 								],
@@ -8258,7 +8258,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "95718a5e-8631-4e1b-affb-1f468e3c5d83",
+								"id": "c9bc889c-010b-4139-b354-173f9d5241f9",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8319,69 +8319,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"writebw",
-										"20hours"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "cb3df3ea-4063-49ef-9d1a-b3514c3e9c5c"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:53:10 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -8448,6 +8385,69 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"bw\": 7731712,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"bw\": 26097664,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"bw\": 24965632,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"bw\": 26224128,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"bw\": 19838464,\r\n                \"time\": 1597736244000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736245000000000\r\n            },\r\n            {\r\n                \"bw\": 0,\r\n                \"time\": 1597736246000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "cb3df3ea-4063-49ef-9d1a-b3514c3e9c5c"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:53:10 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -8457,7 +8457,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "96ed515b-3e73-4c39-b804-2cbf34f2b8c3",
+								"id": "c86a9e75-09a6-4d1c-8134-c13fdce117bf",
 								"exec": [
 									""
 								],
@@ -8467,7 +8467,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "66c5c514-2990-4f5a-8cf2-f41d5105f79d",
+								"id": "a63542db-8590-4c94-8e85-04d7f4ce71be",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8595,7 +8595,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8835afa2-5fa2-40aa-83d1-b22e6f8a5467",
+								"id": "96508648-7c7f-47e8-a1b9-f636a51faf5c",
 								"exec": [
 									""
 								],
@@ -8605,7 +8605,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "500071f4-dc79-4bfe-a618-91b160cac158",
+								"id": "e3a11713-a369-4d92-85dd-919101e05a82",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8661,67 +8661,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/readiops/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"readiops",
-										"20hours"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "934dda29-1780-40f8-8461-97afbe4bbd70"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:51:38 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -8786,6 +8725,67 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"iops\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"iops\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"iops\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"iops\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"iops\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readiops",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "934dda29-1780-40f8-8461-97afbe4bbd70"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:51:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -8795,7 +8795,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f00d74b6-6071-4eb4-bcd3-c84788c9f185",
+								"id": "41e234b0-3a82-4acb-b721-4d721ca89ec1",
 								"exec": [
 									""
 								],
@@ -8805,7 +8805,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6745ddf2-27ad-432a-8438-abbb55735e0b",
+								"id": "2efb7252-02f5-458a-b8bc-8923d1eddc80",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -8940,7 +8940,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2bda6cb6-e5dc-4350-a3e2-7eaf9a66776f",
+								"id": "3a6ac269-73fa-4587-89d4-1eaafb698572",
 								"exec": [
 									""
 								],
@@ -8950,7 +8950,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "22e23d89-33d4-43df-a01c-1cfc2848fb9d",
+								"id": "8f85c8fd-fcf3-46b9-9986-8683cf8ec8e5",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9149,7 +9149,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "937f05e4-c914-41a1-945f-5202549a5500",
+								"id": "9dee1a30-8f0c-4ba6-a739-ca6165781b8d",
 								"exec": [
 									""
 								],
@@ -9159,7 +9159,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4b0d6966-0926-4895-95bf-e5a882f6f3b1",
+								"id": "4c90bd56-d08f-4ca8-9b3d-606006d6566f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9287,7 +9287,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "bf86c0ed-19e9-4528-9eb0-4e4dc6154d93",
+								"id": "79daec28-7034-4bb8-9708-3d66b9b2c1d8",
 								"exec": [
 									""
 								],
@@ -9297,7 +9297,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "96ba7c1d-a95f-42ec-8e4f-81e4c0c25d85",
+								"id": "601f4233-2c43-498b-b9cf-7cf230a8ea71",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9482,12 +9482,12 @@
 					]
 				},
 				{
-					"name": "VOL WRITE BW IOPS",
+					"name": "VOL WRITE IOPS",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "dedb5f87-d186-4a78-a4c5-2df03e895d65",
+								"id": "e9aa13e9-c9e1-43e8-be52-3ac1dec22061",
 								"exec": [
 									""
 								],
@@ -9497,7 +9497,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c2a7a574-7851-486e-854f-4fa0e7e7a3b2",
+								"id": "a139b14f-aaa1-4d93-8d2c-9953a9f72a85",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9627,12 +9627,12 @@
 					]
 				},
 				{
-					"name": "VOL WRITE BW IOPS with PERIOD",
+					"name": "VOL WRITE IOPS with PERIOD",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7a648c75-ca05-4105-b7f9-efcdb5b9573c",
+								"id": "4aef6866-4e4f-4b14-9ed4-b3d16550538f",
 								"exec": [
 									""
 								],
@@ -9642,7 +9642,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "47da4f9a-a92b-44e9-b6ce-2b68def7585b",
+								"id": "796693fc-13d0-4b87-8e26-6c841fa47005",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9841,7 +9841,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "526effed-7b17-48b8-aa02-3c5f1f7a482a",
+								"id": "0d0596a8-f7cd-417d-864c-bcc1f0519469",
 								"exec": [
 									""
 								],
@@ -9851,7 +9851,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "927395da-a497-4b80-a52c-8ebd9fedd415",
+								"id": "ba95e1bc-47de-4f22-938a-ec6ea2aec274",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -9979,7 +9979,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "200dc8a0-6f68-4d9d-996d-5cbfddb46a83",
+								"id": "7b9a07ec-f19b-421c-b0e2-919dadef7ae4",
 								"exec": [
 									""
 								],
@@ -9989,7 +9989,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "631b7f89-92ae-4ba8-8334-f78ae807d904",
+								"id": "b728ac61-52ba-49d7-a846-b01ea1e5bc31",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -10045,6 +10045,67 @@
 						}
 					},
 					"response": [
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -10109,67 +10170,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						},
-						{
-							"name": "Fail - 0 invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"latency",
-										"20hours"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
 						}
 					]
 				},
@@ -10179,7 +10179,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9c4a9984-d04e-476e-82bc-04bda7b116f8",
+								"id": "ffd8d01a-9088-4bf8-892a-236b3a1f4632",
 								"exec": [
 									""
 								],
@@ -10189,7 +10189,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b2e4ad07-3d6b-41d3-bb51-88eeb4b8a0c0",
+								"id": "aecc80ce-0415-418b-925c-632f9160df13",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -10324,7 +10324,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "64a0ac92-d6f8-4b5c-ad56-dba834165095",
+								"id": "b61196e2-1ba0-4de3-a913-3a37d14672ac",
 								"exec": [
 									""
 								],
@@ -10334,7 +10334,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cb9901c8-148d-4b23-b82b-09f972650805",
+								"id": "d4a54a7b-2247-46fc-8a52-9c4c4bb6c11f",
 								"exec": [
 									"pm.test(\"PING\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -10395,69 +10395,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "Fail - invalid time interval, empty response",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"metric",
-										"v1",
-										"volumes",
-										"{{volid01}}",
-										"latency",
-										"20hours"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "128"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -10524,6 +10461,259 @@
 							],
 							"cookie": [],
 							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"latency\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"latency\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"latency\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"latency\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						}
+					]
+				},
+				{
+					"name": "REBUILD LOG",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "04893aa4-0f1e-4c08-9720-ecf0268d85e5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fdc8bcfb-f63f-4a4c-829d-dadd9d3705c6",
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/rebuildlogs/{{period}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"rebuildlogs",
+								"{{period}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Fail - 0 data not present",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/rebuildlogs/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"rebuildlogs",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c950f121-dd24-4f31-822e-69c70f1c432a"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:32:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 20313,\r\n            \"level\": \"WARN\",\r\n            \"description\": \"Data not found\",\r\n            \"problem\": \"requested data is not present\",\r\n            \"solution\": \"check if the data is requested for an existing entity\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"Time\": 1597743919603338213,\r\n                \"Value\": \"[1596194025][1234][trace] progress report: [100]\"\r\n            }\r\n        ]\r\n    }\r\n}"
 						}
 					]
 				}
@@ -10532,7 +10722,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "df5c71dd-0eb9-42dd-b7bb-ca8ecbef5cc3",
+						"id": "206b3071-1893-45d2-bae8-f7ecc63ebb2a",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -10542,7 +10732,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9800f936-01f1-4c0f-b93c-87eeedb22b54",
+						"id": "c1a6ed53-b077-4bc0-92f8-78269c461e39",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -10557,7 +10747,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "0145601e-cf30-4e19-a13c-c179c7f710a4",
+				"id": "b8dcb73f-efaa-464b-9373-87e0cac5b600",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -10567,7 +10757,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5b3dfbf5-3d4d-463f-abff-017e250545d8",
+				"id": "aeb2a3e4-6fa1-438c-8c14-9384582ee482",
 				"type": "text/javascript",
 				"exec": [
 					"tests[\"response code is 200\"] = responseCode.code === 200;"
