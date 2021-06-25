@@ -129,7 +129,7 @@ describe("ConfigurationSetting", () => {
     const confirmBtn = getByText('Submit');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(username, { target: { value: 'abcd' } });
+    fireEvent.change(username, { target: { value: 'abcd1234' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(password, { target: { value: 'test1234' } });
@@ -151,7 +151,7 @@ describe("ConfigurationSetting", () => {
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
-      "username": "abcd"
+      "username": "abcd1234"
     }, {
       "headers": {
         "Accept": "application/json",
@@ -176,7 +176,7 @@ describe("ConfigurationSetting", () => {
     const confirmBtn = getByText('Submit');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(username, { target: { value: 'abcd' } });
+    fireEvent.change(username, { target: { value: 'abcd1234' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(password, { target: { value: 'test1234' } });
@@ -198,7 +198,7 @@ describe("ConfigurationSetting", () => {
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
-      "username": "abcd"
+      "username": "abcd1234"
     }, {
       "headers": {
         "Accept": "application/json",
@@ -223,7 +223,7 @@ describe("ConfigurationSetting", () => {
     const confirmBtn = getByText('Submit');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(username, { target: { value: 'abcd' } });
+    fireEvent.change(username, { target: { value: 'abcd1234' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(password, { target: { value: 'test1234' } });
@@ -245,7 +245,7 @@ describe("ConfigurationSetting", () => {
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
-      "username": "abcd"
+      "username": "abcd1234"
     }, {
       "headers": {
         "Accept": "application/json",
@@ -266,7 +266,7 @@ describe("ConfigurationSetting", () => {
     const email = getByTestId('add-user-email');
     const confirmBtn = getByText('Submit');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
-    fireEvent.change(username, { target: { value: 'abcd' } });
+    fireEvent.change(username, { target: { value: 'abcd1234' } });
     fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
     fireEvent.change(password, { target: { value: 'test' } });
     fireEvent.click(confirmBtn);
@@ -322,7 +322,7 @@ describe("ConfigurationSetting", () => {
     const { getByText } = wrapper;
     const confirmBtn = getByText('Submit');
     fireEvent.click(confirmBtn);
-    expect(getByText("Please Enter a Valid Username")).toBeDefined();
+    expect(getByText("Please enter a valid username. Username should contain 8-64 alphanumeric characters")).toBeDefined();
   });
 
   it('should add list all the users', async () => {

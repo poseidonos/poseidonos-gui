@@ -73,6 +73,9 @@ const styles = (theme) => ({
       justifyContent: 'center'
     }
   },
+  volumeSelect: {
+    maxWidth: 250
+  },
   noVols: {
     marginTop: theme.spacing(4)
   }
@@ -317,7 +320,10 @@ class Performance extends Component {
       array: event.target.value,
       volume: 'all-volumes'
     }, () => {
-      this.fetchVolumeNames(() => this.volumeChanged({target: {value: 'all-volumes'}}));
+      this.fetchVolumeNames(() => {
+        if(this.state.level !== "array")
+          this.volumeChanged({target: {value: 'all-volumes'}})
+      });
     });
   }
 
@@ -470,6 +476,7 @@ class Performance extends Component {
                         <Select
                           value={this.state.volume}
                           onChange={this.volumeChanged}
+                          className={classes.volumeSelect}
                           inputProps={{
                             name: 'Volume',
                             id: 'volume',

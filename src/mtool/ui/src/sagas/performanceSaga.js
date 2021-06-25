@@ -179,7 +179,6 @@ export function* fetchReadBandwidth(action) {
             [axios, axios.get],
             endpoint
         );
-
         const result = response.data;
         /* istanbul ignore else */
         if (result && !result.message) {

@@ -993,9 +993,9 @@ function* createArray(action) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
-        errorMsg: "Error in Array Creation",
+        errorMsg: error && error.response ? error.response.data : "Array Creation failed",
         errorCode: "",
-        alertTitle: `Agent Communication Error - ${error.message}`,
+        alertTitle:  "Error in Array Creation"
       })
     );
   } finally {

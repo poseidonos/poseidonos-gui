@@ -60,15 +60,14 @@ export function* addNewUsersInfo(action) {
         }
     }
     catch (error) {
-        if (error.response.status === 400) {
+        if (error.response.status === 400)
             yield put(actionCreators.openAlertBox({
                 alertOpen: true,
                 istypealert: true,
                 alerttype: 'alert',
                 alerttitle: 'Add New User',
-                alertdescription: 'User already exists',
+                alertdescription: error.response.data,
             }));
-        }
         else
         yield put(actionCreators.openAlertBox({
             alertOpen: true,

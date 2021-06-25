@@ -55,6 +55,8 @@ const styles = (theme) => ({
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
+const USERNAME_REGEX = /^[A-Za-z0-9]{8,64}$/;
+
 class UserManagement extends Component {
   constructor(props) {
     super(props);
@@ -170,13 +172,13 @@ class UserManagement extends Component {
   }
 
   validate() {
-    if (!this.state.username) {
+    if (!(USERNAME_REGEX.test(this.state.username))) {
       this.props.openAlertBox({
         alertOpen: true,
         alerttype: 'alert',
         istypealert: true,
         alerttitle: "Add New User",
-        alertdescription: "Please Enter a Valid Username",
+        alertdescription: "Please enter a valid username. Username should contain 8-64 alphanumeric characters",
       });
     }
     else if (!this.state.password || !this.state.confirmpassword)
