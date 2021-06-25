@@ -47,7 +47,6 @@ import * as actionTypes from "./actionTypes";
 // }
 
 export const fetchCpuUsage = (cpuUsage, interval) => {
-    console.log(interval)
     return {
         type: actionTypes.FETCH_CPU_USAGE,
         cpuUsage,

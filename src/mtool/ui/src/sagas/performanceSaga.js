@@ -140,7 +140,6 @@ export function* fetchCpuUsage(action) {
                     });
                 }
             });
-            console.log(result[1])
             yield put(actionCreators.fetchCpuUsage(values, result[1][0]));
         } else {
             yield put(actionCreators.fetchCpuUsage([], {}));
@@ -217,7 +216,7 @@ function* fetchWriteBandwidth(action) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {
             endpoint += `/volumes?arrayids=${arrayId}&volumeids=${action.payload.volume}&time=${action.payload.time}`
-        }s
+        }
         const response = yield call([axios, axios.get], endpoint);
 
         const result = response.data;

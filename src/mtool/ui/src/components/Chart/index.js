@@ -220,7 +220,7 @@ class Chart extends Component {
       }
     }
     if(nextProps.startTime && nextProps.endTime) {
-      xScale.domain([Math.min(d3ArrayMin(data, (datum) => (datum.time/1e6)), parseInt(nextProps.startTime/1e6)), nextProps.endTime/1e6]);
+      xScale.domain([Math.min(d3ArrayMin(data, (datum) => (datum.time/1e6)), parseInt(nextProps.startTime/1e6, 10)), nextProps.endTime/1e6]);
     } else {
       xScale.domain(domainSelect(nextProps.interval, timeDomain));
     }

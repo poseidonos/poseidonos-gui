@@ -599,8 +599,8 @@ describe("Performance", () => {
       fireEvent.change(measurementInput, {target: {value: 'write_bw'}});
     }
     expect(asFragment()).toMatchSnapshot();
-    // const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
-    // expect(volWriteBw).toBeDefined();
+    const volWriteBw = await waitForElement(() => getByTestId("writeBandwidth-vol"));
+    expect(volWriteBw).toBeDefined();
   });
 
   it("renders volume level read iops graphs for last 1m", async () => {
