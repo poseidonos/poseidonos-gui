@@ -1249,6 +1249,12 @@ def add_new_user(current_user):
     body = json.loads(body_unicode)
     username = body['username']
     password = body['password']
+    if (len(username) > 8 or len(username)==0) and (len(password) > 64 or len(password)==0):
+        return make_response("Invalid username and password length", 400)
+    if len(username) > 8 or len(username)==0:
+        return make_response("Invalid username length", 400)
+    if len(password) > 64 or len(password)==0:
+        return make_response("Invalid password length", 400)
     hashed_password = generate_password_hash(password, method='sha256')
     role = body['user_role']
     mobilenumber = body['mobilenumber']
