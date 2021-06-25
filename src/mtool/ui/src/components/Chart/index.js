@@ -65,6 +65,9 @@ const styles = (theme) => ({
     paddingLeft: "10%",
     overflow: "hidden",
     maxWidth: "80%",
+    position: "absolute",
+    left: 0,
+    right: 0,
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     "&:hover": {
