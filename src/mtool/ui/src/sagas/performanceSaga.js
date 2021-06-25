@@ -36,6 +36,15 @@ import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 
 function extractValues(data) {
+    if (data.length === 0) {
+        data.push({
+            value: 0,
+            bw: 0,
+            iops: 0,
+            latency: 0,
+            time: (new Date(Date.now() - 10000)) * 1e6
+        });
+    }
     return data;
 }
 
