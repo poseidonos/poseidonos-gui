@@ -322,7 +322,7 @@ describe("ConfigurationSetting", () => {
     const { getByText } = wrapper;
     const confirmBtn = getByText('Submit');
     fireEvent.click(confirmBtn);
-    expect(getByText("Please enter a valid username. Username should contain 8-64 alphanumeric characters")).toBeDefined();
+    expect(getByText("Alphanumeric characters only")).toBeDefined();
   });
 
   it('should add list all the users', async () => {

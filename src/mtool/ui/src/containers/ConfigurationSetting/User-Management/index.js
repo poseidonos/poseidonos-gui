@@ -55,7 +55,7 @@ const styles = (theme) => ({
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-const USERNAME_REGEX = /^[A-Za-z0-9]{8,64}$/;
+const USERNAME_REGEX = /^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
 
 class UserManagement extends Component {
   constructor(props) {
@@ -178,7 +178,16 @@ class UserManagement extends Component {
         alerttype: 'alert',
         istypealert: true,
         alerttitle: "Add New User",
-        alertdescription: "Please enter a valid username. Username should contain 8-64 alphanumeric characters",
+        alertdescription: (<p>Username Should follow the below rules
+		<ul>
+		  <li>Alphanumeric characters only</li>
+		  <li>2-15 characters</li>
+		  <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
+		  <li>Cannot be two underscores, two hypens or two spaces in a row</li>
+		  <li>e.g. ab, a-b-c, ab-cd, etc</li>
+		  <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
+		</ul>
+                           </p>),
       });
     }
     else if (!this.state.password || !this.state.confirmpassword)

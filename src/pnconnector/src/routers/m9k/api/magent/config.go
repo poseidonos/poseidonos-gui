@@ -106,7 +106,7 @@ var ReadBandwidthAggRPQVol = `SELECT read_bw as "bw" FROM "%s"."%s"."mean_air" W
 var ReadBandwidthDefaultRPQVol = `SELECT mean(read_bw) as "bw", median(unixTimestamp) as timestamp FROM "%s"."%s"."air" WHERE time > now() - %s and time > %s and vol_id =~ %s and arr_id =~ %s GROUP BY time(%s) FILL(null)`
 var ReadBandwidthLastRecordQVol = `SELECT read_bw as "bw", timestamp FROM "%s"."%s"."air" WHERE vol_id =~ %s and arr_id =~ %s order by time desc limit 1`
 
-var ReadBandwidthAggRPQArr = `SELECT sum(read_bw) as "read_bw" FROM "%s"."%s"."mean_air" WHERE time > now() - %s and time > %s and arr_id =~ %s group by time(1s) FILL(null)`
+var ReadBandwidthAggRPQArr = `SELECT read_bw as "bw" FROM "%s"."%s"."mean_air" WHERE time > now() - %s and time > %s and arr_id =~ %s FILL(null)`
 var ReadBandwidthDefaultRPQArr = `SELECT mean(read_bw) FROM (SELECT sum(read_bw) as "read_bw" FROM "%s"."%s"."air" WHERE time > now() - %s and arr_id =~ %s group by time(1s) FILL(null)) group by time(%s)`
 var ReadBandwidthLastRecordQArr = `SELECT read_bw FROM (SELECT sum(read_bw) as read_bw FROM "%s"."%s"."air" where time > now() - 5s and arr_id =~ %s group by time(1s)) order by time limit 1`
 

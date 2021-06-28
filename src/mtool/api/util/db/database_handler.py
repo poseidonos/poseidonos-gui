@@ -154,7 +154,7 @@ CHECK_EMAIL_QUERY = "SELECT _id FROM " + USER_TABLE + " WHERE lower(email) = ?"
 TOGGLE_STATUS_UPDATE_QUERY = "UPDATE " + \
     USER_TABLE + " SET active = ? where lower(_id) = ?"
 UPDATE_USER_QUERY = "UPDATE " + USER_TABLE + \
-    " SET _id = ?, lower(email) = ?, phone_number = ? where lower(_id) = ?"
+    " SET _id = ?, email = ?, phone_number = ? where lower(_id) = ?"
 SELECT_PASSWORD_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 UPDATE_PASSWORD_QUERY = "UPDATE " + USER_TABLE + " SET password = ? where lower(_id) = ?"
@@ -463,12 +463,7 @@ class SQLiteConnection:
 
     def update_user_in_db(self, username, email, phone_number, old_username):
         cur = DB_CONNECTION.cursor()
-        cur.execute(
-            UPDATE_USER_QUERY,
-            (username,
-             email.lower(),
-             phone_number,
-             old_username.lower()))
+        cur.execute(UPDATE_USER_QUERY, (username, email.lower(), phone_number, old_username.lower()))
         DB_CONNECTION.commit()
         return True
 

@@ -34,7 +34,7 @@ import React, {
     Component
 } from "react";
 import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { TextField, Grid, withStyles, Typography, Select, MenuItem, ButtonGroup, Button } from '@material-ui/core';
+import { TextField, Grid, withStyles, Typography, Select, MenuItem, ButtonGroup, Button, Tooltip } from '@material-ui/core';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import "./AddNewUser.css";
 import { PageTheme } from "../../theme"
@@ -144,6 +144,20 @@ class AddNewUser extends Component {
                         </Grid>
                         <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
                             <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                                <Tooltip
+                                  title={(
+<p>Username Should follow the below rules
+    <ul>
+      <li>Alphanumeric characters only</li>
+      <li>2-15 characters</li>
+      <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
+      <li>Cannot be two underscores, two hypens or two spaces in a row</li>
+      <li>e.g. ab, a-b-c, ab-cd, etc</li>
+      <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
+    </ul>
+</p>
+)}
+                                >
                                 <TextField className={classes.textField}
                                     required
                                     multiline
@@ -155,10 +169,11 @@ class AddNewUser extends Component {
                                     value={this.props.username}
                                     name="username"
                                     label="User Name"
-                                    placeholder="Enter User Name"
+                                    placeholder="Enter User Name (2-15 Characters)"
                                     onChange={(event) => this.props.OnHandleChange(event)}
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />
+                                </Tooltip>
                             </Grid>
                             <Grid sm={6} xs={12} className={classes.fieldContainer} item>
                                 <Select
@@ -184,7 +199,7 @@ class AddNewUser extends Component {
                                     name="password"
                                     type="password"
                                     label="Password"
-                                    placeholder="Enter Initial Password"
+                                    placeholder="Enter Password (8-64 Characters)"
                                     onChange={this.props.OnHandleChange}
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />

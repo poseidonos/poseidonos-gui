@@ -63,7 +63,7 @@ def test_add_new_user(mock_add_new_user_in_db, global_data):
                                                'Accept': 'application/json',
                                                },
                                       data=json.dumps({"username": "abc",
-                                                       "password": "asd",
+                                                       "password": "asd123456",
                                                        "confirmpassword": "asd",
                                                        "user_role": "Admin",
                                                        "mobilenumber": "+82 565 4646 4564",

@@ -212,7 +212,7 @@ def token_required(f):
 
 @app.route('/api/v1.0/version', methods=['GET'])
 def get_version():
-    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ui/package.json"))
+    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../UI/package.json"))
     with open(package_json_path) as f:
         data = json.load(f)
         return toJson({"version": data["version"]})
@@ -1254,6 +1254,13 @@ def validate_email(email):
         return True
     else:
         return False
+def validate_username(username):
+    regex = "^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
+    if(re.search(regex,username)):
+        return True
+    else:
+        return False
+
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
@@ -1262,12 +1269,12 @@ def add_new_user(current_user):
     body = json.loads(body_unicode)
     username = body['username']
     password = body['password']
-    if (len(username) > 8 or len(username)==0) and (len(password) > 64 or len(password)==0):
-        return make_response("Invalid username and password length", 400)
-    if len(username) > 8 or len(username)==0:
-        return make_response("Invalid username length", 400)
-    if len(password) > 64 or len(password)==0:
-        return make_response("Invalid password length", 400)
+    if not validate_username(username):
+        return make_response("Username Should follow the below rules\nAlphanumeric characters only\n2-15 characters\nUnderscore and hyphens and spaces (but not in beginning or end)\nCannot be two underscores, two hypens or two spaces in a row\ne.g. ab, a-b-c, ab-cd, etc\nIncorrect: _abc, abc_, a__b, a--b, etc\n", 400)
+    if len(username) < 2 or len(username) > 15:
+        return make_response("Username length should be between 2-15 characters", 400)
+    if len(password) < 8 or len(password) > 64:
+        return make_response("Password length should be between 8-64 characters", 400)
     hashed_password = generate_password_hash(password, method='sha256')
     role = body['user_role']
     mobilenumber = body['mobilenumber']

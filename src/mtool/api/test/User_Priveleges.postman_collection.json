@@ -1,0 +1,727 @@
+{
+	"info": {
+		"_postman_id": "fa42eb2c-79ed-4a36-ac69-cdab46207b80",
+		"name": "MTool_TC95_to_TC105_User_Priveleges",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6785ce5-eb45-4e2e-80f3-152fdd4d600a",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token = response[\"token\"];\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"postman.setEnvironmentVariable(\"token\", token);\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"Logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login using wrong password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d6798f8c-278f-44ba-b53b-aca2d3c0589b",
+						"exec": [
+							"pm.test(\"Logged failed with wrong password for admin...\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin\",\"password\":\"admin1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff909014-ea76-45ee-8ecd-0d050bf73018",
+						"exec": [
+							"pm.test(\"Added as custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 15 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 15000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Admin User2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bcb8ff38-f5b9-4ce4-b4e2-3b1d11bc1271",
+						"exec": [
+							"pm.test(\"Added as custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 15 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 15000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin2\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Custom Admin user with wrong password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37ba639e-122e-4fa3-a86a-66883eaa9b64",
+						"exec": [
+							"pm.test(\"PKAdmin cannot be logged due to bad password...\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Custom Admin user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "247d4720-5cca-47e9-b865-f5a76ed3e991",
+						"exec": [
+							"// save the response into a local variable so that we can access it later in the script\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"// retrieve the token value from the response\r",
+							"let token =  response[\"token\"];\r",
+							"\r",
+							"// reset \r",
+							"pm.variables.set('token', '');\r",
+							"\r",
+							"// save the token value to variables so that it can used in subsequent APIs\r",
+							"pm.variables.set('token', token);\r",
+							"//pm.environment.set('token', token);\r",
+							"\r",
+							"// console.log(token);\r",
+							"\r",
+							"pm.test(\"PKAdmin logged in as admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c47c84a-4bb7-468d-ab65-18430b414b29",
+						"exec": [
+							"pm.test(\"Duplicate custom user as admin failed...\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ids\": [\"pkadmin2\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0f49ddfc-1fc0-416f-a9c8-316287659eff",
+						"exec": [
+							"pm.test(\"CPU Perf data...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c98e67e0-7930-4393-82d3-6d3a6036b09e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/usage_user/1m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"usage_user",
+						"1m"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Duplicate Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6240435e-ba3a-49d7-93b3-56600238f4d9",
+						"exec": [
+							"pm.test(\"Duplicate custom user as admin failed...\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "32d6a0d6-603b-4374-82c5-37906a45fc09",
+						"exec": [
+							"pm.test(\"Duplicate custom user as admin failed...\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"_id\": \"pkadmin\", \"password\": \"123456789\",\"oldid\": \"pk@pk.com\", \"email\": \"test@test.commm\", \"phone_number\": \"8298989898\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Admin User with password special chars",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ad45a780-f5d4-471f-9a66-7f3b57f8950f",
+						"exec": [
+							"pm.test(\"Added as custom user admin with special chars...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
+							"    // Delay for 5 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 5000);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"special_chars\",\"password\":\"spcl@!%chars\",\"confirmpassword\":\"spcl@!%chars\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"spcl_chars@sc.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"add_new_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Custom Admin User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3637bcf8-0c70-48a3-8548-dae6ee07f993",
+						"exec": [
+							"pm.test(\"Deleted custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ids\":[\"pkadmin\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Special Chars User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5b6375ad-a872-4cc7-ae8f-4f6d6f656d2c",
+						"exec": [
+							"pm.test(\"Deleted custom user admin...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ids\":[\"special_chars\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_users",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a9ece179-0f0c-4fc1-8eba-cb7fa2de41a3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e50fcced-c5bc-43fe-8456-48cf8926f77d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
