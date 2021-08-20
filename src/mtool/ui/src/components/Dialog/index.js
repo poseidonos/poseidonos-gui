@@ -240,7 +240,7 @@ const AlertDialog = (props) => {
                 color: '#000',
                 fontSize: '12px',
                 padding: '0px 0px 0px 61px',
-                whiteSpace: 'normal',
+                whiteSpace: 'pre-line',
                 display: 'block',
                 marginTop: '0px',
               }}

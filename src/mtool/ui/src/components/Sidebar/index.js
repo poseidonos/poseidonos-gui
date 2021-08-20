@@ -99,8 +99,10 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     display: 'flex',
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    color: "#fff",
+    flexDirection: "column"
   },
   logoPaper: {
     marginBottom: '5px',
@@ -285,6 +287,7 @@ const Sidebar = (props) => {
             alt="Poseidon Logo"
           />
         </Paper>
+        <span style={{display: "none"}}>SAMSUNG &copy; {(new Date()).getFullYear()}</span>
       </div>
     </ThemeProvider>
   );

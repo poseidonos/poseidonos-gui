@@ -38,15 +38,15 @@ func QOSSender(xrId string, param interface{}, command string) (model.Request, m
   return Requester{xrId, param, model.VolumeParam{}}.Send(command)
 }
 func QOSCreateVolumePolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return QOSSender(xrId, param, "QOSCREATEVOLUMEPOLICY")
+  return QOSSender(xrId, param, "CREATEQOSVOLUMEPOLICY")
 }
 
 func QOSResetVolumePolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return QOSSender(xrId, param, "QOSRESETVOLUMEPOLICY")
+	return QOSSender(xrId, param, "RESETQOSVOLUMEPOLICY")
 }
 
 func QOSListPolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return QOSSender(xrId, param, "QOSLISTPOLICIES")
+	return QOSSender(xrId, param, "LISTQOSPOLICIES")
 }
 
 

@@ -242,9 +242,11 @@ class CreateVolume extends Component {
       errorDesc = "Please Enter Maximum IOPS (KIOPS)";
     else if (this.state.maxbw < 0)
       errorDesc = "Max Bandwidth cannot be negative";
-    else if (this.state.maxiops < 0) errorDesc = "Maximum IOPS be negative";
-    else if (this.state.maxiops > 0 && this.state.maxiops < 10)
-      errorDesc = "Invalid value for Maximum IOPS";
+    else if (this.state.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
+    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 8796093022207)
+      errorDesc = "Max Bandwidth should be in the range 10 ~ 8796093022207. Use 0 for Maximum";
+    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 9223372036854775)
+      errorDesc = "Max IOPS should be in the range 10 ~ 9223372036854775. Use 0 for Maximum";
     else isError = false;
 
     if (isError === true) {
@@ -481,7 +483,7 @@ class CreateVolume extends Component {
               className={classes.formControl}
             >
               <Tooltip
-                title="Min Value 10. 0 means max"
+                title="0 means max"
                 placement="right-start"
               >
                 <FormControl className={classes.volumeName}>
@@ -510,7 +512,7 @@ class CreateVolume extends Component {
               justify="flex-start"
               className={classes.formControl}
             >
-              <Tooltip title="0 means max" placement="right-start">
+              <Tooltip title="Min value 10. 0 means max" placement="right-start">
                 <FormControl className={classes.volumeName}>
                   <TextField
                     id="create-vol-maxbw"
@@ -589,7 +591,7 @@ class CreateVolume extends Component {
               className={`${classes.volBtnContainer} ${classes.formControl}`}
             >
               <Tooltip
-                title="Volume Creation is in progress. Please wait for sometime."
+                title="Please wait... Volume creation is in progress. It may take anywhere between few seconds to few minutes"
                 placement="right-start"
                 open={this.props.createVolumeButton}
               >

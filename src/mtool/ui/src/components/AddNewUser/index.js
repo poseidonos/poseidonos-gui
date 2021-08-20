@@ -76,7 +76,7 @@ const styles = (theme => {
         textField: {
             width: '70%',
             [theme.breakpoints.down('xs')]: {
-              marginLeft: 0
+                marginLeft: 0
             }
         },
         fieldContainer: {
@@ -97,7 +97,7 @@ const styles = (theme => {
             width: '70%',
             textTransform: 'uppercase',
             [theme.breakpoints.down('xs')]: {
-              marginLeft: 0
+                marginLeft: 0
             }
         },
         selectMenuItem: {
@@ -145,34 +145,34 @@ class AddNewUser extends Component {
                         <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
                             <Grid sm={6} xs={12} className={classes.fieldContainer}>
                                 <Tooltip
-                                  title={(
-<p>Username Should follow the below rules
-    <ul>
-      <li>Alphanumeric characters only</li>
-      <li>2-15 characters</li>
-      <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
-      <li>Cannot be two underscores, two hypens or two spaces in a row</li>
-      <li>e.g. ab, a-b-c, ab-cd, etc</li>
-      <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
-    </ul>
-</p>
-)}
+                                    title={(
+                                        <p>Username Should follow the below rules
+                                            <ul>
+                                                <li>Alphanumeric characters only</li>
+                                                <li>2-15 characters</li>
+                                                <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
+                                                <li>Cannot be two underscores, two hypens or two spaces in a row</li>
+                                                <li>e.g. ab, a-b-c, ab-cd, etc</li>
+                                                <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
+                                            </ul>
+                                        </p>
+                                    )}
                                 >
-                                <TextField className={classes.textField}
-                                    required
-                                    multiline
-                                    rowsMax="1"
-                                    inputProps={{
-                                      "data-testid": "add-user-name"
-                                    }}
-                                    margin="none"
-                                    value={this.props.username}
-                                    name="username"
-                                    label="User Name"
-                                    placeholder="Enter User Name (2-15 Characters)"
-                                    onChange={(event) => this.props.OnHandleChange(event)}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
-                                />
+                                    <TextField className={classes.textField}
+                                        required
+                                        multiline
+                                        rowsMax="1"
+                                        inputProps={{
+                                            "data-testid": "add-user-name"
+                                        }}
+                                        margin="none"
+                                        value={this.props.username}
+                                        name="username"
+                                        label="User Name"
+                                        placeholder="Enter User Name (2-15 Characters)"
+                                        onChange={(event) => this.props.OnHandleChange(event)}
+                                        onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
+                                    />
                                 </Tooltip>
                             </Grid>
                             <Grid sm={6} xs={12} className={classes.fieldContainer} item>
@@ -192,7 +192,7 @@ class AddNewUser extends Component {
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
-                                      "data-testid": "add-user-password"
+                                        "data-testid": "add-user-password"
                                     }}
                                     margin="none"
                                     value={this.props.password}
@@ -208,7 +208,7 @@ class AddNewUser extends Component {
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
-                                      "data-testid": "add-user-confirm-password"
+                                        "data-testid": "add-user-confirm-password"
                                     }}
                                     type="password"
                                     margin="none"
@@ -232,6 +232,7 @@ class AddNewUser extends Component {
                                     }}
                                     required
                                     label="Phone Number"
+                                    autoFormat={false}
                                     // onlyCountries={['in', 'kr']}
                                     defaultCountry="kr"
                                 />
@@ -242,7 +243,7 @@ class AddNewUser extends Component {
                                     multiline
                                     rowsMax="1"
                                     inputProps={{
-                                      "data-testid": "add-user-email"
+                                        "data-testid": "add-user-email"
                                     }}
                                     margin="none"
                                     value={this.props.emailid}

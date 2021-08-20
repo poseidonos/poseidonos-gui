@@ -255,11 +255,11 @@ class Volume extends Component {
   }
 
   deleteVolumes(volumes) {
-    const ids = [];
+    const vols = [];
     volumes.forEach((volume) => {
-      ids.push(volume.name);
+      vols.push({name: volume.name, isMounted: volume.status === "Mounted"});
     });
-    this.props.Delete_Volumes({ volumes: ids });
+    this.props.Delete_Volumes({ volumes: vols });
   }
 
   fetchDevices() {

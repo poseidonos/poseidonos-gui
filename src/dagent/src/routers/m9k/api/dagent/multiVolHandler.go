@@ -62,7 +62,7 @@ const (
 	POST                 = "POST"
 	POS_API_ERROR        = 11040
 	COUNT_EXCEEDED_ERROR = 11050
-	DELAY                = 1 * time.Second
+	DELAY                = 50 * time.Millisecond
 )
 
 var (

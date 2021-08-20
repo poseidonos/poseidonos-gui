@@ -42,6 +42,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 import AlertDialog from '../Dialog';
 import './UserTable.css';
 import { customTheme } from "../../theme";
+import { PHONE_REGEX } from '../../utils/constants';
 
 const styles = (theme) => {
   return ({
@@ -80,9 +81,13 @@ const styles = (theme) => {
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 function validate(newData) {
-  if (!(EMAIL_REGEX.test(newData.email)))
-    return false;
-  return true;
+  if (!(EMAIL_REGEX.test(newData.email))) {
+    return "Please Enter a Valid Email";
+  }
+  if(!(PHONE_REGEX.test(newData.phone_number))) {
+    return "Please Enter a Valid Phone Number";
+  }
+  return "";
 }
 
 class UserTable extends Component {
@@ -126,13 +131,14 @@ class UserTable extends Component {
   }
 
   saveUser(user) {
-    if (!validate(user)) {
+    const errMsg = validate(user);
+    if (errMsg.length > 0) {
       this.props.openAlertBox({
         istypealert: true,
         alerttype: 'alert',
         alertOpen: true,
         alerttitle: 'Update User',
-        alertdescription: 'Please enter a valid input'
+        alertdescription: errMsg
       });
       return;
     }
@@ -187,6 +193,7 @@ class UserTable extends Component {
                 default: row.phone_number,
                 id : `UserTable-phone-${ row._id}`
               }}
+              autoFormat={false}
               value={row.phone_number}
               required
               label=""

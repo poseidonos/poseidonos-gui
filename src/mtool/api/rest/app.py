@@ -212,7 +212,7 @@ def token_required(f):
 
 @app.route('/api/v1.0/version', methods=['GET'])
 def get_version():
-    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../UI/package.json"))
+    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../ui/package.json"))
     with open(package_json_path) as f:
         data = json.load(f)
         return toJson({"version": data["version"]})
@@ -1189,7 +1189,6 @@ def unmount_arr():
 @app.route('/api/v1/qos', methods=['POST'])
 def qos_create_policies():
     try:
-        print("in qos_create_policies ",json.loads(request.data.decode('utf-8')))
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
         array_name = body.get("array")
@@ -1197,15 +1196,20 @@ def qos_create_policies():
         max_bw = body.get("maxbw")
         max_iops = body.get("maxiops")
         request_body = {
-		"param": {
-			"array": array_name,
+                "param": {
+                        "array": array_name,
                         "vol":vol_names,
                         "maxbw":max_bw,
                         "maxiops":max_iops
-		}
+                }
         }
+        range_message = "Please enter valid range: \nValid range for IO =  10 - 18446744073709551 KIOPS\nValid range for BW = 10 - 17592186044415 MB/s"
         response = dagent.qos_create_volume_policies(request_body)
-        return toJson(response.json())
+        response = response.json()
+        if "result" in response and "status" in response["result"] and "code" in response["result"]["status"] and response["result"]["status"]["code"] == 2080:
+            if "description" in response["result"]["status"]:
+                response["result"]["status"]["description"] +=" "+range_message
+        return toJson(response)
     except Exception as e:
         print("In exception qos_create_policies(): ", e)
         return make_response('Could not create volume policies', 500)
@@ -1261,6 +1265,12 @@ def validate_username(username):
     else:
         return False
 
+def validate_phone_number(phone_number):
+    regex = "^\+(?:[0-9] ?){6,14}[0-9]$"
+    if(re.search(regex,phone_number)):
+        return True
+    else:
+        return False
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
@@ -1278,10 +1288,11 @@ def add_new_user(current_user):
     hashed_password = generate_password_hash(password, method='sha256')
     role = body['user_role']
     mobilenumber = body['mobilenumber']
+    if not validate_phone_number(mobilenumber):
+        return make_response("Please provide a valid Phone Number", 400)
     email = body['emailid']
     if not validate_email(email):
         return make_response("Please Enter a Valid Email ID", 400)
-    print('username', username, '\n', 'password', hashed_password)
     if not connection_factory.check_user_id_exist(username):
         return make_response("User Already Exists", 400)
     if not connection_factory.check_email_exist(email):
@@ -1336,7 +1347,6 @@ def set_ibofos_time_interval(current_user):
 @app.route('/api/v1.0/get_users/', methods=['GET'])
 @token_required
 def get_users(current_user):
-    print(" in get_users()", connection_factory)
     usersList = connection_factory.get_users_from_db()
     #usersList = [{"_id": "user_b", "password": "123", "privileges": "Create,Edit,View", "role": "Admin", "email": "your_email@company_xyz.com", "phone_number": "+82 999 9999 999", "active": "True"}, {"_id": "user_a", "password": "123", "privileges": "Create,Edit,View", "role": "Admin", "email": "your_email@company_xyz.com", "phone_number": "+82 999 9999 999", "active": "True"}, {"_id": "user_c", "password": "123", "privileges": "Create,Edit,View", "role": "Admin", "email": "user_c@user.com", "phone_number": "+82 555 5555 5555", "active": "True", "ibofostimeinterval": "4", "livedata": "yes"}, {"_id": "admin", "password": "admin", "email": "admin@corp.com", "phone_number": "xxxxxxxxxx", "role": "admin", "active": "True", "privileges": "Create, Read, Edit, Delete", "ibofostimeinterval": 4, "livedata": "True", "_cls": "util.db.model.User"}]
     #print("userList ", usersList)
@@ -1344,7 +1354,6 @@ def get_users(current_user):
     if not usersList:
         return jsonify({'message': 'no users found'})
     else:
-        print(" inelse .. ")
         return toJson(usersList)
 
 
@@ -1371,7 +1380,11 @@ def update_user():
     _id = body['_id']
     oldid = body['oldid']
     email = body['email']
+    if not validate_email(email):
+        return make_response("Please Enter a Valid Email ID", 400)
     phone_number = body['phone_number']
+    if not validate_phone_number(phone_number):
+        return make_response("Please provide a valid Phone Number", 400)
     if connection_factory.update_user_in_db(_id, email, phone_number, oldid):
         return jsonify({"message": "User updated"})
     else:
@@ -1385,7 +1398,10 @@ def update_password():
     _id = body['userid']
     old_password = body['oldPassword']
     new_password = body['newPassword']
-
+    if len(new_password) < 8 or len(new_password) > 64:
+        return make_response("Password length should be between 8-64 characters", 400)
+    if old_password == new_password:
+        return make_response("New Password cannot be same as old password", 400)
     if connection_factory.update_password_in_db(
             _id, old_password, new_password) == False:
         return abort(404)
@@ -1510,14 +1526,12 @@ def make_block_aligned(size):
 def saveVolume():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    print("save volume")
     # ifOldName=body['old']
-    print('----------body---', body)
     volume_name = body['name']
     vol_size = float(body['size'])
     maxbw = body['maxbw']
     array_name = body.get('array')
-    maxiops = body['maxiops']
+    maxiops = int(body['maxiops'])
     unit = body['unit'].upper()
     mount_vol = body['mount_vol']
     stop_on_error = body['stop_on_error']
@@ -1723,7 +1737,7 @@ def deleteVolumes(name):
         elif del_vol_cmd.status_code == 500:
             fail = fail + 1
             return_msg["result"] = del_vol_cmd.json()["error"]
-            description += vol + ": "
+            description += vol["name"] + ": "
             description += del_vol_cmd.json()["error"]
             description += "\n"
 
@@ -1731,14 +1745,14 @@ def deleteVolumes(name):
             fail = fail + 1
             del_vol_cmd = del_vol_cmd.json()
             if ("result" in del_vol_cmd and "status" in del_vol_cmd["result"]):
-                description += vol + ":"
+                description += vol["name"] + ":"
                 description += del_vol_cmd["result"]["status"]["description"]
                 description += ", Error code: "
                 description += str(del_vol_cmd["result"]["status"]["code"])
                 description += "\n"
 
                 return_msg["result"] = del_vol_cmd["result"]["status"]
-                return_msg["vol_name"] = vol
+                return_msg["vol_name"] = vol["name"]
     # try:
     #    col = db['volume']
     #    col.delete_many({'name':{'$in':deleted_vols}})
@@ -1781,6 +1795,9 @@ def getMaxVolCount():
 @app.route('/api/v1/<array_name>/get_volumes/', methods=['GET'])
 def getVolumes(array_name):
     volumes = list_volume(array_name)
+    for vol in volumes:
+        if "maxiops" in vol:
+            vol["maxiops"] = int(vol["maxiops"])
     return toJson(volumes)
 
 @app.route('/api/v1/get_all_volumes/', methods=['GET'])

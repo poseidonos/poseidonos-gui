@@ -879,7 +879,7 @@ describe("Performance", () => {
 
     renderComponent();
     jest.setTimeout(30000);
-    const { asFragment, getByTestId } = wrapper;
+    const { asFragment, getByTestId, getByText } = wrapper;
 
     const levelSelect = await waitForElement(() => getByTestId("levelSelect"));
     fireEvent.click(levelSelect);
@@ -900,6 +900,7 @@ describe("Performance", () => {
     expect(asFragment()).toMatchSnapshot();
     const volLatency = await waitForElement(() => getByTestId("latency-vol"));
     expect(volLatency).toBeDefined();
+    expect(getByText(/Latency \(ms\)/)).toBeDefined();
   });
 
   it("renders system level cpu graphs for last 1m", async () => {

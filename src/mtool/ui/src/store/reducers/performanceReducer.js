@@ -77,7 +77,7 @@ export const initialState = {
         name: 'Write Bandwidth',
     },
     latency:{
-        yLabel: 'Latency (ns)',
+        yLabel: 'Latency (ms)',
         values: [],
         loaded: false,
         name: 'Latency',
@@ -266,7 +266,7 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         latency: {
-                            yLabel: 'Latency (ns)',
+                            yLabel: 'Latency (ms)',
                             values: action.latency,
                             startTime: action.startTime,
                             endTime: action.endTime,

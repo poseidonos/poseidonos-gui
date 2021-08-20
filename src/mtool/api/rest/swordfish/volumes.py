@@ -114,7 +114,6 @@ class Volume():
             ibof_vols = list_volume(array_name)
             url = self.base_url.format(array_name)
             for vol in ibof_vols:
-                print("Print:___",vol)
                 if str(vol["id"]) == vol_id:
                     self.volume["Name"] = vol["name"]
                     self.volume["Id"] = vol["id"]

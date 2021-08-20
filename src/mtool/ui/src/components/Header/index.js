@@ -270,7 +270,15 @@ class Header extends Component {
         title: 'Change Password',
         alertType: 'alert',
       });
-    } else {
+    } else if(this.state.oldPassword === this.state.newPassword) {
+      this.setState({
+        ...this.state,
+        msg: 'New Password cannot be same as old password',
+        alertOpen: true,
+        title: 'Change Password',
+        alertType: 'alert',
+      });
+    }else {
       fetch('/api/v1.0/update_password/', {
         method: 'POST',
         headers: {
@@ -421,15 +429,16 @@ class Header extends Component {
               alt="Poseidon Management Tool"
             />
             <Typography className={classes.version} variant="caption" display="block">
-              Version 0.3.0
+              Version 0.5.0
             </Typography>
             <div className={classes.grow} />
               <span
                 className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
                 title="Poseidon OS last running timestamp"
               >
-                Last Updated: {this.props.timestamp === "" ?
+                POS Last Active Time: {this.props.timestamp === "..." ?
                   <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
+                  {!this.props.timestamp ? "NA" : ""}
               </span>
               <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
               <Typography className={classes.nextSeparator}>Status:</Typography>

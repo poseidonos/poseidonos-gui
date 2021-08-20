@@ -97,6 +97,14 @@ describe('<Header />', () => {
     fireEvent.click(await waitForElement(() => getByText('Status:')));
   });
 
+
+  it("should render the correct version and last active time", () => {
+    renderComponent();
+    const  { getByText } = wrapper;
+    expect(getByText("Version 0.5.0")).toBeDefined();
+    expect(getByText(/POS Last Active Time:/)).toBeDefined();
+  })
+
   it("should change the Password", async () => {
     renderComponent();
     const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
@@ -235,6 +243,21 @@ describe('<Header />', () => {
     fireEvent.change(confPwd, {target: {value: "defg"}});
     fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
     expect(await waitForElement(() => getByText("Passwords do not match"))).toBeDefined();
+  });
+
+  it("should show error when new password and old password are the same", async () => {
+    renderComponent();
+    const  { asFragment, getByTestId, getByText, getByPlaceholderText } = wrapper;
+    fireEvent.click(getByTestId('header-dropdown'));
+    fireEvent.click(await waitForElement(() => getByText('Change Password')));
+    const oldPwd = await waitForElement(() => getByPlaceholderText("Enter Old Password"));
+    fireEvent.change(oldPwd, {target: {value: "test1234"}});
+    const newPwd = await waitForElement(() => getByPlaceholderText("Enter New Password"));
+    fireEvent.change(newPwd, {target: {value: "test1234"}});
+    const confPwd = await waitForElement(() => getByPlaceholderText("Confirm New Password"));
+    fireEvent.change(confPwd, {target: {value: "test1234"}});
+    fireEvent.click(await waitForElement(() => getByTestId("change-pwd-submit")));
+    expect(await waitForElement(() => getByText("New Password cannot be same as old password"))).toBeDefined();
   });
 
   it("should toggle the menu", async () => {

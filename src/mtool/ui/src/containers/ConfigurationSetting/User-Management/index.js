@@ -41,6 +41,7 @@ import AlertDialog from '../../../components/Dialog';
 import MToolTheme, { customTheme } from '../../../theme';
 import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
+import { PHONE_REGEX } from '../../../utils/constants';
 
 const styles = (theme) => ({
   content: {
@@ -195,9 +196,9 @@ class UserManagement extends Component {
     else if (this.state.password !== this.state.confirmpassword)
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Passwords do not match" })
     else if (this.state.password.length < 8 || this.state.password.length > 64)
-    this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Password length should be between 8-64 characters" })
-    else if (!this.state.mobilenumber || this.state.mobilenumber.length < 4)
-      this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Mobile Number" })
+      this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Password length should be between 8-64 characters" })
+    else if (!(PHONE_REGEX.test(this.state.mobilenumber)))
+      this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please provide a valid Phone Number" })
     else if (!(EMAIL_REGEX.test(this.state.emailid)))
       this.props.openAlertBox({ alerttitle: "Add New User", alertOpen: true, alerttype: "alert", istypealert: true, alertdescription: "Please Enter a Valid Email ID" })
     else {

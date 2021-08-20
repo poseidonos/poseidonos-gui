@@ -36,7 +36,6 @@ import { format as d3Format } from "d3-format";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 import { formatNanoSeconds } from "../utils/format-bytes";
-import { BYTE_FACTOR } from "../utils/constants";
 
 export function* fetchVolumeInfo() {
   try {
@@ -143,10 +142,10 @@ function* fetchPerformanceInfo() {
     if (result) {
       yield put(
         actionCreators.fetchPerformance(
-          d3Format(".1s")(result.iops_read),
-          d3Format(".1s")(result.iops_write),
-          Math.round((result.bw_read / (BYTE_FACTOR * BYTE_FACTOR)) * 100) / 100,
-          Math.round((result.bw_write / (BYTE_FACTOR * BYTE_FACTOR)) * 100) / 100,
+          result.iops_read ? d3Format(".2s")(result.iops_read) : 0,
+          result.iops_write ? d3Format(".2s")(result.iops_write) : 0,
+          Math.round((result.bw_read) * 100) / 100,
+          Math.round((result.bw_write) * 100) / 100,
           formatNanoSeconds(Math.round(result.latency))
         )
       );

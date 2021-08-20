@@ -1226,11 +1226,11 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
         data='''{
-                "volumes": ["vol1"]
+                "volumes": [{"name": "vol1", "isMounted": true}]
                 }''',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
+    data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
 
 
@@ -1254,7 +1254,7 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
         data='''{
-                "volumes": ["vol1"]
+                "volumes": [{"name": "vol1", "isMounted": true}]
                 }''',
         headers={'x-access-token': json_token})
     assert response.status_code == 500
@@ -1266,7 +1266,7 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
         data='''{
-                "volumes": ["vol1"]
+                "volumes": [{"name": "vol1", "isMounted": true}]
                 }''',
         headers={'x-access-token': json_token})
     assert response.status_code == 500
@@ -1291,58 +1291,86 @@ def test_delete_volumes_failed(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
         data='''{
-                "volumes": ["vol1"]
+                "volumes": [{"name": "vol1", "isMounted": true}]
                 }''',
         headers={'x-access-token': json_token})
 
     #data = json.loads(response.get_data(as_text=True))
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_update_volume_invalid_range(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "6d2b2055-064b-40f9-a5a9-9e905f26f9c3",
+    "lastSuccessTime": 1626277436,
+    "result": {
+        "status": {
+            "module": "VolumeManager",
+            "code": 2080,
+            "level": "Warning",
+            "description": "Out of qos range",
+            "posDescription": "Max IOPS Value outside allowed range",
+            "problem": "A value less than the minimum applicable qos value was entered",
+            "solution": "Check the minimum qos value that can be entered and try again."
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
+    response = app.test_client().post(
+        '/api/v1/qos',
+        data='''{
+        "array": "POSArray",
+                "volumes":[{"volumeName":"vol1"}],
+                "maxbw": 4,
+        "maxiops":30
+}''',
+        headers={'x-access-token': json_token})
+
     assert response.status_code == 200
 
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
             return_value="test", autospec=True)
-def test_update_volume(mock_get_current_user, **kwargs):
+def test_update_volume2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].patch(
-        DAGENT_URL + '/api/ibofos/v1/volumes/vol1/qos',
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
         json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
-        status_code=200)
-    response = app.test_client().put(
-        '/api/v1.0/update-volume/',
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
+    response = app.test_client().post(
+        '/api/v1/qos',
         data='''{
-                "name": "vol1",
-                "maxbw": 20,
-                "maxiops": 20
-                }''',
+        "array": "POSArray",
+		"volumes":[{"volumeName":"vol1"}],
+		"maxbw": 40,
+        "maxiops":30
+}''',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
+    #print("data ",response.data)
     assert response.status_code == 200
-
-    kwargs["mock"].patch(
-        DAGENT_URL + '/api/ibofos/v1/volumes/vol1/qos',
-        json=None,
-        status_code=200)
-    response = app.test_client().put(
-        '/api/v1.0/update-volume/',
-        data='''{
-                "name": "vol1",
-                "maxbw": 20,
-                "maxiops": 20
-                }''',
-        headers={'x-access-token': json_token})
-
-    #data = json.loads(response.get_data(as_text=True))
-    assert response.status_code == 500
 
 
 @requests_mock.Mocker(kw="mock")

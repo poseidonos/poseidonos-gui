@@ -6,6 +6,7 @@ WorkingDirectory=/usr/local/dagent
 ExecStart=/usr/local/dagent/bin/dagent
 StandardOutput=file:/var/log/m9k/dagent1.log
 StandardError=file:/var/log/m9k/dagent2.log
+KillMode=process
 
 [Install]
 WantedBy=default.target

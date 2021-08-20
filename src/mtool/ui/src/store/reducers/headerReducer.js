@@ -33,7 +33,7 @@
 import * as actionTypes from "../actions/actionTypes"
 
 export const initialState = {
-    timestamp:"",
+    timestamp:"...",
     status:false,
     state: "",
     OS_Running_Status: "...",

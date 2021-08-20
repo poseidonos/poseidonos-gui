@@ -139,7 +139,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
     fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
     fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
-    fireEvent.change(phno, { target: { value: '123457890' } });
+    fireEvent.change(phno, { target: { value: '+81123457890' } });
     fireEvent.click(confirmBtn);
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
@@ -147,7 +147,7 @@ describe("ConfigurationSetting", () => {
       "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
-      "mobilenumber": "+1 (234) 578-90",
+      "mobilenumber": "+81123457890",
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
@@ -194,7 +194,7 @@ describe("ConfigurationSetting", () => {
       "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
-      "mobilenumber": "+1 (234) 578-90",
+      "mobilenumber": "+123457890",
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
@@ -206,6 +206,36 @@ describe("ConfigurationSetting", () => {
         "x-access-token": null
       }
     });
+  });
+
+  it('should display an error if an invalid phone number is entered', () => {
+    const mock = new MockAdapter(axios);
+    mock.onPost('/api/v1.0/add_new_user/').reply(400, null)
+      .onGet('/api/v1.0/get_users/').reply(200, null);
+    const getSpy = jest.spyOn(axios, 'post');
+    renderComponent();
+    const { asFragment, getByTestId, getByText } = wrapper;
+    const username = getByTestId('add-user-name');
+    const password = getByTestId('add-user-password');
+    const confirmPassword = getByTestId('add-user-confirm-password');
+    const phno = getByTestId('add-user-phno');
+    const email = getByTestId('add-user-email');
+    const confirmBtn = getByText('Submit');
+    fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
+    fireEvent.change(username, { target: { value: 'abcd1234' } });
+    fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
+    fireEvent.change(password, { target: { value: 'test1234' } });
+    fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
+    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
+    fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
+    fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
+    fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
+    fireEvent.change(phno, { target: { value: '1230' } });
+    fireEvent.click(confirmBtn);
+    expect(getByText("Please provide a valid Phone Number")).toBeDefined();
   });
 
   it('should display an error if unable to add a new user', () => {
@@ -241,7 +271,7 @@ describe("ConfigurationSetting", () => {
       "confirmpassword": "test1234",
       "emailid": "abcd@abc.com",
       "error": "",
-      "mobilenumber": "+1 (234) 578-90",
+      "mobilenumber": "+123457890",
       "password": "test1234",
       "phone_number": "+82",
       "user_role": "Admin",
@@ -283,7 +313,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(phno, { target: { value: '22' } });
     fireEvent.click(confirmBtn);
     await waitForElement(() => getByText("OK"));
-    expect(getByText("Please Enter a Valid Mobile Number")).toBeDefined();
+    expect(getByText("Please provide a valid Phone Number")).toBeDefined();
     fireEvent.click(getByText("OK"));
     fireEvent.change(phno, { target: { value: '223456789' } });
     fireEvent.change(email, { target: { value: 'abcd@.abc' } });
@@ -466,7 +496,7 @@ describe("ConfigurationSetting", () => {
         _id: 'abcd',
         email: 'test@abc.com',
         password: 'Defg',
-        phone_number: '+1 (702) 123-4578',
+        phone_number: '+17021234578',
         role: 'admin',
         active: true,
         privileges: 'Create, Read, Edit, Delete',
@@ -522,7 +552,7 @@ describe("ConfigurationSetting", () => {
           _id: 'abcd',
           email: 'test@abc.com',
           password: 'Defg',
-          phone_number: '+1 (702) 123-4578',
+          phone_number: "+17021234578",
           role: 'admin',
           active: true,
           privileges: 'Create, Read, Edit, Delete',
@@ -537,6 +567,45 @@ describe("ConfigurationSetting", () => {
           "x-access-token": null
         }
       });
+    });
+  });
+
+  it('should throw an error if the updated phone number is not valid', async () => {
+    const mock = new MockAdapter(axios);
+    let response = mock.onGet('/api/v1.0/get_users/')
+      .reply(200, [
+        {
+          "_id": "abcd",
+          "email": "abcd@corp.com",
+          "password": "Defg",
+          "phone_number": "xx",
+          "role": "admin",
+          "active": true,
+          "privileges": "Create, Read, Edit, Delete"
+        }
+      ]);
+    renderComponent();
+    const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    await act(async () => {
+      const nameElement = await waitForElement(() => getByText("abcd"));
+      expect(nameElement).toBeDefined();
+      const editBtn = await waitForElement(() => getAllByTitle("Edit")[0]);
+      fireEvent.click(editBtn);
+      const phno = await waitForElement(() => getAllByPlaceholderText("+1 (702) 123-4567")[0]);
+      fireEvent.change(phno, {
+        target: { value: "+1234" }
+      });
+      expect(asFragment()).toMatchSnapshot();
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
+      fireEvent.change(email, {
+        target: { value: "test@test.com" }
+      });
+      let spy = jest.spyOn(axios, "post").mockReturnValue(200);
+      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
+      fireEvent.click(saveBtn);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const alertText = await waitForElement(() => getByText("Please Enter a Valid Phone Number"));
+      expect(alertText).toBeDefined();
     });
   });
 
@@ -574,7 +643,8 @@ describe("ConfigurationSetting", () => {
       const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      const alertText = await waitForElement(() => getByText("Please enter a valid input"));
+      expect(asFragment()).toMatchSnapshot();
+      const alertText = await waitForElement(() => getByText("Please Enter a Valid Email"));
       expect(alertText).toBeDefined();
     });
   });

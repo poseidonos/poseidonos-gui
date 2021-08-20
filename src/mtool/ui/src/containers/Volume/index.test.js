@@ -703,7 +703,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(volUnit, { target: { value: "TB" } });
     //fireEvent.click(await waitForElement(() => getByText('TB')));
     const volBW = await waitForElement(() => getByTestId("create-vol-max-bw"));
-    fireEvent.change(volBW, { target: { value: "10" } });
+    fireEvent.change(volBW, { target: { value:10 } });
     const volIOPS = await waitForElement(() =>
       getByTestId("create-vol-max-iops")
     );
@@ -712,7 +712,7 @@ describe("<Storage Management />", () => {
       getByTestId("createvolume-btn")
     );
     fireEvent.click(createVolButton);
-    expect(getAllByTitle(/Creation is in progress/)).toBeDefined();
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should throw error if creating volume is not possible because of wrong values", async () => {
@@ -837,13 +837,23 @@ describe("<Storage Management />", () => {
     // fireEvent.click(createVolButton);
     // expect(await waitForElement(() => getByText('Please Enter Suffix Start Value'))).toBeDefined();
     // fireEvent.click(await waitForElement(() => getByText('OK')));
+    const volMaxBW = await waitForElement(() =>
+      getByTestId("create-vol-max-bw")
+    );
+    fireEvent.change(volMaxBW, { target: { value: 5 } });
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText("Max Bandwidth should be in the range 10 ~ 8796093022207. Use 0 for Maximum"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volMaxBW, { target: { value: 10 } });
     const volMaxIOPS = await waitForElement(() =>
       getByTestId("create-vol-max-iops")
     );
     fireEvent.change(volMaxIOPS, { target: { value: 5 } });
     fireEvent.click(createVolButton);
     expect(
-      await waitForElement(() => getByText("Invalid value for Maximum IOPS"))
+      await waitForElement(() => getByText("Max IOPS should be in the range 10 ~ 9223372036854775. Use 0 for Maximum"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
   });
@@ -1826,7 +1836,7 @@ describe("<Storage Management />", () => {
       getByTestId("alertDescription")
     );
     // fireEvent.click(getByText("Yes"));
-    expect(getAllByTitle(/Creation is in progress/)).toBeDefined();
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should unmount the array", async () => {

@@ -321,7 +321,9 @@ class Dashboard extends Component {
     let volSpace = 0;
     const { classes } = this.props;
     this.props.volumes.forEach((vol) => {
-      volUsedSpace += Number(vol.total) - Number(vol.remain);
+      volUsedSpace += Number(vol.total) - (
+        Number.isNaN(vol.remain) ? 0 : Number(vol.remain)
+      );
       volSpace += Number(vol.total);
     });
     const volFilledStyle = {
@@ -429,11 +431,11 @@ class Dashboard extends Component {
       {
         title: "Used Space",
         render: (rowData) =>
-          rowData.total && rowData.remain ? formatBytes(rowData.total - rowData.remain) : 0,
+          !Number.isNaN(rowData.remain) ? formatBytes(rowData.total - rowData.remain) : formatBytes(0),
       },
       {
         title: "Total Space",
-        render: (rowData) => (rowData.total ? formatBytes(rowData.total) : 0),
+        render: (rowData) => (rowData.total ? formatBytes(rowData.total) : formatBytes(0)),
       },
       {
         title: "Array",
@@ -539,7 +541,7 @@ class Dashboard extends Component {
                               data-testid="write-bw"
                               className={classes.metricTxt}
                             >
-                              {this.props.writeBW} MBps
+                              {formatBytes(this.props.writeBW, 0)}ps
                             </Typography>
                           </Grid>
                         </Grid>
@@ -567,7 +569,7 @@ class Dashboard extends Component {
                               data-testid="read-bw"
                               className={classes.metricTxt}
                             >
-                              {this.props.readBW} MBps
+                              {formatBytes(this.props.readBW, 0)}ps
                             </Typography>
                           </Grid>
                         </Grid>

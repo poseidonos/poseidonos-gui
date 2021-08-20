@@ -128,6 +128,16 @@ const domainSelect = (timeInterval) => {
   }
 }
 
+const formatValue = (id, value, factor, field) => {
+  if(id === "chart-1" || id === "chart-2") {
+    return formatBytes(value,0);
+  }
+  if(field === "latency") {
+    return value * factor;
+  }
+  return d3Format(".2s")(value);
+}
+
 class Chart extends Component {
   data = [];
 
@@ -158,6 +168,8 @@ class Chart extends Component {
       value: null,
       time: null,
     };
+    this.mouseOut = this.mouseOut.bind(this);
+    this.mouseOverPoint = this.mouseOverPoint.bind(this);
     this.xAxis = d3AxisBottom()
       .scale(this.state.xScale)
       .ticks(4);
@@ -165,8 +177,11 @@ class Chart extends Component {
      /* istanbul ignore if */
     if (this.props.id === "chart-1" || this.props.id === "chart-2") {
       this.yAxis = d3AxisLeft()
-        .tickFormat((val) => formatBytes(val,0))
+        .tickFormat((val) => formatBytes(val,2))
         .scale(this.state.yScale).ticks(10);
+    } else if(this.props.field === "latency") {
+      this.yAxis = d3AxisLeft()
+        .scale(this.state.yScale);
     } else {
       this.yAxis = d3AxisLeft()
         .tickFormat(d3Format(".2s"))
@@ -200,7 +215,8 @@ class Chart extends Component {
     // if (!nextProps.columns) return null;
 
     const selectX = (datum) => new Date(datum.time / 1e6);
-    const selectY = (datum) => datum[nextProps.field];
+    const selectY = (datum) => nextProps.factor ?
+      datum[nextProps.field] * nextProps.factor : datum[nextProps.field];
     const selectYConst = () => nextProps.constValue;
 
     // console.log("nextProps.columns.values",nextProps.columns.values)
@@ -388,10 +404,11 @@ class Chart extends Component {
                       t={circlePoint.t}
                       key={`${circlePoint.x},${circlePoint.y}`}
                       r={4}
-                      onMouseOver={this.mouseOverPoint.bind(this)}
-                      onFocus={this.mouseOverPoint.bind(this)}
-                      onMouseOut={this.mouseOut.bind(this)}
-                      onBlur={this.mouseOut.bind(this)}
+                      onMouseEnter={this.mouseOverPoint}
+                      onFocus={this.mouseOverPoint}
+                      onMouseOut={this.mouseOut}
+                      onMouseLeave={this.mouseOut}
+                      onBlur={this.mouseOut}
                       transform="translate(50,20)"
                       data-testid={this.props.scatterId}
                     />
@@ -415,7 +432,7 @@ class Chart extends Component {
           )}
           <Tooltip
             containerStyle={this.state.tooltipStyle}
-            value={(this.props.id === "chart-1" || this.props.id === "chart-2") ? formatBytes(this.state.value,0) : d3Format(".2s")(this.state.value)}
+            value={formatValue(this.props.id, this.state.value, this.props.factor, this.props.field)}
             label={this.props.chartName}
             t={this.state.time}
           />

@@ -78,8 +78,8 @@ def unmount_volume(vol_name, array_name = dagent.array_names[0]):
     return dagent.unmount_volume(vol_name, array_name)
 
 
-def delete_volume(vol_name, array_name):
-    return dagent.delete_volume(vol_name, array_name)
+def delete_volume(vol, array_name):
+    return dagent.delete_volume(vol, array_name)
 
 
 def list_volume(arr_name):

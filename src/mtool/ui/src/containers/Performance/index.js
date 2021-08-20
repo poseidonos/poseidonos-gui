@@ -668,6 +668,7 @@ class Performance extends Component {
                       endTime={this.props.latency.endTime}
                       constValue={this.state.maxLatency}
                       style={style}
+                      factor={1/1e6}
                       field="latency"
                       datatestid="latency"
                       scatterId="latencyScatter"
@@ -823,6 +824,7 @@ class Performance extends Component {
                             endTime={this.props.vols[content].latency.endTime}
                             constValue={this.props.vols[content].latency.maxLatency}
                             style={style}
+                            factor={1/1e6}
                             field="latency"
                             datatestid="latency-vol"
                             scatterId="latencyScatter"

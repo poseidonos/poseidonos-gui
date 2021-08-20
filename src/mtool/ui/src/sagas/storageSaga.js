@@ -555,7 +555,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Failed",
             errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
                 : ""
               }`
           })
@@ -568,7 +568,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Succeeded partially",
             errorCode: `${action.payload.error}\nError in Renaming volume: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
                 : ""
               }`
           })
@@ -581,7 +581,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `${action.payload.error}\nError in updating Volume name: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
                 : ""
               }`,
           })
@@ -619,8 +619,7 @@ function* updateVolume(action) {
       action.payload.maxiops < 0 ||
       action.payload.maxbw < 0 ||
       (action.payload.maxbw % 1) !== 0 ||
-      (action.payload.maxiops % 1) !== 0 ||
-      (action.payload.maxiops > 0 && action.payload.maxiops < 10)
+      (action.payload.maxiops % 1) !== 0
     ) {
       yield put(
         actionCreators.showStorageAlert({
@@ -711,7 +710,7 @@ function* updateVolume(action) {
             newName: action.payload.newName,
             array: arrayName,
             error: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
                 : ""
               }`
           },
@@ -723,7 +722,7 @@ function* updateVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
               : ""
             }`
           })
@@ -741,7 +740,7 @@ function* updateVolume(action) {
           name: action.payload.name,
           newName: action.payload.newName,
           array: arrayName,
-          error: `Max IOPS and Bandwidth update failed: ${response.data}, Error code:${response.status}\n`
+          error: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
         },
       });
       } else {
@@ -750,7 +749,7 @@ function* updateVolume(action) {
             alertType: "alert",
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
-            errorCode: `Max IOPS and Bandwidth update failed: ${response.data}, Error code:${response.status}\n`
+            errorCode: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
           })
         );
       }

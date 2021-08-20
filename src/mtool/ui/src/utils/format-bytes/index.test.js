@@ -35,7 +35,7 @@ import formatBytes, {formatBebiBytes, formatNanoSeconds} from "./index";
 describe("formatBytes", () => {
     it("should return 0 when zero is passed", () => {
         const value = formatBytes(0);
-        expect(value).toBe('0 Bytes');
+        expect(value).toBe('0 B');
     });
 
     it("hsould convert 1024 to 1 KiB", () => {

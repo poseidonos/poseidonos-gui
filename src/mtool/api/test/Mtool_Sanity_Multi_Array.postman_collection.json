@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f6381618-d947-4b8d-9f3c-7cad7cd441bd",
+		"_postman_id": "08fb735e-61ab-4e00-8dc0-fad82c2fbb04",
 		"name": "Mtool_Sanity_Multi_Array",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "623866a0-2b8c-483b-a39c-c3ca6133b34e",
+						"id": "2febd36e-1c9a-4674-a1d7-f3cf284a5645",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -70,7 +70,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "127683d1-1162-4f12-a623-a0ce1e7e3b45",
+						"id": "36d0c7eb-18bb-449c-9546-ee663e9259bd",
 						"exec": [
 							"let res = pm.response.json();\r",
 							"\r",
@@ -93,7 +93,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "99581eea-d7d7-4304-92a8-b08358e71a16",
+						"id": "d5ae0345-52f5-449d-ad9d-14a14882a211",
 						"exec": [
 							""
 						],
@@ -132,7 +132,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "33a7aac6-17c1-4250-bef5-0b190e47838e",
+						"id": "5394278e-4be5-47e1-8db2-1b31b1b0705a",
 						"exec": [
 							"if (responseCode.code === 200 || responseCode.code === 500) {\r",
 							"    setTimeout(function () {\r",
@@ -183,7 +183,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cff50531-442b-4c21-af9f-eb07808c4f94",
+						"id": "6d82a393-9198-453b-b1a2-8e9f934ce4ee",
 						"exec": [
 							"pm.test(\"POS is Running...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -206,7 +206,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "139411e2-2f55-4c32-8c6d-cd80c20fe4ee",
+						"id": "d5c68053-9c7a-475a-b59e-40f008f9c214",
 						"exec": [
 							""
 						],
@@ -246,7 +246,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0dd05851-464d-4fad-9b02-b7766d3be2cc",
+						"id": "90ee109c-5e4d-4e11-a91a-2107087a35d2",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -289,7 +289,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b2e1831a-c9be-43d4-aee6-4f16671ae9f6",
+						"id": "83516a53-f708-44ba-ab7e-f93187a25117",
 						"exec": [
 							"//setTimeout( function() {}, 2000)\r",
 							"//pm.Wait(5000);\r",
@@ -333,7 +333,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3d2feb57-8928-4892-9cd8-06982b4344a1",
+						"id": "ca2bd2d0-b673-4002-a041-d8a4d98d7a68",
 						"exec": [
 							""
 						],
@@ -382,7 +382,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f84e3588-1677-45bd-a117-d471db539ac9",
+						"id": "fc9b23d6-b1d3-473d-8bd9-842317e0a527",
 						"exec": [
 							""
 						],
@@ -431,7 +431,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3c471f7f-fd74-4094-9a49-6d258fde90bd",
+						"id": "e25a5fd7-cfe1-4978-9cd8-96d02a154e03",
 						"exec": [
 							""
 						],
@@ -441,7 +441,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8019a09d-0c2e-4eb6-b835-73741536c245",
+						"id": "8bb66b45-7181-4e9f-bb45-ad689ad90a22",
 						"exec": [
 							"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -568,7 +568,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7500ee3b-5cbe-4e20-94f0-2309387d07e3",
+						"id": "a3e0e11b-6a31-44e1-9614-033b2a867e3b",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -640,7 +640,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1a7ee6ca-eb6e-4975-8396-0964e65ec1a7",
+						"id": "cd1ba383-f1da-4bf4-b282-7e51b1ce795c",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -712,7 +712,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "da55612e-d0e0-48a3-a5fd-03e0bf9e7e99",
+						"id": "9cc9391f-d219-4b49-80b0-aabd9e39dccf",
 						"exec": [
 							"//pm.test(\"Created an array...\", function () {\r",
 							"//   pm.response.to.have.status(200);\r",
@@ -801,7 +801,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "361b7f1b-8bcd-495f-a6de-f5563d488ec4",
+						"id": "3a92140b-f359-4da3-9683-796857e0c548",
 						"exec": [
 							"//pm.test(\"Created an array...\", function () {\r",
 							"//   pm.response.to.have.status(200);\r",
@@ -889,7 +889,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "17578b2e-6604-4221-af45-f022181c030e",
+						"id": "8b85fe14-6775-4fab-874b-62491901fe4a",
 						"exec": [
 							"\r",
 							"pm.test(\"Array Info is retrieved...\", function () {\r",
@@ -912,7 +912,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "853d5e29-d74e-4bdb-81dc-353b9a4435ea",
+						"id": "4b9a3b7d-0ccd-47f8-80be-a72cc36da9a9",
 						"exec": [
 							"let temp_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiJhZG1pbiIsImV4cCI6MTU5NzQwMDc3Mn0.u2dTsSz6OKOHQKLt2XjpRPFLRCJmzlC7dafmrq_VcWc'"
 						],
@@ -952,7 +952,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ed44beb0-b5d0-42ee-8ba6-0f3ee59ec5f4",
+						"id": "65a9a8d6-8cd2-4d2a-a06d-d26792be65d1",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1016,7 +1016,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ab5ad89f-f397-4c95-8444-d34c1635c6e6",
+						"id": "07c3092c-0afc-43cc-af93-fbcadcb9f530",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1080,7 +1080,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "362ed41a-5737-47c0-bfdd-7896366b8903",
+						"id": "0860a9b0-af39-4e97-8235-f2ff3f453bae",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1144,7 +1144,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cb64ff6a-13bb-4d53-8c00-b971fe75e3d3",
+						"id": "21864afc-0382-448c-a9e0-5321f584fbfa",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1208,7 +1208,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "576819ce-9f46-429d-8286-0a42dbef970c",
+						"id": "04dc30ae-9fd4-4675-a73d-2959851c303a",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1262,7 +1262,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9241e54a-6821-4509-983e-65ca318c14a2",
+						"id": "5c057445-e66d-4381-92fd-a5cc6787198f",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1314,7 +1314,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "36ef2092-0d8b-4e3f-9635-f12f69115219",
+						"id": "6320042b-d846-4f5f-9cb8-ad9b94aa4630",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1365,7 +1365,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1b4966ad-8c89-4dd4-a1af-a3029404b77d",
+						"id": "8040b73b-0975-4c3f-b2f2-c4c7c8a69153",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1412,12 +1412,63 @@
 			"response": []
 		},
 		{
+			"name": "QOS CREATE VOLUME POLICIES in one volume again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7c08cb6f-4f0c-4ef5-a77b-b605a1be810c",
+						"exec": [
+							"pm.test(\"Volume created...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"volumes\":[{\"volumeName\":\"vol_arr1_0\"}],\r\n\t\t\"maxbw\": 40,\r\n        \"maxiops\":30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/qos",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"qos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "QOS LIST VOLUME POLICIES of one volume",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "c8111c14-3a21-4152-ad8c-da2cadf628a6",
+						"id": "1c38f4e0-7bb1-427c-b0f2-4cc0e6d40f63",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1469,7 +1520,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f7920fdc-34f6-4beb-ad4d-3789a89bc077",
+						"id": "6ff785de-b196-4ffa-b4ec-267bd256f4d4",
 						"exec": [
 							"pm.test(\"Get Volume data is successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1496,7 +1547,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "c22526a2-309d-473b-a361-c0a8e852bcc0",
+						"id": "dc8396ea-a183-4073-8fe6-80dedf446911",
 						"exec": [
 							""
 						],
@@ -1537,7 +1588,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d046bb9b-09dc-4596-bf92-1b9f50ecfc81",
+						"id": "8a092d3a-17e2-402f-bf17-423e54f4b17c",
 						"exec": [
 							"pm.test(\"Data received \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1550,7 +1601,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6ec7be1f-d865-4cae-a28f-f65c053af46a",
+						"id": "abbfb188-ebcb-49ac-b16a-b2b7e11189fe",
 						"exec": [
 							""
 						],
@@ -1590,7 +1641,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7b46ab00-46bb-47ff-8c82-3ddf092f09c6",
+						"id": "5063dac2-c919-40f7-9e89-16fe05804eff",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1653,12 +1704,64 @@
 			"response": []
 		},
 		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a36e30f8-c387-4457-bef6-6698e2e5ee38",
+						"exec": [
+							"pm.test(\"User deleted\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ids\": [\"pkadmin\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"delete_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add Custom Admin User",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "e55691b2-ae38-4dee-add9-3c5855f6e90f",
+						"id": "e27f9fcf-274d-412f-9a6d-c8896fbca196",
 						"exec": [
 							"\r",
 							"// reset \r",
@@ -1685,7 +1788,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin@123\",\"confirmpassword\":\"pkadmin\",\"user_role\":\"Admin\",\"mobilenumber\":\"+82 123 1231 234\",\"emailid\":\"pk@pk.com\",\"phone_number\":\"+82\",\"error\":\"\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1710,12 +1813,64 @@
 			"response": []
 		},
 		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1a2ffbed-ca17-457d-af07-76f8be4a9c46",
+						"exec": [
+							"pm.test(\"User updated \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"_id\": \"pkadmin\", \"password\": \"pkadmin@123\",\"oldid\": \"pk@pk.com\", \"email\": \"pk@test.commm\", \"phone_number\": \"8298989898\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/update_user/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"update_user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Login as Custom Admin user",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "d804be67-c6ae-472f-a100-a4f8c545ca86",
+						"id": "599ecb96-eeb9-454d-a2c8-3b7687091d94",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -1745,7 +1900,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin\"}",
+					"raw": "{\"username\":\"pkadmin\",\"password\":\"pkadmin@123\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1770,12 +1925,72 @@
 			"response": []
 		},
 		{
+			"name": "Get Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4e71da95-d9cc-40d6-a909-43ea1d28c5b4",
+						"exec": [
+							"pm.test(\"Received Users\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Verify user count\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var count = jsonData.length;\r",
+							"    console.log(\"count \", count)\r",
+							"\r",
+							"    pm.expect(count).to.be.above(0);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e524e100-7b40-445d-a8f3-73a82db34a82",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1.0/get_users/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1.0",
+						"get_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Array Based Perf",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "f9661b69-83d3-4b78-83f8-4e0524b148fb",
+						"id": "055daf5e-683f-4409-ba9c-78278cacda04",
 						"exec": [
 							"pm.test(\"Array Based Perf...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1828,7 +2043,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e533eca0-57bb-444f-b31a-b17cdd5bf6a1",
+						"id": "6b1f730e-b461-4c30-88da-89cee6cbbbfc",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1853,7 +2068,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b2e76f26-2a57-4eb7-ad06-b574d76d1934",
+						"id": "b2798e77-4a92-46d5-95ab-6ef72659f1d3",
 						"exec": [
 							""
 						],
@@ -1894,7 +2109,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c4bb7304-78be-44ab-84ad-0042bce8d022",
+						"id": "0a9de869-e80b-428c-83cd-46e2bb881b7f",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -1949,7 +2164,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3ecf24d3-b997-4b64-b259-e497196131ae",
+						"id": "7ed63e6a-f9cb-45d4-8942-22f73e8ebd4e",
 						"exec": [
 							"pm.test(\"Volume created...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2001,7 +2216,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "41f3748d-6d3b-4195-b171-c45d0be7becc",
+						"id": "99fb0b01-0687-44ac-91e2-3a9821c5d2e4",
 						"exec": [
 							"pm.test(\"Get Volume data is successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2028,7 +2243,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3507901c-8dbe-4545-88b1-d4ef806bf810",
+						"id": "6404d2ab-fe9a-4ab1-b822-1ac2c7f09dcb",
 						"exec": [
 							""
 						],
@@ -2064,140 +2279,12 @@
 			"response": []
 		},
 		{
-			"name": "Update vol_arr1_0 in 1st array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "62cf64e1-780d-44d8-b911-e8e2f8e31a86",
-						"exec": [
-							"pm.test(\"Response code \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
-							"\r",
-							"pm.test(\"DAgent reponse is...\" + response, function () {\r",
-							"    pm.expect(response).is.to.equal(\"Success\");\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"maxiops\":10,\"maxbw\":20,\"name\":\"{{volNameArr1}}0\",\"array\":\"{{arrayName1}}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/update-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"update-volume",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update vol_arr2_0in 2nd  array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "c0c69a78-27cf-4831-a498-234faa935d7d",
-						"exec": [
-							"pm.test(\"Response code \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
-							"\r",
-							"pm.test(\"DAgent reponse is...\" + response, function () {\r",
-							"    pm.expect(response).is.to.equal(\"Success\");\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"maxiops\":10,\"maxbw\":20,\"name\":\"{{volNameArr2}}0\",\"array\":\"{{arrayName2}}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/update-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"update-volume",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "rename vol_arr1_0 in 1st array",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "e0a0b491-94dc-42bb-9299-46a390305047",
+						"id": "7ac9b6e4-fcd3-4b81-a646-a5cc93a1a24f",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2261,7 +2348,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e2d5ebec-a9ec-49cb-aa34-f76c606e5edf",
+						"id": "17cdf51a-94a9-4041-bd4e-f8c6cfb80dbd",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2325,7 +2412,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6272a0ce-4ff8-41ae-9fed-d29495b43d4e",
+						"id": "28a57350-973a-4fe1-8cf1-fae85663c2e7",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2389,7 +2476,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "473f6ed2-7e3a-4fd8-b063-7ddff2258d46",
+						"id": "3cc31443-1362-4abf-b9d7-ba4464b8cb05",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2453,7 +2540,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a10050c4-6cd8-486c-be4e-8c863cbf48d1",
+						"id": "be35220f-5b76-441a-890e-d50623f73de5",
 						"exec": [
 							"\r",
 							"\r",
@@ -2512,7 +2599,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d7159cd3-18d1-450e-b336-68e63986699d",
+						"id": "d7f0de89-4a7e-4e61-a90c-ecec139e1b38",
 						"exec": [
 							"\r",
 							"\r",
@@ -2571,7 +2658,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a35ebb2b-6a55-4bc2-99c1-d22fcb903cbb",
+						"id": "04c297fb-bd5c-4373-a9c6-bc8589e002f2",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2635,7 +2722,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2355df5b-e4ae-4300-b386-457a28deba98",
+						"id": "714e4cab-51c3-47e8-a203-a4fb198d0bd4",
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2699,7 +2786,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "be307d0d-c525-44bf-9307-59c4bef4ebc4",
+						"id": "7cbc4d21-0b13-4b38-93bc-631cd44e4656",
 						"exec": [
 							"pm.test(\"Delete volume successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2720,7 +2807,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"volumes\": [\"{{volNameArr1}}0\"]}",
+					"raw": "{\r\n  \"volumes\": [{\"name\": \"{{volNameArr1}}0\", \"isMounted\": true}]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2750,7 +2837,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1643863b-70c0-4288-98ac-fc0f31b57b8c",
+						"id": "051216cd-5c00-4faa-9b9f-cc9215564b0e",
 						"exec": [
 							"pm.test(\"Delete volume successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2771,7 +2858,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"volumes\": [\"{{volNameArr2}}0\"]}",
+					"raw": "{\r\n  \"volumes\": [{\"name\": \"{{volNameArr2}}0\", \"isMounted\": true}]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2801,7 +2888,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "22b6fd3d-e512-4152-ba28-5a65f6dbca8e",
+						"id": "351649c7-b4d9-471b-8db0-b1f007153d39",
 						"exec": [
 							"pm.test(\"Get Volume data is successful...\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -2815,7 +2902,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6f7ae73d-fb96-4158-b5cc-0f4483e94f52",
+						"id": "561afe39-fde3-4627-bd3e-072d541c3837",
 						"exec": [
 							""
 						],
@@ -2862,7 +2949,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d6b847c8-c032-408b-80e4-ac3971642246",
+						"id": "867f0d47-ed7e-45e1-b99e-96be257cdfde",
 						"exec": [
 							""
 						],
@@ -2911,7 +2998,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "07e81fb8-d476-44c8-a545-6a741ae1f9e8",
+						"id": "ffd45050-8399-4624-b518-ea8c97be9d3b",
 						"exec": [
 							""
 						],
@@ -2960,7 +3047,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ee9991c5-9e03-47bb-8606-0196aae32938",
+						"id": "63868d40-edc5-4c03-a92a-cd3effd9a2f1",
 						"exec": [
 							""
 						],
@@ -3009,7 +3096,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3a49ea3f-66ef-48bc-8b71-f4e70e7b76c8",
+						"id": "a9a7c9ef-1bc3-4572-b417-5b8ff819fd3e",
 						"exec": [
 							""
 						],
@@ -3058,7 +3145,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a81351ce-67da-458c-ad36-47af9ede5ee5",
+						"id": "9f34a39f-be07-45e7-97dc-75ce2f84d3b4",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -3112,7 +3199,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f973c8b2-373d-44af-ac33-17d89a91aa1b",
+				"id": "8a6b2c39-1a74-4418-a3e0-a5728908477f",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3122,7 +3209,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "b1890923-8573-46ea-bb19-46ae09f64216",
+				"id": "a8af6f26-cdda-4d09-879b-336fcfe62660",
 				"type": "text/javascript",
 				"exec": [
 					""

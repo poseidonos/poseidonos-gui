@@ -740,8 +740,9 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
         'Could not get ibofos to list volumes...', 500)
 
 
-def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
+def delete_volume(vol, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
+    name = vol["name"]
     request_body = {
             "param": {
                 "name": name,
@@ -751,7 +752,8 @@ def delete_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     request_body = json.dumps(request_body)
     
     try:
-        send_command_to_dagent(
+        if "isMounted" in vol and vol["isMounted"]:
+            send_command_to_dagent(
             "DELETE",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
             headers=req_headers,

@@ -261,6 +261,54 @@ describe("Dashboard", () => {
     expect(hostElement).toBeDefined();
   });
 
+  it("should display used space and total space of volumess correctly", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(`/api/v1/get_all_volumes/`)
+      .reply(200, {
+        "POSArray": [
+        {
+          id: '0',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol1',
+          status: 'Mounted',
+          total: 1073741824,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        },
+        {
+          id: '1',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol2',
+          remain: 0,
+          status: 'Mounted',
+          total: 10737418240,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        }
+      ]
+    });
+    renderComponent();
+    const { getAllByText, asFragment } = wrapper;
+    const sizeDisplayedVol1 = await waitForElement(() => getAllByText("1.07 GB"));
+    expect(sizeDisplayedVol1.length).toBe(1);
+    const sizeDisplayedVol2 = await waitForElement(() => getAllByText("10.74 GB"));
+    expect(sizeDisplayedVol2.length).toBe(2);
+   });
+
   //Disabling for PoC1
   // it("should display alerts", async () => {
   //   const mock = new MockAdapter(axios);
@@ -325,7 +373,33 @@ describe("Dashboard", () => {
     const { getByTestId } = wrapper;
     jest.advanceTimersByTime(2000);
     const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
-    expect(readIopsElement.innerHTML).toBe("200");
+    expect(readIopsElement.innerHTML).toBe("150");
+  });
+
+  it("should display bw value with units according to values", async () => {
+    jest.useFakeTimers();
+    const mock = new MockAdapter(axios);
+    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
+      .reply(200,
+        {
+          bw_read: 1024,
+          bw_total: 0,
+          bw_write: 1073741824,
+          iops_read: 154,
+          iops_total: 0,
+          iops_write: 154
+        }
+      ).onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [])
+      .onAny().reply(200, {});
+    renderComponent();
+    const { getByTestId } = wrapper;
+    jest.advanceTimersByTime(2000);
+    const readBwElement = await waitForElement(() => getByTestId("read-bw"));
+    expect(readBwElement.innerHTML).toBe("1 KBps");
+    const writeBwElement = await waitForElement(() => getByTestId("write-bw"));
+    expect(writeBwElement.innerHTML).toBe("1 GBps");
+
   });
 
   it("should display the dashboard page with path", async () => {
