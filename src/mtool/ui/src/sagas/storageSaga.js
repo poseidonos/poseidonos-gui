@@ -37,36 +37,6 @@ import * as actionCreators from "../store/actions/exportActionCreators";
 import { arrayname } from "../store/reducers/storageReducer";
 
 
-function* fetchArraySize() {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/available_storage/?ts=${Date.now()}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
-    /* istanbul ignore else */
-    if (response.status === 200 && response.data) {
-      yield put(
-        actionCreators.fetchArraySize({
-          totalsize: response.data[0].arraySize,
-          usedspace: response.data[0].usedSpace,
-          mountStatus: response.data[0].mountStatus,
-        })
-      );
-    } else {
-      yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0, mountStatus: 'OFFLINE' }));
-    }
-  } catch (e) {
-    yield put(actionCreators.fetchArraySize({ totalsize: 0, usedsize: 0, mountStatus: 'OFFLINE' }));
-  }
-}
-
 function* fetchVolumeDetails(action) {
   try {
     const response = yield call([axios, axios.get], action.payload.url, {
@@ -115,7 +85,6 @@ function* fetchVolumes(action) {
           break;
         }
       }
-      yield fetchArraySize();
     } else {
       yield put(
         actionCreators.fetchStorageVolumes({ volumes: [], totalVolSize: 0 })
@@ -148,7 +117,6 @@ function* fetchArray(action) {
     );
     if (response.status === 200 && response.data) {
       yield put(actionCreators.fetchArray(response.data));
-      yield fetchArraySize();
     } else if (response.status === 401) {
       action.payload.push("/login");
     } else {
@@ -1392,7 +1360,6 @@ function* unmountPOS() {
       })
     );
   } finally {
-    yield fetchArraySize();
     yield fetchArray();
     yield put(actionCreators.stopStorageLoader());
   }
@@ -1458,7 +1425,6 @@ function* mountPOS() {
   } finally {
     yield fetchVolumes({ payload: { array: yield select(arrayname) } });
     yield fetchArray();
-    yield fetchArraySize();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1550,7 +1516,6 @@ function* fetchDeviceDetails(action) {
 export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_INFO, fetchDevices);
   yield takeEvery(actionTypes.SAGA_SAVE_VOLUME, createVolume);
-  yield takeEvery(actionTypes.SAGA_FETCH_ARRAY_SIZE, fetchArraySize);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY, fetchArray);
   yield takeEvery(actionTypes.SAGA_FETCH_CONFIG, fetchConfig);
   yield takeEvery(actionTypes.SAGA_DELETE_ARRAY, deleteArray);

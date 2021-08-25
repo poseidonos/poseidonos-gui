@@ -35,7 +35,6 @@ import io from "socket.io-client";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import "react-dropdown/style.css";
-import { withStyles } from "@material-ui/core/styles";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import FirstPage from "@material-ui/icons/FirstPage";
@@ -46,7 +45,7 @@ import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
 import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
 import Header from "../../components/Header";
@@ -269,10 +268,9 @@ class Dashboard extends Component {
   componentDidMount() {
     this.props.fetchVolumes();
     this.props.fetchArrays();
-    this.props.fetchStorageInfo();
     this.props.fetchPerformance();
     this.props.fetchIpAndMacInfo();
-    this.props.fetchAlertsInfo();
+    // this.props.fetchAlertsInfo();
     const today = new Date();
     const months = [
       "January",
@@ -983,10 +981,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.enableFetchingAlerts(flag)),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
-    fetchAlertsInfo: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_ALERTS_INFO }),
-    fetchStorageInfo: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_STORAGE_INFO }),
+    // fetchAlertsInfo: () =>
+    //  dispatch({ type: actionTypes.SAGA_FETCH_ALERTS_INFO }),
     fetchPerformance: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
     fetchIpAndMacInfo: () =>

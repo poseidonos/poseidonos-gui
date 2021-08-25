@@ -66,6 +66,7 @@ export function* fetchVolumeInfo() {
   }
 }
 
+/*
 export function* fetchAlertsInfo() {
   try {
     const response = yield call(
@@ -81,7 +82,6 @@ export function* fetchAlertsInfo() {
     );
 
     const result = response.data;
-    /* istanbul ignore else */
     if (result) {
       yield put(actionCreators.fetchAlerts(result.alerts));
     }
@@ -89,38 +89,7 @@ export function* fetchAlertsInfo() {
     // console.log(error);
   }
 }
-
-function* fetchStorageInfo() {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      `/api/v1.0/available_storage/?ts=${Date.now()}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
-
-    const result = response.data;
-    /* istanbul ignore else */
-    if (result) {
-      let arraySize = 0;
-      result.forEach((array) => {
-        arraySize += array.arraySize
-      });
-      yield put(
-        actionCreators.fetchStorage(
-          arraySize
-        )
-      );
-    }
-  } catch (error) {
-    // console.log(error);
-  }
-}
+*/
 
 function* fetchPerformanceInfo() {
   try {
@@ -183,8 +152,7 @@ function* fetchIpAndMacInfo() {
 
 export function* dashboardWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
-  yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
-  yield takeEvery(actionTypes.SAGA_FETCH_STORAGE_INFO, fetchStorageInfo);
+  // yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
   yield takeEvery(
     actionTypes.SAGA_FETCH_PERFORMANCE_INFO,
     fetchPerformanceInfo
