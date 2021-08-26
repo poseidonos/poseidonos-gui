@@ -33,12 +33,14 @@
 import React, { Component } from "react";
 import GaugeChart from "react-gauge-chart";
 import { Paper, Grid, Typography, withStyles } from "@material-ui/core";
+import Loader from "react-loader-spinner";
 
 const styles = (theme) => ({
   healthMetricsPaper: {
     minHeight: 150,
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     flexDirection: "column",
   },
   healthMetricContainer: {
@@ -61,6 +63,7 @@ class HealthMetrics extends Component {
     this.state = {
       gaugeWidth: "100%",
       healthMetrics: [],
+      loading: true
     };
     this.setChartWidth = this.setChartWidth.bind(this);
   }
@@ -83,6 +86,9 @@ class HealthMetrics extends Component {
 
     // callback function for health status response
     this.props.healthStatusSocket.on("health_status_response", (result) => {
+      this.setState({
+	      loading: false
+      });
       healthStatus = [];
       healthDetails = result.statuses;
       /*
@@ -142,7 +148,7 @@ class HealthMetrics extends Component {
     const { classes } = this.props;
     return (
       <Paper spacing={3} xs={6} className={classes.healthMetricsPaper}>
-        <Grid container justify="space-around">
+	 <Grid container justify="space-around" align="center"> 
           {this.state.healthMetrics.map((metric) => (
             <Grid
               xs={10}
@@ -180,7 +186,15 @@ class HealthMetrics extends Component {
               </Grid>
             </Grid>
           ))}
-        </Grid>
+	  {this.state.loading ? (
+		  <React.Fragment>
+		     <Grid container justify="center" alignItems="center" direction="column">
+		      <Loader type="TailSpin" color="#788595" height={50} width={50} />
+		      <Typography>Loading Health Meters... </Typography>
+		     </Grid>
+		  </React.Fragment>
+	  ) : null}
+  </Grid>
       </Paper>
     );
   }

@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sidebarText: {
     marginLeft: '4px',
-    color: 'rgba(185, 188, 197)',
+    color: 'rgb(185, 188, 197)',
     opacity: 1
   },
   sidebarIcon: {

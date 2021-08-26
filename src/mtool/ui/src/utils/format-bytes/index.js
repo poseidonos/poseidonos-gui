@@ -31,7 +31,7 @@
  */
 
 const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0 || Number.isNaN(bytes)) return '0 B';
+  if (bytes <= 0 || Number.isNaN(bytes)) return '0 B';
 
   const k = 1000;
   const dm = decimals < 0 ? 0 : decimals;
