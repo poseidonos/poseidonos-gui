@@ -47,8 +47,8 @@ import EditIcon from '@material-ui/icons/EditTwoTone';
 import TrashIcon from '@material-ui/icons/Delete';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import { createMuiTheme, Paper, Typography, withStyles, TextField, Button, Switch } from '@material-ui/core';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { Paper, Typography, TextField, Button, Switch } from '@material-ui/core';
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
 import { Done } from '@material-ui/icons';
@@ -94,7 +94,7 @@ class VolumeList extends Component {
       open: false,
 
     };
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       typography: {
         fontSize: 14,
         fontFamily: 'Arial'

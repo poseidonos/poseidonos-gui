@@ -31,10 +31,9 @@
  */
 
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import MaterialTable, { MTableToolbar } from "material-table";
-import { createMuiTheme , TablePagination } from "@material-ui/core";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { TablePagination } from "@material-ui/core";
+import { createTheme , withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import Search from "@material-ui/icons/Search";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -76,7 +75,7 @@ class BmcLogTable extends Component {
     this.handleEntryTypeChange = this.handleEntryTypeChange.bind(this);
     this.handleSeverityChange = this.handleSeverityChange.bind(this);
     this.handleSelectAll = this.handleSelectAll.bind(this);
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       switch: {
         margin: "100px"
       },
@@ -97,7 +96,7 @@ class BmcLogTable extends Component {
           selectMenu: {
             maxWidth: "200px",
             minWidth: "150px",
-            fontSize: "12px",
+            fontSize: 12,
             backgroundColor: "#78859514",
             paddingLeft: "15px"
           }
@@ -150,7 +149,7 @@ class BmcLogTable extends Component {
         },
         MuiTypography: {
           h6: {
-            fontSize: "14px",
+            fontSize: 14,
             color: "rgb(33,34,37,0.6)",
             fontWeight: "600",
             paddingBottom: "30px"
@@ -159,7 +158,7 @@ class BmcLogTable extends Component {
             paddingBottom: "2px"
           },
           body1: {
-            fontSize: "12px"
+            fontSize: 12
           }
         },
         MuiTextField: {
@@ -178,18 +177,18 @@ class BmcLogTable extends Component {
         },
         MuiFormLabel: {
           root: {
-            fontSize: "14px"
+            fontSize: 14
           }
         },
         MuiTablePagination: {
           menuItem: {
-            fontSize: "12px",
+            fontSize: 12,
             minHeight: "0px"
           }
         },
         MuiInputBase: {
           input: {
-            fontSize: "14px"
+            fontSize: 14
           }
         }
       },
@@ -207,7 +206,7 @@ class BmcLogTable extends Component {
     this.state = {
       component: {
         Toolbar: toolbarProps => (
-          <div style={{ height: "35px", fontSize: "12px" }}>
+          <div style={{ height: "35px", fontSize: 12 }}>
             {/* Ignore props spreading check, as it is used by material-table */}
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <MTableToolbar {...toolbarProps} />
@@ -221,7 +220,7 @@ class BmcLogTable extends Component {
             <td />
             <td>
               <FormControl>
-                <InputLabel style={{ fontSize: "12px", marginLeft: "15px" }}>
+                <InputLabel style={{ fontSize: 12, marginLeft: "15px" }}>
                   Source Filter
                 </InputLabel>
                 <Select
@@ -249,7 +248,7 @@ class BmcLogTable extends Component {
                     {" "}
                     Select All{" "}
                   </Typography>
-                  <ListSubheader style={{ fontSize: "12px" }} value="subheader" data-testid = "sourceSelectAllSubheader">
+                  <ListSubheader style={{ fontSize: 12 }} value="subheader" data-testid = "sourceSelectAllSubheader">
                     Choose Filters
                   </ListSubheader>
                   
@@ -268,7 +267,7 @@ class BmcLogTable extends Component {
             </td>
             <td>
               <FormControl>
-                <InputLabel style={{ fontSize: "12px", marginLeft: "15px" }}>
+                <InputLabel style={{ fontSize: 12, marginLeft: "15px" }}>
                   Entry Type Filter
                 </InputLabel>
                 <Select
@@ -292,7 +291,7 @@ class BmcLogTable extends Component {
                     {" "}
                     Select All{" "}
                   </Typography>
-                  <ListSubheader style={{ fontSize: "12px" }} value="subheader" data-testid = "entryTypeSelectAllSubheader">
+                  <ListSubheader style={{ fontSize: 12 }} value="subheader" data-testid = "entryTypeSelectAllSubheader">
                     Choose Filters
                   </ListSubheader>
                   {this.state.entryType_filter_array.map(item => (
@@ -309,7 +308,7 @@ class BmcLogTable extends Component {
             </td>
             <td>
               <FormControl>
-                <InputLabel style={{ fontSize: "12px", marginLeft: "15px" }}>
+                <InputLabel style={{ fontSize: 12, marginLeft: "15px" }}>
                   Severity Filter
                 </InputLabel>
 
@@ -334,7 +333,7 @@ class BmcLogTable extends Component {
                     {" "}
                     Select All{" "}
                   </Typography>
-                  <ListSubheader style={{ fontSize: "12px" }} value="subheader" data-testid = "severitySelectAllSubheader">
+                  <ListSubheader style={{ fontSize: 12 }} value="subheader" data-testid = "severitySelectAllSubheader">
                     Choose Filters
                   </ListSubheader>
                   {this.state.severity_filter_array.map(item => (
@@ -490,7 +489,7 @@ class BmcLogTable extends Component {
           ]}
           options={{
             rowStyle: {
-              fontSize: "4px",
+              fontSize: 4
             },
             header: true,
             search: false,
@@ -510,7 +509,7 @@ class BmcLogTable extends Component {
               title: "Timestamp",
               field: "timestamp",
               cellStyle: {
-                fontSize: "12px",
+                fontSize: 12,
                 minWidth:"200px"
               }
             },
@@ -518,7 +517,7 @@ class BmcLogTable extends Component {
               title: "Source",
               field: "source",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               headerStyle: {
                 height: "10px"
@@ -528,7 +527,7 @@ class BmcLogTable extends Component {
               title: "Entry Type",
               field: "entryType",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               }
             },
 
@@ -536,14 +535,14 @@ class BmcLogTable extends Component {
               title: "Severity",
               field: "severity",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               }
             },
             {
               title: "Description",
               field: "description",
               cellStyle: {
-                fontSize: "12px",
+                fontSize: 12,
                 maxWidth:"20%",
               },
               filterCellStyle: {

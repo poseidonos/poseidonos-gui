@@ -30,7 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
 
 export const customTheme = {
   palette: {
@@ -61,12 +61,13 @@ export const customTheme = {
       }
   },
   typography: {
-      fontFamily: 'Arial'
+      fontFamily: 'Arial',
+      fontSize: 14
   },
   page: {
       title: {
           textAlign: 'left',
-          fontSize: '16px',
+          fontSize: 16,
           fontWeight: 'bold',
           // color: 'rgb(53, 85, 142)',
           color:'#424850'
@@ -78,7 +79,7 @@ export const customTheme = {
           marginLeft: '24px',
           paddingTop: '8px',
           marginBottom: '5px',
-          fontSize: '16px',
+          fontSize: 16,
           fontWeight: 'bold',
          // color: 'rgb(53, 85, 142)',
          color:'#424850'
@@ -89,8 +90,8 @@ export const customTheme = {
   }
 };
 
-const MToolTheme = createMuiTheme(customTheme);
-export const PageTheme = createMuiTheme({
+const MToolTheme = createTheme(customTheme);
+export const PageTheme = createTheme({
   ...customTheme,
   palette: {
     ...customTheme.palette,
@@ -100,7 +101,7 @@ export const PageTheme = createMuiTheme({
   },
   typography: {
     ...customTheme.typography,
-    fontSize: '12px'
+    fontSize: 12
   }
 })
 

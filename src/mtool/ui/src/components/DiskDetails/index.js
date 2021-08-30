@@ -88,7 +88,7 @@ const styles = theme => ({
   },
   alertDialogText: {
     color: '#000',
-    fontSize: '12px',
+    fontSize: 12,
   },
 });
 
@@ -112,7 +112,7 @@ const DialogTitle = withStyles(styles)(props => {
         className={classes.closeButton}
         onClick={onClose}
       >
-        <span data-testid="diskdetails-close" style={{ fontSize: '14px', color: '#fff' }}>x</span>
+        <span data-testid="diskdetails-close" style={{ fontSize: 14, color: '#fff' }}>x</span>
       </IconButton>
     </MuiDialogTitle>
   );
@@ -137,7 +137,7 @@ const DiskDetails = props => {
           id="alert-dialog-title"
           className={classes.title}
         >
-          <span style={{ color: '#fff', fontSize: '14px', fontWeight: 600 }}>
+          <span style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
             {props.title}
           </span>
         </DialogTitle>
@@ -164,7 +164,7 @@ const DiskDetails = props => {
                 <span>{props.details.mn}</span>
               </span>
      </div>
-            <div style={{ fontSize: '12px' }}>
+            <div style={{ fontSize: 12 }}>
               <b>SMART Values</b>
             </div>
             <Paper className={classes.root}>

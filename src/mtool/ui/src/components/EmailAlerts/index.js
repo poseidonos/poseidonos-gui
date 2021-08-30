@@ -32,7 +32,6 @@
 
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import MaterialTable, { MTableToolbar } from "material-table";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -42,8 +41,8 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import { createMuiTheme, TablePagination } from "@material-ui/core";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { TablePagination } from "@material-ui/core";
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import Search from "@material-ui/icons/Search";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -76,7 +75,7 @@ const styles = (theme) => ({
   EmailTableMainHeader: {
     textAlign: "left",
     color: "rgba(255, 255, 255, 0.87)",
-    fontSize: "14px",
+    fontSize: 14,
     borderRadius: "0px",
     width: "100%",
     marginLeft: "10px",
@@ -136,7 +135,7 @@ const styles = (theme) => ({
     marginRight: "1000px",
     height: "290px",
     fontFamily: "Arial",
-    fontSize: "12px",
+    fontSize: 12,
     paddingLeft: "0px",
     paddingRight: "0px",
     [theme.breakpoints.down("sm")]: {
@@ -147,7 +146,7 @@ const styles = (theme) => ({
   SettingsForm: {
     display: "flex",
     marginLeft: "4px",
-    fontSize: "10px",
+    fontSize: 10,
     justifyContent: "space-between",
   },
 
@@ -179,7 +178,7 @@ const styles = (theme) => ({
   submit: {
     // background: '#007bff',
     height: "1.8rem",
-    fontSize: "12px",
+    fontSize: 12,
     // marginTop: '35px',
     marginTop: "1.75rem",
     // lineHeight: '0.5',
@@ -192,7 +191,7 @@ const styles = (theme) => ({
   update: {
     // background: '#007bff',
     height: "1.8rem",
-    fontSize: "12px",
+    fontSize: 12,
     // marginTop: '35px',
     marginTop: "1.75rem",
     // lineHeight: '0.5',
@@ -215,7 +214,7 @@ const styles = (theme) => ({
   },
 
   labelText: {
-    fontSize: "12px",
+    fontSize: 12,
   },
 
   table: {
@@ -224,7 +223,7 @@ const styles = (theme) => ({
 
   inputText: {
     color: "black",
-    fontSize: "12px",
+    fontSize: 12,
     margin: "0px",
     padding: "0px",
 
@@ -258,7 +257,7 @@ class EmailAlerts extends Component {
   constructor(props) {
     super(props);
 
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       overrides: {
         MuiSvgIcon: {
           //  stylesheet name
@@ -269,7 +268,7 @@ class EmailAlerts extends Component {
         },
         MuiTablePagination: {
           menuItem: {
-            fontSize: "12px",
+            fontSize: 12,
             minHeight: "0px",
           },
           select: {
@@ -295,7 +294,7 @@ class EmailAlerts extends Component {
           title: "Email ID",
           field: "email",
           cellStyle: {
-            fontSize: "12px",
+            fontSize: 12,
             minWidth: "33%",
             maxWidth: "33%",
             width: "33%",
@@ -621,7 +620,7 @@ class EmailAlerts extends Component {
                 }}
                 components={{
                   Toolbar: (props) => (
-                    <div style={{ height: "50px", fontSize: "12px" }}>
+                    <div style={{ height: "50px", fontSize: 12 }}>
                       <MTableToolbar {...props} />
                     </div>
                   ),
@@ -682,7 +681,7 @@ class EmailAlerts extends Component {
                 ]}
                 options={{
                   rowStyle: {
-                    fontSize: "4px",
+                    fontSize: 4
                   },
                   search: false,
                   paginationType: "normal",
@@ -700,7 +699,7 @@ class EmailAlerts extends Component {
                     // backgroundColor: 'rgb(113, 133, 157)',
                     backgroundColor: "#788595",
                     color: "rgba(255, 255, 255, 0.87)",
-                    fontSize: "14px",
+                    fontSize: 14,
                     height: "10%",
                     paddingTop: "2px",
                     paddingBottom: "2px",

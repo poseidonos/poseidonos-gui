@@ -33,7 +33,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withStyles, Grid } from '@material-ui/core';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import UserTable from '../../../components/UserTable';
 import AddNewUser from '../../../components/AddNewUser';
 import './User-Management.css';

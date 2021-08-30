@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider as ThemeProvider , withStyles } from '@material-ui/core/styles';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
@@ -40,7 +40,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -76,7 +75,7 @@ const styles = theme => ({
   formControl: {
     float: 'right',
     width: '95px',
-    fontSize: '1px',
+    fontSize: 1,
   },
 
   cardmedia: {
@@ -99,7 +98,7 @@ const styles = theme => ({
     margin: theme.spacing(3, 0, 2),
     // background: '#007bff',
     background: '#788595',
-    fontSize: '12px',
+    fontSize: 12,
     marginTop: '0px',
     marginBottom: '0px',
   },
@@ -137,7 +136,7 @@ const styles = theme => ({
     marginTop: '5px',
     marginBottom: '10px',
     color: 'rgba(255, 255, 255, 0.87)',
-    fontSize: '12px',
+    fontSize: 12,
     width: '70px',
     paddingRight: '2px',
     textAlignLast: 'center',
@@ -146,7 +145,7 @@ const styles = theme => ({
 
   select: {
     border: 'none',
-    fontSize: '12px',
+    fontSize: 12,
     color: 'rgba(255, 255, 255, 0.87)',
     textAlignLast: 'center',
     height: '20px',
@@ -178,7 +177,7 @@ const styles = theme => ({
   },
 
   menuText: {
-    fontSize: '12px',
+    fontSize: 12,
     minHeight: '0px',
     textAlign: 'left',
   },
@@ -330,10 +329,6 @@ class Authentication extends Component {
                     data-testid= "usernameInput"
                     id="email"
                     placeholder={t('Username')}
-                    InputProps={{
-                      className: classes.input,
-                     // 'data-testid': "usernameInput"
-                    }}
                     name="username"
                     className={classes.textField}
                     onChange={this.handleChange}
@@ -354,9 +349,6 @@ class Authentication extends Component {
                     data-testid= "passwordInput"
                     placeholder={t('Password')}
                     name="password"
-                    InputProps={{
-                      className: classes.input,
-                    }}
                     type={this.state.showPassword ? 'text' : 'password'}
                     id="password"
                     autoComplete="current-password"

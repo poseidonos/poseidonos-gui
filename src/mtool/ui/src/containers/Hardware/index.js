@@ -31,8 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider as ThemeProvider , withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
@@ -98,7 +97,7 @@ const styles = theme => ({
     margin: theme.spacing(3, 0, 2),
     // background: '#007bff',
     background: '#788595',
-    fontSize: '12px',
+    fontSize: 12,
     marginTop: '0px',
     marginBottom: '0px',
   },

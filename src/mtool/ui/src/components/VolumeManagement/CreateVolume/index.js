@@ -33,7 +33,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import {
   Button,
   Paper,
@@ -108,8 +108,8 @@ const styles = (theme) => ({
   createHeader: customTheme.card.header,
   caption: {
     color: "#424850",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
   labelCheckbox: {
     marginTop: theme.spacing(3),
@@ -303,7 +303,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-start"
+              justifyContent="flex-start"
               className={classes.formControl}
             >
               <Tooltip title={volumeCountTitle} placement="bottom-start">
@@ -320,7 +320,7 @@ class CreateVolume extends Component {
                     }}
                     value={this.state.volume_count}
                     onChange={this.handleChange}
-                    required="true"
+                    required
                   />
                 </FormControl>
               </Tooltip>
@@ -330,7 +330,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-end"
+              justifyContent="flex-end"
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>
@@ -355,8 +355,8 @@ class CreateVolume extends Component {
             </Grid>
             <Grid item container xs={12}>
               <Typography
-                variant="h4"
-                component="h4"
+                variant="body2"
+                // component="h4"
                 className={classes.caption}
                 display="block"
               >
@@ -370,7 +370,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-start"
+              justifyContent="flex-start"
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>
@@ -383,7 +383,7 @@ class CreateVolume extends Component {
                   inputProps={{
                     "data-testid": "create-vol-name",
                   }}
-                  required="true"
+                  required
                 />
               </FormControl>
             </Grid>
@@ -392,7 +392,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-end"
+              justifyContent="flex-end"
               className={classes.formControl}
             >
               <Tooltip
@@ -427,7 +427,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-start"
+              justifyContent="flex-start"
               className={classes.formControl}
             >
               <Tooltip
@@ -446,7 +446,7 @@ class CreateVolume extends Component {
                       "data-testid": "create-vol-size",
                       min: 0
                     }}
-                    required="true"
+                    required
                   />
                 </FormControl>
               </Tooltip>
@@ -479,7 +479,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-end"
+              justifyContent="flex-end"
               className={classes.formControl}
             >
               <Tooltip
@@ -499,7 +499,7 @@ class CreateVolume extends Component {
                       min: 0,
                       "data-testid": "create-vol-max-iops",
                     }}
-                    required="true"
+                    required
                   />
                 </FormControl>
               </Tooltip>
@@ -509,7 +509,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-start"
+              justifyContent="flex-start"
               className={classes.formControl}
             >
               <Tooltip title="Min value 10. 0 means max" placement="right-start">
@@ -523,7 +523,7 @@ class CreateVolume extends Component {
                     type="number"
                     // placeholder="0 means max"
                     inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
-                    required="true"
+                    required
                   />
                 </FormControl>
               </Tooltip>
@@ -534,7 +534,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               sm={6}
-              justify="flex-end"
+              justifyContent="flex-end"
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>
@@ -566,7 +566,7 @@ class CreateVolume extends Component {
                 </Tooltip>
               </FormControl>
             </Grid>
-            {/* <Grid item container xs={12} sm={6} justify="flex-end" className={classes.formControl}>
+            {/* <Grid item container xs={12} sm={6} justifyContent="flex-end" className={classes.formControl}>
               <FormControl className={classes.volumeName}>
                   <FormControlLabel
                     control={
@@ -587,7 +587,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               display="flex"
-              justify="flex-start"
+              justifyContent="flex-start"
               className={`${classes.volBtnContainer} ${classes.formControl}`}
             >
               <Tooltip

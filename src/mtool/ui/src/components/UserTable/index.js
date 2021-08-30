@@ -32,10 +32,9 @@
 
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { withStyles } from '@material-ui/core/styles';
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { Grid, Typography, createMuiTheme, TextField, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, Button } from '@material-ui/core';
 import { Add, ArrowUpward, Check, ChevronLeft, ChevronRight, Done, Clear, Edit, FilterList, FirstPage, LastPage, SaveAlt, Search } from '@material-ui/icons';
 import Remove from '@material-ui/icons/Remove';
 import TrashIcon from "@material-ui/icons/Delete";
@@ -52,14 +51,14 @@ const styles = (theme) => {
     },
     pageHeader: {
       textAlign: 'left',
-      fontSize: '16px',
+      fontSize: 16,
       fontWeight: 'bold',
       color: '#424850',
       marginBottom: theme.spacing(1)
     },
     userListTypography: {
       textAlign: 'left',
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: 'bold',
       color: '#424850',
       margin: theme.spacing(1.5),
@@ -70,7 +69,7 @@ const styles = (theme) => {
     },
     userListGrid: {
       background: 'white',
-      fontSize: '14px',
+      fontSize: 14,
       maxWidth: '100%',
       flexBasis: '100%',
       border: '1px solid gray'
@@ -93,7 +92,7 @@ function validate(newData) {
 class UserTable extends Component {
   constructor(props) {
     super(props);
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       typography: {
         fontSize: 12,
         fontFamily: 'Arial'

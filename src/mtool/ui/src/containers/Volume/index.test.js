@@ -223,12 +223,6 @@ describe("<Storage Management />", () => {
       .reply(200, [])
       .onGet(/api\/v1.0\/max_volume_count\/*/)
       .reply(200, 256)
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-        },
-      ])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onAny()
@@ -543,12 +537,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-        },
-      ])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onAny()
@@ -590,12 +578,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-        },
-      ])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onAny()
@@ -635,12 +617,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-        },
-      ])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onAny()
@@ -664,8 +640,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [{ arraySize: 2821793513472, usedSpace: 2821786173440 }])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onPost(/api\/v1.0\/save-volume\/*/)
@@ -724,12 +698,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -867,12 +835,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -954,12 +916,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1038,12 +994,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1138,12 +1088,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1236,12 +1180,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1325,12 +1263,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1431,12 +1363,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1539,12 +1465,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
@@ -1631,12 +1551,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onAny()
       .reply(200, []);
     renderComponent();
@@ -1721,12 +1635,6 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 20,
-        },
-      ])
       .onAny()
       .reply(200, []);
     renderComponent();
@@ -1781,8 +1689,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [{ arraySize: 2821793513472, usedSpace: 2821786173440 }])
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onPost(/api\/v1.0\/save-volume\/*/)
@@ -1850,13 +1756,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-          mountStatus: "NORMAL",
-        },
-      ])
       .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
       .reply(200, {result: {status:{code :0}}})
       .onAny()
@@ -1879,13 +1778,6 @@ describe("<Storage Management />", () => {
       .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-          mountStatus: "OFFLINE",
-        },
-      ])
       .onPost(/api\/v1.0\/ibofos\/mount\/*/)
       .reply(200, {result:{status:{code:0}}})
       .onAny()
@@ -1909,13 +1801,6 @@ describe("<Storage Management />", () => {
       .reply(200, [array])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-          mountStatus: "NORMAL",
-        },
-      ])
       .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
       .reply(400, {})
       .onAny()
@@ -1938,13 +1823,6 @@ describe("<Storage Management />", () => {
       .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
-      .onGet(/api\/v1.0\/available_storage\/*/)
-      .reply(200, [
-        {
-          arraySize: 10,
-          mountStatus: "OFFLINE",
-        },
-      ])
       .onPost(/api\/v1.0\/ibofos\/mount\/*/)
       .reply(400, {})
       .onAny()

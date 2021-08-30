@@ -60,7 +60,7 @@ const styles = theme => ({
   submit: {
     // background: '#007bff',
     height: '1.8rem',
-    fontSize: '12px',
+    fontSize: 12,
     textTransform: 'none',
     minWidth: '0px',
     width: '60px',
@@ -102,7 +102,7 @@ const DialogTitle = withStyles(styles)(props => {
         onClick={onClose}
         data-testid = "alertCloseButton"
       >
-        <span style={{ fontSize: '14px', color: '#fff' }}>x</span>
+        <span style={{ fontSize: 14, color: '#fff' }}>x</span>
       </IconButton>
     </MuiDialogTitle>
   );
@@ -194,7 +194,7 @@ const AlertDialog = (props) => {
                 padding: '3px',
                 paddingLeft: '10px',
                 color: '#fff',
-                fontSize: '14px',
+                fontSize: 14,
                 fontWeight: 500,
                 alignItems: 'center',
               }}
@@ -211,7 +211,7 @@ const AlertDialog = (props) => {
                 style={{
                   padding: '35px 1px 0px 30px',
                   color: '#000',
-                  fontSize: '12px',
+                  fontSize: 12,
                   display: 'inline-block',
                 }}
               >
@@ -227,7 +227,7 @@ const AlertDialog = (props) => {
                 style={{
                   padding: '35px 30px 0px 0px',
                   color: '#000',
-                  fontSize: '12px',
+                  fontSize: 12,
                   display: 'block'
                 }}
                 data-testid = "alertDescription"
@@ -238,7 +238,7 @@ const AlertDialog = (props) => {
             <p
               style={{
                 color: '#000',
-                fontSize: '12px',
+                fontSize: 12,
                 padding: '0px 0px 0px 61px',
                 whiteSpace: 'pre-line',
                 display: 'block',

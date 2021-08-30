@@ -33,10 +33,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { withStyles } from "@material-ui/core/styles";
 import MaterialTable, { MTableToolbar, MTableBody } from "material-table";
-import { createMuiTheme , TablePagination } from "@material-ui/core";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { TablePagination } from "@material-ui/core";
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import Search from "@material-ui/icons/Search";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -68,7 +67,7 @@ class LogTable extends Component {
   constructor(props) {
     super(props);
 
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       switch: {
         margin: "100px"
       },
@@ -123,7 +122,7 @@ class LogTable extends Component {
             marginRight: "10px"
           },
           body1: {
-            fontSize:"13px"
+            fontSize: 13
           }
         },
         MuiTextField: {
@@ -142,18 +141,18 @@ class LogTable extends Component {
         },
         MuiFormLabel: {
           root: {
-            fontSize: "14px"
+            fontSize: 14
           }
         },
         MuiTablePagination: {
           menuItem: {
-            fontSize: "12px",
+            fontSize: 12,
             minHeight: "0px"
           }
         },
         MuiInputBase: {
           input: {
-            fontSize: "14px"
+            fontSize: 14
           }
         }
       },
@@ -171,7 +170,7 @@ class LogTable extends Component {
     this.state = {
       component: {
         Toolbar: toolbarProps => (
-          <div style={{ height: "35px", fontSize: "12px" }}>
+          <div style={{ height: "35px", fontSize: 12 }}>
             <MTableToolbar {...toolbarProps} />
           </div>
         ),
@@ -323,7 +322,7 @@ class LogTable extends Component {
           ]}
           options={{
             rowStyle: {
-              fontSize: "4px",
+              fontSize: 4,
             },
             header: false,
             search: false,
@@ -343,7 +342,7 @@ class LogTable extends Component {
               title: "Timestamp",
               field: "timestamp",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               filterPlaceholder: "Timestamp",
               filterCellStyle:{
@@ -356,7 +355,7 @@ class LogTable extends Component {
               title: "Value",
               field: "value",
               cellStyle: {
-                fontSize: "12px",
+                fontSize: 12,
                 paddingRight: "220px"
               },
               headerStyle: {
@@ -370,7 +369,7 @@ class LogTable extends Component {
               title: "Description",
               field: "description",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               defaultFilter: this.state.description,
               lookup: description,
@@ -381,7 +380,7 @@ class LogTable extends Component {
               title: "Source",
               field: "source",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               filterPlaceholder: "Source",
               defaultFilter: this.state.source,
@@ -391,7 +390,7 @@ class LogTable extends Component {
               title: "Code",
               field: "code",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               filterPlaceholder: "Code",
               defaultFilter: this.state.code,
@@ -401,7 +400,7 @@ class LogTable extends Component {
               title: "Level",
               field: "level",
               cellStyle: {
-                fontSize: "12px"
+                fontSize: 12
               },
               filterPlaceholder: "Level",
               defaultFilter: this.state.level,

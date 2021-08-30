@@ -156,16 +156,6 @@ describe("Dashboard", () => {
 
 
   it("should display available storage value as received from API", async () => {
-    const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1.0/available_storage/?ts= + ${Date.now()}`)
-      .reply(200, [
-        {
-
-          arraySize: 0,
-
-        }
-      ]
-      );
     renderComponent();
     const { getByTestId } = wrapper;
     const readStorageElement = await waitForElement(() => getByTestId("dashboard-no-array"));
@@ -202,12 +192,7 @@ describe("Dashboard", () => {
 
   it("should display storage details", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(/api\/v1\.0\/available_storage\/\?ts=*/)
-      .reply(200, [
-        {
-          arraySize: 4768219004928
-        }
-      ]).onGet(/api\/v1\/get_arrays\/*/)
+    mock.onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
     renderComponent();
     const { getByText, asFragment } = wrapper;

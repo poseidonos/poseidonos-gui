@@ -32,8 +32,7 @@
 
 import React, { Component } from "react";
 import { Box, Grid, Typography, Paper, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { withStyles , MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import io from "socket.io-client";
@@ -333,8 +332,10 @@ class Volume extends Component {
 
               <AppBar style={{ zIndex: 50 }} position="relative" color="default">
                 <Tabs
-                  value={this.state.value}
                   onChange={this.handleTabChange}
+                  value={
+                    window.location.href.indexOf('manage') > 0 ? 'manage' : 'create'
+                  }
                 >
                   <Tab
                     label="create"
@@ -356,10 +357,10 @@ class Volume extends Component {
               <Switch>
                 <Redirect exact from="/storage/array/" to="/storage/array/create" />
                 <Route path="/storage/array/create">
-                  <Grid container xs={12} spacing={1} className={classes.card}>
+                  <Grid container spacing={1} className={classes.card}>
                     <Grid item xs={12}>
                       <Paper spacing={3} className={classes.spaced}>
-                        <Grid container justify="space-between">
+                        <Grid container justifyContent="space-between">
                           <ArrayCreate
                             createArray={this.createArray}
                             config={this.props.config}
@@ -384,10 +385,10 @@ class Volume extends Component {
 
                   {this.props.arrayMap[this.props.selectedArray] ? (
                     <React.Fragment>
-                      <Grid container xs={12} spacing={1} className={classes.card}>
+                      <Grid container spacing={1} className={classes.card}>
                         <Grid item xs={12}>
                           <Paper spacing={3} className={classes.spaced}>
-                            <Grid container justify="space-between">
+                            <Grid container justifyContent="space-between">
                               <Grid container className={classes.arraySelectStatus}>
                               <Grid item sm={6} className={classes.arraySelectGrid}>
                               <FormControl
@@ -409,7 +410,7 @@ class Volume extends Component {
                                   className={classes.arraySelect}
                                 >
                                   {this.props.arrays.map((array) => (
-                                    <MenuItem value={array.arrayname}>
+                                    <MenuItem key={array.arrayname} value={array.arrayname}>
                                       <Typography color="secondary">{array.arrayname}</Typography>
                                     </MenuItem>
                                   ))}
@@ -452,7 +453,6 @@ class Volume extends Component {
                       </Grid>
                       <Grid
                         container
-                        xs={12}
                         spacing={1}
                         className={classes.card}
                         style={{
@@ -487,7 +487,7 @@ class Volume extends Component {
                             </Grid>
                             <div className={classes.statsWrapper}>
                               <Grid item xs={12}>
-                                <Typography variant="span" color="secondary">
+                                <Typography color="secondary">
                                   Number of volumes: {this.props.volumes.length}
                                 </Typography>
                               </Grid>
@@ -528,7 +528,6 @@ class Volume extends Component {
 
                       <Grid
                         container
-                        xs={12}
                         spacing={1}
                         className={classes.card}
                         style={{

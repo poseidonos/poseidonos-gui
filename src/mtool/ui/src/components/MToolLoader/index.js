@@ -54,7 +54,7 @@ const loaderTextStyle = {
   marginLeft: '280px',
   top: '100px',
   left: '40%',
-  fontSize: '18px',
+  fontSize: 18,
   // zIndex: 100,
   display: 'flex',
   alignItems: 'center',
@@ -73,7 +73,7 @@ const MToolLoader = props => {
           width="50"
         />
       </div>
-      <h style={loaderTextStyle}>{props.text}</h>
+      <h2 style={loaderTextStyle}>{props.text}</h2>
     </div>
   );
 };

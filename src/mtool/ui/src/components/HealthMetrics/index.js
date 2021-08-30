@@ -148,7 +148,7 @@ class HealthMetrics extends Component {
     const { classes } = this.props;
     return (
       <Paper spacing={3} xs={6} className={classes.healthMetricsPaper}>
-	 <Grid container justify="space-around" align="center"> 
+	 <Grid container justifyContent="space-around" align="center"> 
           {this.state.healthMetrics.map((metric) => (
             <Grid
               xs={10}
@@ -188,7 +188,7 @@ class HealthMetrics extends Component {
           ))}
 	  {this.state.loading ? (
 		  <React.Fragment>
-		     <Grid container justify="center" alignItems="center" direction="column">
+		     <Grid container justifyContent="center" alignItems="center" direction="column">
 		      <Loader type="TailSpin" color="#788595" height={50} width={50} />
 		      <Typography>Loading Health Meters... </Typography>
 		     </Grid>

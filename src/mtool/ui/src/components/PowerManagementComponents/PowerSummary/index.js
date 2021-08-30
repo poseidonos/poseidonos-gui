@@ -57,7 +57,7 @@ const styles = theme => ({
     summaryInfoHeader: {
         textAlign: 'left',
         color: 'rgba(255, 255, 255, 0.87)',
-        fontSize: '14px',
+        fontSize: 14,
         borderRadius: '0px',
         width: '100%',
         marginLeft: '10px',

@@ -48,7 +48,8 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(0.5)
       },
       legendText: {
-        marginRight: theme.spacing(3)
+        marginRight: theme.spacing(3),
+        fontSize: 12
       }
 }));
 const Legend = (props) => {
@@ -56,7 +57,7 @@ const Legend = (props) => {
   return (
     <div className={classes.legendItem}>
       <span className={classes.legend} style={{backgroundColor: props.bgColor}} />
-      <Typography variant="span" className={classes.legendText} color="secondary">{props.title}</Typography>
+      <Typography className={classes.legendText} color="secondary">{props.title}</Typography>
     </div>
   )
 };

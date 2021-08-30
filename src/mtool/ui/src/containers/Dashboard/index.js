@@ -245,6 +245,17 @@ const icons = {
 const healthStatusSocketEndPoint = ":5000/health_status";
 // const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
 
+const getUsedSpace = (total, remain) => {
+
+  if(Number.isNaN(remain)) {
+    return formatBytes(0);
+  }
+
+  if(remain > total) {
+    return formatBytes(total);
+  }
+  return formatBytes(total - remain);
+}
 
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
@@ -428,8 +439,7 @@ class Dashboard extends Component {
       },
       {
         title: "Used Space",
-        render: (rowData) =>
-          !Number.isNaN(rowData.remain) ? formatBytes(rowData.total - rowData.remain) : formatBytes(0),
+        render: (rowData) => getUsedSpace(rowData.total, rowData.remain)
       },
       {
         title: "Total Space",
@@ -460,8 +470,8 @@ class Dashboard extends Component {
                 </Grid>
               </Grid>
               <Grid container spacing={1} className={classes.topGrid}>
-                <Grid xs={12} md={12} container spacing={1}>
-                  <Grid xs={12} md={6} item spacing={1}>
+                <Grid container spacing={1}>
+                  <Grid xs={12} md={6} item>
                     <HealthMetrics
                       healthStatusSocket={this.state.healthStatusSocket}
                     />
@@ -513,11 +523,10 @@ class Dashboard extends Component {
                       </Grid>
                     </Paper> */}
                     <Paper spacing={3} xs={6} className={classes.metricsPaper}>
-                      <Grid container justify="space-around">
+                      <Grid container justifyContent="space-around">
                         <Grid
                           xs={10}
                           md={6}
-                          justify="center"
                           className={classes.metricContainer}
                           item
                           spacing-xs-1="true"
@@ -535,7 +544,7 @@ class Dashboard extends Component {
                             className={`${classes.metricBox} ${classes.writeMetric}`}
                           >
                             <Typography
-                              variant="h2"
+                              variant="h5"
                               data-testid="write-bw"
                               className={classes.metricTxt}
                             >
@@ -563,7 +572,7 @@ class Dashboard extends Component {
                             className={`${classes.metricBox} ${classes.readMetric}`}
                           >
                             <Typography
-                              variant="h2"
+                              variant="h5"
                               data-testid="read-bw"
                               className={classes.metricTxt}
                             >
@@ -593,7 +602,7 @@ class Dashboard extends Component {
                             className={`${classes.metricBox} ${classes.totalMetric}`}
                           >
                             <Typography
-                              variant="h2"
+                              variant="h5"
                               data-testid="latency"
                               className={classes.metricTxt}
                             >
@@ -602,7 +611,7 @@ class Dashboard extends Component {
                           </Grid>
                         </Grid>
                       </Grid> */}
-                      <Grid container justify="space-around">
+                      <Grid container justifyContent="space-around">
                         <Grid
                           xs={10}
                           md={6}
@@ -623,7 +632,7 @@ class Dashboard extends Component {
                             className={`${classes.metricBox} ${classes.writeMetric}`}
                           >
                             <Typography
-                              variant="h2"
+                              variant="h5"
                               data-testid="write-iops"
                               className={classes.metricTxt}
                             >
@@ -651,7 +660,7 @@ class Dashboard extends Component {
                             className={`${classes.metricBox} ${classes.readMetric}`}
                           >
                             <Typography
-                              variant="h2"
+                              variant="h5"
                               data-testid="read-iops"
                               className={classes.metricTxt}
                             >
@@ -662,7 +671,7 @@ class Dashboard extends Component {
                       </Grid>
                     </Paper>
                   </Grid>
-                  <Grid xs={12} md={6} item spacing={1}>
+                  <Grid xs={12} md={6} item>
                     <Paper className={classes.posInfo}>
                       <Grid
                         md={6}
@@ -670,7 +679,7 @@ class Dashboard extends Component {
                         item
                         container
                         direction="column"
-                        justify="space-between"
+                        justifyContent="space-between"
                       >
                         <Typography
                           data-testid="dashboard-ip"
@@ -733,7 +742,7 @@ class Dashboard extends Component {
                       xs={6}
                       className={`${classes.storageDetailsPaper}`}
                     >
-                      <Grid container justify="space-between">
+                      <Grid container justifyContent="space-between">
                         <Typography
                           className={classes.cardHeader}
                           style={{ marginLeft: "24px" }}
@@ -743,7 +752,7 @@ class Dashboard extends Component {
                       </Grid>
                       <Grid
                         container
-                        justify="center"
+                        justifyContent="center"
                         alignContent="center"
                         className={classes.storageGraph}
                       >
@@ -823,7 +832,7 @@ class Dashboard extends Component {
                   </Grid>
                 </Grid>
 
-                <Grid xs={12} md={12} container spacing={1}>
+                <Grid container spacing={1}>
                   <Grid
                     xs={12}
                     md={6}
@@ -875,7 +884,7 @@ class Dashboard extends Component {
                         }}
                         components={{
                           Toolbar: () => (
-                            <Grid xs={12} className={classes.volumeHeader}>
+                            <Grid className={classes.volumeHeader}>
                               <Typography className={classes.cardHeader}>
                                 Volume Summary
                               </Typography>
@@ -891,7 +900,7 @@ class Dashboard extends Component {
                               >
                                 <MenuItem value="all">All</MenuItem>
                                 {this.props.arrays.map((array) => (
-                                  <MenuItem value={array.arrayname}>{array.arrayname}</MenuItem>
+                                  <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
                                 ))};
                               </Select>
                               </FormControl>

@@ -34,9 +34,8 @@
 
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { withStyles } from '@material-ui/core/styles';
-import { Grid, Switch, createMuiTheme, Select, MenuItem } from '@material-ui/core';
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
+import { Grid, Switch, Select, MenuItem } from '@material-ui/core';
 import { Add, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search } from '@material-ui/icons';
 import TrashIcon from "@material-ui/icons/Delete"
 import AlertDialog from '../../Dialog';
@@ -52,7 +51,7 @@ const styles = (theme) => {
     },
     pageHeader: {
       textAlign: 'left',
-      fontSize: '16px',
+      fontSize: 16,
       fontWeight: 'bold',
       color: '#424850',
       marginBottom: theme.spacing(1),
@@ -68,7 +67,7 @@ let alertsData = [];
 class AlertTable extends Component {
   constructor(props) {
     super(props);
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       typography: {
         fontSize: 12,
         fontFamily: 'Arial'

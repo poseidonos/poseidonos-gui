@@ -78,7 +78,7 @@ const styles = theme => ({
     backgroundColor: "#788595",
     color: "white",
     paddingLeft: "5px",
-    fontSize: "14px",
+    fontSize: 14,
     height: "24px"
   },
   label: {
@@ -87,7 +87,7 @@ const styles = theme => ({
   },
   submit: {
     height: "1.75rem",
-    fontSize: "12px",
+    fontSize: 12,
     textTransform: "none",
     marginTop: "18px",
     marginRight: "15px",

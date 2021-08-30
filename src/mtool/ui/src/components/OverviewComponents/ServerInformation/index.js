@@ -32,20 +32,18 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { customTheme } from '../../../theme';
 import * as actionTypes from '../../../store/actions/actionTypes';
 
-const formTheme = createMuiTheme({
+const formTheme = createTheme({
   ...customTheme,
   typography: {
-      fontSize: '12px'
+      fontSize: 12
   },
   overrides: {
     MuiInput: {
@@ -77,7 +75,7 @@ const styles = theme => ({
     serverInfoHeader: {
         textAlign: 'left',
         color: 'rgba(255, 255, 255, 0.87)',
-        fontSize: '14px',
+        fontSize: 14,
         borderRadius: '0px',
         width: '100%',
         marginLeft: '10px',

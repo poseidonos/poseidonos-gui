@@ -32,7 +32,7 @@
 
 import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import RunIbofOs from '../../components/IbofOsOperationComponents/RunIbofOs/index';

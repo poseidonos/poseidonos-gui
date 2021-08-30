@@ -31,8 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider as ThemeProvider , withStyles } from '@material-ui/core/styles';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';

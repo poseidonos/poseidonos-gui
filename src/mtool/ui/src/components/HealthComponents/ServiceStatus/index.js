@@ -97,7 +97,7 @@ const styles = theme => ({
         backgroundColor: '#788595',
         color: 'white',
         paddingLeft: '5px',
-        fontSize: '14px',
+        fontSize: 14,
         height: '24px',
     },
     img:{

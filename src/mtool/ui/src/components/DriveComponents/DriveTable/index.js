@@ -32,12 +32,11 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { Paper, Switch , createMuiTheme, } from '@material-ui/core';
+import { Paper, Switch } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import Search from '@material-ui/icons/Search';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -88,7 +87,7 @@ const styles = theme => ({
 class DriveTable extends Component {
     constructor(props) {
         super(props);
-        this.theme = createMuiTheme({
+        this.theme = createTheme({
             overrides: {
                 MuiSvgIcon: {
                     //  stylesheet name
@@ -99,7 +98,7 @@ class DriveTable extends Component {
                 },
                 MuiTablePagination: {
                     menuItem: {
-                        fontSize: "12px",
+                        fontSize: 12,
                         minHeight: "0px"
                     },
                     select: {
@@ -129,7 +128,7 @@ class DriveTable extends Component {
                     field: 'SlotNumber',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -141,7 +140,7 @@ class DriveTable extends Component {
                     field: 'Status.Health',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -153,7 +152,7 @@ class DriveTable extends Component {
                     field: 'SerialNumber',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -165,7 +164,7 @@ class DriveTable extends Component {
                     field: 'Firmware',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -177,7 +176,7 @@ class DriveTable extends Component {
                     field: 'State',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -189,7 +188,7 @@ class DriveTable extends Component {
                     field: 'RawCapacity',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -201,7 +200,7 @@ class DriveTable extends Component {
                     field: 'active',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                     (
@@ -254,7 +253,7 @@ class DriveTable extends Component {
                                     sorting: true,
                                     toolbar: false,
                                     rowStyle: {
-                                        fontSize: '4px',
+                                        fontSize: 4
                                     },
                                     search: false,
                                     paginationType: 'normal',
@@ -263,7 +262,7 @@ class DriveTable extends Component {
                                     headerStyle: {
                                         backgroundColor: '#788595',
                                         color: 'rgba(255, 255, 255, 0.87)',
-                                        fontSize: '14px',
+                                        fontSize: 14,
                                         height: '10%',
                                         paddingTop: '2px',
                                         paddingBottom: '2px',

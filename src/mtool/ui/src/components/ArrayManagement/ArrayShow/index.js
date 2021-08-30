@@ -35,8 +35,7 @@
 import React, { Component } from "react";
 import "react-dropdown/style.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "@material-ui/core/styles";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
@@ -372,7 +371,7 @@ class ArrayShow extends Component {
     if (this.props.slots) {
       for (let i = this.props.slots.length; i < 32; i += 1) {
         freeSlots.push(
-          <Grid className={`${classes.gridTile} ${classes.gridTileDisabled}`}>
+          <Grid key={i} className={`${classes.gridTile} ${classes.gridTileDisabled}`}>
             <Typography color="secondary" className={classes.diskNo}>
               {i + 1}
             </Typography>
@@ -445,6 +444,7 @@ class ArrayShow extends Component {
                           classes={{
                             tooltip: classes.tooltip,
                           }}
+                          key={slot.name}
                           title={(
 <React.Fragment>
                               <div>
@@ -525,7 +525,7 @@ class ArrayShow extends Component {
               </GridList>
             </Grid>
           </div>
-          <Grid container xs={12} className={classes.legendButtonGrid}>
+          <Grid container className={classes.legendButtonGrid}>
             <Grid
               item
               container

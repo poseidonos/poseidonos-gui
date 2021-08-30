@@ -31,8 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { withStyles , MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { Grid, Typography, Box, FormControl, Select, MenuItem, Container } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Chart from '../../components/Chart';
@@ -406,11 +405,10 @@ class Performance extends Component {
                 <Grid sm={4} xs={12} item>
                   <Typography className={classes.pageHeader} variant="h6">Performance</Typography>
                 </Grid>
-                <Grid sm={8} xs={12} item container direction="row" alignItems="center" justify="flex-end" className={classes.operationContainer}>
+                <Grid sm={8} xs={12} item container direction="row" alignItems="center" justifyContent="flex-end" className={classes.operationContainer}>
                   <Typography className={classes.selectLabel}>Level:</Typography>
                   <FormControl>
                     <Select
-                      testId="level"
                       value={this.state.level}
                       onChange={this.levelChanged}
                       inputProps={{
@@ -459,7 +457,7 @@ class Performance extends Component {
                             this.props.arrays.length < 1}
                         >
                           {this.props.arrays.map((array) => (
-                            <MenuItem value={array.arrayname} data-testid={array.arrayname}>
+                            <MenuItem key={array.arrayname} value={array.arrayname} data-testid={array.arrayname}>
                               <Typography color="secondary">
                                 {array.arrayname}
                               </Typography>

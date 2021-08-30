@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     mainHeader: {
         textAlign: 'left',
         color: 'rgba(255, 255, 255, 0.87)',
-        fontSize: '14px',
+        fontSize: 14,
         width: '100%',
         marginLeft: '10px',
         lineHeight: '2',
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
     btn: {
         height: '1.8rem',
-        fontSize: '12px',
+        fontSize: 12,
         textTransform: 'none',
         marginRight: '10px',
         width: 125,
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(2),
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
         color: 'black',
-        fontSize: '12px'
+        fontSize: 12
     },
     textField: {
         width: 190,
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         height: '1.8rem',
-        fontSize: '12px',
+        fontSize: 12,
         textTransform: 'none',
         marginRight: '10px',
         width: 70

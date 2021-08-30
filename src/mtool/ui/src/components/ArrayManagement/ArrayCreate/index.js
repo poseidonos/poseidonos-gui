@@ -33,7 +33,7 @@
 import React, { Component } from "react";
 import "react-dropdown/style.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import {
   FormControl,
   InputLabel,
@@ -46,7 +46,6 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import formatBytes from "../../../utils/format-bytes";
 import MToolLoader from "../../MToolLoader";
 import AlertDialog from "../../Dialog";
@@ -488,6 +487,7 @@ class ArrayCreate extends Component {
         freedisks.push(
           <GridListTile
             className={`${classes.gridTile} ${classes.gridTileDisabled}`}
+            key={i}
           >
             <Typography color="secondary">{i + 1}</Typography>
           </GridListTile>
@@ -528,7 +528,7 @@ class ArrayCreate extends Component {
                 }}
               >
                 {this.props.config.raidTypes && this.props.config.raidTypes.map((raid) => (
-                  <MenuItem value={raid.value}>
+                  <MenuItem value={raid.value} key={raid.value}>
                     <Typography color="secondary">{raid.label}</Typography>
                   </MenuItem>
                 ))}
@@ -551,7 +551,7 @@ class ArrayCreate extends Component {
                 }}
               >
                 {diskTypes.map((type) => (
-                  <MenuItem value={type}>
+                  <MenuItem value={type} key={type}>
                     <Typography color="secondary">{type}</Typography>
                   </MenuItem>
                 ))}
@@ -578,7 +578,7 @@ class ArrayCreate extends Component {
               >
                 {this.props.metadisks
                   ? this.props.metadisks.map((disk) => (
-                    <MenuItem value={disk.name}>
+                    <MenuItem key={disk.name} value={disk.name}>
                       <Typography color="secondary">{disk.displayMsg}</Typography>
                     </MenuItem>
                   ))
@@ -596,6 +596,7 @@ class ArrayCreate extends Component {
                         classes={{
                           tooltip: classes.tooltip,
                         }}
+                        key={disk.name}
                         title={(
                           <React.Fragment>
                             <div className={classes.tooltipText}>
@@ -628,7 +629,7 @@ class ArrayCreate extends Component {
                           id={i}
                           onClick={() => {
                             this.toggleRowSelect(i, disk);
-                          }}d
+                          }}
                           data-testid={`diskselect-${i}`}
                         >
                           <Typography className={classes.diskTextNuma}>{disk.numa}</Typography>
@@ -643,7 +644,7 @@ class ArrayCreate extends Component {
               </GridList>
             </Grid>
           </div>
-          <Grid container xs={12} className={classes.legendButtonGrid}>
+          <Grid container className={classes.legendButtonGrid}>
             <Grid
               item
               container

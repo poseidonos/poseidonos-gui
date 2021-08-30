@@ -33,7 +33,7 @@
 import React, {
     Component
 } from "react";
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { TextField, Grid, withStyles, Typography, Select, MenuItem, ButtonGroup, Button, Tooltip } from '@material-ui/core';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import "./AddNewUser.css";
@@ -58,7 +58,7 @@ const styles = (theme => {
         },
         addNewUserTypography: {
             textAlign: 'left',
-            fontSize: '14px',
+            fontSize: 14,
             fontWeight: 'bold',
             color: '#424780',
             margin: theme.spacing(1.5),
@@ -143,7 +143,7 @@ class AddNewUser extends Component {
                             <Typography className={classes.addNewUserTypography} variant="h3">Add New User</Typography>
                         </Grid>
                         <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                            <Grid className={classes.fieldContainer}>
                                 <Tooltip
                                     title={(
                                         <p>Username Should follow the below rules
@@ -161,7 +161,7 @@ class AddNewUser extends Component {
                                     <TextField className={classes.textField}
                                         required
                                         multiline
-                                        rowsMax="1"
+                                        maxRows="1"
                                         inputProps={{
                                             "data-testid": "add-user-name"
                                         }}
@@ -188,7 +188,7 @@ class AddNewUser extends Component {
                         } */}
                                 </Select>
                             </Grid>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                            <Grid className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
@@ -204,7 +204,7 @@ class AddNewUser extends Component {
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />
                             </Grid>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                            <Grid className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
@@ -220,7 +220,7 @@ class AddNewUser extends Component {
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />
                             </Grid>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                            <Grid className={classes.fieldContainer}>
                                 <MuiPhoneNumber
                                     inputClass={classes.textField}
                                     onChange={(value) => this.props.OnHandleChange({ target: { value, name: 'mobilenumber' } })}
@@ -237,11 +237,11 @@ class AddNewUser extends Component {
                                     defaultCountry="kr"
                                 />
                             </Grid>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer}>
+                            <Grid className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     multiline
-                                    rowsMax="1"
+                                    maxRows="1"
                                     inputProps={{
                                         "data-testid": "add-user-email"
                                     }}

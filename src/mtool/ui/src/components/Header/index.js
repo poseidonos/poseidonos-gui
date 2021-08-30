@@ -40,8 +40,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
@@ -410,7 +409,7 @@ class Header extends Component {
     const { classes } = this.props;
     const mobileMenuId = 'primary-search-account-menu-mobile';
     return (
-      <ThemeProvider data-testid="headerTag" theme={MToolTheme}>
+      <ThemeProvider theme={MToolTheme}>
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -450,15 +449,17 @@ class Header extends Component {
                 >
                   Running
                 </Typography>
-              ) : (
+              ) : null}
+              {!this.props.status && this.props.OS_Running_Status === "..." ?
+                <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : null}
+              {!this.props.status && this.props.OS_Running_Status !== "..." ? (
                   <Typography
                     className={classes.notRunning}
                     style={{ color: 'rgb(243, 168, 55)'}}
                   >
-                    {this.props.OS_Running_Status === "..." ?
-                        <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.OS_Running_Status}
+		      {this.props.OS_Running_Status}
                   </Typography>
-                )}
+                ) : null}
             <div className={classes.sectionDesktop}>
 
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (

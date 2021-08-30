@@ -34,13 +34,11 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { withStyles } from '@material-ui/core/styles';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { Grid, TextField } from '@material-ui/core';
 import { PageTheme } from '../../theme';
 
@@ -58,7 +56,7 @@ const styles = theme => ({
   submit: {
     // background: '#007bff',
     height: '1.8rem',
-    fontSize: '12px',
+    fontSize: 12,
     textTransform: 'none',
     minWidth: '0px',
     width: '60px',
@@ -102,116 +100,111 @@ const DialogTitle = withStyles(styles)(props => {
         className={classes.closeButton}
         onClick={onClose}
       >
-        <span style={{ fontSize: '14px', color: '#fff' }}>x</span>
+        <span style={{ fontSize: 14, color: '#fff' }}>x</span>
       </IconButton>
     </MuiDialogTitle>
   );
 });
 
 const ChangePassword = (props) => {
-    const { classes } = props;
-    return (
-        <ThemeProvider theme={PageTheme}>
-            <Dialog
-                open={props.open}
-                onClose={props.handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle
-                    onClose={props.handleClose}
-                    id="alert-dialog-title"
-                    className={classes.title}
-                >
-                    <span
-                        style={{
-                            display: 'flex',
-                            padding: '3px',
-                            paddingLeft: '10px',
-                            color: '#fff',
-                            fontSize: '14px',
-                            fontWeight: 500,
-                            alignItems: 'center',
-                        }}
-                    >
-                        Change Password
-                    </span>
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText
-                        id="alert-dialog-description"
-                        className={classes.dialogContent}
-                    >
-                        <Grid container justify="center">
-                            <Grid item xs={12} container justify="center">
-                                <TextField className={classes.textField}
-                                    required
-                                    margin="none"
-                                    value={props.oldPassword}
-                                    name="oldPassword"
-                                    type="password"
-                                    label="Old Password"
-                                    placeholder="Enter Old Password"
-                                    onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
-                                />
-                            </Grid>
-                            <Grid item xs={12} container justify="center">
-                                <TextField className={classes.textField}
-                                    required
-                                    margin="none"
-                                    value={props.newPassword}
-                                    name="newPassword"
-                                    type="password"
-                                    label="New Password"
-                                    placeholder="Enter New Password"
-                                    onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
-                                />
-                            </Grid>
-                            <Grid item xs={12} container justify="center">
-                                <TextField className={classes.textField}
-                                    required
-                                    margin="none"
-                                    name="confirmPassword"
-                                    value={props.confirmPassword}
-                                    type="password"
-                                    label="Confirm Password"
-                                    placeholder="Confirm New Password"
-                                    onChange={props.OnHandleChange}
-                                    onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
-                                />
-                            </Grid>
-                        </Grid>
-                    </DialogContentText>
-                </DialogContent>
+  const { classes } = props;
+  return (
+    <ThemeProvider theme={PageTheme}>
+      <Dialog
+        open={props.open}
+        onClose={props.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          onClose={props.handleClose}
+          id="alert-dialog-title"
+          className={classes.title}
+        >
+          <span
+            style={{
+              display: 'flex',
+              padding: '3px',
+              paddingLeft: '10px',
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 500,
+              alignItems: 'center',
+            }}
+          >
+            Change Password
+          </span>
+        </DialogTitle>
+        <DialogContent>
+          <Grid container justifyContent="center">
+            <Grid item xs={12} container justify="center">
+                <TextField className={classes.textField}
+                  required
+                  margin="none"
+                  value={props.oldPassword}
+                  name="oldPassword"
+                  type="password"
+                  label="Old Password"
+                  placeholder="Enter Old Password"
+                  onChange={props.OnHandleChange}
+                  onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
+                />
+            </Grid>
+            <Grid item xs={12} container justify="center">
+                <TextField className={classes.textField}
+                  required
+                  margin="none"
+                  value={props.newPassword}
+                  name="newPassword"
+                  type="password"
+                  label="New Password"
+                  placeholder="Enter New Password"
+                  onChange={props.OnHandleChange}
+                  onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
+                />
+            </Grid>
+            <Grid item xs={12} container justify="center">
+                <TextField className={classes.textField}
+                  required
+                  margin="none"
+                  name="confirmPassword"
+                  value={props.confirmPassword}
+                  type="password"
+                  label="Confirm Password"
+                  placeholder="Confirm New Password"
+                  onChange={props.OnHandleChange}
+                  onKeyDown={e => /[+-,#, ,]$/.test(e.key)}
+                />
+            </Grid>
+          </Grid>
+        </DialogContent>
 
-                <DialogActions className={classes.actions}>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={props.handleClose}
-                        className={classes.submit}
-                        autoFocus
-                        id="change-pwd-cancel"
-                        data-testid="change-pwd-cancel"
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        className={classes.submit}
-                        onClick={props.onConfirm}
-                        id="change-pwd-submit"
-                        data-testid="change-pwd-submit"
-                    >
-                        Submit
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </ThemeProvider>
-    );
+        <DialogActions className={classes.actions}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={props.handleClose}
+            className={classes.submit}
+            autoFocus
+            id="change-pwd-cancel"
+            data-testid="change-pwd-cancel"
+          >
+            Cancel
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            className={classes.submit}
+            onClick={props.onConfirm}
+            id="change-pwd-submit"
+            data-testid="change-pwd-submit"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </ThemeProvider>
+  );
 }
 
 export default withStyles(styles)(ChangePassword);

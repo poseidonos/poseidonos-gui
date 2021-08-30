@@ -31,8 +31,7 @@
  */
 
 import React, { Component } from "react";
-import ThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { withStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider as ThemeProvider , withStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import MToolTheme, { customTheme } from "../../theme";

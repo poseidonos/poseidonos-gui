@@ -32,8 +32,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { Paper, GridList, Typography, Tooltip, GridListTile , createMuiTheme,InputLabel, } from '@material-ui/core';
+import { createTheme, withStyles } from '@material-ui/core/styles';
+import { Paper, GridList, Typography, Tooltip, GridListTile, InputLabel, } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 import './Chassis.css';
@@ -165,7 +165,7 @@ class Chassis extends Component {
     this.showPopup = this.showPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
-    this.theme = createMuiTheme({
+    this.theme = createTheme({
       overrides: {
         MuiSvgIcon: {
           //  stylesheet name
@@ -176,7 +176,7 @@ class Chassis extends Component {
         },
         MuiTablePagination: {
           menuItem: {
-            fontSize: "12px",
+            fontSize: 12,
             minHeight: "0px"
           },
           select: {
@@ -210,7 +210,7 @@ class Chassis extends Component {
           field: 'chassisname',
           cellStyle: {
             fontFamily:'Arial',
-            fontSize: '12px',
+            fontSize: 12,
           },
         },
         {
@@ -218,7 +218,7 @@ class Chassis extends Component {
           field: 'chassisstatus',
           cellStyle: {
             fontFamily:'Arial',
-            fontSize: '12px',
+            fontSize: 12,
           },
         },
         {
@@ -226,7 +226,7 @@ class Chassis extends Component {
           field: 'chassisserial',
           cellStyle: {
             fontFamily:'Arial',
-            fontSize: '12px',
+            fontSize: 12,
           },
         },
         {
@@ -234,7 +234,7 @@ class Chassis extends Component {
           field: 'chassisother',
           cellStyle: {
             fontFamily:'Arial',
-            fontSize: '12px',
+            fontSize: 12,
           },
         },
       ],
@@ -401,7 +401,7 @@ class Chassis extends Component {
                     toolbar: false,
                     maxBodyHeight: '170px',
                     rowStyle: {
-                      fontSize: '4px',
+                      fontSize: 4,
                     },
                     search: false,
                     paginationType: 'normal',
@@ -409,7 +409,7 @@ class Chassis extends Component {
                     headerStyle: {
                       backgroundColor: '#788595',
                       color: 'rgba(255, 255, 255, 0.87)',
-                      fontSize: '14px',
+                      fontSize: 14,
                       height: '10%',
                       paddingTop: '2px',
                       paddingBottom: '2px',

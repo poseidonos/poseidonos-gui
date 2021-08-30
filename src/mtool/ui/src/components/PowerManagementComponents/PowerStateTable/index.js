@@ -32,12 +32,11 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
 import MaterialTable,{MTableEditField} from 'material-table';
-import { Paper , createMuiTheme, RadioGroup, Radio, FormControlLabel, Typography } from '@material-ui/core';
+import { Paper, RadioGroup, Radio, FormControlLabel, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import Search from '@material-ui/icons/Search';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -100,7 +99,7 @@ const styles = theme => ({
     summaryInfoHeader: {
         textAlign: 'left',
         color: 'rgba(255, 255, 255, 0.87)',
-        fontSize: '14px',
+        fontSize: 14,
         borderRadius: '0px',
         width: '100%',
         marginLeft: '10px',
@@ -138,7 +137,7 @@ const styles = theme => ({
 class PowerStateTable extends Component {
     constructor(props) {
         super(props);
-        this.theme = createMuiTheme({
+        this.theme = createTheme({
             overrides: {
                 MuiSvgIcon: {
                     //  stylesheet name
@@ -149,7 +148,7 @@ class PowerStateTable extends Component {
                 },
                 MuiTablePagination: {
                     menuItem: {
-                        fontSize: "12px",
+                        fontSize: 12,
                         minHeight: "0px"
                     },
                     select: {
@@ -180,7 +179,7 @@ class PowerStateTable extends Component {
                     editable: 'never',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                         (
@@ -193,7 +192,7 @@ class PowerStateTable extends Component {
                     editable: 'never',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                     render: rowData =>
                         (
@@ -206,7 +205,7 @@ class PowerStateTable extends Component {
                     editable: 'never',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                 },
                 {
@@ -215,7 +214,7 @@ class PowerStateTable extends Component {
                     editable: 'never',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                 },
                 {
@@ -223,7 +222,7 @@ class PowerStateTable extends Component {
                     field: 'PowerState',
                     cellStyle: {
                         fontFamily: 'Arial',
-                        fontSize: '12px',
+                        fontSize: 12,
                     },
                 },
             ],
@@ -369,7 +368,7 @@ class PowerStateTable extends Component {
                                             sorting: true,
                                             toolbar: false,
                                             rowStyle: {
-                                                fontSize: '4px',
+                                                fontSize: 4,
                                             },
                                             search: false,
                                             paginationType: 'normal',
@@ -378,7 +377,7 @@ class PowerStateTable extends Component {
                                             headerStyle: {
                                                 backgroundColor: '#788595',
                                                 color: 'rgba(255, 255, 255, 0.87)',
-                                                fontSize: '14px',
+                                                fontSize: 14,
                                                 height: '10%',
                                                 paddingTop: '2px',
                                                 paddingBottom: '2px',

@@ -57,7 +57,7 @@ const styles = (() => {
       color: 'white',
       paddingLeft: '5px',
       paddingTop: '3px',
-      fontSize: '14px',
+      fontSize: 14,
       height: '25px',
     },
     alertSpacing: {

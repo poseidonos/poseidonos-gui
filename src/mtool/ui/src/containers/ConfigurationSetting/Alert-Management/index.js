@@ -33,8 +33,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Grid from "@material-ui/core/Grid";
-import { withStyles } from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { withStyles , MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { PageTheme } from '../../../theme';
 import AlertTable from '../../../components/AlertManagementComponents/AlertTable';
 import AddNewAlerts from '../../../components/AlertManagementComponents/AddNewAlerts';

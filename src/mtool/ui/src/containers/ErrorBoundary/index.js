@@ -50,11 +50,12 @@ class ErrorBoundary extends Component {
     }
 
     render() {
+        const {children} = this.props;
         if (this.state.hasError) {
             return <h1>UI crashed... Please reload the page</h1>
         }
 
-        return this.props.children;
+        return children;
     }
 }
 
