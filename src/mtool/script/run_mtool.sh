@@ -57,8 +57,7 @@ sudo chmod +x $currdir/script/cleanup.sh
 if [ -L "/usr/local/m9k" ]; then
   sudo rm /usr/local/m9k
 fi
-parentdir="$(dirname $(dirname $ROOT_DIR))"
-parentdir="$(dirname $parentdir)"
+parentdir="$(dirname $ROOT_DIR)"
 sudo ln -s $parentdir /usr/local
 
 if [ ! -d $currdir"/api/public/log" ]

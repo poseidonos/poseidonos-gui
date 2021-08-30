@@ -2,8 +2,8 @@
 Description=Testing mTool startup
 
 [Service]
-WorkingDirectory=/usr/local/m9k/src/mtool
-ExecStart=/usr/local/m9k/src/mtool/script/server_run.sh
+WorkingDirectory=/usr/local/mtool
+ExecStart=/usr/local/mtool/script/server_run.sh
 StandardOutput=file:/var/log/logmtool1.log
 StandardError=file:/var/log/logmtool2.log
 
