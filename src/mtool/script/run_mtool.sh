@@ -54,8 +54,8 @@ fi
 sudo chmod +x $currdir/script/cleanup.sh
 
 #create a soft link for the folder , to get absolute path for starting service
-if [ -L "/usr/local/m9k" ]; then
-  sudo rm /usr/local/m9k
+if [ -L "/usr/local/mtool" ]; then
+  sudo rm /usr/local/mtool
 fi
 parentdir="$(dirname $ROOT_DIR)"
 sudo ln -s $parentdir /usr/local
