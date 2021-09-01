@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package inputs
 
 import (
@@ -37,7 +37,7 @@ import (
 	"errors"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
-  "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require"
 	"magent/src/models"
 	"testing"
 	"time"

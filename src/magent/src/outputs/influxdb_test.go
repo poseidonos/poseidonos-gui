@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package outputs
 
 import (
@@ -291,8 +291,8 @@ func TestNewHttpConfig(t *testing.T) {
 	_, err := NewHTTPClient(dbConfig)
 	require.Error(t, err)
 	/*
-	        ctx, _ := context.WithCancel(context.Background())
-	        dataChan := make(chan models.ClientPoint, 100)
-		WriteToDB(ctx, "udp", dataChan)
+		        ctx, _ := context.WithCancel(context.Background())
+		        dataChan := make(chan models.ClientPoint, 100)
+			WriteToDB(ctx, "udp", dataChan)
 	*/
 }

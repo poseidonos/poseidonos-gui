@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package util
 
 import (
@@ -75,9 +75,11 @@ func FormatAIRJSON(buf []byte, points *[]models.AIRPoint) error {
 	writeLatency := node["LAT_VOLUME_WRITE"].(map[string]interface{})["objs"].([]interface{})
 	readLatency := node["LAT_VOLUME_READ"].(map[string]interface{})["objs"].([]interface{})
 	perfData := node["PERF_VOLUME"].(map[string]interface{})["objs"].([]interface{})
-        /*writeLatency := node["LAT_ARR_VOL_WRITE"].(map[string]interface{})["objs"].([]interface{})
-        readLatency := node["LAT_ARR_VOL_READ"].(map[string]interface{})["objs"].([]interface{})
-        perfData := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})*/
+	/*
+	  writeLatency := node["LAT_ARR_VOL_WRITE"].(map[string]interface{})["objs"].([]interface{})
+	  readLatency := node["LAT_ARR_VOL_READ"].(map[string]interface{})["objs"].([]interface{})
+	  perfData := node["PERF_ARR_VOL"].(map[string]interface{})["objs"].([]interface{})
+	*/
 	valMap := make(map[string]map[string]interface{})
 	parseData(writeLatency, "mean", "write_latency", &valMap, true)
 	parseData(readLatency, "mean", "read_latency", &valMap, true)

@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package inputs
 
 import (
@@ -44,7 +44,8 @@ import (
 	"time"
 )
 
-var airData = "{\"group\": {\"GC\": {\"group_id\": 3, \"node\": {\"PERF_COPY\": {\"build\": false, \"node_id\": 9, \"objs\": [], \"run\": false, \"type\": \"performance\"}}}, \"MFS\": {\"group_id\": 1, \"node\": {\"PERF_METAFS_IO\": {\"build\": false, \"node_id\": 3, \"objs\": [], \"run\": false, \"type\": \"performance\"}}}, \"Mgmt\": {\"group_id\": 0, \"node\": {\"LAT_BDEV_READ\": {\"build\": true, \"node_id\": 1, \"objs\": [], \"run\": true, \"type\": \"latency\"}, \"LAT_BDEV_WRITE\": {\"build\": true, \"node_id\": 2, \"objs\": [{\"app_id\": 10, \"bucket_cnt\": 5, \"low_qt\": 685573, \"max\": 5262695, \"mean\": 1624023, \"median\": 1531668, \"min\": 203399, \"sample_cnt\": 141, \"target_id\": null, \"target_name\": \"0-1\", \"total_low_qt\": 685573, \"total_max\": 5262695, \"total_mean\": 1624023, \"total_median\": 1531668, \"total_min\": 203399, \"total_sample_cnt\": 141, \"total_up_qt\": 2618187, \"up_qt\": 2618187}], \"run\": true, \"type\": \"latency\"}, \"PERF_VOLUME\": {\"build\": true, \"node_id\": 0, \"objs\": [{\"app_id\": 10, \"bw_read\": 0, \"bw_read_avg\": 0, \"bw_total\": 7970304, \"bw_write\": 7970304, \"bw_write_avg\": 7970304, \"cnt_1\": \"512(sz)-15567(cnt)\", \"iops_read\": 0, \"iops_read_avg\": 0, \"iops_total\": 15567, \"iops_write\": 15567, \"iops_write_avg\": 15567, \"target_id\": 63179, \"target_name\": \"reactor_0\"}], \"run\": true, \"type\": \"performance\"}}}, \"POS_Q\": {\"group_id\": 2, \"node\": {\"Q_AIO\": {\"build\": false, \"node_id\": 4, \"objs\": [], \"run\": false, \"type\": \"queue\"}, \"Q_EVENT\": {\"build\": false, \"node_id\": 7, \"objs\": [], \"run\": false, \"type\": \"queue\"}, \"Q_IO\": {\"build\": false, \"node_id\": 8, \"objs\": [], \"run\": false, \"type\": \"queue\"}, \"Q_NVRAM\": {\"build\": false, \"node_id\": 5, \"objs\": [], \"run\": false, \"type\": \"queue\"}, \"Q_SSD\": {\"build\": false, \"node_id\": 6, \"objs\": [], \"run\": false, \"type\": \"queue\"}}}}, \"interval\": 1, \"play\": true, \"timestamp\": 1615814097}\n"
+var airData = `{"group": {"BACKEND_TEST": {"group_id": 4, "node": {"PERF_BACKEND_TEST": {"build": true, "node_id": 10, "objs": [], "run": true, "type": "performance"}}}, "GC": {"group_id": 3, "node": {"PERF_COPY": {"build": false, "node_id": 9, "objs": [], "run": false, "type": "performance"}}}, "M9K": {"group_id": 0, "node": {"LAT_VOLUME_READ": {"build": true, "node_id": 1, "objs": [{"filter": "AIR_BEGIN~AIR_END", "index": 0, "low_qt": 87464, "max": 154828, "mean": 102760, "median": 103083, "min": 69677, "sample_cnt": 97, "target_id": 0, "target_name": "", "total_low_qt": 74577, "total_max": 537449, "total_mean": 87126, "total_median": 84584, "total_min": 11052, "total_sample_cnt": 66865, "total_up_qt": 94865, "up_qt": 115639}, {"filter": "AIR_BEGIN~AIR_END", "index": 1, "low_qt": 91928, "max": 161024, "mean": 110702, "median": 106431, "min": 67097, "sample_cnt": 94, "target_id": 0, "target_name": "", "total_low_qt": 86471, "total_max": 481535, "total_mean": 106235, "total_median": 101416, "total_min": 33020, "total_sample_cnt": 1188, "total_up_qt": 121552, "up_qt": 133017}], "run": true, "type": "latency"}, "LAT_VOLUME_WRITE": {"build": true, "node_id": 2, "objs": [{"filter": "AIR_BEGIN~AIR_END", "index": 0, "low_qt": 515795, "max": 5485016, "mean": 26209, "median": 2410992, "min": 401267, "sample_cnt": 11, "target_id": 0, "target_name": "", "total_low_qt": 3061472, "total_max": 27544895, "total_mean": 5831103, "total_median": 5795938, "total_min": 115081, "total_sample_cnt": 11506, "total_up_qt": 9038015, "up_qt": 5215429}, {"filter": "AIR_BEGIN~AIR_END", "index": 1, "low_qt": 1442293, "max": 6101243, "mean": 3321233, "median": 3571573, "min": 794773, "sample_cnt": 10, "target_id": 0, "target_name": "", "total_low_qt": 5034605, "total_max": 21048181, "total_mean": 9246527, "total_median": 9079371, "total_min": 277888, "total_sample_cnt": 875, "total_up_qt": 13753046, "up_qt": 5380360}], "run": true, "type": "latency"}, "PERF_VOLUME": {"build": true, "node_id": 0, "objs": [{"bw": 50562, "bw_avg": 67670597, "cnt_1": "4096(sz)-37033(cnt)", "filter": "AIR_READ", "index": 0, "iops": 12344, "iops_avg": 16336, "target_id": 30228, "target_name": "reactor_0"}, {"bw": 50611, "bw_avg": 67678239, "cnt_1": "4096(sz)-37069(cnt)", "filter": "AIR_WRITE", "index": 0, "iops": 12356, "iops_avg": 16337, "target_id": 30228, "target_name": "reactor_0"}, {"bw": 50420394, "bw_avg": 48439862, "cnt_1": "4096(sz)-36929(cnt)", "filter": "AIR_READ", "index": 1, "iops": 12309, "iops_avg": 11823, "target_id": 30228, "target_name": "reactor_0"}, {"bw": 50461354, "bw_avg": 48377512, "cnt_1": "4096(sz)-36959(cnt)", "filter": "AIR_WRITE", "index": 1, "iops": 12319, "iops_avg": 11808, "target_id": 30228, "target_name": "reactor_0"}], "run": true, "type": "performance"}}}, "MFS": {"group_id": 1, "node": {"PERF_METAFS_IO": {"build": false, "node_id": 3, "objs": [], "run": false, "type": "performance"}}}, "POS_Q": {"group_id": 2, "node": {"Q_AIO": {"build": false, "node_id": 4, "objs": [], "run": false, "type": "queue"}, "Q_EVENT": {"build": false, "node_id": 7, "objs": [], "run": false, "type": "queue"}, "Q_IO": {"build": false, "node_id": 8, "objs": [], "run": false, "type": "queue"}, "Q_NVRAM": {"build": false, "node_id": 5, "objs": [], "run": false, "type": "queue"}, "Q_SSD": {"build": false, "node_id": 6, "objs": [], "run": false, "type": "queue"}}}}, "interval": 3, "play": true, "timestamp": 1630473119}
+`
 
 func TestWatchFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -66,11 +67,12 @@ func TestWatchFile(t *testing.T) {
 	f.Close()
 	point := <-dataChan
 	fields := map[string]interface{}{
-		"read_bw":       float64(0),
-		"read_iops":     float64(0),
-		"write_bw":      7.970304e+06,
-		"write_iops":    float64(15567),
-		"write_latency": float64(1.624023e+06),
+		"read_bw":       float64(50562),
+		"read_iops":     float64(12344),
+		"read_latency":  float64(102760),
+		"write_bw":      float64(50611),
+		"write_iops":    float64(12356),
+		"write_latency": float64(26209),
 	}
 	assert.Equal(t, point.Fields, fields)
 

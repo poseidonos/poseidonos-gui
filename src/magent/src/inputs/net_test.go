@@ -34,9 +34,11 @@ package inputs
 
 import (
 	"context"
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"magent/src/models"
 	"testing"
+	"time"
 )
 
 // TestGetNetworkData tests if the data collected is from an RNIC
@@ -44,9 +46,17 @@ func TestGetNetworkData(t *testing.T) {
 	dataChan := make(chan models.ClientPoint, 10)
 	ctx, cancel := context.WithCancel(context.Background())
 	go CollectNetworkData(ctx, dataChan)
-	val := <-dataChan
-	cancel()
-	pcis := lsPCI()
-	portList := lsHW(pcis)
-	assert.Contains(t, portList, val.Tags["interface"])
+	go func() {
+		time.Sleep(20 * time.Second)
+		cancel()
+	}()
+	select {
+	case <-ctx.Done():
+		fmt.Println("The system does not have Mellanox Ports")
+	case val := <-dataChan:
+		cancel()
+		pcis := lsPCI()
+		portList := lsHW(pcis)
+		assert.Contains(t, portList, val.Tags["interface"])
+	}
 }
