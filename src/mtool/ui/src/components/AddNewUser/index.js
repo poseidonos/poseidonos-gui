@@ -143,7 +143,7 @@ class AddNewUser extends Component {
                             <Typography className={classes.addNewUserTypography} variant="h3">Add New User</Typography>
                         </Grid>
                         <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
-                            <Grid className={classes.fieldContainer}>
+                            <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
                                 <Tooltip
                                     title={(
                                         <p>Username Should follow the below rules
@@ -175,7 +175,7 @@ class AddNewUser extends Component {
                                     />
                                 </Tooltip>
                             </Grid>
-                            <Grid sm={6} xs={12} className={classes.fieldContainer} item>
+                            <Grid sm={6} xs={12} className={classes.fieldContainer} item container>
                                 <Select
                                     disabled
                                     className={classes.selectFieldItem}
@@ -188,7 +188,7 @@ class AddNewUser extends Component {
                         } */}
                                 </Select>
                             </Grid>
-                            <Grid className={classes.fieldContainer}>
+                            <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
@@ -204,7 +204,7 @@ class AddNewUser extends Component {
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />
                             </Grid>
-                            <Grid className={classes.fieldContainer}>
+                            <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     inputProps={{
@@ -220,7 +220,7 @@ class AddNewUser extends Component {
                                     onKeyDown={e => /[+-,#, ,]$/.test(e.key) && e.preventDefault()}
                                 />
                             </Grid>
-                            <Grid className={classes.fieldContainer}>
+                            <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
                                 <MuiPhoneNumber
                                     inputClass={classes.textField}
                                     onChange={(value) => this.props.OnHandleChange({ target: { value, name: 'mobilenumber' } })}
@@ -237,7 +237,7 @@ class AddNewUser extends Component {
                                     defaultCountry="kr"
                                 />
                             </Grid>
-                            <Grid className={classes.fieldContainer}>
+                            <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
                                 <TextField className={classes.textField}
                                     required
                                     multiline
