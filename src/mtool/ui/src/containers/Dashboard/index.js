@@ -251,9 +251,9 @@ const getUsedSpace = (total, remain) => {
     return formatBytes(0);
   }
 
-  if(remain > total) {
-    return formatBytes(total);
-  }
+  // if(remain > total) {
+  //   return formatBytes(total);
+  // }
   return formatBytes(total - remain);
 }
 
