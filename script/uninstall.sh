@@ -18,7 +18,7 @@ sudo rm /etc/systemd/system/dagent.service
 sudo systemctl stop magent.service
 sudo systemctl disable magent.service
 sudo rm /etc/systemd/system/magent.service
-sudo rm /usr/local/m9k
+sudo rm /usr/local/mtool
 sudo rm /usr/local/magent
 sudo rm /usr/local/dagent
 
