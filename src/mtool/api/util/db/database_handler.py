@@ -120,6 +120,7 @@ TIMESTAMP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
 
 USER_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
+DEFAULT_USER_QUERY = "SELECT _id FROM " + USER_TABLE
 PREV_TIME_QUERY = "SELECT _id,lastRunningTime FROM " + \
     IBOFOS_TIMESTAMP_TABLE + " WHERE _id=?"
 INSERT_TIME_QUERY = "INSERT INTO " + IBOFOS_TIMESTAMP_TABLE + \
@@ -205,7 +206,7 @@ class SQLiteConnection:
         cur = DB_CONNECTION.cursor()
         is_user_table_exist = None
         try:
-            cur.execute(USER_QUERY, ("admin", "admin"))
+            cur.execute(DEFAULT_USER_QUERY)
             is_user_table_exist = cur.fetchone()
         except BaseException:
             pass
