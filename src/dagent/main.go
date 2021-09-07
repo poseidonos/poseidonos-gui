@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
+  "io/ioutil"
 )
 
 const TimeOut = 30
@@ -20,7 +21,9 @@ func init() {
 	log.SetDebugMode()
 	setting.LoadConfig()
 	util.LoadEvents()
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
+  //gin.SetMode(gin.DebugMode)
+  gin.DefaultWriter = ioutil.Discard
 }
 
 func main() {

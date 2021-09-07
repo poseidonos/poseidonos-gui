@@ -81,7 +81,6 @@ func GetStatusInfo(code int) (model.Status, error) {
 	var status model.Status
 	status.Code = code
 	totMods := len(eventsmap.Modules)
-
 	for i := 0; i < totMods; i++ {
 		if code >= eventsmap.Modules[i].Idstart && code <= eventsmap.Modules[i].Idend {
 			totInfo := len(eventsmap.Modules[i].Info)

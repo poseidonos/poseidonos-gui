@@ -48,7 +48,7 @@ func init() {
 //log level grows like below.
 
 func SetDebugMode() {
-	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetLevel(logrus.ErrorLevel)
 }
 
 func SetVerboseMode() {

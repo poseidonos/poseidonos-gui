@@ -773,6 +773,7 @@ modules:
       - code: 2561
         level: INFO
         message: "Array name too long"
+        solution: "Enter a Array name that does not exceed 63 characters"
       - code: 2562
         level: INFO
         message: "Array name not allowed"

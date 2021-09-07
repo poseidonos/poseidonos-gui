@@ -62,7 +62,7 @@ func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 }
 
 func Unauthorized(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusUnauthorized, res, code)
+	makeResponse(ctx, http.StatusUnauthorized, res, code,false)
 }
 
 func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err error) {
@@ -76,17 +76,21 @@ func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err err
 }
 
 func BadRequest(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusBadRequest, res, code)
+	makeResponse(ctx, http.StatusBadRequest, res, code,true)
 }
 
 func Success(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusOK, res, code)
+	makeResponse(ctx, http.StatusOK, res, code,false)
 }
 
-func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int) {
+func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int, isBadRequest bool) {
 	posDescription := res.Result.Status.Description
 	res.Result.Status, _ = util.GetStatusInfo(code)
 	res.Result.Status.PosDescription = posDescription
-	log.Infof("makeResponse : %+v", res)
+  if (isBadRequest == true){
+    log.Errorf("makeResponse : %+v", res)
+  } else {
+	  log.Infof("makeResponse : %+v", res)
+  }
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }
