@@ -243,10 +243,10 @@ class CreateVolume extends Component {
     else if (this.state.maxbw < 0)
       errorDesc = "Max Bandwidth cannot be negative";
     else if (this.state.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
-    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 8796093022207)
-      errorDesc = "Max Bandwidth should be in the range 10 ~ 8796093022207. Use 0 for Maximum";
-    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 9223372036854775)
-      errorDesc = "Max IOPS should be in the range 10 ~ 9223372036854775. Use 0 for Maximum";
+    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 18446744073709551)
+      errorDesc = "Max Bandwidth should be in the range 10 ~ 18446744073709551. Use 0 for Maximum";
+    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 17592186044415)
+      errorDesc = "Max IOPS should be in the range 10 ~ 17592186044415. Use 0 for Maximum";
     else isError = false;
 
     if (isError === true) {
