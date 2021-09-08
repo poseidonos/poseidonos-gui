@@ -64,17 +64,18 @@ def test_add_new_user(mock_add_new_user_in_db, global_data):
                                                },
                                       data=json.dumps({"username": "abc",
                                                        "password": "asd123456",
-                                                       "confirmpassword": "asd",
+                                                       "confirmpassword":
+                                                       "asd123456",
                                                        "user_role": "Admin",
-                                                       "mobilenumber": "+82 565 4646 4564",
-                                                       "emailid": "sd@asd.ccc",
-                                                       "phone_number": "+82",
+                                                       "mobilenumber": "+8256546464564",
+                                                       "emailid": "asd@asd.ccc",
+                                                       "phone_number":"+829999999900",
                                                        "error": ""}),
                                       content_type='application/json',
                                       )
     data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
-    print("DATAAA", data, data['message'])
+    #print("DATAAA", data)
 
 @mock.patch("rest.app.connection_factory.add_new_user_in_db",
             return_value=True, autospec=True)
@@ -142,7 +143,7 @@ def test_update_users(mock_update_user_in_db, global_data):
                                                },
                                       data=json.dumps({"_id": "abc",
                                                        "password": "asd",
-                                                       "email": "sd@asd.cccb",
+                                                       "email": "asd@asd.ccc",
                                                        "phone_number": "+829878765677",
                                                        "role": "Admin",
                                                        "active": 1,

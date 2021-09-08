@@ -1253,7 +1253,7 @@ def qos_policies():
         return make_response('Could not get volume policies', 500)
 
 def validate_email(email):
-    regex = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+    regex = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
     if(re.search(regex,email)):
         return True
     else:
