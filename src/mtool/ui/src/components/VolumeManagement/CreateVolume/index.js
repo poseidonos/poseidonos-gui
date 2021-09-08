@@ -243,10 +243,10 @@ class CreateVolume extends Component {
     else if (this.state.maxbw < 0)
       errorDesc = "Max Bandwidth cannot be negative";
     else if (this.state.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
-    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 18446744073709551)
-      errorDesc = "Max Bandwidth should be in the range 10 ~ 18446744073709551. Use 0 for Maximum";
-    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 17592186044415)
-      errorDesc = "Max IOPS should be in the range 10 ~ 17592186044415. Use 0 for Maximum";
+    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 17592186044415)
+      errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
+    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 18446744073709551)
+      errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
     else isError = false;
 
     if (isError === true) {
@@ -431,7 +431,7 @@ class CreateVolume extends Component {
               className={classes.formControl}
             >
               <Tooltip
-                title="0 means max available size"
+                title="Please input 0 to utilize all the available space in the array"
                 placement="right-start"
               >
                 <FormControl className={classes.unitText}>

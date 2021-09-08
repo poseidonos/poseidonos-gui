@@ -811,7 +811,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(volMaxBW, { target: { value: 5 } });
     fireEvent.click(createVolButton);
     expect(
-      await waitForElement(() => getByText("Max Bandwidth should be in the range 10 ~ 8796093022207. Use 0 for Maximum"))
+      await waitForElement(() => getByText("Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
     fireEvent.change(volMaxBW, { target: { value: 10 } });
@@ -821,7 +821,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(volMaxIOPS, { target: { value: 5 } });
     fireEvent.click(createVolButton);
     expect(
-      await waitForElement(() => getByText("Max IOPS should be in the range 10 ~ 9223372036854775. Use 0 for Maximum"))
+      await waitForElement(() => getByText("Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
   });
