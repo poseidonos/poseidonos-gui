@@ -41,7 +41,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 import AlertDialog from '../Dialog';
 import './UserTable.css';
 import { customTheme } from "../../theme";
-import { PHONE_REGEX } from '../../utils/constants';
+import { PHONE_REGEX, EMAIL_REGEX } from '../../utils/constants';
 
 const styles = (theme) => {
   return ({
@@ -77,7 +77,6 @@ const styles = (theme) => {
   })
 };
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 function validate(newData) {
   if (!(EMAIL_REGEX.test(newData.email))) {

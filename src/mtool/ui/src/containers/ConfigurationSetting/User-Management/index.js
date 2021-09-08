@@ -41,7 +41,7 @@ import AlertDialog from '../../../components/Dialog';
 import MToolTheme, { customTheme } from '../../../theme';
 import * as actionTypes from "../../../store/actions/actionTypes";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
-import { PHONE_REGEX } from '../../../utils/constants';
+import { PHONE_REGEX, EMAIL_REGEX } from '../../../utils/constants';
 
 const styles = (theme) => ({
   content: {
@@ -53,8 +53,6 @@ const styles = (theme) => ({
   toolbar: customTheme.toolbar,
   cardHeader: customTheme.card.header
 });
-
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const USERNAME_REGEX = /^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
 
