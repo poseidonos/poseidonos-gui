@@ -1,14 +1,15 @@
-# POS Management Stack - Middleware (Demon Agent (D-Agent))
-*  This app provides RESTFul APIs to control Poseidon System
+# POS Management Stack - Middleware (D-Agent)
+*  This app provides RESTFul APIs to Poseidon System
 
 ## Pre-Requisites
 go v1.14+
-#### POS
-* The POS should be installed
 
-#### Management Stack Client application
-* The Client application should be installed
-* D-Agent uses the same user DB as Client. Therefore, the Client application (or sqlite, which Client uses) should be installed.
+#### POS
+* The POS should be installed and running 
+
+#### Management Stack client application
+* The client application should be installed (e.g. PoseidonOS-GUI)
+* D-Agent uses the same DB for user auth as the client. Therefore, the client application should be installed OR sqlite should be installed, which client uses too.
  
 
 #### Config File

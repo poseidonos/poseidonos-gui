@@ -22,36 +22,6 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [FORCEKILLIBOFOS](#4-forcekillibofos)
   * [KILLDAGENT](#5-killdagent)
 
-* [Metric](#metric)
-
-  * [CPU](#1-cpu)
-  * [CPU with PERIOD](#2-cpu-with-period)
-  * [LATENCY](#3-latency)
-  * [LATENCY with PERIOD](#4-latency-with-period)
-  * [MEMORY](#5-memory)
-  * [MEMORY with PERIOD](#6-memory-with-period)
-  * [NETWORK](#7-network)
-  * [NETWORK with PERIOD](#8-network-with-period)
-  * [READ BW](#9-read-bw)
-  * [READ BW with PERIOD](#10-read-bw-with-period)
-  * [READ IOPS](#11-read-iops)
-  * [READ IOPS with PERIOD](#12-read-iops-with-period)
-  * [REBUILD LOG](#13-rebuild-log)
-  * [VOL LATENCY](#14-vol-latency)
-  * [VOL LATENCY with PERIOD](#15-vol-latency-with-period)
-  * [VOL READ BW](#16-vol-read-bw)
-  * [VOL READ BW with PERIOD](#17-vol-read-bw-with-period)
-  * [VOL READ IOPS](#18-vol-read-iops)
-  * [VOL READ IOPS with PERIOD](#19-vol-read-iops-with-period)
-  * [VOL WRITE BW](#20-vol-write-bw)
-  * [VOL WRITE BW IOPS](#21-vol-write-bw-iops)
-  * [VOL WRITE BW IOPS with PERIOD](#22-vol-write-bw-iops-with-period)
-  * [VOL WRITE BW with PERIOD](#23-vol-write-bw-with-period)
-  * [WRITE BW](#24-write-bw)
-  * [WRITE BW with PERIOD](#25-write-bw-with-period)
-  * [WRITE IOPS](#26-write-iops)
-  * [WRITE IOPS with PERIOD](#27-write-iops-with-period)
-
 * [POS/Array](#posarray)
 
   * [ADD DEVICE](#1-add-device)
@@ -85,26 +55,23 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE VOLUME (Multi)](#2-create-volume-(multi))
   * [DELETE VOLUME](#3-delete-volume)
   * [LIST VOLUME](#4-list-volume)
-  * [MAX VOLUME COUNT](#5-max-volume-count)
-  * [MOUNT VOLUME](#6-mount-volume)
-  * [RENAME VOLUME](#7-rename-volume)
-  * [UNMOUNT VOLUME](#8-unmount-volume)
-  * [UPDATE VOLUME QOS](#9-update-volume-qos)
+  * [MOUNT VOLUME](#5-mount-volume)
+  * [RENAME VOLUME](#6-rename-volume)
+  * [UNMOUNT VOLUME](#7-unmount-volume)
+  * [LIST QOS POLICIES](#8-list-qos-policies)
+  * [CREATE QOS VOLUME POLICY](#9-create-qos-volume-policy)
+  * [RESET QOS VOLUME POLICY](#10-reset-qos-volume-policy)
 
 
 --------
 
 
 ## Common
-***
-#### Contact
-* Contact : d.moon@samsung.com / hs.moon0112@samsung.com  
 
 ***
 #### About
+* D-Agent provides a REST API for communication from and to Poseidonos service
 * D-Agent's default port 80 in Nginx (Internal Default is 3000)
-* Dev Doucment : http://10.227.30.174:7990/projects/IBOF/repos/m9k/browse/dagent/readme.MD
-
 ***
 
 #### Request Headers
@@ -872,2835 +839,6 @@ URL: http://{{host}}/api/dagent/v1/dagent
 ***Status Code:*** 200
 
 <br>
-
-
-
-## Metric
-
-
-
-### 1. CPU
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/cpu
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 1597734721044941113,
-                "usageUser": 9.188034187863039
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 2. CPU with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/cpu/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 1597734494000000000,
-                "usageUser": 8.904109589275766
-            },
-            {
-                "time": 1597734496000000000,
-                "usageUser": 8.932369203964832
-            },
-            {
-                "time": 1597734498000000000,
-                "usageUser": 9.071550256103384
-            },
-            {
-                "time": 1597734500000000000,
-                "usageUser": 9.211087419587525
-            },
-            {
-                "time": 1597734502000000000,
-                "usageUser": 9.00554844300112
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 3. LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/latency
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 4. LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/latency/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Success"
-        },
-        "data": {
-            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
-            "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 5. MEMORY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/memory
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 1597734867980046613,
-                "usageUser": 58.26696813592269
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 6. MEMORY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/memory/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 1597734590000000000,
-                "usageUser": 58.280068777146624
-            },
-            {
-                "time": 1597734591000000000,
-                "usageUser": 58.27984921332723
-            },
-            {
-                "time": 1597734592000000000,
-                "usageUser": 58.27962964950783
-            },
-            {
-                "time": 1597734593000000000,
-                "usageUser": 58.282093643481055
-            },
-            {
-                "time": 1597734594000000000,
-                "usageUser": 58.281190992223536
-            },
-            {
-                "time": 1597734595000000000,
-                "usageUser": 58.28163011986233
-            },
-            {
-                "time": 1597734596000000000,
-                "usageUser": 58.281386160063
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 7. NETWORK
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/network
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 0,
-                "bytesRecv": 83131870,
-                "bytesSent": 32235833,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 303382,
-                "packetsSent": 187262
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 8. NETWORK with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/network/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "time": 1597738402000000000,
-                "bytesRecv": 41148503,
-                "bytesSent": 16558355.75,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 147997.75,
-                "packetsSent": 97631.75
-            },
-            {
-                "time": 1597738403000000000,
-                "bytesRecv": 41148503,
-                "bytesSent": 16558355.75,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 147997.75,
-                "packetsSent": 97631.75
-            },
-            {
-                "time": 1597738404000000000,
-                "bytesRecv": 41148708,
-                "bytesSent": 16558355.75,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 147998.75,
-                "packetsSent": 97631.75
-            },
-            {
-                "time": 1597738405000000000,
-                "bytesRecv": 41149103.5,
-                "bytesSent": 16558355.75,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 148000.25,
-                "packetsSent": 97631.75
-            },
-            {
-                "time": 1597738406000000000,
-                "bytesRecv": 41149308.5,
-                "bytesSent": 16558355.75,
-                "dropIn": 0,
-                "dropOut": 0,
-                "packetsRecv": 148001.25,
-                "packetsSent": 97631.75
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 9. READ BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 22313472,
-                "time": 1597735688784524383
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 10. READ BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 0,
-                "time": 1597739252000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597739253000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597739254000000000
-            },
-            {
-                "bw": 35348480,
-                "time": 1597739255000000000
-            },
-            {
-                "bw": 45733376,
-                "time": 1597739256000000000
-            },
-            {
-                "bw": 23500288,
-                "time": 1597739257000000000
-            },
-            {
-                "bw": 11842048,
-                "time": 1597739258000000000
-            },
-            {
-                "bw": 14945280,
-                "time": 1597739259000000000
-            },
-            {
-                "bw": 15092224,
-                "time": 1597739260000000000
-            },
-            {
-                "bw": 23834624,
-                "time": 1597739261000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 11. READ IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 1633,
-                "time": 1597736262767388762
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 12. READ IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 0,
-                "time": 1597736236000000000
-            },
-            {
-                "iops": 6376,
-                "time": 1597736237000000000
-            },
-            {
-                "iops": 23973.25,
-                "time": 1597736238000000000
-            },
-            {
-                "iops": 96155,
-                "time": 1597736239000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597736240000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597736241000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597736242000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597736243000000000
-            },
-            {
-                "iops": 19665,
-                "time": 1597736244000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 13. REBUILD LOG
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/rebuildlogs/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 data not present
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 data not present
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 20313,
-            "level": "WARN",
-            "description": "Data not found",
-            "problem": "requested data is not present",
-            "solution": "check if the data is requested for an existing entity"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "Time": 1597743919603338213,
-                "Value": "[1596194025][1234][trace] progress report: [100]"
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 14. VOL LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/latency
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 15. VOL LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/latency/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "latency": 0,
-                "time": 1597736236000000000
-            },
-            {
-                "latency": 6376,
-                "time": 1597736237000000000
-            },
-            {
-                "latency": 23973.25,
-                "time": 1597736238000000000
-            },
-            {
-                "latency": 96155,
-                "time": 1597736239000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736240000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736241000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736242000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736243000000000
-            },
-            {
-                "latency": 19665,
-                "time": 1597736244000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 16. VOL READ BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/readbw
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 0,
-                "time": 1597735928875564783
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 17. VOL READ BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/readbw/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 0,
-                "time": 1597735678000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735679000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735680000000000
-            },
-            {
-                "bw": 28773888,
-                "time": 1597735681000000000
-            },
-            {
-                "bw": 53703680,
-                "time": 1597735682000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 18. VOL READ IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/readiops
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 0,
-                "time": 1597737402983947953
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 19. VOL READ IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/readiops/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 406,
-                "time": 1597737213000000000
-            },
-            {
-                "iops": 394,
-                "time": 1597737214000000000
-            },
-            {
-                "iops": 800,
-                "time": 1597737215000000000
-            },
-            {
-                "iops": 800,
-                "time": 1597737216000000000
-            },
-            {
-                "iops": 1645,
-                "time": 1597737217000000000
-            },
-            {
-                "iops": 1635,
-                "time": 1597737218000000000
-            },
-            {
-                "iops": 1504,
-                "time": 1597737219000000000
-            },
-            {
-                "iops": 129,
-                "time": 1597737220000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 20. VOL WRITE BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/writebw
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "Success"
-        },
-        "data": {
-            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
-            "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 21. VOL WRITE BW IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/writeiops
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 0,
-                "time": 1597737402983947953
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 22. VOL WRITE BW IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/writeiops/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 28927,
-                "time": 1597737831000000000
-            },
-            {
-                "iops": 9124,
-                "time": 1597737832000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597737833000000000
-            },
-            {
-                "iops": 25600,
-                "time": 1597737834000000000
-            },
-            {
-                "iops": 25600,
-                "time": 1597737835000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597737836000000000
-            },
-            {
-                "iops": 12800,
-                "time": 1597737837000000000
-            },
-            {
-                "iops": 800,
-                "time": 1597737838000000000
-            },
-            {
-                "iops": 800,
-                "time": 1597737839000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 23. VOL WRITE BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/volumes/1/writebw/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 0,
-                "time": 1597736239000000000
-            },
-            {
-                "bw": 7731712,
-                "time": 1597736240000000000
-            },
-            {
-                "bw": 26097664,
-                "time": 1597736241000000000
-            },
-            {
-                "bw": 24965632,
-                "time": 1597736242000000000
-            },
-            {
-                "bw": 26224128,
-                "time": 1597736243000000000
-            },
-            {
-                "bw": 19838464,
-                "time": 1597736244000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597736245000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597736246000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 24. WRITE BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 53438976,
-                "time": 1597735948079139123
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 25. WRITE BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "bw": 0,
-                "time": 1597735793000000000
-            },
-            {
-                "bw": 29779968,
-                "time": 1597735794000000000
-            },
-            {
-                "bw": 26093568,
-                "time": 1597735795000000000
-            },
-            {
-                "bw": 28407808,
-                "time": 1597735796000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735797000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735798000000000
-            },
-            {
-                "bw": 6858752,
-                "time": 1597735799000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735800000000000
-            },
-            {
-                "bw": 0,
-                "time": 1597735801000000000
-            },
-            {
-                "bw": 17127936,
-                "time": 1597735802000000000
-            },
-            {
-                "bw": 21874688,
-                "time": 1597735803000000000
-            },
-            {
-                "bw": 21850112,
-                "time": 1597735804000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 26. WRITE IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 0,
-                "time": 1597737402983947953
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 27. WRITE IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": [
-            {
-                "iops": 0,
-                "time": 1597737381000000000
-            },
-            {
-                "iops": 47193,
-                "time": 1597737382000000000
-            },
-            {
-                "iops": 33480,
-                "time": 1597737383000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597737384000000000
-            },
-            {
-                "iops": 0,
-                "time": 1597737385000000000
-            },
-            {
-                "iops": 20450,
-                "time": 1597737386000000000
-            },
-            {
-                "iops": 31656,
-                "time": 1597737387000000000
-            },
-            {
-                "iops": 27805,
-                "time": 1597737388000000000
-            },
-            {
-                "iops": 22408,
-                "time": 1597737389000000000
-            }
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
 
 
 ## POS/Array
@@ -6200,83 +3338,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 
 <br>
 
-
-
-### 5. MAX VOLUME COUNT
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/maxcount
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "10dd290c-9bc2-4e32-971f-4550866fd646",
-    "lastSuccessTime": 1597910673,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "count": "256"
-        }
-    },
-    "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 6. MOUNT VOLUME
+### 5. MOUNT VOLUME
 
 
 
@@ -6429,7 +3491,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-### 7. RENAME VOLUME
+### 6. RENAME VOLUME
 
 
 
@@ -6585,7 +3647,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 
 
 
-### 8. UNMOUNT VOLUME
+### 7. UNMOUNT VOLUME
 
 
 
@@ -6738,16 +3800,16 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-### 9. UPDATE VOLUME QOS
+### 8. LIST QOS VOLUME POLICIES
 
 
 
 ***Endpoint:***
 
 ```bash
-Method: PATCH
+Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
+URL: http://{{host}}/api/ibofos/v1/qos/policies
 ```
 
 
@@ -6768,6 +3830,178 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 {
     "param": {
         "array": "{{arrayName}}",
+        "vol":[{"volumeName":"volume-0"}]
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 4600
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"volume-0"}]
+    }
+}
+```
+
+
+
+##### I. Example Response: Fail - 4600
+```js
+{
+    "rid": "df05ff24-d686-47c7-bf97-06830f1db485",
+    "lastSuccessTime": 1631105717,
+    "result": {
+        "status": {
+            "module": "QoSManager",
+            "code": 4600,
+            "level": "INFO",
+            "description": "set event policy",
+            "posDescription": "Invalid Volume Name vol"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.10"
+    }
+}
+
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"vol-0"}]
+    }
+}
+```
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "09117322-8994-4d94-9480-3a5257c07c08",
+    "lastSuccessTime": 1631105738,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "List of Volume Policies in POSArray"
+        },
+        "data": {
+            "arrayName": [
+                {
+                    "ArrayName": "POSArray"
+                }
+            ],
+            "rebuildPolicy": [
+                {
+                    "rebuild": "low"
+                }
+            ],
+            "volumePolicies": [
+                {
+                    "id": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "min_bw_guarantee": "No",
+                    "min_iops_guarantee": "No",
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "vol0"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "pos-0.9.10"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+### 9. CREATE QOS VOLUME POLICY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/qos
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"volume-0"}],
         "maxiops": 100,
         "maxbw": 500
     }
@@ -6779,7 +4013,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 2010
+##### I. Example Request: Fail - 4600
 
 
 ***Headers:***
@@ -6799,35 +4033,182 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 {
     "param": {
         "array": "{{arrayName}}",
-        "maxiops": 0,
-        "maxbw": 6000
+        "vol":[{"volumeName":"volume-0"}],
+        "maxiops": 100,
+        "maxbw": 500
     }
 }
 ```
 
 
 
-##### I. Example Response: Fail - 2010
+##### I. Example Response: Fail - 4600
 ```js
 {
-    "rid": "45785ae6-e619-4c8a-ac6e-18eb90952862",
-    "lastSuccessTime": 1597910717,
+    "rid": "ac36a4f1-edfb-4605-a5aa-a528ea135123",
+    "lastSuccessTime": 1631105036,
     "result": {
         "status": {
-            "module": "VolumeManager",
-            "code": 2010,
-            "level": "WARN",
-            "description": "The requested volume does not exist",
-            "problem": "The volume with the requested volume name or volume ID does not exist",
-            "solution": "Enter the correct volume name or volume ID after checking the volume list"
+            "module": "QoSManager",
+            "code": 4600,
+            "level": "INFO",
+            "description": "set event policy",
+            "posDescription": "Invalid Volume Name volume-0"
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
+    }
+}
+
+
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"vol-0"}],
+        "maxiops": 100,
+        "maxbw": 500
+    }
+}
+```
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "19022419-70f4-4bbb-82e0-ca8a73d8c103",
+    "lastSuccessTime": 1631105124,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.10"
+    }
+}
+
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+### 10. RESET QOS VOLUME POLICY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/qos/reset
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"volume-0"}]
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 4600
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "vol":[{"volumeName":"volume-0"}]
+    }
+}
+```
+
+
+
+##### I. Example Response: Fail - 4600
+```js
+{
+    "rid": "88521bc2-ae2a-4b2b-b09b-536cdd3bdd80",
+    "lastSuccessTime": 1631105505,
+    "result": {
+        "status": {
+            "module": "QoSManager",
+            "code": 4600,
+            "level": "INFO",
+            "description": "set event policy",
+            "posDescription": "Invalid Volume Name volume-0"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -6859,8 +4240,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 {
     "param": {
         "array": "{{arrayName}}",
-        "maxiops": 0,
-        "maxbw": 6000
+        "vol":[{"volumeName":"vol-0"}]
     }
 }
 ```
@@ -6870,22 +4250,19 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "1fd40c80-6752-49be-9510-a843c08d09d5",
-    "lastSuccessTime": 1597910700,
+    "rid": "016b99d8-19d9-4c6a-bb65-aebc89117d5c",
+    "lastSuccessTime": 1631105543,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Reset"
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -6894,7 +4271,6 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/qos
 ***Status Code:*** 200
 
 <br>
-
 
 
 ***Available Variables:***

@@ -1,46 +1,48 @@
-# POS Management Stack - Client (called MTool) 
-MTool acts as client in the POS Management Stack. It provides UI to configure available Poseidon boxes, aggregate events and represent a big picture of operations.
+# PoseidonOS-GUI
+PoseidonOS-GUI is a reactjs application and a core component of the POS Management Stack. It provides a graphical user interface (GUI) to access, configure and monitor PoseidonOS.
 
-MTool exposes REST APIs with JWT authentication for secured communication with Poseidon Management UI or any third party UI applications.
+PoseidonOS-GUI internally connects to a REST API provider (called DAgent) to access PoseidonOS. It uses JWT authentication for secured communication with the REST API provider.
 
 
 ## Features
-1. Login Screen
+
+The following features are currently supported.
+
+1. Login and Logout
    - Default Credentials - admin/admin
 
+
 2. User Management
-   - User Addition, Deletion, Modification
-   - Logout   
+   - User Addition, Deletion, and Modification
+   - Role assigment to the user (only ADMIN role is currently supported)
 
-3. Performance Page
-   - Array - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS, Latency
-   - Volume - Read Bandwidth, Write Bandwidth, Read IOPS, Write IOPS, Latency
-   - System - CPU Usage
 
-4. Dashboard
-   - Poseidon OS status ( refreshes every 4 seconds )
-   - Health metrics for CPU, Memory and latency data
-   - Storage and volume status
-   
-5. Storage Management
+3. Dashboard
+   - PoseidonOS status that auto refreshes every four seconds
+   - Health metrics shows CPU, Memory and latency data
+   - Storage array and volume status
+
+
+4. Storage Management
    - Array creation, deletion, mount and unmount after Poseidon OS is started
    - Volume creation, deletion, mount and unmount 
    - Array and Volume details are persistent even after Poseidon OS is stopped and started.
-   
-6. Poseidon OS Operations
-   - Start and STOP of Poseidon OS 
-   - Run command to run and bash files  
+
+
+5. PoseidonOS Operations
+   - START and STOP of PoseidonOS 
 
 # System Requirements: 
 - Ubuntu 18.04 with python3 
-- Best Resolution: 1920 x 1080 (currently tested in Mozilla Firefox and Chrome with 100% zoom level)
+- Access to internet and modern browser like Chorme or Firefox (Currently, supports Chrome and Firefox only)
+- Display screen with resolution of 1920 x 1080 (currently tested in Mozilla Firefox and Chrome with 100% zoom level)
 
 # Dev 
 ## Source 
-> git clone http://github.com/poseidonos/poseidonos.git 
-### MTool code is found under `tool/m9k/src/mtool/`
+> git clone http://github.com/poseidonos/poseidonos-gui.git 
+### PoseidonOS-GUI code is found under `m9k`
 
-## Setting up and running MTool
+## Setting up and running PoseidonOS-GUI
 
 ### 1. Install Packages
 This step is performed along with installation of other components  
