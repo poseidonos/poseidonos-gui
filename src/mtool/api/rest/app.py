@@ -1198,9 +1198,9 @@ def qos_create_policies():
         request_body = {
                 "param": {
                         "array": array_name,
-                        "vol":vol_names,
-                        "maxbw":max_bw,
-                        "maxiops":max_iops
+                        "vol": vol_names,
+                        "maxbw": int(max_bw),
+                        "maxiops": int(max_iops)
                 }
         }
         range_message = "Please enter valid range: \nValid range for IO =  10 - 18446744073709551 KIOPS\nValid range for BW = 10 - 17592186044415 MB/s"

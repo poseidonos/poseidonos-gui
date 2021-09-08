@@ -579,16 +579,24 @@ function* renameVolume(action) {
   }
 }
 
+function isValidQOS(iops, bw) {
+  if (
+    !(/^\d+$/.test(iops)) ||
+    !(/^\d+$/.test(bw)) ||
+    iops < 0 ||
+    bw < 0 ||
+    (bw % 1) !== 0 ||
+    (iops % 1) !== 0) {
+    return false;
+  }
+  return true;
+}
+
 function* updateVolume(action) {
   const arrayName = yield select(arrayname)
   try {
     yield put(actionCreators.startStorageLoader("Updating Volume"));
-    if (
-      action.payload.maxiops < 0 ||
-      action.payload.maxbw < 0 ||
-      (action.payload.maxbw % 1) !== 0 ||
-      (action.payload.maxiops % 1) !== 0
-    ) {
+    if (!isValidQOS(action.payload.maxiops, action.payload.maxbw)) {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
@@ -624,8 +632,8 @@ function* updateVolume(action) {
       return;
     }
     const data = {
-      maxiops: parseInt(action.payload.maxiops, 10),
-      maxbw: parseInt(action.payload.maxbw, 10),
+      maxiops: action.payload.maxiops,
+      maxbw: action.payload.maxbw,
       volumes: [{"volumeName":action.payload.name}],
       array: arrayName,
     };
@@ -937,7 +945,7 @@ function* createArray(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error in Array Creation",
-            errorCode: `Description:${response.data.result.status.description}, Error Code: ${response.data.result.status.code}`,
+            errorCode: `${response.data.result.status.description}. ${response.data.result.status.solution}`,
             alertTitle: "Create Array",
           })
         );
