@@ -676,9 +676,6 @@ describe("ConfigurationSetting", () => {
       expect(nameElement).toBeDefined();
       const deleteBtn = await waitForElement(() => getAllByTitle("Delete")[0]);
       fireEvent.click(deleteBtn);
-      const saveBtn = await waitForElement(() => getByText("Yes"));
-      fireEvent.click(saveBtn);
-      await new Promise(resolve => setTimeout(resolve, 1000));
       expect(await waitForElement(() => getByText("Current user cannot be deleted")));
     });
   })
