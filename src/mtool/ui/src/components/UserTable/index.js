@@ -108,7 +108,8 @@ class UserTable extends Component {
 
     this.state = {
       alertOpen: false,
-      selectedRow: null
+      currentUserAlertOpen: false,
+      selectedRow: {}
     }
     this.selectRow = this.selectRow.bind(this);
     this.closeAlert = this.closeAlert.bind(this);
@@ -116,6 +117,12 @@ class UserTable extends Component {
 
 
   selectRow(row) {
+    if(row._id === localStorage.getItem('userid')) {
+      this.setState({
+        currentUserAlertOpen: true
+      });
+      return;
+    }
     this.setState({
       alertOpen: true,
       selectedRow: row
@@ -124,7 +131,8 @@ class UserTable extends Component {
 
   closeAlert() {
     this.setState({
-      alertOpen: false
+      alertOpen: false,
+      currentUserAlertOpen: false
     });
   }
 
@@ -308,13 +316,20 @@ class UserTable extends Component {
         </Grid>
         <AlertDialog
           title="Delete User"
-          description="Are you sure you want to delete the user?"
+          description={`Are you sure you want to delete the user ${this.state.selectedRow._id}?`}
           open={this.state.alertOpen}
           handleClose={this.closeAlert}
           onConfirm={() => {
             this.closeAlert()
             this.props.deleteUsers(this.state.selectedRow);
           }}
+        />
+        <AlertDialog
+          title="Delete User"
+          type="alert"
+          description="Current user cannot be deleted"
+          open={this.state.currentUserAlertOpen}
+          handleClose={this.closeAlert}
         />
       </Grid>
     );
