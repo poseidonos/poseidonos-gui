@@ -124,11 +124,7 @@ Response Sample
     } 
   },
   "info": { // Optional
-      "state": "OFFLINE",
-      "situation": "DEFAULT",
-      "rebuliding_progress": 0,
-      "capacity": 0,
-      "used": 0
+        "version": "pos-0.9.10"
   }
 }
 ```
@@ -328,11 +324,7 @@ URL: http://{{host}}/api/dagent/v1/version
         }
     },
     "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -439,11 +431,7 @@ URL: http://{{host}}/api/dagent/v1/doc/api.html
         }
     },
     "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -681,11 +669,7 @@ URL: http://{{host}}/api/dagent/v1/doc/events.yaml
         }
     },
     "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -754,11 +738,7 @@ URL: http://{{host}}/api/dagent/v1/ibofos
         }
     },
     "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -826,11 +806,7 @@ URL: http://{{host}}/api/dagent/v1/dagent
         }
     },
     "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -854,7 +830,7 @@ URL: http://{{host}}/api/dagent/v1/dagent
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices
 ```
 
 
@@ -929,11 +905,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -986,11 +958,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1011,7 +979,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}
 ```
 
 
@@ -1080,11 +1048,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1219,11 +1183,7 @@ URL: http://{{host}}/api/ibofos/v1/array
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1297,11 +1257,7 @@ URL: http://{{host}}/api/ibofos/v1/array
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1322,7 +1278,7 @@ URL: http://{{host}}/api/ibofos/v1/array
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}
 ```
 
 
@@ -1368,11 +1324,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1412,11 +1364,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1437,7 +1385,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices
 ```
 
 
@@ -1506,11 +1454,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1522,7 +1466,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
 
 
 
-### 6. LOAD ARRAY
+### ~~6. LOAD ARRAY~~ (DEPRECATED)
 
 
 
@@ -1531,7 +1475,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/load
 ```
 
 
@@ -1577,11 +1521,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuildingProgress": "0",
-        "capacity": "0",
-        "used": "0"
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -1602,7 +1542,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
+URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName}}
 ```
 
 
@@ -1636,15 +1576,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 
 ***Body:***
 
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
 
 ##### I. Example Response: Success
 ```js
@@ -1660,11 +1591,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -2180,22 +2107,19 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "3b6f2a86-7369-40e0-9c63-65cdf417fad4",
-    "lastSuccessTime": 1597819950,
+    "rid": "c993d360-e423-455d-a8f0-13ff816e89e5",
+    "lastSuccessTime": 1631167785,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "device scanning complete"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -2216,7 +2140,7 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
 ```bash
 Method: GET
 Type: 
-URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-0/smart
+URL: http://{{host}}/api/ibofos/v1/devices/{{deviceName}}/smart
 ```
 
 
@@ -2285,11 +2209,7 @@ URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-0/smart
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
+			"version": "pos-0.9.10"
     }
 }
 ```
@@ -2422,7 +2342,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### ~~2. MOUNTIBOFOS~~
+### ~~2. MOUNTIBOFOS~~ (DEPRECATED)
 
 
 
@@ -2687,7 +2607,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### ~~4. UNMOUNTIBOFOS~~
+### ~~4. UNMOUNTIBOFOS~~ (DEPRECATED)
 
 
 
@@ -2847,29 +2767,22 @@ URL: http://{{host}}/api/ibofos/v1/system
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d62522e2-336c-42dd-95dc-f7cd44c7e708",
-    "lastSuccessTime": 1597908994,
+    "rid": "4e5ac098-da7c-4800-83d9-2edcfc251881",
+    "lastSuccessTime": 1631167978,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "DONE"
         },
         "data": {
-            "capacity": 120312771380,
-            "rebuildingProgress": "0",
-            "situation": "NORMAL",
-            "state": "NORMAL",
-            "used": 4194304
+            "version": "pos-0.9.10"
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3103,7 +3016,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}
 ```
 
 
@@ -3173,11 +3086,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3231,11 +3140,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3256,7 +3161,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes
+URL: http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}
 ```
 
 
@@ -3324,11 +3229,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 8388608
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3347,7 +3248,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}/mount
 ```
 
 
@@ -3419,11 +3320,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 8388608
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3475,11 +3372,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 8388608
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3500,7 +3393,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ```bash
 Method: PATCH
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}
 ```
 
 
@@ -3574,11 +3467,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3631,11 +3520,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3656,7 +3541,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 ```bash
 Method: DELETE
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
+URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}/mount
 ```
 
 
@@ -3726,11 +3611,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 8388608
+        "version": "pos-0.9.10"
     }
 }
 ```
@@ -3784,11 +3665,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 8388608
+        "version": "pos-0.9.10"
     }
 }
 ```

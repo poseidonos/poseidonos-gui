@@ -4561,7 +4561,8 @@
         content: "";
         border-top: 0;
         border-bottom: 4px dashed;
-        border-bottom: 4px solid;\9
+        border-bottom: 4px solid;
+        \9
     }
 
     .dropup .dropdown-menu,
@@ -8400,6 +8401,7 @@
 <div class=container-fluid>
     <div class=row>
         <div class="col-md-12 collection-intro">
+
             <h1>D-Agent</h1>
             <p>REST API Collection and Documents of D-Agent (Dynamic Agent)</p>
             <h2>Indices</h2>
@@ -8521,11 +8523,11 @@
                 <li>All API has common request scheme except GET method.</li>
             </ul>
             <pre><code class="language-json">{
-  &quot;param&quot;:{
-    // Ref. each command
-  }
-}
-</code></pre>
+              &quot;param&quot;:{
+                // Ref. each command
+              }
+            }
+            </code></pre>
             <hr>
             <h4>Response Headers</h4>
             <table>
@@ -8561,24 +8563,20 @@
             </ul>
             <p>Response Sample</p>
             <pre><code class="language-json">{
-   &quot;result&quot;:{
-    &quot;status&quot;:{
-      &quot;code&quot;:0,
-      &quot;description&quot;:&quot;Some Message&quot;
-    },
-    &quot;data&quot;:{ // Optional
-      // Ref. each command
-    } 
-  },
-  &quot;info&quot;: { // Optional
-      &quot;state&quot;: &quot;OFFLINE&quot;,
-      &quot;situation&quot;: &quot;DEFAULT&quot;,
-      &quot;rebuliding_progress&quot;: 0,
-      &quot;capacity&quot;: 0,
-      &quot;used&quot;: 0
-  }
-}
-</code></pre>
+               &quot;result&quot;:{
+                &quot;status&quot;:{
+                  &quot;code&quot;:0,
+                  &quot;description&quot;:&quot;Some Message&quot;
+                },
+                &quot;data&quot;:{ // Optional
+                  // Ref. each command
+                } 
+              },
+              &quot;info&quot;: { // Optional
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+              }
+            }
+            </code></pre>
             <hr>
             <h4>Timeout</h4>
             <ul>
@@ -8593,9 +8591,9 @@
             <h3>1. Template Dummy</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: 
-</code></pre>
+            Type: 
+            URL: 
+            </code></pre>
             <h2>D-Agent</h2>
             <p>The most biz-logic executes in D-Agent own module</p>
             <h3><s>1. HEARTBEAT</s> (DEPRECATED)</h3>
@@ -8605,9 +8603,9 @@ URL:
             </p>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/heartbeat
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/dagent/v1/heartbeat
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -8676,18 +8674,18 @@ URL: http://{{host}}/api/dagent/v1/heartbeat
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 1597908627,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 1597908627,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail</h5>
@@ -8725,26 +8723,26 @@ URL: http://{{host}}/api/dagent/v1/heartbeat
             </table>
             <h5>II. Example Response: Fail</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Management Stack(M9K)&quot;,
-            &quot;code&quot;: 12010,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;one of iBoF service is dead&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Management Stack(M9K)&quot;,
+                        &quot;code&quot;: 12010,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;one of iBoF service is dead&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>2. VERSION</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/version
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/dagent/v1/version
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -8813,29 +8811,25 @@ URL: http://{{host}}/api/dagent/v1/version
             </table>
             <h5>I. Example Response: Fail</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 12020,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;could not find build info&quot;
-        },
-        &quot;data&quot;: {
-            &quot;githash&quot;: &quot;&quot;,
-            &quot;build_time&quot;: &quot;&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 12020,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;could not find build info&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;githash&quot;: &quot;&quot;,
+                        &quot;build_time&quot;: &quot;&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -8873,22 +8867,22 @@ URL: http://{{host}}/api/dagent/v1/version
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;githash&quot;: &quot;3c25b82ae226af620a99fd8e42b921662a658219&quot;,
-            &quot;buildTime&quot;: &quot;1597889522&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;githash&quot;: &quot;3c25b82ae226af620a99fd8e42b921662a658219&quot;,
+                        &quot;buildTime&quot;: &quot;1597889522&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h2>Internal</h2>
@@ -8899,9 +8893,9 @@ URL: http://{{host}}/api/dagent/v1/version
             <h3>1. DOCUMENTATION (HTML)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/doc/api.html
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/dagent/v1/doc/api.html
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Success</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -8938,43 +8932,39 @@ URL: http://{{host}}/api/dagent/v1/doc/api.html
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;githash&quot;: &quot;b98039e5f8ab19351994044960cf0e27262665b4&quot;,
-            &quot;build_time&quot;: &quot;1591338851&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;githash&quot;: &quot;b98039e5f8ab19351994044960cf0e27262665b4&quot;,
+                        &quot;build_time&quot;: &quot;1591338851&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>2. DOCUMENTATION (MARKDOWN)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/doc/api.md
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/dagent/v1/doc/api.md
+            </code></pre>
             <h3>3. EVENT CODE</h3>
             <p>It will return all POS syste status code and description</p>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/doc/events.yaml
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/dagent/v1/doc/events.yaml
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9043,189 +9033,185 @@ URL: http://{{host}}/api/dagent/v1/doc/events.yaml
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;StatusList&quot;: [
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 0,
-                    &quot;description&quot;: &quot;Success&quot;
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;StatusList&quot;: [
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 0,
+                                &quot;description&quot;: &quot;Success&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 1200,
+                                &quot;description&quot;: &quot;iBoFOS System Recovery Something&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 1234,
+                                &quot;description&quot;: &quot;iBoFOS System Recovery In Progress&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2060,
+                                &quot;description&quot;: &quot;Fail to create volume meta&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2800,
+                                &quot;description&quot;: &quot;Rebuild begin&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2801,
+                                &quot;description&quot;: &quot;Rebuild done&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2082,
+                                &quot;description&quot;: &quot;Rebuildjob added&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2083,
+                                &quot;description&quot;: &quot;About job slicing point&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2500,
+                                &quot;description&quot;: &quot;Array is alreday mounted&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2501,
+                                &quot;description&quot;: &quot;Array is already umounted&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2052,
+                                &quot;description&quot;: &quot;Array already exists&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2053,
+                                &quot;description&quot;: &quot;Array does not exists&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2804,
+                                &quot;description&quot;: &quot;Rebuild progress report&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2805,
+                                &quot;description&quot;: &quot;Rebuildjob begin&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2806,
+                                &quot;description&quot;: &quot;Rebuildjob done&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 2807,
+                                &quot;description&quot;: &quot;Rebuilding debug log&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 10110,
+                                &quot;description&quot;: &quot;Auth Error : API does not activate&quot;,
+                                &quot;solution&quot;: &quot;Activate API&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 10240,
+                                &quot;description&quot;: &quot;Header Error : X-request-Id is invalid&quot;,
+                                &quot;solution&quot;: &quot;Put valid value&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 10250,
+                                &quot;description&quot;: &quot;Header Error : ts missing&quot;,
+                                &quot;solution&quot;: &quot;Put valid value&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 10310,
+                                &quot;description&quot;: &quot;Body Error : Json Error&quot;,
+                                &quot;solution&quot;: &quot;Put valid value&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 11000,
+                                &quot;description&quot;: &quot;Exec command error&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 12000,
+                                &quot;description&quot;: &quot;iBoF is busy&quot;,
+                                &quot;solution&quot;: &quot;Try later&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 12030,
+                                &quot;description&quot;: &quot;iBoF does not run&quot;,
+                                &quot;solution&quot;: &quot;run iBoFOS first&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 11010,
+                                &quot;description&quot;: &quot;iBoF Unmarshal Error&quot;,
+                                &quot;solution&quot;: &quot;Put valid value&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 19000,
+                                &quot;description&quot;: &quot;iBof Response Timeout&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 11000,
+                                &quot;description&quot;: &quot;iBof Socket Connection Error&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 27756,
+                                &quot;description&quot;: &quot;exec Run: The iBoFOS already run&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 27757,
+                                &quot;description&quot;: &quot;exec Run: Fail to run iBoFOS&quot;
+                            },
+                            {
+                                &quot;module&quot;: &quot;&quot;,
+                                &quot;code&quot;: 40000,
+                                &quot;description&quot;: &quot;This API does not implemente yet&quot;
+                            }
+                        ]
+                    }
                 },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 1200,
-                    &quot;description&quot;: &quot;iBoFOS System Recovery Something&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 1234,
-                    &quot;description&quot;: &quot;iBoFOS System Recovery In Progress&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2060,
-                    &quot;description&quot;: &quot;Fail to create volume meta&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2800,
-                    &quot;description&quot;: &quot;Rebuild begin&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2801,
-                    &quot;description&quot;: &quot;Rebuild done&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2082,
-                    &quot;description&quot;: &quot;Rebuildjob added&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2083,
-                    &quot;description&quot;: &quot;About job slicing point&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2500,
-                    &quot;description&quot;: &quot;Array is alreday mounted&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2501,
-                    &quot;description&quot;: &quot;Array is already umounted&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2052,
-                    &quot;description&quot;: &quot;Array already exists&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2053,
-                    &quot;description&quot;: &quot;Array does not exists&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2804,
-                    &quot;description&quot;: &quot;Rebuild progress report&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2805,
-                    &quot;description&quot;: &quot;Rebuildjob begin&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2806,
-                    &quot;description&quot;: &quot;Rebuildjob done&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 2807,
-                    &quot;description&quot;: &quot;Rebuilding debug log&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 10110,
-                    &quot;description&quot;: &quot;Auth Error : API does not activate&quot;,
-                    &quot;solution&quot;: &quot;Activate API&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 10240,
-                    &quot;description&quot;: &quot;Header Error : X-request-Id is invalid&quot;,
-                    &quot;solution&quot;: &quot;Put valid value&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 10250,
-                    &quot;description&quot;: &quot;Header Error : ts missing&quot;,
-                    &quot;solution&quot;: &quot;Put valid value&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 10310,
-                    &quot;description&quot;: &quot;Body Error : Json Error&quot;,
-                    &quot;solution&quot;: &quot;Put valid value&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 11000,
-                    &quot;description&quot;: &quot;Exec command error&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 12000,
-                    &quot;description&quot;: &quot;iBoF is busy&quot;,
-                    &quot;solution&quot;: &quot;Try later&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 12030,
-                    &quot;description&quot;: &quot;iBoF does not run&quot;,
-                    &quot;solution&quot;: &quot;run iBoFOS first&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 11010,
-                    &quot;description&quot;: &quot;iBoF Unmarshal Error&quot;,
-                    &quot;solution&quot;: &quot;Put valid value&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 19000,
-                    &quot;description&quot;: &quot;iBof Response Timeout&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 11000,
-                    &quot;description&quot;: &quot;iBof Socket Connection Error&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 27756,
-                    &quot;description&quot;: &quot;exec Run: The iBoFOS already run&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 27757,
-                    &quot;description&quot;: &quot;exec Run: Fail to run iBoFOS&quot;
-                },
-                {
-                    &quot;module&quot;: &quot;&quot;,
-                    &quot;code&quot;: 40000,
-                    &quot;description&quot;: &quot;This API does not implemente yet&quot;
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>4. FORCEKILLIBOFOS</h3>
             <p>It just runs &quot;pkill -9 ibofos&quot;</p>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/dagent/v1/ibofos
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/dagent/v1/ibofos
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9294,33 +9280,29 @@ URL: http://{{host}}/api/dagent/v1/ibofos
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>5. KILLDAGENT</h3>
             <p>It just run command &quot;run_ibof.sh&quot; and does not gurantee to run.</p>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/dagent/v1/dagent
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/dagent/v1/dagent
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9389,33 +9371,29 @@ URL: http://{{host}}/api/dagent/v1/dagent
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h2>POS/Array</h2>
             <h3>1. ADD DEVICE</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9450,15 +9428,15 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;spare&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
+                &quot;param&quot;: {
+                    &quot;spare&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
+                        }
+                    ]
+                }
             }
-        ]
-    }
-}
-</code></pre>
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 2501</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -9495,33 +9473,29 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;spare&quot;: &quot;{{deviceName4}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;spare&quot;: &quot;{{deviceName4}}&quot;
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 2501</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;51cb31eb-35a1-4bf7-87e9-b33bcef2b066&quot;,
-    &quot;lastSuccessTime&quot;: 1597910351,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2501,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;Array is already umounted.&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;51cb31eb-35a1-4bf7-87e9-b33bcef2b066&quot;,
+                &quot;lastSuccessTime&quot;: 1597910351,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2501,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;Array is already umounted.&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -9559,41 +9533,37 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;spare&quot;: &quot;{{deviceName4}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;spare&quot;: &quot;{{deviceName4}}&quot;
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;5794b792-4506-4323-a51c-59a26c064d8e&quot;,
-    &quot;lastSuccessTime&quot;: 1597910436,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;5794b792-4506-4323-a51c-59a26c064d8e&quot;,
+                &quot;lastSuccessTime&quot;: 1597910436,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>2. ARRAY INFO</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9662,56 +9632,52 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;6e787e27-1964-44da-bcdf-b5f44ffbd1a3&quot;,
-    &quot;lastSuccessTime&quot;: 1588920682,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;DONE&quot;
-        },
-        &quot;data&quot;: {
-            &quot;devicelist&quot;: [
-                {
-                    &quot;name&quot;: &quot;uram0&quot;,
-                    &quot;type&quot;: &quot;BUFFER&quot;
+                &quot;rid&quot;: &quot;6e787e27-1964-44da-bcdf-b5f44ffbd1a3&quot;,
+                &quot;lastSuccessTime&quot;: 1588920682,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;DONE&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;devicelist&quot;: [
+                            {
+                                &quot;name&quot;: &quot;uram0&quot;,
+                                &quot;type&quot;: &quot;BUFFER&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-0&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-1&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-2&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-3&quot;,
+                                &quot;type&quot;: &quot;SPARE&quot;
+                            }
+                        ]
+                    }
                 },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-0&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-1&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-2&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-3&quot;,
-                    &quot;type&quot;: &quot;SPARE&quot;
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>3. CREATE ARRAY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -9746,33 +9712,33 @@ URL: http://{{host}}/api/ibofos/v1/array
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;name&quot;: &quot;{{arrayName}}&quot;,
-        &quot;raidtype&quot;: &quot;RAID5&quot;,
-        &quot;buffer&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;uram0&quot;
+                &quot;param&quot;: {
+                    &quot;name&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;raidtype&quot;: &quot;RAID5&quot;,
+                    &quot;buffer&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;uram0&quot;
+                        }
+                    ],
+                    &quot;data&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
+                        }
+                    ],
+                    &quot;spare&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
+                        }
+                    ]
+                }
             }
-        ],
-        &quot;data&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
-            }
-        ],
-        &quot;spare&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
-            }
-        ]
-    }
-}
-</code></pre>
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Success</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -9809,54 +9775,50 @@ URL: http://{{host}}/api/ibofos/v1/array
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;name&quot;: &quot;{{arrayName}}&quot;,
-        &quot;raidtype&quot;: &quot;RAID5&quot;,
-        &quot;buffer&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;uram0&quot;
+                &quot;param&quot;: {
+                    &quot;name&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;raidtype&quot;: &quot;RAID5&quot;,
+                    &quot;buffer&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;uram0&quot;
+                        }
+                    ],
+                    &quot;data&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
+                        }
+                    ],
+                    &quot;spare&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
+                        }
+                    ]
+                }
             }
-        ],
-        &quot;data&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
-            }
-        ],
-        &quot;spare&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
-            }
-        ]
-    }
-}
-</code></pre>
+            </code></pre>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;cc3eed56-3478-4180-af0b-eac6b88f264f&quot;,
-    &quot;lastSuccessTime&quot;: 1597819968,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;cc3eed56-3478-4180-af0b-eac6b88f264f&quot;,
+                &quot;lastSuccessTime&quot;: 1597819968,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail - 2504</h5>
@@ -9894,62 +9856,58 @@ URL: http://{{host}}/api/ibofos/v1/array
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;name&quot;: &quot;{{arrayName}}&quot;,
-        &quot;raidtype&quot;: &quot;RAID5&quot;,
-        &quot;buffer&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;uram0&quot;
+                &quot;param&quot;: {
+                    &quot;name&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;raidtype&quot;: &quot;RAID5&quot;,
+                    &quot;buffer&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;uram0&quot;
+                        }
+                    ],
+                    &quot;data&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
+                        },
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
+                        }
+                    ],
+                    &quot;spare&quot;: [
+                        {
+                            &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
+                        }
+                    ]
+                }
             }
-        ],
-        &quot;data&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName1}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName2}}&quot;
-            },
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName3}}&quot;
-            }
-        ],
-        &quot;spare&quot;: [
-            {
-                &quot;deviceName&quot;: &quot;{{deviceName4}}&quot;
-            }
-        ]
-    }
-}
-</code></pre>
+            </code></pre>
             <h5>II. Example Response: Fail - 2504</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;3cfc6d1e-6595-4aad-829a-bfca0d831069&quot;,
-    &quot;lastSuccessTime&quot;: 1597819934,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2504,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;Device not found&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;3cfc6d1e-6595-4aad-829a-bfca0d831069&quot;,
+                &quot;lastSuccessTime&quot;: 1597819934,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2504,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;Device not found&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>4. DELETE ARRAY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10018,25 +9976,21 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;f0755583-73c9-436c-9e10-c53d36418fa9&quot;,
-    &quot;lastSuccessTime&quot;: 1597910488,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;f0755583-73c9-436c-9e10-c53d36418fa9&quot;,
+                &quot;lastSuccessTime&quot;: 1597910488,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail - 2500</h5>
@@ -10074,33 +10028,29 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
             </table>
             <h5>II. Example Response: Fail - 2500</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;6426aca5-2d99-496a-9341-7e1e962dcceb&quot;,
-    &quot;lastSuccessTime&quot;: 1597820457,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2500,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;Array is alreday mounted.&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;6426aca5-2d99-496a-9341-7e1e962dcceb&quot;,
+                &quot;lastSuccessTime&quot;: 1597820457,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2500,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;Array is alreday mounted.&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>5. LIST ARRAY DEVICE</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10169,56 +10119,52 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;6e787e27-1964-44da-bcdf-b5f44ffbd1a3&quot;,
-    &quot;lastSuccessTime&quot;: 1588920682,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;DONE&quot;
-        },
-        &quot;data&quot;: {
-            &quot;devicelist&quot;: [
-                {
-                    &quot;name&quot;: &quot;uram0&quot;,
-                    &quot;type&quot;: &quot;BUFFER&quot;
+                &quot;rid&quot;: &quot;6e787e27-1964-44da-bcdf-b5f44ffbd1a3&quot;,
+                &quot;lastSuccessTime&quot;: 1588920682,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;DONE&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;devicelist&quot;: [
+                            {
+                                &quot;name&quot;: &quot;uram0&quot;,
+                                &quot;type&quot;: &quot;BUFFER&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-0&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-1&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-2&quot;,
+                                &quot;type&quot;: &quot;DATA&quot;
+                            },
+                            {
+                                &quot;name&quot;: &quot;unvme-ns-3&quot;,
+                                &quot;type&quot;: &quot;SPARE&quot;
+                            }
+                        ]
+                    }
                 },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-0&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-1&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-2&quot;,
-                    &quot;type&quot;: &quot;DATA&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;unvme-ns-3&quot;,
-                    &quot;type&quot;: &quot;SPARE&quot;
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;rebulidingProgress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
-            <h3>6. LOAD ARRAY</h3>
+            <h3><s>6. LOAD ARRAY</s> (DEPRECATED)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/load
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10287,33 +10233,29 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/load
             </table>
             <h5>I. Example Response: Fail (2509)</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;c6c54c1f-13ef-46f6-9e0c-3d1a4a1b2ee8&quot;,
-    &quot;lastSuccessTime&quot;: 1596081038,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2509,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;MBR read error&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;capacity&quot;: &quot;0&quot;,
-        &quot;used&quot;: &quot;0&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;c6c54c1f-13ef-46f6-9e0c-3d1a4a1b2ee8&quot;,
+                &quot;lastSuccessTime&quot;: 1596081038,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2509,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;MBR read error&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>7. REMOVE DEVICE</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10381,41 +10323,31 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
                 </tbody>
             </table>
             <p><em><strong>Body:</strong></em></p>
-            <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;2e7818c7-34e4-4668-9663-b5670a4678a1&quot;,
-    &quot;lastSuccessTime&quot;: 1597910417,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;2e7818c7-34e4-4668-9663-b5670a4678a1&quot;,
+                &quot;lastSuccessTime&quot;: 1597910417,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>8. MOUNT ARRAY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10484,17 +10416,17 @@ URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
             </table>
             <h5>I. Example Response: Fail - 1022</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;85b04f05-e5d7-46c8-aa75-192f35a58a21&quot;,
-    &quot;lastSuccessTime&quot;: 1588920703,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 1022,
-            &quot;description&quot;: &quot;TIMED OUT&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;85b04f05-e5d7-46c8-aa75-192f35a58a21&quot;,
+                &quot;lastSuccessTime&quot;: 1588920703,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 1022,
+                        &quot;description&quot;: &quot;TIMED OUT&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -10532,21 +10464,21 @@ URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;8f5ecc2c-7772-4081-b3b8-e0e52822dcdb&quot;,
-    &quot;lastSuccessTime&quot;: 1597819990,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.8.2&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;8f5ecc2c-7772-4081-b3b8-e0e52822dcdb&quot;,
+                &quot;lastSuccessTime&quot;: 1597819990,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.8.2&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>III. Example Request: Fail - 10050</h5>
@@ -10584,26 +10516,26 @@ URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
             </table>
             <h5>III. Example Response: Fail - 10050</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;D-Agent&quot;,
-            &quot;code&quot;: 10050,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;Receiving error from POS&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;D-Agent&quot;,
+                        &quot;code&quot;: 10050,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;Receiving error from POS&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>9. UNMOUNT ARRAY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: 
-URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10672,21 +10604,21 @@ URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
             </table>
             <h5>I. Example Response: Fail - 2522</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
-    &quot;lastSuccessTime&quot;: 1622986144,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2522,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;no array exist&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.8.2&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
+                &quot;lastSuccessTime&quot;: 1622986144,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2522,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;no array exist&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.8.2&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -10724,29 +10656,29 @@ URL: http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
-    &quot;lastSuccessTime&quot;: 1622987052,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.8.2&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
+                &quot;lastSuccessTime&quot;: 1622987052,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.8.2&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>10. LIST ARRAY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/arrays
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/arrays
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10815,62 +10747,62 @@ URL: http://{{host}}/api/ibofos/v1/arrays
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
-    &quot;lastSuccessTime&quot;: 1622985867,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;arrayList&quot;: [
-                {
-                    &quot;createDatetime&quot;: &quot;2021-06-06 16:20:48 +0530&quot;,
-                    &quot;devicelist&quot;: [
-                        {
-                            &quot;name&quot;: &quot;uram0&quot;,
-                            &quot;type&quot;: &quot;BUFFER&quot;
-                        },
-                        {
-                            &quot;name&quot;: &quot;S45ANY0K100220      &quot;,
-                            &quot;type&quot;: &quot;DATA&quot;
-                        },
-                        {
-                            &quot;name&quot;: &quot;S45ANY0K300748      &quot;,
-                            &quot;type&quot;: &quot;DATA&quot;
-                        },
-                        {
-                            &quot;name&quot;: &quot;S45ANY0K300762      &quot;,
-                            &quot;type&quot;: &quot;DATA&quot;
-                        },
-                        {
-                            &quot;name&quot;: &quot;S45ANY0K300769      &quot;,
-                            &quot;type&quot;: &quot;SPARE&quot;
-                        }
-                    ],
-                    &quot;name&quot;: &quot;POSArray&quot;,
-                    &quot;status&quot;: &quot;Mounted&quot;,
-                    &quot;updateDatetime&quot;: &quot;2021-06-06 16:20:48 +0530&quot;
+                &quot;rid&quot;: &quot;44f1280b-982e-4d2e-ab14-fe9eb2022045&quot;,
+                &quot;lastSuccessTime&quot;: 1622985867,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;arrayList&quot;: [
+                            {
+                                &quot;createDatetime&quot;: &quot;2021-06-06 16:20:48 +0530&quot;,
+                                &quot;devicelist&quot;: [
+                                    {
+                                        &quot;name&quot;: &quot;uram0&quot;,
+                                        &quot;type&quot;: &quot;BUFFER&quot;
+                                    },
+                                    {
+                                        &quot;name&quot;: &quot;S45ANY0K100220      &quot;,
+                                        &quot;type&quot;: &quot;DATA&quot;
+                                    },
+                                    {
+                                        &quot;name&quot;: &quot;S45ANY0K300748      &quot;,
+                                        &quot;type&quot;: &quot;DATA&quot;
+                                    },
+                                    {
+                                        &quot;name&quot;: &quot;S45ANY0K300762      &quot;,
+                                        &quot;type&quot;: &quot;DATA&quot;
+                                    },
+                                    {
+                                        &quot;name&quot;: &quot;S45ANY0K300769      &quot;,
+                                        &quot;type&quot;: &quot;SPARE&quot;
+                                    }
+                                ],
+                                &quot;name&quot;: &quot;POSArray&quot;,
+                                &quot;status&quot;: &quot;Mounted&quot;,
+                                &quot;updateDatetime&quot;: &quot;2021-06-06 16:20:48 +0530&quot;
+                            }
+                        ]
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.8.2&quot;
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.8.2&quot;
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h2>POS/Devices</h2>
             <h3>1. LIST DEVICE</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/devices
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/devices
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -10939,81 +10871,81 @@ URL: http://{{host}}/api/ibofos/v1/devices
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;7ec6e965-dc86-4a95-8a3a-353dc36478a1&quot;,
-    &quot;lastSuccessTime&quot;: 1588920642,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 0,
-            &quot;description&quot;: &quot;DONE&quot;
-        },
-        &quot;data&quot;: {
-            &quot;devicelist&quot;: [
-                {
-                    &quot;addr&quot;: &quot;0000:04:00.0&quot;,
-                    &quot;class&quot;: &quot;SYSTEM&quot;,
-                    &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
-                    &quot;name&quot;: &quot;unvme-ns-0&quot;,
-                    &quot;size&quot;: 16777216,
-                    &quot;sn&quot;: &quot;VMWare NVME-0002&quot;,
-                    &quot;type&quot;: &quot;SSD&quot;
+                &quot;rid&quot;: &quot;7ec6e965-dc86-4a95-8a3a-353dc36478a1&quot;,
+                &quot;lastSuccessTime&quot;: 1588920642,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;description&quot;: &quot;DONE&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;devicelist&quot;: [
+                            {
+                                &quot;addr&quot;: &quot;0000:04:00.0&quot;,
+                                &quot;class&quot;: &quot;SYSTEM&quot;,
+                                &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
+                                &quot;name&quot;: &quot;unvme-ns-0&quot;,
+                                &quot;size&quot;: 16777216,
+                                &quot;sn&quot;: &quot;VMWare NVME-0002&quot;,
+                                &quot;type&quot;: &quot;SSD&quot;
+                            },
+                            {
+                                &quot;addr&quot;: &quot;0000:0c:00.0&quot;,
+                                &quot;class&quot;: &quot;SYSTEM&quot;,
+                                &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
+                                &quot;name&quot;: &quot;unvme-ns-1&quot;,
+                                &quot;size&quot;: 16777216,
+                                &quot;sn&quot;: &quot;VMWare NVME-0003&quot;,
+                                &quot;type&quot;: &quot;SSD&quot;
+                            },
+                            {
+                                &quot;addr&quot;: &quot;0000:13:00.0&quot;,
+                                &quot;class&quot;: &quot;SYSTEM&quot;,
+                                &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
+                                &quot;name&quot;: &quot;unvme-ns-2&quot;,
+                                &quot;size&quot;: 16777216,
+                                &quot;sn&quot;: &quot;VMWare NVME-0000&quot;,
+                                &quot;type&quot;: &quot;SSD&quot;
+                            },
+                            {
+                                &quot;addr&quot;: &quot;0000:1b:00.0&quot;,
+                                &quot;class&quot;: &quot;SYSTEM&quot;,
+                                &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
+                                &quot;name&quot;: &quot;unvme-ns-3&quot;,
+                                &quot;size&quot;: 16777216,
+                                &quot;sn&quot;: &quot;VMWare NVME-0001&quot;,
+                                &quot;type&quot;: &quot;SSD&quot;
+                            },
+                            {
+                                &quot;addr&quot;: &quot;&quot;,
+                                &quot;class&quot;: &quot;SYSTEM&quot;,
+                                &quot;mn&quot;: &quot;uram0&quot;,
+                                &quot;name&quot;: &quot;uram0&quot;,
+                                &quot;size&quot;: 262144,
+                                &quot;sn&quot;: &quot;uram0&quot;,
+                                &quot;type&quot;: &quot;NVRAM&quot;
+                            }
+                        ]
+                    }
                 },
-                {
-                    &quot;addr&quot;: &quot;0000:0c:00.0&quot;,
-                    &quot;class&quot;: &quot;SYSTEM&quot;,
-                    &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
-                    &quot;name&quot;: &quot;unvme-ns-1&quot;,
-                    &quot;size&quot;: 16777216,
-                    &quot;sn&quot;: &quot;VMWare NVME-0003&quot;,
-                    &quot;type&quot;: &quot;SSD&quot;
-                },
-                {
-                    &quot;addr&quot;: &quot;0000:13:00.0&quot;,
-                    &quot;class&quot;: &quot;SYSTEM&quot;,
-                    &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
-                    &quot;name&quot;: &quot;unvme-ns-2&quot;,
-                    &quot;size&quot;: 16777216,
-                    &quot;sn&quot;: &quot;VMWare NVME-0000&quot;,
-                    &quot;type&quot;: &quot;SSD&quot;
-                },
-                {
-                    &quot;addr&quot;: &quot;0000:1b:00.0&quot;,
-                    &quot;class&quot;: &quot;SYSTEM&quot;,
-                    &quot;mn&quot;: &quot;VMware Virtual NVMe Disk&quot;,
-                    &quot;name&quot;: &quot;unvme-ns-3&quot;,
-                    &quot;size&quot;: 16777216,
-                    &quot;sn&quot;: &quot;VMWare NVME-0001&quot;,
-                    &quot;type&quot;: &quot;SSD&quot;
-                },
-                {
-                    &quot;addr&quot;: &quot;&quot;,
-                    &quot;class&quot;: &quot;SYSTEM&quot;,
-                    &quot;mn&quot;: &quot;uram0&quot;,
-                    &quot;name&quot;: &quot;uram0&quot;,
-                    &quot;size&quot;: 262144,
-                    &quot;sn&quot;: &quot;uram0&quot;,
-                    &quot;type&quot;: &quot;NVRAM&quot;
+                &quot;info&quot;: {
+                    &quot;state&quot;: &quot;OFFLINE&quot;,
+                    &quot;situation&quot;: &quot;DEFAULT&quot;,
+                    &quot;rebuliding_progress&quot;: 0,
+                    &quot;capacity&quot;: 0,
+                    &quot;used&quot;: 0
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>2. SCAN DEVICE</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/devices/all/scan
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/devices/all/scan
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11082,33 +11014,30 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;3b6f2a86-7369-40e0-9c63-65cdf417fad4&quot;,
-    &quot;lastSuccessTime&quot;: 1597819950,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;c993d360-e423-455d-a8f0-13ff816e89e5&quot;,
+                &quot;lastSuccessTime&quot;: 1631167785,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;,
+                        &quot;posDescription&quot;: &quot;device scanning complete&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>3. SMART</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: 
-URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-0/smart
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/devices/{{deviceName}}/smart
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11177,57 +11106,53 @@ URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-0/smart
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;4ed9f174-7458-453a-a3a9-63a81b4cdc8c&quot;,
-    &quot;lastSuccessTime&quot;: 1597910447,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;availableSpare&quot;: &quot;1%&quot;,
-            &quot;availableSpareSpace&quot;: &quot;OK&quot;,
-            &quot;availableSpareThreshold&quot;: &quot;100%&quot;,
-            &quot;contollerBusyTime&quot;: &quot;0x50000000000000000m&quot;,
-            &quot;criticalTemperatureTime&quot;: &quot;0m&quot;,
-            &quot;currentTemperature&quot;: &quot;11759C&quot;,
-            &quot;dataUnitsRead&quot;: &quot;0x60000000000000000&quot;,
-            &quot;dataUnitsWritten&quot;: &quot;0x50000000000000000&quot;,
-            &quot;deviceReliability&quot;: &quot;OK&quot;,
-            &quot;hostReadCommands&quot;: &quot;0x17700000000000000000&quot;,
-            &quot;hostWriteCommands&quot;: &quot;0x13880000000000000000&quot;,
-            &quot;lifePercentageUsed&quot;: &quot;0%&quot;,
-            &quot;lifetimeErrorLogEntries&quot;: &quot;0&quot;,
-            &quot;powerCycles&quot;: &quot;0xA0000000000000000&quot;,
-            &quot;powerOnHours&quot;: &quot;0x3C0000000000000000h&quot;,
-            &quot;readOnly&quot;: &quot;No&quot;,
-            &quot;temperature&quot;: &quot;OK&quot;,
-            &quot;unrecoverableMediaErrors&quot;: &quot;0&quot;,
-            &quot;unsafeShutdowns&quot;: &quot;0&quot;,
-            &quot;volatileMemoryBackup&quot;: &quot;OK&quot;,
-            &quot;warningTemperatureTime&quot;: &quot;0m&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;4ed9f174-7458-453a-a3a9-63a81b4cdc8c&quot;,
+                &quot;lastSuccessTime&quot;: 1597910447,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;availableSpare&quot;: &quot;1%&quot;,
+                        &quot;availableSpareSpace&quot;: &quot;OK&quot;,
+                        &quot;availableSpareThreshold&quot;: &quot;100%&quot;,
+                        &quot;contollerBusyTime&quot;: &quot;0x50000000000000000m&quot;,
+                        &quot;criticalTemperatureTime&quot;: &quot;0m&quot;,
+                        &quot;currentTemperature&quot;: &quot;11759C&quot;,
+                        &quot;dataUnitsRead&quot;: &quot;0x60000000000000000&quot;,
+                        &quot;dataUnitsWritten&quot;: &quot;0x50000000000000000&quot;,
+                        &quot;deviceReliability&quot;: &quot;OK&quot;,
+                        &quot;hostReadCommands&quot;: &quot;0x17700000000000000000&quot;,
+                        &quot;hostWriteCommands&quot;: &quot;0x13880000000000000000&quot;,
+                        &quot;lifePercentageUsed&quot;: &quot;0%&quot;,
+                        &quot;lifetimeErrorLogEntries&quot;: &quot;0&quot;,
+                        &quot;powerCycles&quot;: &quot;0xA0000000000000000&quot;,
+                        &quot;powerOnHours&quot;: &quot;0x3C0000000000000000h&quot;,
+                        &quot;readOnly&quot;: &quot;No&quot;,
+                        &quot;temperature&quot;: &quot;OK&quot;,
+                        &quot;unrecoverableMediaErrors&quot;: &quot;0&quot;,
+                        &quot;unsafeShutdowns&quot;: &quot;0&quot;,
+                        &quot;volatileMemoryBackup&quot;: &quot;OK&quot;,
+                        &quot;warningTemperatureTime&quot;: &quot;0m&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                        &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h2>POS/System</h2>
             <h3>1. EXITIBOFOS</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/system
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11296,27 +11221,27 @@ URL: http://{{host}}/api/ibofos/v1/system
             </table>
             <h5>I. Example Response: Fail - 9003</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;6e4ab80b-07ee-4354-87d3-12df9821e432&quot;,
-    &quot;lastSuccessTime&quot;: 1597820066,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;system&quot;,
-            &quot;code&quot;: 9003,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;The request cannot be executed since ibofos is mounted&quot;,
-            &quot;problem&quot;: &quot;ibofos already has been mounted&quot;,
-            &quot;solution&quot;: &quot;try again after unmount ibofos&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;6e4ab80b-07ee-4354-87d3-12df9821e432&quot;,
+                &quot;lastSuccessTime&quot;: 1597820066,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;system&quot;,
+                        &quot;code&quot;: 9003,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;The request cannot be executed since ibofos is mounted&quot;,
+                        &quot;problem&quot;: &quot;ibofos already has been mounted&quot;,
+                        &quot;solution&quot;: &quot;try again after unmount ibofos&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 120312771380,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;NORMAL&quot;,
+                    &quot;state&quot;: &quot;NORMAL&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -11354,33 +11279,33 @@ URL: http://{{host}}/api/ibofos/v1/system
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;c9487931-cfdd-4f5b-a595-d09b6ce0fe89&quot;,
-    &quot;lastSuccessTime&quot;: 1597820084,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;c9487931-cfdd-4f5b-a595-d09b6ce0fe89&quot;,
+                &quot;lastSuccessTime&quot;: 1597820084,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 0,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;DEFAULT&quot;,
+                    &quot;state&quot;: &quot;OFFLINE&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
-            <h3><s>2. MOUNTIBOFOS</s></h3>
+            <h3><s>2. MOUNTIBOFOS</s> (DEPRECATED)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/mount
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/system/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11449,24 +11374,24 @@ URL: http://{{host}}/api/ibofos/v1/system/mount
             </table>
             <h5>I. Example Response: Fail - 1022</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;85b04f05-e5d7-46c8-aa75-192f35a58a21&quot;,
-    &quot;lastSuccessTime&quot;: 1588920703,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 1022,
-            &quot;description&quot;: &quot;TIMED OUT&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;DIAGNOSIS&quot;,
-        &quot;situation&quot;: &quot;TRY_MOUNT&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 120795955200,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;85b04f05-e5d7-46c8-aa75-192f35a58a21&quot;,
+                &quot;lastSuccessTime&quot;: 1588920703,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 1022,
+                        &quot;description&quot;: &quot;TIMED OUT&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;state&quot;: &quot;DIAGNOSIS&quot;,
+                    &quot;situation&quot;: &quot;TRY_MOUNT&quot;,
+                    &quot;rebuliding_progress&quot;: 0,
+                    &quot;capacity&quot;: 120795955200,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -11504,25 +11429,25 @@ URL: http://{{host}}/api/ibofos/v1/system/mount
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;8f5ecc2c-7772-4081-b3b8-e0e52822dcdb&quot;,
-    &quot;lastSuccessTime&quot;: 1597819990,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;8f5ecc2c-7772-4081-b3b8-e0e52822dcdb&quot;,
+                &quot;lastSuccessTime&quot;: 1597819990,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 120312771380,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;NORMAL&quot;,
+                    &quot;state&quot;: &quot;NORMAL&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>III. Example Request: Fail - 2503</h5>
@@ -11560,33 +11485,33 @@ URL: http://{{host}}/api/ibofos/v1/system/mount
             </table>
             <h5>III. Example Response: Fail - 2503</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;d3fe603c-655b-4e2c-b240-7e81428047f5&quot;,
-    &quot;lastSuccessTime&quot;: 1597819897,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;Array&quot;,
-            &quot;code&quot;: 2503,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;Array does not exists&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;d3fe603c-655b-4e2c-b240-7e81428047f5&quot;,
+                &quot;lastSuccessTime&quot;: 1597819897,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;Array&quot;,
+                        &quot;code&quot;: 2503,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;Array does not exists&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 0,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;DEFAULT&quot;,
+                    &quot;state&quot;: &quot;OFFLINE&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>3. RUNIBOFOS</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/system
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11655,18 +11580,18 @@ URL: http://{{host}}/api/ibofos/v1/system
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 1597819762,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 1597819762,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail</h5>
@@ -11704,32 +11629,32 @@ URL: http://{{host}}/api/ibofos/v1/system
             </table>
             <h5>II. Example Response: Fail</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;&quot;,
-    &quot;lastSuccessTime&quot;: 0,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;&quot;,
-            &quot;code&quot;: 11000,
-            &quot;description&quot;: &quot;Exec command error&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;state&quot;: &quot;&quot;,
-        &quot;situation&quot;: &quot;&quot;,
-        &quot;rebuliding_progress&quot;: 0,
-        &quot;capacity&quot;: 0,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;&quot;,
+                &quot;lastSuccessTime&quot;: 0,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;&quot;,
+                        &quot;code&quot;: 11000,
+                        &quot;description&quot;: &quot;Exec command error&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;state&quot;: &quot;&quot;,
+                    &quot;situation&quot;: &quot;&quot;,
+                    &quot;rebuliding_progress&quot;: 0,
+                    &quot;capacity&quot;: 0,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
-            <h3><s>4. UNMOUNTIBOFOS</s></h3>
+            <h3><s>4. UNMOUNTIBOFOS</s> (DEPRECATED)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system/mount
-</code></pre>
+            Type: 
+            URL: http://{{host}}/api/ibofos/v1/system/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11798,26 +11723,26 @@ URL: http://{{host}}/api/ibofos/v1/system/mount
             </table>
             <h5>I. Example Response: Fail - 9001</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;742c4553-0909-43b6-97bf-6519cdee2b71&quot;,
-    &quot;lastSuccessTime&quot;: 1597819883,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;system&quot;,
-            &quot;code&quot;: 9001,
-            &quot;level&quot;: &quot;ERROR&quot;,
-            &quot;description&quot;: &quot;failed to unmount ibofos&quot;,
-            &quot;problem&quot;: &quot;ibofos not mounted&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;742c4553-0909-43b6-97bf-6519cdee2b71&quot;,
+                &quot;lastSuccessTime&quot;: 1597819883,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;system&quot;,
+                        &quot;code&quot;: 9001,
+                        &quot;level&quot;: &quot;ERROR&quot;,
+                        &quot;description&quot;: &quot;failed to unmount ibofos&quot;,
+                        &quot;problem&quot;: &quot;ibofos not mounted&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 0,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;DEFAULT&quot;,
+                    &quot;state&quot;: &quot;OFFLINE&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -11855,33 +11780,33 @@ URL: http://{{host}}/api/ibofos/v1/system/mount
             </table>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;84fd344b-774a-4733-b6a8-dcebd68dedf8&quot;,
-    &quot;lastSuccessTime&quot;: 1597820004,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 0,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;DEFAULT&quot;,
-        &quot;state&quot;: &quot;OFFLINE&quot;,
-        &quot;used&quot;: 0
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;84fd344b-774a-4733-b6a8-dcebd68dedf8&quot;,
+                &quot;lastSuccessTime&quot;: 1597820004,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 0,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;DEFAULT&quot;,
+                    &quot;state&quot;: &quot;OFFLINE&quot;,
+                    &quot;used&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>5. iBOFOSINFO</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/system
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/system
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -11950,41 +11875,34 @@ URL: http://{{host}}/api/ibofos/v1/system
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;d62522e2-336c-42dd-95dc-f7cd44c7e708&quot;,
-    &quot;lastSuccessTime&quot;: 1597908994,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;capacity&quot;: 120312771380,
-            &quot;rebuildingProgress&quot;: &quot;0&quot;,
-            &quot;situation&quot;: &quot;NORMAL&quot;,
-            &quot;state&quot;: &quot;NORMAL&quot;,
-            &quot;used&quot;: 4194304
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;4e5ac098-da7c-4800-83d9-2edcfc251881&quot;,
+                &quot;lastSuccessTime&quot;: 1631167978,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;,
+                        &quot;posDescription&quot;: &quot;DONE&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;version&quot;: &quot;pos-0.9.10&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h2>POS/Volume</h2>
             <h3>1. CREATE VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12019,15 +11937,15 @@ URL: http://{{host}}/api/ibofos/v1/volumes
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;name&quot;: &quot;vol01f&quot;,
-        &quot;size&quot;: 4194304,
-        &quot;maxbw&quot;: 0,
-        &quot;maxiops&quot;: 0
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;name&quot;: &quot;vol01f&quot;,
+                    &quot;size&quot;: 4194304,
+                    &quot;maxbw&quot;: 0,
+                    &quot;maxiops&quot;: 0
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 2022</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -12064,38 +11982,38 @@ URL: http://{{host}}/api/ibofos/v1/volumes
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;name&quot;: &quot;vol01&quot;,
-        &quot;size&quot;: 4194304,
-        &quot;maxbw&quot;: 0,
-        &quot;maxiops&quot;: 0
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;name&quot;: &quot;vol01&quot;,
+                    &quot;size&quot;: 4194304,
+                    &quot;maxbw&quot;: 0,
+                    &quot;maxiops&quot;: 0
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 2022</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d&quot;,
-    &quot;lastSuccessTime&quot;: 1597910744,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;VolumeManager&quot;,
-            &quot;code&quot;: 2022,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;Volume name is duplicated&quot;,
-            &quot;problem&quot;: &quot;A volume with a duplicate name already exists&quot;,
-            &quot;solution&quot;: &quot;Enter a different volume name&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d&quot;,
+                &quot;lastSuccessTime&quot;: 1597910744,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;VolumeManager&quot;,
+                        &quot;code&quot;: 2022,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;Volume name is duplicated&quot;,
+                        &quot;problem&quot;: &quot;A volume with a duplicate name already exists&quot;,
+                        &quot;solution&quot;: &quot;Enter a different volume name&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 120312771380,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;NORMAL&quot;,
+                    &quot;state&quot;: &quot;NORMAL&quot;,
+                    &quot;used&quot;: 4194304
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -12133,44 +12051,44 @@ URL: http://{{host}}/api/ibofos/v1/volumes
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;name&quot;: &quot;vol01&quot;,
-        &quot;size&quot;: 4194304,
-        &quot;maxbw&quot;: 0,
-        &quot;maxiops&quot;: 0
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;name&quot;: &quot;vol01&quot;,
+                    &quot;size&quot;: 4194304,
+                    &quot;maxbw&quot;: 0,
+                    &quot;maxiops&quot;: 0
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;bde37273-adc4-459f-883b-cf5ea2542134&quot;,
-    &quot;lastSuccessTime&quot;: 1597910684,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;bde37273-adc4-459f-883b-cf5ea2542134&quot;,
+                &quot;lastSuccessTime&quot;: 1597910684,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;capacity&quot;: 120312771380,
+                    &quot;rebuildingProgress&quot;: &quot;0&quot;,
+                    &quot;situation&quot;: &quot;NORMAL&quot;,
+                    &quot;state&quot;: &quot;NORMAL&quot;,
+                    &quot;used&quot;: 4194304
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>2. CREATE VOLUME (Multi)</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12205,25 +12123,25 @@ URL: http://{{host}}/api/ibofos/v1/volumes
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;name&quot;: &quot;volmulAA&quot;,
-        &quot;size&quot;: 5242880,
-        &quot;maxbw&quot;: 0,
-        &quot;maxiops&quot;: 0,
-        &quot;totalcount&quot;: 174,
-        &quot;stoponerror&quot;: false,
-        &quot;namesuffix&quot;: 0,
-        &quot;mountall&quot;: true
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;name&quot;: &quot;volmulAA&quot;,
+                    &quot;size&quot;: 5242880,
+                    &quot;maxbw&quot;: 0,
+                    &quot;maxiops&quot;: 0,
+                    &quot;totalcount&quot;: 174,
+                    &quot;stoponerror&quot;: false,
+                    &quot;namesuffix&quot;: 0,
+                    &quot;mountall&quot;: true
+                }
+            }
+            </code></pre>
             <h3>3. DELETE VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12258,11 +12176,11 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Success</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -12299,32 +12217,28 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;805514bf-445b-40b6-9b84-b33a6d07e409&quot;,
-    &quot;lastSuccessTime&quot;: 1597910838,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;805514bf-445b-40b6-9b84-b33a6d07e409&quot;,
+                &quot;lastSuccessTime&quot;: 1597910838,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail - 2010</h5>
@@ -12362,42 +12276,38 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Fail - 2010</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;9139d5fa-f93f-4ecb-a9f4-5fe9cc553a9d&quot;,
-    &quot;lastSuccessTime&quot;: 1597910848,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;VolumeManager&quot;,
-            &quot;code&quot;: 2010,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;The requested volume does not exist&quot;,
-            &quot;problem&quot;: &quot;The volume with the requested volume name or volume ID does not exist&quot;,
-            &quot;solution&quot;: &quot;Enter the correct volume name or volume ID after checking the volume list&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;9139d5fa-f93f-4ecb-a9f4-5fe9cc553a9d&quot;,
+                &quot;lastSuccessTime&quot;: 1597910848,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;VolumeManager&quot;,
+                        &quot;code&quot;: 2010,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;The requested volume does not exist&quot;,
+                        &quot;problem&quot;: &quot;The volume with the requested volume name or volume ID does not exist&quot;,
+                        &quot;solution&quot;: &quot;Enter the correct volume name or volume ID after checking the volume list&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>4. LIST VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12466,55 +12376,51 @@ URL: http://{{host}}/api/ibofos/v1/volumes
             </table>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;f51223bf-db87-4308-b49b-64b981cc6d9e&quot;,
-    &quot;lastSuccessTime&quot;: 1597910789,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        },
-        &quot;data&quot;: {
-            &quot;volumes&quot;: [
-                {
-                    &quot;id&quot;: 0,
-                    &quot;maxbw&quot;: 6000,
-                    &quot;maxiops&quot;: 0,
-                    &quot;name&quot;: &quot;newvol01&quot;,
-                    &quot;remain&quot;: 4194304,
-                    &quot;status&quot;: &quot;Unmounted&quot;,
-                    &quot;total&quot;: 4194304
+                &quot;rid&quot;: &quot;f51223bf-db87-4308-b49b-64b981cc6d9e&quot;,
+                &quot;lastSuccessTime&quot;: 1597910789,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;volumes&quot;: [
+                            {
+                                &quot;id&quot;: 0,
+                                &quot;maxbw&quot;: 6000,
+                                &quot;maxiops&quot;: 0,
+                                &quot;name&quot;: &quot;newvol01&quot;,
+                                &quot;remain&quot;: 4194304,
+                                &quot;status&quot;: &quot;Unmounted&quot;,
+                                &quot;total&quot;: 4194304
+                            },
+                            {
+                                &quot;id&quot;: 1,
+                                &quot;maxbw&quot;: 0,
+                                &quot;maxiops&quot;: 0,
+                                &quot;name&quot;: &quot;vol01&quot;,
+                                &quot;remain&quot;: 4194304,
+                                &quot;status&quot;: &quot;Unmounted&quot;,
+                                &quot;total&quot;: 4194304
+                            }
+                        ]
+                    }
                 },
-                {
-                    &quot;id&quot;: 1,
-                    &quot;maxbw&quot;: 0,
-                    &quot;maxiops&quot;: 0,
-                    &quot;name&quot;: &quot;vol01&quot;,
-                    &quot;remain&quot;: 4194304,
-                    &quot;status&quot;: &quot;Unmounted&quot;,
-                    &quot;total&quot;: 4194304
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
                 }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 8388608
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>5. MOUNT VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12549,11 +12455,11 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 2040</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -12590,34 +12496,30 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 2040</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;83447d87-e5a9-4f5a-bee8-a857cb8b9aa3&quot;,
-    &quot;lastSuccessTime&quot;: 1597910808,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;VolumeManager&quot;,
-            &quot;code&quot;: 2040,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;Volume already mounted&quot;,
-            &quot;problem&quot;: &quot;Attempt to mount a volume that is already mounted&quot;,
-            &quot;solution&quot;: &quot;Nothing to do&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 8388608
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;83447d87-e5a9-4f5a-bee8-a857cb8b9aa3&quot;,
+                &quot;lastSuccessTime&quot;: 1597910808,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;VolumeManager&quot;,
+                        &quot;code&quot;: 2040,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;Volume already mounted&quot;,
+                        &quot;problem&quot;: &quot;Attempt to mount a volume that is already mounted&quot;,
+                        &quot;solution&quot;: &quot;Nothing to do&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -12655,40 +12557,36 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;964d431e-ac03-4920-b94a-86c33c1ecacc&quot;,
-    &quot;lastSuccessTime&quot;: 1597910800,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 8388608
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;964d431e-ac03-4920-b94a-86c33c1ecacc&quot;,
+                &quot;lastSuccessTime&quot;: 1597910800,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>6. RENAME VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: PATCH
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12723,12 +12621,12 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;newname&quot;: &quot;newvol01&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;newname&quot;: &quot;newvol01&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 2010</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -12765,35 +12663,31 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;newname&quot;: &quot;newvol01&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;newname&quot;: &quot;newvol01&quot;
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 2010</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;1530cced-60d1-4623-b670-8854a089eb79&quot;,
-    &quot;lastSuccessTime&quot;: 1597910772,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;VolumeManager&quot;,
-            &quot;code&quot;: 2010,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;The requested volume does not exist&quot;,
-            &quot;problem&quot;: &quot;The volume with the requested volume name or volume ID does not exist&quot;,
-            &quot;solution&quot;: &quot;Enter the correct volume name or volume ID after checking the volume list&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;1530cced-60d1-4623-b670-8854a089eb79&quot;,
+                &quot;lastSuccessTime&quot;: 1597910772,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;VolumeManager&quot;,
+                        &quot;code&quot;: 2010,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;The requested volume does not exist&quot;,
+                        &quot;problem&quot;: &quot;The volume with the requested volume name or volume ID does not exist&quot;,
+                        &quot;solution&quot;: &quot;Enter the correct volume name or volume ID after checking the volume list&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -12831,41 +12725,37 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;newname&quot;: &quot;newvol01&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;newname&quot;: &quot;newvol01&quot;
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;d30a0f60-fceb-4652-889e-3dc4b374ac83&quot;,
-    &quot;lastSuccessTime&quot;: 1597910761,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 4194304
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;d30a0f60-fceb-4652-889e-3dc4b374ac83&quot;,
+                &quot;lastSuccessTime&quot;: 1597910761,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>7. UNMOUNT VOLUME</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: DELETE
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/volumes/{{volumeName}}/mount
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -12900,11 +12790,11 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Success</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -12941,32 +12831,28 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;2f6400e3-6a6f-4028-aea0-c5daa8a4f1d5&quot;,
-    &quot;lastSuccessTime&quot;: 1597910819,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 8388608
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;2f6400e3-6a6f-4028-aea0-c5daa8a4f1d5&quot;,
+                &quot;lastSuccessTime&quot;: 1597910819,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Fail - 2041</h5>
@@ -13004,42 +12890,38 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Fail - 2041</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;157e6963-e935-4c2e-8649-fa5cd1d8b846&quot;,
-    &quot;lastSuccessTime&quot;: 1597910827,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;VolumeManager&quot;,
-            &quot;code&quot;: 2041,
-            &quot;level&quot;: &quot;WARN&quot;,
-            &quot;description&quot;: &quot;Volume already unmounted&quot;,
-            &quot;problem&quot;: &quot;Attempt to unmount a volume that is already unmounted&quot;,
-            &quot;solution&quot;: &quot;Nothing to do&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;capacity&quot;: 120312771380,
-        &quot;rebuildingProgress&quot;: &quot;0&quot;,
-        &quot;situation&quot;: &quot;NORMAL&quot;,
-        &quot;state&quot;: &quot;NORMAL&quot;,
-        &quot;used&quot;: 8388608
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;157e6963-e935-4c2e-8649-fa5cd1d8b846&quot;,
+                &quot;lastSuccessTime&quot;: 1597910827,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;VolumeManager&quot;,
+                        &quot;code&quot;: 2041,
+                        &quot;level&quot;: &quot;WARN&quot;,
+                        &quot;description&quot;: &quot;Volume already unmounted&quot;,
+                        &quot;problem&quot;: &quot;Attempt to unmount a volume that is already unmounted&quot;,
+                        &quot;solution&quot;: &quot;Nothing to do&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h3>8. LIST QOS VOLUME POLICIES</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/qos/policies
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/qos/policies
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -13074,12 +12956,12 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 4600</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -13116,30 +12998,31 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 4600</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;df05ff24-d686-47c7-bf97-06830f1db485&quot;,
-    &quot;lastSuccessTime&quot;: 1631105717,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;QoSManager&quot;,
-            &quot;code&quot;: 4600,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;set event policy&quot;,
-            &quot;posDescription&quot;: &quot;Invalid Volume Name vol&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;df05ff24-d686-47c7-bf97-06830f1db485&quot;,
+                &quot;lastSuccessTime&quot;: 1631105717,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;QoSManager&quot;,
+                        &quot;code&quot;: 4600,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;set event policy&quot;,
+                        &quot;posDescription&quot;: &quot;Invalid Volume Name vol&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -13177,62 +13060,62 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}]
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;09117322-8994-4d94-9480-3a5257c07c08&quot;,
-    &quot;lastSuccessTime&quot;: 1631105738,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;,
-            &quot;posDescription&quot;: &quot;List of Volume Policies in POSArray&quot;
-        },
-        &quot;data&quot;: {
-            &quot;arrayName&quot;: [
-                {
-                    &quot;ArrayName&quot;: &quot;POSArray&quot;
+                &quot;rid&quot;: &quot;09117322-8994-4d94-9480-3a5257c07c08&quot;,
+                &quot;lastSuccessTime&quot;: 1631105738,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;,
+                        &quot;posDescription&quot;: &quot;List of Volume Policies in POSArray&quot;
+                    },
+                    &quot;data&quot;: {
+                        &quot;arrayName&quot;: [
+                            {
+                                &quot;ArrayName&quot;: &quot;POSArray&quot;
+                            }
+                        ],
+                        &quot;rebuildPolicy&quot;: [
+                            {
+                                &quot;rebuild&quot;: &quot;low&quot;
+                            }
+                        ],
+                        &quot;volumePolicies&quot;: [
+                            {
+                                &quot;id&quot;: 0,
+                                &quot;maxbw&quot;: 0,
+                                &quot;maxiops&quot;: 0,
+                                &quot;min_bw_guarantee&quot;: &quot;No&quot;,
+                                &quot;min_iops_guarantee&quot;: &quot;No&quot;,
+                                &quot;minbw&quot;: 0,
+                                &quot;miniops&quot;: 0,
+                                &quot;name&quot;: &quot;vol0&quot;
+                            }
+                        ]
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
                 }
-            ],
-            &quot;rebuildPolicy&quot;: [
-                {
-                    &quot;rebuild&quot;: &quot;low&quot;
-                }
-            ],
-            &quot;volumePolicies&quot;: [
-                {
-                    &quot;id&quot;: 0,
-                    &quot;maxbw&quot;: 0,
-                    &quot;maxiops&quot;: 0,
-                    &quot;min_bw_guarantee&quot;: &quot;No&quot;,
-                    &quot;min_iops_guarantee&quot;: &quot;No&quot;,
-                    &quot;minbw&quot;: 0,
-                    &quot;miniops&quot;: 0,
-                    &quot;name&quot;: &quot;vol0&quot;
-                }
-            ]
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>9. CREATE QOS VOLUME POLICY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/qos
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/qos
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -13267,14 +13150,14 @@ URL: http://{{host}}/api/ibofos/v1/qos
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}],
-        &quot;maxiops&quot;: 100,
-        &quot;maxbw&quot;: 500
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}],
+                    &quot;maxiops&quot;: 100,
+                    &quot;maxbw&quot;: 500
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 4600</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -13311,32 +13194,34 @@ URL: http://{{host}}/api/ibofos/v1/qos
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}],
-        &quot;maxiops&quot;: 100,
-        &quot;maxbw&quot;: 500
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}],
+                    &quot;maxiops&quot;: 100,
+                    &quot;maxbw&quot;: 500
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 4600</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;ac36a4f1-edfb-4605-a5aa-a528ea135123&quot;,
-    &quot;lastSuccessTime&quot;: 1631105036,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;QoSManager&quot;,
-            &quot;code&quot;: 4600,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;set event policy&quot;,
-            &quot;posDescription&quot;: &quot;Invalid Volume Name volume-0&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;ac36a4f1-edfb-4605-a5aa-a528ea135123&quot;,
+                &quot;lastSuccessTime&quot;: 1631105036,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;QoSManager&quot;,
+                        &quot;code&quot;: 4600,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;set event policy&quot;,
+                        &quot;posDescription&quot;: &quot;Invalid Volume Name volume-0&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            
+            
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -13374,40 +13259,41 @@ URL: http://{{host}}/api/ibofos/v1/qos
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}],
-        &quot;maxiops&quot;: 100,
-        &quot;maxbw&quot;: 500
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}],
+                    &quot;maxiops&quot;: 100,
+                    &quot;maxbw&quot;: 500
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;19022419-70f4-4bbb-82e0-ca8a73d8c103&quot;,
-    &quot;lastSuccessTime&quot;: 1631105124,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;,
-            &quot;posDescription&quot;: &quot;Volume Qos Policy Create&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;19022419-70f4-4bbb-82e0-ca8a73d8c103&quot;,
+                &quot;lastSuccessTime&quot;: 1631105124,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;,
+                        &quot;posDescription&quot;: &quot;Volume Qos Policy Create&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <h3>10. RESET QOS VOLUME POLICY</h3>
             <p><em><strong>Endpoint:</strong></em></p>
             <pre><code class="language-bash">Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/qos/reset
-</code></pre>
+            Type: RAW
+            URL: http://{{host}}/api/ibofos/v1/qos/reset
+            </code></pre>
             <p><em><strong>Headers:</strong></em></p>
             <table>
                 <thead>
@@ -13442,12 +13328,12 @@ URL: http://{{host}}/api/ibofos/v1/qos/reset
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
+                }
+            }
+            </code></pre>
             <p><em><strong>More example Requests/Responses:</strong></em></p>
             <h5>I. Example Request: Fail - 4600</h5>
             <p><em><strong>Headers:</strong></em></p>
@@ -13484,30 +13370,30 @@ URL: http://{{host}}/api/ibofos/v1/qos/reset
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;volume-0&quot;}]
+                }
+            }
+            </code></pre>
             <h5>I. Example Response: Fail - 4600</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;88521bc2-ae2a-4b2b-b09b-536cdd3bdd80&quot;,
-    &quot;lastSuccessTime&quot;: 1631105505,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;QoSManager&quot;,
-            &quot;code&quot;: 4600,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;set event policy&quot;,
-            &quot;posDescription&quot;: &quot;Invalid Volume Name volume-0&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;88521bc2-ae2a-4b2b-b09b-536cdd3bdd80&quot;,
+                &quot;lastSuccessTime&quot;: 1631105505,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;QoSManager&quot;,
+                        &quot;code&quot;: 4600,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;set event policy&quot;,
+                        &quot;posDescription&quot;: &quot;Invalid Volume Name volume-0&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 400</p>
             <p>&lt;br&gt;</p>
             <h5>II. Example Request: Success</h5>
@@ -13545,30 +13431,30 @@ URL: http://{{host}}/api/ibofos/v1/qos/reset
             </table>
             <p><em><strong>Body:</strong></em></p>
             <pre><code class="language-js">{
-    &quot;param&quot;: {
-        &quot;array&quot;: &quot;{{arrayName}}&quot;,
-        &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}]
-    }
-}
-</code></pre>
+                &quot;param&quot;: {
+                    &quot;array&quot;: &quot;{{arrayName}}&quot;,
+                    &quot;vol&quot;:[{&quot;volumeName&quot;:&quot;vol-0&quot;}]
+                }
+            }
+            </code></pre>
             <h5>II. Example Response: Success</h5>
             <pre><code class="language-js">{
-    &quot;rid&quot;: &quot;016b99d8-19d9-4c6a-bb65-aebc89117d5c&quot;,
-    &quot;lastSuccessTime&quot;: 1631105543,
-    &quot;result&quot;: {
-        &quot;status&quot;: {
-            &quot;module&quot;: &quot;COMMON&quot;,
-            &quot;code&quot;: 0,
-            &quot;level&quot;: &quot;INFO&quot;,
-            &quot;description&quot;: &quot;Success&quot;,
-            &quot;posDescription&quot;: &quot;Volume Qos Policy Reset&quot;
-        }
-    },
-    &quot;info&quot;: {
-        &quot;version&quot;: &quot;pos-0.9.10&quot;
-    }
-}
-</code></pre>
+                &quot;rid&quot;: &quot;016b99d8-19d9-4c6a-bb65-aebc89117d5c&quot;,
+                &quot;lastSuccessTime&quot;: 1631105543,
+                &quot;result&quot;: {
+                    &quot;status&quot;: {
+                        &quot;module&quot;: &quot;COMMON&quot;,
+                        &quot;code&quot;: 0,
+                        &quot;level&quot;: &quot;INFO&quot;,
+                        &quot;description&quot;: &quot;Success&quot;,
+                        &quot;posDescription&quot;: &quot;Volume Qos Policy Reset&quot;
+                    }
+                },
+                &quot;info&quot;: {
+                    &quot;version&quot;: &quot;pos-0.9.10&quot;
+                }
+            }
+            </code></pre>
             <p><em><strong>Status Code:</strong></em> 200</p>
             <p>&lt;br&gt;</p>
             <p><em><strong>Available Variables:</strong></em></p>
@@ -13635,7 +13521,6 @@ URL: http://{{host}}/api/ibofos/v1/qos/reset
             </table>
             <hr>
             <p><a href="#d-agent">Back to top</a></p>
-            <blockquote></blockquote>
 
         </div>
     </div>
