@@ -34,7 +34,7 @@ The official user guide is in the /doc/ directory
 3. nodejs 14.x
 4. InfluxDB (1.8.x)
 5. IP Address of Mellanox Port should be set (Please refer to the file src/dagent/README.md)
-6. Poseidon OS should be available at the directory "/root/workspace/ibofos"
+6. POS should run from this directory - /root/workspace/ibofos/ (e.g the POS binaries should be present at /root/workspace/ibofos/bin directory)
 
 ### Supported OS and Version
 1. Linux Ubuntu 18.04
