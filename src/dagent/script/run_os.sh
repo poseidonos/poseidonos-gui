@@ -6,7 +6,7 @@ logfile="ibofos.log"
 root_dir=/root/workspace/ibofos
 ibofos=${root_dir}/bin/ibofos
 NR_VOLUME=1
-SPDK_DIR=/root/workspace/ibofos/lib/spdk-19.10
+SPDK_DIR=/root/workspace/ibofos/lib/spdk
 TRANSPORT=TCP
 IP=10.100.11.7
 

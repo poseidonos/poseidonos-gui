@@ -2,7 +2,8 @@
 *  This app provides RESTFul APIs to Poseidon System
 
 ## Pre-Requisites
-go v1.14+
+1. go v1.14+
+2. IP Address of Mellanox Port should be set in the file script/run_os.sh (Eg: IP=10.100.11.7)
 
 #### POS
 * The POS should be installed and running 
