@@ -81,7 +81,7 @@ http://localhost
 # Screens
 ## Dashboard 
 - (Location: src/mtool/ui/src/assets/images/dashboard_ui.png)
-- ![Dashboard Page](/src/mtool/ui/src/assets/images/dashboard_ui.png)
+- ![Dashboard Page](src/mtool/ui/src/assets/images/dashboard_ui.png)
 
 ## Array Management
 - (Location: src/mtool/ui/src/assets/images/array_manage_ui.png)
