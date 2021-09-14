@@ -81,7 +81,7 @@ http://localhost
 # Screens
 ## Dashboard 
 - (Location: src/mtool/ui/src/assets/images/dashboard_ui.png)
-- ![Dashboard Page](src/mtool/ui/src/assets/images/dashboard_ui.png)
+- ![Dashboard Page](/src/mtool/ui/src/assets/images/dashboard_ui.png)
 
 ## Array Management
 - (Location: src/mtool/ui/src/assets/images/array_manage_ui.png)
@@ -145,14 +145,14 @@ http://localhost
     1.  _ps_ _-aux |_ _grep_ _influxdb_ _or_ _systemctl_ _status_ _influxd_ _or service_ _influxd_ _status  
         
 5.  How to restart Poseidonos-GUI? (We recommend restarting entire stack rather than individual components as shown below)
-    1.  _/script/run_all.sh  
+    1.  ./script/run_all.sh  
         
 6.  How to check for any M9K errors or logs?
-    1.  _/m9k/_ _mtool_ _/public/log (MTool logs - REST API interactions logs)_
-    2.  _/_ _var_ _/log/m9k/ (_ _Dagent_ _and_ _Magent_ _)_
-    3.  _\- /_ _var_ _/log/m9k/dagent1.log (POS API interactions are here - failed create/mount an array will be here)_
-    4.  _\- /_ _var_ _/log/m9k/logmagent1.log (AIR data and CPU, Memory metrics data logs)_
-    5.  _/_ _var_ _/log/syslog (_ _influxDB_ _logs-_ _grep_ _for text "influx")_
+    1.  _/m9k/mtool/public/log (MTool logs - REST API interactions logs)_
+    2.  _/var/log/m9k/ (_ _Dagent_ _and_ _Magent_ _)_
+    3.  _/var/log/m9k/dagent1.log (POS API interactions are here - failed create/mount an array will be here)_
+    4.  _/var/log/m9k/logmagent1.log (AIR data and CPU, Memory metrics data logs)_
+    5.  _/var/log/syslog (_ _influxDB_ _logs-_ _grep_ _for text "influx")_
     
 7.  GUI shows “POS is busy”. What should be done?
     1.  _In most of the cases, you can wait for 3-4 seconds and retry_
@@ -164,21 +164,23 @@ http://localhost
         
         
 9.  How to restart all components M9K ?
-    1.  _./_ _m9k/run_all.sh  
+    1.  ./m9k/run_all.sh  
         
         
+
 10.  Is there a limit of volumes per array? 
     1.  Yes, it is 256  
           
         
+
 11.  My POS software is installed a directory other than /root/workspace/ibofos - is this an issue? 
-    1.  Yes, it can cause issues. M9K requires POS to be in **/root/workspace/ibofos**
-    2.  However, if you really have to change this location to /abc/ then please use the following steps (use caution since this process has not been thoroughly tested)
-        1.  Open run\_os.sh script at src/dagent/script/run\_os.sh
-        2.  Change the variables root\_dir and SPDK\_DIR; e.g. 
-            1.  root_dir= /abc/ibofos
-        3.  Change the variable SPDK_DIR; e.g. 
-            1.  SPDK_DIR= /abc/ibofos/lib/spdk  
+
+    - Yes, it can cause issues. M9K requires POS to be in **/root/workspace/ibofos**. However, if you really have to change this location to /abc/ then please use the following steps (use caution since this process has not been thoroughly tested)
+        - Open run\_os.sh script at src/dagent/script/run\_os.sh
+        - Change the variables root\_dir and SPDK\_DIR; e.g. 
+            - root_dir= /abc/ibofos
+        - Change the variable SPDK_DIR; e.g. 
+            - SPDK_DIR= /abc/ibofos/lib/spdk  
                   
 12.  What are the default login credentials for the UI? 
     1. Username: admin
