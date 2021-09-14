@@ -1,7 +1,7 @@
 # PoseidonOS-GUI
-PoseidonOS-GUI is a reactjs application and a core component of the POS Management Stack. It provides a graphical user interface (GUI) to access, configure and monitor PoseidonOS.
+PoseidonOS-GUI is a reactjs application and a core component of the POS Management Stack (M9K). It provides a graphical user interface (GUI) to access, configure and monitor PoseidonOS.
 
-PoseidonOS-GUI internally connects to a REST API provider (called DAgent) to access PoseidonOS. It uses JWT authentication for secured communication with the REST API provider.
+PoseidonOS-GUI internally connects to a REST API provider (called DAgent) to access PoseidonOS. It uses JWT authentication for secured communication.
 
 
 ## Features
@@ -34,21 +34,21 @@ The following features are currently supported.
 
 # System Requirements: 
 - Ubuntu 18.04 with python3 
-- Access to internet and modern browser like Chorme or Firefox (Currently, supports Chrome and Firefox only)
+- Access to internet and modern browser like Chrome or Firefox (Currently, supports Chrome and Firefox only)
 - Display screen with resolution of 1920 x 1080 (currently tested in Mozilla Firefox and Chrome with 100% zoom level)
 
 # Dev 
 ## Source 
 > git clone http://github.com/poseidonos/poseidonos-gui.git 
-### PoseidonOS-GUI code is found under `m9k`
+### PoseidonOS-GUI code is found under `src/mtool` 
 
-## Setting up and running PoseidonOS-GUI
+## Build and Run PoseidonOS-GUI
 
 ### 1. Install Packages
-This step is performed along with installation of other components  
+This step is performed along with installation of M9K components  (Please see ([README](../../README.md)) at the root level)
 
 ### 2. Run application
-This step is performed along with running of other components  
+This step is performed along with build and run of M9K components  (Please see ([README](../../README.md)) at the root level)
 
 ### 3. Access application
 The server will run on localhost and will be accessible from the browser

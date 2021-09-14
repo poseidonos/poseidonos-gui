@@ -14,13 +14,14 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * ~~[HEARTBEAT](#1-heartbeat)~~
   * [VERSION](#2-version)
 
-* [Internal](#internal)
+* [Developer](#developer)
 
   * [DOCUMENTATION (HTML)](#1-documentation-(html))
   * [DOCUMENTATION (MARKDOWN)](#2-documentation-(markdown))
   * [EVENT CODE](#3-event-code)
   * [FORCEKILLIBOFOS](#4-forcekillibofos)
   * [KILLDAGENT](#5-killdagent)
+  * [RESETMBR](#6-resetmbr)
 
 * [POS/Array](#posarray)
 
@@ -377,7 +378,7 @@ URL: http://{{host}}/api/dagent/v1/version
 
 
 
-## Internal
+## Developer
 Internal is only for POS developer and QA.  
 Internal APIs will not provide to 3rd party
 
@@ -804,6 +805,116 @@ URL: http://{{host}}/api/dagent/v1/dagent
             "code": 0,
             "description": "Success"
         }
+    },
+    "info": {
+        "version": "pos-0.9.10"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+### 6. RESETMBR (Reset Array)
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/arrays/reset
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 2500
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+
+##### I. Example Response: Fail - 2500
+```js
+{
+    "rid": "a6e3cbfc-2c7d-4023-a0c9-bede2de49509",
+    "lastSuccessTime": 1631615088,
+    "result": {
+        "status": {
+            "module": "Array",
+            "code": 2500,
+            "level": "ERROR",
+            "description": "Array is alreday mounted.",
+            "posDescription": "Reset mbr failed "
+        },
+        "data": {}
+    },
+    "info": {
+        "version": "pos-0.9.10"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "983e9408-2632-4ff0-8d1f-6ba01c643f5f",
+    "lastSuccessTime": 1631614612,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Reset mbr done"
+        },
+        "data": {}
     },
     "info": {
         "version": "pos-0.9.10"
