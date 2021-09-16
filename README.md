@@ -1,12 +1,12 @@
 # POS Management Stack (M9K)
 POS Management Stack is designed for management and monitoring of storage in PoseidonOS. It uses a client server model and consists of a client frontend application ([README](src/mtool/README.md)) (developed using reactjs) that facilitates users requests by interacting with a backend server application (developed using Python3). The backend application connects to a middleware server application (written using Golang) to interact with PoseidonOS system. The middleware application also hosts a REST API server ([README](src/dagent/README.md))
 
-Storage Management enables array management, volume management and user management. Storage Monitoring enables to know the state and health of the storage. It consists of graphs and notification system (will be added soon). Graphs can be displayed for benchmarking of I/O, bandwidth, CPU utilization and other metrics gathered from POS (will be added soon).
+Storage Management enables array management, volume management and user management. Storage Monitoring enables to know the state and health of the storage. It consists of graphs and notification system (will be enabled soon). Graphs can be displayed for benchmarking of I/O, bandwidth, CPU utilization and other metrics gathered from POS (will be enabled soon).
 
 # Implementation Details
 
-POS Management Stack consists of three major components as described above - a client (UI), backend server and middlewware server (API server that interacts with POS server). 
-* Client (Poseidonos-GUI) is developed using Javascript framework [Reactjs](https://reactjs.org/) ([README](src/mtool/README.md))
+As described above , POS Management Stack consists of a client (Poseidonos-GUI), backend server and middlewware server (API server that interacts with POS server). 
+* Poseidonos-GUI is developed using Javascript framework [Reactjs](https://reactjs.org/) ([README](src/mtool/README.md))
 * Backend server is developed using Python3 
 * Middleware server (DAgent) is developed using GO ([README](src/dagent/README.md))
 * Tested and works fine in the following latest modern browsers
@@ -48,8 +48,10 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
    - Copy the contents of inside the extracted directory to /usr/bin directory using the command: sudo cp -r node-v14.x.x-linux-x64/{bin,include,lib,share} /usr/ 
 6. node.js is required in the /usr/bin/ directory (you can copy using "sudo cp -r node-v14.x.x-linux-x64/{bin,include,lib,share} /usr/")
 7. golang is required in the /usr/local directory (you can copy to  /usr/local)
-8. Export golang PATH using "export PATH=$PATH:/usr/local/go/bin"
+8. Add golang path to environment using "export PATH=$PATH:/usr/local/go/bin" (this may be added in the profile (e.g. bashrc) file for persistence across sessions)
 9. If you encounter any SSL related issues, you can set "npm config set strict-ssl false" for npm installation to work with SSL cert (this is a workaround in dev environment and not recommended in production environments).
+10. For QOS settings maxiops and maxbw to work, a flag "fe_qos" should be set to "true" in /etc/pos/pos.conf (this step assumes that Poseidonos service is running already). After changing this flag, Poseidonos service has to be restarted from Poseidonos-GUI using the "Admin -> Poseidon Operations -> STOP & START"
+
 
 ### Supported OS and Version
 1. Linux Ubuntu 18.04
@@ -58,6 +60,7 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 1. Clone the project from GitHub - https://github.com/poseidonos/poseidonos-gui
 2. Navigate to poseidonos-gui directory
 3. Run scripts as described below to install and run the application
+(<b><i>You need to run these scripts as root or with a user with elevated permissions</i></b>)
 4. Access the application in the browser (e.g. http://<local_ip_addr>)
 
 ```
@@ -127,14 +130,20 @@ http://localhost
 | 4    | GUI Log    | src/mtool/api/public/log | Rest API interaction logs; errors or exceptions |  This is created when GUI runs    |
 | 5    | System Log | /var/log/syslog          | Various system level logs                       |                                   |
 
+# Known Issues
+1. URAM disks are not available in Poseidonos-GUI array creation step, after the server or vm was restarted
+	- In such case, restart Poseidonos service from the Poseidonos-GUI using the "Admin -> Poseidon Operations -> START"
+	- Please note that restarting the Poseidonos service from CLI will not resolve this issue. The Poseidonos service should be restarted from Poseidonos-GUI.
+2. "Data Written" shows as 0 on the dashboard page of Poseidonos-GUI even when IO is performed
+	- This happens in specific cases like when the entire volume storage space is consumed. It will be resolved in a future version.
+
+
 # FAQ
 1.  How to check whether POS is running (or check POS status)?
     1.  _Using GUI - The Right hand top corner shows the POS status (e.g. RUNNING)_
-    2.  _From terminal -_ _ps_ _–aux |_ _grep_ _ibofos  
         
 2.  How to restart POS?
-    1.  _Use GUI and use the POS Operations page_
-    2.  _Use terminal (kill and start from_ _Poseidonos_ _GUI) –_ _pkill_ _-9_ _ibofos  
+    1.  _Use GUI and use the POS Operations page - (Admin -> Poseidon Operations -> STOP or START)_
         
 3.  How to check which agents are running?
     1.  _ps_ _-aux |_ _grep_ _dagent_ _or_ _systemctl_ _status_ _dagent_ _or service_ _dagent_ _status_
@@ -191,3 +200,6 @@ http://localhost
 
 14. What is "POS"?
     1. It is an internal name for Poseidonos server
+
+15. What should I do if I am unable to properly start Poseidonos service from the "Admin" menu?
+    1. This can mean that Poseidonos service may not be installed correctly. Please make sure Poseidonos is installed correctly. You can also try to run setup_env.sh script (this script  is available in script directory in the Poseidonos repo)
