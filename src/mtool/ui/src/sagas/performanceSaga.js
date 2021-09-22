@@ -31,9 +31,10 @@
  */
 
 import axios from "axios";
-import { call, takeEvery, put, cancelled } from "redux-saga/effects";
+import { call, takeEvery, put, cancelled, select } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
+import { arrayMap } from "../store/reducers/storageReducer";
 
 function extractValues(data) {
     if (data.length === 0) {
@@ -46,6 +47,14 @@ function extractValues(data) {
         });
     }
     return data;
+}
+
+function getArrayId(arrayName, arrMap) {
+  let arrayId = -1;
+  if(arrMap && arrMap[arrayName]) {
+    arrayId = arrMap[arrayName].index;
+  }
+  return arrayId;
 }
 
 // function* fetchDiskUsed(action) {
@@ -166,10 +175,7 @@ export function* fetchCpuUsage(action) {
 export function* fetchReadBandwidth(action) {
     try {
         let endpoint = "/api/v1/readbw/arrays";
-        let arrayId = 0;
-        if(action.payload.array !== "POSArray") {
-            arrayId = 1;
-        }
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {
@@ -216,10 +222,7 @@ function* fetchWriteBandwidth(action) {
     try {
 
         let endpoint = "/api/v1/writebw/arrays";
-        let arrayId = 0;
-        if(action.payload.array !== "POSArray") {
-            arrayId = 1;
-        }
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {
@@ -264,10 +267,7 @@ function* fetchWriteBandwidth(action) {
 export function* fetchReadIops(action) {
     try {
         let endpoint = "/api/v1/readiops/arrays";
-        let arrayId = 0;
-        if(action.payload.array !== "POSArray") {
-            arrayId = 1;
-        }
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {
@@ -314,10 +314,7 @@ export function* fetchReadIops(action) {
 export function* fetchWriteIops(action) {
     try {
         let endpoint = "/api/v1/writeiops/arrays";
-        let arrayId = 0;
-        if(action.payload.array !== "POSArray") {
-            arrayId = 1;
-        }
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {
@@ -365,10 +362,7 @@ export function* fetchWriteIops(action) {
 export function* fetchLatency(action) {
     try {
         let endpoint = "/api/v1/latency/arrays";
-        let arrayId = 0;
-        if(action.payload.array !== "POSArray") {
-            arrayId = 1;
-        }
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
         } else {

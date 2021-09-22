@@ -131,7 +131,8 @@ class Performance extends Component {
       this.props.Set_Array(this.props.arrays[0].arrayname);
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        array: this.props.arrays[0].arrayname
+        array: this.props.arrays[0].arrayname,
+        arrayId: this.props.arrays[0].index
       })
     }
   }

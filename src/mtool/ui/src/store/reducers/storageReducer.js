@@ -305,4 +305,5 @@ const storageReducer = (state = initialState, action) => {
 }
 
 export const arrayname = (state = {storageReducer:{}}) => state.storageReducer.arrayname
+export const arrayMap = (state = {storageReducer:{}}) => state.storageReducer.arrayMap
 export default storageReducer;

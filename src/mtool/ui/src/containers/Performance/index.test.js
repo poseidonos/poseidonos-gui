@@ -148,6 +148,7 @@ describe("Performance", () => {
       },
     ],
     status: "Mounted",
+    index: 0,
     state: "EXIST",
     totalsize: 6357625339904,
     usedspace: 0,
