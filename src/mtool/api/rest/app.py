@@ -705,9 +705,23 @@ def get_volume_latency():
 
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
-    array_ids = "0" # will add code to get all array ids
+    array_ids = "0,1"
     res = get_disk_current_perf(array_ids)
     return jsonify(res)
+    """ 
+    ### below code can be used if we get array ids from list_arrays API"
+    arrays = dagent.list_arrays()
+    arrays = arrays.json()
+    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
+        arrays = arrays["result"]["data"]["arrayList"]
+        index = []
+        for array in arrays:
+            index.append(array["index"])
+        array_ids = ",".join(map(str,index))
+        res = get_disk_current_perf(array_ids)
+        return jsonify(res)
+    else:
+        return jsonify({"res": []})"""
 def get_read_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
