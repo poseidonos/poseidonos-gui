@@ -29,29 +29,33 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
 package ibofos
 
 import (
-	"pnconnector/src/routers/m9k/model"
+        "pnconnector/src/routers/m9k/model"
 )
 
-func ScanDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return deviceSender(xrId, param, "SCANDEVICE")
+func CreateTransport(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "CREATETRANSPORT")
 }
 
-func ListDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return deviceSender(xrId, param, "LISTDEVICE")
+func AddListener(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "ADDLISTENER")
 }
 
-func GetSMART(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return deviceSender(xrId, param, "SMART")
+func ListSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "LISTSUBSYSTEM")
 }
 
-func CreateDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-        return deviceSender(xrId, param, "CREATEDEVICE")
+func CreateSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "CREATESUBSYSTEM")
 }
 
-func deviceSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
-	return Requester{xrId, param, model.DeviceParam{}}.Send(command)
+func DeleteSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "DELETESUBSYSTEM")
 }
+
+func subSystemSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
+        return Requester{xrId, param, model.SubSystemParam{}}.Send(command)
+}
+

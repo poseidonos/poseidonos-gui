@@ -51,6 +51,10 @@ func CreateArray(xrId string, param interface{}) (model.Request, model.Response,
 	return arraySender(xrId, param, "CREATEARRAY")
 }
 
+func AutoCreateArray(xrId string, param interface{}) (model.Request, model.Response, error) {
+        return arraySender(xrId, param, "AUTOCREATEARRAY")
+}
+
 func DeleteArray(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return arraySender(xrId, param, "DELETEARRAY")
 }

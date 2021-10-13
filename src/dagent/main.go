@@ -1,18 +1,18 @@
 package main
 
 import (
-	"pnconnector/src/log"
-	"pnconnector/src/setting"
-	"pnconnector/src/util"
 	"context"
 	"dagent/src/routers"
 	"dagent/src/routers/m9k/api/dagent"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
+	"pnconnector/src/log"
+	"pnconnector/src/setting"
+	"pnconnector/src/util"
 	"time"
-  "io/ioutil"
 )
 
 const TimeOut = 30
@@ -22,8 +22,8 @@ func init() {
 	setting.LoadConfig()
 	util.LoadEvents()
 	gin.SetMode(gin.ReleaseMode)
-  //gin.SetMode(gin.DebugMode)
-  gin.DefaultWriter = ioutil.Discard
+	//gin.SetMode(gin.DebugMode)
+	gin.DefaultWriter = ioutil.Discard
 }
 
 func main() {

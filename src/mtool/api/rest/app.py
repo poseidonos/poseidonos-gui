@@ -1072,9 +1072,127 @@ def getDeviceDetails(current_user, name):
         res = "Unable to get SMART info"
         return make_response(res, 500)
 
+# create transport
+@app.route('/api/v1/transport/', methods=['POST'])
+@token_required
+def create_transport(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    transport_type = body.get('transport_type')
+    buf_cache_size = body.get('buf_cache_size')
+    num_shared_buf = body.get('num_shared_buf')
+    try:
+        resp = dagent.create_trans(transport_type, buf_cache_size, num_shared_buf)
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in creating transport "+e)
+        return abort(404)
+
+# create subsystem
+@app.route('/api/v1/subsystem/', methods=['POST'])
+@token_required
+def create_subsystem(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    name = body.get('name')
+    transport_type = body.get('transport_type')
+    target_address = body.get('target_address')
+    transport_service_id = body.get('transport_service_id')
+    try:
+        resp = dagent.create_subsystem(name, transport_type, target_address, transport_service_id)
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in creating subsystem "+e)
+        return abort(404)
+
+# add listener
+@app.route('/api/v1/listener/', methods=['POST'])
+@token_required
+def add_listener(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    name = body.get('name')
+    transport_type = body.get('transport_type')
+    target_address = body.get('target_address')
+    transport_service_id = body.get('transport_service_id')
+    try:
+        resp = dagent.add_listener(name, transport_type, target_address, transport_service_id)
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in adding listener "+e)
+        return abort(404)
+
+# list subsystem
+@app.route('/api/v1/subsystem/', methods=['GET'])
+@token_required
+def list_subsystem(current_user):
+    try:
+        resp = dagent.list_subsystem()
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in list subsystem "+e)
+        return abort(404)
+
+# delete susbsystem
+@app.route('/api/v1/subsystem/', methods=['DELETE'])
+@token_required
+def delete_susbsystem(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    name = body.get('name')
+    try:
+        resp = dagent.delete_subsystem(name)
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in deleting subsystem "+e)
+        return abort(404)
+# create device
+@app.route('/api/v1/device/', methods=['POST'])
+@token_required
+def create_device(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    name = body.get('name')
+    num_blocks = body.get('num_blocks')
+    block_size = body.get('block_size')
+    dev_type = body.get('dev_type')
+    numa = body.get('numa')
+    try:
+        resp = dagent.create_device(name, num_blocks, block_size, dev_type, numa)
+        resp = resp.json()
+        return toJson(resp)
+    except Exception as e:
+        print("Exception in deleting subsystem "+e)
+        return abort(404)
+
+
+# auto create array
+@app.route('/api/v1/autoarray/', methods=['POST'])
+@token_required
+def auto_create_array(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    arrayname = body.get('arrayname')
+    raidtype = body['raidtype']
+    metaDisk = body["metaDisk"]
+    num_data = body['num_data']
+    num_spare = body['num_spare']
+    if arrayname is None:
+        arrayname = dagent.array_names[0]
+    try:
+        array_create = dagent.auto_create_array(arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}])
+        array_create = array_create.json()
+        return toJson(array_create)
+    except Exception as e:
+        print("Exception in creating array: "+e)
+        return abort(404)
+
 # Create Array
-
-
 @app.route('/api/v1.0/create_arrays/', methods=['POST'])
 @token_required
 def create_arrays(current_user):
@@ -1096,11 +1214,11 @@ def create_arrays(current_user):
     if arrayname is None:
         arrayname = dagent.array_names[0]
     try:
-        a_info = arr_info(arrayname)
+        """a_info = arr_info(arrayname)
         if a_info.status_code == 200:
             a_info = a_info.json()
             if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
-                return make_response(arrayname+' already exists', 400)
+                return make_response(arrayname+' already exists', 400)"""
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
                                       {"deviceName": metaDisk}])
         array_create = array_create.json()

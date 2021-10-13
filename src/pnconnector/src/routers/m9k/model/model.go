@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package model
 
 type Request struct {
@@ -51,13 +51,13 @@ type Result struct {
 }
 
 type Status struct {
-	Module      	string `json:"module"`
-	Code        	int    `json:"code"`
-	Level       	string `json:"level,omitempty"`
-	Description 	string `json:"description"`
-	PosDescription 	string `json:"posDescription"`
-	Problem     	string `json:"problem,omitempty"`
-	Solution    	string `json:"solution,omitempty"`
+	Module         string `json:"module"`
+	Code           int    `json:"code"`
+	Level          string `json:"level,omitempty"`
+	Description    string `json:"description"`
+	PosDescription string `json:"posDescription"`
+	Problem        string `json:"problem,omitempty"`
+	Solution       string `json:"solution,omitempty"`
 }
 
 type Device struct {
@@ -82,10 +82,41 @@ type ArrayParam struct {
 	Array    string   `json:"array,omitempty"`
 }
 
+type AutocreateArrayParam struct {
+        ARRAYNAME               string            `json:"name"`
+        BUFFER                  [1]DeviceNameList `json:"buffer"`
+        NUMDATADEVS             int               `json:"num_data"`
+        NUMSPAREDEVS    int               `json:"num_spare,omitempty"`
+        RAID                    string            `json:"raidtype,omitempty"`
+}
+type DeviceNameList struct {
+        DEVICENAME string `json:"deviceName,omitempty"`
+}
+type CreateDeviceReqParam struct {
+        DEVICENAME string `json:"name"`
+        NUMBLOCKS  int    `json:"num_blocks"`
+        BLOCKSIZE  int    `json:"block_size"`
+        DEVICETYPE string `json:"dev_type"`
+        NUMA       int  `json:"numa"`
+}
+type SubSystemParam struct {
+	TRANSPORTTYPE      string `json:"transport_type,omitempty"`
+	BUFCACHESIZE       int    `json:"buf_cache_size,omitempty"`
+	NUMSHAREDBUF       int    `json:"num_shared_buf,omitempty"`
+	TARGETADDRESS      string `json:"target_address"`
+	TRANSPORTSERVICEID string `json:"transport_service_id"`
+	SUBNQN             string `json:"name"`
+	SERIAL             string `json:"sn,omitempty"`
+	MODEL              string `json:"mn,omitempty"`
+	MAXNAMESPACES      int    `json:"max_namespaces,omitempty"`
+	ALLOWANYHOST       bool   `json:"allow_any_host,omitempty"`
+	ANAREPORTING       bool   `json:"ana_reporting,omitempty"`
+}
+
 type MAgentParam struct {
-    ArrayIds    string  `form:"arrayids"`
-    VolumeIds   string  `form:"volumeids"`
-    Time        string	`form:"time"`
+	ArrayIds  string `form:"arrayids"`
+	VolumeIds string `form:"volumeids"`
+	Time      string `form:"time"`
 }
 
 type DeviceParam struct {
@@ -99,9 +130,9 @@ type VolumeParam struct {
 	Array       string `json:"array,omitempty"`
 	SubNQN      string `json:"subnqn,omitempty"`
 	Size        uint64 `json:"size,omitempty"`
-  Miniops     uint64 `json:"miniops,omitempty"`
+	Miniops     uint64 `json:"miniops,omitempty"`
 	Maxiops     uint64 `json:"maxiops,omitempty"`
-  Minbw       uint64 `json:"minbw,omitempty"`
+	Minbw       uint64 `json:"minbw,omitempty"`
 	Maxbw       uint64 `json:"maxbw,omitempty"`
 	NameSuffix  uint64 `json:"namesuffix,omitempty"`
 	TotalCount  uint64 `json:"totalcount,omitempty"`

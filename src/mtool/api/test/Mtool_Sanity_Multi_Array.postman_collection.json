@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d622a99c-7873-40bb-ab40-0837c2d91518",
+		"_postman_id": "17b8c3cd-0c8f-479b-89e5-14ea233cc895",
 		"name": "Mtool_Sanity_Multi_Array",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -228,6 +228,77 @@
 						"api",
 						"v1.0",
 						"get_Is_Ibof_OS_Running",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create URAM device",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    try {\r",
+							"        response = jsonData.result.description\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"if (responseCode.code === 200) {\r",
+							"    // Delay for 12 Seconds (set in milliseconds)\r",
+							"    setTimeout(function () {\r",
+							"    }, 500);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"uram4\",\r\n\t\t\"num_blocks\" : 512,\r\n\t\t\"block_size\" : 8192,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/device/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"device",
 						""
 					]
 				}
@@ -687,6 +758,537 @@
 						"v1.0",
 						"delete_array",
 						"{{arrayName2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auto Create Array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"arrayname\": \"{{arrayName1}}1\",\r\n    \"raidtype\": \"RAID5\",\r\n    \"metaDisk\": \"uram1\",\r\n    \"num_data\" : 3,\r\n\t\"num_spare\" : 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/autoarray/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"autoarray",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transport",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"transport_type\": \"tcp\",\r\n        \"buf_cache_size\": 64,\r\n        \"num_shared_buf\": 4096\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/transport/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"transport",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Subsystem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.111\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"subsystem",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add listener",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.111\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"subsystem",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Susbsystem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"subsystem",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Subsystem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm.test(\"Created an array...\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"//});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData.result.status.description);\r",
+							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
+							"console.log(jsonData.result);\r",
+							"//let description = jsonData.result.status;\r",
+							"pm.test(\"DAgent response is... \" + status, function () {\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"});\r",
+							"/*\r",
+							"let statusDesc = jsonData.result.status.description;\r",
+							"\r",
+							"if (statusDesc.toLowerCase() == \"success\") {\r",
+							"    setTimeout(function () {\r",
+							"    }, 2000);\r",
+							"\r",
+							"    // Create Volume\r",
+							"    postman.setNextRequest(\"Create Volume\")\r",
+							"} else {\r",
+							"\r",
+							"    console.log('Array creating failed .... exiting..');\r",
+							"\r",
+							"    // try restarting POS\r",
+							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
+							"    if (restartCount <= 3) {\r",
+							"        // increment restart count \r",
+							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
+							"        // Try restart \r",
+							"        postman.setNextRequest(\"Stop ibofos\");\r",
+							"\r",
+							"    } else {\r",
+							"        // Fail and logout\r",
+							"        postman.setNextRequest(\"logout\");\r",
+							"    }\r",
+							"\r",
+							"\r",
+							"}\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"subsystem",
+						""
 					]
 				}
 			},

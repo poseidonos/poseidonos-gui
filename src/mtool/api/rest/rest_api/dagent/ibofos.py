@@ -348,6 +348,178 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
     except Exception as e:
         print("exception in exists: " + str(e))
         return False
+def add_listener(name, transport_type, target_address, transport_service_id, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to add listener api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "name": name,
+            "transport_type": transport_type,
+            "target_address": target_address,
+            "transport_service_id": transport_service_id}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' +'listener',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to add listener...', 500)
+
+def create_subsystem(name, transport_type, target_address, transport_service_id, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to create subsystem api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "name": name,
+            "transport_type": transport_type,
+            "target_address": target_address,
+            "transport_service_id": transport_service_id}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to create subsystem...', 500)
+
+def list_subsystem(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to list subsystem api ...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            headers=req_headers,
+            timeout=(connect_timeout, read_timeout))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response('Could not get ibofos to list subsystem...', 500)
+
+def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to delete subsystem api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "name": name}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to delete subsystem...', 500)
+def create_device(name, num_blocks, block_size, dev_type, numa, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to create uram device  api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "name": name,
+            "num_blocks" : num_blocks,
+            "block_size": block_size,
+            "dev_type" : dev_type,
+            "numa" : numa}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'device',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to create uram device...', 500)
+
+def create_trans(transport_type, buf_cache_size, num_shared_buf, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to create transport api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "transport_type": transport_type,
+            "buf_cache_size": buf_cache_size,
+            "num_shared_buf": num_shared_buf}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'transport',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to create transport...', 500)
+
+
+def auto_create_array(arrayname, raidtype, num_spare, num_data, meta_devices, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to auto create array using mount api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "name": arrayname,
+            "raidtype": raidtype,
+            "buffer": meta_devices,
+            "num_data": num_data,
+            "num_spare": num_spare}}
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'autoarray',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        if response.status_code != 200:
+            return response
+        response = mount_array(name)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to auto create array...', 500)
+
 
 
 def create_array(
@@ -391,7 +563,7 @@ def create_array(
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
-        'Could not get ibofos to scan devices...', 500)
+        'Could not get ibofos to create array...', 500)
 def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
