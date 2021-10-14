@@ -90,6 +90,21 @@ export const customTheme = {
   }
 };
 
+export const TableTheme = createTheme({
+  typography: {
+    fontSize: 14,
+    fontFamily: 'Arial'
+  },
+  palette: {
+    primary: {
+      main: '#4caf50',
+    },
+    secondary: {
+      main: 'rgba(0, 0, 0, 0.54)'
+    },
+  },
+});
+
 const MToolTheme = createTheme(customTheme);
 export const PageTheme = createTheme({
   ...customTheme,

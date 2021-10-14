@@ -61,6 +61,7 @@ export default function* rootSaga() {
         alertManagementAlertTableWatcher(),
         alertManagementAddNewAlertsWatcher(),
         storageWatcher(),
+        subsystemWatcher(),
         performanceWatcher(),
         authenticationWatcher(),
         userManagementContainerWatcher(),

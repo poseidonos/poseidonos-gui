@@ -33,6 +33,7 @@
 import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
+import { AppBar, Tabs, Tab, withStyles, Box } from '@material-ui/core';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import RunIbofOs from '../../components/IbofOsOperationComponents/RunIbofOs/index';
@@ -40,10 +41,31 @@ import './IbofOsOperations.css';
 import AlertDialog from "../../components/Dialog";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
+import TabPanel from "../../components/TabPanel";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from '../../store/actions/exportActionCreators';
 
-import MToolTheme from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
+import Device from './Device';
+import Subsystem from './Subsystem';
+
+const styles = (theme) => ({
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        width: '100%',
+        boxSizing: 'border-box',
+        // paddingLeft: '24px',
+        // paddingRight: '13px',
+    },
+    selectedTab: {
+        color: 'rgb(33, 34, 37)',
+        borderBottom: `2px solid ${'rgb(33, 34, 37)'}`,
+        fontWeight: 600
+    },
+
+    toolbar: customTheme.toolbar
+});
 
 class IbofOsOperations extends Component {
     constructor() {
@@ -60,6 +82,7 @@ class IbofOsOperations extends Component {
             add_delete_send: "",
             alerttitle: "",
             alertdescription: "",
+            tabValue: "operations"
         };
         this.triggerCommand = this.triggerCommand.bind(this);
         // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
@@ -68,6 +91,7 @@ class IbofOsOperations extends Component {
         // this.onClickRunCommand = this.onClickRunCommand.bind(this);
         this.openAlert = this.openAlert.bind(this);
         this.handleAlertClose = this.handleAlertClose.bind(this);
+        this.handleCallToRouter = this.handleCallToRouter.bind(this);
         this.interval = null;
     }
 
@@ -100,6 +124,10 @@ class IbofOsOperations extends Component {
         this.setState({
             alertOpen: false
         })
+    }
+
+    handleCallToRouter(_, value) {
+        this.props.history.push(value);
     }
 
     openAlert(operationType) {
@@ -148,20 +176,41 @@ class IbofOsOperations extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <ThemeProvider theme={MToolTheme}>
-                <CssBaseline />
+                <Box display="flex">
+                {/* <CssBaseline /> */}
                 <Header />
                 <Sidebar />
-                <div className="IbofOsOperations">
-                    <RunIbofOs
-                        status={this.props.bool_status}
-                        responsefromos={this.props.operationsMessage}
-                        openAlert={this.openAlert}
-                        OS_Running_Status={this.props.OS_Running}
-                        isButtonDisabled={this.state.isButtonDisabled}
-                        mountState={this.props.posMountStatus}
-                    />
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <AppBar position="static" color="default">
+                        <Tabs
+                            value={this.props.history.location.pathname}
+                            onChange={this.handleCallToRouter}
+                        >
+                            <Tab data-testid="operationsTab" label="Operations" key="operations" value="/operations/pos" />
+                            <Tab data-testid="devicesTab" label="Devices" key="devices" value="/operations/devices" />
+                            <Tab data-testid="subsystemTab" label="Subsystem" key="subsystem" value="/operations/subsystem" />
+                        </Tabs>
+                    </AppBar>
+                    <TabPanel value={this.props.history.location.pathname} index={"/operations/pos"}>
+                        <RunIbofOs
+                            status={this.props.bool_status}
+                            responsefromos={this.props.operationsMessage}
+                            openAlert={this.openAlert}
+                            OS_Running_Status={this.props.OS_Running}
+                            isButtonDisabled={this.state.isButtonDisabled}
+                            mountState={this.props.posMountStatus}
+                        />
+                    </TabPanel>
+                    <TabPanel value={this.props.history.location.pathname} index={"/operations/devices"}>
+                        <Device />
+                    </TabPanel>
+                    <TabPanel value={this.props.history.location.pathname} index={"/operations/subsystem"}>
+                        <Subsystem />
+                    </TabPanel>
                     <AlertDialog
                         title={this.state.alerttitle}
                         description={this.state.alertdescription}
@@ -170,7 +219,8 @@ class IbofOsOperations extends Component {
                         handleClose={this.handleAlertClose}
                         onConfirm={this.triggerCommand}
                     />
-                </div>
+                </main>
+                </Box>
             </ThemeProvider>
         );
     }
@@ -196,5 +246,5 @@ const mapDispatchToProps = dispatch => {
         Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message})
     };
 }
-export default ((connect(mapStateToProps, mapDispatchToProps))(withRouter(IbofOsOperations)));
+export default ((connect(mapStateToProps, mapDispatchToProps))(withRouter(withStyles(styles)(IbofOsOperations))));
 

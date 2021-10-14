@@ -117,6 +117,7 @@ const rootReducers = combineReducers({
     hardwareSensorReducer,
     hardwareHealthReducer,
     hardwarePowerManagementReducer,
+    subsystemReducer,
     waitLoaderReducer,
     BMCAuthenticationReducer,
     subsystemReducer,

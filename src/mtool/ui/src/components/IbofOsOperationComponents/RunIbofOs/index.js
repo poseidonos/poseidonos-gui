@@ -42,7 +42,7 @@ const RunIbofOs = props => {
   // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div>
-      <h1 className="IBOFOS-header_style">Poseidon OS Operation</h1>
+      {/* <h1 className="IBOFOS-header_style">Poseidon OS Operation</h1> */}
       <div className="RunIbofOs-Outer-Box">
         <span className="IBOFOSMainHeader">Run/Shutdown Poseidon OS</span>
         <div>

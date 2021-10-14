@@ -45,7 +45,10 @@ import {
   GridListTile,
   Button,
   TextField,
+  Link,
+  Dialog,
 } from "@material-ui/core";
+import { Add } from '@material-ui/icons';
 import formatBytes from "../../../utils/format-bytes";
 import MToolLoader from "../../MToolLoader";
 import AlertDialog from "../../Dialog";
@@ -53,6 +56,8 @@ import DiskDetails from "../../DiskDetails";
 import "./ArrayCreate.css";
 import { PageTheme } from "../../../theme";
 import Legend from "../../Legend";
+import Popup from "../../Popup";
+import CreateDisk from "../../CreateDisk";
 
 const defaultDiskDetails = {
   DevicePath: "NA",
@@ -92,6 +97,9 @@ const styles = (theme) => ({
     "& b": {
       fontWeight: theme.typography.fontWeightMedium,
     },
+  },
+  createDiskIcon: {
+    marginTop: theme.spacing(3)
   },
   formControl: {
     margin: theme.spacing(0.5, 2),
@@ -232,6 +240,7 @@ class ArrayCreate extends Component {
       metaDisk: "",
       loading: false,
       errorMsg: "",
+      createDiskOpen: false,
       alertOpen: false,
       popupOpen: false,
       totalSize: 0,
@@ -250,6 +259,7 @@ class ArrayCreate extends Component {
     this.getDiskDetails = this.getDiskDetails.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.openCreatePopup = this.openCreatePopup.bind(this);
+    this.openCreateDiskForm = this.openCreateDiskForm.bind(this);
   }
 
   handleChange(event) {
@@ -335,6 +345,12 @@ class ArrayCreate extends Component {
         createMsg: "Do you want to proceed and create Array?"
       })
     }
+  }
+
+  openCreateDiskForm() {
+    this.setState({
+      createDiskOpen: true
+    })
   }
 
   createArray() {
@@ -576,6 +592,7 @@ class ArrayCreate extends Component {
                   ))
                   : null}
               </Select>
+              <Link href="/operations/devices" align="right">Create Disk</Link>
             </FormControl>
           </Grid>
           <div className={classes.diskGridContainer}>

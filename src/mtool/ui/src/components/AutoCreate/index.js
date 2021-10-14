@@ -13,7 +13,7 @@
  *       notice, this list of conditions and the following disclaimer in
  *       the documentation and/or other materials provided with the
  *       distribution.
- *     * Neither the name of Samsung Electronics Corporation nor the names of its
+ *     * Neither the name of Intel Corporation nor the names of its
  *       contributors may be used to endorse or promote products derived
  *       from this software without specific prior written permission.
  *
@@ -30,53 +30,37 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Menu, MenuItem, makeStyles, Divider } from '@material-ui/core';
-import PDF from '../../../assets/Samsung_iBOF_Management_Tool_User_Manual.pdf';
+import { Button, Paper, ThemeProvider, Typography, withStyles } from "@material-ui/core";
+import React from "react";
+import MToolTheme from "../../theme";
 
-const useStyles = makeStyles(() => ({
-    menuItem: {
-      color: '#000'
-    },
-    optionItem: {
-      width: "100%"
+const styles = (theme) => ({
+    container: {
+        marginTop: theme.spacing(1),
+        textAlign: 'center',
+        padding: theme.spacing(1)
     }
-})); 
+});
 
-const Dropdown = (props) => {
-    const classes = useStyles();
-
+const AutoCreate = (props) => {
+    const {classes} = props;
+    const autoCreateArray = () => {
+        const freeSSD = props.disks.filter(disk => disk.isAvailable);
+        const freeMetaDisk = props.metadisks.filter(disk => disk.isAvailable);
+        props.autoCreateArray({freeSSD, freeMetaDisk});
+    };
     return (
-    <Menu
-      id="simple-menu"
-      keepMounted
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
-      getContentAnchorEl={null}
-      anchorEl={props.anchorEl}
-      open={props.dropdown}
-      onClose={props.closeDropdown}
-    >
-      <MenuItem className={classes.menuItem}><NavLink to="/operations/pos">Poseidon Operations</NavLink></MenuItem>
-      <Divider />
-      <MenuItem className={classes.menuItem}><NavLink to="/ConfigurationSetting/user">User Management</NavLink></MenuItem>
-      <Divider />
-      <MenuItem className={classes.menuItem} onClick={props.renderPopup}>Change Password</MenuItem>
-      <Divider />
-      <MenuItem className={classes.menuItem}>
-        <a href={PDF} target="_blank" type="application/pdf" className={classes.optionItem} rel="noopener noreferrer">Help</a>
-      </MenuItem>
-      <Divider />
-      <MenuItem className={classes.menuItem} onClick={props.userLogout} data-testid="logoutButton">Logout</MenuItem>
-    </Menu>
+        <ThemeProvider theme={MToolTheme}>
+            <Paper
+                className={classes.container}
+                variant="contained"
+                color="primary"
+            >
+                <Typography>Need an Array Created Quickly?</Typography>
+                <Button onClick={autoCreateArray} variant="contained" color="primary">Auto-Create</Button>
+            </Paper>
+        </ThemeProvider>
     );
-}
+};
 
-export default Dropdown;
+export default withStyles(styles)(AutoCreate);

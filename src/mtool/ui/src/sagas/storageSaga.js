@@ -1087,6 +1087,114 @@ function* createArray(action) {
   }
 }
 
+function* autoCreateArray(action) {
+  try {
+    const minSSD = 3;
+    let ssd = 3;
+    let spare = 0;
+    if(!action.payload.freeSSD ||
+      action.payload.freeSSD.length < minSSD) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: `Minimum ${minSSD} Disks should be availabe for array creation`,
+            errorCode: "",
+            alertTitle:  "Error in Array Creation"
+          })
+        );
+        return;
+    }
+    if(!action.payload.freeMetaDisk ||
+      !action.payload.freeMetaDisk.length) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: `Minimum 1 Write Buffer Path should be availabe for array creation`,
+            errorCode: "",
+            alertTitle:  "Error in Array Creation"
+          })
+        );
+        return;
+    }
+    if(action.payload.freeSSD.length > 3) {
+      spare = 1;
+    }
+    const arrayname = `Auto_Array_${Date.now()}`;
+    yield put(actionCreators.startStorageLoader("Creating Array"));
+    const response = yield call(
+      [axios, axios.post],
+      "/api/v1/autoarray/",
+      {
+        arrayname,
+        raidtype: "RAID5",
+        metaDisk: action.payload.freeMetaDisk[0].name,
+        num_data: ssd,
+        num_spare: spare
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (
+        response.data.return !== -1 &&
+        response.data.result.status.code === 0
+      ) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: "Array created successfully",
+            alertTitle: "Create Array",
+            alertType: "info",
+            errorCode: "",
+            link: `/storage/array/manage?array=${arrayname}`,
+            linkText: "Manage Array"
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error in Array Creation",
+            errorCode: `${response.data.result.status.description}. ${response.data.result.status.solution}`,
+            alertTitle: "Create Array",
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error in Array Creation",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Array Creation failed",
+          alertTitle: "Create Array",
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: error && error.response ? error.response.data : "Array Creation failed",
+        errorCode: "",
+        alertTitle:  "Error in Array Creation"
+      })
+    );
+  } finally {
+    yield fetchDevices();
+    yield fetchArray();
+    yield put(actionCreators.stopStorageLoader());
+  }
+}
+
+
 // function* attachDisk(action) {
 //     try {
 //         yield put(actionCreators.startStorageLoader('Attaching Device'));
@@ -1254,6 +1362,72 @@ function* addSpareDisk(action) {
 //         yield put(actionCreators.stopStorageLoader());
 //     }
 // }
+
+function* createDisk(action) {
+  try {
+    yield put(actionCreators.startStorageLoader("Removing Spare Device"));
+    const response = yield call(
+      [axios, axios.post],
+      "/api/v1.0/disk",
+      {
+        name: action.payload.name
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data.return !== -1) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: "Spare Device Removed successfully",
+            alertTitle: "Remove Spare Device",
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while Removing Spare Device",
+            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            alertTitle: "Remove Spare Device",
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error while Removing Spare Device",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Removing Spare Device failed",
+          alertTitle: "Remove Spare Device",
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: "Error while Removing Spare Device",
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: "Remove Spare Device",
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
+    yield fetchDevices();
+  }
+}
 
 function* removeSpareDisk(action) {
   try {
@@ -1639,12 +1813,15 @@ export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUMES, fetchVolumes);
   yield takeEvery(actionTypes.SAGA_DELETE_VOLUMES, deleteVolumes);
   yield takeEvery(actionTypes.SAGA_CREATE_ARRAY, createArray);
+  yield takeEvery(actionTypes.SAGA_AUTO_CREATE_ARRAY, autoCreateArray);
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_DETAILS, fetchDeviceDetails);
   yield takeEvery(actionTypes.SAGA_UPDATE_VOLUME, updateVolume);
   yield takeEvery(actionTypes.SAGA_RESET_AND_UPDATE_VOLUME, resetAndUpdateVolume);
+  yield takeEvery(actionTypes.SAGA_CREATE_DISK, createDisk);
   // yield takeEvery(actionTypes.SAGA_ATTACH_DISK, attachDisk);
   // yield takeEvery(actionTypes.SAGA_DETACH_DISK, detachDisk);
   yield takeEvery(actionTypes.SAGA_ADD_SPARE_DISK, addSpareDisk);
+
   yield takeEvery(actionTypes.SAGA_REMOVE_SPARE_DISK, removeSpareDisk);
   yield takeEvery(actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT, fetchMaxVolumeCount);
   yield takeEvery(

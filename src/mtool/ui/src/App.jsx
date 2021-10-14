@@ -90,7 +90,7 @@ const App = () => {
         />
         <PrivateRoute
           className="App-content"
-          path="/IbofOsOperations"
+          path="/operations/*"
           exact
           component={() => (
             <ErrorBoundary>

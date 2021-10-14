@@ -74,7 +74,7 @@ const MobileMenu = (props) => {
           open={props.isMobileMenuOpen}
           onClose={props.handleMobileMenuClose}
         >
-          <MenuItem className={classes.menuItem}><NavLink to="/IbofOsOperations">Poseidon Operations</NavLink></MenuItem>
+          <MenuItem className={classes.menuItem}><NavLink to="/operations/pos">Poseidon Operations</NavLink></MenuItem>
           <Divider />
           <a href={PDF} target="_blank" rel="noopener noreferrer">
             <MenuItem className={classes.menuItem}>

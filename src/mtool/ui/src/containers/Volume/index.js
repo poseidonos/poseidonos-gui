@@ -38,6 +38,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import io from "socket.io-client";
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
+import AutoCreate from "../../components/AutoCreate";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import ArrayCreate from "../../components/ArrayManagement/ArrayCreate";
@@ -444,6 +445,11 @@ class Volume extends Component {
                           />
                         </Grid>
                       </Paper>
+                      <AutoCreate
+                        disks={this.props.ssds}
+                        metadisks={this.props.metadisks}
+                        autoCreateArray={this.props.Auto_Create_Array}
+                      />
                         {(this.props.posMountStatus === "EXIST_NORMAL") ? (
                           <Typography style={{color: "#b11b1b"}} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
                         ): null}
@@ -739,7 +745,8 @@ const mapDispatchToProps = (dispatch) => {
     Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
     Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload}),
     Get_Subsystems: () => dispatch({type: actionTypes.SAGA_FETCH_SUBSYSTEMS}),
-    Show_Storage_Alert: (payload) => dispatch({type: actionTypes.STORAGE_SHOW_ALERT, payload})
+    Show_Storage_Alert: (payload) => dispatch({type: actionTypes.STORAGE_SHOW_ALERT, payload}),
+    Auto_Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_AUTO_CREATE_ARRAY, payload})
   };
 };
 
