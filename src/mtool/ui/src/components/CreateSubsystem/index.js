@@ -31,10 +31,9 @@
  */
 
 import React from 'react';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField, withStyles } from '@material-ui/core';
+import { Button, FormControl, FormControlLabel, TextField, withStyles, Checkbox } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
-import { Checkbox } from '@material-ui/core';
 
 const styles = (theme) => ({
     createSubsystemForm: {
@@ -51,7 +50,7 @@ const CreateSubsystem = (props) => {
     return (
         <form className={classes.createDiskForm}>
             <FormControl
-              className={classes.formItem}
+                className={classes.formItem}
             >
                 <TextField
                     label="SUBNQN"
@@ -84,17 +83,18 @@ const CreateSubsystem = (props) => {
             </FormControl>
             <FormControl
                 className={classes.formItem}
-                size="small"
+
             >
-                <InputLabel htmlFor="allowAnyHost">
-                    Allow Any Host?
-                </InputLabel>
-                <Checkbox
-                    inputProps={{
-                        id: "allowAnyHost"
-                    }}
+                <FormControlLabel
+                    label="Allow Any Host?"
+                    control={(
+                        <Checkbox
+                            inputProps={{
+                                id: "allowAnyHost"
+                            }}
+                        />
+                    )}
                 />
-                   
             </FormControl>
             <Button
                 className={classes.formItem}
@@ -110,7 +110,7 @@ const CreateSubsystem = (props) => {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-    Create_Disk: (payload) => dispatch({type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload})
+    Create_Disk: (payload) => dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateSubsystem));

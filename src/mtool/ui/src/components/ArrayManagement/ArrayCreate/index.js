@@ -46,9 +46,7 @@ import {
   Button,
   TextField,
   Link,
-  Dialog,
 } from "@material-ui/core";
-import { Add } from '@material-ui/icons';
 import formatBytes from "../../../utils/format-bytes";
 import MToolLoader from "../../MToolLoader";
 import AlertDialog from "../../Dialog";
@@ -56,8 +54,6 @@ import DiskDetails from "../../DiskDetails";
 import "./ArrayCreate.css";
 import { PageTheme } from "../../../theme";
 import Legend from "../../Legend";
-import Popup from "../../Popup";
-import CreateDisk from "../../CreateDisk";
 
 const defaultDiskDetails = {
   DevicePath: "NA",

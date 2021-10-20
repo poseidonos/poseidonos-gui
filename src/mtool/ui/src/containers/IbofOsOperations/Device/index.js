@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import { Grid, Paper, ThemeProvider, Typography, withStyles } from '@material-ui/core';
+import { Grid, ThemeProvider, Typography, withStyles } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
@@ -39,6 +39,8 @@ import { customTheme, TableTheme } from '../../../theme';
 import CreateDisk from '../../../components/CreateDisk';
 import Popup from '../../../components/Popup';
 import * as actionTypes from "../../../store/actions/actionTypes";
+import MToolLoader from '../../../components/MToolLoader';
+import AlertDialog from '../../../components/Dialog';
 
 const styles = (theme) => ({
     cardHeader: {
@@ -103,7 +105,7 @@ class Device extends Component {
         return (
             <Grid container direction="column">
                 <Grid item className={classes.item}>
-                    <ThemeProvider theme={TableTheme} >
+                    <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
                                 <Typography className={classes.cardHeader}>Device List</Typography>
@@ -128,30 +130,50 @@ class Device extends Component {
                         />
                     </ThemeProvider>
                 </Grid>
-                <Grid item className={classes.item}>
+                {/* <Grid item className={classes.item}>
                     <Paper>
                         <CreateDisk />
                     </Paper>
-                </Grid>
+                </Grid> */}
 
                 <Popup
                     title="Create Disk"
                     open={this.state.dialogOpen}
                     close={this.closeDialog}
                 >
-                    <CreateDisk />
+                    <CreateDisk
+                        cleanup={this.closeDialog}
+                    />
                 </Popup>
+                {this.props.loading ? <MToolLoader text={this.props.loadText} /> : null}
+                <AlertDialog
+                    title={this.props.alertTitle}
+                    description={this.props.errorMsg}
+                    open={this.props.alertOpen}
+                    type={this.props.alertType}
+                    errCode={this.props.errorCode}
+                    onConfirm={this.props.Close_Alert}
+                    handleClose={this.props.Close_Alert}
+                />
             </Grid>
         );
     }
 }
 const mapStateToProps = (state) => ({
-    devices: state.storageReducer.metadisks
+    loading: state.storageReducer.loading,
+    loadText: state.storageReducer.loadText,
+    devices: state.storageReducer.metadisks,
+    alertOpen: state.storageReducer.alertOpen,
+    alertType: state.storageReducer.alertType,
+    alertTitle: state.storageReducer.alertTitle,
+    errorMsg: state.storageReducer.errorMsg,
+    errorCode: state.storageReducer.errorCode,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     Get_Devices: (payload) =>
-        dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload })
+        dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
+    Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Device));

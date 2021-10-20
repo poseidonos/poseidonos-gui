@@ -47,21 +47,38 @@ const styles = (theme) => ({
 
 const CreateDisk = (props) => {
     const { classes } = props;
+
+    const createDiskSubmit = (event) => {
+        event.preventDefault();
+        props.Create_Disk({
+            name: event.target.name.value,
+            block_size: parseInt(event.target.block_size.value, 10),
+            num_blocks: parseInt(event.target.num_blocks.value, 10),
+            numa: parseInt(event.target.numa.value, 10),
+            dev_type: event.target.dev_type.value
+        });
+        event.target.reset();
+        props.cleanup();
+    }
+
     return (
-        <form className={classes.createDiskForm}>
-            <FormControl
-              className={classes.formItem}
-            >
-                <TextField
-                    label="Disk Size"
-                />
-            </FormControl>
+        <form className={classes.createDiskForm} onSubmit={createDiskSubmit}>
             <FormControl
                 className={classes.formItem}
                 size="small"
             >
                 <TextField
                     label="Disk Name"
+                    name="name"
+                />
+            </FormControl>
+            <FormControl
+              className={classes.formItem}
+            >
+                <TextField
+                    label="Block Size"
+                    name="block_size"
+                    type="number"
                 />
             </FormControl>
             <FormControl
@@ -69,7 +86,20 @@ const CreateDisk = (props) => {
                 size="small"
             >
                 <TextField
-                    label="Disk Type"
+                    label="Number of Blocks"
+                    name="num_blocks"
+                    type="number"
+                />
+            </FormControl>
+            <FormControl
+                className={classes.formItem}
+                size="small"
+            >
+                <TextField
+                    label="NUMA"
+                    name="numa"
+                    defaultValue={0}
+                    type="number"
                 />
             </FormControl>
             <FormControl
@@ -81,6 +111,7 @@ const CreateDisk = (props) => {
                   inputProps={{
                       id: "disktype"
                   }}
+                  name="dev_type"
                   defaultValue="uram"
                 >
                   <MenuItem value="uram" data-testid="uram">
@@ -95,6 +126,7 @@ const CreateDisk = (props) => {
                 className={classes.formItem}
                 variant="contained"
                 color="primary"
+                type="submit"
             >
                 Create Disk
             </Button>

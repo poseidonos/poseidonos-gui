@@ -31,7 +31,6 @@
  */
 
 import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { AppBar, Tabs, Tab, withStyles, Box } from '@material-ui/core';
 import { connect } from 'react-redux'
@@ -195,7 +194,7 @@ class IbofOsOperations extends Component {
                             <Tab data-testid="subsystemTab" label="Subsystem" key="subsystem" value="/operations/subsystem" />
                         </Tabs>
                     </AppBar>
-                    <TabPanel value={this.props.history.location.pathname} index={"/operations/pos"}>
+                    <TabPanel value={this.props.history.location.pathname} index="/operations/pos">
                         <RunIbofOs
                             status={this.props.bool_status}
                             responsefromos={this.props.operationsMessage}
@@ -205,10 +204,10 @@ class IbofOsOperations extends Component {
                             mountState={this.props.posMountStatus}
                         />
                     </TabPanel>
-                    <TabPanel value={this.props.history.location.pathname} index={"/operations/devices"}>
+                    <TabPanel value={this.props.history.location.pathname} index="/operations/devices">
                         <Device />
                     </TabPanel>
-                    <TabPanel value={this.props.history.location.pathname} index={"/operations/subsystem"}>
+                    <TabPanel value={this.props.history.location.pathname} index="/operations/subsystem">
                         <Subsystem />
                     </TabPanel>
                     <AlertDialog

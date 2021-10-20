@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import { Grid, Paper, ThemeProvider, Typography, withStyles } from '@material-ui/core';
+import { Grid, ThemeProvider, Typography, withStyles } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
@@ -77,7 +77,6 @@ class Subsystem extends Component {
     }
 
     componentDidMount() {
-        console.log('payload ss')
         this.props.Get_Subsystems();
     }
 
@@ -105,7 +104,7 @@ class Subsystem extends Component {
         return (
             <Grid container direction="column">
                 <Grid item className={classes.item}>
-                    <ThemeProvider theme={TableTheme} >
+                    <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
                                 <Typography className={classes.cardHeader}>Subsystems</Typography>
@@ -134,7 +133,7 @@ class Subsystem extends Component {
                     <Paper>
                         <CreateSubsystem />
                     </Paper>
-                        </Grid>*/}
+                        </Grid> */}
                 <Popup
                     title="Create Subsystem"
                     open={this.state.dialogOpen}

@@ -1090,7 +1090,7 @@ function* createArray(action) {
 function* autoCreateArray(action) {
   try {
     const minSSD = 3;
-    let ssd = 3;
+    const ssd = 3;
     let spare = 0;
     if(!action.payload.freeSSD ||
       action.payload.freeSSD.length < minSSD) {
@@ -1119,13 +1119,13 @@ function* autoCreateArray(action) {
     if(action.payload.freeSSD.length > 3) {
       spare = 1;
     }
-    const arrayname = `Auto_Array_${Date.now()}`;
+    const autoArrayname = `Auto_Array_${Date.now()}`;
     yield put(actionCreators.startStorageLoader("Creating Array"));
     const response = yield call(
       [axios, axios.post],
       "/api/v1/autoarray/",
       {
-        arrayname,
+        autoArrayname,
         raidtype: "RAID5",
         metaDisk: action.payload.freeMetaDisk[0].name,
         num_data: ssd,
@@ -1151,7 +1151,7 @@ function* autoCreateArray(action) {
             alertTitle: "Create Array",
             alertType: "info",
             errorCode: "",
-            link: `/storage/array/manage?array=${arrayname}`,
+            link: `/storage/array/manage?array=${autoArrayname}`,
             linkText: "Manage Array"
           })
         );
@@ -1365,12 +1365,12 @@ function* addSpareDisk(action) {
 
 function* createDisk(action) {
   try {
-    yield put(actionCreators.startStorageLoader("Removing Spare Device"));
+    yield put(actionCreators.startStorageLoader("Creating Disk"));
     const response = yield call(
       [axios, axios.post],
-      "/api/v1.0/disk",
+      "/api/v1/device/",
       {
-        name: action.payload.name
+        ...action.payload
       },
       {
         headers: {
@@ -1385,8 +1385,8 @@ function* createDisk(action) {
       if (response.data.return !== -1) {
         yield put(
           actionCreators.showStorageAlert({
-            errorMsg: "Spare Device Removed successfully",
-            alertTitle: "Remove Spare Device",
+            errorMsg: "Disk Creation Successful",
+            alertTitle: "Create Disk",
             alertType: "info",
             errorCode: "",
           })
@@ -1395,9 +1395,9 @@ function* createDisk(action) {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
-            errorMsg: "Error while Removing Spare Device",
+            errorMsg: "Error while creationg disk",
             errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
-            alertTitle: "Remove Spare Device",
+            alertTitle: "Create Disk",
           })
         );
       }
@@ -1405,12 +1405,12 @@ function* createDisk(action) {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
-          errorMsg: "Error while Removing Spare Device",
+          errorMsg: "Error while Creating Disk",
           errorCode:
             response.data && response.data.result
               ? response.data.result
-              : "Removing Spare Device failed",
-          alertTitle: "Remove Spare Device",
+              : "Disk Creation failed",
+          alertTitle: "Create Disk",
         })
       );
     }
@@ -1418,9 +1418,9 @@ function* createDisk(action) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
-        errorMsg: "Error while Removing Spare Device",
+        errorMsg: "Error while Creating Disk",
         errorCode: `Agent Communication Error - ${error.message}`,
-        alertTitle: "Remove Spare Device",
+        alertTitle: "Create Disk",
       })
     );
   } finally {

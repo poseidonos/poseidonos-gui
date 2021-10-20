@@ -55,7 +55,6 @@ const loaderTextStyle = {
   top: '100px',
   left: '40%',
   fontSize: 18,
-  // zIndex: 100,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
