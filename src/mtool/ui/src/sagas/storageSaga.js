@@ -1401,6 +1401,18 @@ function* createDisk(action) {
           })
         );
       }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error while Creating Disk",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Disk Creation failed",
+          alertTitle: "Create Disk",
+        })
+      );
     }
   } catch (error) {
     yield put(
