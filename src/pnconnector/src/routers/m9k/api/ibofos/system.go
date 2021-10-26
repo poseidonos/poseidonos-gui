@@ -44,7 +44,7 @@ import (
 )
 
 func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return systemSender(xrId, param, "EXITIBOFOS")
+	return systemSender(xrId, param, "STOPPOS")
 }
 
 func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
