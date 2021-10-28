@@ -513,7 +513,7 @@ def auto_create_array(arrayname, raidtype, num_spare, num_data, meta_devices, au
             data=request_body)
         if response.status_code != 200:
             return response
-        response = mount_array(name)
+        response = mount_array(arrayname)
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
