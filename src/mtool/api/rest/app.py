@@ -1324,18 +1324,11 @@ def qos_create_policies():
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        array_name = body.get("array")
         vol_names = body.get("volumes")
-        max_bw = body.get("maxbw")
-        max_iops = body.get("maxiops")
+        body['vol'] = body.pop('volumes')
         request_body = {
-                "param": {
-                        "array": array_name,
-                        "vol": vol_names,
-                        "maxbw": int(max_bw),
-                        "maxiops": int(max_iops)
+                "param": body
                 }
-        }
         range_message = "Please enter valid range: \nValid range for IO =  10 - 18446744073709551 KIOPS\nValid range for BW = 10 - 17592186044415 MB/s"
         response = dagent.qos_create_volume_policies(request_body)
         response = response.json()
