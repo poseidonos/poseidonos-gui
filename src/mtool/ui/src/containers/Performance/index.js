@@ -84,7 +84,8 @@ const READ_BANDWIDTH = 'read_bw';
 const WRITE_BANDWIDTH = 'write_bw';
 const READ_IOPS = 'read_iops';
 const WRITE_IOPS = 'write_iops';
-const LATENCY = 'latency';
+const READ_LATENCY = 'read_latency';
+const WRITE_LATENCY = 'write_latency';
 
 class Performance extends Component {
   constructor(props) {
@@ -217,12 +218,21 @@ class Performance extends Component {
   }
 
 
-  fetchLatency(t) {
+  fetchReadLatency(t) {
     for (let i = 0; i < this.state.chartContent.length; i += 1) {
       if (this.state.level === "array")
-        this.props.Get_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(LATENCY))
-        this.props.Get_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
+        this.props.Get_Read_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
+      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_LATENCY))
+        this.props.Get_Read_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
+    }
+  }
+
+  fetchWriteLatency(t) {
+    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      if (this.state.level === "array")
+        this.props.Get_Write_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
+      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_LATENCY))
+        this.props.Get_Write_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
     }
   }
 
@@ -237,7 +247,8 @@ class Performance extends Component {
       this.fetchWriteIOPS(this.state.intervalTime);
       this.fetchReadBandwidth(this.state.intervalTime);
       this.fetchWriteBandwidth(this.state.intervalTime);
-      this.fetchLatency(this.state.intervalTime);
+      this.fetchReadLatency(this.state.intervalTime);
+      this.fetchWriteLatency(this.state.intervalTime);
     }
   }
 
@@ -387,10 +398,12 @@ class Performance extends Component {
     }, {
       label: "Write IOPS",
       value: WRITE_IOPS
-    },
-    {
-      label: "Latency",
-      value: LATENCY
+    }, {
+      label: "Read Latency",
+      value: READ_LATENCY
+    }, {
+      label: "Write Latency",
+      value: WRITE_LATENCY
     }];
 
     const { classes } = this.props;
@@ -657,20 +670,39 @@ class Performance extends Component {
                   <Grid item xs={12} md={6}>
                     <Chart
                       id="chart-5"
-                      columns={this.props.latency}
-                      loaded={this.props.latency.loaded}
-                      yLabel={this.props.latency.yLabel}
-                      chartName={`${this.props.latency.name} - ${this.state.array}`}
+                      columns={this.props.readLatency}
+                      loaded={this.props.readLatency.loaded}
+                      yLabel={this.props.readLatency.yLabel}
+                      chartName={`${this.props.readLatency.name} - ${this.state.array}`}
                       width={this.state.chartwidth}
                       interval={this.state.intervalTime}
-                      startTime={this.props.latency.startTime}
-                      endTime={this.props.latency.endTime}
+                      startTime={this.props.readLatency.startTime}
+                      endTime={this.props.readLatency.endTime}
                       constValue={this.state.maxLatency}
                       style={style}
                       factor={1/1e6}
                       field="latency"
-                      datatestid="latency"
-                      scatterId="latencyScatter"
+                      datatestid="readLatency"
+                      scatterId="readLatencyScatter"
+                    />
+                  </Grid>
+		  <Grid item xs={12} md={6}>
+                    <Chart
+                      id="chart-6"
+                      columns={this.props.writeLatency}
+                      loaded={this.props.writeLatency.loaded}
+                      yLabel={this.props.writeLatency.yLabel}
+                      chartName={`${this.props.writeLatency.name} - ${this.state.array}`}
+                      width={this.state.chartwidth}
+                      interval={this.state.intervalTime}
+                      startTime={this.props.writeLatency.startTime}
+                      endTime={this.props.writeLatency.endTime}
+                      constValue={this.state.maxLatency}
+                      style={style}
+                      factor={1/1e6}
+                      field="latency"
+                      datatestid="writeLatency"
+                      scatterId="writeLatencyScatter"
                     />
                   </Grid>
                 </Grid>
@@ -809,27 +841,50 @@ class Performance extends Component {
                         </Grid>
                       ) : null}
 
-                      {this.props.vols[content].latency && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(LATENCY)) ? (
+                      {this.props.vols[content].readLatency && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_LATENCY)) ? (
                         <Grid item xs={12} md={6}>
                           <Chart
                             id="chart-5"
-                            columns={this.props.vols[content].latency}
-                            loaded={this.props.vols[content].latency.loaded}
-                            yLabel={this.props.vols[content].latency.yLabel}
-                            chartName={`${this.props.vols[content].latency.name} (${this.state.array})`}
+                            columns={this.props.vols[content].readLatency}
+                            loaded={this.props.vols[content].readLatency.loaded}
+                            yLabel={this.props.vols[content].readLatency.yLabel}
+                            chartName={`${this.props.vols[content].readLatency.name} (${this.state.array})`}
                             width={this.state.chartwidth}
                             interval={this.state.intervalTime}
-                            startTime={this.props.vols[content].latency.startTime}
-                            endTime={this.props.vols[content].latency.endTime}
-                            constValue={this.props.vols[content].latency.maxLatency}
+                            startTime={this.props.vols[content].readLatency.startTime}
+                            endTime={this.props.vols[content].readLatency.endTime}
+                            constValue={this.props.vols[content].readLatency.maxLatency}
                             style={style}
                             factor={1/1e6}
                             field="latency"
-                            datatestid="latency-vol"
-                            scatterId="latencyScatter"
+                            datatestid="readLatency-vol"
+                            scatterId="readLatencyScatter"
                           />
                         </Grid>
                       ) : null}
+
+		      {this.props.vols[content].writeLatency && (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_LATENCY)) ? (
+                        <Grid item xs={12} md={6}>
+                          <Chart
+                            id="chart-6"
+                            columns={this.props.vols[content].writeLatency}
+                            loaded={this.props.vols[content].writeLatency.loaded}
+                            yLabel={this.props.vols[content].writeLatency.yLabel}
+                            chartName={`${this.props.vols[content].writeLatency.name} (${this.state.array})`}
+                            width={this.state.chartwidth}
+                            interval={this.state.intervalTime}
+                            startTime={this.props.vols[content].writeLatency.startTime}
+                            endTime={this.props.vols[content].writeLatency.endTime}
+                            constValue={this.props.vols[content].writeLatency.maxLatency}
+                            style={style}
+                            factor={1/1e6}
+                            field="latency"
+                            datatestid="writeLatency-vol"
+                            scatterId="writeLatencyScatter"
+                          />
+                        </Grid>
+                      ) : null}
+
 
                     </React.Fragment>
                   ) : null
@@ -859,7 +914,8 @@ const mapStateToProps = state => {
     power_usage: state.performanceReducer.power_usage,
     vols: state.performanceReducer.vols,
     writeBandwidth: state.performanceReducer.writeBandwidth,
-    latency: state.performanceReducer.latency,
+    readLatency: state.performanceReducer.readLatency,
+    writeLatency: state.performanceReducer.writeLatency,
     volumes: state.storageReducer.volumes,
     arrays: state.storageReducer.arrays,
     power_sensor_info: state.hardwareSensorReducer.power_sensor_info,
@@ -874,7 +930,8 @@ const mapDispatchToProps = dispatch => {
     Get_Write_Bandwidth: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_WRITE_BANDWIDTH, payload }),
     Get_Read_IOPS: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_READ_IOPS, payload }),
     Get_Write_IOPS: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_WRITE_IOPS, payload }),
-    Get_Latency: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_LATENCY, payload }),
+    Get_Read_Latency: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_READ_LATENCY, payload }),
+    Get_Write_Latency: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_WRITE_LATENCY, payload }),
     // fetchInputPower: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION,payload }),
     Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
     Get_Arrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),

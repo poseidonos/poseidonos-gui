@@ -76,11 +76,17 @@ export const initialState = {
         loaded: false,
         name: 'Write Bandwidth',
     },
-    latency:{
+    readLatency:{
         yLabel: 'Latency (ms)',
         values: [],
         loaded: false,
-        name: 'Latency',
+        name: 'Read Latency',
+    },
+    writeLatency:{
+        yLabel: 'Latency (ms)',
+        values: [],
+        loaded: false,
+        name: 'Write Latency',
     },
     power_usage: {
         yLabel: 'Watts (W)',
@@ -139,11 +145,21 @@ const performanceReducer = (state = initialState, action) => {
                     endTime: action.interval.endTime
                 }
             }
-        case actionTypes.FETCH_LATENCY:
+        case actionTypes.FETCH_READ_LATENCY:
             return {
                 ...state,
-                latency: {
-                    ...state.latency,
+                readLatency: {
+                    ...state.readLatency,
+                    values: action.latency,
+                    startTime: action.interval.startTime,
+                    endTime: action.interval.endTime
+                }
+            }
+        case actionTypes.FETCH_WRITE_LATENCY:
+            return {
+                ...state,
+                writeLatency: {
+                    ...state.writeLatency,
                     values: action.latency,
                     startTime: action.interval.startTime,
                     endTime: action.interval.endTime
@@ -258,21 +274,37 @@ const performanceReducer = (state = initialState, action) => {
                 }
             }
         }
-        case actionTypes.FETCH_VOL_LATENCY: {
+        case actionTypes.FETCH_VOL_WRITE_LATENCY: {
             return {
                 ...state,
                 vols: {
                     ...state.vols,
                     [action.level]: {
                         ...state.vols[action.level],
-                        latency: {
+                        writeLatency: {
                             yLabel: 'Latency (ms)',
                             values: action.latency,
                             startTime: action.startTime,
                             endTime: action.endTime,
-                            name: `Latency ${action.name}`,
-                           // maxiops: action.maxiops !== 0 ? action.maxiops: null,
-                           // maxbw: action.maxbw !== 0 ? action.maxbw : null
+                            name: `Write Latency ${action.name}`,
+                        }
+                    }
+                }
+            }
+        }
+        case actionTypes.FETCH_VOL_READ_LATENCY: {
+            return {
+                ...state,
+                vols: {
+                    ...state.vols,
+                    [action.level]: {
+                        ...state.vols[action.level],
+                        readLatency: {
+                            yLabel: 'Latency (ms)',
+                            values: action.latency,
+                            startTime: action.startTime,
+                            endTime: action.endTime,
+                            name: `Read Latency ${action.name}`,
                         }
                     }
                 }

@@ -181,11 +181,11 @@ class Chart extends Component {
         .scale(this.state.yScale).ticks(10);
     } else if(this.props.field === "latency") {
       this.yAxis = d3AxisLeft()
-        .scale(this.state.yScale);
+        .scale(this.state.yScale).ticks(10);
     } else {
       this.yAxis = d3AxisLeft()
         .tickFormat(d3Format(".2s"))
-        .scale(this.state.yScale);
+        .scale(this.state.yScale).ticks(10);
     }
   }
 

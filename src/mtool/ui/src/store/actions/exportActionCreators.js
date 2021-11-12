@@ -104,8 +104,10 @@ export {
     fetchVolWriteBandwidth,
     fetchVolReadIops,
     fetchVolWriteIops,
-    fetchLatency,
-    fetchVolLatency,
+    fetchReadLatency,
+    fetchVolReadLatency,
+    fetchWriteLatency,
+    fetchVolWriteLatency,
     // fetchInputPowerVariation
 } from "./performanceActions";
 

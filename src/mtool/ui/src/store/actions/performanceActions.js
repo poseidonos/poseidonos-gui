@@ -86,9 +86,17 @@ export const fetchWriteIops = (iops, interval) => {
     }
 }
 
-export const fetchLatency = (latency, interval) => {
+export const fetchReadLatency = (latency, interval) => {
     return {
-        type: actionTypes.FETCH_LATENCY,
+        type: actionTypes.FETCH_READ_LATENCY,
+        latency,
+        interval
+    }
+}
+
+export const fetchWriteLatency = (latency, interval) => {
+    return {
+        type: actionTypes.FETCH_WRITE_LATENCY,
         latency,
         interval
     }
@@ -153,9 +161,9 @@ export const fetchVolWriteIops = (payload) => {
     }
 }
 
-export const fetchVolLatency = (payload) => {
+export const fetchVolReadLatency = (payload) => {
     return {
-        type: actionTypes.FETCH_VOL_LATENCY,
+        type: actionTypes.FETCH_VOL_READ_LATENCY,
         latency: payload.values,
         level: payload.level,
         name: payload.name,
@@ -165,3 +173,17 @@ export const fetchVolLatency = (payload) => {
         endTime: payload.endTime
     }
 }
+
+export const fetchVolWriteLatency = (payload) => {
+    return {
+        type: actionTypes.FETCH_VOL_WRITE_LATENCY,
+        latency: payload.values,
+        level: payload.level,
+        name: payload.name,
+        maxiops: payload.maxiops,
+        maxbw: payload.maxiops,
+        startTime: payload.startTime,
+        endTime: payload.endTime
+    }
+}
+

@@ -358,10 +358,9 @@ export function* fetchWriteIops(action) {
     }
 }
 
-
-export function* fetchLatency(action) {
+export function* fetchWriteLatency(action) {
     try {
-        let endpoint = "/api/v1/latency/arrays";
+        let endpoint = "/api/v1/writelatency/arrays";
         const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
             endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
@@ -377,31 +376,79 @@ export function* fetchLatency(action) {
         /* istanbul ignore else */
         if (result && !result.message) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchLatency(extractValues(result.res[0]), result.res[1][0]));
+                yield put(actionCreators.fetchWriteLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+                yield put(actionCreators.fetchVolWriteLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
             }
         }
         else if (action.payload.level === "array") {
-            yield put(actionCreators.fetchLatency([], {}));
+            yield put(actionCreators.fetchWriteLatency([], {}));
         } else {
-            yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+            yield put(actionCreators.fetchVolWriteLatency({ values: [], ...action.payload }))
         }
     }
     catch (error) {
         if (action.payload.level === "array") {
-            yield put(actionCreators.fetchLatency([], {}));
+            yield put(actionCreators.fetchWriteLatency([], {}));
         } else {
-            yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+            yield put(actionCreators.fetchVolWriteLatency({ values: [], ...action.payload }))
         }
     }
     finally {
          /* istanbul ignore if */
         if (yield cancelled()) {
             if (action.payload.level === "array") {
-                yield put(actionCreators.fetchLatency([], {}));
+                yield put(actionCreators.fetchWriteLatency([], {}));
             } else {
-                yield put(actionCreators.fetchVolLatency({ values: [], ...action.payload }))
+                yield put(actionCreators.fetchVolWriteLatency({ values: [], ...action.payload }))
+            }
+        }
+    }
+}
+
+export function* fetchReadLatency(action) {
+    try {
+        let endpoint = "/api/v1/readlatency/arrays";
+        const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
+        if(action.payload.volume === null) {
+            endpoint += `?arrayids=${arrayId}&time=${action.payload.time}`;
+        } else {
+            endpoint += `/volumes?arrayids=${arrayId}&volumeids=${action.payload.volume}&time=${action.payload.time}`
+        }
+        const response = yield call(
+            [axios, axios.get],
+            endpoint
+        );
+
+        const result = response.data;
+        /* istanbul ignore else */
+        if (result && !result.message) {
+            if (action.payload.level === "array") {
+                yield put(actionCreators.fetchReadLatency(extractValues(result.res[0]), result.res[1][0]));
+            } else {
+                yield put(actionCreators.fetchVolReadLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+            }
+        }
+        else if (action.payload.level === "array") {
+            yield put(actionCreators.fetchReadLatency([], {}));
+        } else {
+            yield put(actionCreators.fetchVolReadLatency({ values: [], ...action.payload }))
+        }
+    }
+    catch (error) {
+        if (action.payload.level === "array") {
+            yield put(actionCreators.fetchReadLatency([], {}));
+        } else {
+            yield put(actionCreators.fetchVolReadLatency({ values: [], ...action.payload }))
+        }
+    }
+    finally {
+         /* istanbul ignore if */
+        if (yield cancelled()) {
+            if (action.payload.level === "array") {
+                yield put(actionCreators.fetchReadLatency([], {}));
+            } else {
+                yield put(actionCreators.fetchVolReadLatency({ values: [], ...action.payload }))
             }
         }
     }
@@ -416,6 +463,7 @@ export default function* performanceWatcher() {
     yield takeEvery(actionTypes.SAGA_FETCH_WRITE_BANDWIDTH, fetchWriteBandwidth);
     yield takeEvery(actionTypes.SAGA_FETCH_READ_IOPS, fetchReadIops);
     yield takeEvery(actionTypes.SAGA_FETCH_WRITE_IOPS, fetchWriteIops);
-    yield takeEvery(actionTypes.SAGA_FETCH_LATENCY, fetchLatency);
+    yield takeEvery(actionTypes.SAGA_FETCH_READ_LATENCY, fetchReadLatency);
+    yield takeEvery(actionTypes.SAGA_FETCH_WRITE_LATENCY, fetchWriteLatency);
     //   yield takeEvery(actionTypes.SAGA_FETCH_INPUT_POWER_VARIATION, fetchInputPowerVariation);
 }

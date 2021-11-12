@@ -49,7 +49,7 @@ from rest.rest_api.health_status.health_status import process_response, get_over
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency,get_disk_read_latency , \
-    get_disk_current_perf 
+    get_disk_current_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -713,6 +713,18 @@ def get_read_latency(time_interval, arr_ids, vol_ids):
         print(e)
         return jsonify({"res": []})
 
+def get_write_latency(time_interval, arr_ids, vol_ids):
+    if time_interval not in time_groups.keys():
+        raise InvalidUsage(
+            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
+            status_code=404)
+    try:
+        res = get_disk_write_latency(time_interval, arr_ids, vol_ids)
+        return jsonify({"res": res["result"]["data"]})
+    except Exception as e:
+        print(e)
+        return jsonify({"res": []})
+
 @app.route('/api/v1/readlatency/arrays', methods=['GET'])
 def get_array_read_latency():
     params = request.args.to_dict()
@@ -728,6 +740,20 @@ def get_volume_read_latency():
     time_interval = params["time"]
     return get_read_latency(time_interval, arr_ids, vol_ids)
 
+@app.route('/api/v1/writelatency/arrays', methods=['GET'])
+def get_array_write_latency():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    time_interval = params["time"]
+    return get_write_latency(time_interval, arr_ids, "")
+
+@app.route('/api/v1/writelatency/arrays/volumes', methods=['GET'])
+def get_volume_write_latency():
+    params = request.args.to_dict()
+    arr_ids = params["arrayids"]
+    vol_ids = params["volumeids"]
+    time_interval = params["time"]
+    return get_write_latency(time_interval, arr_ids, vol_ids)
 
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
