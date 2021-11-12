@@ -1158,6 +1158,12 @@ def list_subsystem(current_user):
     try:
         resp = dagent.list_subsystem()
         resp = resp.json()
+        for subsystem in resp["result"]["data"]["subsystemlist"]:
+            if subsystem["subtype"] == "NVMe":
+                namespaces = subsystem["namespaces"] if "namespaces" in subsystem else []
+                if len(namespaces) > 0:
+                    arrayname = "_".join(namespaces[0]["bdev_name"].split("_")[2:])
+                    subsystem["array"] = arrayname
         return toJson(resp)
     except Exception as e:
         print("Exception in list subsystem "+e)
@@ -1688,6 +1694,7 @@ def saveVolume():
     mount_vol = body['mount_vol']
     stop_on_error = body['stop_on_error']
     count = body['count']
+    subsystem = body['subsystem']
     suffix = body['suffix']
     max_available_size = body['max_available_size']
 
@@ -1717,7 +1724,8 @@ def saveVolume():
         mount_vol,
         stop_on_error,
         int(maxbw),
-        int(maxiops))
+        int(maxiops),
+        subsystem)
 
     # print("print save volllll", toJson(create_vol_res.json())
     return toJson(create_vol_res.json())

@@ -61,6 +61,10 @@ func MountVolume(xrId string, param interface{}) (model.Request, model.Response,
 	return Requester{xrId, param, model.VolumeParam{}}.Send("MOUNTVOLUME")
 }
 
+func MountVolumeWithSubsystem(xrId string, param interface{}) (model.Request, model.Response, error) {
+        return Requester{xrId, param, model.VolumeParam{}}.Send("MOUNTVOLUMEWITHSUBSYSTEM")
+}
+
 func UnmountVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.VolumeParam{}}.Send("UNMOUNTVOLUME")
 }

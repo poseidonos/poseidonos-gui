@@ -281,6 +281,11 @@ func Route(router *gin.Engine) {
 				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolume, param)
 			}
 		})
+		iBoFOSPath.POST("/volumes/:volumeName/mount/subsystem", func(ctx *gin.Context) {
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolumeWithSubsystem, param)
+		})
 		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}

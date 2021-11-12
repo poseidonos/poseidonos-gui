@@ -131,15 +131,15 @@ const styles = (theme) => ({
     }
   },
   volumeStatsPaper: {
-    height: 350,
+    height: 400,
     display: "flex",
     position: "relative",
     flexDirection: "column",
     [theme.breakpoints.down("md")]: {
-      height: 400,
+      height: 450,
     },
     [theme.breakpoints.down("xs")]: {
-      height: 220,
+      height: 270,
     },
   },
   selectedTab: {
@@ -193,6 +193,7 @@ class Volume extends Component {
     this.fetchDevices();
     this.fetchStorageInfo();
     this.fetchMaxVolumeCount();
+    this.props.Get_Subsystems();
   }
 
   componentDidUpdate() {
@@ -227,6 +228,7 @@ class Volume extends Component {
       maxbw: volume.maxbw,
       maxiops: volume.maxiops,
       count: volume.volume_count,
+      subsystem: volume.subsystem,
       suffix: volume.volume_suffix,
       stop_on_error: volume.stop_on_error_checkbox,
       mount_vol: volume.mount_vol,
@@ -467,6 +469,8 @@ class Volume extends Component {
                           <CreateVolume
                             data-testid="createvolume"
                             createVolume={this.createVolume}
+			    subsystems={this.props.subsystems}
+			    array={this.props.selectedArray}
                             maxVolumeCount={this.props.maxVolumeCount}
                             volCount={this.props.volumes.length}
                             maxAvailableSize={
@@ -588,6 +592,7 @@ const mapStateToProps = (state) => {
     config: state.storageReducer.config,
     selectedArray: state.storageReducer.arrayname,
     loading: state.storageReducer.loading,
+    subsystems: state.subsystemReducer.subsystems,
     alertOpen: state.storageReducer.alertOpen,
     alertType: state.storageReducer.alertType,
     alertTitle: state.storageReducer.alertTitle,
@@ -646,7 +651,8 @@ const mapDispatchToProps = (dispatch) => {
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
     Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
     Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
-    Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload})
+    Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload}),
+    Get_Subsystems: () => dispatch({type: actionTypes.SAGA_FETCH_SUBSYSTEMS})
   };
 };
 

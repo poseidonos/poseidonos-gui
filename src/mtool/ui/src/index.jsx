@@ -66,7 +66,8 @@ import hardwareOverviewReducer from "./store/reducers/hardwareOverviewReducer";
 import hardwareSensorReducer from "./store/reducers/hardwareSensorReducer";
 import hardwareHealthReducer from "./store/reducers/hardwareHealthReducer";
 import hardwarePowerManagementReducer from "./store/reducers/hardwarePowerManagementReducer";
-import waitLoaderReducer from "./store/reducers/waitLoaderReducer"
+import waitLoaderReducer from "./store/reducers/waitLoaderReducer";
+import subsystemReducer from "./store/reducers/subsystemReducer";
 import rootSaga from "./sagas/indexSaga";
 
 // Add a request interceptor
@@ -115,7 +116,8 @@ const rootReducers = combineReducers({
     hardwareHealthReducer,
     hardwarePowerManagementReducer,
     waitLoaderReducer,
-    BMCAuthenticationReducer
+    BMCAuthenticationReducer,
+    subsystemReducer,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducers,composeEnhancers(applyMiddleware(sagaMiddleware)))

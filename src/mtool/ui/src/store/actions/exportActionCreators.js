@@ -88,6 +88,11 @@ export {
 } from "./storageActions";
 
 export {
+    getSubsystems,
+    showSubsystemAlert
+} from "./subsystemActions";
+
+export {
     // fetchDiskUsed,
     // fetchDiskWrite,
     fetchCpuUsage,

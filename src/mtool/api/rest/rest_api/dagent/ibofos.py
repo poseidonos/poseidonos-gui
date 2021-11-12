@@ -721,6 +721,7 @@ def create_volume(
         stop_on_error,
         maxbw=0,
         maxiops=0,
+        subsystem={},
         auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
@@ -733,7 +734,8 @@ def create_volume(
             "totalcount": count,
             "stoponerror": stop_on_error,
             "namesuffix": suffix,
-            "mountall": mount_all}}
+            "mountall": mount_all,
+            "subnqn": subsystem["subnqn"]}}
 
     request_body = json.dumps(request_body)
     #print("volume bodyyyy",request_body)
@@ -824,6 +826,31 @@ def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
+def mount_volume_with_subsystem(name, arrayname, subsystem, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    param = subsystem.copy()
+    param["array"] = arrayname
+    request_body = {
+            "param": param
+    }
+    request_body = json.dumps(request_body)
+    #print(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        #print("---------------RESPONSE---------------")
+        #print(response.status_code , response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to scan devices...', 500)
 
 def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)

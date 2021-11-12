@@ -97,12 +97,12 @@ const styles = (theme) => ({
     },
   },
   volumeCreatePaper: {
-    height: 350,
+    height: 400,
     [theme.breakpoints.down('md')]: {
-      height: 400
+      height: 450
     },
     [theme.breakpoints.down('xs')]: {
-      height: 550
+      height: 600
     }
   },
   createHeader: customTheme.card.header,
@@ -116,6 +116,30 @@ const styles = (theme) => ({
   },
 });
 
+const getSubsystem = (subsystem, subsystems) => {
+	for(const s of subsystems) {
+		if(s.nqn === subsystem) {
+			return s;
+		}
+	}
+	return {
+		listen_addresses: []
+	};
+}
+
+const getTransport = (subsystem, transport) => {
+	if(transport.indexOf(":") > 0) {
+		const ip = transport.split(":")[0];
+		const port = transport.split(":")[1];
+		for(const address of subsystem.listen_addresses) {
+			if(address.target_address === ip && address.transport_service_id === port) {
+				return address;
+			}
+		}
+	}
+	return {};
+}
+
 class CreateVolume extends Component {
   constructor(props) {
     super(props);
@@ -127,6 +151,8 @@ class CreateVolume extends Component {
       volume_description: "",
       volume_units: "GB",
       form_valid: true,
+      subsystem: "",
+      transport: "",
       open: false,
       alert_description: "",
       maxbw: 0,
@@ -195,6 +221,29 @@ class CreateVolume extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if(!this.state.subsystem && this.props.subsystems.length > 0) {
+      for(let i = 0; i < this.props.subsystems.length; i++) {
+        if(this.props.subsystems[i]["subtype"] === "NVMe") {
+          this.setState({
+            subsystem: this.props.subsystems[i].nqn
+          });
+      if(this.props.subsystems[i].listen_addresses && this.props.subsystems[i].listen_addresses.length) {
+              this.setState({
+		      transport: `${this.props.subsystems[i].listen_addresses[0].target_address}:${this.props.subsystems[i].listen_addresses[0].transport_service_id}`
+              });
+      } else {
+              this.setState({
+                      transport: ""
+              });
+      }
+
+          break;
+        }
+      }
+    }
+  }
+
   handleClose() {
     this.setState({ open: false, alert_open: false });
   }
@@ -205,7 +254,20 @@ class CreateVolume extends Component {
       this.setState({
         stop_on_error_checkbox: !this.state.stop_on_error_checkbox,
       });
-    } else if (name === "mount_vol_checkbox") {
+    } else if (name === "subsystem") {
+      const subSystem = getSubsystem(value, this.props.subsystems);
+      if(subSystem.listen_addresses && subSystem.listen_addresses.length) {
+	      this.setState({
+		      subsystem: value,
+		      transport: `${subSystem.listen_addresses[0].target_address}:${subSystem.listen_addresses[0].transport_service_id}`
+	      });
+      } else {
+	      this.setState({
+		      subsystem: value,
+		      transport: ""
+	      });
+      }
+    }else if (name === "mount_vol_checkbox") {
       this.setState({ mount_vol: !this.state.mount_vol });
     } else this.setState({ [name]: value });
   }
@@ -265,6 +327,7 @@ class CreateVolume extends Component {
       }
     }
 
+    const transport = getTransport(getSubsystem(this.state.subsystem, this.props.subsystems), this.state.transport)
     if (this.state.volume_count > 1 && parseInt(volSize, 10) === 0) {
       this.setState({
         alert_open: true,
@@ -273,10 +336,25 @@ class CreateVolume extends Component {
             alert_open: false,
             volume_count: 1,
           });
-          this.props.createVolume({ ...this.state, volume_count: 1 });
+          this.props.createVolume({ ...this.state,
+		  subsystem: {
+			  transport_type: transport.transport_type,
+			  transport_service_id: transport.transport_service_id,
+			  target_address: transport.target_address,
+			  subnqn: this.state.subsystem
+		  },
+		  volume_count: 1
+	  });
         },
       });
-    } else this.props.createVolume({ ...this.state });
+    } else this.props.createVolume({ ...this.state,
+	    subsystem: {
+                          transport_type: transport.transport_type,
+                          transport_service_id: transport.transport_service_id,
+                          target_address: transport.target_address,
+                          subnqn: this.state.subsystem
+            },
+    });
   }
 
   render() {
@@ -535,6 +613,69 @@ class CreateVolume extends Component {
               xs={12}
               sm={6}
               justifyContent="flex-end"
+              className={classes.formControl}
+            >
+              <FormControl className={classes.volumeName}>
+              <Select
+                  value={this.state.subsystem}
+                  onChange={this.handleChange}
+                  inputProps={{
+                    name: "subsystem",
+                    id: "subsystem",
+                    "data-testid": "subsystem-input",
+                  }}
+                  SelectDisplayProps={{
+                    "data-testid": "subsystem",
+                  }}
+                  className={classes.unitSelect}
+                >
+                  {this.props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
+                  (
+                    <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
+                      {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+                    </MenuItem>
+                  ) : null)}
+              </Select>
+              </FormControl>
+            </Grid>
+	    {/*
+	    <Grid
+              item
+              container
+              xs={12}
+              sm={6}
+              justifyContent="flex-start"
+              className={classes.formControl}
+            >
+              <FormControl className={classes.volumeName}>
+              <Select
+                  value={this.state.transport}
+                  onChange={this.handleChange}
+                  inputProps={{
+                    name: "transport",
+                    id: "transport",
+                    "data-testid": "transport-input",
+                  }}
+                  SelectDisplayProps={{
+                    "data-testid": "transport",
+                  }}
+                  className={classes.unitSelect}
+                >
+                  {getSubsystem(this.state.subsystem, this.props.subsystems).listen_addresses.map((transport) => (
+                    <MenuItem value={`${transport.target_address}:${transport.transport_service_id}`} key={`${transport.target_address}:${transport.transport_service_id}`}>
+                      {`${transport.target_address}:${transport.transport_service_id}`}
+                    </MenuItem>
+                  ))}
+              </Select>
+              </FormControl>
+            </Grid>
+	    */}
+            <Grid
+              item
+              container
+              xs={12}
+              sm={6}
+              justifyContent="flex-start"
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>

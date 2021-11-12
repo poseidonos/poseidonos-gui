@@ -45,7 +45,8 @@ def create_volume(
         mount_vol,
         stop_on_error,
         maxbw=0,
-        maxiops=0):
+        maxiops=0,
+        subsystem=""):
     create_vol_response = dagent.create_volume(
         vol_name,
         arr_name,
@@ -55,10 +56,11 @@ def create_volume(
         mount_vol,
         stop_on_error,
         maxbw,
-        maxiops)
+        maxiops,
+        subsystem)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
-            dagent.mount_volume(vol_name, arr_name)
+            dagent.mount_volume_with_subsystem(vol_name, arr_name, subsystem)
     return create_vol_response
 
 
