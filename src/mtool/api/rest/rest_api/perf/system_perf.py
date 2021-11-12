@@ -83,6 +83,10 @@ def get_disk_latency(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_latency(time, arr_id)
     return metrics.get_vol_latency(time, arr_id, vol_id)
+def get_disk_read_latency(time, arr_id, vol_id):
+    if vol_id == "":
+        return metrics.get_read_latency(time, arr_id)
+    return metrics.get_vol_read_latency(time, arr_id, vol_id)
 
 def get_disk_read_iops(time, arr_id, vol_id):
     if vol_id == "":

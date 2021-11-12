@@ -39,9 +39,9 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-func CallDagent(ctx *gin.Context, f func(string) (model.Response, error)) {
+func CallDagent(ctx *gin.Context, f func(string, interface{}) (model.Response, error)) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	res, err := f(header.XrId(ctx))
+	res, err := f(header.XrId(ctx), req.Param)
 	api.HttpResponse(ctx, res, err)
 }

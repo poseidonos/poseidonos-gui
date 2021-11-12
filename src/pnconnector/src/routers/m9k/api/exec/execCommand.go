@@ -35,11 +35,18 @@ package exec
 import (
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
+	"pnconnector/src/routers/m9k/api/ibofos"
 )
 
-func ForceKillIbof(xrId string) (model.Response, error) {
-	util.ExecCmd("pkill -9 ibofos", false)
-	res := model.Response{}
-	res.Result.Status.Code = 0
+func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
+	_, result, _ := ibofos.SystemSender(xrId, param, "GETPOSINFO")
+        res := model.Response{}
+	if result.Result.Status.Description == "DONE" {
+	 	util.ExecCmd("pkill -9 ibofos", false)
+		res.Result.Status.Code = 0
+
+	} else {
+	        res.Result.Status.Code = 11021
+	}
 	return res, nil
 }

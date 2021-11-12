@@ -38,6 +38,7 @@ import (
 	"dagent/src/routers/m9k/api/magent"
 	"dagent/src/routers/m9k/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -45,6 +46,8 @@ import (
 	amoduleIBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	amoduleMagent "pnconnector/src/routers/m9k/api/magent"
 	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
+	"reflect"
 	"strings"
 )
 
@@ -61,7 +64,6 @@ func Route(router *gin.Engine) {
 	uri.Use(middleware.CheckHeader)
 	uri.Use(middleware.CheckBody)
 	uri.Use(middleware.ResponseHeader)
-
 	// D-Agent
 	dagentPath := uri.Group("/dagent/v1")
 	{
@@ -127,9 +129,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/devices", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ListDevice)
 		})
-                iBoFOSPath.POST("/device", func(ctx *gin.Context) {
-                        ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateDevice)
-                })
+		iBoFOSPath.POST("/device", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateDevice)
+		})
 		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
 			if deviceName == "all" {
@@ -152,10 +154,10 @@ func Route(router *gin.Engine) {
 			param.Name = ctx.Param("arrayName")
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateArray, param)
 		})
-                iBoFOSPath.POST("/autoarray", func(ctx *gin.Context) {
-                        param := model.AutocreateArrayParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AutoCreateArray, param)
-                })
+		iBoFOSPath.POST("/autoarray", func(ctx *gin.Context) {
+			param := model.AutocreateArrayParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AutoCreateArray, param)
+		})
 		iBoFOSPath.GET("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Name = ctx.Param("arrayName")
@@ -209,34 +211,43 @@ func Route(router *gin.Engine) {
 	}
 	//Subsystem
 	{
-                iBoFOSPath.POST("/transport", func(ctx *gin.Context) {
-                        param := model.SubSystemParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateTransport, param)
-                })
+		iBoFOSPath.POST("/transport", func(ctx *gin.Context) {
+			param := model.SubSystemParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateTransport, param)
+		})
 
-                iBoFOSPath.POST("/listener", func(ctx *gin.Context) {
-                        param := model.SubSystemParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddListener, param)
-                })
-                iBoFOSPath.GET("/subsystem", func(ctx *gin.Context) {
-                        param := model.SubSystemParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListSubSystem, param)
-                })
-                iBoFOSPath.POST("/subsystem", func(ctx *gin.Context) {
-                        param := model.SubSystemParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateSubSystem, param)
-                })
-                iBoFOSPath.DELETE("/subsystem", func(ctx *gin.Context) {
-                        param := model.SubSystemParam{}
-                        ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.DeleteSubSystem, param)
-                })
-
+		iBoFOSPath.POST("/listener", func(ctx *gin.Context) {
+			param := model.SubSystemParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AddListener, param)
+		})
+		iBoFOSPath.GET("/subsystem", func(ctx *gin.Context) {
+			param := model.SubSystemParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListSubSystem, param)
+		})
+		iBoFOSPath.POST("/subsystem", func(ctx *gin.Context) {
+			param := model.SubSystemParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateSubSystem, param)
+		})
+		iBoFOSPath.DELETE("/subsystem", func(ctx *gin.Context) {
+			param := model.SubSystemParam{}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.DeleteSubSystem, param)
+		})
 
 	}
 
 	// Volume
 	{
 		iBoFOSPath.POST("/volumes", func(ctx *gin.Context) {
+			req := model.Request{}
+			ctx.ShouldBindBodyWith(&req, binding.JSON)
+			reqMap := req.Param.(map[string]interface{})
+			res := model.Response{}
+			if reflect.TypeOf(reqMap["namesuffix"]).Kind() == reflect.String {
+				res.Result.Status, _ = util.GetStatusInfo(11060)
+				ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+				return
+
+			}
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
@@ -404,21 +415,37 @@ func Route(router *gin.Engine) {
 				magent.CallMagent(ctx, amoduleMagent.GetWriteIOPS, param)
 			}
 		})
-		//latency
-		mAgentPath.GET("/latency/arrays", func(ctx *gin.Context) {
+		//write latency
+		mAgentPath.GET("/writelatency/arrays", func(ctx *gin.Context) {
 			var params model.MAgentParam
 			if ctx.ShouldBindQuery(&params) == nil {
 				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
-				magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
+				magent.CallMagent(ctx, amoduleMagent.GetWriteLatency, param)
 			}
 		})
-		mAgentPath.GET("/latency/arrays/volumes", func(ctx *gin.Context) {
+		mAgentPath.GET("/writelatency/arrays/volumes", func(ctx *gin.Context) {
 			var params model.MAgentParam
 			if ctx.ShouldBindQuery(&params) == nil {
 				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
-				magent.CallMagent(ctx, amoduleMagent.GetLatency, param)
+				magent.CallMagent(ctx, amoduleMagent.GetWriteLatency, param)
 			}
 		})
+                //read latency
+                mAgentPath.GET("/readlatency/arrays", func(ctx *gin.Context) {
+                        var params model.MAgentParam
+                        if ctx.ShouldBindQuery(&params) == nil {
+                                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+                                magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
+                        }
+                })
+                mAgentPath.GET("/readlatency/arrays/volumes", func(ctx *gin.Context) {
+                        var params model.MAgentParam
+                        if ctx.ShouldBindQuery(&params) == nil {
+                                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+                                magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
+                        }
+                })
+
 		//rebuildlogs
 		mAgentPath.GET("/rebuildlogs/:time", func(ctx *gin.Context) {
 			time := ctx.Param("time")

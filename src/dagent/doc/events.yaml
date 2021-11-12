@@ -1391,6 +1391,11 @@ modules:
         message: iBof Connection Error
         problem: connection problem between POS and Management Stack
         solution: restart POS
+      - code: 11021
+        level: ERROR
+        message: 
+        problem: connection problem between POS and Management Stack, No POS instance to kill
+        solution: start POS
       - code: 11030
         level: ERROR
         message: Another request already in progress
@@ -1405,6 +1410,11 @@ modules:
         message: Volume count exceeds limit
         problem: POS allows only 256 volumes to create. please check and try again
         solution: Try with a smaller value for count
+      - code: 11060
+        level: ERROR
+        message: Volume suffix invalid
+        problem: Only numeric suffix allowed
+        solution: Please try  numeric suffix
       - code: 12010
         level: ERROR
         message: one of iBoF service is dead

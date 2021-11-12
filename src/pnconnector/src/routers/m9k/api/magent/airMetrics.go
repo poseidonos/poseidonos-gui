@@ -233,7 +233,7 @@ func GetWriteIOPS(param interface{}) (model.Response, error) {
 }
 
 // GetLatency collects the latency metrics from influxdb
-func GetLatency(param interface{}) (model.Response, error) {
+func GetWriteLatency(param interface{}) (model.Response, error) {
 	var result model.Response
 	var values [][]interface{}
 	var columns []string
@@ -242,9 +242,9 @@ func GetLatency(param interface{}) (model.Response, error) {
   arrayIds, volumeIds := parseIds(param)
 	startingTime := getVolumeCreationTime(volumeIds)
 	if volumeIds == "" {
-		values, columns, statusCode = GetAIRData(param, LatencyAggRPQArr, LatencyDefaultRPQArr, LatencyLastRecordQArr, startingTime, volumeIds, arrayIds)
+		values, columns, statusCode = GetAIRData(param, WriteLatencyAggRPQArr, WriteLatencyDefaultRPQArr, WriteLatencyLastRecordQArr, startingTime, volumeIds, arrayIds)
 	} else {
-		values, columns, statusCode = GetAIRData(param, LatencyAggRPQVol, LatencyDefaultRPQVol, LatencyLastRecordQVol, startingTime, volumeIds, arrayIds)
+		values, columns, statusCode = GetAIRData(param, WriteLatencyAggRPQVol, WriteLatencyDefaultRPQVol, WriteLatencyLastRecordQVol, startingTime, volumeIds, arrayIds)
 	}
 	result.Result.Status, _ = util.GetStatusInfo(statusCode)
 	if statusCode != 0 {
@@ -255,4 +255,27 @@ func GetLatency(param interface{}) (model.Response, error) {
 	res := extractValues(values, columns, "latency", "latency", LatencyField,timeInterval,currentTime)
 	result.Result.Data = res
 	return result, nil
+}
+func GetReadLatency(param interface{}) (model.Response, error) {
+        var result model.Response
+        var values [][]interface{}
+        var columns []string
+        var statusCode int
+        currentTime := time.Now().UnixNano()
+  arrayIds, volumeIds := parseIds(param)
+        startingTime := getVolumeCreationTime(volumeIds)
+        if volumeIds == "" {
+                values, columns, statusCode = GetAIRData(param, ReadLatencyAggRPQArr, ReadLatencyDefaultRPQArr, ReadLatencyLastRecordQArr, startingTime, volumeIds, arrayIds)
+        } else {
+                values, columns, statusCode = GetAIRData(param, ReadLatencyAggRPQVol, ReadLatencyDefaultRPQVol, ReadLatencyLastRecordQVol, startingTime, volumeIds, arrayIds)
+        }
+        result.Result.Status, _ = util.GetStatusInfo(statusCode)
+        if statusCode != 0 {
+                result.Result.Data = make([]string, 0)
+                return result, nil
+        }
+  timeInterval := param.(model.MAgentParam).Time
+        res := extractValues(values, columns, "latency", "latency", LatencyField,timeInterval,currentTime)
+        result.Result.Data = res
+        return result, nil
 }

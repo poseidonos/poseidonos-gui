@@ -47,7 +47,7 @@ var LastSuccessTime int64
 
 const MAXAGE int64 = 4 // 4sec
 
-func HeartBeat(xrId string) (model.Response, error) {
+func HeartBeat(xrId string, param interface{}) (model.Response, error) {
 	var err error
 	var res model.Response
 	successTime := updateSuccessTime(xrId)
@@ -74,14 +74,14 @@ func updateSuccessTime(xrId string) int64 {
 	}
 }
 
-func KillDAgent(xrId string) (model.Response, error) {
+func KillDAgent(xrId string, param interface{}) (model.Response, error) {
 	res := model.Response{}
 	res.Result.Status.Code = 0
 	syscall.Kill(syscall.Getpid(), syscall.SIGINT)
 	return res, nil
 }
 
-func Version(xrId string) (model.Response, error) {
+func Version(xrId string, param interface{}) (model.Response, error) {
 	buildInfo := model.BuildInfo{GitHash: GitCommit, BuildTime: BuildTime}
 	res := model.Response{}
 	res.Result.Data = buildInfo

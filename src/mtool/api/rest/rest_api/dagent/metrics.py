@@ -195,7 +195,22 @@ def get_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("latency",arr_ids,time)
+        PATH = ARRAY_PATH.format("writelatency",arr_ids,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
+        #print("--------------RESPONSE-------------")
+        response = response.json()
+        #print("--------------RESPONSE-------------")
+        return response
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+
+def get_read_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    try:
+        #print("Sending command to dagent")
+        PATH = ARRAY_PATH.format("readlatency",arr_ids,time)
         response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
@@ -210,7 +225,22 @@ def get_vol_latency(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         #print("Sending command to dagent")
-        PATH = VOLUME_PATH.format("latency",arr_ids,vol_ids,time)
+        PATH = VOLUME_PATH.format("writelatency",arr_ids,vol_ids,time)
+        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
+        #print("--------------RESPONSE-------------")
+        response = response.json()
+        #print("--------------RESPONSE-------------")
+        return response
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+
+def get_vol_read_latency(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    try:
+        #print("Sending command to dagent")
+        PATH = VOLUME_PATH.format("readlatency",arr_ids,vol_ids,time)
         response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
         #print("--------------RESPONSE-------------")
         response = response.json()
