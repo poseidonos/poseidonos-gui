@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b4e99fba-2015-490d-848d-c829a18c01e7",
+		"_postman_id": "77d2a903-1642-4be2-a2c1-377aecd6a8cf",
 		"name": "MTool_Performance-after-fio_Tester",
 		"description": "MTool simple workflow - from login, start pos, create array, create vol, perf charts and stop pos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12,7 +12,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e35994da-1fed-48d9-aa1d-358ed15fc9b3",
 						"exec": [
 							"// save the response into a local variable so that we can access it later in the script\r",
 							"let response = pm.response.json();\r",
@@ -70,7 +69,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e7c25c23-aa8d-4ef3-b6f0-63f9a844adba",
 						"exec": [
 							"pm.test(\"Data received \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -85,7 +83,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b8b09e3a-5dd9-4389-8a2b-f432f2161fa7",
 						"exec": [
 							""
 						],
@@ -125,7 +122,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6fcfa621-4a4c-4cdc-8c15-b53a59537784",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -135,7 +131,7 @@
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
+							"    bw_sum = bw_sum + data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -191,7 +187,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8871aa84-a1b3-4aff-9201-3b78d49dbc82",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -201,7 +196,7 @@
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
+							"    bw_sum = bw_sum + data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -257,7 +252,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d27a1f48-cddf-4ece-b7f4-23eeb0a859cf",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -267,7 +261,7 @@
 							"data = jsonData.res\r",
 							"iops_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    iops_sum = iops_sum + data[i].iops\r",
+							"    iops_sum = iops_sum + data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \",iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -322,7 +316,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f9003dcf-2e73-4767-b7bf-674568f29e0e",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -332,7 +325,7 @@
 							"data = jsonData.res\r",
 							"iops_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    iops_sum = iops_sum + data[i].iops\r",
+							"    iops_sum = iops_sum + data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \",iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -386,7 +379,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "11e376cf-0513-4ccd-a125-77f3431a8a24",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -434,12 +426,63 @@
 			"response": []
 		},
 		{
+			"name": "array_read_latency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays?arrayids=0&time=5m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"readlatency",
+						"arrays"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "vol_bw_read_0",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "7c16ce12-8493-4e4f-b52c-cc7efed5883a",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -449,7 +492,7 @@
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
+							"    bw_sum = bw_sum + data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -508,7 +551,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5e5dd6cb-a768-4ef8-877b-234690c05f41",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -519,7 +561,7 @@
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
+							"    bw_sum = bw_sum + data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -579,7 +621,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e00b7d98-72b1-49c5-84ff-45ef1abee018",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -590,7 +631,7 @@
 							"data = jsonData.res\r",
 							"iops_sum = 0 \r",
 							"for( i= 0; i<data.length;i++) {\r",
-							"    iops_sum = iops_sum + data[i].iops\r",
+							"    iops_sum = iops_sum + data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \",iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -649,7 +690,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d930de72-9679-4f57-8b5b-1d6d630c13d6",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -659,7 +699,7 @@
 							"data = jsonData.res\r",
 							"iops_sum = 0\r",
 							"for (i = 0; i < data.length; i++) {\r",
-							"    iops_sum = iops_sum + data[i].iops\r",
+							"    iops_sum = iops_sum + data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \", iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () {\r",
@@ -718,7 +758,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d09e9d70-703e-4d9a-9b96-769353ffe668",
 						"exec": [
 							"pm.test(\"Data received\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -769,13 +808,69 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "vol_read_latency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Data received\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"readlatency",
+						"arrays",
+						"volumes"
+					],
+					"query": [
+						{
+							"key": "arrayids",
+							"value": "0"
+						},
+						{
+							"key": "volumeids",
+							"value": "0"
+						},
+						{
+							"key": "time",
+							"value": "5m"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "a64b5034-f3e7-4dd6-8ea4-eac96d59cafb",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -785,7 +880,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "2233a08c-6495-4237-a310-dd0a37d48312",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -795,11 +889,9 @@
 	],
 	"variable": [
 		{
-			"id": "b0317c7a-8a04-4185-a7a5-4295f275e8f6",
 			"key": "token",
 			"value": "",
 			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -1978,7 +1978,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\":{\r\n        \"name\": \"uram2\",\r\n\t\t\"num_blocks\" : 512,\r\n\t\t\"block_size\" : 4096,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}\r\n}"
+									"raw": "{\r\n    \"param\":{\r\n        \"name\": \"uram0\",\r\n\t\t\"num_blocks\" : 512,\r\n\t\t\"block_size\" : 8192,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/device",
@@ -2449,7 +2449,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n    \"arrayname\": \"{{arrayName1}}_auto\",\n    \"raidtype\": \"RAID5\",\n    \"metaDisk\": \"uram1\",\n    \"num_data\" : 3,\n\t\"num_spare\" : 0\n}\n}"
+									"raw": "{\n    \"param\": {\n    \"arrayname\": \"{{arrayName1}}\",\n    \"raidtype\": \"RAID5\",\n    \"metaDisk\": \"uram0\",\n    \"num_data\" : 3,\n\t\"num_spare\" : 1\n}\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/autoarray",
@@ -4804,7 +4804,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n\t\t\"maxbw\": 40,\r\n        \"maxiops\":30\r\n    }\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n        \"minbw\":20,\r\n\t\t\"maxbw\": 40,\r\n        \"maxiops\":30\r\n    }\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/qos",
@@ -6577,7 +6577,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.111\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
@@ -6778,7 +6778,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.111\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/listener",
@@ -11042,7 +11042,7 @@
 					]
 				},
 				{
-					"name": "LATENCY",
+					"name": "WRITE LATENCY",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -11086,7 +11086,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/latency/arrays?arrayids=0&time=",
+							"raw": "http://{{host}}/api/metric/v1/writelatency/arrays?arrayids=0&time=",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -11095,7 +11095,7 @@
 								"api",
 								"metric",
 								"v1",
-								"latency",
+								"writelatency",
 								"arrays"
 							],
 							"query": [
@@ -11178,7 +11178,7 @@
 					]
 				},
 				{
-					"name": "LATENCY with PERIOD",
+					"name": "WRITE LATENCY with PERIOD",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -11222,7 +11222,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/latency/arrays?arrayids=0&time={{period}}",
+							"raw": "http://{{host}}/api/metric/v1/writelatency/arrays?arrayids=0&time={{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -11231,7 +11231,7 @@
 								"api",
 								"metric",
 								"v1",
-								"latency",
+								"writelatency",
 								"arrays"
 							],
 							"query": [
@@ -11376,7 +11376,7 @@
 					]
 				},
 				{
-					"name": "VOL LATENCY",
+					"name": "VOL WRITE LATENCY",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -11420,7 +11420,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=",
+							"raw": "http://{{host}}/api/metric/v1/writelatency/arrays/volumes?arrayids=0&volumeids=0&time=",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -11429,7 +11429,7 @@
 								"api",
 								"metric",
 								"v1",
-								"latency",
+								"writelatency",
 								"arrays",
 								"volumes"
 							],
@@ -11519,7 +11519,7 @@
 					]
 				},
 				{
-					"name": "VOL LATENCY with PERIOD",
+					"name": "VOL WRITE LATENCY with PERIOD",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -11563,7 +11563,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time={{period}}",
+							"raw": "http://{{host}}/api/metric/v1/writelatency/arrays/volumes?arrayids=0&volumeids=0&time={{period}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -11572,7 +11572,691 @@
 								"api",
 								"metric",
 								"v1",
-								"latency",
+								"writelatency",
+								"arrays",
+								"volumes"
+							],
+							"query": [
+								{
+									"key": "arrayids",
+									"value": "0"
+								},
+								{
+									"key": "volumeids",
+									"value": "0"
+								},
+								{
+									"key": "time",
+									"value": "{{period}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"{{period}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736236000000000\r\n            },\r\n            {\r\n                \"latency\": 6376,\r\n                \"time\": 1597736237000000000\r\n            },\r\n            {\r\n                \"latency\": 23973.25,\r\n                \"time\": 1597736238000000000\r\n            },\r\n            {\r\n                \"latency\": 96155,\r\n                \"time\": 1597736239000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736240000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736241000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736242000000000\r\n            },\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597736243000000000\r\n            },\r\n            {\r\n                \"latency\": 19665,\r\n                \"time\": 1597736244000000000\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						{
+							"name": "Fail - invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "560f0b7a-594a-48b1-ae51-1d593479049d"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:45:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						}
+					]
+				},
+				{
+					"name": "READ LATENCY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/readlatency/arrays?arrayids=0&time=",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"readlatency",
+								"arrays"
+							],
+							"query": [
+								{
+									"key": "arrayids",
+									"value": "0"
+								},
+								{
+									"key": "time",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
+						}
+					]
+				},
+				{
+					"name": "READ LATENCY with PERIOD",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/readlatency/arrays?arrayids=0&time={{period}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"readlatency",
+								"arrays"
+							],
+							"query": [
+								{
+									"key": "arrayids",
+									"value": "0"
+								},
+								{
+									"key": "time",
+									"value": "{{period}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Fail - 0 invalid time interval, empty response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "7801c974-61f1-4e74-a73f-4ff31d2b1597"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:47:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"MAgent\",\r\n            \"code\": 21010,\r\n            \"level\": \"ERROR\",\r\n            \"description\": \"Time parameter error\",\r\n            \"problem\": \"Invalid time period specified\",\r\n            \"solution\": \"use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d\"\r\n        },\r\n        \"data\": []\r\n    }\r\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"{{period}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"Success\"\n        },\n        \"data\": {\n            \"githash\": \"b98039e5f8ab19351994044960cf0e27262665b4\",\n            \"build_time\": \"1591338851\"\n        }\n    },\n    \"info\": {\n        \"state\": \"\",\n        \"situation\": \"\",\n        \"rebuliding_progress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "VOL READ LATENCY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"readlatency",
+								"arrays",
+								"volumes"
+							],
+							"query": [
+								{
+									"key": "arrayids",
+									"value": "0"
+								},
+								{
+									"key": "volumeids",
+									"value": "0"
+								},
+								{
+									"key": "time",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "562b9d26-1fbf-4aaa-9cb8-c9bef13ffbee"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Jun 2020 06:34:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "267"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"rid\": \"\",\r\n    \"lastSuccessTime\": 0,\r\n    \"result\": {\r\n        \"status\": {\r\n            \"module\": \"COMMON\",\r\n            \"code\": 0,\r\n            \"level\": \"INFO\",\r\n            \"description\": \"Success\"\r\n        },\r\n        \"data\": [\r\n            {\r\n                \"latency\": 0,\r\n                \"time\": 1597737402983947953\r\n            }\r\n        ]\r\n    }\r\n}"
+						}
+					]
+				},
+				{
+					"name": "VOL READ LATENCY with PERIOD",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PING\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time={{period}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"readlatency",
 								"arrays",
 								"volumes"
 							],
