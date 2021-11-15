@@ -60,7 +60,9 @@ def create_volume(
         subsystem)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
-            dagent.mount_volume_with_subsystem(vol_name, arr_name, subsystem)
+            res = dagent.mount_volume_with_subsystem(vol_name, arr_name, subsystem)
+            if res.status_code != 200:
+                return res
     return create_vol_response
 
 

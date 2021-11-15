@@ -35,7 +35,7 @@ import { call, takeEvery, put, select } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 import { arrayname } from "../store/reducers/storageReducer";
-
+import {fetchSubsystems} from "./subsystemSaga";
 
 function* fetchVolumeDetails(action) {
   try {
@@ -287,9 +287,11 @@ function* createVolume(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             alertTitle: "Create Volume",
-            errorMsg: "Volume(s) creation failed",
-            errorCode: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            errorMsg: "Error while creating Volume",
+            errorCode: `${response.data.result && response.data.result.status
+                ? `${response.data.result.status.description}
+			    ${response.data.result.status.posDescription}
+			    Error code:${response.data.result.status.code}`
                 : ""
               }`,
           })
@@ -318,6 +320,7 @@ function* createVolume(action) {
       })
     );
   } finally {
+    yield fetchSubsystems();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -903,6 +906,7 @@ function* deleteVolumes(action) {
     );
   } finally {
     yield fetchVolumes({ payload: { array: yield select(arrayname) } });
+    yield fetchSubsystems();
     yield put(actionCreators.stopStorageLoader());
   }
 }
@@ -1304,6 +1308,7 @@ function* changeVolumeMountStatus(action) {
         array: arrayName
       }
     });
+    yield fetchSubsystems();
     yield put(actionCreators.stopStorageLoader());
   }
 }

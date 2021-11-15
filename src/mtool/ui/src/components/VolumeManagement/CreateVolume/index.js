@@ -42,6 +42,7 @@ import {
   withStyles,
   TextField,
   FormControl,
+  InputLabel,
   Select,
   MenuItem,
   Checkbox,
@@ -117,13 +118,11 @@ const styles = (theme) => ({
 });
 
 const getSubsystem = (subsystem, subsystems) => {
-	for(const s of subsystems) {
-		if(s.nqn === subsystem) {
-			return s;
-		}
-	}
+	const result = subsystems.find((s) => s.nqn === subsystem);
+	if(result) return result;
 	return {
-		listen_addresses: []
+		listen_addresses: [],
+		array: "-"
 	};
 }
 
@@ -281,6 +280,7 @@ class CreateVolume extends Component {
     let errorDesc = "";
     let volSize = this.state.volume_size;
     let maxAvailableSize;
+    const subsystem = getSubsystem(this.state.subsystem, this.props.subsystems);
     if (this.state.volume_size.length === 0)
       errorDesc = "Please Enter Volume Size";
     else if (this.state.volume_size < 0)
@@ -309,6 +309,8 @@ class CreateVolume extends Component {
       errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
     else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 18446744073709551)
       errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
+    else if (this.state.mount_vol && subsystem.array && subsystem.array !== this.props.array)
+      errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
 
     if (isError === true) {
@@ -327,7 +329,8 @@ class CreateVolume extends Component {
       }
     }
 
-    const transport = getTransport(getSubsystem(this.state.subsystem, this.props.subsystems), this.state.transport)
+    const transport = getTransport(subsystem, this.state.transport)
+
     if (this.state.volume_count > 1 && parseInt(volSize, 10) === 0) {
       this.setState({
         alert_open: true,
@@ -347,14 +350,16 @@ class CreateVolume extends Component {
 	  });
         },
       });
-    } else this.props.createVolume({ ...this.state,
+    } else {
+	    this.props.createVolume({ ...this.state,
 	    subsystem: {
                           transport_type: transport.transport_type,
                           transport_service_id: transport.transport_service_id,
                           target_address: transport.target_address,
                           subnqn: this.state.subsystem
             },
-    });
+     })
+    };
   }
 
   render() {
@@ -616,9 +621,11 @@ class CreateVolume extends Component {
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>
+              <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
               <Select
                   value={this.state.subsystem}
                   onChange={this.handleChange}
+                  label="Select Subsystem"
                   inputProps={{
                     name: "subsystem",
                     id: "subsystem",

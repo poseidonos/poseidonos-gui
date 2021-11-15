@@ -35,7 +35,7 @@ import { call, takeEvery, put } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 
-function* fetchSubsystems() {
+export function* fetchSubsystems() {
     const alertDetails = {
         errorMsg: "Unable to get subsytems!",
         alertType: "alert",

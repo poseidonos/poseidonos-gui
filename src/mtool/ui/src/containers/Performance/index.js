@@ -73,7 +73,11 @@ const styles = (theme) => ({
     }
   },
   volumeSelect: {
-    maxWidth: 250
+    maxWidth: 250,
+    '& p': {
+	    overflow: "hidden",
+	    textOverflow: "ellipsis"
+    }
   },
   noVols: {
     marginTop: theme.spacing(4)

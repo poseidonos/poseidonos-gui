@@ -212,6 +212,7 @@ class Volume extends Component {
 
   handleTabChange(event, newValue) {
     if(newValue === "manage") {
+      this.props.Get_Subsystems();
       this.props.history.push(`/storage/array/${newValue}?array=${this.props.selectedArray}`);
     } else {
       this.fetchDevices();
