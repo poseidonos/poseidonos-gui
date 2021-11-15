@@ -53,13 +53,13 @@ export const initialState = {
         name: 'Host Storage Usage',
     },
     readIOPS: {
-        yLabel: 'IOPS',
+        yLabel: 'IOPS (io/s)',
         values: [],
         loaded: false,
         name: 'Read IOPS',
     },
     writeIOPS: {
-        yLabel: 'IOPS',
+        yLabel: 'IOPS (io/s)',
         values: [],
         loaded: false,
         name: 'Write IOPS',
@@ -242,7 +242,7 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         readIOPS: {
-                            yLabel: 'IOPS',
+                            yLabel: 'IOPS (io/s)',
                             values: action.iops,
                             startTime: action.startTime,
                             endTime: action.endTime,
@@ -262,7 +262,7 @@ const performanceReducer = (state = initialState, action) => {
                     [action.level]: {
                         ...state.vols[action.level],
                         writeIOPS: {
-                            yLabel: 'IOPS',
+                            yLabel: 'IOPS (io/s)',
                             values: action.iops,
                             startTime: action.startTime,
                             endTime: action.endTime,

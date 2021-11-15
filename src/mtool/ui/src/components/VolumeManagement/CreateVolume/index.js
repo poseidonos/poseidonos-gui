@@ -130,9 +130,9 @@ const getTransport = (subsystem, transport) => {
 	if(transport.indexOf(":") > 0) {
 		const ip = transport.split(":")[0];
 		const port = transport.split(":")[1];
-		for(const address of subsystem.listen_addresses) {
-			if(address.target_address === ip && address.transport_service_id === port) {
-				return address;
+		for(let i = 0; i < subsystem.listen_addresses.length; i += 1) {
+			if(subsystem.listen_addresses[i].target_address === ip && subsystem.listen_addresses[i].transport_service_id === port) {
+				return subsystem.listen_addresses[i];
 			}
 		}
 	}
@@ -222,8 +222,9 @@ class CreateVolume extends Component {
 
   componentDidUpdate() {
     if(!this.state.subsystem && this.props.subsystems.length > 0) {
-      for(let i = 0; i < this.props.subsystems.length; i++) {
-        if(this.props.subsystems[i]["subtype"] === "NVMe") {
+      /* eslint-disable react/no-did-update-set-state */
+      for(let i = 0; i < this.props.subsystems.length; i += 1) {
+        if(this.props.subsystems[i].subtype === "NVMe") {
           this.setState({
             subsystem: this.props.subsystems[i].nqn
           });
@@ -240,6 +241,7 @@ class CreateVolume extends Component {
           break;
         }
       }
+      /* eslint-enable react/no-did-update-set-state */
     }
   }
 
@@ -635,7 +637,7 @@ class CreateVolume extends Component {
                     "data-testid": "subsystem",
                   }}
                   className={classes.unitSelect}
-                >
+              >
                   {this.props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
                   (
                     <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
