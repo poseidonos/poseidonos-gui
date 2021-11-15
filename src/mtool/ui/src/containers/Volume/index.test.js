@@ -55,6 +55,7 @@ import createSagaMiddleware from "redux-saga";
 import { act } from "react-dom/test-utils";
 import Volume from "./index";
 import storageReducer from "../../store/reducers/storageReducer";
+import subsystemReducer from "../../store/reducers/subsystemReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
@@ -70,6 +71,7 @@ describe("<Storage Management />", () => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
       storageReducer,
+      subsystemReducer,
       headerReducer,
       configurationsettingReducer,
       BMCAuthenticationReducer,

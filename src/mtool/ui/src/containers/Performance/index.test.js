@@ -51,6 +51,7 @@ import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import performanceReducer from "../../store/reducers/performanceReducer";
 import storageReducer from "../../store/reducers/storageReducer";
+import subsystemReducer from "../../store/reducers/subsystemReducer";
 import hardwareSensorReducer from "../../store/reducers/hardwareSensorReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer"
@@ -91,6 +92,7 @@ describe("Performance", () => {
       storageReducer,
       configurationsettingReducer,
       hardwareSensorReducer,
+      subsystemReducer,
       BMCAuthenticationReducer
     });
     const composeEnhancers =
@@ -804,7 +806,7 @@ describe("Performance", () => {
     expect(volWriteIOPS).toBeDefined();
   });
 
-  it("renders volume level latency graphs for last 1m", async () => {
+  it("renders volume level read latency graphs for last 1m", async () => {
     mock.onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/).reply(200, {
@@ -851,7 +853,7 @@ describe("Performance", () => {
           }
         }
       })
-      .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=1m')
+      .onGet('/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=1m')
       .reply(200, {
         res: [
           [{
@@ -864,7 +866,7 @@ describe("Performance", () => {
           }]
         ]
       })
-      .onGet('/api/v1/latency/arrays/volumes?arrayids=0&volumeids=1&time=1m')
+      .onGet('/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=1&time=1m')
       .reply(200, {
         res: [
           [{
@@ -893,13 +895,13 @@ describe("Performance", () => {
     const measurementSelect = await waitForElement(() => getByTestId("measurementSelect"));
     fireEvent.click(measurementSelect);
     try {
-      fireEvent.click(await waitForElement(() => getByTestId("latency")));
+      fireEvent.click(await waitForElement(() => getByTestId("readLatency")));
     } catch {
       const measurementInput = await waitForElement(() => getByTestId("measurementInput"));
-      fireEvent.change(measurementInput, { target: { value: 'latency' } });
+      fireEvent.change(measurementInput, { target: { value: 'read_latency' } });
     }
     expect(asFragment()).toMatchSnapshot();
-    const volLatency = await waitForElement(() => getByTestId("latency-vol"));
+    const volLatency = await waitForElement(() => getByTestId("readLatency-vol"));
     expect(volLatency).toBeDefined();
     expect(getByText(/Latency \(ms\)/)).toBeDefined();
   });
