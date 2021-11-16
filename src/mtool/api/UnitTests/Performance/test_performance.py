@@ -516,9 +516,9 @@ def test_get_vol_latency(mock_get_current_user, **kwargs):
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","7d"), status_code=500)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","12h"), json="test", status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","30d"), exc=HTTPError)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","30d"), exc=HTTPError)
     response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
@@ -544,9 +544,9 @@ def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","7d"), status_code=500)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","12h"), json="test", status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","30d"), exc=HTTPError)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","30d"), exc=HTTPError)
     response = app.test_client().get(
         '/api/v1/latency/1/0',
         headers={'x-access-token': json_token})
@@ -565,11 +565,11 @@ def test_get_latency(mock_get_current_user, **kwargs):
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","7d"),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","7d"),
                        status_code=500)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","30d"),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","30d"),
                         exc=HTTPError)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","12h"),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","12h"),
                        json="test",
                        status_code=200)
     response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","1m"), headers={'x-access-token': json_token})

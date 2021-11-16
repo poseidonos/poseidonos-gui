@@ -722,6 +722,25 @@ def test_create_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
+        '/api/ibofos/v1/volumes/vol1/mount',
+        json={
+    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"
+        }
+    },
+    "info": {
+        "version": "v0.10.1"
+    }},
+        status_code=200)
+    kwargs["mock"].post(
+        DAGENT_URL +
         '/api/ibofos/v1/volumes',
         json={
             "result": {
@@ -742,6 +761,7 @@ def test_create_volumes(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
                 "max_available_size": 1722281885696
                 }''',
         headers={'x-access-token': json_token})
@@ -773,6 +793,7 @@ def test_create_volumes_failure(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
+                "subsystem": "nqn.2019-04.ibof:subsystem1",
                 "max_available_size": 1722281885696
                 }''',
         headers={'x-access-token': json_token})
@@ -795,6 +816,22 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
                     "description": "SUCCESS",
                     "code": 0}}},
         status_code=200)
+
+    kwargs["mock"].post( DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
+        json={"rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"}
+    },
+    "info": {
+        "version": "v0.10.1"
+    }}, status_code=200)
+
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -808,7 +845,8 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
-                "max_available_size": 1722281885696
+                "max_available_size": 1722281885696,
+				"subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
                 }''',
         headers={'x-access-token': json_token})
 
@@ -829,6 +867,25 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
                     "description": "SUCCESS",
                     "code": 0}}},
         status_code=200)
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/volumes/vol1/mount',
+        json={
+    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"
+        }
+    },
+    "info": {
+        "version": "v0.10.1"
+    }},
+        status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -842,7 +899,8 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
-                "max_available_size": 1722281885696
+                "max_available_size": 1722281885696,
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
                 }''',
         headers={'x-access-token': json_token})
 
@@ -863,6 +921,25 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
                     "description": "SUCCESS",
                     "code": 0}}},
         status_code=200)
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/volumes/vol1/mount',
+        json={
+    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"
+        }
+    },
+    "info": {
+        "version": "v0.10.1"
+    }},
+        status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -876,7 +953,8 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
-                "max_available_size": 1722281885696
+                "max_available_size": 1722281885696,
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
                 }''',
         headers={'x-access-token': json_token})
 
@@ -897,6 +975,25 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
                     "description": "SUCCESS",
                     "code": 0}}},
         status_code=200)
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/volumes/vol1/mount',
+        json={
+    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"
+        }
+    },
+    "info": {
+        "version": "v0.10.1"
+    }},
+        status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -910,7 +1007,8 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
                 "stop_on_error": true,
                 "count": 1,
                 "suffix": 1,
-                "max_available_size": 1722281885696
+                "max_available_size": 1722281885696,
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
                 }''',
         headers={'x-access-token': json_token})
 

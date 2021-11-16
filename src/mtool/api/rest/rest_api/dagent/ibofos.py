@@ -844,8 +844,10 @@ def mount_volume_with_subsystem(name, arrayname, subsystem, auth=BASIC_AUTH_TOKE
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
-        #print(response.status_code , response.json())
+        print("url :",DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount')
+        print("---------------RESPONSE---------------")
+        print("response",response)
+        print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')

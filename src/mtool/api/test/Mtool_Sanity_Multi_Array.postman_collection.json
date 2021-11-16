@@ -1657,7 +1657,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\"}",
+					"raw": "{\"name\":\"{{volNameArr1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1708,7 +1708,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr1_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\"}",
+					"raw": "{\"name\":\"{{volNameArr1_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2539,7 +2539,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr2}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\"}",
+					"raw": "{\"name\":\"{{volNameArr2}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2590,7 +2590,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr2_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\"}",
+					"raw": "{\"name\":\"{{volNameArr2_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"

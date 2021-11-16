@@ -34,6 +34,7 @@
 
 #from socketclient.socketclient import create_vol, delete_vol, list_vol, mount_vol
 import rest.rest_api.dagent.ibofos as dagent
+from bson import json_util
 
 
 def create_volume(
@@ -61,6 +62,9 @@ def create_volume(
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
             res = dagent.mount_volume_with_subsystem(vol_name, arr_name, subsystem)
+            print("res :",res)
+            if res is None:
+               return json_util.dumps({})
             if res.status_code != 200:
                 return res
     return create_vol_response
