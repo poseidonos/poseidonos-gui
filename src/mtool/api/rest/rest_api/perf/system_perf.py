@@ -47,6 +47,11 @@ def get_user_memory_usage(time):
 def get_latency_usage(time):
     return metrics.get_latency(time, "0,1")
 
+def get_read_latency_usage(time):
+    return metrics.get_read_latency(time, "0,1")
+
+def get_write_latency_usage(time):
+    return metrics.get_write_latency(time, "0,1")
 
 """
 def get_input_power_variation(time):

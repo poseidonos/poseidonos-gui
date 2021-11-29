@@ -152,7 +152,7 @@ class HealthMetrics extends Component {
           {this.state.healthMetrics.map((metric) => (
             <Grid
               xs={10}
-              md={4} // currently, it is assumed that there are only 3 health metrics
+              md={3} // currently, it is assumed that there are only 4 health metrics
               justify="center"
               className={classes.healthMetricContainer}
               item

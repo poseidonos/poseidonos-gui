@@ -48,7 +48,7 @@ from rest.rest_api.health_status.health_status import process_response, get_over
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency,get_disk_read_latency , \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_read_latency_usage, get_write_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency,get_disk_read_latency , \
     get_disk_current_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
@@ -2530,13 +2530,20 @@ def getHealthStatus():
         mem_result = process_response(res, "memory", "memoryUsagePercent", "mem-status","MEMORY UTILIZATION")
         if len(mem_result) > 0:
             statuses.append(mem_result)
-        res = get_latency_usage("15m")
+        res = get_write_latency_usage("15m")
         if res is not None:
             set_max_latency(res, "latency")
-        res = get_latency_usage("")
-        latency_result = process_response(res, "latency", "latency", "lat-status","IO LATENCY")
-        if len(latency_result) > 0:
-            statuses.append(latency_result)
+        res = get_write_latency_usage("")
+        write_latency_result = process_response(res, "latency", "latency", "write-lat-status","IO WRITE LATENCY")
+        if len(write_latency_result) > 0:
+            statuses.append(write_latency_result)
+        res = get_read_latency_usage("15m")
+        if res is not None:
+            set_max_latency(res, "latency")
+        res = get_read_latency_usage("")
+        read_latency_result = process_response(res, "latency", "latency", "read-lat-status","IO READ LATENCY")
+        if len(read_latency_result) > 0:
+            statuses.append(read_latency_result)
         health_list = []
         for i in range(0,len(statuses)):
             health_list.append(statuses[i]["isHealthy"])
@@ -2620,4 +2627,4 @@ if __name__ == '__main__':
         host='0.0.0.0',
         debug=False,
         use_reloader=False,
-        port=5001)
+        port=5000)
