@@ -238,17 +238,17 @@ func Route(router *gin.Engine) {
 	// Volume
 	{
 		iBoFOSPath.POST("/volumes", func(ctx *gin.Context) {
-			req := model.Request{}
-			ctx.ShouldBindBodyWith(&req, binding.JSON)
-			reqMap := req.Param.(map[string]interface{})
-			res := model.Response{}
-			if reflect.TypeOf(reqMap["namesuffix"]).Kind() == reflect.String {
-				res.Result.Status, _ = util.GetStatusInfo(11060)
-				ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
-				return
-
-			}
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
+				req := model.Request{}
+				ctx.ShouldBindBodyWith(&req, binding.JSON)
+				reqMap := req.Param.(map[string]interface{})
+				res := model.Response{}
+				if reflect.TypeOf(reqMap["namesuffix"]).Kind() == reflect.String || reqMap["namesuffix"].(float64) < 0 {
+					res.Result.Status, _ = util.GetStatusInfo(11060)
+					ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+					return
+
+				}
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateVolume)
@@ -435,21 +435,21 @@ func Route(router *gin.Engine) {
 				magent.CallMagent(ctx, amoduleMagent.GetWriteLatency, param)
 			}
 		})
-                //read latency
-                mAgentPath.GET("/readlatency/arrays", func(ctx *gin.Context) {
-                        var params model.MAgentParam
-                        if ctx.ShouldBindQuery(&params) == nil {
-                                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
-                                magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
-                        }
-                })
-                mAgentPath.GET("/readlatency/arrays/volumes", func(ctx *gin.Context) {
-                        var params model.MAgentParam
-                        if ctx.ShouldBindQuery(&params) == nil {
-                                param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
-                                magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
-                        }
-                })
+		//read latency
+		mAgentPath.GET("/readlatency/arrays", func(ctx *gin.Context) {
+			var params model.MAgentParam
+			if ctx.ShouldBindQuery(&params) == nil {
+				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: ""}
+				magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
+			}
+		})
+		mAgentPath.GET("/readlatency/arrays/volumes", func(ctx *gin.Context) {
+			var params model.MAgentParam
+			if ctx.ShouldBindQuery(&params) == nil {
+				param := model.MAgentParam{Time: params.Time, ArrayIds: params.ArrayIds, VolumeIds: params.VolumeIds}
+				magent.CallMagent(ctx, amoduleMagent.GetReadLatency, param)
+			}
+		})
 
 		//rebuildlogs
 		mAgentPath.GET("/rebuildlogs/:time", func(ctx *gin.Context) {

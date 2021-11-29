@@ -73,7 +73,6 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 }
 
 func IBoFOSInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
-	fmt.Println("param",param)
 	return SystemSender(xrId, param, "GETPOSINFO")
 }
 

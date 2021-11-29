@@ -1384,6 +1384,14 @@ def qos_create_policies():
         body = json.loads(body_unicode)
         vol_names = body.get("volumes")
         body['vol'] = body.pop('volumes')
+        if "maxbw" in body:
+            body["maxbw"] = int(body["maxbw"])
+        if "minbw" in body:
+            body["minbw"] = int(body["minbw"])
+        if "maxiops" in body:
+            body["maxiops"] = int(body["maxiops"])
+        if "miniops" in body:
+            body["miniops"] = int(body["miniops"])
         request_body = {
                 "param": body
                 }
@@ -2612,4 +2620,4 @@ if __name__ == '__main__':
         host='0.0.0.0',
         debug=False,
         use_reloader=False,
-        port=5000)
+        port=5001)

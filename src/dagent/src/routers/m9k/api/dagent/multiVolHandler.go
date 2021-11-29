@@ -62,6 +62,7 @@ const (
 	POST                 = "POST"
 	POS_API_ERROR        = 11040
 	COUNT_EXCEEDED_ERROR = 11050
+	ARRAY_UNMOUNT_ERROR  = 2090
 	DELAY                = 50 * time.Millisecond
 )
 
@@ -272,10 +273,35 @@ func maxCountExceeded(count int, array string) (int, bool) {
 	}
 	return COUNT_EXCEEDED_ERROR, true
 }
-
+func checkArrayExist(array string) (int, bool) {
+	param := model.ArrayParam{Name:array}
+	listXrid, _ := uuid.NewUUID()
+	_, resp, err := iBoFOS.ArrayInfo(listXrid.String(), param)
+        if err != nil {
+                return POS_API_ERROR, true
+        }
+	if resp.Result.Status.Code!=0 {
+		return resp.Result.Status.Code,true
+	}
+	if resp.Result.Data.(map[string]interface{})["state"] == "OFFLINE" {
+		return ARRAY_UNMOUNT_ERROR,true
+	}
+	return 0, false
+}
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
+	if volParam.Name=="" {
+                res.Result.Status, _ = util.GetStatusInfo(2020)
+                ctx.AbortWithStatusJSON(http.StatusBadRequest, &res)
+                return
+        }
+
+        if status, ok := checkArrayExist(volParam.Array); ok {
+                res.Result.Status, _ = util.GetStatusInfo(status)
+                ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+                return
+        }
 
 	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
