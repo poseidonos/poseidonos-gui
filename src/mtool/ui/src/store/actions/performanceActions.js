@@ -110,6 +110,7 @@ export const fetchWriteLatency = (latency, interval) => {
 // }
 
 export const fetchVolReadBandwidth = (payload) => {
+console.log(payload)
     return {
         type: actionTypes.FETCH_VOL_READ_BW,
         bw: payload.values,

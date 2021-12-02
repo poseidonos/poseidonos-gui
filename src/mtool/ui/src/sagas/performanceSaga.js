@@ -49,6 +49,61 @@ function extractValues(data) {
     return data;
 }
 
+function getTimeStamp(period) {
+    switch(period) {
+	    case "1m":
+	          return {
+			  startTime: (new Date(Date.now() - 60000)) * 1e6,
+			  endTime: Date.now() * 1e6
+		  }
+	    case "5m":
+	          return {
+                          startTime: (new Date(Date.now() - 300000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "15m":
+                  return {
+                          startTime: (new Date(Date.now() - 900000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "1h":
+                  return {
+                          startTime: (new Date(Date.now() - 3600000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "6h":
+                  return {
+                          startTime: (new Date(Date.now() - 1800000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "12h":
+                  return {
+                          startTime: (new Date(Date.now() - 3600000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "1d":
+                  return {
+                          startTime: (new Date(Date.now() - 7200000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "7d":
+                  return {
+                          startTime: (new Date(Date.now() - 50400000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    case "30d":
+                  return {
+                          startTime: (new Date(Date.now() - 216000000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+	    default:
+	          return {
+                          startTime: (new Date(Date.now() - 300000)) * 1e6,
+                          endTime: Date.now() * 1e6
+                  }
+    }
+}
+
 function getArrayId(arrayName, arrMap) {
   let arrayId = -1;
   if(arrMap && arrMap[arrayName]) {
@@ -191,6 +246,7 @@ export function* fetchReadBandwidth(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
+		let timestamp = getTimeStamp(action.payload.time);
 		const volMap = {};
 		for(let i = 0; i < result.res.length; i += 1) {
 		    const vol = result.res[i];
@@ -200,14 +256,16 @@ export function* fetchReadBandwidth(action) {
 			    level: vol[0].volumeid,
 			    ...action.payload.vols[vol[0].volumeid]
 		        }));
+			timestamp = vol[0].data[1][0];
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1 ) {
                         const volid = volIds[i];
 			if(!volMap[volid]) {
-				yield put(actionCreators.fetchVolReadBandwidth({ values: [], 
+				yield put(actionCreators.fetchVolReadBandwidth({ values: [{bw: 0, time: timestamp.startTime}], 
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
 			}
@@ -255,6 +313,7 @@ function* fetchWriteBandwidth(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
+                let timestamp = getTimeStamp(action.payload.time);
 		const volMap = {};
                 for(let i = 0; i < result.res.length; i += 1) {
                     const vol = result.res[i];
@@ -264,14 +323,16 @@ function* fetchWriteBandwidth(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
+			timestamp = vol[0].data[1][0];
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1) {
                         const volid = volIds[i];
                         if(!volMap[volid]) {
-                                yield put(actionCreators.fetchVolWriteBandwidth({ values: [],
+                                yield put(actionCreators.fetchVolWriteBandwidth({ values: [{bw: 0, time: timestamp.startTime}],
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
                         }
@@ -323,6 +384,7 @@ export function* fetchReadIops(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
+                let timestamp = getTimeStamp(action.payload.time);
                 const volMap = {};
                 for(let i = 0; i < result.res.length; i += 1) {
                     const vol = result.res[i];
@@ -332,14 +394,16 @@ export function* fetchReadIops(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
+			timestamp = vol[0].data[1][0];
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1) {
                         const volid = volIds[i];
                         if(!volMap[volid]) {
-                                yield put(actionCreators.fetchVolReadIops({ values: [],
+                                yield put(actionCreators.fetchVolReadIops({ values: [{iops: 0, time: timestamp.startTime}],
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
                         }
@@ -390,6 +454,7 @@ export function* fetchWriteIops(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
+                let timestamp = getTimeStamp(action.payload.time);
 		const volMap = {};
                 for(let i = 0; i < result.res.length; i += 1) {
                     const vol = result.res[i];
@@ -399,14 +464,16 @@ export function* fetchWriteIops(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
+			timestamp = vol[0].data[1][0];
 		    }
                 }
                 const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1) {
                         const volid = volIds[i];
                         if(!volMap[volid]) {
-                                yield put(actionCreators.fetchVolWriteIops({ values: [],
+                                yield put(actionCreators.fetchVolWriteIops({ values: [{iops: 0, time: timestamp.startTime}],
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
                         }
@@ -457,6 +524,7 @@ export function* fetchWriteLatency(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
+                let timestamp = getTimeStamp(action.payload.time);
 		const volMap = {};
                 for(let i = 0; i < result.res.length; i += 1) {
                     const vol = result.res[i];
@@ -466,14 +534,16 @@ export function* fetchWriteLatency(action) {
                           level: vol[0].volumeid,
                           ...action.payload.vols[vol[0].volumeid]
                        }));
+		       timestamp = vol[0].data[1][0];
 		    }
                 }
                 const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1) {
                         const volid = volIds[i];
                         if(!volMap[volid]) {
-                                yield put(actionCreators.fetchVolWriteLatency({ values: [],
+                                yield put(actionCreators.fetchVolWriteLatency({ values: [{latency: 0, time: timestamp.startTime}],
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
                         }
@@ -525,6 +595,7 @@ export function* fetchReadLatency(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
+                let timestamp = getTimeStamp(action.payload.time);
 		const volMap = {};
                 for(let i = 0; i < result.res.length; i += 1) {
                     const vol = result.res[i];
@@ -534,14 +605,16 @@ export function* fetchReadLatency(action) {
                         level: vol[0].volumeid,
                         ...action.payload.vols[vol[0].volumeid]
                     }));
+		    timestamp = vol[0].data[1][0];
 		    }
                 }
 		const volIds = `${action.payload.volume}`.split(",");
                 for(let i = 0; i < volIds.length; i += 1) {
 			const volid = volIds[i];
                         if(!volMap[volid]) {
-                                yield put(actionCreators.fetchVolReadLatency({ values: [],
+                                yield put(actionCreators.fetchVolReadLatency({ values: [{latency: 0, time: timestamp.startTime}],
                                 level: volid,
+				...timestamp,
                                 ...action.payload.vols[volid]
                                 }));
                         }
