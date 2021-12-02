@@ -256,7 +256,7 @@ export function* fetchReadBandwidth(action) {
 			    level: vol[0].volumeid,
 			    ...action.payload.vols[vol[0].volumeid]
 		        }));
-			timestamp = vol[0].data[1][0];
+			timestamp = {...vol[0].data[1][0]};
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
@@ -323,7 +323,7 @@ function* fetchWriteBandwidth(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
-			timestamp = vol[0].data[1][0];
+			timestamp = {...vol[0].data[1][0]};
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
@@ -394,7 +394,7 @@ export function* fetchReadIops(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
-			timestamp = vol[0].data[1][0];
+			timestamp = {...vol[0].data[1][0]};
 		    }
 		}
                 const volIds = `${action.payload.volume}`.split(",");
@@ -464,7 +464,7 @@ export function* fetchWriteIops(action) {
                             level: vol[0].volumeid,
                             ...action.payload.vols[vol[0].volumeid]
                         }));
-			timestamp = vol[0].data[1][0];
+			timestamp = {...vol[0].data[1][0]};
 		    }
                 }
                 const volIds = `${action.payload.volume}`.split(",");
@@ -534,7 +534,7 @@ export function* fetchWriteLatency(action) {
                           level: vol[0].volumeid,
                           ...action.payload.vols[vol[0].volumeid]
                        }));
-		       timestamp = vol[0].data[1][0];
+		       timestamp = {...vol[0].data[1][0]};
 		    }
                 }
                 const volIds = `${action.payload.volume}`.split(",");
@@ -605,7 +605,7 @@ export function* fetchReadLatency(action) {
                         level: vol[0].volumeid,
                         ...action.payload.vols[vol[0].volumeid]
                     }));
-		    timestamp = vol[0].data[1][0];
+		    timestamp = {...vol[0].data[1][0]};
 		    }
                 }
 		const volIds = `${action.payload.volume}`.split(",");
