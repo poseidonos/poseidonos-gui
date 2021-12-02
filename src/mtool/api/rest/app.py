@@ -2523,25 +2523,25 @@ def getHealthStatus():
         response = {}
         statuses = []
         res = get_user_cpu_usage("1m")
-        cpu_result = process_response(res, "cpu", "cpuUsagePercent", "cpu-status","CPU UTILIZATION")
+        cpu_result = process_response(res, "cpu", "cpuUsagePercent", "cpu-status","CPU UTIL")
         if len(cpu_result) > 0:
             statuses.append(cpu_result)
         res = get_user_memory_usage("15m")
-        mem_result = process_response(res, "memory", "memoryUsagePercent", "mem-status","MEMORY UTILIZATION")
+        mem_result = process_response(res, "memory", "memoryUsagePercent", "mem-status","MEMORY UTIL")
         if len(mem_result) > 0:
             statuses.append(mem_result)
         res = get_write_latency_usage("15m")
         if res is not None:
             set_max_latency(res, "latency")
         res = get_write_latency_usage("")
-        write_latency_result = process_response(res, "latency", "latency", "write-lat-status","IO WRITE LATENCY")
+        write_latency_result = process_response(res, "latency", "latency", "write-lat-status","IO WRITE LAT")
         if len(write_latency_result) > 0:
             statuses.append(write_latency_result)
         res = get_read_latency_usage("15m")
         if res is not None:
             set_max_latency(res, "latency")
         res = get_read_latency_usage("")
-        read_latency_result = process_response(res, "latency", "latency", "read-lat-status","IO READ LATENCY")
+        read_latency_result = process_response(res, "latency", "latency", "read-lat-status","IO READ LAT")
         if len(read_latency_result) > 0:
             statuses.append(read_latency_result)
         health_list = []
