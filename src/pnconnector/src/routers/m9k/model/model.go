@@ -32,10 +32,12 @@
 
 package model
 
+var RequesterName = "DAgent"
 type Request struct {
 	Command string      `json:"command"`
 	Rid     string      `json:"rid"`
 	Param   interface{} `json:"param,omitempty"`
+	Requester    string `json:"requester"`
 }
 
 type Response struct {

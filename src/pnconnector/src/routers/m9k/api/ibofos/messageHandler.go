@@ -70,6 +70,7 @@ func (rq Requester) Send(command string) (model.Request, model.Response, error) 
 		return iBoFRequest, model.Response{}, err
 	} else {
 		iBoFRequest.Param = rq.param
+		iBoFRequest.Requester = model.RequesterName
 		res, err := sendIBoF(iBoFRequest)
 		return iBoFRequest, res, err
 	}
