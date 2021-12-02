@@ -96,7 +96,7 @@ func extractValuesVolume(valuesList []models.Row, columns []string, key, metrics
         var resultList [][]map[string]interface{}
         var metric []map[string]interface{}
 
-	if len(valuesList) == 0 {
+	if valuesList == nil || len(valuesList) == 0 {
                 resultList = append(resultList, result)
                 resultList = append(resultList, timeMap)
                 info["data"] = resultList
