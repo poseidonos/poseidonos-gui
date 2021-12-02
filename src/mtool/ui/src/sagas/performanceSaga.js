@@ -191,8 +191,28 @@ export function* fetchReadBandwidth(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolReadBandwidth({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
-            }
+		const volMap = {};
+		for(let i = 0; i < result.res.length; i += 1) {
+		    const vol = result.res[i];
+                    if(vol.length && vol[0].volumeid !== undefined) {
+		        volMap[vol[0].volumeid] = true;
+		        yield put(actionCreators.fetchVolReadBandwidth({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0], 
+			    level: vol[0].volumeid,
+			    ...action.payload.vols[vol[0].volumeid]
+		        }));
+		    }
+		}
+                const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1 ) {
+                        const volid = volIds[i];
+			if(!volMap[volid]) {
+				yield put(actionCreators.fetchVolReadBandwidth({ values: [], 
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+			}
+		}
+	    }
         } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchReadBandwidth([], {}));
         } else {
@@ -220,7 +240,6 @@ export function* fetchReadBandwidth(action) {
 
 function* fetchWriteBandwidth(action) {
     try {
-
         let endpoint = "/api/v1/writebw/arrays";
         const arrayId = getArrayId(action.payload.array, yield select(arrayMap));
         if(action.payload.volume === null) {
@@ -236,7 +255,27 @@ function* fetchWriteBandwidth(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteBandwidth(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolWriteBandwidth({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+		const volMap = {};
+                for(let i = 0; i < result.res.length; i += 1) {
+                    const vol = result.res[i];
+                    if(vol.length && vol[0].volumeid !== undefined) {
+                        volMap[vol[0].volumeid] = true;
+                        yield put(actionCreators.fetchVolWriteBandwidth({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0],
+                            level: vol[0].volumeid,
+                            ...action.payload.vols[vol[0].volumeid]
+                        }));
+		    }
+		}
+                const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1) {
+                        const volid = volIds[i];
+                        if(!volMap[volid]) {
+                                yield put(actionCreators.fetchVolWriteBandwidth({ values: [],
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+                        }
+                }
             }
         }
         else if (action.payload.level === "array") {
@@ -284,7 +323,27 @@ export function* fetchReadIops(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolReadIops({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+                const volMap = {};
+                for(let i = 0; i < result.res.length; i += 1) {
+                    const vol = result.res[i];
+                    if(vol.length && vol[0].volumeid !== undefined) {
+                        volMap[vol[0].volumeid] = true;
+                        yield put(actionCreators.fetchVolReadIops({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0],
+                            level: vol[0].volumeid,
+                            ...action.payload.vols[vol[0].volumeid]
+                        }));
+		    }
+		}
+                const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1) {
+                        const volid = volIds[i];
+                        if(!volMap[volid]) {
+                                yield put(actionCreators.fetchVolReadIops({ values: [],
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+                        }
+                }
             }
         } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchReadIops([], {}));
@@ -331,7 +390,27 @@ export function* fetchWriteIops(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteIops(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolWriteIops({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+		const volMap = {};
+                for(let i = 0; i < result.res.length; i += 1) {
+                    const vol = result.res[i];
+                    if(vol.length && vol[0].volumeid !== undefined) {
+		        volMap[vol[0].volumeid] = true;
+                        yield put(actionCreators.fetchVolWriteIops({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0],
+                            level: vol[0].volumeid,
+                            ...action.payload.vols[vol[0].volumeid]
+                        }));
+		    }
+                }
+                const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1) {
+                        const volid = volIds[i];
+                        if(!volMap[volid]) {
+                                yield put(actionCreators.fetchVolWriteIops({ values: [],
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+                        }
+                }
             }
         } else if (action.payload.level === "array") {
             yield put(actionCreators.fetchWriteIops([], {}));
@@ -378,7 +457,27 @@ export function* fetchWriteLatency(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchWriteLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolWriteLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+		const volMap = {};
+                for(let i = 0; i < result.res.length; i += 1) {
+                    const vol = result.res[i];
+		    if(vol.length && vol[0].volumeid !== undefined) {
+		       volMap[vol[0].volumeid] = true;
+                       yield put(actionCreators.fetchVolWriteLatency({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0],
+                          level: vol[0].volumeid,
+                          ...action.payload.vols[vol[0].volumeid]
+                       }));
+		    }
+                }
+                const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1) {
+                        const volid = volIds[i];
+                        if(!volMap[volid]) {
+                                yield put(actionCreators.fetchVolWriteLatency({ values: [],
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+                        }
+                }
             }
         }
         else if (action.payload.level === "array") {
@@ -426,7 +525,27 @@ export function* fetchReadLatency(action) {
             if (action.payload.level === "array") {
                 yield put(actionCreators.fetchReadLatency(extractValues(result.res[0]), result.res[1][0]));
             } else {
-                yield put(actionCreators.fetchVolReadLatency({ values: extractValues(result.res[0]), ...result.res[1][0], ...action.payload }));
+		const volMap = {};
+                for(let i = 0; i < result.res.length; i += 1) {
+                    const vol = result.res[i];
+		    if(vol.length && vol[0].volumeid !== undefined) {
+		    volMap[vol[0].volumeid] = true;
+                    yield put(actionCreators.fetchVolReadLatency({ values: extractValues(vol[0].data[0]), ...vol[0].data[1][0],
+                        level: vol[0].volumeid,
+                        ...action.payload.vols[vol[0].volumeid]
+                    }));
+		    }
+                }
+		const volIds = `${action.payload.volume}`.split(",");
+                for(let i = 0; i < volIds.length; i += 1) {
+			const volid = volIds[i];
+                        if(!volMap[volid]) {
+                                yield put(actionCreators.fetchVolReadLatency({ values: [],
+                                level: volid,
+                                ...action.payload.vols[volid]
+                                }));
+                        }
+                }
             }
         }
         else if (action.payload.level === "array") {

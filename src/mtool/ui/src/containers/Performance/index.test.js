@@ -544,40 +544,52 @@ describe("Performance", () => {
       .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "0",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
       .onGet(`/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "1",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
       .onGet(/api\/v1\/writebw\/*/)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "1",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
 
@@ -656,27 +668,35 @@ describe("Performance", () => {
       .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "0",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
       .onGet(`/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "1",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
 
@@ -756,27 +776,35 @@ describe("Performance", () => {
       .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "0",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
       .onGet(`/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=1&time=1m`)
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "1",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
 
@@ -856,27 +884,35 @@ describe("Performance", () => {
       .onGet('/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=1m')
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+	    [{
+		"arrayid": "0",
+		"volumeid": "0",
+		"data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+	    }]
         ]
       })
       .onGet('/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=1&time=1m')
       .reply(200, {
         res: [
-          [{
-            time: 123456,
-            value: 0
-          }],
-          [{
-            startTime: 123455,
-            endTime: 123457
-          }]
+            [{
+                "arrayid": "0",
+                "volumeid": "1",
+                "data": [[{
+                    time: 123456,
+                    value: 0
+                }],
+                [{
+                    startTime: 123455,
+                    endTime: 123457
+                }]]
+            }]
         ]
       })
 

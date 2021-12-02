@@ -184,60 +184,66 @@ class Performance extends Component {
   // }
 
   fetchReadBandwidth(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array") {
-        this.props.Get_Read_Bandwidth({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
+        this.props.Get_Read_Bandwidth({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
+      } else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(READ_BANDWIDTH)) {
+	this.props.Get_Read_Bandwidth({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
       }
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_BANDWIDTH)) {
-        this.props.Get_Read_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
+      else if(this.state.volume !== "all-volumes" && this.state.chartContent.length) {
+        this.props.Get_Read_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
       }
-    }
   }
 
   fetchWriteBandwidth(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Write_Bandwidth({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_BANDWIDTH))
-        this.props.Get_Write_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
-    }
+        this.props.Get_Write_Bandwidth({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
+      else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(WRITE_BANDWIDTH))
+        this.props.Get_Write_Bandwidth({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
+      else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
+        this.props.Get_Write_Bandwidth({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
   }
 
   fetchWriteIOPS(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Write_IOPS({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_IOPS))
-        this.props.Get_Write_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
-    }
+        this.props.Get_Write_IOPS({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
+      else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(WRITE_IOPS))
+        this.props.Get_Write_IOPS({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
+      else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
+        this.props.Get_Write_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
   }
 
   fetchReadIOPS(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Read_IOPS({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_IOPS))
-        this.props.Get_Read_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
-    }
+        this.props.Get_Read_IOPS({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
+      else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(READ_IOPS))
+        this.props.Get_Read_IOPS({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
+      else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
+        this.props.Get_Read_IOPS({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
   }
 
 
   fetchReadLatency(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Read_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(READ_LATENCY))
-        this.props.Get_Read_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
-    }
+        this.props.Get_Read_Latency({ time: t, level: this.state.chartContent[0], ariray: this.state.array, volume: null });
+      else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(READ_LATENCY))
+        this.props.Get_Read_Latency({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
+      else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
+        this.props.Get_Read_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
   }
 
   fetchWriteLatency(t) {
-    for (let i = 0; i < this.state.chartContent.length; i += 1) {
+      const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Write_Latency({ time: t, level: this.state.chartContent[i], array: this.state.array, volume: null });
-      else if (this.state.volume !== "all-volumes" || this.state.selectedMeasurement.includes(WRITE_LATENCY))
-        this.props.Get_Write_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[i], level: this.state.chartContent[i], ...this.state.vols[i] });
-    }
+        this.props.Get_Write_Latency({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
+      else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(WRITE_LATENCY))
+        this.props.Get_Write_Latency({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
+      else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
+        this.props.Get_Write_Latency({ time: t, array: this.state.array, volume: this.state.chartContent[0], level: this.state.chartContent[0], vols});
   }
 
   fetchDetails() {
@@ -708,7 +714,7 @@ class Performance extends Component {
                       datatestid="writeLatency"
                       scatterId="writeLatencyScatter"
                     />
-                  </Grid>
+    </Grid>
                 </Grid>
               ) : null}
               {this.state.level === "system" ? (
