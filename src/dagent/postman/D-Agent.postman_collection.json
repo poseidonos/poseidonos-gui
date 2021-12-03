@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "da8273c0-331e-4bdb-a204-2dfac1bb5964",
+		"_postman_id": "009ea8a2-d9f0-43ff-9c55-9c38b6c7771f",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -1678,7 +1678,7 @@
 							]
 						},
 						{
-							"name": "SMART",
+							"name": "SMARTLOG",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -6979,7 +6979,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"107.108.221.146\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"107.108.83.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/listener",
@@ -12655,7 +12655,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{host}}/api/metric/v1/rebuildlogs/{{period}}",
+							"raw": "http://{{host}}/api/metric/v1/rebuildlogs",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -12664,8 +12664,7 @@
 								"api",
 								"metric",
 								"v1",
-								"rebuildlogs",
-								"{{period}}"
+								"rebuildlogs"
 							]
 						}
 					},
