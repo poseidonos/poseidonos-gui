@@ -155,7 +155,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -174,7 +174,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -220,7 +220,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -239,7 +239,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -284,7 +284,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -303,7 +303,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -347,7 +347,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -366,7 +366,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -399,7 +399,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/latency/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writelatency/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -408,7 +408,7 @@
 					"path": [
 						"api",
 						"v1",
-						"latency",
+						"writelatency",
 						"arrays"
 					],
 					"query": [
@@ -418,7 +418,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -451,7 +451,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays?arrayids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays?arrayids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -470,7 +470,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -491,8 +491,8 @@
 							"var jsonData = pm.response.json(); \r",
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
-							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[0][i].bw\r",
+							"for( i= 0; i<data[0][0].data[0].length;i++) {\r",
+							"    bw_sum = bw_sum + data[0][0].data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -514,7 +514,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -538,7 +538,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -560,8 +560,8 @@
 							"var jsonData = pm.response.json(); \r",
 							"data = jsonData.res\r",
 							"bw_sum = 0 \r",
-							"for( i= 0; i<data.length;i++) {\r",
-							"    bw_sum = bw_sum + data[0][i].bw\r",
+							"for( i= 0; i<data[0][0].data[0].length;i++) {\r",
+							"    bw_sum = bw_sum + data[0][0].data[0][i].bw\r",
 							"}\r",
 							"console.log(\"bw_sum  \",bw_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -584,7 +584,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writebw/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -608,7 +608,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -630,8 +630,8 @@
 							"var jsonData = pm.response.json(); \r",
 							"data = jsonData.res\r",
 							"iops_sum = 0 \r",
-							"for( i= 0; i<data.length;i++) {\r",
-							"    iops_sum = iops_sum + data[0][i].iops\r",
+							"for( i= 0; i<data[0][0].data[0].length;i++) {\r",
+							"    iops_sum = iops_sum + data[0][0].data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \",iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
@@ -653,7 +653,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readiops/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -677,7 +677,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -698,8 +698,8 @@
 							"var jsonData = pm.response.json();\r",
 							"data = jsonData.res\r",
 							"iops_sum = 0\r",
-							"for (i = 0; i < data.length; i++) {\r",
-							"    iops_sum = iops_sum + data[0][i].iops\r",
+							"for( i= 0; i<data[0][0].data[0].length;i++) {\r",
+							"    iops_sum = iops_sum + data[0][0].data[0][i].iops\r",
 							"}\r",
 							"console.log(\"iops_sum  \", iops_sum)\r",
 							"pm.test(\"Verify Json values\", function () {\r",
@@ -721,7 +721,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writeiops/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -745,7 +745,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -778,7 +778,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/latency/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/writelatency/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -787,7 +787,7 @@
 					"path": [
 						"api",
 						"v1",
-						"latency",
+						"writelatency",
 						"arrays",
 						"volumes"
 					],
@@ -802,7 +802,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
@@ -835,7 +835,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=5m",
+					"raw": "http://{{host}}:{{port}}/api/v1/readlatency/arrays/volumes?arrayids=0&volumeids=0&time=15m",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -859,7 +859,7 @@
 						},
 						{
 							"key": "time",
-							"value": "5m"
+							"value": "15m"
 						}
 					]
 				}
