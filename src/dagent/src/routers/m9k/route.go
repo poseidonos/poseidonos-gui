@@ -452,12 +452,6 @@ func Route(router *gin.Engine) {
 		})
 
 		//rebuildlogs
-		// Deprecated
-		mAgentPath.GET("/rebuildlogs/:time", func(ctx *gin.Context) {
-			time := ctx.Param("time")
-			param := model.MAgentParam{Time: time}
-			magent.CallMagent(ctx, amoduleMagent.GetRebuildLogs, param)
-		})
 		mAgentPath.GET("/rebuildlogs", func(ctx *gin.Context) {
                         time := ctx.Param("time")
                         param := model.MAgentParam{Time: time}
