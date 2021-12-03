@@ -45,7 +45,7 @@ func ListDevice(xrId string, param interface{}) (model.Request, model.Response, 
 }
 
 func GetSMART(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return deviceSender(xrId, param, "SMART")
+	return deviceSender(xrId, param, "SMARTLOG")
 }
 
 func CreateDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
