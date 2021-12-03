@@ -63,6 +63,9 @@ const styles = (theme) => ({
   selectLabel: {
     margin: theme.spacing(0, 1)
   },
+  warningText: {
+    color: "#ff6a00"
+  },
   wrapper: {
     marginTop: theme.spacing(1)
   },
@@ -580,6 +583,12 @@ class Performance extends Component {
                   </FormControl>
                 </Grid>
               </Grid>
+	      {((this.state.level === 'volume') && (this.state.volume === 'all-volumes') && (this.props.volumes.length >= 50)) ? (
+		      <Grid container justify="center">
+		        <h3 className={classes.warningText}>Warning! In case large number of volumes are present, All Volumes page will be slow</h3>
+		      </Grid>
+	      ) : null}
+		        
               {/* {this.state.level === "power" ? (
                 this.props.power_sensor_info.map((power) => (
                   power.PowerInputWatts ? (
