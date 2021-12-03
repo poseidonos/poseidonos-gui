@@ -35,6 +35,7 @@ package magent
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
 )
@@ -51,34 +52,15 @@ type LogsFields []LogsField
 // GetRebuildLogs gets the logs from influxdb and returns a JSON response
 func GetRebuildLogs(param interface{}) (model.Response, error) {
 	var res model.Response
-	var resp model.Response
-	timeInterval := param.(model.MAgentParam).Time
-    if _, found := TimeGroupsDefault[timeInterval]; !found {
-		resp.Result.Status, _ = util.GetStatusInfo(errEndPointCode)
-        resp.Result.Data = make([]string, 0)
-        return resp, nil
-    }
-	fieldsList := make(LogsFields, 0)
-	query := fmt.Sprintf(RebuildingLogQ, DBName, timeInterval)
-	result, err := ExecuteQuery(query)
+	content, err := ioutil.ReadFile("/var/log/pos/rebuild_log")
 	if err != nil {
-		res.Result.Status, _ = util.GetStatusInfo(errQueryCode)
-		res.Result.Data = make([]string, 0)
-		return res, nil
-	}
-	if len(result) == 0 || len(result[0].Series) == 0 {
 		res.Result.Status, _ = util.GetStatusInfo(0)
-		res.Result.Data = make([]string, 0)
+                res.Result.Data = ""
 		return res, nil
+	}
 
-	}
-	for _, Values := range result[0].Series[0].Values {
-		if Values[1] != nil {
-			fieldsList = append(fieldsList, LogsField{Values[0].(json.Number), Values[1].(string)})
-		}
-	}
 	res.Result.Status, _ = util.GetStatusInfo(0)
-	res.Result.Data = fieldsList
+	res.Result.Data = fmt.Sprintf("%s", content)
 
 	return res, nil
 }
