@@ -101,7 +101,7 @@ describe('<Header />', () => {
   it("should render the correct version and last active time", () => {
     renderComponent();
     const  { getByText } = wrapper;
-    expect(getByText("Version 0.9.0")).toBeDefined();
+    expect(getByText("Version 0.10.0")).toBeDefined();
     expect(getByText(/POS Last Active Time:/)).toBeDefined();
   })
 
