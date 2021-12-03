@@ -247,6 +247,11 @@ modules:
         message: Requested size not aligned
         problem: The requested volume size does not align with block size
         solution: Input volume size to be multiple of block size
+      - code: 2033
+        level: WARN
+        message: Requested size is invalid
+        problem: The requested volume size is invalid
+        solution: Check the allocatable volume size and retry
       - code: 2040
         level: WARN
         message: Volume already mounted

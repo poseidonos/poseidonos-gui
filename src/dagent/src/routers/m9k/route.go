@@ -249,6 +249,12 @@ func Route(router *gin.Engine) {
 					return
 
 				}
+                                if reflect.TypeOf(reqMap["size"]).Kind() == reflect.String || reqMap["size"].(float64) <= 0 {
+                                        res.Result.Status, _ = util.GetStatusInfo(2033)
+                                        ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+                                        return
+
+                                }
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateVolume)
