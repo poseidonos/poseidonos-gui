@@ -232,7 +232,7 @@ class Performance extends Component {
   fetchReadLatency(t) {
       const vols = this.props.volumes.reduce((res, cur) => { res[cur.id] = cur; return res}, {});
       if (this.state.level === "array")
-        this.props.Get_Read_Latency({ time: t, level: this.state.chartContent[0], ariray: this.state.array, volume: null });
+        this.props.Get_Read_Latency({ time: t, level: this.state.chartContent[0], array: this.state.array, volume: null });
       else if (this.state.volume === "all-volumes" && this.state.selectedMeasurement.includes(READ_LATENCY))
         this.props.Get_Read_Latency({ time: t, array: this.state.array, volume: this.props.volumes.map(v => v.id).join(","), level: 'all-volumes', vols});
       else if (this.state.volume !== "all-volumes" && this.state.chartContent.length)
