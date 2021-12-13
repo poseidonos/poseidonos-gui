@@ -33,13 +33,13 @@
 package ibofos
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"pnconnector/src/handler"
 	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/model"
 	"time"
+	"io"
 )
 
 var (
@@ -125,8 +125,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 
 	for {
 		temp, err := handler.ReadFromIBoFSocket(conn)
-
-		if err != nil {
+		if err != nil && err != io.EOF {
 			log.Infof("sendIBoF read error : %v", err)
 			return model.Response{}, ErrReceiving
 		} else {
@@ -134,20 +133,14 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		}
 
 		response := model.Response{}
+		/*d := json.NewDecoder([]byte(test))
 
-		d := json.NewDecoder(bytes.NewBuffer(temp))
 		d.UseNumber()
-
 		if err = d.Decode(&response); err != nil {
 			log.Fatal(err)
-		}
-
-		if err != nil {
-			log.Infof("Response Unmarshal Error : %v", err)
-			return model.Response{}, ErrJson
-		} else {
-			response.LastSuccessTime = time.Now().UTC().Unix()
-			return response, nil
-		}
+		}*/
+		json.Unmarshal([]byte(temp),&response)
+		response.LastSuccessTime = time.Now().UTC().Unix()
+		return response, nil
 	}
 }

@@ -36,10 +36,10 @@ import (
 	"pnconnector/src/log"
 	"pnconnector/src/setting"
 	"pnconnector/src/util"
-	"bytes"
 	"errors"
-	"io"
 	"net"
+	"bufio"
+	"io"
 )
 
 func ConnectToIBoFOS() (net.Conn, error) {
@@ -72,27 +72,28 @@ func DisconnectToIBoFOS(conn net.Conn) error {
 	return err
 }
 
-func ReadFromIBoFSocket(conn net.Conn) ([]byte, error) {
+func ReadFromIBoFSocket(conn net.Conn) (string, error) {
 	var err error
-	var buf []byte
-
+	//var buf []byte
+	var res string
 	log.Info("readFromIBoFSocket Start")
 
 	if conn == nil {
 		log.Info("readFromIBoFSocket : Conn is nil")
 	} else {
-		buf = make([]byte, 1024*1024)
-		_, err = conn.Read(buf)
-		if err != nil || err == io.EOF {
+		//buf = make([]byte, 1024*1024)
+		//_, err = conn.Read(buf)
+		res, err = bufio.NewReader(conn).ReadString('\n')
+		if err != nil && err != io.EOF {
 			log.Info("readFromIBoFSocket : Message Receive Fail :", err)
 			//conn.Close()
 			//conn = nil
-		} else {
+		} /*else {
 			log.Info("readFromIBoFSocket : Message Receive Success")
 			buf = bytes.Trim(buf, "\x00")
-		}
+		}*/
 	}
-	return buf, err
+	return res, err
 }
 
 func WriteToIBoFSocket(conn net.Conn, marshaled []byte) error {
