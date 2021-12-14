@@ -205,13 +205,13 @@ const DiskDetails = props => {
                       Available Spare
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.availableSpare}
+                      {props.details.available_spare}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">Available Spare Space</CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.availableSpareSpace}
+                      {props.details.available_spare_space}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -219,7 +219,7 @@ const DiskDetails = props => {
                       Available Spare Threshold
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.availableSpareThreshold}
+                      {props.details.available_spare_threshold}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -227,7 +227,7 @@ const DiskDetails = props => {
                       Controller Busy Time
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.contollerBusyTime}
+                      {props.details.controller_busy_time}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -235,7 +235,7 @@ const DiskDetails = props => {
                       Critical Temperature Time
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.criticalTemperatureTime}
+                      {props.details.critical_temperature_time}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -243,7 +243,7 @@ const DiskDetails = props => {
                       Current Temperature
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.currentTemperature}
+                      {props.details.current_temperature}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -251,7 +251,7 @@ const DiskDetails = props => {
                       Data Units Read
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.dataUnitsRead}
+                      {props.details.data_units_read}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -259,7 +259,7 @@ const DiskDetails = props => {
                       Data Units Written
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.dataUnitsWritten}
+                      {props.details.data_units_written}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -267,7 +267,7 @@ const DiskDetails = props => {
                       Device Reliability
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.deviceReliability}
+                      {props.details.device_reliability}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -275,7 +275,7 @@ const DiskDetails = props => {
                       Host Read Commands
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.hostReadCommands}
+                      {props.details.host_read_commands}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -283,7 +283,7 @@ const DiskDetails = props => {
                       Host Write Commands
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.hostWriteCommands}
+                      {props.details.host_write_commands}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -291,7 +291,7 @@ const DiskDetails = props => {
                       Life Percentage Used
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.lifePercentageUsed}
+                      {props.details.life_percentage_used}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -299,7 +299,7 @@ const DiskDetails = props => {
                       Lifetime Error Log Entries
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.lifetimeErrorLogEntries}
+                      {props.details.lifetime_error_log_entries}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -307,7 +307,7 @@ const DiskDetails = props => {
                       Power Cycles
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.powerCycles}
+                      {props.details.power_cycles}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -315,7 +315,7 @@ const DiskDetails = props => {
                       Power On Hours
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.powerOnHours}
+                      {props.details.power_on_hours}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -323,7 +323,7 @@ const DiskDetails = props => {
                       Read Only
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.readOnly}
+                      {props.details.read_only}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -339,7 +339,7 @@ const DiskDetails = props => {
                       Temperature Sensor 1
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.temperatureSensor1}
+                      {props.details.temperature_sensor1}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -347,7 +347,7 @@ const DiskDetails = props => {
                       Temperature Sensor 2
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.temperatureSensor2}
+                      {props.details.temperature_sensor2}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -355,7 +355,7 @@ const DiskDetails = props => {
                       Temperature Sensor 3
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.temperatureSensor3}
+                      {props.details.temperature_sensor3}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -363,7 +363,7 @@ const DiskDetails = props => {
                       Unrecoverable Media Errors
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.unrecoverableMediaErrors}
+                      {props.details.unrecoverable_media_errors}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -371,7 +371,7 @@ const DiskDetails = props => {
                       Unsafe Shutdowns
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.unsafeShutdowns}
+                      {props.details.unsafe_shutdowns}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -379,7 +379,7 @@ const DiskDetails = props => {
                       Volatile Memory Backup
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.volatileMemoryBackup}
+                      {props.details.volatile_memory_backup}
                     </CustomTableCell>
                   </TableRow>
                   <TableRow className={classes.row}>
@@ -387,7 +387,7 @@ const DiskDetails = props => {
                       Warning Temperature Time
                     </CustomTableCell>
                     <CustomTableCell align="center">
-                      {props.details.warningTemperatureTime}
+                      {props.details.warning_temperature_time}
                     </CustomTableCell>
                   </TableRow>
                 </TableBody>
