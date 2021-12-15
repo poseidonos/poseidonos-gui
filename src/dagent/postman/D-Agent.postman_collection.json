@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "009ea8a2-d9f0-43ff-9c55-9c38b6c7771f",
+		"_postman_id": "054e6ac4-5582-4201-a4b6-f4ef4988098e",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -4804,208 +4804,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n        \"minbw\":20,\r\n\t\t\"maxbw\": 40,\r\n        \"maxiops\":30\r\n    }\r\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/qos",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"qos"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "Fail - 2022",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes"
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:05:44 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "403"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"1ce8c5c3-d2f7-4ac8-9e59-2478605ef11d\",\n    \"lastSuccessTime\": 1597910744,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2022,\n            \"level\": \"WARN\",\n            \"description\": \"Volume name is duplicated\",\n            \"problem\": \"A volume with a duplicate name already exists\",\n            \"solution\": \"Enter a different volume name\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
-								},
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Request-Id",
-												"value": "{{$guid}}"
-											},
-											{
-												"key": "ts",
-												"value": "{{$timestamp}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{basic_auth}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
-										},
-										"url": {
-											"raw": "http://{{host}}/api/ibofos/v1/volumes",
-											"protocol": "http",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ibofos",
-												"v1",
-												"volumes"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Thu, 20 Aug 2020 08:04:44 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "274"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "bde37273-adc4-459f-883b-cf5ea2542134"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"rid\": \"bde37273-adc4-459f-883b-cf5ea2542134\",\n    \"lastSuccessTime\": 1597910684,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    },\n    \"info\": {\n        \"capacity\": 120312771380,\n        \"rebuildingProgress\": \"0\",\n        \"situation\": \"NORMAL\",\n        \"state\": \"NORMAL\",\n        \"used\": 4194304\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "QOS CREATE VOLUME POLICIES Copy",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"CREATE VOLUME\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n        \"minbw\":20,\r\n\t\t\"maxbw\": 40,\r\n        \"maxiops\":30\r\n    }\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n        \"maxbw\": 40,\r\n        \"maxiops\":30\r\n    }\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/qos",
@@ -6778,7 +6577,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n    }\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
