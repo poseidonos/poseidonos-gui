@@ -30,8 +30,8 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { Button, FormControl, FormControlLabel, TextField, withStyles, Checkbox } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, FormControl, FormControlLabel, MenuItem, Select, TextField, withStyles, Checkbox } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -41,11 +41,35 @@ const styles = (theme) => ({
         flexDirection: 'column'
     },
     formItem: {
-        margin: theme.spacing(1)
+	width: '48%',
+        margin: '1%',
+	height: 48,
+	justifyContent: 'flex-end'
+    },
+    submitBtn: {
+	margin: theme.spacing(1)
     }
 });
 
+const defaultSubsystem = {
+	"name":"",
+	"allow_any_host": false,
+	"mn": "",
+	"sn": "",
+	"max_namespaces": 256
+};
+
 const CreateSubsystem = (props) => {
+    const [subsystem, setSubsystem] = useState(defaultSubsystem);
+    
+    const onChange = (event) => {
+	    const {name, value} = event.target;
+	    setSubsystem({
+		    ...subsystem,
+		    [name]: value
+	    })
+    }
+
     const { classes } = props;
     return (
         <form className={classes.createDiskForm}>
@@ -54,6 +78,20 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="SUBNQN"
+	            value={subsystem.name}
+	            name="name"
+	            onChange={onChange}
+                />
+            </FormControl>
+            <FormControl
+                className={classes.formItem}
+                size="small"
+            >
+	        <TextField
+                    label="Serial No"
+                    value={subsystem.sn}
+                    name="sn"
+                    onChange={onChange}
                 />
             </FormControl>
             <FormControl
@@ -61,15 +99,10 @@ const CreateSubsystem = (props) => {
                 size="small"
             >
                 <TextField
-                    label="Serial Number"
-                />
-            </FormControl>
-            <FormControl
-                className={classes.formItem}
-                size="small"
-            >
-                <TextField
-                    label="Model Number"
+                    label="Model No"
+	            value={subsystem.mn}
+	            name="mn"
+	            onChange={onChange}
                 />
             </FormControl>
 
@@ -79,9 +112,12 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="Maximum Namespaces"
+	            value={subsystem.max_namespaces}
+	            name="max_namespaces"
+	            onChange={onChange}
                 />
             </FormControl>
-            <FormControl
+	    <FormControl
                 className={classes.formItem}
 
             >
@@ -89,6 +125,8 @@ const CreateSubsystem = (props) => {
                     label="Allow Any Host?"
                     control={(
                         <Checkbox
+			    name="allow_any_host"
+			    value={subsystem.allow_any_host}
                             inputProps={{
                                 id: "allowAnyHost"
                             }}
@@ -97,9 +135,10 @@ const CreateSubsystem = (props) => {
                 />
             </FormControl>
             <Button
-                className={classes.formItem}
+                className={classes.submitBtn}
                 variant="contained"
                 color="primary"
+	        onClick={() => props.createSubsystem(subsystem)}
             >
                 Create Subsystem
             </Button>

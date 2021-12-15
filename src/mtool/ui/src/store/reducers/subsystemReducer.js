@@ -52,6 +52,23 @@ const subsystemReducer = (state = initialState, action) => {
                 subsystems: action.payload
             }
         }
+	case actionTypes.SHOW_SUBSYSTEM_ALERT: {
+	    return {
+		...state,
+		alert: {
+		    ...action.payload,
+		    open: true
+		}
+	    }
+	}
+	case actionTypes.CLOSE_SUBSYSTEM_ALERT:
+		return {
+			...state,
+			alert: {
+				...state.alert,
+				open: false
+			}
+		}
         default:
             return state
     }

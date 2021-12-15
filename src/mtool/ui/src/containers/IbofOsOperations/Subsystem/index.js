@@ -40,6 +40,7 @@ import Popup from '../../../components/Popup';
 import * as actionTypes from "../../../store/actions/actionTypes";
 import MToolLoader from '../../../components/MToolLoader';
 import CreateSubsystem from '../../../components/CreateSubsystem';
+import AlertDialog from "../../../components/Dialog";
 
 const styles = (theme) => ({
     cardHeader: {
@@ -74,6 +75,7 @@ class Subsystem extends Component {
         };
         this.openCreateSubsystemDialog = this.openCreateSubsystemDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
+	this.closeAlert = this.closeAlert.bind(this);
     }
 
     componentDidMount() {
@@ -92,6 +94,16 @@ class Subsystem extends Component {
         });
     }
 
+    closeAlert() {
+	    this.props.Close_Alert();
+    }
+    
+    openConfirmation(callback) {
+	this.setState({
+		alertopen: true
+	});
+    }
+
     render() {
         const subsystemTableColumns = [{
             title: "NQN",
@@ -99,7 +111,24 @@ class Subsystem extends Component {
         }, {
             title: "Subtype",
             field: "subtype"
-        }];
+        }, {
+	    title: "Serial No",
+	    field: "serial_number"
+	}, {
+	    title: "Model No",
+	    field: "model_number"
+	}, {
+	    title: "Array",
+	    field: "array"
+	}, {
+	    title: "Allow Any Host",
+	    render: (rowData) => rowData.allow_any_host === 1 ? "Yes" : "No"
+	}, {
+	    title: "Actions",
+	    render: (rowData) => (
+		    <button onClick={() => this.props.Delete_Subsystem({name: rowData.nqn})}>Delete</button>
+	    )
+	}];
         const { classes } = this.props;
         return (
             <Grid container direction="column">
@@ -117,6 +146,19 @@ class Subsystem extends Component {
                                     this.openCreateSubsystemDialog();
                                 }
                             }]}
+		            detailPanel={
+				    rowData => (
+					    <div>
+					    {rowData.listen_addresses && rowData.listen_addresses.map(address => (
+						    <div>{address.target_address}</div>
+					    ))}
+					    {rowData.namespaces && rowData.namespaces.map(ns => (
+                                                    <div>{ns.bdev_name}</div>
+                                            ))}
+					    <div>{rowData.max_namespaces}</div>
+					    </div>
+				    )
+			    }
                             data={this.props.subsystems}
                             options={{
                                 headerStyle: {
@@ -139,8 +181,28 @@ class Subsystem extends Component {
                     open={this.state.dialogOpen}
                     close={this.closeDialog}
                 >
-                    <CreateSubsystem />
+                    <CreateSubsystem createSubsystem={this.props.Create_Subsystem}/>
                 </Popup>
+		{/*<AlertDialog
+                  title={this.state.alertTitle}
+                  description={this.state.errorMsg}
+                  open={this.state.alertOpen}
+                  type={this.state.alertType}
+                  onConfirm={this.alertConfirm}
+                  handleClose={this.alertClose}
+                  errCode={this.state.errorCode}
+                />*/}
+		<AlertDialog
+                  title={this.props.alertTitle}
+                  description={this.props.errorMsg}
+                  open={this.props.alertOpen}
+                  type={this.props.alertType}
+                  link={this.props.alertLink}
+                  linkText={this.props.alertLinkText}
+                  onConfirm={this.closeAlert}
+                  handleClose={this.closeAlert}
+                  errCode={this.props.errorCode}
+                />
                 {this.props.loading ?
                     <MToolLoader text={this.props.loadText} /> : null}
             </Grid>
@@ -150,12 +212,23 @@ class Subsystem extends Component {
 const mapStateToProps = (state) => ({
     loading: state.waitLoaderReducer.loading,
     loadText:state.waitLoaderReducer.loadText,
-    subsystems: state.subsystemReducer.subsystems
+    subsystems: state.subsystemReducer.subsystems,
+    alertTitle: state.subsystemReducer.alert.title,
+    alertOpen: state.subsystemReducer.alert.open,
+    alertType: state.subsystemReducer.alert.type,
+    errorMsg: state.subsystemReducer.alert.msg,
+    errorCode: state.subsystemReducer.alert.code,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     Get_Subsystems: () =>
-        dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS })
+        dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
+    Create_Subsystem: (payload) =>
+	dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload}),
+    Delete_Subsystem: (payload) =>
+	dispatch({ type: actionTypes.SAGA_DELETE_SUBSYSTEM, payload}),
+    Close_Alert: () =>
+	dispatch({ type: actionTypes.CLOSE_SUBSYSTEM_ALERT })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Subsystem));

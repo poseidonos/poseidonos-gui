@@ -72,6 +72,5 @@ export default function* rootSaga() {
         hardwareHealthWatcher(),
         hardwarePowerManagementWatcher(),
         BMCAuthenticationWatcher(),
-	subsystemWatcher(),
     ]);
 }
