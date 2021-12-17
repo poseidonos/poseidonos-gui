@@ -480,6 +480,7 @@ class Volume extends Component {
                             createVolSocket={this.state.createVolSocket}
                             fetchVolumes={this.fetchVolumes}
                             fetchArray={this.props.Get_Array}
+			    fetchSubsystems={this.props.Get_Subsystems}
                           />
                         </Grid>
 

@@ -215,6 +215,7 @@ class CreateVolume extends Component {
 
         this.props.fetchVolumes();
         this.props.fetchArray();
+	this.props.fetchSubsystems();
       }
       /* eslint-enable camelcase */
     });
