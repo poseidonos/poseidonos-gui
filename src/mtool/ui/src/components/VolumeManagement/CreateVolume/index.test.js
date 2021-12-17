@@ -78,6 +78,7 @@ global.document.createRange= () => ({
 
 const fetchVolumesMock = () => {};
 const fetchArrayMock =() => {};
+const fetchSubsystemsMock =() => {};
 
 beforeEach(() => {
 
@@ -97,7 +98,8 @@ beforeEach(() => {
                     volCount={3}
                     fetchVolumes={fetchVolumesMock}
                     fetchArray={fetchArrayMock}
-	            subsystems={[]}
+                    subsystems={[]}
+                    fetchSubsystems={fetchSubsystemsMock}
                     createVolume={createVolume}
                     createVolSocket={socket}
                 />
