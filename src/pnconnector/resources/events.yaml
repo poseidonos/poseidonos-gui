@@ -1386,6 +1386,11 @@ modules:
         message: Sending error
         problem: connection problem between POS and Management Stack
         solution: restart POS
+      - code: 11001
+        level: ERROR
+        message: Sending error
+        problem: poseidonos binary does not present in /usr/local/bin/poseidonos
+        solution: install poseidonos through make install
       - code: 11010
         level: ERROR
         message: Json Error

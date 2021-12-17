@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package api
 
 import (
@@ -37,9 +37,9 @@ import (
 	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	"pnconnector/src/routers/m9k/model"
 	//"pnconnector/src/setting"
-	"pnconnector/src/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"pnconnector/src/util"
 )
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
@@ -62,7 +62,7 @@ func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 }
 
 func Unauthorized(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusUnauthorized, res, code,false)
+	makeResponse(ctx, http.StatusUnauthorized, res, code, false)
 }
 
 func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err error) {
@@ -76,21 +76,23 @@ func makeResponseWithErr(ctx *gin.Context, res model.Response, code int, err err
 }
 
 func BadRequest(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusBadRequest, res, code,true)
+	makeResponse(ctx, http.StatusBadRequest, res, code, true)
 }
 
 func Success(ctx *gin.Context, res model.Response, code int) {
-	makeResponse(ctx, http.StatusOK, res, code,false)
+	makeResponse(ctx, http.StatusOK, res, code, false)
 }
 
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int, isBadRequest bool) {
 	posDescription := res.Result.Status.Description
+	errorInfo := res.Result.Status.ErrorInfo
 	res.Result.Status, _ = util.GetStatusInfo(code)
 	res.Result.Status.PosDescription = posDescription
-  if (isBadRequest == true){
-    log.Errorf("makeResponse : %+v", res)
-  } else {
-	  log.Infof("makeResponse : %+v", res)
-  }
+	res.Result.Status.ErrorInfo = errorInfo
+	if isBadRequest == true {
+		log.Errorf("makeResponse : %+v", res)
+	} else {
+		log.Infof("makeResponse : %+v", res)
+	}
 	ctx.AbortWithStatusJSON(httpStatus, &res)
 }

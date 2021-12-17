@@ -5,6 +5,24 @@ server:
   ibof:
     ip: 127.0.0.1
     port: 18716
+    target_address: 107.108.221.146
+    transport_type: "tcp"
+    buf_cache_size: 64
+    num_shared_buf: 4096
+    subsystem_1: "nqn.2019-04.pos:subsystem1"
+    subsystem_2: "nqn.2019-04.pos:subsystem2"
+    transport_service_id: 1158
+    sn: "POS0000000003"
+    mn: "IBOF_VOLUME_EEEXTENSION"
+    max_namespaces: 256
+    allow_any_host: true
+    uram1: "uram0"
+    uram2: "uram1"
+    num_blocks: 512
+    block_size: 8192
+    dev_type: "uram"
+    numa: 0
   bmc:
     ip: 107.108.214.139
     port: 443
+     

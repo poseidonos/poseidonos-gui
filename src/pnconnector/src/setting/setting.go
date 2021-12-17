@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package setting
 
 import (
@@ -54,8 +54,25 @@ type Server struct {
 	BMC    HostConf `yaml:"bmc"`
 }
 type HostConf struct {
-	IP   string `yaml:"ip"`
-	Port string `yaml:"port"`
+	IP                 string `yaml:"ip"`
+	Port               string `yaml:"port"`
+	TargetAddress      string `yaml:"target_address"`
+	TransportType      string `yaml:"transport_type"`
+	BufCacheSize       int    `yaml:"buf_cache_size"`
+	NumSharedBuf       int    `yaml:"num_shared_buf"`
+	Subsystem_1        string `yaml:"subsystem_1"`
+	Subsystem_2        string `yaml:"subsystem_2"`
+	TransportServiceId string `yaml:"transport_service_id"`
+	Serial             string `json:"sn,omitempty"`
+	Model              string `json:"mn,omitempty"`
+	MaxNameSpaces      int    `json:"max_namespaces,omitempty"`
+	AllowAnyHost       bool   `json:"allow_any_host,omitempty"`
+	Uram1              string `yaml:"uram1"`
+	Uram2              string `yaml:"uram2"`
+	NumBlocks          int    `yaml:"num_blocks"`
+	BlockSize          int    `yaml:"block_size"`
+	DevType            string `yaml:"dev_type"`
+	Numa               int    `yaml:"numa"`
 }
 
 func init() {

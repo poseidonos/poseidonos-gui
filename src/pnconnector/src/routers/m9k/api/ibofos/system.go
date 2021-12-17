@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package ibofos
 
 import (
@@ -47,7 +47,63 @@ func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, 
 	return SystemSender(xrId, param, "STOPPOS")
 }
 
+func UpdateResponse(response model.Response, res *model.Response, opName string, errorInfo *map[string]interface{}) {
+	info := make(map[string]interface{})
+	info["code"] = response.Result.Status.Code
+	info["description"] = response.Result.Status.Description
+	(*errorInfo)[opName] = info
+}
+
+func transport(xrId string, config setting.HostConf, res *model.Response, opName string, errorInfo *map[string]interface{}) {
+	subsystemParam := model.SubSystemParam{}
+	subsystemParam.TRANSPORTTYPE = config.TransportType
+	subsystemParam.BUFCACHESIZE = config.BufCacheSize
+	subsystemParam.NUMSHAREDBUF = config.NumSharedBuf
+	//create Transport
+	_, response, _ := CreateTransport(xrId, subsystemParam)
+	UpdateResponse(response, res, opName, errorInfo)
+
+}
+
+func subSystem(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+	subsystemParam := model.SubSystemParam{}
+	subsystemParam.SUBNQN = name
+	subsystemParam.SERIAL = config.Serial
+	subsystemParam.MODEL = config.Model
+	subsystemParam.MAXNAMESPACES = config.MaxNameSpaces
+	subsystemParam.ALLOWANYHOST = config.AllowAnyHost
+
+	_, response, _ := CreateSubSystem(xrId, subsystemParam)
+	//update response
+	UpdateResponse(response, res, opName, errorInfo)
+
+}
+func listener(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+	subsystemParam := model.SubSystemParam{}
+	subsystemParam.SUBNQN = name
+	subsystemParam.TRANSPORTTYPE = config.TransportType
+	subsystemParam.TARGETADDRESS = config.TargetAddress
+	subsystemParam.TRANSPORTSERVICEID = config.TransportServiceId
+	_, response, _ := AddListener(xrId, subsystemParam)
+	//update response
+	UpdateResponse(response, res, opName, errorInfo)
+
+}
+func uramDevice(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+	deviceParam := model.CreateDeviceReqParam{}
+	deviceParam.DEVICENAME = name
+	deviceParam.NUMBLOCKS = config.NumBlocks
+	deviceParam.BLOCKSIZE = config.BlockSize
+	deviceParam.DEVICETYPE = config.DevType
+	deviceParam.NUMA = config.Numa
+	_, response, _ := CreateDevice(xrId, deviceParam)
+	//update response
+	response.Result.Status.Description = name + ": " + response.Result.Status.Description
+	UpdateResponse(response, res, opName, errorInfo)
+
+}
 func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
+	errorInfo := make(map[string]interface{})
 	iBoFRequest := model.Request{
 		Command: "RUNIBOFOS",
 		Rid:     xrId,
@@ -55,7 +111,11 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 
 	iBoFRequest.Param = param
 	res := model.Response{}
-
+	_, pathErr := os.Stat("/usr/local/bin/poseidonos")
+	if os.IsNotExist(pathErr) {
+		res.Result.Status.Code = 11001
+		return iBoFRequest, res, pathErr
+	}
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	cmd := fmt.Sprintf("/../script/run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
 	err := util.ExecCmd(path+cmd, false)
@@ -68,7 +128,18 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 	}
 
 	log.Info("RuniBoFOS result : ", res.Result.Status.Code)
-
+	if res.Result.Status.Code == 0 {
+		time.Sleep(2 * time.Second)
+		config := setting.Config.Server.IBoF
+		transport(xrId, config, &res, "transport", &errorInfo)
+		subSystem(xrId, config, &res, config.Subsystem_1, "subSystem1", &errorInfo)
+		subSystem(xrId, config, &res, config.Subsystem_2, "subSystem2", &errorInfo)
+		listener(xrId, config, &res, config.Subsystem_1, "addListener1", &errorInfo)
+		listener(xrId, config, &res, config.Subsystem_2, "addListener2", &errorInfo)
+		uramDevice(xrId, config, &res, config.Uram1, "uram1", &errorInfo)
+		uramDevice(xrId, config, &res, config.Uram2, "uram2", &errorInfo)
+		res.Result.Status.ErrorInfo = errorInfo
+	}
 	return iBoFRequest, res, err
 }
 

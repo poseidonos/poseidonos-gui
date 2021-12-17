@@ -33,11 +33,12 @@
 package model
 
 var RequesterName = "DAgent"
+
 type Request struct {
-	Command string      `json:"command"`
-	Rid     string      `json:"rid"`
-	Param   interface{} `json:"param,omitempty"`
-	Requester    string `json:"requester"`
+	Command   string      `json:"command"`
+	Rid       string      `json:"rid"`
+	Param     interface{} `json:"param,omitempty"`
+	Requester string      `json:"requester"`
 }
 
 type Response struct {
@@ -53,13 +54,14 @@ type Result struct {
 }
 
 type Status struct {
-	Module         string `json:"module"`
-	Code           int    `json:"code"`
-	Level          string `json:"level,omitempty"`
-	Description    string `json:"description"`
-	PosDescription string `json:"posDescription"`
-	Problem        string `json:"problem,omitempty"`
-	Solution       string `json:"solution,omitempty"`
+	Module         string      `json:"module"`
+	Code           int         `json:"code"`
+	Level          string      `json:"level,omitempty"`
+	Description    string      `json:"description"`
+	PosDescription string      `json:"posDescription"`
+	Problem        string      `json:"problem,omitempty"`
+	Solution       string      `json:"solution,omitempty"`
+	ErrorInfo      interface{} `json:"errorInfo,omitempty"`
 }
 
 type Device struct {
@@ -85,21 +87,21 @@ type ArrayParam struct {
 }
 
 type AutocreateArrayParam struct {
-        ARRAYNAME               string            `json:"name"`
-        BUFFER                  [1]DeviceNameList `json:"buffer"`
-        NUMDATADEVS             int               `json:"num_data"`
-        NUMSPAREDEVS    int               `json:"num_spare,omitempty"`
-        RAID                    string            `json:"raidtype,omitempty"`
+	ARRAYNAME    string            `json:"name"`
+	BUFFER       [1]DeviceNameList `json:"buffer"`
+	NUMDATADEVS  int               `json:"num_data"`
+	NUMSPAREDEVS int               `json:"num_spare,omitempty"`
+	RAID         string            `json:"raidtype,omitempty"`
 }
 type DeviceNameList struct {
-        DEVICENAME string `json:"deviceName,omitempty"`
+	DEVICENAME string `json:"deviceName,omitempty"`
 }
 type CreateDeviceReqParam struct {
-        DEVICENAME string `json:"name"`
-        NUMBLOCKS  int    `json:"num_blocks"`
-        BLOCKSIZE  int    `json:"block_size"`
-        DEVICETYPE string `json:"dev_type"`
-        NUMA       int  `json:"numa"`
+	DEVICENAME string `json:"name"`
+	NUMBLOCKS  int    `json:"num_blocks"`
+	BLOCKSIZE  int    `json:"block_size"`
+	DEVICETYPE string `json:"dev_type"`
+	NUMA       int    `json:"numa"`
 }
 type SubSystemParam struct {
 	TRANSPORTTYPE      string `json:"transport_type,omitempty"`
