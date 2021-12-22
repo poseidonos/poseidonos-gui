@@ -127,7 +127,7 @@ export function* createSubsystem(action) {
             title: "Create Subsystem",
             msg: "Failed to create Subsystem!",
             code: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
                 : ""
               }`,
           })

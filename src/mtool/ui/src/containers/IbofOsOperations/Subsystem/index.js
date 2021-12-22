@@ -31,9 +31,9 @@
  */
 
 import React, { Component } from 'react';
-import { Grid, ThemeProvider, Typography, withStyles } from '@material-ui/core';
+import { Grid, IconButton, ThemeProvider, Typography, Tooltip, withStyles } from '@material-ui/core';
 import MaterialTable from 'material-table';
-import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward } from '@material-ui/icons';
+import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Delete, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { customTheme, TableTheme } from '../../../theme';
 import Popup from '../../../components/Popup';
@@ -46,6 +46,15 @@ const styles = (theme) => ({
     cardHeader: {
         ...customTheme.card.header,
         marginLeft: 0
+    },
+    detailText: {
+	fontWeight: 600
+    },
+    deleteIcon: {
+	cursor: "pointer",
+	"&:hover": {
+		boxShadow: 5
+	}
     },
     item: {
         marginTop: theme.spacing(1)
@@ -71,11 +80,18 @@ class Subsystem extends Component {
     constructor() {
         super()
         this.state = {
-            dialogOpen: false
+            dialogOpen: false,
+	    actionTitle: "",
+	    actionOpen: false,
+	    actionMsg: "",
+	    actionType: "confirm",
+	    confirmAction: () => {}
         };
         this.openCreateSubsystemDialog = this.openCreateSubsystemDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
 	this.closeAlert = this.closeAlert.bind(this);
+	this.openAction = this.openAction.bind(this);
+	this.closeAction = this.closeAction.bind(this);
     }
 
     componentDidMount() {
@@ -96,15 +112,43 @@ class Subsystem extends Component {
 
     closeAlert() {
 	    this.props.Close_Alert();
+	    this.setState({
+		    actionOpen: false,
+		    dialogOpen: this.props.errorCode ?
+		        this.state.dialogOpen : false
+	    });
     }
     
-    openConfirmation(callback) {
+    closeAction() {
+	    this.setState({
+		    actionOpen: false
+	    });
+    }
+    
+    openAction(title, message, callback) {
 	this.setState({
-		alertopen: true
+		actionMsg: message,
+		actionTitle: title,
+		actionOpen: true,
+		confirmAction: callback
 	});
     }
 
     render() {
+	const addressColumns = [{
+	    title: "Target Address",
+	    field: "target_address"
+	}];
+	const namespaceColumns = [{
+	    title: "BDEV Name",
+	    field: "bdev_name"
+	}, {
+	    title: "ID",
+	    field: "nsid"
+	}, {
+	    title: "UUID",
+	    field: "uuid"
+	}];
         const subsystemTableColumns = [{
             title: "NQN",
             field: "nqn"
@@ -112,21 +156,22 @@ class Subsystem extends Component {
             title: "Subtype",
             field: "subtype"
         }, {
-	    title: "Serial No",
-	    field: "serial_number"
-	}, {
-	    title: "Model No",
-	    field: "model_number"
-	}, {
 	    title: "Array",
 	    field: "array"
 	}, {
-	    title: "Allow Any Host",
-	    render: (rowData) => rowData.allow_any_host === 1 ? "Yes" : "No"
-	}, {
 	    title: "Actions",
 	    render: (rowData) => (
-		    <button onClick={() => this.props.Delete_Subsystem({name: rowData.nqn})}>Delete</button>
+		    <Tooltip title="Delete Subsystem">
+		    <IconButton
+		      onClick={() => {
+                           this.openAction("Delete Subsystem",
+                                   `Are you sure you want tp delete the subsystem ${rowData.nqn}`,
+                                   () => this.props.Delete_Subsystem({name: rowData.nqn}))
+                      }}
+		    >
+		    <Delete />
+		    </IconButton>
+		    </Tooltip>
 	    )
 	}];
         const { classes } = this.props;
@@ -148,15 +193,49 @@ class Subsystem extends Component {
                             }]}
 		            detailPanel={
 				    rowData => (
-					    <div>
-					    {rowData.listen_addresses && rowData.listen_addresses.map(address => (
-						    <div>{address.target_address}</div>
-					    ))}
-					    {rowData.namespaces && rowData.namespaces.map(ns => (
-                                                    <div>{ns.bdev_name}</div>
-                                            ))}
-					    <div>{rowData.max_namespaces}</div>
-					    </div>
+					    <ThemeProvider theme={TableTheme}>
+					    <Grid container spacing={1} padding={1}>
+					    <Grid item container md={12} justifyContent="space-around">
+					      <Typography variant="p" className={classes.detailText}>Max Namespaces: {rowData.max_namespaces}</Typography>
+					      <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {rowData.allow_any_host ? "Yes" : "No"}</Typography>
+					      <Typography variant="p" className={classes.detailText}>Model No: {rowData.model_number}</Typography>
+  					      <Typography variant="p" className={classes.detailText}>Serial No: {rowData.serial_number}</Typography>
+					    </Grid>
+					    <Grid item xs={12}>
+					    <MaterialTable
+					      title={(
+						      <Typography className={classes.cardHeader}>Namespaces</Typography>
+					      )}
+					      columns={namespaceColumns}
+					      data={rowData.namespaces}
+					      icons={icons}
+                                              options={{
+                                                headerStyle: {
+                                                  backgroundColor: "#788595",
+                                                  color: "#FFF",
+                                                }
+                                              }}
+					    />
+					    </Grid>
+					    <Grid item xs={12}>
+                                            <MaterialTable
+                                              title={(
+                                                      <Typography className={classes.cardHeader}>Listen Addresses</Typography>
+                                              )}
+                                              columns={addressColumns}
+                                              data={rowData.listen_addresses}
+                                              icons={icons}
+					      options={{
+                                                headerStyle: {
+                                                  backgroundColor: "#788595",
+                                                  color: "#FFF",
+                                                }
+                                              }}
+
+                                            />
+                                            </Grid>
+					    </Grid>
+					    </ThemeProvider>
 				    )
 			    }
                             data={this.props.subsystems}
@@ -181,17 +260,16 @@ class Subsystem extends Component {
                     open={this.state.dialogOpen}
                     close={this.closeDialog}
                 >
-                    <CreateSubsystem createSubsystem={this.props.Create_Subsystem}/>
+                    <CreateSubsystem createSubsystem={this.props.Create_Subsystem} confirmAction={this.openAction}/>
                 </Popup>
-		{/*<AlertDialog
-                  title={this.state.alertTitle}
-                  description={this.state.errorMsg}
-                  open={this.state.alertOpen}
-                  type={this.state.alertType}
-                  onConfirm={this.alertConfirm}
-                  handleClose={this.alertClose}
-                  errCode={this.state.errorCode}
-                />*/}
+		<AlertDialog
+                  title={this.state.actionTitle}
+                  description={this.state.actionMsg}
+                  open={this.state.actionOpen}
+                  type={this.state.actionType}
+                  onConfirm={this.state.confirmAction}
+                  handleClose={this.closeAction}
+                />
 		<AlertDialog
                   title={this.props.alertTitle}
                   description={this.props.errorMsg}
