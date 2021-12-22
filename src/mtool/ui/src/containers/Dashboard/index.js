@@ -331,7 +331,7 @@ class Dashboard extends Component {
     const { classes } = this.props;
     this.props.volumes.forEach((vol) => {
       volUsedSpace += Number(vol.total) - (
-        Number.isNaN(vol.remain) ? 0 : Number(vol.remain)
+        vol.remain === undefined ? Number(vol.total) : Number(vol.remain)
       );
       volSpace += Number(vol.total);
     });
