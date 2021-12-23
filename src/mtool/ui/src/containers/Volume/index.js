@@ -48,9 +48,11 @@ import MToolLoader from "../../components/MToolLoader";
 import AlertDialog from "../../components/Dialog";
 import "./Volume.css";
 import MToolTheme, { customTheme } from "../../theme";
+import SelectSubsystem from "../../components/SelectSubsystem";
 import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
+import { getSubsystemForArray } from "../../utils/subsystem";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -168,6 +170,7 @@ class Volume extends Component {
           "x-access-token": localStorage.getItem("token"),
         },
       }),
+      mountSubsystem: ""
     };
     this.deleteVolumes = this.deleteVolumes.bind(this);
     this.fetchVolumes = this.fetchVolumes.bind(this);
@@ -182,6 +185,10 @@ class Volume extends Component {
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.changeArray = this.changeArray.bind(this);
     this.changeMountStatus = this.changeMountStatus.bind(this);
+    this.mountConfirm = this.mountConfirm.bind(this);
+    this.changeMountSubsystem = this.changeMountSubsystem.bind(this);
+    this.closeMountPopup = this.closeMountPopup.bind(this);
+    this.isSubsystemReserved = this.isSubsystemReserved.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if(array) {
@@ -279,6 +286,63 @@ class Volume extends Component {
 
   createArray(array) {
     this.props.Create_Array(array);
+  }
+
+  closeMountPopup() {
+    this.setState({
+	    mountOpen: false
+    });
+  }
+
+  changeMountSubsystem(event) {
+    this.setState({
+	mountSubsystem: event.target.value
+    });
+  }
+
+  isSubsystemReserved() {
+    for(let  i = 0; i < this.props.subsystems.length; i += 1) {
+	const subsystem = this.props.subsystems[i];
+	const isSubsystemSelected = subsystem.nqn === this.state.mountSubsystem;
+	const isArrayFreeOrValid = !subsystem.array || subsystem.array === this.props.selectedArray;
+	if(isSubsystemSelected && isArrayFreeOrValid) {
+		   return false;
+	}
+    }
+    return true;
+  }
+
+  mountConfirm(payload) {
+    this.setState({
+        mountSubsystem: getSubsystemForArray(this.props.subsystems, this.props.selectedArray),
+	volumeForMount: payload.name,
+	mountConfirm: () => {
+	  
+          if(this.isSubsystemReserved()) {
+	      this.props.Show_Storage_Alert({
+                alertType: "alert",
+                errorMsg: "Mount error",
+                errorCode: "Selected Subsystem is used by another array",
+                alertTitle: "Mounting Array"
+              });
+	      return;
+	  }
+	  this.closeMountPopup();
+	  this.props.Change_Mount_Status({
+		...payload,
+		subsystem: this.state.mountSubsystem
+	  })
+	},
+	mountOpen: true
+    });
+  }
+
+  changeMountStatus(payload) {
+    if(payload.status !== "Mounted") {
+	this.mountConfirm(payload);
+    } else {
+        this.props.Change_Mount_Status(payload);
+    }
   }
 
   deleteArray() {
@@ -571,9 +635,6 @@ class Volume extends Component {
                   ) : null}
                 </Route>
               </Switch>
-              {this.props.loading ? (
-                <MToolLoader text={this.props.loadText} />
-              ) : null}
               <AlertDialog
                 title={this.props.alertTitle}
                 description={this.props.errorMsg}
@@ -585,6 +646,20 @@ class Volume extends Component {
                 handleClose={this.alertConfirm}
                 errCode={this.props.errorCode}
               />
+	      <SelectSubsystem
+	        title="Select a subsystem"
+	        open={this.state.mountOpen}
+	        subsystems={this.props.subsystems}
+	        handleChange={this.changeMountSubsystem}
+	        selectedSubsystem={this.state.mountSubsystem}
+	        handleClose={this.closeMountPopup}
+	        array={this.props.selectedArray}
+	        volume={this.state.volumeForMount}
+	        mountVolume={this.state.mountConfirm}
+	      />
+              {this.props.loading ? (
+                <MToolLoader text={this.props.loadText} />
+              ) : null}
             </Grid>
           </main>
         </Box>
@@ -663,7 +738,8 @@ const mapDispatchToProps = (dispatch) => {
     Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
     Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
     Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload}),
-    Get_Subsystems: () => dispatch({type: actionTypes.SAGA_FETCH_SUBSYSTEMS})
+    Get_Subsystems: () => dispatch({type: actionTypes.SAGA_FETCH_SUBSYSTEMS}),
+    Show_Storage_Alert: (payload) => dispatch({type: actionTypes.STORAGE_SHOW_ALERT, payload})
   };
 };
 
