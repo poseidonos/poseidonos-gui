@@ -181,6 +181,7 @@ class Volume extends Component {
     this.fetchMaxVolumeCount = this.fetchMaxVolumeCount.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.changeArray = this.changeArray.bind(this);
+    this.changeMountStatus = this.changeMountStatus.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if(array) {
@@ -242,6 +243,14 @@ class Volume extends Component {
     this.props.history.push(`/storage/array/manage?array=${value}`);
     this.props.Set_Array(value);
     this.props.Get_Volumes({array: value});
+  }
+
+  changeMountStatus(payload) {
+    this.props.Change_Mount_Status({
+	    ...payload,
+	    subsystems: this.props.subsystems,
+	    array: this.props.selectedArray
+    });
   }
 
   fetchVolumes() {
@@ -554,7 +563,7 @@ class Volume extends Component {
                             changeField={this.props.Change_Volume_Field}
                             fetchVolumes={this.fetchVolumes}
                             saveVolume={this.props.Update_Volume}
-                            changeMountStatus={this.props.Change_Mount_Status}
+                            changeMountStatus={this.changeMountStatus}
                           />
                         </Grid>
                       </Grid>

@@ -1220,6 +1220,26 @@ function* removeSpareDisk(action) {
   }
 }
 
+function getSubsystemForArray(subsystems, array) {
+  let subsystem = null;
+  if (subsystems && subsystems.length) {
+    subsystems.forEach((s) => {
+      const isSubsystemOfArray = s.array === array;
+      const isSubsystemDiscovery = s.subtype && s.subtype.toLowerCase() === "discovery";
+      const isSubsystemFree = !isSubsystemDiscovery && !subsystem && !s.array;
+      if(isSubsystemOfArray) {
+	subsystem = s;
+	return;
+      }
+      if(isSubsystemFree) {
+	subsystem = s;
+      }
+    })
+  }
+  return subsystem;
+}
+
+
 function* changeVolumeMountStatus(action) {
   let message = "Mount";
   const arrayName = yield select(arrayname)
@@ -1240,6 +1260,18 @@ function* changeVolumeMountStatus(action) {
         },
       });
     } else {
+      const subsystem = getSubsystemForArray(action.payload.subsystems, action.payload.array);
+      if(!subsystem) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while mounting Volume",
+            errorCode: "No subsystems available for mounting the volume",
+            alertTitle: "Mounting Volume",
+          })
+        );
+	return;
+      }
       yield put(actionCreators.startStorageLoader("Mounting Volume"));
       response = yield call(
         [axios, axios.post],
@@ -1247,6 +1279,7 @@ function* changeVolumeMountStatus(action) {
         {
           name: action.payload.name,
           array: arrayName,
+	  subnqn: subsystem.nqn
         },
         {
           headers: {
