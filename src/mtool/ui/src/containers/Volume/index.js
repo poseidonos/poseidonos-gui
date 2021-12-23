@@ -52,7 +52,7 @@ import SelectSubsystem from "../../components/SelectSubsystem";
 import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
-import { getSubsystemForArray } from "../../utils/subsystem";
+import getSubsystemForArray from "../../utils/subsystem";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -252,14 +252,6 @@ class Volume extends Component {
     this.props.Get_Volumes({array: value});
   }
 
-  changeMountStatus(payload) {
-    this.props.Change_Mount_Status({
-	    ...payload,
-	    subsystems: this.props.subsystems,
-	    array: this.props.selectedArray
-    });
-  }
-
   fetchVolumes() {
     this.props.Get_Volumes({array: this.props.selectedArray});
   }
@@ -301,7 +293,7 @@ class Volume extends Component {
   }
 
   isSubsystemReserved() {
-    for(let  i = 0; i < this.props.subsystems.length; i += 1) {
+    for(let i = 0; i < this.props.subsystems.length; i += 1) {
 	const subsystem = this.props.subsystems[i];
 	const isSubsystemSelected = subsystem.nqn === this.state.mountSubsystem;
 	const isArrayFreeOrValid = !subsystem.array || subsystem.array === this.props.selectedArray;

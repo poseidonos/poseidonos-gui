@@ -1,6 +1,5 @@
-export const getSubsystemForArray = (subsystems, array) => {
+const getSubsystemForArray = (subsystems, array) => {
   let subsystem = null;
-	console.log(subsystems, array)
   if (subsystems && subsystems.length) {
     subsystems.forEach((s) => {
       const isSubsystemOfArray = s.array === array;
@@ -18,3 +17,4 @@ export const getSubsystemForArray = (subsystems, array) => {
   return subsystem.nqn;
 }
 
+export default getSubsystemForArray;

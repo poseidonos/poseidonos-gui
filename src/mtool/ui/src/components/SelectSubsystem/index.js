@@ -1,8 +1,6 @@
 import React from "react";
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import { Button, Grid, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from "../DialogTitle";
@@ -42,19 +40,16 @@ const SelectSubsystem = (props) => {
         <DialogContent
             className={classes.dialogContent}
         >
-	    {/*<DialogContentText
-            id="subsystem-dialog-description"
-          >*/}
-	    <Grid
+	      <Grid
               item
               container
               xs={12}
               justifyContent="center"
               className={classes.formControl}
-            >
-	      <Typography variant="h6" align="center">Volume: {props.volume}</Typography>
-	      <Typography variant="h6" align="center">Array: {props.array}</Typography>
-              <FormControl className={classes.subsystemFormItem}>
+	      >
+	        <Typography variant="h6" align="center">Volume: {props.volume}</Typography>
+	        <Typography variant="h6" align="center">Array: {props.array}</Typography>
+            <FormControl className={classes.subsystemFormItem}>
               <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
               <Select
                   value={props.selectedSubsystem}
@@ -77,19 +72,18 @@ const SelectSubsystem = (props) => {
                     </MenuItem>
                   ) : null)}
               </Select>
-	      <Button
+	          <Button
                   onClick={props.mountVolume}
                   variant="contained"
                   color="primary"
                   data-testid="mountvolume-btn"
                   className={classes.subsystemFormItem}
-              >
+	          >
                   Mount Volume
               </Button>
-              </FormControl>
-            </Grid>
-	    {/*</DialogContentText>*/}
-	</DialogContent>
+            </FormControl>
+          </Grid>
+        </DialogContent>
       </Dialog>
     );
 }
