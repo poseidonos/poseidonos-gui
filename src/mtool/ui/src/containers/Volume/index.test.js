@@ -1047,6 +1047,20 @@ describe("<Storage Management />", () => {
           },
         },
       })
+      .onGet(/api\/v1\/subsystem/)
+      .reply(200, {
+        result: {
+          data: {
+	    subsystemlist: [{
+	        nqn: "subsystem1"
+	    }],
+	  },
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
       .onPost(/api\/volume\/mount/)
       .reply(200, {
         result: {
@@ -1070,6 +1084,7 @@ describe("<Storage Management />", () => {
       {
         name: "vol2",
         array: "POSArray",
+        subnqn: "subsystem1"
       },
       {
         headers: {
