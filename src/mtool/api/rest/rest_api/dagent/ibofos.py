@@ -800,11 +800,12 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
         'Error response from Agent while renaming volume...', 500)
 
 
-def mount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
+def mount_volume(name, arrayname, subnqn, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
             "param": {
-                "array": arrayname
+                "array": arrayname,
+                "subnqn": subnqn
             }
     }
     request_body = json.dumps(request_body)

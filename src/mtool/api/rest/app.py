@@ -1868,7 +1868,7 @@ def mountVolume():
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        mount_vol_res = mount_volume(body["name"], body.get("array"))
+        mount_vol_res = mount_volume(body["name"], body.get("array"), body.get("subnqn"))
         return toJson(mount_vol_res.json())
     except Exception as e:
         print("In exception mountVolume(): ", e)
