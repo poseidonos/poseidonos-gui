@@ -6,6 +6,7 @@ logfile="ibofos.log"
 ibofos=/usr/local/bin/poseidonos
 
 pkill -9 poseidonos
+pkill -9 ibofos
 sleep 2
 
 if [ ! -f "$ibofos" ]; then

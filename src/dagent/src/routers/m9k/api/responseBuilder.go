@@ -88,11 +88,23 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	errorInfo := res.Result.Status.ErrorInfo
 	res.Result.Status, _ = util.GetStatusInfo(code)
 	res.Result.Status.PosDescription = posDescription
-	res.Result.Status.ErrorInfo = errorInfo
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)
 	} else {
 		log.Infof("makeResponse : %+v", res)
 	}
-	ctx.AbortWithStatusJSON(httpStatus, &res)
+
+	if errorInfo != nil {
+		res.Result.Status.ErrorInfo = errorInfo
+		if errorInfo.(map[string]interface{})["errorCode"] == 1 {
+			ctx.AbortWithStatusJSON(207, &res)
+		} else {
+			ctx.AbortWithStatusJSON(httpStatus, &res)
+		}
+
+	} else {
+		ctx.AbortWithStatusJSON(httpStatus, &res)
+
+	}
+
 }

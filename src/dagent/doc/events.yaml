@@ -1389,8 +1389,8 @@ modules:
       - code: 11001
         level: ERROR
         message: Sending error
-        problem: poseidonos binary does not present in /usr/local/bin/poseidonos
-        solution: install poseidonos through make install
+        problem: poseidonos binary not found in /usr/local/bin/
+        solution: Please build the poseidonos and run 'make install' from poseidonos root directory
       - code: 11010
         level: ERROR
         message: Json Error

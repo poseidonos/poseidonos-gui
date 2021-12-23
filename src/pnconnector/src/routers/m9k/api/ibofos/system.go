@@ -47,25 +47,26 @@ func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, 
 	return SystemSender(xrId, param, "STOPPOS")
 }
 
-func UpdateResponse(response model.Response, res *model.Response, opName string, errorInfo *map[string]interface{}) {
+func UpdateResponse(response model.Response, res *model.Response, opName string, errorInfoList *[]map[string]interface{}) {
 	info := make(map[string]interface{})
+	info["id"]=opName
 	info["code"] = response.Result.Status.Code
 	info["description"] = response.Result.Status.Description
-	(*errorInfo)[opName] = info
+	*errorInfoList = append(*errorInfoList,info)
 }
 
-func transport(xrId string, config setting.HostConf, res *model.Response, opName string, errorInfo *map[string]interface{}) {
+func transport(xrId string, config setting.HostConf, res *model.Response, opName string, errorInfoList *[]map[string]interface{}) {
 	subsystemParam := model.SubSystemParam{}
 	subsystemParam.TRANSPORTTYPE = config.TransportType
 	subsystemParam.BUFCACHESIZE = config.BufCacheSize
 	subsystemParam.NUMSHAREDBUF = config.NumSharedBuf
 	//create Transport
 	_, response, _ := CreateTransport(xrId, subsystemParam)
-	UpdateResponse(response, res, opName, errorInfo)
+	UpdateResponse(response, res, opName, errorInfoList)
 
 }
 
-func subSystem(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+func subSystem(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfoList *[]map[string]interface{}) {
 	subsystemParam := model.SubSystemParam{}
 	subsystemParam.SUBNQN = name
 	subsystemParam.SERIAL = config.Serial
@@ -75,10 +76,10 @@ func subSystem(xrId string, config setting.HostConf, res *model.Response, name s
 
 	_, response, _ := CreateSubSystem(xrId, subsystemParam)
 	//update response
-	UpdateResponse(response, res, opName, errorInfo)
+	UpdateResponse(response, res, opName, errorInfoList)
 
 }
-func listener(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+func listener(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfoList *[]map[string]interface{}) {
 	subsystemParam := model.SubSystemParam{}
 	subsystemParam.SUBNQN = name
 	subsystemParam.TRANSPORTTYPE = config.TransportType
@@ -86,10 +87,10 @@ func listener(xrId string, config setting.HostConf, res *model.Response, name st
 	subsystemParam.TRANSPORTSERVICEID = config.TransportServiceId
 	_, response, _ := AddListener(xrId, subsystemParam)
 	//update response
-	UpdateResponse(response, res, opName, errorInfo)
+	UpdateResponse(response, res, opName, errorInfoList)
 
 }
-func uramDevice(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfo *map[string]interface{}) {
+func uramDevice(xrId string, config setting.HostConf, res *model.Response, name string, opName string, errorInfoList *[]map[string]interface{}) {
 	deviceParam := model.CreateDeviceReqParam{}
 	deviceParam.DEVICENAME = name
 	deviceParam.NUMBLOCKS = config.NumBlocks
@@ -99,11 +100,12 @@ func uramDevice(xrId string, config setting.HostConf, res *model.Response, name 
 	_, response, _ := CreateDevice(xrId, deviceParam)
 	//update response
 	response.Result.Status.Description = name + ": " + response.Result.Status.Description
-	UpdateResponse(response, res, opName, errorInfo)
+	UpdateResponse(response, res, opName, errorInfoList)
 
 }
 func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	errorInfo := make(map[string]interface{})
+	errorInfoList := []map[string]interface{}{}
 	iBoFRequest := model.Request{
 		Command: "RUNIBOFOS",
 		Rid:     xrId,
@@ -131,13 +133,22 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 	if res.Result.Status.Code == 0 {
 		time.Sleep(2 * time.Second)
 		config := setting.Config.Server.IBoF
-		transport(xrId, config, &res, "transport", &errorInfo)
-		subSystem(xrId, config, &res, config.Subsystem_1, "subSystem1", &errorInfo)
-		subSystem(xrId, config, &res, config.Subsystem_2, "subSystem2", &errorInfo)
-		listener(xrId, config, &res, config.Subsystem_1, "addListener1", &errorInfo)
-		listener(xrId, config, &res, config.Subsystem_2, "addListener2", &errorInfo)
-		uramDevice(xrId, config, &res, config.Uram1, "uram1", &errorInfo)
-		uramDevice(xrId, config, &res, config.Uram2, "uram2", &errorInfo)
+		errorCode := 0
+		transport(xrId, config, &res, "transport", &errorInfoList)
+		subSystem(xrId, config, &res, config.Subsystem_1, "subSystem1", &errorInfoList)
+		subSystem(xrId, config, &res, config.Subsystem_2, "subSystem2", &errorInfoList)
+		listener(xrId, config, &res, config.Subsystem_1, "addListener1", &errorInfoList)
+		listener(xrId, config, &res, config.Subsystem_2, "addListener2", &errorInfoList)
+		uramDevice(xrId, config, &res, config.Uram1, "uram1", &errorInfoList)
+		uramDevice(xrId, config, &res, config.Uram2, "uram2", &errorInfoList)
+		for itr :=0; itr<len(errorInfoList); itr++ {
+			if errorInfoList[itr]["code"].(int) > 0 {
+				errorCode = 1
+				break
+			}
+		}
+		errorInfo["errorResponses"] = errorInfoList
+		errorInfo["errorCode"] = errorCode
 		res.Result.Status.ErrorInfo = errorInfo
 	}
 	return iBoFRequest, res, err
