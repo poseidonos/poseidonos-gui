@@ -102,3 +102,22 @@
     width: 60%;
   }
 } */
+.IBOFOSStatusLabel {
+  margin: 4px 2.5%;
+  padding: 4px;
+  clear: both;
+  width: 95%;
+}
+.IBOFOSResponse {
+  padding: 4px;
+  border: 1px solid #788595;
+  width: 100%;
+  min-height: 50px;
+}
+.IBOFOSStatusIcon {
+  vertical-align: sub;
+  height: 0.8em !important;
+}
+.IBOFOSStatusText {
+  clear: both;
+}

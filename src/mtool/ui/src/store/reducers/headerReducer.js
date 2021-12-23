@@ -37,7 +37,7 @@ export const initialState = {
     status:false,
     state: "",
     OS_Running_Status: "...",
-    operationsMessage: ""
+    operationsMessage: []
 }
 
 

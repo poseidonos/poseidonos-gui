@@ -87,7 +87,7 @@ function* CallIsiBOFOSRunning(action) {
 }
 
 function* startIBOFOs() {
-    yield put(actionCreators.setOperationsMessage("Starting Poseidon OS"));
+    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/start_ibofos', {
             headers: {
@@ -97,16 +97,30 @@ function* startIBOFOs() {
             },
         });
         if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage(response.data.response));
+	    const responseStatus = response.data.result.status;
+	    const errorResponses = responseStatus.errorInfo ?
+			responseStatus.errorInfo.errorResponses : [];
+            yield put(actionCreators.setOperationsMessage([
+		    {
+		        code: response.data.result.status.code,
+		        id: "POS",
+			description: `${responseStatus.description || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
+		    },
+		    ...errorResponses
+	    ]));
         }
     } catch (e) {
-        yield put(actionCreators.setOperationsMessage(`Error in Starting Poseidon OS: ${e}`));
+        yield put(actionCreators.setOperationsMessage([{
+		code: 500,
+		id: "Server",
+		description: `Error in Starting Poseidon OS: ${e}`
+	}]));
     }
 }
 
 
 function* stopIBOFOs() {
-    yield put(actionCreators.setOperationsMessage("Stopping Poseidon OS"));
+    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/stop_ibofos', {
             headers: {
@@ -116,14 +130,24 @@ function* stopIBOFOs() {
             },
         });
         if (response.status === 200) {
-            if(response.data.code === 0) {
-                yield put(actionCreators.setOperationsMessage("Poseidon OS Stopped Successfully"));
-            } else {
-                yield put(actionCreators.setOperationsMessage(`Error in Stopping Poseidon OS: ${response.data.response}`));
-            }
+	    const responseStatus = response.data;
+            const errorResponses = responseStatus.errorInfo ?
+                        responseStatus.errorInfo.errorResponses : [];
+            yield put(actionCreators.setOperationsMessage([
+                    {
+                        code: responseStatus.code,
+                        id: "POS",
+                        description: `${responseStatus.response || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
+                    },
+                    ...errorResponses
+            ]));
         }
     } catch (e) {
-        yield put(actionCreators.setOperationsMessage(`Error in Stopping Poseidon OS: ${e}`));
+	yield put(actionCreators.setOperationsMessage([{
+                code: 500,
+                id: "Server",
+                description: `Error in Stopping Poseidon OS: ${e}`
+        }]));
     }
 }
 

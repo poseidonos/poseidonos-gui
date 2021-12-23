@@ -31,7 +31,10 @@
  */
 
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import { green, red } from '@material-ui/core/colors';
 import './RunIbofOs.css';
 import LinearProgressBarComponent from '../LinearProgressBarComponent';
 
@@ -149,16 +152,20 @@ const RunIbofOs = props => {
             </div>
           </div> */}
         </div>
-        <span className="IBOFOSStatusLabel">
+        <Grid className="IBOFOSStatusLabel">
           <span>Response</span>
-        </span>
-        <span>
-          <input
-            className="IBOFOSInputField"
-            value={props.responsefromos}
-            readOnly
-          />
-        </span>
+          <Grid className="IBOFOSResponse">
+	  {props.responsefromos && props.responsefromos.map((response) => (
+		  <Typography component="div" className="IBOFOSStatusText">{response.code === 0 ? (
+			  <CheckCircleIcon className="IBOFOSStatusIcon" style={{color: green[500]}} />
+		  ) : null}{response.code &&
+				  response.code !== 200 ? (
+                          <ErrorIcon className="IBOFOSStatusIcon" style={{color: red[500]}} />
+                  ) : null} {response.description}
+    </Typography>
+	  ))}
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
