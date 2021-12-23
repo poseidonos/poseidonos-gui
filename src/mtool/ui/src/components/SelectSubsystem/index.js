@@ -76,13 +76,13 @@ const SelectSubsystem = (props) => {
                   onClick={props.mountVolume}
                   variant="contained"
                   color="primary"
-                  data-testid="mountvolume-btn"
+                  data-testid="subsystem-mountvolume-btn"
                   className={classes.subsystemFormItem}
 	          >
                   Mount Volume
-              </Button>
+           </Button>
             </FormControl>
-          </Grid>
+       </Grid>
         </DialogContent>
       </Dialog>
     );

@@ -1075,10 +1075,15 @@ describe("<Storage Management />", () => {
     const getSpy = jest.spyOn(axios, "post");
     renderComponent();
     const { getByText, getByTitle, getByTestId, asFragment } = wrapper;
-    const mountBtn = await waitForElement(() =>
+    const mountToggle = await waitForElement(() =>
       getByTestId("vol-mount-btn-vol2")
     );
+    fireEvent.click(mountToggle);
+    const mountBtn = await waitForElement(() =>
+      getByTestId("subsystem-mountvolume-btn")
+    );
     fireEvent.click(mountBtn);
+
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/volume/mount",
       {
