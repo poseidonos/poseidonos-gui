@@ -142,7 +142,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 		uramDevice(xrId, config, &res, config.Uram1, "uram1", &errorInfoList)
 		uramDevice(xrId, config, &res, config.Uram2, "uram2", &errorInfoList)
 		for itr :=0; itr<len(errorInfoList); itr++ {
-			if errorInfoList[itr]["code"].(int) > 0 {
+			if errorInfoList[itr]["code"].(int) != 0 {
 				errorCode = 1
 				break
 			}
