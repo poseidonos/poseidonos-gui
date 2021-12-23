@@ -248,7 +248,9 @@ def start_ibofos(current_user):
     if(get_ibof_os_status()):
         return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
-    if res.status_code == 200:
+    res = res.json()
+    return jsonify(res)
+"""    if res.status_code == 200:
         res = res.json()
         if res["result"]["status"]["code"] == 0:
             description = res["result"]["status"]["description"]
@@ -262,7 +264,7 @@ def start_ibofos(current_user):
             return jsonify({"response": description})
 
     return jsonify({"response": "unable to start POS"})
-
+"""
 
 # Delete Array
 @app.route('/api/v1.0/delete_array/<name>', methods=['POST'])
