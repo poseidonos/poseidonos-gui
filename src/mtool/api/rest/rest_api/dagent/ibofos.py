@@ -89,7 +89,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 response = requests.patch(
                     url=url, headers=headers, timeout=timeout, data=data)
             retry_count = retry_count + 1
-            if((response.status_code == 200 and response['result'] and response['result']['status'] and response['result']['status']['code'] and response['result']['status']['code'] != '12000')):
+            if(((response.status_code == 200 or response.status_code == 207) and response['result'] and response['result']['status'] and response['result']['status']['code'] and response['result']['status']['code'] != '12000')):
                 return response
             if response.status_code == 202 or response.status_code == 503:
                 retry_count = 5
