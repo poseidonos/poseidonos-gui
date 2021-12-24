@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "584e6d89-7fa4-47ae-b342-ecaaef8654e0",
+		"_postman_id": "9df0bbc5-4814-4e66-b8d3-23c8f44581cd",
 		"name": "Mtool_Sanity_Multi_Array",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -261,7 +261,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"uram4\",\r\n\t\t\"num_blocks\" : 512,\r\n\t\t\"block_size\" : 8192,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}",
+					"raw": "{\r\n        \"name\": \"uram4\",\r\n\t\t\"num_blocks\" : 16777216,\r\n\t\t\"block_size\" : 512,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3087,7 +3087,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr1}}0\", \"array\": \"{{arrayName1}}\"}",
+					"raw": "{\"name\": \"{{volNameArr1}}0\", \"array\": \"{{arrayName1}}\",\"subnqn\": \"nqn.2019-04.ibof:subsystem1\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3150,7 +3150,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\"}",
+					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\",\"subnqn\": \"nqn.2019-04.ibof:subsystem2\"}",
 					"options": {
 						"raw": {
 							"language": "json"
