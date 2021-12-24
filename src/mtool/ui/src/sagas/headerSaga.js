@@ -120,7 +120,7 @@ function* startIBOFOs() {
 
 
 function* stopIBOFOs() {
-    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
+    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Stopping Poseidon OS"}]));
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/stop_ibofos', {
             headers: {
