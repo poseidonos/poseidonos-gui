@@ -12,7 +12,7 @@ As described above , POS Management Stack consists of a client (Poseidonos-GUI),
 * Tested and works fine in the following latest modern browsers
     * Google Chrome 
     * Mozilla Firefox 
-* PoseidonOS service is required to be installed and running already (at this location - /root/workspace/ibofos/)
+* PoseidonOS service is required to be installed and running already
 
 # Features Supported
 * Roles, Authentication and Authorization (Only Admin role is supported; default login credentials = admin/admin)
@@ -35,7 +35,8 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 3. nodejs 14.x
 4. InfluxDB (1.8.x)
 5. IP Address of Mellanox Port should be set (Please refer to the file src/dagent/README.md ([README](src/dagent/README.md)))
-6. POS should run from this directory - /root/workspace/ibofos/ (e.g the POS binaries should be present at /root/workspace/ibofos/bin directory)
+6. POS service is assumed to be available at "/usr/local/bin". If POS binary is not available in the "usr/local/bin" directory, then user will see an error when staring the pos (e.g. Poseidonos binary not found in /usr/local/bin/). In such a case, please build the poseidonos and run 'make install' from poseidonos root directory to correctly install the POS service
+
 
 ### Other Considerations 
 1. Internet access is required for downloading the required packages
@@ -109,7 +110,7 @@ http://localhost
 | 1    | install_all.sh          | script/            | Installs dependencies for GUI, DAgent and MAgent (e.g. nginx, influx)                         |                                                              |
 | 2    | build_all.sh            | script/            | Builds various components into respective binaries (e.g. DAgent binary, GUI Binary)           |                                                              |
 | 3    | run_all.sh              | script/            | Runs the binaries as services or applications (e.g. DAgent service, GUI web application)      |                                                              |
-| 4    | run_os.sh               | src/dagent/script/ | Set POS dir location, SPDK directory, transport ip settings and run subsystem related scripts | 1. POS is required to be available at /root/workspace/ibofos |
+| 4    | run_os.sh               | src/dagent/script/ | Runs the POS binary                                                                           |                                                              |
 | 5    | build_dagent.sh         | src/dagent/script/ | Builds Dagent code into binary                                                                | 1. Used internally by build_all.sh script (#2)               |
 | 6    | run_dagent.sh           | src/dagent/script/ | Runs Dagent as a service                                                                      | 1. Used internally by run_all.sh script (#3)                 |
 | 7    | build_magent.sh         | src/magent/script/ | Builds Magent code into binary                                                                | 1. Used internally by build_all.sh script (#2)               |
@@ -169,29 +170,22 @@ http://localhost
         
         
 8.  How to know what services are running as a part of GUI?
-    1.  _Influx,_ _nginx_ _,_ _dagent_ _,_ _magent_ _,_ _Mtool_ _backend  
+    1.  _Influx,_ _nginx_ _,_ _dagent_ _,_ _magent_ _,_ _Mtool_ _backend_  
         
         
 9.  How to restart all components M9K ?
     1.  ./m9k/run_all.sh  
         
         
-
-10.  Is there a limit of volumes per array? 
+10. Is there a limit of volumes per array ?
     1.  Yes, it is 256  
           
         
+11. Is there a specific directory from which POS should be installed?
+    1.  There is no specific directory from which POS should be installed. POS service is assumed to be available at "/usr/local/bin". If POS binary is not available in the "usr/local/bin" directory, then user will see an error when staring the pos (e.g. Poseidonos binary not found in /usr/local/bin/). In such a case, please build the poseidonos and run 'make install' from poseidonos root directory to correctly install the POS service
 
-11.  My POS software is installed a directory other than /root/workspace/ibofos - is this an issue? 
 
-    - Yes, it can cause issues. M9K requires POS to be in **/root/workspace/ibofos**. However, if you really have to change this location to /abc/ then please use the following steps (use caution since this process has not been thoroughly tested)
-        - Open run\_os.sh script at src/dagent/script/run\_os.sh
-        - Change the variables root\_dir and SPDK\_DIR; e.g. 
-            - root_dir= /abc/ibofos
-        - Change the variable SPDK_DIR; e.g. 
-            - SPDK_DIR= /abc/ibofos/lib/spdk  
-                  
-12.  What are the default login credentials for the UI? 
+12. What are the default login credentials for the UI? 
     1. Username: admin
     2. Password: admin
 

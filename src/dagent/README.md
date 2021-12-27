@@ -6,8 +6,7 @@
 2. IP Address of Mellanox Port should be set in the file script/run_os.sh (eg: IP=10.100.11.7)
 
 #### POS
-* The POS should be installed and running. M9K requires POS to be in **/root/workspace/ibofos**
-
+* The POS should be installed and running. POS binary is assumed to be available at **/usr/local/bin**
 #### Config File
 * config.yaml file should be in the same location as the executable file (e.g src/dagent/bin/). If there is no config file, D-Agent will use default values.
 * Management applications uses Nginx and it will forward D-Agent API requests to port 3000 port.
