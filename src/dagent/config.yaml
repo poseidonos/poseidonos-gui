@@ -18,7 +18,7 @@ server:
     allow_any_host: true
     uram1: "uram0"
     uram2: "uram1"
-    num_blocks: 16777216
+    num_blocks: 8388608
     block_size: 512
     dev_type: "uram"
     numa: 0

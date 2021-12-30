@@ -63,10 +63,10 @@ type HostConf struct {
 	Subsystem_1        string `yaml:"subsystem_1"`
 	Subsystem_2        string `yaml:"subsystem_2"`
 	TransportServiceId string `yaml:"transport_service_id"`
-	Serial             string `json:"sn,omitempty"`
-	Model              string `json:"mn,omitempty"`
-	MaxNameSpaces      int    `json:"max_namespaces,omitempty"`
-	AllowAnyHost       bool   `json:"allow_any_host,omitempty"`
+	Serial             string `yaml:"sn"`
+	Model              string `yaml:"mn"`
+	MaxNameSpaces      int    `yaml:"max_namespaces"`
+	AllowAnyHost       bool   `yaml:"allow_any_host"`
 	Uram1              string `yaml:"uram1"`
 	Uram2              string `yaml:"uram2"`
 	NumBlocks          int    `yaml:"num_blocks"`
