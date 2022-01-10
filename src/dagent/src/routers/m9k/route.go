@@ -37,9 +37,11 @@ import (
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/api/magent"
 	"dagent/src/routers/m9k/middleware"
+	"dagent/src/routers/m9k/api/temp"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
+	"fmt"
 	"os"
 	"path/filepath"
 	"pnconnector/src/routers/m9k/api/exec"
@@ -49,11 +51,14 @@ import (
 	"pnconnector/src/util"
 	"reflect"
 	"strings"
+	"pnconnector/src/log"
 )
 
 func Route(router *gin.Engine) {
 	uri := router.Group("/api")
 
+	log.Error("test error")
+	fmt.Println("Tesing FMT")
 	// Doc Static
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	dir = strings.ReplaceAll(dir, "/bin", "/doc")
@@ -238,6 +243,10 @@ func Route(router *gin.Engine) {
 	// Volume
 	{
 		iBoFOSPath.POST("/volumes", func(ctx *gin.Context) {
+
+			fmt.Println("Request to create volume FMT")
+			log.Errorf("Request to create Volume")
+			log.Error(ctx)
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
 				req := model.Request{}
 				ctx.ShouldBindBodyWith(&req, binding.JSON)
@@ -270,6 +279,9 @@ func Route(router *gin.Engine) {
 			param := model.VolumeParam{Name: volumeName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.RenameVolume, param)
 		})
+		iBoFOSPath.GET("/volumes/nqn/:id", func(ctx *gin.Context) {
+                        temp.CallTemp(ctx)
+                })
 		iBoFOSPath.GET("/volumes/maxcount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetMaxVolumeCount)
 		})
