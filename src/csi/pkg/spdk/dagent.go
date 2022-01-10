@@ -136,3 +136,50 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 	}
 
 }
+
+func (dagent *DAgent) DeleteVolume(name string, config map[string]string) (error) {
+        klog.Info("Delete VOlume Started")
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", config["provisionerIp"], config["provisionerPort"],name)
+        requestBody := []byte(fmt.Sprintf(`{
+            "param": {
+                "array": "POSArray"
+             }
+        }`))
+        req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(requestBody))
+        id := uuid.New()
+        req.Header.Set("Content-Type", "application/json")
+        req.Header.Set("X-request-Id", id.String())
+        req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+        client := &http.Client{}
+        log.Println("calling unmount Volume")
+        resp, err := client.Do(req)
+        if err != nil {
+                return  err
+        }
+        defer resp.Body.Close()
+        body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("unmount vol body ",body)
+        time.Sleep(5*time.Second)
+        requestBody = []byte(`{
+            "param": {
+                "array": "POSArray"
+             }
+        }`)
+	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"],name)
+        req, err = http.NewRequest("DELETE", deleteUrl, bytes.NewBuffer(requestBody))
+        req.Header.Set("Content-Type", "application/json")
+        id = uuid.New()
+        req.Header.Set("X-request-Id", id.String())
+        req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+        if err != nil {
+                return  err
+        }
+        log.Println("Calling delete Volume")
+        resp, err = client.Do(req)
+        if err != nil {
+                return  err
+        }
+        //body, _ = ioutil.ReadAll(resp.Body)
+
+	return err
+}

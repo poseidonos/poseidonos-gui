@@ -169,11 +169,17 @@ func (s *controllerServer) CreateVolume(
 	return &csi.CreateVolumeResponse{Volume: &volume.csiVolume}, nil
 }
 
-func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
+func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
-	cs.mtx.Lock()
-	volume, exists := cs.volumes[volumeID]
-	cs.mtx.Unlock()
+	klog.Info("Delete Volume: ")
+	klog.Info("volumeID:", volumeID)
+        klog.Info("volumeID: %s ", volumeID)
+
+	s.mtx.Lock()
+	volume, exists := s.volumes[volumeID]
+	klog.Infof("volume, exists %v %v",volume, exists)
+	klog.Infof("cs.volumes %v",s.volumes)
+	s.mtx.Unlock()
 	if !exists {
 		// already deleted?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -187,7 +193,7 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 	defer volume.mtx.Unlock()
 
 	// no harm if volume already unpublished
-	err := unpublishVolume(volume)
+	/*err := unpublishVolume(volume)
 	switch {
 	case err == util.ErrVolumeUnpublished:
 		// unpublished but not deleted in last request?
@@ -197,10 +203,21 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 		klog.Warningf("volume already deleted: %s", volumeID)
 	case err != nil:
 		return nil, status.Error(codes.Internal, err.Error())
-	}
+	}*/
 
 	// no harm if volume already deleted
-	err = deleteVolume(volume)
+	
+        volumeInfo := map[string]string{
+                "targetType":      "TCP",
+                "targetAddr":      s.posNode.Subsystem.Ip,
+                "targetPort":      s.posNode.Subsystem.Port,
+                "nqn":             s.posNode.Subsystem.Nqn,
+                "array":           s.posNode.Array.Name,
+                "provisionerIp":   s.posNode.Dagent.Ip,
+                "provisionerPort": s.posNode.Dagent.Port,
+        }
+
+	err := deleteVolume(volume,volumeInfo)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -209,10 +226,10 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 	}
 
 	// no harm if volumeID already deleted
-	cs.mtx.Lock()
-	delete(cs.volumes, volumeID)
-	delete(cs.volumesIdem, volume.name)
-	cs.mtx.Unlock()
+	s.mtx.Lock()
+	delete(s.volumes, volumeID)
+	delete(s.volumesIdem, volume.name)
+	s.mtx.Unlock()
 
 	return &csi.DeleteVolumeResponse{}, nil
 }
@@ -337,11 +354,14 @@ func publishVolume(volume *volume) (map[string]string, error) {
 	return volumeInfo, nil
 }
 
-func deleteVolume(volume *volume) error {
-	return volume.spdkNode.DeleteVolume(volume.csiVolume.GetVolumeId())
+func deleteVolume(volume *volume, conf map[string]string) error {
+	provisioner := &DAgent{}
+	err := provisioner.DeleteVolume(volume.name,conf)
+	return err
 }
 
 func unpublishVolume(volume *volume) error {
+	klog.Infof("In unpublishVolume %v", volume.csiVolume.GetVolumeId())
 	return volume.spdkNode.UnpublishVolume(volume.csiVolume.GetVolumeId())
 }
 
