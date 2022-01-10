@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Arm Limited and Contributors
+# Copyright (c) Intel Corporation
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: spdkcsi-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: spdkcsi-sc
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: spdkcsi-test
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu:18.04
+    imagePullPolicy: "IfNotPresent"
+    command: ["sleep", "365d"]
+    volumeMounts:
+    - mountPath: /dev/xda
+      name: spdk-volume
+  volumes:
+  - name: spdk-volume
+    persistentVolumeClaim:
+      claimName: spdkcsi-pvc
