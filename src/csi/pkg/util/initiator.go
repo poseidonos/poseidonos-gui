@@ -49,7 +49,7 @@ func NewSpdkCsiInitiator(volumeContext map[string]string) (SpdkCsiInitiator, err
 		return &initiatorNVMf{
 			// see util/nvmf.go VolumeInfo()
 			targetType: volumeContext["targetType"],
-			targetAddr: "107.108.83.97",
+			targetAddr: volumeContext["targetAddr"],
 			targetPort: volumeContext["targetPort"],
 			nqn:        volumeContext["nqn"],
 			model:      volumeContext["model"],
