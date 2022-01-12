@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9df0bbc5-4814-4e66-b8d3-23c8f44581cd",
+		"_postman_id": "af292fca-29fe-4550-8666-a65843b5ba15",
 		"name": "Mtool_Sanity_Multi_Array",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1084,7 +1084,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.pos:subsystem1\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1135,7 +1135,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem2\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.pos:subsystem2\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1186,7 +1186,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.pos:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1194,7 +1194,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"raw": "http://{{host}}:{{port}}/api/v1/listener/",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1203,7 +1203,7 @@
 					"path": [
 						"api",
 						"v1",
-						"subsystem",
+						"listener",
 						""
 					]
 				}
@@ -1237,7 +1237,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem2\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.pos:subsystem2\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"111.100.13.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1245,7 +1245,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
+					"raw": "http://{{host}}:{{port}}/api/v1/listener/",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1254,7 +1254,7 @@
 					"path": [
 						"api",
 						"v1",
-						"subsystem",
+						"listener",
 						""
 					]
 				}
@@ -1657,7 +1657,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
+					"raw": "{\"name\":\"{{volNameArr1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.pos:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1708,7 +1708,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr1_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
+					"raw": "{\"name\":\"{{volNameArr1_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName1}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName1}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.pos:subsystem1\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2539,7 +2539,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr2}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
+					"raw": "{\"name\":\"{{volNameArr2}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"3\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.pos:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2590,7 +2590,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"{{volNameArr2_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.ibof:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
+					"raw": "{\"name\":\"{{volNameArr2_1}}\",\"size\":\"20\",\"description\":\"\",\"unit\":\"GB\",\"arrayname\":\"{{arrayName2}}\",\"maxbw\":0,\"maxiops\":0,\"count\":\"1\",\"suffix\":0,\"stop_on_error\":false,\"mount_vol\":true,\"array\":\"{{arrayName2}}\",\"max_available_size\": \"{{globals.totalsize}}\",\"subsystem\": {\"subnqn\": \"nqn.2019-04.pos:subsystem2\", \"transport_type\": \"TCP\", \"transport_service_id\": \"1158\", \"target_address\": \"111.100.13.97\"}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3087,7 +3087,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr1}}0\", \"array\": \"{{arrayName1}}\",\"subnqn\": \"nqn.2019-04.ibof:subsystem1\"}",
+					"raw": "{\"name\": \"{{volNameArr1}}0\", \"array\": \"{{arrayName1}}\",\"subnqn\": \"nqn.2019-04.pos:subsystem1\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3150,7 +3150,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\",\"subnqn\": \"nqn.2019-04.ibof:subsystem2\"}",
+					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\",\"subnqn\": \"nqn.2019-04.pos:subsystem2\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3552,7 +3552,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\":\"nqn.2019-04.ibof:subsystem2\"\r\n}",
+					"raw": "{\r\n        \"name\":\"nqn.2019-04.pos:subsystem2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

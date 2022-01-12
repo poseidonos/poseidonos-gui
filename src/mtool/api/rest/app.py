@@ -1150,11 +1150,12 @@ def create_subsystem(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     name = body.get('name')
-    transport_type = body.get('transport_type')
-    target_address = body.get('target_address')
-    transport_service_id = body.get('transport_service_id')
+    serial_num = body.get('sn')
+    model_num = body.get('mn')
+    max_namespaces = body.get('max_namespaces')
+    allow_any_host = body.get('allow_any_host')
     try:
-        resp = dagent.create_subsystem(name, transport_type, target_address, transport_service_id)
+        resp = dagent.create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host)
         resp = resp.json()
         return toJson(resp)
     except Exception as e:

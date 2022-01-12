@@ -374,16 +374,17 @@ def add_listener(name, transport_type, target_address, transport_service_id, aut
     return make_failure_response(
         'Could not get ibofos to add listener...', 500)
 
-def create_subsystem(name, transport_type, target_address, transport_service_id, auth=BASIC_AUTH_TOKEN):
+def create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to create subsystem api ...')
     req_headers = get_headers(auth)
     request_body = {
         "param": {
             "name": name,
-            "transport_type": transport_type,
-            "target_address": target_address,
-            "transport_service_id": transport_service_id}}
+            "sn": serial_num,
+            "mn": model_num,
+            "max_namespaces": max_namespaces,
+            "allow_any_host": allow_any_host}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
