@@ -34,194 +34,266 @@ import axios from "axios";
 import { call, takeEvery, put } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
+import { IP_REGEX } from "../utils/constants";
 
 function hasResult(response) {
-	return response.data && response.data.result;
+  return response.data && response.data.result;
 }
 
 function isResponseCodeSuccess(response) {
-	return hasResult(response) &&
-		response.data.result.status && response.data.result.status.code === 0;
+  return hasResult(response) &&
+    response.data.result.status && response.data.result.status.code === 0;
 }
 
 function isResponseCodeFailure(response) {
-	return hasResult(response) &&
-		response.data.result.status && response.data.result.status.code !== 0;
+  return hasResult(response) &&
+    response.data.result.status && response.data.result.status.code !== 0;
 }
 
 
 
 export function* fetchSubsystems() {
-    const alertDetails = {
-        msg: "Unable to get subsytems!",
-        type: "alert",
-        title: "Fetch Subsystems",
-    };
-    try {
-      yield put(actionCreators.startLoader("Fetching Subsystems"));
-      const response = yield call([axios, axios.get], "/api/v1/subsystem/", {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      const result = response.data;
-      if (
-        response.status === 200 &&
-	      isResponseCodeFailure(response)
-      ) {
-        yield put(
-          actionCreators.showSubsystemAlert({
-            type: "alert",
-            title: "Fetch Subsystems",
-            msg: "Unable to get Subsystems!",
-            code: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-                : ""
-              }`,
-          })
-        );
-      } else if (isResponseCodeSuccess(response)) {
-        yield put(actionCreators.getSubsystems(result.result.data.subsystemlist));
-      } else {
-        yield put(actionCreators.showSubsystemAlert({
-          ...alertDetails,
-          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-              : "Agent Communication Error"
-            }`
-        }));
-      }
-    } catch (error) {
+  const alertDetails = {
+    msg: "Unable to get subsytems!",
+    type: "alert",
+    title: "Fetch Subsystems",
+  };
+  try {
+    yield put(actionCreators.startLoader("Fetching Subsystems"));
+    const response = yield call([axios, axios.get], "/api/v1/subsystem/", {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    const result = response.data;
+    if (
+      response.status === 200 &&
+      isResponseCodeFailure(response)
+    ) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "alert",
+          title: "Fetch Subsystems",
+          msg: "Unable to get Subsystems!",
+          code: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            : ""
+            }`,
+        })
+      );
+    } else if (isResponseCodeSuccess(response)) {
+      yield put(actionCreators.getSubsystems(result.result.data.subsystemlist));
+    } else {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
-        errorCode: `Agent Communication Error - ${error.message}`
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          : "Agent Communication Error"
+          }`
       }));
-    } finally {
-      yield put(actionCreators.stopLoader());
     }
+  } catch (error) {
+    yield put(actionCreators.showSubsystemAlert({
+      ...alertDetails,
+      errorCode: `Agent Communication Error - ${error.message}`
+    }));
+  } finally {
+    yield put(actionCreators.stopLoader());
+  }
+}
+
+export function* addListener(action) {
+  const alertDetails = {
+    msg: "Failed to Add Listener!",
+    type: "alert",
+    title: "Add Listener",
+  };
+  if(!(IP_REGEX.test(action.payload.ip))) {
+    yield put(
+        actionCreators.showSubsystemAlert({
+        msg: "Please provide a valid IP address",
+        type: "alert",
+        title: "Invalid IP",
+      })
+    );
+    return;
+  }
+  try {
+    yield put(actionCreators.startLoader("Adding Listener"));
+    const response = yield call([axios, axios.post], "/api/v1/listener/", {
+      ...action.payload
+    }, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    const result = response.data;
+    if (
+      response.status === 200 &&
+      isResponseCodeFailure(response)
+    ) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "alert",
+          title: "Add Listener",
+          msg: "Failed to add Listener!",
+          code: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            : ""
+            }`,
+        })
+      );
+    } else if (isResponseCodeSuccess(response)) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "info",
+          title: "Add Listener",
+          msg: "Listener Added Successfully"
+        })
+      );
+
+      yield fetchSubsystems();
+    } else {
+      yield put(actionCreators.showSubsystemAlert({
+        ...alertDetails,
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+          ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+          : "Agent Communication Error"
+          }`
+      }));
+    }
+  } catch (error) {
+    yield put(actionCreators.showSubsystemAlert({
+      ...alertDetails,
+      errorCode: `Agent Communication Error - ${error.message}`
+    }));
+  } finally {
+    yield put(actionCreators.stopLoader());
+  }
 }
 
 export function* createSubsystem(action) {
-    const alertDetails = {
-        msg: "Failed to create Subsytem!",
-        type: "alert",
-        title: "Create Subsystem",
-    };
-    try {
-      yield put(actionCreators.startLoader("Creating Subsystems"));
-      const response = yield call([axios, axios.post], "/api/v1/subsystem/", {
-	...action.payload
-      },{
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      const result = response.data;
-      if (
-        response.status === 200 &&
-	      isResponseCodeFailure(response)
-      ) {
-        yield put(
-          actionCreators.showSubsystemAlert({
-            type: "alert",
-            title: "Create Subsystem",
-            msg: "Failed to create Subsystem!",
-            code: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
-                : ""
-              }`,
-          })
-        );
-      } else if (isResponseCodeSuccess(response)) {
-        yield put(
-          actionCreators.showSubsystemAlert({
-            type: "info",
-            title: "Create Subsystem",
-            msg: "Subsystem Created Successfully"
-	  })
-	);
-      } else {
-        yield put(actionCreators.showSubsystemAlert({
-          ...alertDetails,
-          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-              ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
-              : "Agent Communication Error"
-            }`
-        }));
-      }
-    } catch (error) {
+  const alertDetails = {
+    msg: "Failed to create Subsytem!",
+    type: "alert",
+    title: "Create Subsystem",
+  };
+  try {
+    yield put(actionCreators.startLoader("Creating Subsystems"));
+    const response = yield call([axios, axios.post], "/api/v1/subsystem/", {
+      ...action.payload
+    }, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    const result = response.data;
+    if (
+      response.status === 200 &&
+      isResponseCodeFailure(response)
+    ) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "alert",
+          title: "Create Subsystem",
+          msg: "Failed to create Subsystem!",
+          code: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            : ""
+            }`,
+        })
+      );
+    } else if (isResponseCodeSuccess(response)) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "info",
+          title: "Create Subsystem",
+          msg: "Subsystem Created Successfully"
+        })
+      );
+    } else {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
-        errorCode: `Agent Communication Error - ${error.message}`
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+          ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+          : "Agent Communication Error"
+          }`
       }));
-    } finally {
-      yield put(actionCreators.stopLoader());
-      yield fetchSubsystems();
     }
+  } catch (error) {
+    yield put(actionCreators.showSubsystemAlert({
+      ...alertDetails,
+      errorCode: `Agent Communication Error - ${error.message}`
+    }));
+  } finally {
+    yield put(actionCreators.stopLoader());
+    yield fetchSubsystems();
+  }
 }
 
 export function* deleteSubsystem(action) {
-    const alertDetails = {
-        msg: "Failed to delete Subsytem!",
-        type: "alert",
-        title: "Delete Subsystem",
-    };
-    try {
-      yield put(actionCreators.startLoader("Deleting Subsystems"));
-      const response = yield call([axios, axios.delete], "/api/v1/subsystem/", {
-        data: {
-          ...action.payload
-        },
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      const result = response.data;
-      if (
-        response.status === 200 &&
-              isResponseCodeFailure(response)
-      ) {
-        yield put(
-          actionCreators.showSubsystemAlert({
-            type: "alert",
-            title: "Delete Subsystem",
-            msg: "Failed to delete Subsystem!",
-            code: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
-                : ""
-              }`,
-          })
-        );
-      } else if (isResponseCodeSuccess(response)) {
-        yield put(
-          actionCreators.showSubsystemAlert({
-            type: "info",
-            title: "Delete Subsystem",
-            msg: "Subsystem Deleted Successfully"
-          })
-        );
-      } else {
-        yield put(actionCreators.showSubsystemAlert({
-          ...alertDetails,
-          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-              : "Agent Communication Error"
-            }`
-        }));
-      }
-    } catch (error) {
+  const alertDetails = {
+    msg: "Failed to delete Subsytem!",
+    type: "alert",
+    title: "Delete Subsystem",
+  };
+  try {
+    yield put(actionCreators.startLoader("Deleting Subsystems"));
+    const response = yield call([axios, axios.delete], "/api/v1/subsystem/", {
+      data: {
+        ...action.payload
+      },
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    const result = response.data;
+    if (
+      response.status === 200 &&
+      isResponseCodeFailure(response)
+    ) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "alert",
+          title: "Delete Subsystem",
+          msg: "Failed to delete Subsystem!",
+          code: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            : ""
+            }`,
+        })
+      );
+    } else if (isResponseCodeSuccess(response)) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "info",
+          title: "Delete Subsystem",
+          msg: "Subsystem Deleted Successfully"
+        })
+      );
+    } else {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
-        errorCode: `Agent Communication Error - ${error.message}`
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          : "Agent Communication Error"
+          }`
       }));
-    } finally {
-      yield put(actionCreators.stopLoader());
-      yield fetchSubsystems();
     }
+  } catch (error) {
+    yield put(actionCreators.showSubsystemAlert({
+      ...alertDetails,
+      errorCode: `Agent Communication Error - ${error.message}`
+    }));
+  } finally {
+    yield put(actionCreators.stopLoader());
+    yield fetchSubsystems();
+  }
 }
 
 export default function* subsystemWatcher() {
-    yield takeEvery(actionTypes.SAGA_FETCH_SUBSYSTEMS, fetchSubsystems);
-    yield takeEvery(actionTypes.SAGA_CREATE_SUBSYSTEM, createSubsystem);
-    yield takeEvery(actionTypes.SAGA_DELETE_SUBSYSTEM, deleteSubsystem);
+  yield takeEvery(actionTypes.SAGA_FETCH_SUBSYSTEMS, fetchSubsystems);
+  yield takeEvery(actionTypes.SAGA_CREATE_SUBSYSTEM, createSubsystem);
+  yield takeEvery(actionTypes.SAGA_DELETE_SUBSYSTEM, deleteSubsystem);
+  yield takeEvery(actionTypes.SAGA_ADD_LISTENER, addListener);
 }

@@ -77,7 +77,7 @@ describe("IbofOsOperations", () => {
             composeEnhancers(applyMiddleware(sagaMiddleware))
         );
         sagaMiddleware.run(rootSaga);
-        const route = "/";
+        const route = "/operations/pos";
         history = createMemoryHistory({ initialEntries: [route] });
     });
 
@@ -271,7 +271,7 @@ describe("IbofOsOperations", () => {
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(401);
         fireEvent.click(startButtonElement);
         fireEvent.click(getByText("Yes"));
-        expect(history.location.pathname).toBe("/");
+        expect(history.location.pathname).toBe("/operations/pos");
     })
 
     it("should not display rebuild status bar", async () => {

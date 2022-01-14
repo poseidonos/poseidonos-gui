@@ -41,6 +41,7 @@ import * as actionTypes from "../../../store/actions/actionTypes";
 import MToolLoader from '../../../components/MToolLoader';
 import CreateSubsystem from '../../../components/CreateSubsystem';
 import AlertDialog from "../../../components/Dialog";
+import SubsystemDetails from '../../../components/SubsystemDetails';
 
 const styles = (theme) => ({
     cardHeader: {
@@ -165,7 +166,7 @@ class Subsystem extends Component {
 		    <IconButton
 		      onClick={() => {
                            this.openAction("Delete Subsystem",
-                                   `Are you sure you want tp delete the subsystem ${rowData.nqn}`,
+                                   `Are you sure you want to delete the subsystem ${rowData.nqn}`,
                                    () => this.props.Delete_Subsystem({name: rowData.nqn}))
                       }}
 		    >
@@ -193,49 +194,9 @@ class Subsystem extends Component {
                             }]}
 		            detailPanel={
 				    rowData => (
-					    <ThemeProvider theme={TableTheme}>
-					    <Grid container spacing={1} padding={1}>
-					    <Grid item container md={12} justifyContent="space-around">
-					      <Typography variant="p" className={classes.detailText}>Max Namespaces: {rowData.max_namespaces}</Typography>
-					      <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {rowData.allow_any_host ? "Yes" : "No"}</Typography>
-					      <Typography variant="p" className={classes.detailText}>Model No: {rowData.model_number}</Typography>
-  					      <Typography variant="p" className={classes.detailText}>Serial No: {rowData.serial_number}</Typography>
-					    </Grid>
-					    <Grid item xs={12}>
-					    <MaterialTable
-					      title={(
-						      <Typography className={classes.cardHeader}>Namespaces</Typography>
-					      )}
-					      columns={namespaceColumns}
-					      data={rowData.namespaces}
-					      icons={icons}
-                                              options={{
-                                                headerStyle: {
-                                                  backgroundColor: "#788595",
-                                                  color: "#FFF",
-                                                }
-                                              }}
-					    />
-					    </Grid>
-					    <Grid item xs={12}>
-                                            <MaterialTable
-                                              title={(
-                                                      <Typography className={classes.cardHeader}>Listen Addresses</Typography>
-                                              )}
-                                              columns={addressColumns}
-                                              data={rowData.listen_addresses}
-                                              icons={icons}
-					      options={{
-                                                headerStyle: {
-                                                  backgroundColor: "#788595",
-                                                  color: "#FFF",
-                                                }
-                                              }}
-
-                                            />
-                                            </Grid>
-					    </Grid>
-					    </ThemeProvider>
+					    <SubsystemDetails
+                          data={rowData}
+                        />
 				    )
 			    }
                             data={this.props.subsystems}
@@ -250,11 +211,6 @@ class Subsystem extends Component {
                         />
                     </ThemeProvider>
                 </Grid>
-                {/* <Grid item className={classes.item}>
-                    <Paper>
-                        <CreateSubsystem />
-                    </Paper>
-                        </Grid> */}
                 <Popup
                     title="Create Subsystem"
                     open={this.state.dialogOpen}
