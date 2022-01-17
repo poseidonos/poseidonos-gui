@@ -36,7 +36,7 @@ import {
     fireEvent,
     cleanup,
     waitForElement,
-    wait
+    wait,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
@@ -153,7 +153,7 @@ describe("DeviceOperations", () => {
 
     afterEach(cleanup);
 
-    it("should list the subsystems",
+    it("should list the devices",
         async () => {
             const mock = new MockAdapter(axios);
             mock.onGet("/api/v1.0/get_devices/").reply(200,
@@ -163,5 +163,124 @@ describe("DeviceOperations", () => {
             const { getByText } = wrapper;
             const deviceName = await waitForElement(() => getByText("uram0"));
             expect(deviceName).toBeDefined();
+        });
+
+        it("should create the device",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1.0/get_devices/")
+            .reply(200,
+                deviceResponse
+            )
+            .onPost("/api/v1/device/")
+            .reply(200,
+                {
+                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                    "lastSuccessTime": 1642352844,
+                    "result": {
+                        "status": {
+                            "module": "",
+                            "code": 0,
+                            "description": "",
+                            "posDescription": "Success"
+                        }
+                    },
+                    "info": {
+                        "version": "v0.10.6"
+                    }
+                }
+            );
+            const getSpy = jest.spyOn(axios, "post");
+            renderComponent();
+            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const deviceName = await waitForElement(() => getByText("uram0"));
+            expect(deviceName).toBeDefined();
+            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            expect(addBtn).toBeDefined();
+            fireEvent.click(addBtn);
+            const nameField = await waitForElement(() => getByTestId("diskName"));
+            fireEvent.change(nameField, {target: {value: "uram33"}});
+            const blockSizeField = await waitForElement(() => getByTestId("blockSize"));
+            fireEvent.change(blockSizeField, {target: {value: 1024}});
+            const numBlocksField = await waitForElement(() => getByTestId("numBlocks"));
+            fireEvent.change(numBlocksField, {target: {value: 1024}});
+            const diskCreateBtn = await waitForElement(() => getByTestId("createDisk"));
+            fireEvent.click(diskCreateBtn);
+            const successResponse = await waitForElement(() => getByText(/Disk\ Creation\ Successful/));
+            expect(successResponse).toBeDefined();
+        });
+
+        it("should display error message when disk creation fails",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1.0/get_devices/")
+            .reply(200,
+                deviceResponse
+            )
+            .onPost("/api/v1/device/")
+            .reply(200,
+                {
+                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                    "lastSuccessTime": 1642352844,
+                    "result": {
+                        "status": {
+                            "module": "",
+                            "code": 5526,
+                            "description": "",
+                            "posDescription": "Failed to create buffer device. Cannot allocate memory"
+                        }
+                    },
+                    "info": {
+                        "version": "v0.10.6"
+                    }
+                }
+            );
+            renderComponent();
+            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const deviceName = await waitForElement(() => getByText("uram0"));
+            expect(deviceName).toBeDefined();
+            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            expect(addBtn).toBeDefined();
+            fireEvent.click(addBtn);
+            const nameField = await waitForElement(() => getByTestId("diskName"));
+            fireEvent.change(nameField, {target: {value: "uram33"}});
+            const blockSizeField = await waitForElement(() => getByTestId("blockSize"));
+            fireEvent.change(blockSizeField, {target: {value: 1024}});
+            const numBlocksField = await waitForElement(() => getByTestId("numBlocks"));
+            fireEvent.change(numBlocksField, {target: {value: 1024}});
+            const diskCreateBtn = await waitForElement(() => getByTestId("createDisk"));
+            fireEvent.click(diskCreateBtn);
+            const successResponse = await waitForElement(() => getByText(/Error while creating disk/));
+            expect(successResponse).toBeDefined();
+        });
+
+        it("should display error message when API fails",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1.0/get_devices/")
+            .reply(200,
+                deviceResponse
+            )
+            .onPost("/api/v1/device/")
+            .reply(500
+            );
+            const getSpy = jest.spyOn(axios, "post");
+            renderComponent();
+            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const deviceName = await waitForElement(() => getByText("uram0"));
+            expect(deviceName).toBeDefined();
+            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            expect(addBtn).toBeDefined();
+            fireEvent.click(addBtn);
+            const nameField = await waitForElement(() => getByTestId("diskName"));
+            fireEvent.change(nameField, {target: {value: "uram33"}});
+            const blockSizeField = await waitForElement(() => getByTestId("blockSize"));
+            fireEvent.change(blockSizeField, {target: {value: 1024}});
+            const numBlocksField = await waitForElement(() => getByTestId("numBlocks"));
+            fireEvent.change(numBlocksField, {target: {value: 1024}});
+            const diskCreateBtn = await waitForElement(() => getByTestId("createDisk"));
+            fireEvent.click(diskCreateBtn);
+            const successResponse = await waitForElement(() => getByText(/Error while Creating Disk/));
+            expect(successResponse).toBeDefined();
         });
 });

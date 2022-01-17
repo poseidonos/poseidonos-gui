@@ -1382,7 +1382,7 @@ function* createDisk(action) {
     );
     /* istanbul ignore else */
     if (response.status === 200) {
-      if (response.data.return !== -1) {
+      if (response.data?.result?.status?.code === 0) {
         yield put(
           actionCreators.showStorageAlert({
             errorMsg: "Disk Creation Successful",
@@ -1395,24 +1395,12 @@ function* createDisk(action) {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
-            errorMsg: "Error while creationg disk",
-            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            errorMsg: "Error while creating disk",
+            errorCode: `Description:${response.data?.result?.status?.posDescription}, Error Code:${response.data?.result?.status?.code}`,
             alertTitle: "Create Disk",
           })
         );
       }
-    } else {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          errorMsg: "Error while Creating Disk",
-          errorCode:
-            response.data && response.data.result
-              ? response.data.result
-              : "Disk Creation failed",
-          alertTitle: "Create Disk",
-        })
-      );
     }
   } catch (error) {
     yield put(

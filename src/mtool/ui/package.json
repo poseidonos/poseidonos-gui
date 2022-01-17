@@ -79,6 +79,8 @@
       "!src/components/LogConfiguration/**/*.js",
       "!src/components/ChangePassword/**/*.js",
       "!src/sagas/logManagementSaga.js",
+      "!src/sagas/hardwareOverviewSaga.js",
+      "!src/sagas/hardwarePowerManagementSaga.js",
       "!src/store/actions/logManagementActions.js",
       "!src/store/actions/logManagementActions.js",
       "!src/store/reducers/logManagementReducer.js",

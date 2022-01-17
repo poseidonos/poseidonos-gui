@@ -50,12 +50,13 @@ const CreateDisk = (props) => {
 
     const createDiskSubmit = (event) => {
         event.preventDefault();
+        const {name, block_size: blockSize, num_blocks: numBlocks, numa, dev_type: devType} = event.target.elements;
         props.Create_Disk({
-            name: event.target.name.value,
-            block_size: parseInt(event.target.block_size.value, 10),
-            num_blocks: parseInt(event.target.num_blocks.value, 10),
-            numa: parseInt(event.target.numa.value, 10),
-            dev_type: event.target.dev_type.value
+            name: name.value,
+            block_size: parseInt(blockSize.value, 10),
+            num_blocks: parseInt(numBlocks.value, 10),
+            numa: parseInt(numa.value, 10),
+            dev_type: devType.value
         });
         event.target.reset();
         props.cleanup();
@@ -70,6 +71,9 @@ const CreateDisk = (props) => {
                 <TextField
                     label="Disk Name"
                     name="name"
+                    inputProps={{
+                        "data-testid": "diskName"
+                    }}
                 />
             </FormControl>
             <FormControl
@@ -79,6 +83,9 @@ const CreateDisk = (props) => {
                     label="Block Size"
                     name="block_size"
                     type="number"
+                    inputProps={{
+                        "data-testid": "blockSize"
+                    }}
                 />
             </FormControl>
             <FormControl
@@ -89,6 +96,9 @@ const CreateDisk = (props) => {
                     label="Number of Blocks"
                     name="num_blocks"
                     type="number"
+                    inputProps={{
+                        "data-testid": "numBlocks"
+                    }}
                 />
             </FormControl>
             <FormControl
@@ -127,6 +137,7 @@ const CreateDisk = (props) => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                data-testid="createDisk"
             >
                 Create Disk
             </Button>

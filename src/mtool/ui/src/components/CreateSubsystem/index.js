@@ -31,7 +31,7 @@
  */
 
 import React, { useState } from 'react';
-import { Button, FormControl, FormControlLabel, MenuItem, Select, TextField, withStyles, Checkbox } from '@material-ui/core';
+import { Button, FormControl, FormControlLabel, TextField, withStyles, Checkbox } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -41,33 +41,33 @@ const styles = (theme) => ({
         flexDirection: 'column'
     },
     formItem: {
-	width: '48%',
+        width: '48%',
         margin: '1%',
-	height: 48,
-	justifyContent: 'flex-end'
+        height: 48,
+        justifyContent: 'flex-end'
     },
     submitBtn: {
-	margin: theme.spacing(1)
+        margin: theme.spacing(1)
     }
 });
 
 const defaultSubsystem = {
-	"name":"",
-	"allow_any_host": false,
-	"mn": "",
-	"sn": "",
-	"max_namespaces": 256
+    "name": "",
+    "allow_any_host": false,
+    "mn": "",
+    "sn": "",
+    "max_namespaces": 256
 };
 
 const CreateSubsystem = (props) => {
     const [subsystem, setSubsystem] = useState(defaultSubsystem);
-    
+
     const onChange = (event) => {
-	    const {name, value} = event.target;
-	    setSubsystem({
-		    ...subsystem,
-		    [name]: value
-	    })
+        const { name, value } = event.target;
+        setSubsystem({
+            ...subsystem,
+            [name]: value
+        })
     }
 
     const { classes } = props;
@@ -78,19 +78,25 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="SUBNQN"
-	            value={subsystem.name}
-	            name="name"
-	            onChange={onChange}
+                    value={subsystem.name}
+                    name="name"
+                    inputProps={{
+                        "data-testid": "subsystemName"
+                    }}
+                    onChange={onChange}
                 />
             </FormControl>
             <FormControl
                 className={classes.formItem}
                 size="small"
             >
-	        <TextField
+                <TextField
                     label="Serial No"
                     value={subsystem.sn}
                     name="sn"
+                    inputProps={{
+                        "data-testid": "subsystemSN"
+                    }}
                     onChange={onChange}
                 />
             </FormControl>
@@ -100,9 +106,12 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="Model No"
-	            value={subsystem.mn}
-	            name="mn"
-	            onChange={onChange}
+                    value={subsystem.mn}
+                    name="mn"
+                    inputProps={{
+                        "data-testid": "subsystemMN"
+                    }}
+                    onChange={onChange}
                 />
             </FormControl>
 
@@ -112,12 +121,15 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="Maximum Namespaces"
-	            value={subsystem.max_namespaces}
-	            name="max_namespaces"
-	            onChange={onChange}
+                    value={subsystem.max_namespaces}
+                    name="max_namespaces"
+                    inputProps={{
+                        "data-testid": "subsystemMaxNS"
+                    }}
+                    onChange={onChange}
                 />
             </FormControl>
-	    <FormControl
+            <FormControl
                 className={classes.formItem}
 
             >
@@ -125,10 +137,11 @@ const CreateSubsystem = (props) => {
                     label="Allow Any Host?"
                     control={(
                         <Checkbox
-			    name="allow_any_host"
-			    value={subsystem.allow_any_host}
+                            name="allow_any_host"
+                            value={subsystem.allow_any_host}
                             inputProps={{
-                                id: "allowAnyHost"
+                                id: "allowAnyHost",
+                                "data-testid": "allowAnyHost"
                             }}
                         />
                     )}
@@ -138,7 +151,8 @@ const CreateSubsystem = (props) => {
                 className={classes.submitBtn}
                 variant="contained"
                 color="primary"
-	        onClick={() => props.createSubsystem(subsystem)}
+                data-testid="subsystemCreate"
+                onClick={() => props.createSubsystem(subsystem)}
             >
                 Create Subsystem
             </Button>

@@ -1176,10 +1176,10 @@ def create_subsystem(current_user):
 def add_listener(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    name = body.get('name')
-    transport_type = body.get('transport_type')
-    target_address = body.get('target_address')
-    transport_service_id = body.get('transport_service_id')
+    name = body.get('nqn')
+    transport_type = body.get('type')
+    target_address = body.get('ip')
+    transport_service_id = body.get('port')
     try:
         resp = dagent.add_listener(name, transport_type, target_address, transport_service_id)
         if resp is not None:

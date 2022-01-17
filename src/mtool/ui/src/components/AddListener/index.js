@@ -31,7 +31,7 @@
  */
 
 import React, { useState } from 'react';
-import { Button, FormControl, MenuItem, Select, TextField, ThemeProvider, withStyles, Checkbox } from '@material-ui/core';
+import { Button, FormControl, MenuItem, Select, TextField, ThemeProvider, withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import MToolTheme from '../../theme';
@@ -93,6 +93,9 @@ const AddListener = (props) => {
                         label="IP"
                         value={listener.ip}
                         name="ip"
+                        inputProps={{
+                            "data-testid": "addListenerIP"
+                        }}
                         onChange={onChange}
                     />
                 </FormControl>
@@ -130,6 +133,7 @@ const AddListener = (props) => {
                     className={classes.submitBtn}
                     variant="contained"
                     color="primary"
+                    data-testid="addListenerSubmit"
                     onClick={() => props.Add_Listener(listener)}
                 >
                     Add Listener

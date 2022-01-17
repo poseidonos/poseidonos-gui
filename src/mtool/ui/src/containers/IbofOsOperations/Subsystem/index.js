@@ -136,20 +136,6 @@ class Subsystem extends Component {
     }
 
     render() {
-	const addressColumns = [{
-	    title: "Target Address",
-	    field: "target_address"
-	}];
-	const namespaceColumns = [{
-	    title: "BDEV Name",
-	    field: "bdev_name"
-	}, {
-	    title: "ID",
-	    field: "nsid"
-	}, {
-	    title: "UUID",
-	    field: "uuid"
-	}];
         const subsystemTableColumns = [{
             title: "NQN",
             field: "nqn"
@@ -192,13 +178,14 @@ class Subsystem extends Component {
                                     this.openCreateSubsystemDialog();
                                 }
                             }]}
-		            detailPanel={
-				    rowData => (
+		            detailPanel={[{
+				    tooltip: "Show Subsystem Details",
+				    render: rowData => (
 					    <SubsystemDetails
                           data={rowData}
-                        />
+					    />
 				    )
-			    }
+			    }]}
                             data={this.props.subsystems}
                             options={{
                                 headerStyle: {
@@ -216,7 +203,7 @@ class Subsystem extends Component {
                     open={this.state.dialogOpen}
                     close={this.closeDialog}
                 >
-                    <CreateSubsystem createSubsystem={this.props.Create_Subsystem} confirmAction={this.openAction}/>
+                    <CreateSubsystem createSubsystem={this.props.Create_Subsystem} confirmAction={this.openAction} />
                 </Popup>
 		<AlertDialog
                   title={this.state.actionTitle}
@@ -225,7 +212,7 @@ class Subsystem extends Component {
                   type={this.state.actionType}
                   onConfirm={this.state.confirmAction}
                   handleClose={this.closeAction}
-                />
+		/>
 		<AlertDialog
                   title={this.props.alertTitle}
                   description={this.props.errorMsg}
@@ -236,7 +223,7 @@ class Subsystem extends Component {
                   onConfirm={this.closeAlert}
                   handleClose={this.closeAlert}
                   errCode={this.props.errorCode}
-                />
+		/>
                 {this.props.loading ?
                     <MToolLoader text={this.props.loadText} /> : null}
             </Grid>

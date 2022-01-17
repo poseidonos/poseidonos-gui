@@ -160,10 +160,6 @@ class IbofOsOperations extends Component {
             this.props.Start_POS();
         } else if (this.state.add_delete_send === "Stop") {
             this.props.Stop_POS();
-        } else if (this.state.add_delete_send === "Mount") {
-            this.props.Mount_POS();
-        } else if (this.state.add_delete_send === "Unmount") {
-            this.props.Unmount_POS()
         } else {
             this.props.Reset_POS();
         }
@@ -240,8 +236,6 @@ const mapDispatchToProps = dispatch => {
         Stop_POS: () => dispatch({type: actionTypes.SAGA_STOP_IBOFOS}),
         Start_POS: () => dispatch({type: actionTypes.SAGA_START_IBOFOS}),
         Reset_POS: () => dispatch({type: actionTypes.SAGA_RESET_IBOFOS}),
-        Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_IBOFOS}),
-        Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_IBOFOS}),
         Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message})
     };
 }

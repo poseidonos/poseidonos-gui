@@ -127,7 +127,6 @@ export function* addListener(action) {
         "x-access-token": localStorage.getItem("token"),
       },
     });
-    const result = response.data;
     if (
       response.status === 200 &&
       isResponseCodeFailure(response)
@@ -187,7 +186,6 @@ export function* createSubsystem(action) {
         "x-access-token": localStorage.getItem("token"),
       },
     });
-    const result = response.data;
     if (
       response.status === 200 &&
       isResponseCodeFailure(response)
@@ -247,7 +245,6 @@ export function* deleteSubsystem(action) {
         "x-access-token": localStorage.getItem("token"),
       },
     });
-    const result = response.data;
     if (
       response.status === 200 &&
       isResponseCodeFailure(response)

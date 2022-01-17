@@ -41,6 +41,7 @@ const TabPanel = (props) => {
             role="tabpanel"
             hidden={value !== index}
             id={`wrapped-tabpanel-${index}`}
+	    // eslint-disable-next-line react/jsx-props-no-spreading
             {...other}
         >
             {value === index && (

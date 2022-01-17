@@ -177,6 +177,12 @@ describe("<Storage Management />", () => {
     arrayName: "",
     displayMsg: "uram1",
     trimmedDisplayMsg: "uram1"
+  }, {
+    name: "uram2",
+    isAvailable: true,
+    arrayName: "",
+    displayMsg: "uram1",
+    trimmedDisplayMsg: "uram1"
   }];
 
   const array = {
@@ -1052,8 +1058,12 @@ describe("<Storage Management />", () => {
         result: {
           data: {
 	    subsystemlist: [{
-	        nqn: "subsystem1"
-	    }],
+	        nqn: "subsystem1",
+          subtype: "NVMe"
+	    }, {
+        nqn: "subsystem2",
+        subtype: "NVMe"
+      }],
 	  },
           status: {
             code: 0,
@@ -1074,11 +1084,18 @@ describe("<Storage Management />", () => {
       .reply(200, []);
     const getSpy = jest.spyOn(axios, "post");
     renderComponent();
-    const { getByText, getByTitle, getByTestId, asFragment } = wrapper;
+    const { getByText, getByLabelText, getAllByTestId, getByTestId, asFragment } = wrapper;
     const mountToggle = await waitForElement(() =>
       getByTestId("vol-mount-btn-vol2")
     );
     fireEvent.click(mountToggle);
+    const mountSelect = await waitForElement(() =>
+      getByLabelText("Select Subsystem")
+    );
+    fireEvent.click(mountSelect);
+    const subsystems = await waitForElement(() =>
+      getAllByTestId('subsystem'));
+    fireEvent.click(subsystems[1]);
     const mountBtn = await waitForElement(() =>
       getByTestId("subsystem-mountvolume-btn")
     );
@@ -1858,5 +1875,39 @@ describe("<Storage Management />", () => {
       getByText("Mount Array")
     );
     fireEvent.click(mountButton);
+  });
+
+  it("should autocreate an array", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, {
+        "raidTypes": ["raid5"],
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        "totalDisks": 32
+      })
+      .onPost("/api/v1/autoarray/")
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    fireEvent.click(getByText("create"));
+    const autoCreateBtn = getByText("Auto-Create");
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    expect(dev1).toBeDefined();
+    fireEvent.click(autoCreateBtn);
+    expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
   });
 });

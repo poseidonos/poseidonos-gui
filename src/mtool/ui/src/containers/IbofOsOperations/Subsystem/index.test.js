@@ -54,6 +54,7 @@ import waitLoaderReducer from "../../../store/reducers/waitLoaderReducer";
 import PrivateRoute from "../../../components/PrivateRoute";
 import Subsystem from "./index";
 import i18n from "../../../i18n";
+import { addListener } from "../../../sagas/subsystemSaga";
 
 jest.unmock("axios");
 
@@ -185,4 +186,150 @@ describe("SubsystemOperations", () => {
         const nqnName = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem2"));
         expect(nqnName).toBeDefined();
     });
+
+    it("should display subsystem details", async () => {
+        const mock = new MockAdapter(axios);
+        mock.onGet("/api/v1/subsystem/").reply(200,
+            subsystemResponse
+        );
+        renderComponent();
+        const { getByText } = wrapper;
+        const nqnName = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem2"));
+        expect(nqnName).toBeDefined();
+    });
+
+    it("should create the subsystem",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                )
+                .onPost("/api/v1/subsystem/")
+                .reply(200,
+                    {
+                        "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                        "lastSuccessTime": 1642352844,
+                        "result": {
+                            "status": {
+                                "module": "",
+                                "code": 0,
+                                "description": "",
+                                "posDescription": "Success"
+                            }
+                        },
+                        "info": {
+                            "version": "v0.10.6"
+                        }
+                    }
+                ).onAny(200);
+            const getSpy = jest.spyOn(axios, "post");
+            jest.setTimeout(30000);
+            renderComponent();
+            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const addBtn = await waitForElement(() => getByTitle("Add a Subsystem"));
+            expect(addBtn).toBeDefined();
+            fireEvent.click(addBtn);
+            const nameField = await waitForElement(() => getByTestId("subsystemName"));
+            fireEvent.change(nameField, { target: { value: "nqn123" } });
+            const snField = await waitForElement(() => getByTestId("subsystemSN"));
+            fireEvent.change(snField, { target: { value: "POS00000" } });
+            const mnField = await waitForElement(() => getByTestId("subsystemMN"));
+            fireEvent.change(mnField, { target: { value: "ABCD" } });
+            const maxnsField = await waitForElement(() => getByTestId("subsystemMaxNS"));
+            fireEvent.change(maxnsField, { target: { value: 256 } });
+            const allowHostField = await waitForElement(() => getByTestId("allowAnyHost"));
+            fireEvent.change(allowHostField, { target: { value: true } });
+            const subsystemCreateBtn = await waitForElement(() => getByTestId("subsystemCreate"));
+            fireEvent.click(subsystemCreateBtn);
+            const successResponse = await waitForElement(() => getByText(/Subsystem Created Successfully/));
+            expect(successResponse).toBeDefined();
+        });
+
+    it("should show the listeners of a subsystem",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                )
+            renderComponent();
+            const { findAllByTitle, getByText } = wrapper;
+            const detailBtns = await findAllByTitle("Show Subsystem Details");
+            fireEvent.click(detailBtns[1]);
+            const ipAddress = getByText("107.108.221.146");
+            expect(ipAddress).toBeDefined();
+        });
+
+    it("should add a listener to a subsystem",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                ).onPost("/api/v1/listener/")
+                .reply(200, {
+                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                    "lastSuccessTime": 1642352844,
+                    "result": {
+                        "status": {
+                            "module": "",
+                            "code": 0,
+                            "description": "",
+                            "posDescription": "Success"
+                        }
+                    },
+                    "info": {
+                        "version": "v0.10.6"
+                    }
+                }).onAny(200);
+            renderComponent();
+            const { findAllByTitle, getByTestId, getByTitle, getByText } = wrapper;
+            const detailBtns = await findAllByTitle("Show Subsystem Details");
+            fireEvent.click(detailBtns[1]);
+            const ipAddress = getByText("107.108.221.146");
+            expect(ipAddress).toBeDefined();
+            const addListenerBtn = getByTitle("Add a Listener");
+            fireEvent.click(addListenerBtn);
+            const addListenerIP = getByTestId("addListenerIP");
+            fireEvent.change(addListenerIP, { target: { value: "1234" } });
+            const addListenerSubmit = getByTestId("addListenerSubmit");
+            fireEvent.click(addListenerSubmit);
+            expect(getByText(/Please provide a valid IP address/)).toBeDefined();
+            fireEvent.click(getByText("OK"));
+            fireEvent.change(addListenerIP, { target: { value: "107.108.109.110" } });
+            fireEvent.click(addListenerSubmit);
+            expect(await waitForElement(() => getByText(/Listener Added Successfully/))).toBeDefined();
+        });
+
+        it("should delete a subsystem",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                )
+                .onDelete("/api/v1/subsystem/")
+                .reply(200, {
+                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                    "lastSuccessTime": 1642352844,
+                    "result": {
+                        "status": {
+                            "module": "",
+                            "code": 0,
+                            "description": "",
+                            "posDescription": "Success"
+                        }
+                    },
+                    "info": {
+                        "version": "v0.10.6"
+                    }
+                }).onAny().reply(200);
+            renderComponent();
+            const { findAllByTitle, getByText } = wrapper;
+            const deleteBtns = await findAllByTitle("Delete Subsystem");
+            fireEvent.click(deleteBtns[1]);
+            fireEvent.click(getByText("Yes"));
+            expect(await waitForElement(() => getByText("Subsystem Deleted Successfully"))).toBeDefined();
+        });
 });
