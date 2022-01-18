@@ -236,7 +236,7 @@ describe("DeviceOperations", () => {
                 }
             );
             renderComponent();
-            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const { getByText, getByTestId, getByTitle } = wrapper;
             const deviceName = await waitForElement(() => getByText("uram0"));
             expect(deviceName).toBeDefined();
             const addBtn = await waitForElement(() => getByTitle("Add a device"));

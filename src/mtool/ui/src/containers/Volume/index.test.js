@@ -177,12 +177,6 @@ describe("<Storage Management />", () => {
     arrayName: "",
     displayMsg: "uram1",
     trimmedDisplayMsg: "uram1"
-  }, {
-    name: "uram2",
-    isAvailable: true,
-    arrayName: "",
-    displayMsg: "uram1",
-    trimmedDisplayMsg: "uram1"
   }];
 
   const array = {
@@ -1882,6 +1876,92 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices,
+        metadevices: [
+          ...metadevices,
+          {
+            name: "uram2",
+            isAvailable: true,
+            arrayName: "",
+            displayMsg: "uram1",
+            trimmedDisplayMsg: "uram1"
+          }
+        ],
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, {
+        "raidTypes": ["raid5"],
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        "totalDisks": 32
+      })
+      .onPost("/api/v1/autoarray/")
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
+    const autoCreateBtn = getByText("Auto-Create");
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    expect(dev1).toBeDefined();
+    fireEvent.click(autoCreateBtn);
+    expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
+  });
+
+  it("should display error message if 3 ssds are not available", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices: [...devices.slice(0, 2)],
+        metadevices: [
+          ...metadevices,
+          {
+            name: "uram2",
+            isAvailable: true,
+            arrayName: "",
+            displayMsg: "uram1",
+            trimmedDisplayMsg: "uram1"
+          }
+        ],
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, {
+        "raidTypes": ["raid5"],
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        "totalDisks": 32
+      })
+      .onPost("/api/v1/autoarray/")
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
+    const autoCreateBtn = getByText("Auto-Create");
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    expect(dev1).toBeDefined();
+    fireEvent.click(autoCreateBtn);
+    expect(await waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
+  });
+
+  it("should display error message in autocreate if metadisks are not available", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
         metadevices,
       })
       .onPost("/api/v1.0/create_arrays/")
@@ -1902,12 +1982,12 @@ describe("<Storage Management />", () => {
       .onAny()
       .reply(200, []);
     renderComponent();
-    const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     fireEvent.click(getByText("create"));
     const autoCreateBtn = getByText("Auto-Create");
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     expect(dev1).toBeDefined();
     fireEvent.click(autoCreateBtn);
-    expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
+    expect(await waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
   });
 });
