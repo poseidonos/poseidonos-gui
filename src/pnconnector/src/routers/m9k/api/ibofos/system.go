@@ -131,7 +131,6 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 
 	log.Info("RuniBoFOS result : ", res.Result.Status.Code)
 	if res.Result.Status.Code == 0 {
-		time.Sleep(2 * time.Second)
 		config := setting.Config.Server.IBoF
 		errorCode := 0
 		transport(xrId, config, &res, "transport", &errorInfoList)
