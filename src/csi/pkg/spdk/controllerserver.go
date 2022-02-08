@@ -115,13 +115,13 @@ func (s *controllerServer) CreateVolume(
 	}, nil
 	if err != nil {
 		//deleteVolume(volume)
-		klog.Info("Volume Creation Successfully Completed Err2")
+		klog.Info("VolumeInfo Parsing Failed Err %v",err.Error())
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	volume, err = s.createVolume(req, volumeInfo)
 	if err != nil {
-		klog.Infof("Volume Creation Successfully Completed Err %v", err.Error())
+		klog.Infof("Volume Creation Failed Err %v", err.Error())
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
