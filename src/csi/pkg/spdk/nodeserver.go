@@ -204,7 +204,6 @@ func (ns *nodeServer) stageVolume(devicePath string, req *csi.NodeStageVolumeReq
 	stagingPath := req.GetStagingTargetPath() + "/" + req.GetVolumeId()
 	isBlock := req.GetVolumeCapability().GetBlock() != nil
 	mounted, err := ns.createStageMountPoint(stagingPath, isBlock)
-	klog.Infof("error in Stage VOlumew *************** : %v", err)
 	if err != nil {
 		return "", err
 	}
@@ -241,8 +240,8 @@ func (ns *nodeServer) publishVolume(stagingPath string, req *csi.NodePublishVolu
 	targetPath := req.GetTargetPath()
 	isBlock := req.GetVolumeCapability().GetBlock() != nil
 	mounted, err := ns.createMountPoint(targetPath, isBlock)
-	klog.Infof("error in Publish VOlumew *************** : %v **** %v", err, mounted)
 	if err != nil {
+		klog.Infof("Error in Publish Volume: %v", err)
 		return err
 	}
 	if mounted {

@@ -19,7 +19,6 @@ package spdk
 import (
 	"context"
 	"fmt"
-	"log"
 	"os/exec"
 	"sync"
 
@@ -93,9 +92,7 @@ func (s *controllerServer) CreateVolume(
 			volume := s.volumes[volumeID]
 			return volume, nil
 		}
-		log.Println("Printing Volume Name")
-		log.Println(req.Name)
-		log.Println(req)
+		klog.Infof("Volume %s marked as creating", req.Name)
 		s.volumesIdem[req.Name] = creatingTag
 		return nil, nil
 	}()
@@ -171,14 +168,10 @@ func (s *controllerServer) CreateVolume(
 
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
-	klog.Info("Delete Volume: ")
-	klog.Info("volumeID:", volumeID)
-        klog.Info("volumeID: %s ", volumeID)
+	klog.Info("Deleting Volume: %s", volumeID)
 
 	s.mtx.Lock()
 	volume, exists := s.volumes[volumeID]
-	klog.Infof("volume, exists %v %v",volume, exists)
-	klog.Infof("cs.volumes %v",s.volumes)
 	s.mtx.Unlock()
 	if !exists {
 		// already deleted?
@@ -206,18 +199,18 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	}*/
 
 	// no harm if volume already deleted
-	
-        volumeInfo := map[string]string{
-                "targetType":      "TCP",
-                "targetAddr":      s.posNode.Subsystem.Ip,
-                "targetPort":      s.posNode.Subsystem.Port,
-                "nqn":             s.posNode.Subsystem.Nqn,
-                "array":           s.posNode.Array.Name,
-                "provisionerIp":   s.posNode.Dagent.Ip,
-                "provisionerPort": s.posNode.Dagent.Port,
-        }
 
-	err := deleteVolume(volume,volumeInfo)
+	volumeInfo := map[string]string{
+		"targetType":      "TCP",
+		"targetAddr":      s.posNode.Subsystem.Ip,
+		"targetPort":      s.posNode.Subsystem.Port,
+		"nqn":             s.posNode.Subsystem.Nqn,
+		"array":           s.posNode.Array.Name,
+		"provisionerIp":   s.posNode.Dagent.Ip,
+		"provisionerPort": s.posNode.Dagent.Port,
+	}
+
+	err := deleteVolume(volume, volumeInfo)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -356,7 +349,7 @@ func publishVolume(volume *volume) (map[string]string, error) {
 
 func deleteVolume(volume *volume, conf map[string]string) error {
 	provisioner := &DAgent{}
-	err := provisioner.DeleteVolume(volume.name,conf)
+	err := provisioner.DeleteVolume(volume.name, conf)
 	return err
 }
 
@@ -439,19 +432,18 @@ func newControllerServer(d *csicommon.CSIDriver) (*controllerServer, error) {
 	}
 	server.posNode = PosNode{
 		Dagent: Dagent{
-			Ip: config.POS.Dagent.Ip,
+			Ip:   config.POS.Dagent.Ip,
 			Port: config.POS.Dagent.Port,
 		},
 		Subsystem: Subsystem{
-			Ip: config.POS.Subsystem.Ip,
+			Ip:   config.POS.Subsystem.Ip,
 			Port: config.POS.Subsystem.Port,
-			Nqn: config.POS.Subsystem.Nqn,
+			Nqn:  config.POS.Subsystem.Nqn,
 		},
 		Array: Array{
 			Name: config.POS.Array.Name,
 		},
 	}
-
 
 	// create spdk nodes
 	for i := range config.Nodes {

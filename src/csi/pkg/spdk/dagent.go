@@ -9,7 +9,6 @@ import (
 	"github.com/google/uuid"
 	"io/ioutil"
 	"k8s.io/klog/v2"
-	"log"
 	"net/http"
 	"time"
 )
@@ -41,8 +40,7 @@ type Status struct {
 
 func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string) (*volume, error) {
 	name := csiReq.Name
-	klog.Info("Create VOlume Started")
-	klog.Infof("%v", csiReq.GetCapacityRange().GetRequiredBytes())
+	klog.Infof("Creating Volume using DAgent: %v", csiReq.Name)
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes", config["provisionerIp"], config["provisionerPort"])
 	requestBody := []byte(fmt.Sprintf(`{
 	    "param": {
@@ -59,13 +57,14 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 	req.Header.Set("X-request-Id", id.String())
 	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
 	client := &http.Client{}
-	log.Println("calling Create Volume")
 	resp, err := client.Do(req)
 	if err != nil {
+		klog.Infof("Error in DAgent Create Volume API: %v", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
+	klog.Infof("Create Volume API response: %v", body)
 	time.Sleep(5 * time.Second)
 	requestBody = []byte(fmt.Sprintf(`{
             "param": {
@@ -81,12 +80,14 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 	if err != nil {
 		return nil, err
 	}
-	log.Println("Calling Mount Volume")
+	klog.Infof("Calling Mount Volume API: %v", csiReq.Name)
 	resp, err = client.Do(req)
 	if err != nil {
+		klog.Infof("Error in DAgent Mount Volume API: %v", err)
 		return nil, err
 	}
 	body, _ = ioutil.ReadAll(resp.Body)
+	klog.Infof("Mount Volume API response: %v", body)
 	volUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/nqn/%s", config["provisionerIp"], config["provisionerPort"], name)
 	req, err = http.NewRequest("GET", volUrl, nil)
 	id = uuid.New()
@@ -96,25 +97,25 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 	if err != nil {
 		return nil, err
 	}
-	log.Println("Publishing Volume")
+	klog.Infof("Calling Volume NQN API: %v", csiReq.Name)
 	resp, err = client.Do(req)
 	if err != nil {
+		klog.Infof("Error in DAgent NQN API: %v", err)
 		return nil, err
 	}
 	body, _ = ioutil.ReadAll(resp.Body)
-	log.Println("Created Volume")
+	klog.Infof("NQN API response: %v", body)
 	d := json.NewDecoder(bytes.NewBuffer(body))
 	d.UseNumber()
 	response := Response{}
-	log.Println("Volume Body")
-	log.Println(body)
 
 	if err = d.Decode(&response); err != nil {
-		log.Fatal(err)
+		klog.Infof("Error in decoding response from DAgent: %v", err)
+		return nil, err
 	}
 
 	if err != nil {
-		log.Printf("Response Unmarshal Error : %v", err)
+		klog.Infof("Response Unmarshal Error : %v", err)
 		return nil, err
 	} else {
 		response.LastSuccessTime = time.Now().UTC().Unix()
@@ -123,7 +124,6 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 			return nil, errors.New("Volume Creation Failed")
 		}
 
-		log.Print(response.Result.Data)
 		return &volume{
 			name: name,
 			csiVolume: csi.Volume{
@@ -137,49 +137,50 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 
 }
 
-func (dagent *DAgent) DeleteVolume(name string, config map[string]string) (error) {
-        klog.Info("Delete VOlume Started")
-	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", config["provisionerIp"], config["provisionerPort"],name)
-        requestBody := []byte(fmt.Sprintf(`{
+func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error {
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", config["provisionerIp"], config["provisionerPort"], name)
+	requestBody := []byte(fmt.Sprintf(`{
             "param": {
                 "array": "POSArray"
              }
         }`))
-        req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(requestBody))
-        id := uuid.New()
-        req.Header.Set("Content-Type", "application/json")
-        req.Header.Set("X-request-Id", id.String())
-        req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
-        client := &http.Client{}
-        log.Println("calling unmount Volume")
-        resp, err := client.Do(req)
-        if err != nil {
-                return  err
-        }
-        defer resp.Body.Close()
-        body, _ := ioutil.ReadAll(resp.Body)
-	log.Println("unmount vol body ",body)
-        time.Sleep(5*time.Second)
-        requestBody = []byte(`{
+	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(requestBody))
+	id := uuid.New()
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-request-Id", id.String())
+	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+	client := &http.Client{}
+	klog.Infof("Calling Unmount Volume API: %v", name)
+	resp, err := client.Do(req)
+	if err != nil {
+		klog.Infof("Error in Unmount Volume API: %v", err)
+		return err
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	klog.Infof("Unmount Volume API Response: %v", body)
+	time.Sleep(5 * time.Second)
+	requestBody = []byte(`{
             "param": {
                 "array": "POSArray"
              }
         }`)
-	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"],name)
-        req, err = http.NewRequest("DELETE", deleteUrl, bytes.NewBuffer(requestBody))
-        req.Header.Set("Content-Type", "application/json")
-        id = uuid.New()
-        req.Header.Set("X-request-Id", id.String())
-        req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
-        if err != nil {
-                return  err
-        }
-        log.Println("Calling delete Volume")
-        resp, err = client.Do(req)
-        if err != nil {
-                return  err
-        }
-        //body, _ = ioutil.ReadAll(resp.Body)
+	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"], name)
+	req, err = http.NewRequest("DELETE", deleteUrl, bytes.NewBuffer(requestBody))
+	req.Header.Set("Content-Type", "application/json")
+	id = uuid.New()
+	req.Header.Set("X-request-Id", id.String())
+	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+	if err != nil {
+		return err
+	}
+	klog.Infof("Calling Delete Volume API: %v", name)
+	resp, err = client.Do(req)
+	if err != nil {
+		klog.Infof("Error in Delete Volume API: %v", err)
+		return err
+	}
+	//body, _ = ioutil.ReadAll(resp.Body)
 
 	return err
 }
