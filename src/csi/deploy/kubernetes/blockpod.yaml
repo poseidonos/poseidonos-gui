@@ -5,7 +5,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: spdkcsi-pvc-block
+  name: poscsi-pvc-block
 spec:
   accessModes:
   - ReadWriteOnce
@@ -13,13 +13,27 @@ spec:
   resources:
     requests:
       storage: 256Mi
-  storageClassName: spdkcsi-sc
+  storageClassName: poscsi-sc
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: poscsi-pvc-block-1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Block
+  resources:
+    requests:
+      storage: 512Mi
+  storageClassName: poscsi-sc
 
 ---
 kind: Pod
 apiVersion: v1
 metadata:
-  name: spdkcsi-test-block
+  name: poscsi-test-block
 spec:
   containers:
   - name: ubuntu
@@ -28,8 +42,13 @@ spec:
     command: ["sleep", "365d"]
     volumeDevices:
     - devicePath: /dev/xdb
-      name: spdk-volume
+      name: pos-volume
+    - devicePath: /dev/xdc
+      name: pos-volume-1
   volumes:
-  - name: spdk-volume
+  - name: pos-volume
     persistentVolumeClaim:
-      claimName: spdkcsi-pvc-block
+      claimName: poscsi-pvc-block
+  - name: pos-volume-1
+    persistentVolumeClaim:
+      claimName: poscsi-pvc-block-1

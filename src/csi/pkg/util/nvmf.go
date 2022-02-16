@@ -20,9 +20,18 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"sync/atomic"
-
+	//"sync/atomic"
+	"bytes"
+	"encoding/json"
+	"github.com/container-storage-interface/spec/lib/go/csi"
+	"github.com/google/uuid"
+	"github.com/poseidonos/pos-csi/pkg/model"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"io/ioutil"
 	"k8s.io/klog"
+	"net/http"
+	"time"
 )
 
 const invalidNSID = 0
@@ -135,56 +144,100 @@ func (node *nodeNVMf) DeleteVolume(lvolID string) error {
 }
 
 // PublishVolume exports a volume through NVMf target
-func (node *nodeNVMf) PublishVolume(lvolID string) error {
+func PublishVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string) error {
 	var err error
-
-	err = node.createTransport()
+	err = createTransport(conf)
 	if err != nil {
 		return err
 	}
-
-	node.mtx.Lock()
-	lvol, exists := node.lvols[lvolID]
-	node.mtx.Unlock()
-
-	if !exists {
-		return ErrVolumeDeleted
-	}
-	if lvol.nqn != "" {
-		return ErrVolumePublished
-	}
-
-	// cleanup lvol on error
-	defer func() {
-		if err != nil {
-			lvol.reset()
-		}
-	}()
-
-	lvol.model = lvolID
-	lvol.nqn, err = node.createSubsystem(lvol.model)
+	err = createSubsystem(conf)
 	if err != nil {
 		return err
 	}
-
-	lvol.nsID, err = node.subsystemAddNs(lvol.nqn, lvolID)
+	err = subsystemAddListener(conf)
 	if err != nil {
-		node.deleteSubsystem(lvol.nqn) // nolint:errcheck // we can do few
 		return err
 	}
-
-	err = node.subsystemAddListener(lvol.nqn)
+	err = mountVolume(csiReq, conf)
 	if err != nil {
-		node.subsystemRemoveNs(lvol.nqn, lvol.nsID) // nolint:errcheck // ditto
-		node.deleteSubsystem(lvol.nqn)              // nolint:errcheck // ditto
 		return err
 	}
-
-	klog.V(5).Infof("volume published: %s", lvolID)
 	return nil
 }
 
-func (node *nodeNVMf) UnpublishVolume(lvolID string) error {
+func mountVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string) error {
+	name := csiReq.Name
+	requestBody := []byte(fmt.Sprintf(`{
+            "param": {
+                "array": "%s",
+                "subnqn": "%s"
+             }
+        }`, conf["array"], conf["nqn"]))
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", conf["provisionerIp"], conf["provisionerPort"], name)
+	resp, err := CallDAgent(url, requestBody, "POST", "Mount volume")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		klog.Info("Error in decoding Mount Volume Response")
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		klog.Infof("Mount Volume API response: %v", string(body))
+	} else if response.Result.Status.Code == 2040 {
+		klog.Infof("Volume Already Mounted")
+	} else {
+		return status.Error(codes.Unavailable, response.Result.Status.Description)
+	}
+	return nil
+}
+
+func GetUUIDFromNamespaces(volName string, namespaces []interface{}) (string, error) {
+	for _, namespace := range namespaces {
+		ns := namespace.(map[string]interface{})
+		if ns["bdev_name"].(string) == volName {
+			return ns["uuid"].(string), nil
+		}
+	}
+	return "", status.Error(codes.Unavailable, "Volume does not exist in subsystem")
+}
+
+func GetUUIDFromSubsystem(id string, conf map[string]string) (string, error) {
+	subsystemResponse, err := ListSubsystem(conf)
+	if err != nil {
+		return "", err
+	}
+	data := subsystemResponse.Result.Data.(map[string]interface{})
+	subList, exists := data["subsystemlist"].([]interface{})
+	if exists {
+		for _, subsystem := range subList {
+			subsystemMap := subsystem.(map[string]interface{})
+			if subsystemMap["nqn"] == conf["nqn"] {
+				if namespaces, exists := subsystemMap["namespaces"]; exists {
+					volName := "bdev_" + id + "_" + conf["array"]
+					return GetUUIDFromNamespaces(volName, namespaces.([]interface{}))
+				}
+			}
+		}
+	}
+	return "", status.Error(codes.Unavailable, "Volume does not exist in subsystem")
+}
+
+func GetUUID(name string, conf map[string]string) (string, error) {
+	id, err := GetVolumeIdFromName(name, conf)
+	if err != nil {
+		return "", err
+	}
+	uuid, err := GetUUIDFromSubsystem(id, conf)
+	if err != nil {
+		return "", err
+	}
+	return uuid, nil
+}
+
+/*
+func UnpublishVolume(lvolID string) error {
 	var err error
 
 	node.mtx.Lock()
@@ -214,29 +267,92 @@ func (node *nodeNVMf) UnpublishVolume(lvolID string) error {
 	lvol.reset()
 	klog.V(5).Infof("volume unpublished: %s", lvolID)
 	return nil
+}*/
+
+func GetVolumeIdFromName(volumeName string, conf map[string]string) (string, error) {
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"])
+	resp, err := CallDAgent(url, nil, "GET", "List Volumes")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		return "", status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		volumes := response.Result.Data.(map[string]interface{})["volumes"].([]interface{})
+		for _, volume := range volumes {
+			vol := volume.(map[string]interface{})
+			if vol["name"].(string) == volumeName {
+				return fmt.Sprintf("%s", vol["id"]), nil
+			}
+		}
+	}
+
+	return "", status.Error(codes.Unavailable, response.Result.Status.Description)
+
 }
 
-func (node *nodeNVMf) createSubsystem(model string) (string, error) {
-	nqn := "nqn.2020-04.io.spdk.csi:uuid:" + model
-
-	params := struct {
-		Nqn          string `json:"nqn"`
-		AllowAnyHost bool   `json:"allow_any_host"`
-		SerialNumber string `json:"serial_number"`
-		ModelNumber  string `json:"model_number"`
-	}{
-		Nqn:          nqn,
-		AllowAnyHost: cfgAllowAnyHost,
-		SerialNumber: "spdkcsi-sn",
-		ModelNumber:  model, // client matches imported disk with model string
+func ListSubsystem(conf map[string]string) (model.Response, error) {
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
+	resp, err := CallDAgent(url, nil, "GET", "List SubSystem")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		return response, status.Error(codes.Unavailable, err.Error())
 	}
+	if response.Result.Status.Code == 0 {
+		klog.Info("List SubSystem Success")
+	} else {
+		return response, status.Error(codes.Unavailable, response.Result.Status.Description)
+	}
+	return response, nil
 
-	err := node.client.call("nvmf_create_subsystem", &params, nil)
+}
+func createSubsystem(conf map[string]string) error {
+	response, err := ListSubsystem(conf)
 	if err != nil {
-		return "", err
+		return err
+	}
+	klog.Infof("%v", response)
+	data := response.Result.Data.(map[string]interface{})
+	subList, keyExist1 := data["subsystemlist"].([]interface{})
+	if keyExist1 {
+		for itr := 0; itr < len(subList); itr++ {
+			nqn, keyExist2 := subList[itr].(map[string]interface{})["nqn"]
+			if keyExist2 {
+				if strings.Compare(nqn.(string), conf["nqn"]) == 0 {
+					klog.Infof("Subsystem already exist")
+					return nil
+				}
+			}
+		}
+	}
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
+	requestBody := []byte(fmt.Sprintf(`{"param": {
+        "name": "%s",
+        "sn": "%s",
+        "mn": "%s",
+        "max_namespaces": %s,
+        "allow_any_host": %s
+    }}`, conf["nqn"], conf["serialNumber"], conf["modelNumber"], conf["maxNamespaces"], conf["allowAnyHost"]))
+	resp, _ := CallDAgent(url, requestBody, "POST", "Create SubSystem")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response = model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		klog.Infof("Create SubSystem API response: %v", string(body))
+	} else {
+		return status.Error(codes.Unavailable, response.Result.Status.Description)
 	}
 
-	return nqn, nil
+	return nil
 }
 
 func (node *nodeNVMf) subsystemAddNs(nqn, lvolID string) (int, error) {
@@ -260,31 +376,35 @@ func (node *nodeNVMf) subsystemAddNs(nqn, lvolID string) (int, error) {
 	return nsID, err
 }
 
-func (node *nodeNVMf) subsystemAddListener(nqn string) error {
-	type listenAddress struct {
-		TrType  string `json:"trtype"`
-		AdrFam  string `json:"adrfam"`
-		TrAddr  string `json:"traddr"`
-		TrSvcID string `json:"trsvcid"`
+func subsystemAddListener(conf map[string]string) error {
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/listener", conf["provisionerIp"], conf["provisionerPort"])
+	requestBody := []byte(fmt.Sprintf(`{
+            "param": {
+                "name": "%s",
+                "transport_type": "%s",
+                "target_address": "%s",
+                "transport_service_id": "%s"
+             }
+        }`, conf["nqn"], conf["targetType"], conf["targetAddr"], conf["targetPort"]))
+	resp, err := CallDAgent(url, requestBody, "POST", "Add Listener")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		return status.Error(codes.Unavailable, err.Error())
 	}
-
-	params := struct {
-		Nqn           string        `json:"nqn"`
-		ListenAddress listenAddress `json:"listen_address"`
-	}{
-		Nqn: nqn,
-		ListenAddress: listenAddress{
-			TrType:  node.targetType,
-			TrAddr:  node.targetAddr,
-			TrSvcID: node.targetPort,
-			AdrFam:  cfgAddrFamily,
-		},
+	if response.Result.Status.Code == 0 {
+		klog.Infof("Add listener API response: %v", string(body))
+	} else {
+		return status.Error(codes.Unavailable, response.Result.Status.Description)
 	}
+	return nil
 
-	return node.client.call("nvmf_subsystem_add_listener", &params, nil)
 }
 
-func (node *nodeNVMf) subsystemRemoveNs(nqn string, nsID int) error {
+/*
+func subsystemRemoveNs(nqn string, nsID int) error {
 	params := struct {
 		Nqn  string `json:"nqn"`
 		NsID int    `json:"nsid"`
@@ -296,7 +416,7 @@ func (node *nodeNVMf) subsystemRemoveNs(nqn string, nsID int) error {
 	return node.client.call("nvmf_subsystem_remove_ns", &params, nil)
 }
 
-func (node *nodeNVMf) deleteSubsystem(nqn string) error {
+func deleteSubsystem(nqn string) error {
 	params := struct {
 		Nqn string `json:"nqn"`
 	}{
@@ -304,30 +424,56 @@ func (node *nodeNVMf) deleteSubsystem(nqn string) error {
 	}
 
 	return node.client.call("nvmf_delete_subsystem", &params, nil)
-}
+}*/
 
-func (node *nodeNVMf) createTransport() error {
+func createTransport(conf map[string]string) error {
 	// concurrent requests can happen despite this fast path check
-	if atomic.LoadInt32(&node.transCreated) != 0 {
-		return nil
-	}
+	/*if atomic.LoadInt32(&node.transCreated) != 0 {
+	        return nil
+	}*/
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/transport", conf["provisionerIp"], conf["provisionerPort"])
+	requestBody := []byte(fmt.Sprintf(`{
+            "param": {
+                "transport_type": "%s",
+                "buf_cache_size": %s,
+                "num_shared_buf": %s
+             }
+        }`, conf["targetType"], conf["bufCacheSize"], conf["numSharedBuf"]))
 
-	// TODO: support transport parameters
-	params := struct {
-		TrType string `json:"trtype"`
-	}{
-		TrType: node.targetType,
+	resp, err := CallDAgent(url, requestBody, "POST", "Create Transport")
+	body, _ := ioutil.ReadAll(resp.Body)
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		return status.Error(codes.Unavailable, err.Error())
 	}
-
-	err := node.client.call("nvmf_create_transport", &params, nil)
 
 	if err == nil {
-		klog.V(5).Infof("Transport created: %s,%s", node.targetAddr, node.targetType)
-		atomic.StoreInt32(&node.transCreated, 1)
+		klog.V(5).Infof("Transport created: %s,%s", conf["targetAddr"], conf["targetType"])
+		//atomic.StoreInt32(&node.transCreated, 1)
 	} else if strings.Contains(err.Error(), "already exists") {
 		err = nil // ignore transport already exists error
-		atomic.StoreInt32(&node.transCreated, 1)
+		//atomic.StoreInt32(&node.transCreated, 1)
 	}
 
 	return err
+}
+
+func CallDAgent(url string, requestBody []byte, reqType string, reqName string) (*http.Response, error) {
+	req, err := http.NewRequest(reqType, url, bytes.NewBuffer(requestBody))
+	id := uuid.New()
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-request-Id", id.String())
+	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		klog.Infof("Error in DAgent %v API: %v", reqName, err)
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
+	return resp, err
+	/*if resp.StatusCode != 200 {
+	        return nil, status.Error(codes.Unavailable, "Transport Creation Failed")
+	}*/
 }

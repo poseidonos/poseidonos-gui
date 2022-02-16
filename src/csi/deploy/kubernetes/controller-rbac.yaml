@@ -5,14 +5,14 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: spdkcsi-controller-sa
+  name: poscsi-controller-sa
 
 # external-provisioner sidecar required roles
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: spdkcsi-provisioner-role
+  name: poscsi-provisioner-role
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -55,14 +55,14 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: spdkcsi-provisioner-binding
+  name: poscsi-provisioner-binding
 subjects:
 - kind: ServiceAccount
-  name: spdkcsi-controller-sa
+  name: poscsi-controller-sa
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: spdkcsi-provisioner-role
+  name: poscsi-provisioner-role
   apiGroup: rbac.authorization.k8s.io
 
 # external-attacher sidecar required roles
@@ -70,7 +70,7 @@ roleRef:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: spdkcsi-attacher-role
+  name: poscsi-attacher-role
 rules:
 - apiGroups: [""]
   resources: ["persistentvolumes"]
@@ -92,12 +92,12 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: spdkcsi-attacher-binding
+  name: poscsi-attacher-binding
 subjects:
 - kind: ServiceAccount
-  name: spdkcsi-controller-sa
+  name: poscsi-controller-sa
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: spdkcsi-attacher-role
+  name: poscsi-attacher-role
   apiGroup: rbac.authorization.k8s.io

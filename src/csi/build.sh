@@ -1,6 +1,6 @@
 #!/bin/bash
 
-make -C . spdkcsi
-cp _out/spdkcsi deploy/image/
+make -C . poscsi
+cp _out/poscsi deploy/image/
 cd deploy/image
 docker build . -t poscsi

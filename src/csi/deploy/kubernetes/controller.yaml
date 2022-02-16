@@ -5,22 +5,22 @@
 kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: spdkcsi-controller
+  name: poscsi-controller
 spec:
-  serviceName: spdkcsi-controller
+  serviceName: poscsi-controller
   replicas: 1
   selector:
     matchLabels:
-      app: spdkcsi-controller
+      app: poscsi-controller
   template:
     metadata:
       labels:
-        app: spdkcsi-controller
+        app: poscsi-controller
     spec:
-      serviceAccount: spdkcsi-controller-sa
+      serviceAccount: poscsi-controller-sa
       hostNetwork: true
       containers:
-      - name: spdkcsi-provisioner
+      - name: poscsi-provisioner
         image: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
         imagePullPolicy: "IfNotPresent"
         args:
@@ -32,7 +32,7 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-      - name: spdkcsi-snapshotter
+      - name: poscsi-snapshotter
         image: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
         args:
         - "--csi-address=unix:///csi/csi-provisioner.sock"
@@ -48,7 +48,7 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-      - name: spdkcsi-attacher
+      - name: poscsi-attacher
         image: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         imagePullPolicy: "IfNotPresent"
         args:
@@ -58,7 +58,7 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-      - name: spdkcsi-controller
+      - name: poscsi-controller
         image: poscsi:latest
         imagePullPolicy: "IfNotPresent"
         securityContext:
@@ -79,19 +79,19 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-        - name: spdkcsi-config
-          mountPath: /etc/spdkcsi-config/
+        - name: poscsi-config
+          mountPath: /etc/poscsi-config/
           readOnly: true
-        - name: spdkcsi-secret
-          mountPath: /etc/spdkcsi-secret/
+        - name: poscsi-secret
+          mountPath: /etc/poscsi-secret/
           readOnly: true
       volumes:
       - name: socket-dir
         emptyDir:
           medium: "Memory"
-      - name: spdkcsi-config
+      - name: poscsi-config
         configMap:
-          name: spdkcsi-cm
-      - name: spdkcsi-secret
+          name: poscsi-cm
+      - name: poscsi-secret
         secret:
-          secretName: spdkcsi-secret
+          secretName: poscsi-secret

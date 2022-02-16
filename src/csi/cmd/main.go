@@ -22,12 +22,12 @@ import (
 
 	"k8s.io/klog"
 
-	"github.com/spdk/spdk-csi/pkg/spdk"
-	"github.com/spdk/spdk-csi/pkg/util"
+	"github.com/poseidonos/pos-csi/pkg/pos"
+	"github.com/poseidonos/pos-csi/pkg/util"
 )
 
 const (
-	driverName    = "csi.spdk.io"
+	driverName    = "csi.pos.io"
 	driverVersion = "0.1.0"
 )
 
@@ -39,7 +39,7 @@ var (
 
 func init() {
 	flag.StringVar(&conf.DriverName, "drivername", driverName, "Name of the driver")
-	flag.StringVar(&conf.Endpoint, "endpoint", "unix://tmp/spdkcsi.sock", "CSI endpoint")
+	flag.StringVar(&conf.Endpoint, "endpoint", "unix://tmp/poscsi.sock", "CSI endpoint")
 	flag.StringVar(&conf.NodeID, "nodeid", "", "node id")
 	flag.BoolVar(&conf.IsControllerServer, "controller", false, "Start controller server")
 	flag.BoolVar(&conf.IsNodeServer, "node", false, "Start node server")
@@ -52,9 +52,9 @@ func init() {
 }
 
 func main() {
-	klog.Infof("Starting SPDK-CSI driver: %v version: %v", conf.DriverName, driverVersion)
+	klog.Infof("Starting POS-CSI driver: %v version: %v", conf.DriverName, driverVersion)
 
-	spdk.Run(&conf)
+	pos.Run(&conf)
 
 	os.Exit(0)
 }

@@ -5,20 +5,34 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: spdkcsi-pvc
+  name: poscsi-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 256Mi
-  storageClassName: spdkcsi-sc
+      storage: 5Gi
+  storageClassName: poscsi-sc
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: poscsi-pvc-1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Mi
+  storageClassName: poscsi-sc
+
 
 ---
 kind: Pod
 apiVersion: v1
 metadata:
-  name: spdkcsi-test
+  name: poscsi-test
 spec:
   containers:
   - name: ubuntu
@@ -27,8 +41,39 @@ spec:
     command: ["sleep", "365d"]
     volumeMounts:
     - mountPath: /dev/xda
-      name: spdk-volume
+      name: pos-volume
+    - mountPath: /dev/xdb
+      name: pos-volume-1
   volumes:
-  - name: spdk-volume
+  - name: pos-volume
     persistentVolumeClaim:
-      claimName: spdkcsi-pvc
+      claimName: poscsi-pvc
+  - name: pos-volume-1
+    persistentVolumeClaim:
+      claimName: poscsi-pvc-1
+
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: poscsi-test-1
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu:18.04
+    imagePullPolicy: "IfNotPresent"
+    command: ["sleep", "365d"]
+    volumeMounts:
+    - mountPath: /dev/xda
+      name: pos-volume
+    - mountPath: /dev/xdb
+      name: pos-volume-1
+  volumes:
+  - name: pos-volume
+    persistentVolumeClaim:
+      claimName: poscsi-pvc
+  - name: pos-volume-1
+    persistentVolumeClaim:
+      claimName: poscsi-pvc-1
+

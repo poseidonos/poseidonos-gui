@@ -5,11 +5,11 @@
 # XXX: pin alpine to 3.8 with e2fsprogs-1.44
 # e2fsprogs-1.45+ crashes my test vm when running mkfs.ext4
 FROM alpine:3.8
-LABEL maintainers="SPDK-CSI Authors"
-LABEL description="SPDK-CSI Plugin"
+LABEL maintainers="POS-CSI Authors"
+LABEL description="POS-CSI Plugin"
 
-COPY spdkcsi /usr/local/bin/spdkcsi
+COPY poscsi /usr/local/bin/poscsi
 
 RUN apk add nvme-cli open-iscsi e2fsprogs xfsprogs blkid
 
-ENTRYPOINT ["/usr/local/bin/spdkcsi"]
+ENTRYPOINT ["/usr/local/bin/poscsi"]

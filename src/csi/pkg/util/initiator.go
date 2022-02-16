@@ -28,20 +28,20 @@ import (
 	"k8s.io/klog"
 )
 
-// SpdkCsiInitiator defines interface for NVMeoF/iSCSI initiator
+// POSCsiInitiator defines interface for NVMeoF/iSCSI initiator
 //
 // - Connect initiates target connection and returns local block device filename
-//   e.g., /dev/disk/by-id/nvme-SPDK_Controller1_SPDK00000000000001
+//   e.g., /dev/disk/by-id/nvme-uuid.c3fe887f-2db7-4d15-8fa7-e56987e04839
 // - Disconnect terminates target connection
 //
 // - Caller(node service) should serialize calls to same initiator
 // - Implementation should be idempotent to duplicated requests
-type SpdkCsiInitiator interface {
+type POSCsiInitiator interface {
 	Connect() (string, error)
 	Disconnect() error
 }
 
-func NewSpdkCsiInitiator(volumeContext map[string]string) (SpdkCsiInitiator, error) {
+func NewPOSCsiInitiator(volumeContext map[string]string) (POSCsiInitiator, error) {
 	targetType := strings.ToLower(volumeContext["targetType"])
 	klog.Errorf("Volume Details")
 	switch targetType {

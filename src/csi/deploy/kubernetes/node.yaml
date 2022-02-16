@@ -5,20 +5,20 @@
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  name: spdkcsi-node
+  name: poscsi-node
 spec:
   selector:
     matchLabels:
-      app: spdkcsi-node
+      app: poscsi-node
   template:
     metadata:
       labels:
-        app: spdkcsi-node
+        app: poscsi-node
     spec:
-      serviceAccount: spdkcsi-node-sa
+      serviceAccount: poscsi-node-sa
       hostNetwork: true
       containers:
-      - name: spdkcsi-registrar
+      - name: poscsi-registrar
         securityContext:
           privileged: true
           capabilities:
@@ -29,13 +29,13 @@ spec:
         args:
         - "--v=5"
         - "--csi-address=unix:///csi/csi.sock"
-        - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.spdk.io/csi.sock"
+        - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.pos.io/csi.sock"
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
         - name: registration-dir
           mountPath: /registration
-      - name: spdkcsi-node
+      - name: poscsi-node
         securityContext:
           privileged: true
           capabilities:
@@ -74,7 +74,7 @@ spec:
       volumes:
       - name: socket-dir
         hostPath:
-          path: /var/lib/kubelet/plugins/csi.spdk.io
+          path: /var/lib/kubelet/plugins/csi.pos.io
           type: DirectoryOrCreate
       - name: registration-dir
         hostPath:

@@ -26,23 +26,23 @@ SCRIPT_DIRS := scripts deploy e2e
 ifeq ($(origin GOARCH), undefined)
   GOARCH := $(shell go env GOARCH)
 endif
-# csi image info (spdkcsi/spdkcsi:canary)
+# csi image info (poscsi/spdkcsi:canary)
 ifeq ($(origin CSI_IMAGE_REGISTRY), undefined)
-  CSI_IMAGE_REGISTRY := spdkcsi
+  CSI_IMAGE_REGISTRY := poscsi
 endif
 ifeq ($(origin CSI_IMAGE_TAG), undefined)
   CSI_IMAGE_TAG := canary
 endif
-CSI_IMAGE := $(CSI_IMAGE_REGISTRY)/spdkcsi:$(CSI_IMAGE_TAG)
+CSI_IMAGE := $(CSI_IMAGE_REGISTRY)/poscsi:$(CSI_IMAGE_TAG)
 
 # default target
-all: spdkcsi lint test
+all: poscsi lint test
 
 # build binary
-.PHONY: spdkcsi
-spdkcsi:
-	@echo === building spdkcsi binary
-	@CGO_ENABLED=0 GOARCH=$(GOARCH) GOOS=linux go build -o $(OUT_DIR)/spdkcsi ./cmd/
+.PHONY: poscsi
+poscsi:
+	@echo === building poscsi binary
+	@CGO_ENABLED=0 GOARCH=$(GOARCH) GOOS=linux go build -o $(OUT_DIR)/poscsi ./cmd/
 
 # static code check, text lint
 lint: golangci yamllint shellcheck
@@ -100,12 +100,12 @@ e2e-test:
 helm-test:
 	@echo === running helm test
 	@./scripts/install-helm.sh up
-	@./scripts/install-helm.sh install-spdkcsi
-	@./scripts/install-helm.sh cleanup-spdkcsi
+	@./scripts/install-helm.sh install-poscsi
+	@./scripts/install-helm.sh cleanup-poscsi
 	@./scripts/install-helm.sh clean
 
 # docker image
-image: spdkcsi
+image: poscsi
 	@echo === running docker build
 	@if [ -n $(HTTP_PROXY) ]; then \
 		proxy_opt="--build-arg http_proxy=$(HTTP_PROXY) --build-arg https_proxy=$(HTTP_PROXY)"; \
@@ -115,5 +115,5 @@ image: spdkcsi
 
 .PHONY: clean
 clean:
-	rm -f $(OUT_DIR)/spdkcsi
+	rm -f $(OUT_DIR)/poscsi
 	go clean -testcache

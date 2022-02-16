@@ -24,7 +24,6 @@ import (
 	"net/http"
 	"strings"
 	"sync/atomic"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -78,7 +77,7 @@ type SpdkNode interface {
 	VolumeInfo(lvolID string) (map[string]string, error)
 	CreateVolume(lvsName string, sizeMiB int64) (string, error)
 	DeleteVolume(lvolID string) error
-	PublishVolume(lvolID string) error
+	PublishVolume(conf map[string]string) error
 	UnpublishVolume(lvolID string) error
 	CreateSnapshot(lvolName, snapshotName string) (string, error)
 }
@@ -111,7 +110,7 @@ type rpcClient struct {
 	httpClient *http.Client
 	rpcID      int32 // json request message ID, auto incremented
 }
-
+/*
 func NewSpdkNode(rpcURL, rpcUser, rpcPass, targetType, targetAddr string) (SpdkNode, error) {
 	client := rpcClient{
 		rpcURL:     rpcURL,
@@ -130,7 +129,7 @@ func NewSpdkNode(rpcURL, rpcUser, rpcPass, targetType, targetAddr string) (SpdkN
 	default:
 		return nil, fmt.Errorf("unknown transport: %s", targetType)
 	}
-}
+}*/
 
 func (client *rpcClient) info() string {
 	return client.rpcURL

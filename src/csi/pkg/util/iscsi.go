@@ -27,7 +27,7 @@ const (
 	numberInitiatorGroupTag = 1
 	targetQueueDepth        = 64
 	// SPDK ISCSI Iqn fixed prefix
-	iqnPrefixName = "iqn.2016-06.io.spdk:"
+	iqnPrefixName = "iqn.2016-06.io.pos:"
 )
 
 type nodeISCSI struct {
@@ -128,7 +128,7 @@ func (node *nodeISCSI) DeleteVolume(lvolID string) error {
 }
 
 // PublishVolume exports a volume through ISCSI target
-func (node *nodeISCSI) PublishVolume(lvolID string) error {
+func (node *nodeISCSI) PublishVolume(lvolID string, conf map[string]string) error {
 	var err error
 
 	node.mtx.Lock()
