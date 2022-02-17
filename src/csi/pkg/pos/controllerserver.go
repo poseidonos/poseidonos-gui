@@ -3,12 +3,10 @@ package pos
 import (
 	"context"
 	"sync"
-
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
-
 	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
 	"github.com/poseidonos/pos-csi/pkg/util"
 )
@@ -41,6 +39,17 @@ func (s *controllerServer) CreateVolume(
 	klog.Info("In Volume Creation")
 
 	s.mtx.Lock()
+	defer s.mtx.Unlock()
+        if len(req.GetName()) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Name missing in request")
+        }
+        caps := req.GetVolumeCapabilities()
+        if caps == nil {
+                return nil, status.Error(codes.InvalidArgument, "Volume Capabilities missing in request")
+        }
+        if req.GetCapacityRange().GetRequiredBytes() == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume capacity cannot be 0")
+        }
 	klog.Infof("POS Volumes, %v", s.volumes)
 	posVolume, exists := s.volumes[req.Name]
 	klog.Infof("isExists %v %v", posVolume, exists)
@@ -59,12 +68,10 @@ func (s *controllerServer) CreateVolume(
 			return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
 		}
 	}
-	s.mtx.Unlock()
 
 	posVolume.mtx.Lock()
 	defer posVolume.mtx.Unlock()
 	params := req.GetParameters()
-	klog.Infof("get parameters ", params)
 	// volumeInfo to be updated from Storage Class
 	volumeInfo := map[string]string{
 		"targetType":      params["transportType"],
@@ -121,6 +128,10 @@ func (s *controllerServer) CreateVolume(
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
 	klog.Info("Deleting Volume: %s", volumeID)
+
+	if len(volumeID) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume ID missing in request")
+        }
 
 	s.mtx.Lock()
 	volume, exists := s.volumes[volumeID]

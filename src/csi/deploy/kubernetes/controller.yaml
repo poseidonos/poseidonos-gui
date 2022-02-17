@@ -32,22 +32,6 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-      - name: poscsi-snapshotter
-        image: k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.3
-        args:
-        - "--csi-address=unix:///csi/csi-provisioner.sock"
-        - "--v=5"
-        - "--timeout=150s"
-        - "--leader-election=false"
-        imagePullPolicy: "IfNotPresent"
-        securityContext:
-          privileged: true
-          capabilities:
-            add: ["SYS_ADMIN"]
-          allowPrivilegeEscalation: true
-        volumeMounts:
-        - name: socket-dir
-          mountPath: /csi
       - name: poscsi-attacher
         image: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
         imagePullPolicy: "IfNotPresent"
@@ -87,8 +71,9 @@ spec:
           readOnly: true
       volumes:
       - name: socket-dir
-        emptyDir:
-          medium: "Memory"
+        hostPath:
+          path: /var/lib/kubelet/plugins/csi.pos.io
+          type: DirectoryOrCreate
       - name: poscsi-config
         configMap:
           name: poscsi-cm
