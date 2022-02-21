@@ -3,6 +3,7 @@ package pos
 import (
 	"context"
 	"sync"
+
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,7 +22,6 @@ var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
 	volumes map[string]*volume // volume id to volume struct
-	//	volumesIdem   map[string]string       // volume name to id, for CreateVolume idempotency
 	mtx sync.Mutex // protect volume lock's map
 }
 
@@ -29,6 +29,7 @@ type volume struct {
 	name      string // CO provided volume name
 	csiVolume csi.Volume
 	status    string
+	size      int64
 	mtx       sync.Mutex // per volume lock to serialize DeleteVolume requests
 }
 
@@ -40,7 +41,8 @@ func (s *controllerServer) CreateVolume(
 
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
-        if len(req.GetName()) == 0 {
+
+	if len(req.GetName()) == 0 {
                 return nil, status.Error(codes.InvalidArgument, "Name missing in request")
         }
         caps := req.GetVolumeCapabilities()
@@ -50,6 +52,7 @@ func (s *controllerServer) CreateVolume(
         if req.GetCapacityRange().GetRequiredBytes() == 0 {
                 return nil, status.Error(codes.InvalidArgument, "Volume capacity cannot be 0")
         }
+
 	klog.Infof("POS Volumes, %v", s.volumes)
 	posVolume, exists := s.volumes[req.Name]
 	klog.Infof("isExists %v %v", posVolume, exists)
@@ -64,6 +67,10 @@ func (s *controllerServer) CreateVolume(
 			return nil, status.Error(codes.Aborted, "Volume already under creation")
 		}
 		if posVolume.status == CREATED {
+			if posVolume.size != req.GetCapacityRange().GetRequiredBytes() {
+				klog.Infof("Volume %s with same name and different size is already available", req.Name)
+				return nil,  status.Error(codes.AlreadyExists, "Volume with different size exists")
+			}
 			klog.Infof("Volume %s with same name is already available", req.Name)
 			return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
 		}
@@ -108,6 +115,7 @@ func (s *controllerServer) CreateVolume(
 		return nil, err
 	}
 	newVolume.csiVolume.VolumeId = volumeID
+	klog.Info("Volume Id of created Volume", volumeID)
 	volumeInfo["model"] = volumeID
 	if newVolume.csiVolume.VolumeContext == nil {
 		newVolume.csiVolume.VolumeContext = volumeInfo
@@ -118,6 +126,7 @@ func (s *controllerServer) CreateVolume(
 	}
 	posVolume.csiVolume = newVolume.csiVolume
 	posVolume.name = newVolume.name
+	posVolume.size = newVolume.size
 	posVolume.status = CREATED
 	s.volumes[volumeID] = posVolume
 
@@ -193,6 +202,22 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 }
 
 func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req *csi.ValidateVolumeCapabilitiesRequest) (*csi.ValidateVolumeCapabilitiesResponse, error) {
+
+	volumeId := req.GetVolumeId()
+	if len(volumeId) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+        }
+	if len(req.VolumeCapabilities) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities not present in Request")
+	}
+
+	cs.mtx.Lock()
+        _, exists := cs.volumes[volumeId]
+        cs.mtx.Unlock()
+        if !exists {
+                return nil, status.Error(codes.InvalidArgument, "Requested Volume not present")
+        }
+
 	// make sure we support all requested caps
 	for _, cap := range req.VolumeCapabilities {
 		supported := false

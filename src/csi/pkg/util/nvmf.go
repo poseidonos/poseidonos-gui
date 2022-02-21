@@ -34,7 +34,8 @@ import (
 	"time"
 )
 
-const invalidNSID = 0
+const INVALID_NSID = 0
+const MAX_RETRY_COUNT = 5
 
 type nodeNVMf struct {
 	client *rpcClient
@@ -55,7 +56,7 @@ type lvolNVMf struct {
 }
 
 func (lvol *lvolNVMf) reset() {
-	lvol.nsID = invalidNSID
+	lvol.nsID = INVALID_NSID
 	lvol.nqn = ""
 	lvol.model = ""
 }
@@ -112,7 +113,7 @@ func (node *nodeNVMf) CreateVolume(lvsName string, sizeMiB int64) (string, error
 	if exists {
 		return "", fmt.Errorf("volume ID already exists: %s", lvolID)
 	}
-	node.lvols[lvolID] = &lvolNVMf{nsID: invalidNSID}
+	node.lvols[lvolID] = &lvolNVMf{nsID: INVALID_NSID}
 
 	klog.V(5).Infof("volume created: %s", lvolID)
 	return lvolID, nil
@@ -204,7 +205,7 @@ func GetUUIDFromNamespaces(volName string, namespaces []interface{}) (string, er
 }
 
 func GetUUIDFromSubsystem(id string, conf map[string]string) (string, error) {
-	subsystemResponse, err := ListSubsystem(conf)
+	subsystemResponse, err := ListSubsystem(conf, 1)
 	if err != nil {
 		return "", err
 	}
@@ -256,7 +257,7 @@ func UnpublishVolume(lvolID string) error {
 		// we should try deleting subsystem even if we fail here
 		klog.Errorf("failed to remove namespace(nqn=%s, nsid=%d): %s", lvol.nqn, lvol.nsID, err)
 	} else {
-		lvol.nsID = invalidNSID
+		lvol.nsID = INVALID_NSID
 	}
 
 	err = node.deleteSubsystem(lvol.nqn)
@@ -293,7 +294,7 @@ func GetVolumeIdFromName(volumeName string, conf map[string]string) (string, err
 
 }
 
-func ListSubsystem(conf map[string]string) (model.Response, error) {
+func ListSubsystem(conf map[string]string, count int) (model.Response, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
 	resp, err := CallDAgent(url, nil, "GET", "List SubSystem")
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -306,13 +307,17 @@ func ListSubsystem(conf map[string]string) (model.Response, error) {
 	if response.Result.Status.Code == 0 {
 		klog.Info("List SubSystem Success")
 	} else {
+		if response.Result.Status.Code == 1030 && count < MAX_RETRY_COUNT {
+			time.Sleep(2 * time.Second)
+			return ListSubsystem(conf, count + 1)
+		}
 		return response, status.Error(codes.Unavailable, response.Result.Status.Description)
 	}
 	return response, nil
 
 }
 func createSubsystem(conf map[string]string) error {
-	response, err := ListSubsystem(conf)
+	response, err := ListSubsystem(conf, 1)
 	if err != nil {
 		return err
 	}

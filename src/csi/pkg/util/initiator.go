@@ -103,6 +103,7 @@ func (nvmf *initiatorNVMf) Connect() (string, error) {
 	deviceGlob := fmt.Sprintf("/dev/disk/by-id/*%s*", nvmf.model)
 	devicePath, err := waitForDeviceReady(deviceGlob, 20)
 	if err != nil {
+		klog.Infof("Error in devicePath: %v", err)
 		return "", err
 	}
 	return devicePath, nil

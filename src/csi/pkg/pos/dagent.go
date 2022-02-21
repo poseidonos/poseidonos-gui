@@ -43,6 +43,10 @@ type Status struct {
 
 func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string) (*volume, error) {
 	name := csiReq.Name
+	alignedSize := size
+	if size == 0 {
+		alignedSize = 1048576
+	}
 	klog.Infof("Creating Volume using DAgent: %v", csiReq.Name)
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes", config["provisionerIp"], config["provisionerPort"])
 	requestBody := []byte(fmt.Sprintf(`{
@@ -53,7 +57,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "maxbw": 0,
                 "maxiops": 0
              }
-        }`, config["array"], name, csiReq.GetCapacityRange().GetRequiredBytes()))
+        }`, config["array"], name, alignedSize))
 	resp, err := util.CallDAgent(url, requestBody, "POST", "Create Volume")
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
@@ -77,6 +81,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 	}
 	return &volume{
 		name: name,
+		size: size,
 		csiVolume: csi.Volume{
 			CapacityBytes: size,
 			VolumeContext: csiReq.GetParameters(),

@@ -55,6 +55,18 @@ func newNodeServer(d *csicommon.CSIDriver) *nodeServer {
 }
 
 func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVolumeRequest) (*csi.NodeStageVolumeResponse, error) {
+
+
+        if req.GetVolumeCapability() == nil {
+                return nil, status.Error(codes.InvalidArgument, "Volume Capability not present in Request")
+        }
+	if len(req.GetVolumeId()) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+	}
+	if len(req.GetStagingTargetPath()) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Volume Staging Target Path not present in Request")
+	}
+
 	volume, err := func() (*nodeVolume, error) {
 		volumeID := req.GetVolumeId()
 		ns.mtx.Lock()
@@ -101,6 +113,12 @@ func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 
 func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstageVolumeRequest) (*csi.NodeUnstageVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
+	if len(volumeID) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+        }
+        if len(req.GetStagingTargetPath()) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume Staging Target Path not present in Request")
+        }
 	ns.mtx.Lock()
 	volume, exists := ns.volumes[volumeID]
 	ns.mtx.Unlock()
@@ -141,7 +159,13 @@ func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstag
 }
 
 func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublishVolumeRequest) (*csi.NodePublishVolumeResponse, error) {
+	if req.GetVolumeCapability() == nil {
+		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities not present in Request")
+	}
 	volumeID := req.GetVolumeId()
+	if len(volumeID) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+        }
 	ns.mtx.Lock()
 	volume, exists := ns.volumes[volumeID]
 	ns.mtx.Unlock()
@@ -165,7 +189,15 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 }
 
 func (ns *nodeServer) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpublishVolumeRequest) (*csi.NodeUnpublishVolumeResponse, error) {
+
+	if len(req.GetTargetPath()) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume Staging Target Path not present in Request")
+        }
+
 	volumeID := req.GetVolumeId()
+	if len(req.GetVolumeId()) == 0 {
+                return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+        }
 	ns.mtx.Lock()
 	volume, exists := ns.volumes[volumeID]
 	ns.mtx.Unlock()
@@ -238,6 +270,9 @@ func (ns *nodeServer) stageVolume(devicePath string, req *csi.NodeStageVolumeReq
 // must be idempotent
 func (ns *nodeServer) publishVolume(stagingPath string, req *csi.NodePublishVolumeRequest) error {
 	targetPath := req.GetTargetPath()
+	if len(targetPath) == 0 {
+		return errors.New("TargetPath is not provided")
+	}
 	isBlock := req.GetVolumeCapability().GetBlock() != nil
 	mounted, err := ns.createMountPoint(targetPath, isBlock)
 	if err != nil {
@@ -280,7 +315,7 @@ func (ns *nodeServer) createStageMountPoint(path string, isBlock bool) (bool, er
 // create mount point if not exists, return whether already mounted
 func (ns *nodeServer) createMountPoint(path string, isBlock bool) (bool, error) {
 	unmounted, err := mount.IsNotMountPoint(ns.mounter, path)
-	if !os.IsNotExist(err) {
+	if err != nil && !os.IsNotExist(err) {
 		klog.Infof("Error except Mount point not exist: %v", err)
 		return false, err
 	}
