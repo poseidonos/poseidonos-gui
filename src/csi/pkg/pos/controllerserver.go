@@ -49,9 +49,6 @@ func (s *controllerServer) CreateVolume(
         if caps == nil {
                 return nil, status.Error(codes.InvalidArgument, "Volume Capabilities missing in request")
         }
-        if req.GetCapacityRange().GetRequiredBytes() == 0 {
-                return nil, status.Error(codes.InvalidArgument, "Volume capacity cannot be 0")
-        }
 
 	klog.Infof("POS Volumes, %v", s.volumes)
 	posVolume, exists := s.volumes[req.Name]
@@ -195,6 +192,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 
 	// no harm if volumeID already deleted
 	s.mtx.Lock()
+	delete(s.volumes, volume.name)
 	delete(s.volumes, volumeID)
 	s.mtx.Unlock()
 
@@ -215,7 +213,7 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
         _, exists := cs.volumes[volumeId]
         cs.mtx.Unlock()
         if !exists {
-                return nil, status.Error(codes.InvalidArgument, "Requested Volume not present")
+                return nil, status.Error(codes.NotFound, "Requested Volume not present")
         }
 
 	// make sure we support all requested caps
