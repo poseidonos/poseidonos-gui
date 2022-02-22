@@ -175,7 +175,7 @@ func mountVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string) error 
              }
         }`, conf["array"], conf["nqn"]))
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", conf["provisionerIp"], conf["provisionerPort"], name)
-	resp, err := CallDAgent(url, requestBody, "POST", "Mount volume")
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Mount volume", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -272,7 +272,7 @@ func UnpublishVolume(lvolID string) error {
 
 func GetVolumeIdFromName(volumeName string, conf map[string]string) (string, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"])
-	resp, err := CallDAgent(url, nil, "GET", "List Volumes")
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List Volumes", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -296,7 +296,7 @@ func GetVolumeIdFromName(volumeName string, conf map[string]string) (string, err
 
 func ListSubsystem(conf map[string]string, count int) (model.Response, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
-	resp, err := CallDAgent(url, nil, "GET", "List SubSystem")
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List SubSystem", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -343,7 +343,7 @@ func createSubsystem(conf map[string]string) error {
         "max_namespaces": %s,
         "allow_any_host": %s
     }}`, conf["nqn"], conf["serialNumber"], conf["modelNumber"], conf["maxNamespaces"], conf["allowAnyHost"]))
-	resp, _ := CallDAgent(url, requestBody, "POST", "Create SubSystem")
+	resp, _ := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create SubSystem", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -391,7 +391,7 @@ func subsystemAddListener(conf map[string]string) error {
                 "transport_service_id": "%s"
              }
         }`, conf["nqn"], conf["targetType"], conf["targetAddr"], conf["targetPort"]))
-	resp, err := CallDAgent(url, requestBody, "POST", "Add Listener")
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Add Listener", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -445,7 +445,7 @@ func createTransport(conf map[string]string) error {
              }
         }`, conf["targetType"], conf["bufCacheSize"], conf["numSharedBuf"]))
 
-	resp, err := CallDAgent(url, requestBody, "POST", "Create Transport")
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create Transport", 0)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -481,4 +481,28 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string) 
 	/*if resp.StatusCode != 200 {
 	        return nil, status.Error(codes.Unavailable, "Transport Creation Failed")
 	}*/
+}
+
+func CallDAgentWithStatus(ip, port, url string, requestBody []byte, reqType string, reqName string, count int) (*http.Response, error) {
+	statusURL := fmt.Sprintf("http://%s:%s/api/ibofos/v1/system", ip, port)
+	resp, err := CallDAgent(statusURL, nil, "GET", "Status")
+	body, _ := ioutil.ReadAll(resp.Body)
+        dec := json.NewDecoder(bytes.NewBuffer(body))
+        dec.UseNumber()
+        response := model.Response{}
+        if err = dec.Decode(&response); err != nil {
+                klog.Info("Error in decoding Status Response")
+                return nil, status.Error(codes.Unavailable, err.Error())
+        }
+        if response.Result.Status.Code == 0 {
+                return CallDAgent(url, requestBody, reqType, reqName)
+        } else if response.Result.Status.Code == 1030 {
+		if count >= MAX_RETRY_COUNT {
+			return nil, status.Error(codes.Unavailable, "POS is in busy state")
+		}
+                time.Sleep(2 *time.Second)
+		return CallDAgentWithStatus(ip, port, url, requestBody, reqType, reqName, count + 1)
+        }
+        return nil, status.Error(codes.Unavailable, response.Result.Status.Description)
+
 }

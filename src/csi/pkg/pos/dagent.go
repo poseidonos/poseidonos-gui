@@ -5,14 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/google/uuid"
 	"github.com/poseidonos/pos-csi/pkg/model"
 	"github.com/poseidonos/pos-csi/pkg/util"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io/ioutil"
 	"k8s.io/klog/v2"
-	"net/http"
 	"time"
 )
 
@@ -58,7 +56,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "maxiops": 0
              }
         }`, config["array"], name, alignedSize))
-	resp, err := util.CallDAgent(url, requestBody, "POST", "Create Volume")
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0)
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}
@@ -98,14 +96,7 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error 
                 "array": "POSArray"
              }
         }`))
-	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(requestBody))
-	id := uuid.New()
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-request-Id", id.String())
-	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
-	client := &http.Client{}
-	klog.Infof("Calling Unmount Volume API: %v", name)
-	resp, err := client.Do(req)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "SELETE", "Unmount Volume", 0)
 	if err != nil {
 		klog.Infof("Error in Unmount Volume API: %v", err)
 		return err
@@ -120,21 +111,11 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error 
              }
         }`)
 	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"], name)
-	req, err = http.NewRequest("DELETE", deleteUrl, bytes.NewBuffer(requestBody))
-	req.Header.Set("Content-Type", "application/json")
-	id = uuid.New()
-	req.Header.Set("X-request-Id", id.String())
-	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
-	if err != nil {
-		return err
-	}
-	klog.Infof("Calling Delete Volume API: %v", name)
-	resp, err = client.Do(req)
+	resp, err = util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], deleteUrl, requestBody, "DELETE", "Delete Volume", 0)
 	if err != nil {
 		klog.Infof("Error in Delete Volume API: %v", err)
 		return err
 	}
-	//body, _ = ioutil.ReadAll(resp.Body)
 
 	return err
 }
