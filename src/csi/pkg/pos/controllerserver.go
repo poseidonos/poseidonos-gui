@@ -98,7 +98,7 @@ func (s *controllerServer) CreateVolume(
 		// Should call delete volume
 		posVolume.status = ""
 		delete(s.volumes, req.Name)
-		klog.Infof("Error in Volume Creation", err.Error())
+		klog.Infof("Error in Volume Creation %v ", err.Error())
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	err = util.PublishVolume(req, volumeInfo)
@@ -133,7 +133,7 @@ func (s *controllerServer) CreateVolume(
 
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
-	klog.Info("Deleting Volume: %s", volumeID)
+	klog.Infof("Deleting Volume: %v", volumeID)
 
 	if len(volumeID) == 0 {
                 return nil, status.Error(codes.InvalidArgument, "Volume ID missing in request")
@@ -142,7 +142,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	s.mtx.Lock()
 	volume, exists := s.volumes[volumeID]
 	s.mtx.Unlock()
-	klog.Infof("volume = > ", volume, exists)
+	klog.Infof("volume = > %v %v", volume, exists)
 	if !exists {
 		// already deleted?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -236,13 +236,7 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 	}, nil
 }
 
-func (cs *controllerServer) CreateSnapshot(ctx context.Context, req *csi.CreateSnapshotRequest) (*csi.CreateSnapshotResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "")
-}
 
-func (cs *controllerServer) DeleteSnapshot(ctx context.Context, req *csi.DeleteSnapshotRequest) (*csi.DeleteSnapshotResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "")
-}
 
 func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string) (*volume, error) {
 	size := req.GetCapacityRange().GetRequiredBytes()

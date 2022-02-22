@@ -11,33 +11,39 @@ import (
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 
-	csicommon "github.com/spdk/spdk-csi/pkg/csi-common"
+	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
 	"github.com/spdk/spdk-csi/pkg/util"
 )
+var volumeInfo  = map[string]string {
+                "transportType":      "tcp",
+                "targetAddress":      "107.108.83.97",
+                "transportServiceId":      "1158",
+                "nqnName":             "nqn.2019-04.pos:subsystem1",
+                "arrayName":           "POSArray",
+                "provisionerIP":   "107.108.83.97",
+                "provisionerPort": "3003",
+                "serialNumber":    "POS0000000003",
+                "modelNumber":     "IBOF_VOLUME_EEEXTENSION",
+                "maxNamespaces":   "256",
+                "allowAnyHost":    "true",
+                "bufCacheSize":    "64",
+                "numSharedBuf":    "4096",
+        }
+
 
 func TestNvmeofVolume(t *testing.T) {
 	testVolume("nvme-tcp", t)
 }
-
+/*
 func TestNvmeofIdempotency(t *testing.T) {
 	testIdempotency("nvme-tcp", t)
-}
-
+}*/
+/*
 func TestNvmeofConcurrency(t *testing.T) {
 	testConcurrency("nvme-tcp", t)
 }
+*/
 
-func TestIscsiVolume(t *testing.T) {
-	testVolume("iscsi", t)
-}
-
-func TestIscsiIdempotency(t *testing.T) {
-	testIdempotency("iscsi", t)
-}
-
-func TestIscsiConcurrency(t *testing.T) {
-	testConcurrency("iscsi", t)
-}
 
 func testVolume(targetType string, t *testing.T) {
 	cs, lvss, err := createTestController(targetType)
@@ -186,24 +192,13 @@ func createConfigFiles(targetType string) error {
       "nodes": [
         {
           "name": "localhost",
-          "rpcURL": "http://127.0.0.1:9009",
+          "rpcURL": "http://107.108.83.97:3000",
           "targetType": "nvme-tcp",
-          "targetAddr": "127.0.0.1"
+	  "targetAddr": "107.108.83.97:1158"
         }
       ]
 	}`
-	case "iscsi":
-		config = `
-    {
-      "nodes": [
-        {
-          "name": "localhost",
-          "rpcURL": "http://127.0.0.1:9009",
-          "targetType": "iscsi",
-          "targetAddr": "127.0.0.1"
-        }
-      ]
-    }`
+
 	}
 	_, err = configFile.Write([]byte(config))
 	if err != nil {
@@ -244,6 +239,8 @@ func createTestVolume(cs *controllerServer, name string, size int64) (string, er
 	reqCreate := csi.CreateVolumeRequest{
 		Name:          name,
 		CapacityRange: &csi.CapacityRange{RequiredBytes: size},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -273,6 +270,8 @@ func createSameVolumeInParallel(cs *controllerServer, name string, count int, si
 	volumeID := make([]string, count)
 	reqCreate := csi.CreateVolumeRequest{
 		Name:          name,
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: volumeInfo,
 		CapacityRange: &csi.CapacityRange{RequiredBytes: size},
 	}
 	for i := 0; i < count; i++ {
@@ -337,6 +336,7 @@ func deleteSameVolumeInParallel(cs *controllerServer, volumeID string, count int
 
 func getLVSS(cs *controllerServer) ([][]util.LvStore, error) {
 	var lvss [][]util.LvStore
+/*
 	for _, spdkNode := range cs.spdkNodes {
 		lvs, err := spdkNode.LvStores()
 		if err != nil {
@@ -344,6 +344,7 @@ func getLVSS(cs *controllerServer) ([][]util.LvStore, error) {
 		}
 		lvss = append(lvss, lvs)
 	}
+*/
 	return lvss, nil
 }
 

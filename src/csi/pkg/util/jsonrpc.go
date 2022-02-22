@@ -79,7 +79,6 @@ type SpdkNode interface {
 	DeleteVolume(lvolID string) error
 	PublishVolume(conf map[string]string) error
 	UnpublishVolume(lvolID string) error
-	CreateSnapshot(lvolName, snapshotName string) (string, error)
 }
 
 // logical volume store
@@ -110,26 +109,6 @@ type rpcClient struct {
 	httpClient *http.Client
 	rpcID      int32 // json request message ID, auto incremented
 }
-/*
-func NewSpdkNode(rpcURL, rpcUser, rpcPass, targetType, targetAddr string) (SpdkNode, error) {
-	client := rpcClient{
-		rpcURL:     rpcURL,
-		rpcUser:    rpcUser,
-		rpcPass:    rpcPass,
-		httpClient: &http.Client{Timeout: cfgRPCTimeoutSeconds * time.Second},
-	}
-
-	switch strings.ToLower(targetType) {
-	case "nvme-rdma":
-		return newNVMf(&client, "RDMA", targetAddr), nil
-	case "nvme-tcp":
-		return newNVMf(&client, "TCP", targetAddr), nil
-	case "iscsi":
-		return newISCSI(&client, targetAddr), nil
-	default:
-		return nil, fmt.Errorf("unknown transport: %s", targetType)
-	}
-}*/
 
 func (client *rpcClient) info() string {
 	return client.rpcURL
@@ -199,20 +178,7 @@ func (client *rpcClient) deleteVolume(lvolID string) error {
 	return err
 }
 
-func (client *rpcClient) snapshot(lvolName, snapShotName string) (string, error) {
-	params := struct {
-		LvolName     string `json:"lvol_name"`
-		SnapShotName string `json:"snapshot_name"`
-	}{
-		LvolName:     lvolName,
-		SnapShotName: snapShotName,
-	}
 
-	var snapshotID string
-	err := client.call("bdev_lvol_snapshot", &params, &snapshotID)
-
-	return snapshotID, err
-}
 
 // low level rpc request/response handling
 func (client *rpcClient) call(method string, args, result interface{}) error {
