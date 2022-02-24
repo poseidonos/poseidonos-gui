@@ -96,7 +96,7 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error 
                 "array": "POSArray"
              }
         }`))
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "SELETE", "Unmount Volume", 0)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0)
 	if err != nil {
 		klog.Infof("Error in Unmount Volume API: %v", err)
 		return err
