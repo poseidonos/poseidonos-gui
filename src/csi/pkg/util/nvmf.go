@@ -21,6 +21,7 @@ import (
 	"strings"
 	"sync"
 	//"sync/atomic"
+	"errors"
 	"bytes"
 	"encoding/json"
 	"github.com/container-storage-interface/spec/lib/go/csi"
@@ -34,107 +35,19 @@ import (
 	"time"
 )
 
-const INVALID_NSID = 0
 const MAX_RETRY_COUNT = 5
 
-type nodeNVMf struct {
-	client *rpcClient
+var (
+        // json response errors: errors.New("json: tag-string")
+        // matches if "tag-string" founded in json error string
+        ErrJSONNoSpaceLeft  = errors.New("json: No space left")
+        ErrJSONNoSuchDevice = errors.New("json: No such device")
 
-	targetType   string // RDMA, TCP
-	targetAddr   string
-	targetPort   string
-	transCreated int32
-
-	lvols map[string]*lvolNVMf
-	mtx   sync.Mutex // for concurrent access to lvols map
-}
-
-type lvolNVMf struct {
-	nsID  int
-	nqn   string
-	model string
-}
-
-func (lvol *lvolNVMf) reset() {
-	lvol.nsID = INVALID_NSID
-	lvol.nqn = ""
-	lvol.model = ""
-}
-
-func newNVMf(client *rpcClient, targetType, targetAddr string) *nodeNVMf {
-	return &nodeNVMf{
-		client:     client,
-		targetType: targetType,
-		targetAddr: targetAddr,
-		targetPort: cfgNVMfSvcPort,
-		lvols:      make(map[string]*lvolNVMf),
-	}
-}
-
-func (node *nodeNVMf) Info() string {
-	return node.client.info()
-}
-
-func (node *nodeNVMf) LvStores() ([]LvStore, error) {
-	return node.client.lvStores()
-}
-
-// VolumeInfo returns a string:string map containing information necessary
-// for CSI node(initiator) to connect to this target and identify the disk.
-func (node *nodeNVMf) VolumeInfo(lvolID string) (map[string]string, error) {
-	node.mtx.Lock()
-	lvol, exists := node.lvols[lvolID]
-	node.mtx.Unlock()
-
-	if !exists {
-		return nil, fmt.Errorf("volume not exists: %s", lvolID)
-	}
-
-	return map[string]string{
-		"targetType": node.targetType,
-		"targetAddr": node.targetAddr,
-		"targetPort": node.targetPort,
-		"nqn":        lvol.nqn,
-		"model":      lvol.model,
-	}, nil
-}
-
-// CreateVolume creates a logical volume and returns volume ID
-func (node *nodeNVMf) CreateVolume(lvsName string, sizeMiB int64) (string, error) {
-	lvolID, err := node.client.createVolume(lvsName, sizeMiB)
-	if err != nil {
-		return "", err
-	}
-
-	node.mtx.Lock()
-	defer node.mtx.Unlock()
-
-	_, exists := node.lvols[lvolID]
-	if exists {
-		return "", fmt.Errorf("volume ID already exists: %s", lvolID)
-	}
-	node.lvols[lvolID] = &lvolNVMf{nsID: INVALID_NSID}
-
-	klog.V(5).Infof("volume created: %s", lvolID)
-	return lvolID, nil
-}
-
-
-
-func (node *nodeNVMf) DeleteVolume(lvolID string) error {
-	err := node.client.deleteVolume(lvolID)
-	if err != nil {
-		return err
-	}
-
-	node.mtx.Lock()
-	defer node.mtx.Unlock()
-
-	delete(node.lvols, lvolID)
-
-	klog.V(5).Infof("volume deleted: %s", lvolID)
-	return nil
-}
+        // internal errors
+        ErrVolumeDeleted     = errors.New("volume deleted")
+        ErrVolumePublished   = errors.New("volume already published")
+        ErrVolumeUnpublished = errors.New("volume not published")
+)
 
 // PublishVolume exports a volume through NVMf target
 func PublishVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) error {
@@ -230,38 +143,7 @@ func GetUUID(name string, conf map[string]string,mtx2 *sync.Mutex) (string, erro
 	return uuid, nil
 }
 
-/*
-func UnpublishVolume(lvolID string) error {
-	var err error
 
-	node.mtx.Lock()
-	lvol, exists := node.lvols[lvolID]
-	node.mtx.Unlock()
-
-	if !exists {
-		return ErrVolumeDeleted
-	}
-	if lvol.nqn == "" {
-		return ErrVolumeUnpublished
-	}
-
-	err = node.subsystemRemoveNs(lvol.nqn, lvol.nsID)
-	if err != nil {
-		// we should try deleting subsystem even if we fail here
-		klog.Errorf("failed to remove namespace(nqn=%s, nsid=%d): %s", lvol.nqn, lvol.nsID, err)
-	} else {
-		lvol.nsID = INVALID_NSID
-	}
-
-	err = node.deleteSubsystem(lvol.nqn)
-	if err != nil {
-		return err
-	}
-
-	lvol.reset()
-	klog.V(5).Infof("volume unpublished: %s", lvolID)
-	return nil
-}*/
 
 func GetVolumeIdFromName(volumeName string, conf map[string]string,mtx2 *sync.Mutex) (string, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"])
@@ -353,26 +235,7 @@ func createSubsystem(conf map[string]string, mtx2 *sync.Mutex) error {
 	return nil
 }
 
-func (node *nodeNVMf) subsystemAddNs(nqn, lvolID string) (int, error) {
-	type namespace struct {
-		BdevName string `json:"bdev_name"`
-	}
 
-	params := struct {
-		Nqn       string    `json:"nqn"`
-		Namespace namespace `json:"namespace"`
-	}{
-		Nqn: nqn,
-		Namespace: namespace{
-			BdevName: lvolID,
-		},
-	}
-
-	var nsID int
-
-	err := node.client.call("nvmf_subsystem_add_ns", &params, &nsID)
-	return nsID, err
-}
 
 func subsystemAddListener(conf map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/listener", conf["provisionerIp"], conf["provisionerPort"])
@@ -401,28 +264,6 @@ func subsystemAddListener(conf map[string]string, mtx2 *sync.Mutex) error {
 
 }
 
-/*
-func subsystemRemoveNs(nqn string, nsID int) error {
-	params := struct {
-		Nqn  string `json:"nqn"`
-		NsID int    `json:"nsid"`
-	}{
-		Nqn:  nqn,
-		NsID: nsID,
-	}
-
-	return node.client.call("nvmf_subsystem_remove_ns", &params, nil)
-}
-
-func deleteSubsystem(nqn string) error {
-	params := struct {
-		Nqn string `json:"nqn"`
-	}{
-		Nqn: nqn,
-	}
-
-	return node.client.call("nvmf_delete_subsystem", &params, nil)
-}*/
 
 func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
 	// concurrent requests can happen despite this fast path check
