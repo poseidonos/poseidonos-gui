@@ -86,6 +86,14 @@ func (nvmf *initiatorNVMf) Connect() (string, error) {
 		// go on checking device status in case caused by duplicated request
 		klog.Errorf("command modprobe nvme_tcp failed: %s", err)
 	}
+        /*cmdLine := []string{"nvme", "disconnect", "-n", nvmf.nqn}
+        err = execWithTimeout(cmdLine, 10)
+        if err != nil {
+                // go on checking device status in case caused by duplicate request
+                klog.Errorf("command %v failed: %s", cmdLine, err)
+        }*/
+
+
 	cmdLine := []string{"nvme", "connect", "-t", strings.ToLower(nvmf.targetType),
 		"-a", nvmf.targetAddr, "-s", nvmf.targetPort, "-n", nvmf.nqn}
 	err = execWithTimeout(cmdLine, 40)
@@ -93,6 +101,12 @@ func (nvmf *initiatorNVMf) Connect() (string, error) {
 		// go on checking device status in case caused by duplicated request
 		klog.Errorf("command %v failed: %s", cmdLine, err)
 	}
+        cmdLine = []string{"nvme", "list"}
+        err = execWithTimeout(cmdLine, 10)
+        if err != nil {
+                // go on checking device status in case caused by duplicate request
+                klog.Errorf("nvme list command %v failed: %s", cmdLine, err)
+        }
 
 	deviceGlob := fmt.Sprintf("/dev/disk/by-id/*%s*", nvmf.model)
 	devicePath, err := waitForDeviceReady(deviceGlob, 20)
@@ -131,6 +145,12 @@ func waitForDeviceReady(deviceGlob string, seconds int) (string, error) {
 				klog.Infof("%v", f.Name())
 			}
 		*/
+		err := execWithTimeout([]string{"ls", "/dev/disk/by-id/"}, 20)
+	        if err != nil {
+                // go on checking device status in case caused by duplicated request
+                klog.Errorf("ls dev/disk error: %s", err)
+        	}
+
 		matches, err := filepath.Glob(deviceGlob)
 		if err != nil {
 			return "", err

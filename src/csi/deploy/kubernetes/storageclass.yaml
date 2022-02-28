@@ -13,8 +13,8 @@ parameters:
   targetAddress: "107.108.83.97"
   transportServiceId: "1158"
   provisionerIP: "107.108.83.97"
-  provisionerPort: "3003"
-  nqnName: "nqn.2019-04.pos:subsystem1"
+  provisionerPort: "3000"
+  nqnName: "nqn.2019-04.pos:subsystem4"
   arrayName: "POSArray"
 reclaimPolicy: Delete
 volumeBindingMode: Immediate

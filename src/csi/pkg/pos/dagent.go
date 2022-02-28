@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"k8s.io/klog/v2"
 	"time"
+	"sync"
 )
 
 type DAgent struct {
@@ -39,8 +40,9 @@ type Status struct {
 	Solution    string `json:"solution,omitempty"`
 }
 
-func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string) (*volume, error) {
+func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string, mtx2 *sync.Mutex) (*volume, error) {
 	name := csiReq.Name
+	fmt.Println("config ",config)
 	alignedSize := size
 	if size == 0 {
 		alignedSize = 1048576
@@ -56,7 +58,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "maxiops": 0
              }
         }`, config["array"], name, alignedSize))
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0,mtx2)
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}
@@ -89,14 +91,14 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 
 }
 
-func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error {
+func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *sync.Mutex ) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", config["provisionerIp"], config["provisionerPort"], name)
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
                 "array": "POSArray"
              }
         }`))
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0, mtx2)
 	if err != nil {
 		klog.Infof("Error in Unmount Volume API: %v", err)
 		return err
@@ -111,11 +113,12 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error 
              }
         }`)
 	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"], name)
-	resp, err = util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], deleteUrl, requestBody, "DELETE", "Delete Volume", 0)
+	resp, err = util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], deleteUrl, requestBody, "DELETE", "Delete Volume", 0, mtx2)
 	if err != nil {
 		klog.Infof("Error in Delete Volume API: %v", err)
 		return err
 	}
-
+        body, _ = ioutil.ReadAll(resp.Body)
+        klog.Infof("Delete Volume API response: %v", string(body))
 	return err
 }

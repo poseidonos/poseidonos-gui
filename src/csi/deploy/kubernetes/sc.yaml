@@ -1,9 +1,0 @@
----
-fsType: ext4
-transportType: "tcp"
-targetAddress: "107.108.83.97"
-transportServiceId: "1158"
-provisionerIP: "107.108.83.97"
-provisionerPort: "3003"
-nqnName: "nqn.2019-04.pos:subsystem1"
-arrayName: "POSArray"

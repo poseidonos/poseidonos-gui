@@ -23,6 +23,7 @@ type controllerServer struct {
 	*csicommon.DefaultControllerServer
 	volumes map[string]*volume // volume id to volume struct
 	mtx sync.Mutex // protect volume lock's map
+	mtx2 sync.Mutex
 }
 
 type volume struct {
@@ -93,7 +94,7 @@ func (s *controllerServer) CreateVolume(
 		"numSharedBuf":    "4096",
 	}
 
-	newVolume, err := s.createVolume(req, volumeInfo)
+	newVolume, err := s.createVolume(req, volumeInfo, &s.mtx2)
 	if err != nil {
 		// Should call delete volume
 		posVolume.status = ""
@@ -101,12 +102,12 @@ func (s *controllerServer) CreateVolume(
 		klog.Infof("Error in Volume Creation %v ", err.Error())
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-	err = util.PublishVolume(req, volumeInfo)
+	err = util.PublishVolume(req, volumeInfo, &s.mtx2)
 	if err != nil {
 		posVolume.status = ""
 		return nil, err
 	}
-	volumeID, err := util.GetUUID(req.Name, volumeInfo)
+	volumeID, err := util.GetUUID(req.Name, volumeInfo, &s.mtx2)
 	if err != nil {
 		posVolume.status = ""
 		return nil, err
@@ -182,7 +183,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 		"provisionerIp":   params["provisionerIP"],
 		"provisionerPort": params["provisionerPort"],
 	}
-	err := deleteVolume(volume, volumeInfo)
+	err := deleteVolume(volume, volumeInfo, &s.mtx2)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -238,16 +239,16 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 
 
 
-func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string) (*volume, error) {
+func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) (*volume, error) {
 	size := req.GetCapacityRange().GetRequiredBytes()
 	provisioner := &DAgent{}
-	vol, err := provisioner.CreateVolume(req, size, conf)
+	vol, err := provisioner.CreateVolume(req, size, conf, mtx2)
 	return vol, err
 }
 
-func deleteVolume(volume *volume, conf map[string]string) error {
+func deleteVolume(volume *volume, conf map[string]string, mtx2 *sync.Mutex) error {
 	provisioner := &DAgent{}
-	err := provisioner.DeleteVolume(volume.name, conf)
+	err := provisioner.DeleteVolume(volume.name, conf, mtx2)
 	return err
 }
 
