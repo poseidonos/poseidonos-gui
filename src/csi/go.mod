@@ -4,18 +4,18 @@ go 1.14
 
 require (
 	github.com/container-storage-interface/spec v1.2.0
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/kubernetes-csi/csi-lib-utils v0.7.0
-	github.com/onsi/ginkgo v1.11.0
-	github.com/onsi/gomega v1.7.0
-	github.com/spdk/spdk-csi v0.0.0-20211122155459-a55a004bcf44
+	github.com/onsi/ginkgo v1.11.0 // indirect
+	github.com/onsi/gomega v1.7.0 // indirect
+	github.com/spdk/spdk-csi v0.0.0-20211122155459-a55a004bcf44 // indirect
 	google.golang.org/grpc v1.27.1
-	k8s.io/apimachinery v0.19.3
-	k8s.io/client-go v0.19.3
+	k8s.io/apimachinery v0.19.3 // indirect
+	k8s.io/client-go v0.19.3 // indirect
 	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.30.0
-	k8s.io/kubernetes v1.19.3
+	k8s.io/kubernetes v1.19.3 // indirect
 	k8s.io/mount-utils v0.23.1
 	k8s.io/utils v0.0.0-20210930125809-cb0fa318a74b
 )

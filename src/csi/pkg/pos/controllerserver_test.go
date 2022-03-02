@@ -12,7 +12,7 @@ import (
 	"github.com/container-storage-interface/spec/lib/go/csi"
 
 	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
-	"github.com/spdk/spdk-csi/pkg/util"
+	"github.com/poseidonos/pos-csi/pkg/util"
 )
 var volumeInfo  = map[string]string {
                 "transportType":      "tcp",
@@ -179,7 +179,7 @@ func createTestController(targetType string) (cs *controllerServer, lvss [][]uti
 }
 
 func createConfigFiles(targetType string) error {
-	configFile, err := ioutil.TempFile("", "spdkcsi-config*.json")
+	configFile, err := ioutil.TempFile("", "poscsi-config*.json")
 	if err != nil {
 		return err
 	}
@@ -207,7 +207,7 @@ func createConfigFiles(targetType string) error {
 	}
 	os.Setenv("SPDKCSI_CONFIG", configFile.Name())
 
-	secretFile, err := ioutil.TempFile("", "spdkcsi-secret*.json")
+	secretFile, err := ioutil.TempFile("", "poscsi-secret*.json")
 	if err != nil {
 		os.Remove(configFile.Name())
 		return err
@@ -219,8 +219,8 @@ func createConfigFiles(targetType string) error {
       "rpcTokens": [
         {
           "name": "localhost",
-          "username": "spdkcsiuser",
-          "password": "spdkcsipass"
+          "username": "poscsiuser",
+          "password": "poscsipass"
         }
       ]
 	}`
@@ -337,8 +337,8 @@ func deleteSameVolumeInParallel(cs *controllerServer, volumeID string, count int
 func getLVSS(cs *controllerServer) ([][]util.LvStore, error) {
 	var lvss [][]util.LvStore
 /*
-	for _, spdkNode := range cs.spdkNodes {
-		lvs, err := spdkNode.LvStores()
+	for _, posNode := range cs.posNodes {
+		lvs, err := posNode.LvStores()
 		if err != nil {
 			return nil, err
 		}

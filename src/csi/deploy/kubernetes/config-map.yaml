@@ -7,8 +7,7 @@ kind: ConfigMap
 metadata:
   name: poscsi-cm
 data:
-  # rpcURL: spdk json rpc target
-  # targetType: nvme-rdma, nvme-tcp, iscsi
+  # targetType: nvme-rdma, nvme-tcp
   # targetAddr: target service IP
   config.json: |-
     {

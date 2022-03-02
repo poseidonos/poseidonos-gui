@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// NOTE: This test requires spdk target and jsonrpc http proxy run on localhost
-// - start spdk target server
-//   $ spdk/app/spdk_tgt/spdk_tgt
+// NOTE: This test requires pos target and jsonrpc http proxy run on localhost
+// - start pos target server
+//   $ pos/app/pos_tgt/pos_tgt
 // - create test bdev and volume store
-//   $ spdk/scripts/rpc.py bdev_malloc_create -b Malloc0 1024 4096
-//   $ spdk/scripts/rpc.py bdev_lvol_create_lvstore Malloc0 lvs0
+//   $ pos/scripts/rpc.py bdev_malloc_create -b Malloc0 1024 4096
+//   $ pos/scripts/rpc.py bdev_lvol_create_lvstore Malloc0 lvs0
 // - start jsonrpc http proxy
-//   $ spdk/scripts/rpc_http_proxy.py 127.0.0.1 9009 spdkcsiuser spdkcsipass
+//   $ pos/scripts/rpc_http_proxy.py 127.0.0.1 9009 poscsiuser poscsipass
 
 package util
 
@@ -34,15 +34,15 @@ import (
 /*
 const (
 	rpcURL  = "http://127.0.0.1:9009"
-	rpcUser = "spdkcsiuser"
-	rpcPass = "spdkcsipass"
+	rpcUser = "poscsiuser"
+	rpcPass = "poscsipass"
 	trAddr  = "127.0.0.1"
 )
 */
 const (
     rpcURL  = "http://107.108.83.97:3000"
-    rpcUser = "spdkcsiuser"
-    rpcPass = "spdkcsipass"
+    rpcUser = "poscsiuser"
+    rpcPass = "poscsipass"
     trAddr  = "107.108.83.97:1158"
 )
 /*

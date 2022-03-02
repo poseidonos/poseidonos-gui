@@ -26,7 +26,6 @@ SCRIPT_DIRS := scripts deploy e2e
 ifeq ($(origin GOARCH), undefined)
   GOARCH := $(shell go env GOARCH)
 endif
-# csi image info (poscsi/spdkcsi:canary)
 ifeq ($(origin CSI_IMAGE_REGISTRY), undefined)
   CSI_IMAGE_REGISTRY := poscsi
 endif
