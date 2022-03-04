@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Arm Limited and Contributors
+# Copyright (c) Intel Corporation
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: poscsi-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: poscsi-sc
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: poscsi-test-1
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu:18.04
+    imagePullPolicy: "IfNotPresent"
+    command: ["sleep", "365d"]
+    volumeMounts:
+    - mountPath: /dev/xda
+      name: pos-volume
+  volumes:
+  - name: pos-volume
+    persistentVolumeClaim:
+      claimName: poscsi-pvc
+

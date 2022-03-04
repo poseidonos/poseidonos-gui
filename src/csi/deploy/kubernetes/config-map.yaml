@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Arm Limited and Contributors
+# Copyright (c) Intel Corporation
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: poscsi-cm
+data:
+  # targetType: nvme-rdma, nvme-tcp
+  # targetAddr: target service IP
+  config.json: |-
+    {
+      "nodes": [
+        {
+          "name": "localhost",
+          "rpcURL": "http://127.0.0.1:9009",
+          "targetType": "nvme-tcp",
+          "targetAddr": "127.0.0.1"
+        }
+      ],
+      "pos": {
+              "dagent": {
+                      "ip": "107.108.83.97",
+                      "port": "3003"
+              },
+              "subsystem": {
+                      "ip": "107.108.83.97",
+                      "port": "1158",
+                      "nqn": "nqn.2019-04.pos:subsystem1"
+              },
+              "array": {
+                      "name": "POSArray"
+              }
+      }
+
+    }

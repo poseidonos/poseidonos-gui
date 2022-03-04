@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Arm Limited and Contributors
+# Copyright (c) Intel Corporation
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: poscsi-controller
+spec:
+  serviceName: poscsi-controller
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poscsi-controller
+  template:
+    metadata:
+      labels:
+        app: poscsi-controller
+    spec:
+      serviceAccount: poscsi-controller-sa
+      hostNetwork: true
+      containers:
+      - name: poscsi-provisioner
+        image: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
+        imagePullPolicy: "IfNotPresent"
+        args:
+        - "--v=5"
+        - "--csi-address=unix:///csi/csi-provisioner.sock"
+        - "--timeout=30s"
+        - "--retry-interval-start=500ms"
+        - "--leader-election=false"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /csi
+      - name: poscsi-attacher
+        image: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
+        imagePullPolicy: "IfNotPresent"
+        args:
+        - "--v=5"
+        - "--csi-address=unix:///csi/csi-provisioner.sock"
+        - "--leader-election=false"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /csi
+      - name: poscsi-controller
+        image: poscsi:latest
+        imagePullPolicy: "IfNotPresent"
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["SYS_ADMIN"]
+          allowPrivilegeEscalation: true
+        args:
+        - "--v=5"
+        - "--endpoint=unix:///csi/csi-provisioner.sock"
+        - "--nodeid=$(NODE_ID)"
+        - "--controller"
+        env:
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /csi
+        - name: poscsi-config
+          mountPath: /etc/poscsi-config/
+          readOnly: true
+        - name: poscsi-secret
+          mountPath: /etc/poscsi-secret/
+          readOnly: true
+      volumes:
+      - name: socket-dir
+        hostPath:
+          path: /var/lib/kubelet/plugins/csi.pos.io
+          type: DirectoryOrCreate
+      - name: poscsi-config
+        configMap:
+          name: poscsi-cm
+      - name: poscsi-secret
+        secret:
+          secretName: poscsi-secret
