@@ -62,7 +62,6 @@ func PublishVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2
 	}
 	err = subsystemAddListener(conf, mtx2)
 	if err != nil {
-	        fmt.Println("returning from add listener subsystemAddListener >>>>>>>>>>>>>>>> mytest",err)
 		return err
 	}
 	err = mountVolume(csiReq, conf, mtx2)

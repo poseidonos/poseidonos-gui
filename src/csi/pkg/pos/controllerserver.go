@@ -3,7 +3,7 @@ package pos
 import (
 	"context"
 	"sync"
-
+	"net"
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -77,6 +77,10 @@ func (s *controllerServer) CreateVolume(
 	posVolume.mtx.Lock()
 	defer posVolume.mtx.Unlock()
 	params := req.GetParameters()
+	errMsg := validateParams(params)
+	if errMsg!= nil {
+		return nil, errMsg
+	}
 	// volumeInfo to be updated from Storage Class
 	volumeInfo := map[string]string{
 		"targetType":      params["transportType"],
@@ -100,7 +104,7 @@ func (s *controllerServer) CreateVolume(
 		posVolume.status = ""
 		delete(s.volumes, req.Name)
 		klog.Infof("Error in Volume Creation %v ", err.Error())
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, err
 	}
 	err = util.PublishVolume(req, volumeInfo, &s.mtx2)
 	if err != nil {
@@ -132,6 +136,23 @@ func (s *controllerServer) CreateVolume(
 	return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
 }
 
+func validateParams(params map[string]string) error {
+	if len(params) == 0 {
+		return status.Error(codes.Unavailable, "parameters are not available in storageclass")
+	}
+	for key := range params {
+		if params[key] == "" {
+			return status.Error(codes.Unavailable, key+" is not available in storageclass")
+		}
+	}
+	if net.ParseIP(params["targetAddress"]) == nil {
+		return status.Error(codes.Unavailable, "Invalid Target IP address is storageclass")
+	}
+        if net.ParseIP(params["provisionerIP"]) == nil {
+                return status.Error(codes.Unavailable, "Invalid provisioner IP address is storageclass")
+        }
+	return nil
+}
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
 	klog.Infof("Deleting Volume: %v", volumeID)
