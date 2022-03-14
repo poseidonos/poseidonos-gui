@@ -35,7 +35,7 @@ func Run(conf *util.Config) {
 			csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME,
 		}
 		volumeModes = []csi.VolumeCapability_AccessMode_Mode{
-			csi.VolumeCapability_AccessMode_MULTI_NODE_MULTI_WRITER,
+			csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER,
 		}
 	)
 
