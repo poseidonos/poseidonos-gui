@@ -72,8 +72,30 @@ func PublishVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2
 }
 
 // UnpublishVolume deletes the subsystem to which the volume is attached
-func UnpublishVolume(params map[string]string, mtx2 *sync.Mutex) error {
+func UnpublishVolume(name string, params map[string]string, mtx2 *sync.Mutex) error {
+	err := unmountVolume(name, params, mtx2)
+	if err != nil {
+		return err
+	}
 	return deleteSubsystem(params, mtx2)
+}
+
+func unmountVolume(name string, params map[string]string, mtx2 *sync.Mutex) error {
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", params["provisionerIp"], params["provisionerPort"], name)
+        requestBody := []byte(fmt.Sprintf(`{
+            "param": {
+                "array": "%s"
+             }
+        }`, params["array"]))
+        resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0, mtx2)
+        if err != nil {
+                klog.Infof("Error in Unmount Volume API: %v", err)
+                return status.Error(codes.Unavailable, err.Error())
+        }
+	defer resp.Body.Close()
+        body, _ := ioutil.ReadAll(resp.Body)
+        klog.Infof("Unmount Volume API response: %v", string(body))
+	return nil
 }
 
 func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
@@ -92,7 +114,9 @@ func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
                 klog.Info("Error in decoding Subsystem Delete Response")
                 return status.Error(codes.Unavailable, err.Error())
         }
-        if response.Result.Status.Code == -1 {
+	if response.Result.Status.Code == 0 {
+		klog.Infof("Subsystem deleted successfully")
+	} else if response.Result.Status.Code == -1 {
                 klog.Infof("No Subsystem to be deleted")
         } else {
                 return status.Error(codes.Unavailable, response.Result.Status.Description)

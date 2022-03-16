@@ -182,7 +182,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	defer volume.mtx.Unlock()
 
 	// no harm if volume already unpublished
-	err := util.UnpublishVolume(params, &s.mtx2)
+	err := util.UnpublishVolume(volume.name, params, &s.mtx2)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
