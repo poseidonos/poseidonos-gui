@@ -71,6 +71,35 @@ func PublishVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2
 	return nil
 }
 
+// UnpublishVolume deletes the subsystem to which the volume is attached
+func UnpublishVolume(params map[string]string, mtx2 *sync.Mutex) error {
+	return deleteSubsystem(params, mtx2)
+}
+
+func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
+	requestBody := []byte(fmt.Sprintf(`{
+		"param": {
+			"name": "%s"
+		}
+	}`, params["nqn"]))
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", params["provisionerIP"], params["provisionerPort"])
+	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Delete Subsystem", 0, mtx2)
+	body, _ := ioutil.ReadAll(resp.Body)
+        dec := json.NewDecoder(bytes.NewBuffer(body))
+        dec.UseNumber()
+        response := model.Response{}
+        if err = dec.Decode(&response); err != nil {
+                klog.Info("Error in decoding Subsystem Delete Response")
+                return status.Error(codes.Unavailable, err.Error())
+        }
+        if response.Result.Status.Code == -1 {
+                klog.Infof("No Subsystem to be deleted")
+        } else {
+                return status.Error(codes.Unavailable, response.Result.Status.Description)
+        }
+        return nil
+}
+
 func mountVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) error {
 	name := csiReq.Name
 	requestBody := []byte(fmt.Sprintf(`{

@@ -2,6 +2,7 @@ package pos
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"net"
 	"github.com/container-storage-interface/spec/lib/go/csi"
@@ -86,7 +87,7 @@ func (s *controllerServer) CreateVolume(
 		"targetType":      params["transportType"],
 		"targetAddr":      params["targetAddress"],
 		"targetPort":      params["transportServiceId"],
-		"nqn":             params["nqnName"],
+		"nqn":             fmt.Sprintf("nqn.2019-04.pos:%s", req.Name),
 		"array":           params["arrayName"],
 		"provisionerIp":   params["provisionerIP"],
 		"provisionerPort": params["provisionerPort"],
@@ -181,17 +182,10 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	defer volume.mtx.Unlock()
 
 	// no harm if volume already unpublished
-	/*err := unpublishVolume(volume)
-	switch {
-	case err == util.ErrVolumeUnpublished:
-		// unpublished but not deleted in last request?
-		klog.Warningf("volume not published: %s", volumeID)
-	case err == util.ErrVolumeDeleted:
-		// deleted in previous request?
-		klog.Warningf("volume already deleted: %s", volumeID)
-	case err != nil:
+	err := util.UnpublishVolume(params, &s.mtx2)
+	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
-	}*/
+	}
 
 	// no harm if volume already deleted
 
@@ -204,7 +198,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 		"provisionerIp":   params["provisionerIP"],
 		"provisionerPort": params["provisionerPort"],
 	}
-	err := deleteVolume(volume, volumeInfo, &s.mtx2)
+	err = deleteVolume(volume, volumeInfo, &s.mtx2)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
 		klog.Warningf("volume not exists: %s", volumeID)
