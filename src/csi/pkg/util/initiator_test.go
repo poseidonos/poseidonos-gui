@@ -22,6 +22,14 @@ import (
 	"time"
 )
 
+/*
+func TestConnect(t *testing.T) {
+	_, err := NewPOSCsiInitiator(volumeInfo)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+*/
 func TestExecWithTimeoutPositive(t *testing.T) {
 	elapsed, err := runExecWithTimeout([]string{"true"}, 10)
 	if err != nil {

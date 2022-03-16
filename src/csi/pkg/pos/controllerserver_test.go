@@ -8,45 +8,83 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	// "k8s.io/klog"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 
 	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
-	"github.com/poseidonos/pos-csi/pkg/util"
 )
-var volumeInfo  = map[string]string {
-                "transportType":      "tcp",
-                "targetAddress":      "107.108.83.97",
-                "transportServiceId":      "1158",
-                "nqnName":             "nqn.2019-04.pos:subsystem1",
-                "arrayName":           "POSArray",
-                "provisionerIP":   "107.108.83.97",
-                "provisionerPort": "3003",
-                "serialNumber":    "POS0000000003",
-                "modelNumber":     "IBOF_VOLUME_EEEXTENSION",
-                "maxNamespaces":   "256",
-                "allowAnyHost":    "true",
-                "bufCacheSize":    "64",
-                "numSharedBuf":    "4096",
-        }
+
 
 
 func TestNvmeofVolume(t *testing.T) {
 	testVolume("nvme-tcp", t)
 }
-/*
+
+func TestNvmeValidateVolumeCapabilities(t *testing.T) {
+	testValidateVolumeCapabilities("nvme-tcp", t)
+}
+
+
 func TestNvmeofIdempotency(t *testing.T) {
 	testIdempotency("nvme-tcp", t)
-}*/
-/*
+}
+
 func TestNvmeofConcurrency(t *testing.T) {
 	testConcurrency("nvme-tcp", t)
 }
+
+func TestNvmeWithEmptyVolumeName(t *testing.T) {
+	testEmptyVolumeName("nvme-tcp", t)
+}
+
+func TestNvmeWithoutVolumeCapabilities(t *testing.T) {
+	testWithoutVolumeCapabilities("nvme-tcp", t)
+}
+
+func TestNvmeWithoutCapacityRange(t *testing.T) {
+	testWithoutCapacityRange("nvme-tcp", t)
+}
+
+func TestNvmeWithoutVolumesize(t *testing.T) {
+	testWithoutVolumesize("nvme-tcp", t)
+}
+
+func TestNvmeWithWrongParams(t *testing.T) {
+	testWithWrongParams("nvme-tcp", t)
+}
+
+func TestNvmeWithSameNameDiffSize(t *testing.T) {
+	testWithSameNameDiffSize("nvme-tcp", t)
+}
+/*
+func TestNvmeWithSameNameDiffSubsystem(t *testing.T) {
+	testWithSameNameDiffSubsystem("nvme-tcp", t)
+}
 */
+func TestNvmeDeleteWithoutVolumeID(t *testing.T) {
+	testDeleteWithoutVolumeID("nvme-tcp", t)
+}
+
+func TestNvmeDeleteOnDeletedVolume(t *testing.T) {
+	testDeleteOnDeletedVolume("nvme-tcp", t)
+}
+
+func TestNvmeValidateVolumeCapabilitiesonDeletedVolume(t *testing.T) {
+	testValidateVolumeCapabilitiesonDeletedVolume("nvme-tcp", t)
+}
+
+func TestNvmeValidateVolumeCapabilitiesWithoutVolumeId(t *testing.T) {
+	testValidateVolumeCapabilitiesWithoutVolumeId("nvme-tcp", t)
+}
+
+func TestNvmeValidateVolumeCapabilitiesWithoutVolumeCapabilities(t *testing.T) {
+	testValidateVolumeCapabilitiesWithoutVolumeCapabilities("nvme-tcp", t)
+}
 
 
 func testVolume(targetType string, t *testing.T) {
-	cs, lvss, err := createTestController(targetType)
+	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,20 +119,109 @@ func testVolume(targetType string, t *testing.T) {
 		t.Fatal("volume id should be different")
 	}
 
-	// make sure we didn't leave any garbage in lvstores
-	if !verifyLVSS(cs, lvss) {
-		t.Fatal("lvstore status doesn't match")
+}
+
+func testValidateVolumeCapabilities(targetType string, t *testing.T){
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	//To Check Unsupported Validate Volume Capabilities
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          volumeName,
+		CapacityRange: &csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: volumeInfo,
+	}
+
+	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// create volume
+	volumeID := resp.GetVolume().GetVolumeId()
+	if volumeID == "" {
+		t.Fatal("Empty Volume ID")
+	}
+
+	reqVal := csi.ValidateVolumeCapabilitiesRequest{
+		VolumeId: volumeID,
+		VolumeCapabilities: []*csi.VolumeCapability{
+			&csi.VolumeCapability{
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
+			},	
+		},
+	}
+
+	_, err = cs.ValidateVolumeCapabilities(context.TODO(), &reqVal)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// klog.Infof("Node UnStage Response %v", respVal)
+
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+
+
+	//To Check Supported Validate Volume Capabilities
+	reqCreate = csi.CreateVolumeRequest{
+		Name:          "test-test-vol",
+		CapacityRange: &csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{
+			&csi.VolumeCapability{
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
+			},	
+		},
+		Parameters: volumeInfo,
+	}
+
+	resp, err = cs.CreateVolume(context.TODO(), &reqCreate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// create volume
+	volumeID = resp.GetVolume().GetVolumeId()
+	if volumeID == "" {
+		t.Fatal("Empty Volume ID")
+	}
+
+	reqVal = csi.ValidateVolumeCapabilitiesRequest{
+		VolumeId: volumeID,
+		VolumeCapabilities: []*csi.VolumeCapability{
+			&csi.VolumeCapability{
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
+			},	
+		},
+	}
+
+	_, err = cs.ValidateVolumeCapabilities(context.TODO(), &reqVal)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 
 func testIdempotency(targetType string, t *testing.T) {
-	cs, lvss, err := createTestController(targetType)
+	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	const volumeName = "test-volume-idem"
-	const requestCount = 50
+	const requestCount = 2
 	const volumeSize = 256 * 1024 * 1024
 
 	volumeID, err := createSameVolumeInParallel(cs, volumeName, requestCount, volumeSize)
@@ -105,21 +232,17 @@ func testIdempotency(targetType string, t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	if !verifyLVSS(cs, lvss) {
-		t.Fatal("lvstore status doesn't match")
-	}
 }
 
 func testConcurrency(targetType string, t *testing.T) {
-	cs, lvss, err := createTestController(targetType)
+	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// count * size cannot exceed storage capacity
 	const volumeNamePrefix = "test-volume-con-"
-	const volumeCount = 20
+	const volumeCount = 2
 	const volumeSize = 16 * 1024 * 1024
 
 	// create/delete multiple volumes in parallel
@@ -149,15 +272,457 @@ func testConcurrency(targetType string, t *testing.T) {
 		t.Fatal("concurrency test failed")
 	}
 
-	if !verifyLVSS(cs, lvss) {
-		t.Fatal("lvstore status doesn't match")
+}
+
+func testEmptyVolumeName(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = ""
+	const volumeSize = 256 * 1024 * 1024
+
+	volumeID, err := createTestVolume(cs, volumeName, volumeSize)
+
+	//should get error
+	if err == nil {
+		err = deleteTestVolume(cs, volumeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Fatal("Volume Created with Empty Name")
 	}
 }
 
-func createTestController(targetType string) (cs *controllerServer, lvss [][]util.LvStore, err error) {
+func testWithoutVolumeCapabilities(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume-no-capabilities"
+	const volumeSize = 256 * 1024 * 1024
+
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          volumeName,
+		CapacityRange: &csi.CapacityRange{RequiredBytes: volumeSize},
+		Parameters: volumeInfo,
+	}
+
+	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	
+	//should get error
+	if err == nil {
+		volumeID := resp.GetVolume().GetVolumeId()
+		if volumeID == "" {
+			t.Fatal("empty volume id")
+		}
+		err = deleteTestVolume(cs, volumeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Fatal("Volume Created without Capabilities")
+	}
+}
+
+func testWithoutCapacityRange(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume-without-capacity-range"
+	const volumeSize = 256 * 1024 * 1024
+
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          volumeName,
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: volumeInfo,
+	}
+
+	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	volumeID := resp.GetVolume().GetVolumeId()
+	if volumeID == "" {
+		t.Fatal("empty volume id")
+	}
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+
+func testWithoutVolumesize(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	// const volumeSize = 256 * 1024 * 1024
+
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          	volumeName,
+		CapacityRange: 	&csi.CapacityRange{},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: 	volumeInfo,	
+	}
+
+	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	volumeID := resp.GetVolume().GetVolumeId()
+	if volumeID == "" {
+		t.Fatal("empty volume id")
+	}
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testWithWrongParams(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          	volumeName,
+		CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: 	volumeInfoWithoutTransportTypeTargetAddressTransportServiceId,	
+	}
+
+	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	
+	//Without anyone of targetportType, targetAddress, transportServiceId nvmf PublishVolume should throw error
+	if err == nil {
+		volumeID := resp.GetVolume().GetVolumeId()
+		if volumeID == "" {
+			t.Fatal("empty volume id")
+		}
+		err = deleteTestVolume(cs, volumeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Fatal("Volume Created with wrong Parameters")
+	}
+	
+	reqCreate = csi.CreateVolumeRequest{
+		Name:          	volumeName,
+		CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: 	volumeInfoWithoutNqnNameArrayName,	
+	}
+
+	resp, err = cs.CreateVolume(context.TODO(), &reqCreate)
+	
+	//Without anyone of nqnName or arrayName, dagent provisioner should throw error
+	if err == nil {
+		volumeID := resp.GetVolume().GetVolumeId()
+		if volumeID == "" {
+			t.Fatal("empty volume id")
+		}
+		err = deleteTestVolume(cs, volumeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Fatal("Volume Created with wrong Parameters")
+	}
+
+	// reqCreate = csi.CreateVolumeRequest{
+	// 	Name:          	"vol'",
+	// 	CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
+	// 	VolumeCapabilities: []*csi.VolumeCapability{},
+	// 	Parameters: 	volumeInfo,	
+	// }
+
+	// resp, err = cs.CreateVolume(context.TODO(), &reqCreate)
+	
+	// //Without anyone of nqnName or arrayName, dagent provisioner should throw error
+	// if err == nil {
+	// 	volumeID := resp.GetVolume().GetVolumeId()
+	// 	if volumeID == "" {
+	// 		t.Fatal("empty volume id")
+	// 	}
+	// 	err = deleteTestVolume(cs, volumeID)
+	// 	if err != nil {
+	// 		t.Fatal(err)
+	// 	}
+	// 	t.Fatal("Volume Created with wrong Parameters")
+	// }
+}
+
+func testWithSameNameDiffSize(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize1 = 256 * 1024 * 1024
+	const volumeSize2 = 16 * 1024 * 1024
+
+	// create volume#1
+	volumeID1, err1 := createTestVolume(cs, volumeName, volumeSize1)
+	if err1 != nil {
+		t.Fatal(err1)
+	}
+	
+	// create volume#2 with same name diff size
+	volumeID2, err2 := createTestVolume(cs, volumeName, volumeSize2)
+	
+	// delete volume#1
+	err = deleteTestVolume(cs, volumeID1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	//should get error#2
+	if err2 == nil {	
+		// delete volume#2
+		err = deleteTestVolume(cs, volumeID2)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
+		t.Fatal("Volume should not be created with same name different size")
+	}
+
+}
+
+func testWithSameNameDiffSubsystem(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	reqCreate := csi.CreateVolumeRequest{
+		Name:          	volumeName,
+		CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: volumeInfoDiffSubsystem	,	
+	}
+
+	resp1, err := cs.CreateVolume(context.TODO(), &reqCreate)
+	
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	
+	reqCreate2 := csi.CreateVolumeRequest{
+		Name:          	volumeName,
+		CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
+		VolumeCapabilities: []*csi.VolumeCapability{},
+		Parameters: 	volumeInfoDiffSubsystem,	
+	}
+
+	resp2, err := cs.CreateVolume(context.TODO(), &reqCreate2)
+	
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	volumeID1 := resp1.GetVolume().GetVolumeId()
+	if volumeID1 == "" {
+		t.Fatal("empty volume id")
+	}
+	
+	volumeID2 := resp2.GetVolume().GetVolumeId()
+	if volumeID2 == "" {
+		t.Fatal("empty volume id")
+	}
+
+	if volumeID1 != volumeID2 {
+		err = deleteTestVolume(cs, volumeID1)
+		if err != nil {
+			t.Fatal(err)
+		}
+		err = deleteTestVolume(cs, volumeID2)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Fatal("Volumes are same volumeIds should be same")
+	}
+
+	err = deleteTestVolume(cs, volumeID1)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testDeleteWithoutVolumeID(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+	const volumeID = ""
+
+	err = deleteTestVolume(cs, volumeID);
+	//should get err
+	if err == nil {
+		t.Fatal("VolumeId Is missing")
+	}
+}
+
+func testDeleteOnDeletedVolume(targetType string, t *testing.T) {
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	// create volume
+	volumeID, err := createTestVolume(cs, volumeName, volumeSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	//delete deleted volume which is handled in controllerserver.go file
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+}
+
+
+func testValidateVolumeCapabilitiesonDeletedVolume(targetType string, t *testing.T){
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	// create volume
+	volumeID, err := createTestVolume(cs, volumeName, volumeSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	reqVal := csi.ValidateVolumeCapabilitiesRequest{
+		VolumeId: volumeID,
+	}
+
+	_, err = cs.ValidateVolumeCapabilities(context.TODO(), &reqVal)
+	if err == nil {
+		localErr := deleteTestVolume(cs, volumeID)
+		if localErr != nil {
+			t.Fatal(localErr)
+		}
+		t.Fatal("Volume is deleted")
+	}
+}
+
+func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing.T){
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	// create volume
+	volumeID, err := createTestVolume(cs, volumeName, volumeSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	reqVal := csi.ValidateVolumeCapabilitiesRequest{
+		VolumeCapabilities: []*csi.VolumeCapability{
+			&csi.VolumeCapability{
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
+			},	
+		},
+	}
+
+	_, err = cs.ValidateVolumeCapabilities(context.TODO(), &reqVal)
+	if err == nil {
+		localErr := deleteTestVolume(cs, volumeID)
+		if localErr != nil {
+			t.Fatal(localErr)
+		}
+		t.Fatal("VolumeID is required to validate volumeCapabilities")
+	}
+	// klog.Infof("Node UnStage Response %v", respVal)
+
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testValidateVolumeCapabilitiesWithoutVolumeCapabilities(targetType string, t *testing.T){
+	cs, err := createTestController(targetType)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const volumeName = "test-volume"
+	const volumeSize = 256 * 1024 * 1024
+
+	// create volume
+	volumeID, err := createTestVolume(cs, volumeName, volumeSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	reqVal := csi.ValidateVolumeCapabilitiesRequest{
+		VolumeId: volumeID,
+	}
+
+	_, err = cs.ValidateVolumeCapabilities(context.TODO(), &reqVal)
+	if err == nil {
+		localErr := deleteTestVolume(cs, volumeID)
+		if localErr != nil {
+			t.Fatal(localErr)
+		}
+		t.Fatal("VolumeCapablities is required to validate volume capablities")
+	}
+	// klog.Infof("Node UnStage Response %v", respVal)
+
+	// delete volume
+	err = deleteTestVolume(cs, volumeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func createTestController(targetType string) (cs *controllerServer, err error) {
 	err = createConfigFiles(targetType)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	defer func() {
 		os.Remove(os.Getenv("SPDKCSI_CONFIG"))
@@ -167,19 +732,14 @@ func createTestController(targetType string) (cs *controllerServer, lvss [][]uti
 	cd := csicommon.NewCSIDriver("test-driver", "test-version", "test-node")
 	cs, err = newControllerServer(cd)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	lvss, err = getLVSS(cs)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return cs, lvss, nil
+	return cs, nil
 }
 
 func createConfigFiles(targetType string) error {
-	configFile, err := ioutil.TempFile("", "poscsi-config*.json")
+	configFile, err := ioutil.TempFile("", "spdkcsi-config*.json")
 	if err != nil {
 		return err
 	}
@@ -187,17 +747,7 @@ func createConfigFiles(targetType string) error {
 	var config string
 	switch targetType {
 	case "nvme-tcp":
-		config = `
-    {
-      "nodes": [
-        {
-          "name": "localhost",
-          "rpcURL": "http://107.108.83.97:3000",
-          "targetType": "nvme-tcp",
-	  "targetAddr": "107.108.83.97:1158"
-        }
-      ]
-	}`
+		config = nvmeTcpConfig
 
 	}
 	_, err = configFile.Write([]byte(config))
@@ -207,7 +757,7 @@ func createConfigFiles(targetType string) error {
 	}
 	os.Setenv("SPDKCSI_CONFIG", configFile.Name())
 
-	secretFile, err := ioutil.TempFile("", "poscsi-secret*.json")
+	secretFile, err := ioutil.TempFile("", "spdkcsi-secret*.json")
 	if err != nil {
 		os.Remove(configFile.Name())
 		return err
@@ -219,8 +769,8 @@ func createConfigFiles(targetType string) error {
       "rpcTokens": [
         {
           "name": "localhost",
-          "username": "poscsiuser",
-          "password": "poscsipass"
+          "username": "spdkcsiuser",
+          "password": "spdkcsipass"
         }
       ]
 	}`
@@ -332,43 +882,4 @@ func deleteSameVolumeInParallel(cs *controllerServer, volumeID string, count int
 		return fmt.Errorf("some cs.DeleteVolume failed")
 	}
 	return nil
-}
-
-func getLVSS(cs *controllerServer) ([][]util.LvStore, error) {
-	var lvss [][]util.LvStore
-/*
-	for _, posNode := range cs.posNodes {
-		lvs, err := posNode.LvStores()
-		if err != nil {
-			return nil, err
-		}
-		lvss = append(lvss, lvs)
-	}
-*/
-	return lvss, nil
-}
-
-func verifyLVSS(cs *controllerServer, lvss [][]util.LvStore) bool {
-	lvssNow, err := getLVSS(cs)
-	if err != nil {
-		return false
-	}
-
-	// deep compare lvss and lvssNow
-	if len(lvss) != len(lvssNow) {
-		return false
-	}
-	for i := 0; i < len(lvss); i++ {
-		lvs := lvss[i]
-		lvsNow := lvssNow[i]
-		if len(lvs) != len(lvsNow) {
-			return false
-		}
-		for j := 0; j < len(lvs); j++ {
-			if lvs[j] != lvsNow[j] {
-				return false
-			}
-		}
-	}
-	return true
 }

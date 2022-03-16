@@ -17,12 +17,12 @@ limitations under the License.
 package util
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
+//	"encoding/json"
+//	"io/ioutil"
+//	"os"
 	"sync/atomic"
 )
-
+/*
 func ParseJSONFile(fileName string, result interface{}) error {
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -52,7 +52,7 @@ func FromEnv(env, def string) string {
 	}
 	return def
 }
-
+*/
 // a trivial trylock implementation
 type TryLock struct {
 	locked int32
