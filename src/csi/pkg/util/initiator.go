@@ -164,7 +164,7 @@ func execWithTimeout(cmdLine []string, timeout int) error {
 	defer cancel()
 
 	klog.Infof("running command: %v", cmdLine)
-	cmd := exec.CommandContext(ctx, cmdLine[0], cmdLine[1:]...)
+	cmd := exec.CommandContext(ctx, cmdLine[0], cmdLine[1:]...) // #nosec G204
 	output, err := cmd.CombinedOutput()
 
 	if ctx.Err() == context.DeadlineExceeded {

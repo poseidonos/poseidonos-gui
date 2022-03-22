@@ -321,7 +321,7 @@ func (ns *nodeServer) publishVolume(stagingPath string, req *csi.NodePublishVolu
 // create mount point if not exists, return whether already mounted
 func (ns *nodeServer) createStageMountPoint(path string, isBlock bool) (bool, error) {
 	if isBlock {
-		pathFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0o600)
+		pathFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0o600) // #nosec G304
 		if err != nil {
 			return false, err
 		}
@@ -348,7 +348,7 @@ func (ns *nodeServer) createMountPoint(path string, isBlock bool) (bool, error) 
 		return false, err
 	}
 	if isBlock {
-		pathFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0o600)
+		pathFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0o600) // #nosec G304
 		if err != nil {
 			return false, err
 		}
