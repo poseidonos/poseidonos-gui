@@ -25,6 +25,7 @@ func beforeEach() {
     fmt.Printf("Current Unix Time: %v\n", time.Now().Unix())
 }
 
+//--------------Node Get Capabilities --------------
 func TestNvmeNodeGetCapabilities(t *testing.T){
 	beforeEach()
 	cs, ns, _, volumeID := testCreateVolumeNodeServer(t)
@@ -34,6 +35,8 @@ func TestNvmeNodeGetCapabilities(t *testing.T){
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 
+
+//------------------Node Stage and Unstage Tests --------------
 func TestNvmeNodeStageUnstageVolume(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
@@ -44,18 +47,7 @@ func TestNvmeNodeStageUnstageVolume(t *testing.T){
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 
-func TestNvmeNodePublishUnpublishVolume(t *testing.T){
-	beforeEach()
-	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
-	testNodeStageVolume(cs, ns, resp, volumeID, t)
-	
-	testNodePublishVolume(cs, ns, resp, volumeID, t)
-	testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
 
-	testNodeUnstageVolume(cs, ns, resp, volumeID, t)
-	testDeleteVolumeNodeServer(cs, volumeID, t)
-}
-/*
 func TestNvmeNodeStageUnstageVolumeBlock(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
@@ -65,7 +57,8 @@ func TestNvmeNodeStageUnstageVolumeBlock(t *testing.T){
 
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
-*/
+
+
 func TestNvmeNodeStageUnstageVolumeWithDifferentAccessModes(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
@@ -121,11 +114,11 @@ func TestNvmeNodeStageVolumeWithoutVolumeContext(t *testing.T){
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 
-func TestNvmeNodeStageVolumeIdempotency(t *testing.T){
+func TestNvmeNodeStageOnStagedVolume(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
 
-	testNodeStageVolumeIdempotency(cs, ns, resp, volumeID, t)
+	testNodeStageOnStagedVolume(cs, ns, resp, volumeID, t)
 	testNodeUnstageVolume(cs, ns, resp, volumeID, t)
 
 	testDeleteVolumeNodeServer(cs, volumeID, t)
@@ -153,6 +146,19 @@ func TestNvmeNodeUnstageVolumeWithoutStagingTargetPath(t *testing.T){
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 
+/*
+func TestNvmeNodeUnstageVolumeWithWrongStagingTargetPath(t *testing.T){
+	beforeEach()
+	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
+	testNodeStageVolume(cs, ns, resp, volumeID, t)
+	
+	testNodeUnstageVolumeWithWrongStagingTargetPath(cs, ns, resp, volumeID, t)
+	
+	testNodeUnstageVolume(cs,ns,resp,volumeID, t)
+	testDeleteVolumeNodeServer(cs, volumeID, t)
+}
+*/
+
 func TestNvmeNodeUnstageVolumeOnDeletedVolume(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
@@ -161,12 +167,25 @@ func TestNvmeNodeUnstageVolumeOnDeletedVolume(t *testing.T){
 	testNodeUnstageVolumeOnDeletedVolume(cs, ns, resp, volumeID, t)
 }
 
-func TestNvmeNodeUnstageVolumeIdempotency(t *testing.T){
+func TestNvmeNodeUnstageOnUnstagedVolume(t *testing.T){
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
 	testNodeStageVolume(cs, ns, resp, volumeID, t)
 
-	testNodeUnstageVolumeIdempotency(cs, ns, resp, volumeID, t)
+	testNodeUnstageOnUnstagedVolume(cs, ns, resp, volumeID, t)
 
+	testDeleteVolumeNodeServer(cs, volumeID, t)
+}
+
+
+func TestNvmeNodePublishUnpublishVolume(t *testing.T){
+	beforeEach()
+	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
+	testNodeStageVolume(cs, ns, resp, volumeID, t)
+	
+	testNodePublishVolume(cs, ns, resp, volumeID, t)
+	testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
+
+	testNodeUnstageVolume(cs, ns, resp, volumeID, t)
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 /*
@@ -224,7 +243,7 @@ func TestNvmeNodePublishVolumeOnUnstagedVolume(t *testing.T){
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
 
-func TestNvmeNodePublishVolumeIdempotency(t *testing.T){
+func TestNvmeNodePublishVolumeOnPublishVolume(t *testing.T){
 	beforeEach()
 	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
 	testNodeStageVolume(cs, ns, resp, volumeID, t)	
@@ -262,6 +281,18 @@ func TestNvmeNodeUnpublishVolumeWithoutVolumeId(t *testing.T){
 	testNodeUnstageVolume(cs, ns, resp, volumeID, t)
 	testDeleteVolumeNodeServer(cs, volumeID, t)
 }
+
+func TestNvmeNodeUnpublishVolumeOnUnstagedVolume(t *testing.T){
+	beforeEach()
+	cs, ns, resp, volumeID := testCreateVolumeNodeServer(t)
+	testNodeStageVolume(cs, ns, resp, volumeID, t)
+	testNodeUnstageVolume(cs, ns, resp, volumeID, t)
+
+	testNodeUnpublishVolumeOnUnstagedVolume(cs, ns, resp, volumeID, t)
+
+	testDeleteVolumeNodeServer(cs, volumeID, t)
+}
+
 
 
 
@@ -319,48 +350,6 @@ func testNodeUnstageVolume(cs *controllerServer, ns *nodeServer, resp *csi.Creat
 		t.Fatal(err)
 	}
 	klog.Infof("Node UnStage Response %v", respUnstage)
-}
-
-func testNodePublishVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
-	reqPublish := csi.NodePublishVolumeRequest{
-		VolumeId:          volumeID,
-		VolumeCapability:  &csi.VolumeCapability{
-			AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
-			AccessType: &csi.VolumeCapability_Mount{
-				Mount: &csi.VolumeCapability_MountVolume{},
-			},
-		},
-		VolumeContext:	   resp.GetVolume().GetVolumeContext(),
-		TargetPath: targetPath,
-		Readonly: false,
-	}
-	klog.Infof("Target Path %s", targetPath)
-	klog.Infof("ReqPublish %v", reqPublish.GetVolumeContext())
-
-	respPublish, err := ns.NodePublishVolume(context.TODO(), &reqPublish)
-	if err != nil {
-		testDeleteVolumeNodeServer(cs, volumeID, t)
-		
-		t.Fatal(err)
-	}
-	klog.Infof("Response Publish %v",respPublish)	
-}
-
-func testNodeUnpublishVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){	
-	reqUnpublish := csi.NodeUnpublishVolumeRequest{
-		VolumeId: volumeID,
-		TargetPath: targetPath,
-	}
-
-	respUnpublish, err := ns.NodeUnpublishVolume(context.TODO(), &reqUnpublish)
-	if err != nil {
-		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
-		testDeleteVolumeNodeServer(cs, volumeID, t)
-		
-		t.Fatal(err)
-	}
-	klog.Infof("Node Unpublish Response %v", respUnpublish)
-
 }
 
 func testNodeStageVolumeBlock(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
@@ -515,7 +504,7 @@ func testNodeStageVolumeWithWrongStagingTargetPath(cs *controllerServer, ns *nod
 		},
 		VolumeContext:	   resp.GetVolume().GetVolumeContext(),
 		
-		StagingTargetPath: "/dont-create-this-directory",
+		StagingTargetPath: wrongStagingTargetPath,
 	}
 	klog.Infof("ReqStage %v", reqStage.GetVolumeContext())
 
@@ -553,7 +542,7 @@ func testNodeStageVolumeWithoutVolumeContext(cs *controllerServer, ns *nodeServe
 	klog.Infof("Resp Stage %v", respStage)
 }
 
-func testNodeStageVolumeIdempotency(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
+func testNodeStageOnStagedVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
 	reqStage := csi.NodeStageVolumeRequest{
 		VolumeId:          volumeID,
 		VolumeCapability:  &csi.VolumeCapability{
@@ -615,6 +604,22 @@ func testNodeUnstageVolumeWithoutStagingTargetPath(cs *controllerServer, ns *nod
 	klog.Infof("Node UnStage Response %v", respUnstage)
 }
 
+func testNodeUnstageVolumeWithWrongStagingTargetPath(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
+	reqUnstage := csi.NodeUnstageVolumeRequest{
+		VolumeId: volumeID,
+		StagingTargetPath: "blabla",
+	}
+	klog.Infof("ReqUnstage %s", reqUnstage.GetStagingTargetPath())
+	respUnstage, err := ns.NodeUnstageVolume(context.TODO(), &reqUnstage)
+	if err == nil {
+		testNodeUnstageVolume(cs, ns, resp, volumeID, t);
+		testDeleteVolumeNodeServer(cs, volumeID, t)
+		
+		t.Fatal("Without Staging Target Path Node volume cannot be unstaged")
+	}
+	klog.Infof("Node UnStage Response %v", respUnstage)
+}
+
 func testNodeUnstageVolumeOnDeletedVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
 	reqUnstage := csi.NodeUnstageVolumeRequest{
 		VolumeId: volumeID,
@@ -630,7 +635,7 @@ func testNodeUnstageVolumeOnDeletedVolume(cs *controllerServer, ns *nodeServer, 
 	klog.Infof("Node UnStage Response %v", respUnstage)
 }
 
-func testNodeUnstageVolumeIdempotency(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
+func testNodeUnstageOnUnstagedVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
 	reqUnstage := csi.NodeUnstageVolumeRequest{
 		VolumeId: volumeID,
 		StagingTargetPath: stagingTargetPath,
@@ -651,6 +656,49 @@ func testNodeUnstageVolumeIdempotency(cs *controllerServer, ns *nodeServer, resp
 		t.Fatal(err)
 	}
 	klog.Infof("Node UnStage Response 2 %v", respUnstage2)
+}
+
+
+func testNodePublishVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
+	reqPublish := csi.NodePublishVolumeRequest{
+		VolumeId:          volumeID,
+		VolumeCapability:  &csi.VolumeCapability{
+			AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
+			AccessType: &csi.VolumeCapability_Mount{
+				Mount: &csi.VolumeCapability_MountVolume{},
+			},
+		},
+		VolumeContext:	   resp.GetVolume().GetVolumeContext(),
+		TargetPath: targetPath,
+		Readonly: false,
+	}
+	klog.Infof("Target Path %s", targetPath)
+	klog.Infof("ReqPublish %v", reqPublish.GetVolumeContext())
+
+	respPublish, err := ns.NodePublishVolume(context.TODO(), &reqPublish)
+	if err != nil {
+		testDeleteVolumeNodeServer(cs, volumeID, t)
+		
+		t.Fatal(err)
+	}
+	klog.Infof("Response Publish %v",respPublish)	
+}
+
+func testNodeUnpublishVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){	
+	reqUnpublish := csi.NodeUnpublishVolumeRequest{
+		VolumeId: volumeID,
+		TargetPath: targetPath,
+	}
+
+	respUnpublish, err := ns.NodeUnpublishVolume(context.TODO(), &reqUnpublish)
+	if err != nil {
+		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
+		testDeleteVolumeNodeServer(cs, volumeID, t)
+		
+		t.Fatal(err)
+	}
+	klog.Infof("Node Unpublish Response %v", respUnpublish)
+
 }
 
 func testNodePublishVolumeBlock(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
@@ -789,7 +837,7 @@ func testNodeUnpublishVolumeWithoutTargetPath(cs *controllerServer, ns *nodeServ
 	respUnpublish, err := ns.NodeUnpublishVolume(context.TODO(), &reqUnpublish)
 	if err == nil {
 		testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
-		testNodeStageVolume(cs, ns, resp, volumeID, t)
+		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
 		testDeleteVolumeNodeServer(cs, volumeID, t)
 		
 		t.Fatal(err)
@@ -805,7 +853,7 @@ func testNodeUnpublishVolumeWithoutVolumeId(cs *controllerServer, ns *nodeServer
 	respUnpublish, err := ns.NodeUnpublishVolume(context.TODO(), &reqUnpublish)
 	if err == nil {
 		testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
-		testNodeStageVolume(cs, ns, resp, volumeID, t)
+		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
 		testDeleteVolumeNodeServer(cs, volumeID, t)
 		
 		t.Fatal(err)
@@ -813,6 +861,22 @@ func testNodeUnpublishVolumeWithoutVolumeId(cs *controllerServer, ns *nodeServer
 	klog.Infof("Node Unpublish Response %v", respUnpublish)
 }
 
+func testNodeUnpublishVolumeOnUnstagedVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string,  t *testing.T){
+	reqUnpublish := csi.NodeUnpublishVolumeRequest{
+		VolumeId: volumeID,
+		TargetPath: targetPath,
+	}
+	klog.Infof("Node reqpublish %v", reqUnpublish)
+	respUnpublish, err := ns.NodeUnpublishVolume(context.TODO(), &reqUnpublish)
+	if err != nil {
+		// testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
+		// testNodeUnstageVolume(cs, ns, resp, volumeID, t)
+		testDeleteVolumeNodeServer(cs, volumeID, t)
+		
+		t.Fatal(err)
+	}
+	klog.Infof("Node Unpublish Response %v", respUnpublish)
+}
 
 func testCreateVolumeNodeServer(  t *testing.T)(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string) {
 	cd := csicommon.NewCSIDriver("test-driver", "test-version", "test-node")
@@ -823,7 +887,7 @@ func testCreateVolumeNodeServer(  t *testing.T)(cs *controllerServer, ns *nodeSe
 
 	klog.Infof("Controller Server %v", *cs)
 	
-	const volumeName = "test-volume"
+	const volumeName = nodeVolumeName
 	const volumeSize = 256 * 1024 * 1024
 
 	reqCreate := csi.CreateVolumeRequest{

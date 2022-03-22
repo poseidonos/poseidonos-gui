@@ -10,25 +10,20 @@ var nvmeTcpConfig = `
   "nodes": [
 	{
 	  "name": "localhost",
-	  "rpcURL": "http://107.108.221.146:3000",
+	  "rpcURL": "http://107.108.83.97:3000",
 	  "targetType": "nvme-tcp",
-  "targetAddr": "107.108.221.146:1158"
+  "targetAddr": "107.108.83.97:1158"
 	}
   ]
 }`
 
-var stagingTargetPath = "/tmp"
-var targetPath = "/tmp/test-pub4"
-
-var utilConfig = util.Config{"test-driver", "test-version", "unix:///var/lib/kubelet/plugins/csi.pos.io/csi.sock", "test-nodeid", true, false}
-
 var volumeInfo  = map[string]string {
                 "transportType":      "tcp",
-                "targetAddress":      "107.108.221.146",
+                "targetAddress":      "107.108.83.97",
                 "transportServiceId":      "1158",
                 "nqnName":             "nqn.2019-04.pos:subsystem-test-r-20",
                 "arrayName":           "POSArray",
-                "provisionerIP":   "107.108.221.146",
+                "provisionerIP":   "107.108.83.97",
                 "provisionerPort": "3000",
                 "serialNumber":    "POS0000000003",
                 "modelNumber":     "IBOF_VOLUME_EEEXTENSION",
@@ -38,37 +33,14 @@ var volumeInfo  = map[string]string {
                 "numSharedBuf":    "4096",
         }
 
+const infiniteVolumeSize = 204800 * 204800 * 204800
+const idempotencyCount = 10
+const concurrencyCount = 1  //As It fails sometimes if count > 1
 
+const nodeVolumeName = "new-voll-4"
 
+var stagingTargetPath = "/tmp"
+var targetPath = "/tmp/test-pub6"
+var wrongStagingTargetPath = "/wrong-path/ddd" //make sure this path doesnot exist
 
-//Changes not Required 
-
-var volumeInfoWithoutTransportTypeTargetAddressTransportServiceId = map[string]string {
-          "transportType":      "",
-          "targetAddress":      "",
-          "transportServiceId":      "",
-          "nqnName":             volumeInfo["nqnName"] + "-2",
-          "arrayName":           volumeInfo["arrayName"],
-          "provisionerIP":       volumeInfo["provisionerIP"],
-          "provisionerPort":     volumeInfo["provisionerPort"],
-      }
-
-var volumeInfoWithoutNqnNameArrayName = map[string]string {
-  "transportType":      volumeInfo["transportType"],
-  "targetAddress":      volumeInfo["targetAddress"],
-  "transportServiceId":   volumeInfo["transportServiceId"],
-  "nqnName":             "",
-  "arrayName":           "",
-  "provisionerIP":       volumeInfo["provisionerIP"],
-  "provisionerPort":     volumeInfo["provisionerPort"],
-}
-
-var volumeInfoDiffSubsystem = map[string]string {
-  "transportType":      volumeInfo["transportType"],
-  "targetAddress":      volumeInfo["targetAddress"],
-  "transportServiceId":   volumeInfo["transportServiceId"],
-  "nqnName":             volumeInfo["nqnName"] + "-3",
-  "arrayName":           volumeInfo["arrayName"],
-  "provisionerIP":       volumeInfo["provisionerIP"],
-  "provisionerPort":     volumeInfo["provisionerPort"],
-}
+var utilConfig = util.Config{"test-driver", "test-version", "unix:///var/lib/kubelet/plugins/csi.pos.io/csi.sock", "test-nodeid", true, false}
