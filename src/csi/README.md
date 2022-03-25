@@ -176,18 +176,6 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
 1) POS CSI driver does not support Ephermal volumes.
 2) Currently POS-CSI driver supports only ReadWriteOnce access mode.
 3) Basic list of mandatory APIs mentioned in the [CSI Spec](https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md) are supported. Complete list of APIs are yet to be supported. 
-     * ControllerPublishVolume
-     * ControllerUnpublishVolume
-     * ListVolumes
-     * ControllerGetVolume 
-     * GetCapacity
-     * CreateSnapshot
-     * DeleteSnapshot
-     * ListSnapshot
-     * ControllerExpandVolume
-     * NodeVolumeStats
-     * NodeGetInfo
-     * NodeExpandVolume
 ## Known Issues
 ```bash
 1) Complete testing of E2E testing framework with CSI Driver yet to be done
