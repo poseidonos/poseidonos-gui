@@ -39,21 +39,21 @@ This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-i
 
 
 ## Prerequisites
-1) OS: Ubuntu 18.04
-2) RAM: 2GB or greater
-3) CPUs: 2 or greater
-4) minikube v1.24.0
-5) docker v19.03.13
-6) kubectl v1.21.2
-7) go v1.14
-8) Below two docker images should be available in the system, Use docker pull to get these images if the Kubernetes cluster cannot access internet.
+1. OS: Ubuntu 18.04
+2. RAM: 2GB or greater
+3. CPUs: 2 or greater
+4. minikube v1.24.0
+5. docker v19.03.13
+6. kubectl v1.21.2
+7. go v1.14
+8. Below two docker images should be available in the system, Use docker pull to get these images if the Kubernetes cluster cannot access internet.
    1) docker pull k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
    2) docker pull k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
-9)  The Driver assumes POS Array is already created and available.
-10) POS version : v0.10.6
-11) Supported volume access modes : ReadWriteOnce
+9.  The Driver assumes POS Array is already created and available.
+10. POS version : v0.10.6
+11. Supported volume access modes : ReadWriteOnce
 
-12) NVMe/NVMEe-oF kernel modules should be pre-installed on all the nodes in the Kubernetes cluster. Run the below commands on each node before running POS-CSI driver
+12. NVMe/NVMEe-oF kernel modules should be pre-installed on all the nodes in the Kubernetes cluster. Run the below commands on each node before running POS-CSI driver
     1)  modprobe nvme
     2)  modprobe nvme_tcp
 
