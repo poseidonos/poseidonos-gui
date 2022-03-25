@@ -35,8 +35,6 @@ package pos
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
-	"os"
 	"sync"
 	"sync/atomic"
 	"testing"

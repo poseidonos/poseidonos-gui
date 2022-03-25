@@ -592,22 +592,6 @@ func testNodeUnstageVolumeWithoutStagingTargetPath(cs *controllerServer, ns *nod
 	klog.Infof("Node UnStage Response %v", respUnstage)
 }
 
-func testNodeUnstageVolumeWithWrongStagingTargetPath(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string, t *testing.T) {
-	reqUnstage := csi.NodeUnstageVolumeRequest{
-		VolumeId:          volumeID,
-		StagingTargetPath: "wrongpath",
-	}
-	klog.Infof("ReqUnstage %s", reqUnstage.GetStagingTargetPath())
-	respUnstage, err := ns.NodeUnstageVolume(context.TODO(), &reqUnstage)
-	if err == nil {
-		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
-		testDeleteVolumeNodeServer(cs, volumeID, t)
-
-		t.Fatal("Without Staging Target Path Node volume cannot be unstaged")
-	}
-	klog.Infof("Node UnStage Response %v", respUnstage)
-}
-
 func testNodeUnstageVolumeOnDeletedVolume(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string, t *testing.T) {
 	reqUnstage := csi.NodeUnstageVolumeRequest{
 		VolumeId:          volumeID,
@@ -686,33 +670,6 @@ func testNodeUnpublishVolume(cs *controllerServer, ns *nodeServer, resp *csi.Cre
 	}
 	klog.Infof("Node Unpublish Response %v", respUnpublish)
 
-}
-
-func testNodePublishVolumeBlock(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string, t *testing.T) {
-	reqPublish := csi.NodePublishVolumeRequest{
-		VolumeId: volumeID,
-		VolumeCapability: &csi.VolumeCapability{
-			AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
-			AccessType: &csi.VolumeCapability_Block{
-				Block: &csi.VolumeCapability_BlockVolume{},
-			},
-		},
-		VolumeContext: resp.GetVolume().GetVolumeContext(),
-		TargetPath:    targetPath,
-		Readonly:      false,
-	}
-	klog.Infof("Target Path %s", targetPath)
-	klog.Infof("ReqPublish %v", reqPublish.GetVolumeContext())
-
-	respPublish, err := ns.NodePublishVolume(context.TODO(), &reqPublish)
-	if err != nil {
-		testNodeUnpublishVolume(cs, ns, resp, volumeID, t)
-		testNodeUnstageVolume(cs, ns, resp, volumeID, t)
-		testDeleteVolumeNodeServer(cs, volumeID, t)
-
-		t.Fatal(err)
-	}
-	klog.Infof("Response Publish %v", respPublish)
 }
 
 func testNodePublishVolumeWithoutTargetPath(cs *controllerServer, ns *nodeServer, resp *csi.CreateVolumeResponse, volumeID string, t *testing.T) {

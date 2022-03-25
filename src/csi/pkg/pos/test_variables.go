@@ -34,11 +34,10 @@ package pos
 
 var volumeInfo = map[string]string{
 	"transportType":      "tcp",
-	"targetAddress":      "107.108.83.97",
+	"targetAddress":      "107.108.221.146",
 	"transportServiceId": "1158",
-	"nqnName":            "nqn.2019-04.pos:subsystem-test-r-20",
 	"arrayName":          "POSArray",
-	"provisionerIP":      "107.108.83.97",
+	"provisionerIP":      "107.108.221.146",
 	"provisionerPort":    "3000",
 	"serialNumber":       "POS0000000003",
 	"modelNumber":        "IBOF_VOLUME_EEEXTENSION",
