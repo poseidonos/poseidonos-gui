@@ -1,6 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright (c) Arm Limited and Contributors
-# Copyright (c) Intel Corporation
 ---
 kind: StatefulSet
 apiVersion: apps/v1
@@ -63,20 +60,8 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
-        - name: poscsi-config
-          mountPath: /etc/poscsi-config/
-          readOnly: true
-        - name: poscsi-secret
-          mountPath: /etc/poscsi-secret/
-          readOnly: true
       volumes:
       - name: socket-dir
         hostPath:
           path: /var/lib/kubelet/plugins/csi.pos.io
           type: DirectoryOrCreate
-      - name: poscsi-config
-        configMap:
-          name: poscsi-cm
-      - name: poscsi-secret
-        secret:
-          secretName: poscsi-secret

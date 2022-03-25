@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package pos
 
 import (
@@ -40,13 +40,11 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-	// "k8s.io/klog"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 
 	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
 )
-
 
 //-------------Create & Delete Volume Tests--------------
 func TestNvmeofVolume(t *testing.T) {
@@ -113,7 +111,6 @@ func TestNvmeValidateVolumeCapabilitiesWithoutVolumeId(t *testing.T) {
 func TestNvmeValidateVolumeCapabilitiesWithoutVolumeCapabilities(t *testing.T) {
 	testValidateVolumeCapabilitiesWithoutVolumeCapabilities("nvme-tcp", t)
 }
-
 
 func testVolume(targetType string, t *testing.T) {
 	cs, err := createTestController(targetType)
@@ -246,11 +243,11 @@ func testWithoutVolumeCapabilities(targetType string, t *testing.T) {
 	reqCreate := csi.CreateVolumeRequest{
 		Name:          volumeName,
 		CapacityRange: &csi.CapacityRange{RequiredBytes: volumeSize},
-		Parameters: volumeInfo,
+		Parameters:    volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
-	
+
 	//should get error
 	if err == nil {
 		volumeID := resp.GetVolume().GetVolumeId()
@@ -275,9 +272,9 @@ func testWithoutCapacityRange(targetType string, t *testing.T) {
 	const volumeSize = 256 * 1024 * 1024
 
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          volumeName,
+		Name:               volumeName,
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: volumeInfo,
+		Parameters:         volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -302,13 +299,12 @@ func testWithoutVolumesize(targetType string, t *testing.T) {
 	}
 
 	const volumeName = "test-volume"
-	// const volumeSize = 256 * 1024 * 1024
 
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          	volumeName,
-		CapacityRange: 	&csi.CapacityRange{},
+		Name:               volumeName,
+		CapacityRange:      &csi.CapacityRange{},
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: 	volumeInfo,	
+		Parameters:         volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -353,7 +349,6 @@ func testWithWrongParams(targetType string, t *testing.T) {
 	var volumeName = "test-volume-without-params"
 	const volumeSize = 256 * 1024 * 1024
 
-		
 	//Without Parameters
 	var emptyVolumeInfo = map[string]string{}
 	volumeID, err := createTestVolumeWithWrongParameters(cs, volumeName, volumeSize, emptyVolumeInfo)
@@ -376,21 +371,20 @@ func testWithWrongParams(targetType string, t *testing.T) {
 		}
 		t.Fatal("Volume Created without Parameters")
 	}
-	
 
 	//With wrong TargetAddress
-	volumeName ="test-volume-without-targetaddress"
-	var volumeInfoWithoutTargetAddress= map[string]string {
-        "transportType":        volumeInfo["transportType"],
-        "targetAddress":        "wrongaddress",
-        "transportServiceId":   volumeInfo["transportServiceId"],
-        "nqnName":              volumeInfo["nqnName"],
-        "arrayName":            volumeInfo["arrayName"],
-        "provisionerIP":        volumeInfo["provisionerIP"],
-        "provisionerPort":      volumeInfo["provisionerPort"],
-    }
+	volumeName = "test-volume-without-targetaddress"
+	var volumeInfoWithoutTargetAddress = map[string]string{
+		"transportType":      volumeInfo["transportType"],
+		"targetAddress":      "wrongaddress",
+		"transportServiceId": volumeInfo["transportServiceId"],
+		"nqnName":            volumeInfo["nqnName"],
+		"arrayName":          volumeInfo["arrayName"],
+		"provisionerIP":      volumeInfo["provisionerIP"],
+		"provisionerPort":    volumeInfo["provisionerPort"],
+	}
 	volumeID, err = createTestVolumeWithWrongParameters(cs, volumeName, volumeSize, volumeInfoWithoutTargetAddress)
-	
+
 	if err == nil {
 		err = deleteTestVolume(cs, volumeID)
 		if err != nil {
@@ -400,18 +394,18 @@ func testWithWrongParams(targetType string, t *testing.T) {
 	}
 
 	//With wrong ProvisionerIP
-	volumeName ="test-volume-without-provisionerIP"
-	var volumeInfoWithoutProvisionerIp= map[string]string {
-        "transportType":        volumeInfo["transportType"],
-        "targetAddress":        volumeInfo["targetAddress"],
-        "transportServiceId":   volumeInfo["transportServiceId"],
-        "nqnName":              volumeInfo["nqnName"],
-        "arrayName":            volumeInfo["arrayName"],
-        "provisionerIP":        "999.999.999.999",
-        "provisionerPort":      volumeInfo["provisionerPort"],
-    }
+	volumeName = "test-volume-without-provisionerIP"
+	var volumeInfoWithoutProvisionerIp = map[string]string{
+		"transportType":      volumeInfo["transportType"],
+		"targetAddress":      volumeInfo["targetAddress"],
+		"transportServiceId": volumeInfo["transportServiceId"],
+		"nqnName":            volumeInfo["nqnName"],
+		"arrayName":          volumeInfo["arrayName"],
+		"provisionerIP":      "999.999.999.999",
+		"provisionerPort":    volumeInfo["provisionerPort"],
+	}
 	volumeID, err = createTestVolumeWithWrongParameters(cs, volumeName, volumeSize, volumeInfoWithoutProvisionerIp)
-	
+
 	if err == nil {
 		err = deleteTestVolume(cs, volumeID)
 		if err != nil {
@@ -421,18 +415,18 @@ func testWithWrongParams(targetType string, t *testing.T) {
 	}
 
 	//Without ProvisionerPORT
-	volumeName ="test-volume-without-provisionerPort"
-	var volumeInfoWithoutProvisionerPort= map[string]string {
-        "transportType":        volumeInfo["transportType"],
-        "targetAddress":        volumeInfo["targetAddress"],
-        "transportServiceId":   volumeInfo["transportServiceId"],
-        "nqnName":              volumeInfo["nqnName"],
-        "arrayName":            volumeInfo["arrayName"],
-        "provisionerIP":        volumeInfo["provisionerIP"],
-        "provisionerPort":      "",
-    }
+	volumeName = "test-volume-without-provisionerPort"
+	var volumeInfoWithoutProvisionerPort = map[string]string{
+		"transportType":      volumeInfo["transportType"],
+		"targetAddress":      volumeInfo["targetAddress"],
+		"transportServiceId": volumeInfo["transportServiceId"],
+		"nqnName":            volumeInfo["nqnName"],
+		"arrayName":          volumeInfo["arrayName"],
+		"provisionerIP":      volumeInfo["provisionerIP"],
+		"provisionerPort":    "",
+	}
 	volumeID, err = createTestVolumeWithWrongParameters(cs, volumeName, volumeSize, volumeInfoWithoutProvisionerPort)
-	
+
 	if err == nil {
 		err = deleteTestVolume(cs, volumeID)
 		if err != nil {
@@ -440,28 +434,7 @@ func testWithWrongParams(targetType string, t *testing.T) {
 		}
 		t.Fatal("Volume Created without provisioner port")
 	}
-	
-	// reqCreate = csi.CreateVolumeRequest{
-	// 	Name:          	volumeName,
-	// 	CapacityRange: 	&csi.CapacityRange{RequiredBytes: volumeSize},
-	// 	VolumeCapabilities: []*csi.VolumeCapability{},
-	// 	Parameters: 	volumeInfoWithoutNqnNameArrayName,	
-	// }
 
-	// resp, err = cs.CreateVolume(context.TODO(), &reqCreate)
-	
-	// //Without anyone of nqnName or arrayName, dagent provisioner should throw error
-	// if err == nil {
-	// 	volumeID := resp.GetVolume().GetVolumeId()
-	// 	if volumeID == "" {
-	// 		t.Fatal("empty volume id")
-	// 	}
-	// 	err = deleteTestVolume(cs, volumeID)
-	// 	if err != nil {
-	// 		t.Fatal(err)
-	// 	}
-	// 	t.Fatal("Volume Created with wrong Parameters")
-	// }
 }
 
 func testWithSameNameDiffSize(targetType string, t *testing.T) {
@@ -479,10 +452,10 @@ func testWithSameNameDiffSize(targetType string, t *testing.T) {
 	if err1 != nil {
 		t.Fatal(err1)
 	}
-	
+
 	// create volume#2 with same name diff size
 	volumeID2, err2 := createTestVolume(cs, volumeName, volumeSize2)
-	
+
 	// delete volume#1
 	err = deleteTestVolume(cs, volumeID1)
 	if err != nil {
@@ -490,13 +463,13 @@ func testWithSameNameDiffSize(targetType string, t *testing.T) {
 	}
 
 	//should get error#2
-	if err2 == nil {	
+	if err2 == nil {
 		// delete volume#2
 		err = deleteTestVolume(cs, volumeID2)
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		t.Fatal("Volume should not be created with same name different size")
 	}
 
@@ -509,7 +482,7 @@ func testDeleteWithoutVolumeID(targetType string, t *testing.T) {
 	}
 	const volumeID = ""
 
-	err = deleteTestVolume(cs, volumeID);
+	err = deleteTestVolume(cs, volumeID)
 	//should get err
 	if err == nil {
 		t.Fatal("VolumeId Is missing")
@@ -544,8 +517,7 @@ func testDeleteOnDeletedVolume(targetType string, t *testing.T) {
 
 }
 
-
-func testValidateVolumeCapabilities(targetType string, t *testing.T){
+func testValidateVolumeCapabilities(targetType string, t *testing.T) {
 	cd := csicommon.NewCSIDriver("test-driver", "test-version", "test-node")
 	cs, err := newControllerServer(cd)
 	if err != nil {
@@ -557,10 +529,10 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 
 	//To Check Unsupported Validate Volume Capabilities
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          volumeName,
-		CapacityRange: &csi.CapacityRange{RequiredBytes: volumeSize},
+		Name:               volumeName,
+		CapacityRange:      &csi.CapacityRange{RequiredBytes: volumeSize},
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: volumeInfo,
+		Parameters:         volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -577,8 +549,8 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 		VolumeId: volumeID,
 		VolumeCapabilities: []*csi.VolumeCapability{
 			&csi.VolumeCapability{
-				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
-			},	
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
+			},
 		},
 	}
 
@@ -586,15 +558,12 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 	if err != nil {
 		t.Fatal(err)
 	}
-	// klog.Infof("Node UnStage Response %v", respVal)
 
 	// delete volume
 	err = deleteTestVolume(cs, volumeID)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-
 
 	//To Check Supported Validate Volume Capabilities
 	volumeModes := []csi.VolumeCapability_AccessMode_Mode{
@@ -611,7 +580,7 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 				AccessType: &csi.VolumeCapability_Mount{
 					Mount: &csi.VolumeCapability_MountVolume{},
 				},
-			},	
+			},
 		},
 		Parameters: volumeInfo,
 	}
@@ -634,7 +603,7 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 				AccessType: &csi.VolumeCapability_Mount{
 					Mount: &csi.VolumeCapability_MountVolume{},
 				},
-			},	
+			},
 		},
 	}
 
@@ -650,7 +619,7 @@ func testValidateVolumeCapabilities(targetType string, t *testing.T){
 	}
 }
 
-func testValidateVolumeCapabilitiesonDeletedVolume(targetType string, t *testing.T){
+func testValidateVolumeCapabilitiesonDeletedVolume(targetType string, t *testing.T) {
 	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
@@ -675,8 +644,8 @@ func testValidateVolumeCapabilitiesonDeletedVolume(targetType string, t *testing
 		VolumeId: volumeID,
 		VolumeCapabilities: []*csi.VolumeCapability{
 			&csi.VolumeCapability{
-				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
-			},	
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
+			},
 		},
 	}
 
@@ -690,7 +659,7 @@ func testValidateVolumeCapabilitiesonDeletedVolume(targetType string, t *testing
 	}
 }
 
-func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing.T){
+func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing.T) {
 	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
@@ -708,8 +677,8 @@ func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing
 	reqVal := csi.ValidateVolumeCapabilitiesRequest{
 		VolumeCapabilities: []*csi.VolumeCapability{
 			&csi.VolumeCapability{
-				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},	
-			},	
+				AccessMode: &csi.VolumeCapability_AccessMode{Mode: csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER},
+			},
 		},
 	}
 
@@ -721,7 +690,6 @@ func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing
 		}
 		t.Fatal("VolumeID is required to validate volumeCapabilities")
 	}
-	// klog.Infof("Node UnStage Response %v", respVal)
 
 	// delete volume
 	err = deleteTestVolume(cs, volumeID)
@@ -730,7 +698,7 @@ func testValidateVolumeCapabilitiesWithoutVolumeId(targetType string, t *testing
 	}
 }
 
-func testValidateVolumeCapabilitiesWithoutVolumeCapabilities(targetType string, t *testing.T){
+func testValidateVolumeCapabilitiesWithoutVolumeCapabilities(targetType string, t *testing.T) {
 	cs, err := createTestController(targetType)
 	if err != nil {
 		t.Fatal(err)
@@ -757,7 +725,6 @@ func testValidateVolumeCapabilitiesWithoutVolumeCapabilities(targetType string, 
 		}
 		t.Fatal("VolumeCapablities is required to validate volume capablities")
 	}
-	// klog.Infof("Node UnStage Response %v", respVal)
 
 	// delete volume
 	err = deleteTestVolume(cs, volumeID)
@@ -767,15 +734,6 @@ func testValidateVolumeCapabilitiesWithoutVolumeCapabilities(targetType string, 
 }
 
 func createTestController(targetType string) (cs *controllerServer, err error) {
-	err = createConfigFiles(targetType)
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		os.Remove(os.Getenv("SPDKCSI_CONFIG"))
-		os.Remove(os.Getenv("SPDKCSI_SECRET"))
-	}()
-
 	cd := csicommon.NewCSIDriver("test-driver", "test-version", "test-node")
 	cs, err = newControllerServer(cd)
 	if err != nil {
@@ -785,59 +743,12 @@ func createTestController(targetType string) (cs *controllerServer, err error) {
 	return cs, nil
 }
 
-func createConfigFiles(targetType string) error {
-	configFile, err := ioutil.TempFile("", "spdkcsi-config*.json")
-	if err != nil {
-		return err
-	}
-	defer configFile.Close()
-	var config string
-	switch targetType {
-	case "nvme-tcp":
-		config = nvmeTcpConfig
-
-	}
-	_, err = configFile.Write([]byte(config))
-	if err != nil {
-		os.Remove(configFile.Name())
-		return err
-	}
-	os.Setenv("SPDKCSI_CONFIG", configFile.Name())
-
-	secretFile, err := ioutil.TempFile("", "spdkcsi-secret*.json")
-	if err != nil {
-		os.Remove(configFile.Name())
-		return err
-	}
-	defer secretFile.Close()
-	// nolint:gosec // only for test
-	secret := `
-    {
-      "rpcTokens": [
-        {
-          "name": "localhost",
-          "username": "spdkcsiuser",
-          "password": "spdkcsipass"
-        }
-      ]
-	}`
-	_, err = secretFile.Write([]byte(secret))
-	if err != nil {
-		os.Remove(configFile.Name())
-		os.Remove(secretFile.Name())
-		return err
-	}
-	os.Setenv("SPDKCSI_SECRET", secretFile.Name())
-
-	return nil
-}
-
 func createTestVolume(cs *controllerServer, name string, size int64) (string, error) {
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          name,
-		CapacityRange: &csi.CapacityRange{RequiredBytes: size},
+		Name:               name,
+		CapacityRange:      &csi.CapacityRange{RequiredBytes: size},
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: volumeInfo,
+		Parameters:         volumeInfo,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -855,10 +766,10 @@ func createTestVolume(cs *controllerServer, name string, size int64) (string, er
 
 func createTestVolumeWithWrongParameters(cs *controllerServer, name string, size int64, parameters map[string]string) (string, error) {
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          name,
-		CapacityRange: &csi.CapacityRange{RequiredBytes: size},
+		Name:               name,
+		CapacityRange:      &csi.CapacityRange{RequiredBytes: size},
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: parameters,
+		Parameters:         parameters,
 	}
 
 	resp, err := cs.CreateVolume(context.TODO(), &reqCreate)
@@ -887,10 +798,10 @@ func createSameVolumeInParallel(cs *controllerServer, name string, count int, si
 	// issue multiple create requests to create *same* volume in parallel
 	volumeID := make([]string, count)
 	reqCreate := csi.CreateVolumeRequest{
-		Name:          name,
+		Name:               name,
 		VolumeCapabilities: []*csi.VolumeCapability{},
-		Parameters: volumeInfo,
-		CapacityRange: &csi.CapacityRange{RequiredBytes: size},
+		Parameters:         volumeInfo,
+		CapacityRange:      &csi.CapacityRange{RequiredBytes: size},
 	}
 	for i := 0; i < count; i++ {
 		wg.Add(1)

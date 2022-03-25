@@ -29,20 +29,20 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package pos
 
 import (
 	"context"
 	"fmt"
-	"sync"
-	"net"
 	"github.com/container-storage-interface/spec/lib/go/csi"
+	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
+	"github.com/poseidonos/pos-csi/pkg/util"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
-	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
-	"github.com/poseidonos/pos-csi/pkg/util"
+	"net"
+	"sync"
 )
 
 const (
@@ -55,8 +55,8 @@ var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
 	volumes map[string]*volume // volume id to volume struct
-	mtx sync.Mutex // protect volume lock's map
-	mtx2 sync.Mutex
+	mtx     sync.Mutex         // protect volume lock's map
+	mtx2    sync.Mutex         // for synchronizing requests to POS
 }
 
 type volume struct {
@@ -77,12 +77,12 @@ func (s *controllerServer) CreateVolume(
 	defer s.mtx.Unlock()
 
 	if len(req.GetName()) == 0 {
-                return nil, status.Error(codes.InvalidArgument, "Name missing in request")
-        }
-        caps := req.GetVolumeCapabilities()
-        if caps == nil {
-                return nil, status.Error(codes.InvalidArgument, "Volume Capabilities missing in request")
-        }
+		return nil, status.Error(codes.InvalidArgument, "Name missing in request")
+	}
+	caps := req.GetVolumeCapabilities()
+	if caps == nil {
+		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities missing in request")
+	}
 
 	klog.Infof("POS Volumes, %v", s.volumes)
 	posVolume, exists := s.volumes[req.Name]
@@ -100,7 +100,7 @@ func (s *controllerServer) CreateVolume(
 		if posVolume.status == CREATED {
 			if posVolume.size != req.GetCapacityRange().GetRequiredBytes() {
 				klog.Infof("Volume %s with same name and different size is already available", req.Name)
-				return nil,  status.Error(codes.AlreadyExists, "Volume with different size exists")
+				return nil, status.Error(codes.AlreadyExists, "Volume with different size exists")
 			}
 			klog.Infof("Volume %s with same name is already available", req.Name)
 			return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
@@ -111,7 +111,7 @@ func (s *controllerServer) CreateVolume(
 	defer posVolume.mtx.Unlock()
 	params := req.GetParameters()
 	errMsg := validateParams(params)
-	if errMsg!= nil {
+	if errMsg != nil {
 		posVolume.status = ""
 		return nil, errMsg
 	}
@@ -180,11 +180,11 @@ func validateParams(params map[string]string) error {
 		}
 	}
 	if net.ParseIP(params["targetAddress"]) == nil {
-		return status.Error(codes.Unavailable, "Invalid Target IP address is storageclass")
+		return status.Error(codes.Unavailable, "Invalid Target IP address in storageclass")
 	}
-        if net.ParseIP(params["provisionerIP"]) == nil {
-                return status.Error(codes.Unavailable, "Invalid provisioner IP address is storageclass")
-        }
+	if net.ParseIP(params["provisionerIP"]) == nil {
+		return status.Error(codes.Unavailable, "Invalid provisioner IP address in storageclass")
+	}
 	return nil
 }
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
@@ -192,8 +192,8 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	klog.Infof("Deleting Volume: %v", volumeID)
 
 	if len(volumeID) == 0 {
-                return nil, status.Error(codes.InvalidArgument, "Volume ID missing in request")
-        }
+		return nil, status.Error(codes.InvalidArgument, "Volume ID missing in request")
+	}
 
 	s.mtx.Lock()
 	volume, exists := s.volumes[volumeID]
@@ -252,18 +252,18 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 
 	volumeId := req.GetVolumeId()
 	if len(volumeId) == 0 {
-                return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
-        }
+		return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
+	}
 	if len(req.VolumeCapabilities) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities not present in Request")
 	}
 
 	cs.mtx.Lock()
-        _, exists := cs.volumes[volumeId]
-        cs.mtx.Unlock()
-        if !exists {
-                return nil, status.Error(codes.NotFound, "Requested Volume not present")
-        }
+	_, exists := cs.volumes[volumeId]
+	cs.mtx.Unlock()
+	if !exists {
+		return nil, status.Error(codes.NotFound, "Requested Volume not present")
+	}
 
 	// make sure we support all requested caps
 	for _, cap := range req.VolumeCapabilities {
@@ -284,8 +284,6 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 		},
 	}, nil
 }
-
-
 
 func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) (*volume, error) {
 	size := req.GetCapacityRange().GetRequiredBytes()

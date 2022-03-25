@@ -29,20 +29,8 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
 
 package util
-
-const (
-	// TODO: move hardcoded settings to config map
-	cfgRPCTimeoutSeconds = 20
-	cfgLvolClearMethod   = "unmap" // none, unmap, write_zeroes
-	cfgLvolThinProvision = true
-	cfgNVMfSvcPort       = "4420"
-	cfgISCSISvcPort      = "3260"
-	cfgAllowAnyHost      = true
-	cfgAddrFamily        = "IPv4" // IPv4, IPv6, IB, FC
-)
 
 // Config stores parsed command line parameters
 type Config struct {

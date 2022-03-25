@@ -29,13 +29,12 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package util
 
 import (
 	"context"
 	"fmt"
-	//	"io/ioutil"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -44,7 +43,7 @@ import (
 	"k8s.io/klog"
 )
 
-// POSCsiInitiator defines interface for NVMeoF/iSCSI initiator
+// POSCsiInitiator defines interface for NVMeoF initiator
 //
 // - Connect initiates target connection and returns local block device filename
 //   e.g., /dev/disk/by-id/nvme-uuid.c3fe887f-2db7-4d15-8fa7-e56987e04839
@@ -132,21 +131,11 @@ func (nvmf *initiatorNVMf) Disconnect() error {
 	return waitForDeviceGone(deviceGlob, 20)
 }
 
-
 // wait for device file comes up or timeout
 func waitForDeviceReady(deviceGlob string, seconds int) (string, error) {
 	klog.Info("Waiting for Device Ready")
 	for i := 0; i <= seconds; i++ {
 		time.Sleep(time.Second)
-		/*
-			files, err := ioutil.ReadDir("/dev")
-			if err != nil {
-				klog.Infof("%v", err)
-			}
-			for _, f := range files {
-				klog.Infof("%v", f.Name())
-			}
-		*/
 		matches, err := filepath.Glob(deviceGlob)
 		if err != nil {
 			return "", err

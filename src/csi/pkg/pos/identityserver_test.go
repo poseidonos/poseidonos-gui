@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package pos
 
 import (
@@ -41,8 +41,7 @@ import (
 	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
 )
 
-
-func TestNewIdentityServer( t *testing.T ){
+func TestNewIdentityServer(t *testing.T) {
 	cd := csicommon.NewCSIDriver("test-driver", "test-version", "test-node")
 	is := newIdentityServer(cd)
 	req := csi.GetPluginCapabilitiesRequest{}

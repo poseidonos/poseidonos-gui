@@ -29,46 +29,13 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package util
 
 import (
-//	"encoding/json"
-//	"io/ioutil"
-//	"os"
 	"sync/atomic"
 )
-/*
-func ParseJSONFile(fileName string, result interface{}) error {
-	file, err := os.Open(fileName)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
 
-	bytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		return err
-	}
-
-	return json.Unmarshal(bytes, result)
-}
-
-// round up bytes to megabytes
-func ToMiB(bytes int64) int64 {
-	const mi = 1024 * 1024
-	return (bytes + mi - 1) / mi
-}
-
-// ${env:-def}
-func FromEnv(env, def string) string {
-	s := os.Getenv(env)
-	if s != "" {
-		return s
-	}
-	return def
-}
-*/
 // a trivial trylock implementation
 type TryLock struct {
 	locked int32

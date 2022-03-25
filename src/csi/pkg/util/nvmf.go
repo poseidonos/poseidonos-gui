@@ -29,17 +29,14 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package util
 
 import (
-	"fmt"
-	"strings"
-	"sync"
-	//"sync/atomic"
-	"errors"
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/google/uuid"
 	"github.com/poseidonos/pos-csi/pkg/model"
@@ -48,21 +45,23 @@ import (
 	"io/ioutil"
 	"k8s.io/klog"
 	"net/http"
+	"strings"
+	"sync"
 	"time"
 )
 
 const MAX_RETRY_COUNT = 5
 
 var (
-        // json response errors: errors.New("json: tag-string")
-        // matches if "tag-string" founded in json error string
-        ErrJSONNoSpaceLeft  = errors.New("json: No space left")
-        ErrJSONNoSuchDevice = errors.New("json: No such device")
+	// json response errors: errors.New("json: tag-string")
+	// matches if "tag-string" founded in json error string
+	ErrJSONNoSpaceLeft  = errors.New("json: No space left")
+	ErrJSONNoSuchDevice = errors.New("json: No such device")
 
-        // internal errors
-        ErrVolumeDeleted     = errors.New("volume deleted")
-        ErrVolumePublished   = errors.New("volume already published")
-        ErrVolumeUnpublished = errors.New("volume not published")
+	// internal errors
+	ErrVolumeDeleted     = errors.New("volume deleted")
+	ErrVolumePublished   = errors.New("volume already published")
+	ErrVolumeUnpublished = errors.New("volume not published")
 )
 
 // PublishVolume exports a volume through NVMf target
@@ -98,19 +97,19 @@ func UnpublishVolume(name string, params map[string]string, mtx2 *sync.Mutex) er
 
 func unmountVolume(name string, params map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", params["provisionerIp"], params["provisionerPort"], name)
-        requestBody := []byte(fmt.Sprintf(`{
+	requestBody := []byte(fmt.Sprintf(`{
             "param": {
                 "array": "%s"
              }
         }`, params["array"]))
-        resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0, mtx2)
-        if err != nil {
-                klog.Infof("Error in Unmount Volume API: %v", err)
-                return status.Error(codes.Unavailable, err.Error())
-        }
+	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0, mtx2)
+	if err != nil {
+		klog.Infof("Error in Unmount Volume API: %v", err)
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	defer resp.Body.Close()
-        body, _ := ioutil.ReadAll(resp.Body)
-        klog.Infof("Unmount Volume API response: %v", string(body))
+	body, _ := ioutil.ReadAll(resp.Body)
+	klog.Infof("Unmount Volume API response: %v", string(body))
 	return nil
 }
 
@@ -123,21 +122,21 @@ func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", params["provisionerIP"], params["provisionerPort"])
 	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Delete Subsystem", 0, mtx2)
 	body, _ := ioutil.ReadAll(resp.Body)
-        dec := json.NewDecoder(bytes.NewBuffer(body))
-        dec.UseNumber()
-        response := model.Response{}
-        if err = dec.Decode(&response); err != nil {
-                klog.Info("Error in decoding Subsystem Delete Response")
-                return status.Error(codes.Unavailable, err.Error())
-        }
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		klog.Info("Error in decoding Subsystem Delete Response")
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	if response.Result.Status.Code == 0 {
 		klog.Infof("Subsystem deleted successfully")
 	} else if response.Result.Status.Code == -1 {
-                klog.Infof("No Subsystem to be deleted")
-        } else {
-                return status.Error(codes.Unavailable, response.Result.Status.Description)
-        }
-        return nil
+		klog.Infof("No Subsystem to be deleted")
+	} else {
+		return status.Error(codes.Unavailable, response.Result.Status.Description)
+	}
+	return nil
 }
 
 func mountVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) error {
@@ -199,23 +198,21 @@ func GetUUIDFromSubsystem(id string, conf map[string]string, mtx2 *sync.Mutex) (
 	return "", status.Error(codes.Unavailable, "Volume does not exist in subsystem")
 }
 
-func GetUUID(name string, conf map[string]string,mtx2 *sync.Mutex) (string, error) {
+func GetUUID(name string, conf map[string]string, mtx2 *sync.Mutex) (string, error) {
 	id, err := GetVolumeIdFromName(name, conf, mtx2)
 	if err != nil {
 		return "", err
 	}
-	uuid, err := GetUUIDFromSubsystem(id, conf,mtx2)
+	uuid, err := GetUUIDFromSubsystem(id, conf, mtx2)
 	if err != nil {
 		return "", err
 	}
 	return uuid, nil
 }
 
-
-
-func GetVolumeIdFromName(volumeName string, conf map[string]string,mtx2 *sync.Mutex) (string, error) {
+func GetVolumeIdFromName(volumeName string, conf map[string]string, mtx2 *sync.Mutex) (string, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"])
-	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List Volumes", 0,mtx2)
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List Volumes", 0, mtx2)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -252,7 +249,7 @@ func ListSubsystem(conf map[string]string, count int, mtx2 *sync.Mutex) (model.R
 	} else {
 		if response.Result.Status.Code == 1030 && count < MAX_RETRY_COUNT {
 			time.Sleep(2 * time.Second)
-			return ListSubsystem(conf, count + 1, mtx2)
+			return ListSubsystem(conf, count+1, mtx2)
 		}
 		return response, status.Error(codes.Unavailable, response.Result.Status.Description)
 	}
@@ -286,7 +283,7 @@ func createSubsystem(conf map[string]string, mtx2 *sync.Mutex) error {
         "max_namespaces": %s,
         "allow_any_host": %s
     }}`, conf["nqn"], conf["serialNumber"], conf["modelNumber"], conf["maxNamespaces"], conf["allowAnyHost"]))
-	resp, _ := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create SubSystem", 0,mtx2)
+	resp, _ := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create SubSystem", 0, mtx2)
 	body, _ := ioutil.ReadAll(resp.Body)
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
@@ -302,8 +299,6 @@ func createSubsystem(conf map[string]string, mtx2 *sync.Mutex) error {
 
 	return nil
 }
-
-
 
 func subsystemAddListener(conf map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/listener", conf["provisionerIp"], conf["provisionerPort"])
@@ -332,12 +327,7 @@ func subsystemAddListener(conf map[string]string, mtx2 *sync.Mutex) error {
 
 }
 
-
 func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
-	// concurrent requests can happen despite this fast path check
-	/*if atomic.LoadInt32(&node.transCreated) != 0 {
-	        return nil
-	}*/
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/transport", conf["provisionerIp"], conf["provisionerPort"])
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
@@ -358,10 +348,8 @@ func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
 
 	if err == nil {
 		klog.V(5).Infof("Transport created: %s,%s", conf["targetAddr"], conf["targetType"])
-		//atomic.StoreInt32(&node.transCreated, 1)
 	} else if strings.Contains(err.Error(), "already exists") {
 		err = nil // ignore transport already exists error
-		//atomic.StoreInt32(&node.transCreated, 1)
 	}
 
 	return err
@@ -374,39 +362,36 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string, 
 	req.Header.Set("X-request-Id", id.String())
 	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
 	client := &http.Client{}
-        mtx2.Lock()
+	mtx2.Lock()
 	resp, err := client.Do(req)
-        mtx2.Unlock()
+	mtx2.Unlock()
 	if err != nil {
 		klog.Infof("Error in DAgent %v API: %v", reqName, err)
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}
 	return resp, err
-	/*if resp.StatusCode != 200 {
-	        return nil, status.Error(codes.Unavailable, "Transport Creation Failed")
-	}*/
 }
 
 func CallDAgentWithStatus(ip, port, url string, requestBody []byte, reqType string, reqName string, count int, mtx2 *sync.Mutex) (*http.Response, error) {
 	statusURL := fmt.Sprintf("http://%s:%s/api/ibofos/v1/system", ip, port)
 	resp, err := CallDAgent(statusURL, nil, "GET", "Status", mtx2)
 	body, _ := ioutil.ReadAll(resp.Body)
-        dec := json.NewDecoder(bytes.NewBuffer(body))
-        dec.UseNumber()
-        response := model.Response{}
-        if err = dec.Decode(&response); err != nil {
-                klog.Info("Error in decoding Status Response")
-                return nil, status.Error(codes.Unavailable, err.Error())
-        }
-        if response.Result.Status.Code == 0 {
-                return CallDAgent(url, requestBody, reqType, reqName, mtx2)
-        } else if response.Result.Status.Code == 1030 {
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		klog.Info("Error in decoding Status Response")
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		return CallDAgent(url, requestBody, reqType, reqName, mtx2)
+	} else if response.Result.Status.Code == 1030 {
 		if count >= MAX_RETRY_COUNT {
 			return nil, status.Error(codes.Unavailable, "POS is in busy state")
 		}
-                time.Sleep(2 *time.Second)
-		return CallDAgentWithStatus(ip, port, url, requestBody, reqType, reqName, count + 1, mtx2)
-        }
-        return nil, status.Error(codes.Unavailable, response.Result.Status.Description)
+		time.Sleep(2 * time.Second)
+		return CallDAgentWithStatus(ip, port, url, requestBody, reqType, reqName, count+1, mtx2)
+	}
+	return nil, status.Error(codes.Unavailable, response.Result.Status.Description)
 
 }

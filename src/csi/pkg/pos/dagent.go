@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package pos
 
 import (
@@ -43,13 +43,11 @@ import (
 	"google.golang.org/grpc/status"
 	"io/ioutil"
 	"k8s.io/klog/v2"
-	"time"
 	"sync"
+	"time"
 )
 
-type DAgent struct {
-	//	Client RemoteClient
-}
+type DAgent struct{}
 
 type Response struct {
 	Rid             string      `json:"rid"`
@@ -74,7 +72,6 @@ type Status struct {
 
 func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string, mtx2 *sync.Mutex) (*volume, error) {
 	name := csiReq.Name
-	fmt.Println("config ",config)
 	alignedSize := size
 	if size == 0 {
 		alignedSize = 1048576
@@ -90,7 +87,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "maxiops": 0
              }
         }`, config["array"], name, alignedSize))
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0,mtx2)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0, mtx2)
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}
@@ -123,7 +120,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 
 }
 
-func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *sync.Mutex ) error {
+func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *sync.Mutex) error {
 	time.Sleep(5 * time.Second)
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
@@ -137,6 +134,6 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *
 		return err
 	}
 	body, _ := ioutil.ReadAll(resp.Body)
-        klog.Infof("Delete Volume API response: %v", string(body))
+	klog.Infof("Delete Volume API response: %v", string(body))
 	return err
 }
