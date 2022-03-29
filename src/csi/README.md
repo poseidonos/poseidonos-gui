@@ -9,7 +9,8 @@ It provisions POS volumes on storage node dynamically and enables Pods to access
 
 This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-interface/spec/blob/v1.1.0/spec.md). It is currently developed and tested only on Kubernetes.
 
-  
+
+>WARNING: POS CSI for Kubernetes is an alpha-level preview release for testing and evaluation purposes only, and it should not be deployed in support of production workloads.
 
 ## Table of Contents
 
@@ -180,5 +181,6 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
 ```bash
 1) Complete testing of E2E testing framework with CSI Driver yet to be done
 2) Solution testing is done with basic deployment. Extensive deployment testing and benchmarking are yet to be done
+3) In some scenarios where IO operations are done in parallel to execution of create/delete volumes in Kubernetes cluster might result in data loss as well as array reset. In this scenario, Poseidon storage needs to be reset.
 ```
 
