@@ -61,9 +61,61 @@ func MountVolume(xrId string, param interface{}) (model.Request, model.Response,
 	return Requester{xrId, param, model.VolumeParam{}}.Send("MOUNTVOLUME")
 }
 
-func MountVolumeWithSubsystem(xrId string, param interface{}) (model.Request, model.Response, error) {
-        return Requester{xrId, param, model.VolumeParam{}}.Send("MOUNTVOLUMEWITHSUBSYSTEM")
+func CallSubSystemAuto(xrId string, res *model.Response, param map[string]interface{}, opName string, errorInfoList *[]map[string]interface{}) {
+	subsystemParam := model.SubSystemParam{}
+	subsystemParam.SUBNQN,_ = param["subnqn"].(string)
+	_, response, _ := CreateSubSystemAuto(xrId, subsystemParam)
+	//update response
+	UpdateResponse(response, res, opName, errorInfoList)
+
 }
+func CallAddlistener(xrId string, res *model.Response, param map[string]interface{}, opName string, errorInfoList *[]map[string]interface{}) {
+	subsystemParam := model.SubSystemParam{}
+	subsystemParam.SUBNQN,_ = param["subnqn"].(string)
+	subsystemParam.TRANSPORTTYPE,_ = param["transport_type"].(string)
+	subsystemParam.TARGETADDRESS,_ = param["target_address"].(string)
+	subsystemParam.TRANSPORTSERVICEID,_ = param["transport_service_id"].(string)
+	_, response, _ := AddListener(xrId, subsystemParam)
+	//update response
+	UpdateResponse(response, res, opName, errorInfoList)
+
+}
+func CallMountVolume(xrId string, res *model.Response, param map[string]interface{}, opName string, errorInfoList *[]map[string]interface{}){
+	volumeParam := model.VolumeParam{}
+	volumeParam.Name,_ = param["name"].(string)
+	volumeParam.Array,_ = param["array"].(string)
+	volumeParam.SubNQN,_ = param["subnqn"].(string)
+	_, response, _ := MountVolume(xrId,volumeParam)
+	//update response
+	UpdateResponse(response, res, opName, errorInfoList)
+}
+func MountVolumeWithSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
+	errorInfo := make(map[string]interface{})
+	errorInfoList := []map[string]interface{}{}
+	iBoFRequest := model.Request{
+		Command: "RUNIBOFOS",
+		Rid:     xrId,
+	}
+	iBoFRequest.Param = param
+	res := model.Response{}
+        reqMap := param.(map[string]interface{})
+	errorCode := 0
+	CallSubSystemAuto(xrId, &res, reqMap, "SubSystemAuto", &errorInfoList)
+	CallAddlistener(xrId, &res, reqMap, "AddListener", &errorInfoList)
+	CallMountVolume(xrId, &res, reqMap, "MountVolume", &errorInfoList)
+	for itr :=0; itr<len(errorInfoList); itr++ {
+		if errorInfoList[itr]["code"].(int) != 0 {
+			errorCode = 1
+			break
+		}
+	}
+	errorInfo["errorResponses"] = errorInfoList
+	errorInfo["errorCode"] = errorCode
+	res.Result.Status.ErrorInfo = errorInfo
+	return iBoFRequest, res, nil
+        //return Requester{xrId, param, model.VolumeParam{}}.Send("MOUNTVOLUME")
+}
+
 
 func UnmountVolume(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return Requester{xrId, param, model.VolumeParam{}}.Send("UNMOUNTVOLUME")

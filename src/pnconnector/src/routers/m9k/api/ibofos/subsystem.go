@@ -51,6 +51,10 @@ func CreateSubSystem(xrId string, param interface{}) (model.Request, model.Respo
   return subSystemSender(xrId, param, "CREATESUBSYSTEM")
 }
 
+func CreateSubSystemAuto(xrId string, param interface{}) (model.Request, model.Response, error) {
+  return subSystemSender(xrId, param, "CREATESUBSYSTEMAUTO")
+}
+
 func DeleteSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
   return subSystemSender(xrId, param, "DELETESUBSYSTEM")
 }
