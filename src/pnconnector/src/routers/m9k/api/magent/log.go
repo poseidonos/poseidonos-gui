@@ -55,7 +55,7 @@ func GetRebuildLogs(param interface{}) (model.Response, error) {
 	content, err := ioutil.ReadFile("/var/log/pos/rebuild_log")
 	if err != nil {
 		res.Result.Status, _ = util.GetStatusInfo(0)
-                res.Result.Data = ""
+		res.Result.Data = ""
 		return res, nil
 	}
 

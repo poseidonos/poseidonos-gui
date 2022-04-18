@@ -29,24 +29,24 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package exec
 
 import (
+	"pnconnector/src/routers/m9k/api/ibofos"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
-	"pnconnector/src/routers/m9k/api/ibofos"
 )
 
 func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
 	_, result, _ := ibofos.SystemSender(xrId, param, "GETPOSINFO")
-        res := model.Response{}
+	res := model.Response{}
 	if result.Result.Status.Description == "DONE" {
-	 	util.ExecCmd("pkill -9 ibofos", false)
+		util.ExecCmd("pkill -9 ibofos", false)
 		res.Result.Status.Code = 0
 
 	} else {
-	        res.Result.Status.Code = 11021
+		res.Result.Status.Code = 11021
 	}
 	return res, nil
 }

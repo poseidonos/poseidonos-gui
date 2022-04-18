@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package ibofos
 
 import (
@@ -49,7 +49,7 @@ func GetSMART(xrId string, param interface{}) (model.Request, model.Response, er
 }
 
 func CreateDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
-        return deviceSender(xrId, param, "CREATEDEVICE")
+	return deviceSender(xrId, param, "CREATEDEVICE")
 }
 
 func deviceSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {

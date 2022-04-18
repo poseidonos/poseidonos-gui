@@ -29,14 +29,14 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package magent
 
 import (
-	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func CallMagent(ctx *gin.Context, f func(interface{}) (model.Response, error), param interface{}) {

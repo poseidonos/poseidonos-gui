@@ -30,27 +30,20 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package ibofos
 
 import (
-	"github.com/influxdata/influxdb/client/v2"
+	"pnconnector/src/routers/m9k/model"
 )
 
-// InfluxDBClient contains the function to connect to influxDB
-type InfluxDBClient interface {
-	ConnectDB() (client.Client, error)
+func StartTelemetry(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return TelemetrySender(xrId, param, "STARTTELEMETRY")
 }
 
-// InfluxClient implements InfluxDBClient
-type InfluxClient struct{}
-
-// ConnectDB creates an influxdb client and returns it
-func (i InfluxClient) ConnectDB() (client.Client, error) {
-	client, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: DBAddress,
-	})
-	return client, err
+func StopTelemetry(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return TelemetrySender(xrId, param, "STOPTELEMETRY")
 }
 
-// IDBClient should be used for connecting to InfluxDB
-var IDBClient InfluxDBClient = InfluxClient{}
+func TelemetrySender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
+	return Requester{xrId, param, model.SystemParam{}}.Send(command)
+}

@@ -36,7 +36,7 @@ import (
 )
 
 func ListArray(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return arraySender(xrId, param, "LISTARRAY")
+	return arraySender(xrId, param, "LISTARRAY")
 }
 
 func ListArrayDevice(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -52,7 +52,7 @@ func CreateArray(xrId string, param interface{}) (model.Request, model.Response,
 }
 
 func AutoCreateArray(xrId string, param interface{}) (model.Request, model.Response, error) {
-        return arraySender(xrId, param, "AUTOCREATEARRAY")
+	return arraySender(xrId, param, "AUTOCREATEARRAY")
 }
 
 func DeleteArray(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -82,6 +82,7 @@ func MountArray(xrId string, param interface{}) (model.Request, model.Response, 
 func UnmountArray(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return SystemSender(xrId, param, "UNMOUNTARRAY")
 }
+
 func ArrayReset(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return SystemSender(xrId, param, "RESETMBR")
+	return SystemSender(xrId, param, "RESETMBR")
 }

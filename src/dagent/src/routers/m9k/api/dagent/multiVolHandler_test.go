@@ -29,12 +29,10 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package dagent
 
 import (
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/setting"
 	"bytes"
 	"dagent/src/routers"
 	"encoding/json"
@@ -43,6 +41,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/setting"
 	"testing"
 	"time"
 )

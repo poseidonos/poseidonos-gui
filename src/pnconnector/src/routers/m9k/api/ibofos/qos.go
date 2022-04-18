@@ -34,11 +34,12 @@ package ibofos
 import (
 	"pnconnector/src/routers/m9k/model"
 )
+
 func QOSSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
-  return Requester{xrId, param, model.VolumeParam{}}.Send(command)
+	return Requester{xrId, param, model.VolumeParam{}}.Send(command)
 }
 func QOSCreateVolumePolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return QOSSender(xrId, param, "CREATEQOSVOLUMEPOLICY")
+	return QOSSender(xrId, param, "CREATEQOSVOLUMEPOLICY")
 }
 
 func QOSResetVolumePolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
@@ -48,5 +49,3 @@ func QOSResetVolumePolicies(xrId string, param interface{}) (model.Request, mode
 func QOSListPolicies(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return QOSSender(xrId, param, "LISTQOSPOLICIES")
 }
-
-

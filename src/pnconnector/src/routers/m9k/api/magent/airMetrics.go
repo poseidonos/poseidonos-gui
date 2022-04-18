@@ -93,26 +93,26 @@ func extractValuesVolume(valuesList []models.Row, columns []string, key, metrics
 	var metricList [][]map[string]interface{}
 	info := make(map[string]interface{})
 	result := []map[string]interface{}{}
-        var resultList [][]map[string]interface{}
-        var metric []map[string]interface{}
+	var resultList [][]map[string]interface{}
+	var metric []map[string]interface{}
 
 	if valuesList == nil || len(valuesList) == 0 {
-                resultList = append(resultList, result)
-                resultList = append(resultList, timeMap)
-                info["data"] = resultList
-                metric = append(metric, info)
-                metricList = append(metricList, metric)
+		resultList = append(resultList, result)
+		resultList = append(resultList, timeMap)
+		info["data"] = resultList
+		metric = append(metric, info)
+		metricList = append(metricList, metric)
 		return metricList
 	}
 	for itr := 0; itr < len(valuesList); itr++ {
 		info = make(map[string]interface{})
 		if vol_id, ok := valuesList[itr].Tags["vol_id"]; ok {
 			info["volumeid"] = vol_id
-	                info["arrayid"] = arrayId
+			info["arrayid"] = arrayId
 		}
 		result = []map[string]interface{}{}
-		resultList = make([][]map[string]interface{},0)
-		metric = make([]map[string]interface{},0)
+		resultList = make([][]map[string]interface{}, 0)
+		metric = make([]map[string]interface{}, 0)
 		for _, val := range valuesList[itr].Values {
 			currentValue := make(map[string]interface{})
 			currentValue["time"] = val[0]

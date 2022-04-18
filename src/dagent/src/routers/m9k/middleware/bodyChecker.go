@@ -29,16 +29,16 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package middleware
 
 import (
-	"pnconnector/src/log"
-	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"io"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func CheckBody(ctx *gin.Context) {

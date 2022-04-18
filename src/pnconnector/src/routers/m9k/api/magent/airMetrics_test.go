@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package magent
 
 import (
@@ -78,16 +78,16 @@ func TestGetReadBandwidth(t *testing.T) {
 			err: nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "30d",
-                Level: "array",
-            },
-            expected: []map[string]interface{}{
-                {"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
-                {"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
-            },
-            err: nil,
-        },
+			input: model.MAgentParam{
+				Time:  "30d",
+				Level: "array",
+			},
+			expected: []map[string]interface{}{
+				{"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
+			},
+			err: nil,
+		},
 		{
 			input: model.MAgentParam{
 				Time:  "30d",
@@ -150,15 +150,15 @@ func TestGetWriteBandwidth(t *testing.T) {
 		err      error
 	}{
 		{
-            input: model.MAgentParam{
-                Time: "",
+			input: model.MAgentParam{
+				Time:  "",
 				Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
-            },
-            err: nil,
-        },
+			},
+			expected: []map[string]interface{}{
+				{"bw": json.Number("300"), "time": json.Number("1589872050483860738")},
+			},
+			err: nil,
+		},
 		{
 			input: model.MAgentParam{
 				Level: "array",
@@ -191,16 +191,16 @@ func TestGetWriteBandwidth(t *testing.T) {
 			err: nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "30d",
-                Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
-                {"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
-            },
-            err: nil,
-        },
+			input: model.MAgentParam{
+				Time:  "30d",
+				Level: "0",
+			},
+			expected: []map[string]interface{}{
+				{"bw": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"bw": json.Number("700"), "time": json.Number("1589872050483870738")},
+			},
+			err: nil,
+		},
 		{
 			input: model.MAgentParam{
 				Time:  "5m",
@@ -218,13 +218,13 @@ func TestGetWriteBandwidth(t *testing.T) {
 			err:      nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "0",
-                Level: "0",
-            },
-            expected: make([]string, 0),
-            err:      nil,
-        },
+			input: model.MAgentParam{
+				Time:  "0",
+				Level: "0",
+			},
+			expected: make([]string, 0),
+			err:      nil,
+		},
 		{
 			input: model.MAgentParam{
 				Time:  "20m",
@@ -233,7 +233,6 @@ func TestGetWriteBandwidth(t *testing.T) {
 			expected: make([]string, 0),
 			err:      nil,
 		},
-
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -253,15 +252,15 @@ func TestGetReadiops(t *testing.T) {
 		err      error
 	}{
 		{
-            input: model.MAgentParam{
-                Time: "",
+			input: model.MAgentParam{
+				Time:  "",
 				Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
-            },
-            err: nil,
-        },{
+			},
+			expected: []map[string]interface{}{
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
+			},
+			err: nil,
+		}, {
 			input: model.MAgentParam{
 				Level: "array",
 			},
@@ -318,16 +317,16 @@ func TestGetReadiops(t *testing.T) {
 			err:      nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "30d",
-                Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"iops": json.Number("100"), "time": json.Number("1589872050483860738")},
-                {"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
-            },
-            err: nil,
-        },
+			input: model.MAgentParam{
+				Time:  "30d",
+				Level: "0",
+			},
+			expected: []map[string]interface{}{
+				{"iops": json.Number("100"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
+			},
+			err: nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -347,15 +346,15 @@ func TestGetWriteiops(t *testing.T) {
 		err      error
 	}{
 		{
-            input: model.MAgentParam{
-                Time: "",
+			input: model.MAgentParam{
+				Time:  "",
 				Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
-            },
-            err: nil,
-        },{
+			},
+			expected: []map[string]interface{}{
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
+			},
+			err: nil,
+		}, {
 			input: model.MAgentParam{
 				Level: "array",
 			},
@@ -412,16 +411,16 @@ func TestGetWriteiops(t *testing.T) {
 			err:      nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "30d",
-                Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
-                {"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
-            },
-            err: nil,
-        },
+			input: model.MAgentParam{
+				Time:  "30d",
+				Level: "0",
+			},
+			expected: []map[string]interface{}{
+				{"iops": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"iops": json.Number("700"), "time": json.Number("1589872050483870738")},
+			},
+			err: nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}
@@ -440,7 +439,7 @@ func TestGetLatency(t *testing.T) {
 		expected interface{}
 		err      error
 	}{
-		
+
 		{
 			input: model.MAgentParam{
 				Level: "array",
@@ -497,16 +496,16 @@ func TestGetLatency(t *testing.T) {
 			err:      nil,
 		},
 		{
-            input: model.MAgentParam{
-                Time:  "30d",
-                Level: "0",
-            },
-            expected: []map[string]interface{}{
-                {"latency": json.Number("300"), "time": json.Number("1589872050483860738")},
-                {"latency": json.Number("700"), "time": json.Number("1589872050483870738")},
-            },
-            err: nil,
-        },
+			input: model.MAgentParam{
+				Time:  "30d",
+				Level: "0",
+			},
+			expected: []map[string]interface{}{
+				{"latency": json.Number("300"), "time": json.Number("1589872050483860738")},
+				{"latency": json.Number("700"), "time": json.Number("1589872050483870738")},
+			},
+			err: nil,
+		},
 	}
 
 	IDBClient = mocks.MockInfluxClient{}

@@ -99,6 +99,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.IBoFOSInfo)
 		})
+		iBoFOSPath.POST("/system/property", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.SetPOSProperty)
+		})
 		iBoFOSPath.DELETE("/system/mount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UnmountiBoFOS)
 		})
@@ -249,12 +252,12 @@ func Route(router *gin.Engine) {
 					return
 
 				}
-                                if reflect.TypeOf(reqMap["size"]).Kind() == reflect.String || reqMap["size"].(float64) <= 0 {
-                                        res.Result.Status, _ = util.GetStatusInfo(2033)
-                                        ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
-                                        return
+				if reflect.TypeOf(reqMap["size"]).Kind() == reflect.String || reqMap["size"].(float64) <= 0 {
+					res.Result.Status, _ = util.GetStatusInfo(2033)
+					ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+					return
 
-                                }
+				}
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
 				ibofos.CalliBoFOS(ctx, amoduleIBoFOS.CreateVolume)
@@ -290,7 +293,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.POST("/volumes/:volumeName/mount/subsystem", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolumeWithSubSystem,param)
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.MountVolumeWithSubSystem, param)
 		})
 		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
@@ -312,6 +315,41 @@ func Route(router *gin.Engine) {
 	})
 	iBoFOSPath.POST("/qos/policies", func(ctx *gin.Context) {
 		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.QOSListPolicies)
+	})
+
+	//Telemetry
+	iBoFOSPath.POST("/telemetry", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.StartTelemetry)
+	})
+	iBoFOSPath.DELETE("/telemetry", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.StopTelemetry)
+	})
+
+	// Logger Commands
+	iBoFOSPath.POST("/logger/filter", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ApplyLogFilter)
+	})
+	iBoFOSPath.GET("/logger/info", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.LoggerInfo)
+	})
+	iBoFOSPath.POST("/logger/level", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.SetLogLevel)
+	})
+	iBoFOSPath.GET("/logger/level", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetLogLevel)
+	})
+
+	// Developer Commands
+	iBoFOSPath.POST("/devel/event-wrr/reset", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateEventWrr)
+	})
+	iBoFOSPath.POST("/devel/event-wrr/update", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ResetEventWrr)
+	})
+	iBoFOSPath.DELETE("/devel/:arrayName/rebuild", func(ctx *gin.Context) {
+		arrayName := ctx.Param("arrayName")
+		param := model.ArrayParam{Name: arrayName}
+		ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.StopRebuilding, param)
 	})
 
 	// MAgentPath
@@ -459,10 +497,10 @@ func Route(router *gin.Engine) {
 
 		//rebuildlogs
 		mAgentPath.GET("/rebuildlogs", func(ctx *gin.Context) {
-                        time := ctx.Param("time")
-                        param := model.MAgentParam{Time: time}
-                        magent.CallMagent(ctx, amoduleMagent.GetRebuildLogs, param)
-                })
+			time := ctx.Param("time")
+			param := model.MAgentParam{Time: time}
+			magent.CallMagent(ctx, amoduleMagent.GetRebuildLogs, param)
+		})
 
 	}
 }

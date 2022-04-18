@@ -29,17 +29,17 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package handler
 
 import (
+	"bufio"
+	"errors"
+	"io"
+	"net"
 	"pnconnector/src/log"
 	"pnconnector/src/setting"
 	"pnconnector/src/util"
-	"errors"
-	"net"
-	"bufio"
-	"io"
 )
 
 func ConnectToIBoFOS() (net.Conn, error) {

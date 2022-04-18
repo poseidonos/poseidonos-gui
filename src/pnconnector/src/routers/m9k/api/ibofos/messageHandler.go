@@ -29,17 +29,17 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package ibofos
 
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"pnconnector/src/handler"
 	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/model"
 	"time"
-	"io"
 )
 
 var (
@@ -139,7 +139,7 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 		if err = d.Decode(&response); err != nil {
 			log.Fatal(err)
 		}*/
-		json.Unmarshal([]byte(temp),&response)
+		json.Unmarshal([]byte(temp), &response)
 		response.LastSuccessTime = time.Now().UTC().Unix()
 		return response, nil
 	}

@@ -32,11 +32,11 @@
 package bmc
 
 import (
-	"pnconnector/src/setting"
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httputil"
+	"pnconnector/src/setting"
 )
 
 func RedirectRedfish(ctx *gin.Context) {

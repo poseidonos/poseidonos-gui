@@ -49,10 +49,10 @@ func ExitiBoFOS(xrId string, param interface{}) (model.Request, model.Response, 
 
 func UpdateResponse(response model.Response, res *model.Response, opName string, errorInfoList *[]map[string]interface{}) {
 	info := make(map[string]interface{})
-	info["id"]=opName
+	info["id"] = opName
 	info["code"] = response.Result.Status.Code
 	info["description"] = response.Result.Status.Description
-	*errorInfoList = append(*errorInfoList,info)
+	*errorInfoList = append(*errorInfoList, info)
 }
 
 func transport(xrId string, config setting.HostConf, res *model.Response, opName string, errorInfoList *[]map[string]interface{}) {
@@ -140,7 +140,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 		listener(xrId, config, &res, config.Subsystem_2, "addListener2", &errorInfoList)
 		uramDevice(xrId, config, &res, config.Uram1, "uram1", &errorInfoList)
 		uramDevice(xrId, config, &res, config.Uram2, "uram2", &errorInfoList)
-		for itr :=0; itr<len(errorInfoList); itr++ {
+		for itr := 0; itr < len(errorInfoList); itr++ {
 			if errorInfoList[itr]["code"].(int) != 0 {
 				errorCode = 1
 				break
@@ -167,6 +167,10 @@ func MountiBoFOS(xrId string, param interface{}) (model.Request, model.Response,
 
 func UnmountiBoFOS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return SystemSender(xrId, param, "UNMOUNTIBOFOS")
+}
+
+func SetPOSProperty(xrId string, param interface{}) (model.Request, model.Response, error) {
+	return SystemSender(xrId, param, "REBUILDPERFIMPACT")
 }
 
 func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {

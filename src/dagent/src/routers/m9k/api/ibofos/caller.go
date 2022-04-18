@@ -29,18 +29,18 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package ibofos
 
 import (
-	"pnconnector/src/log"
-	"pnconnector/src/routers/m9k/model"
 	"bytes"
 	"dagent/src/routers/m9k/api"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {

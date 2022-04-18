@@ -29,16 +29,16 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package middleware
 
 import (
-	"pnconnector/src/log"
-	"pnconnector/src/routers/m9k/model"
 	"bytes"
 	"dagent/src/routers/m9k/api/dagent"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 )
 
 type responseBody struct {

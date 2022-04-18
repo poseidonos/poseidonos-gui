@@ -32,10 +32,10 @@
 package dagent
 
 import (
+	"errors"
 	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	"pnconnector/src/routers/m9k/model"
 	"pnconnector/src/util"
-	"errors"
 	"syscall"
 	"time"
 )

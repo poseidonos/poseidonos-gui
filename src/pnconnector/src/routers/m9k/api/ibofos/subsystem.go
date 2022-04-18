@@ -32,34 +32,33 @@
 package ibofos
 
 import (
-        "pnconnector/src/routers/m9k/model"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func CreateTransport(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "CREATETRANSPORT")
+	return subSystemSender(xrId, param, "CREATETRANSPORT")
 }
 
 func AddListener(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "ADDLISTENER")
+	return subSystemSender(xrId, param, "ADDLISTENER")
 }
 
 func ListSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "LISTSUBSYSTEM")
+	return subSystemSender(xrId, param, "LISTSUBSYSTEM")
 }
 
 func CreateSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "CREATESUBSYSTEM")
+	return subSystemSender(xrId, param, "CREATESUBSYSTEM")
 }
 
 func CreateSubSystemAuto(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "CREATESUBSYSTEMAUTO")
+	return subSystemSender(xrId, param, "CREATESUBSYSTEMAUTO")
 }
 
 func DeleteSubSystem(xrId string, param interface{}) (model.Request, model.Response, error) {
-  return subSystemSender(xrId, param, "DELETESUBSYSTEM")
+	return subSystemSender(xrId, param, "DELETESUBSYSTEM")
 }
 
 func subSystemSender(xrId string, param interface{}, command string) (model.Request, model.Response, error) {
-        return Requester{xrId, param, model.SubSystemParam{}}.Send(command)
+	return Requester{xrId, param, model.SubSystemParam{}}.Send(command)
 }
-

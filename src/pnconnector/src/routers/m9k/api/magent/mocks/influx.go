@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package mocks
 
 import (
@@ -58,7 +58,7 @@ var VolumeQuery = "SELECT * from poseidon.default_rp.volumes where volid=0 order
 
 var VolumeQueryNoData = "SELECT * from poseidon.default_rp.volumes where volid=101 order by time desc limit 1"
 
-var LastReadBandwidthQuery  = `SELECT read_bw FROM (SELECT sum(read_bw) as read_bw FROM "poseidon"."default_rp"."air" where time > now() - 5s group by time(1s)) order by time limit 1`
+var LastReadBandwidthQuery = `SELECT read_bw FROM (SELECT sum(read_bw) as read_bw FROM "poseidon"."default_rp"."air" where time > now() - 5s group by time(1s)) order by time limit 1`
 var ArrayReadBandwidthQuery = `SELECT mean(read_bw) FROM (SELECT sum(read_bw) as "read_bw" FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m group by time(1s) FILL(null)) group by time(1m)`
 var VolReadBandwidthQuery = `SELECT mean(read_bw) as "bw", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
 
@@ -82,7 +82,7 @@ var LastWriteIOPSQueryVol = `SELECT write_iops as "iops", timestamp FROM "poseid
 var ArrayWriteIOPSQuery = `SELECT mean(write_iops) FROM (SELECT sum(write_iops) as "write_iops" FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m group by time(1s) FILL(null)) group by time(1m)`
 var ArrayWriteIOPSQueryVol = `SELECT write_iops as "iops" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - 30d and time > 0 FILL(null) and vol_id = '0'`
 var VolWriteIOPSQuery = `SELECT mean(write_iops) as "iops", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
-var LatencyQuery = `SELECT mean(write_latency) FROM (SELECT sum(write_latency) as "write_latency" FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m group by time(1s) FILL(null)) group by time(1m)` 
+var LatencyQuery = `SELECT mean(write_latency) FROM (SELECT sum(write_latency) as "write_latency" FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m group by time(1s) FILL(null)) group by time(1m)`
 var LastLatencyQuery = `SELECT write_latency FROM (SELECT sum(write_latency) as write_latency FROM "poseidon"."default_rp"."air" where time > now() - 5s group by time(1s)) order by time limit 1`
 var VolLatencyQuery = `SELECT mean(write_latency) as "latency", median(unixTimestamp) as timestamp FROM "poseidon"."default_rp"."air" WHERE time > now() - 15m and time > 0 and vol_id = '0' GROUP BY time(1m) FILL(null)`
 var VolLatencyQueryAgg = `SELECT write_latency as "latency" FROM "poseidon"."agg_rp"."mean_air" WHERE time > now() - 30d and time > 0 FILL(null) and vol_id = '0'`
@@ -198,17 +198,17 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 		}
 		rows = append(rows, row)
 	case DefaultReadBandwidthQuery:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "read_bw",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-                {json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
-            },
-        }
-        rows = append(rows, row)
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_bw",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("400"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
 	case AggregatedReadBandwidthQuery:
 		row := models.Row{
 			Columns: []string{
@@ -232,17 +232,17 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case LastWriteBandwidthQueryVol:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "write_bw",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
+	case LastWriteBandwidthQueryVol:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_bw",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
 	case ArrayWriteBandwidthQuery:
 		row := models.Row{
 			Columns: []string{
@@ -266,39 +266,39 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case LastReadIOPSQueryVol:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "read_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
-    case LastReadIOPSQuery:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "read_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
-    case LastReadIOPSQueryVol:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "read_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
+	case LastReadIOPSQueryVol:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
+	case LastReadIOPSQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
+	case LastReadIOPSQueryVol:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
 	case ArrayReadIOPSQuery:
 		row := models.Row{
 			Columns: []string{
@@ -323,18 +323,18 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case VolReadIOPSQueryAgg:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "read_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-                {json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
-            },
-        }
-        rows = append(rows, row)
+	case VolReadIOPSQueryAgg:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"read_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
 	case LastWriteIOPSQuery:
 		row := models.Row{
 			Columns: []string{
@@ -346,17 +346,17 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case LastWriteIOPSQueryVol:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "write_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
+	case LastWriteIOPSQueryVol:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
 	case VolWriteBandwidthQuery:
 		row := models.Row{
 			Columns: []string{
@@ -369,18 +369,18 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case VolWriteBandwidthAggQuery:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "write_bw",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
-                {json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
-            },
-        }
-        rows = append(rows, row)
+	case VolWriteBandwidthAggQuery:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_bw",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("100"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
 	case ArrayWriteIOPSQuery:
 		row := models.Row{
 			Columns: []string{
@@ -393,18 +393,18 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case ArrayWriteIOPSQueryVol:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "write_iops",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-                {json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
-            },
-        }
-        rows = append(rows, row)
+	case ArrayWriteIOPSQueryVol:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_iops",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("300"), json.Number("0")},
+			},
+		}
+		rows = append(rows, row)
 	case VolWriteIOPSQuery:
 		row := models.Row{
 			Columns: []string{
@@ -440,18 +440,18 @@ func (m *mockClient) Query(q client.Query) (*client.Response, error) {
 			},
 		}
 		rows = append(rows, row)
-    case VolLatencyQueryAgg:
-        row := models.Row{
-            Columns: []string{
-                "time",
-                "write_latency",
-            },
-            Values: [][]interface{}{
-                {json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
-                {json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("200"), json.Number("1")},
-            },
-        }
-        rows = append(rows, row)
+	case VolLatencyQueryAgg:
+		row := models.Row{
+			Columns: []string{
+				"time",
+				"write_latency",
+			},
+			Values: [][]interface{}{
+				{json.Number("1589872050483860738"), json.Number("300"), json.Number("0"), json.Number("200"), json.Number("1")},
+				{json.Number("1589872050483870738"), json.Number("700"), json.Number("0"), json.Number("200"), json.Number("1")},
+			},
+		}
+		rows = append(rows, row)
 	case LatencyQuery:
 		row := models.Row{
 			Columns: []string{

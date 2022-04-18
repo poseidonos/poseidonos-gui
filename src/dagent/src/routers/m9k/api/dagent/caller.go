@@ -32,11 +32,11 @@
 package dagent
 
 import (
-	"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/api"
 	"dagent/src/routers/m9k/header"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func CallDagent(ctx *gin.Context, f func(string, interface{}) (model.Response, error)) {

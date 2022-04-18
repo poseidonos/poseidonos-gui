@@ -29,14 +29,10 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package dagent
 
 import (
-	"pnconnector/src/log"
-	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 	"bytes"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
@@ -45,6 +41,10 @@ import (
 	"github.com/google/uuid"
 	"io/ioutil"
 	"net/http"
+	"pnconnector/src/log"
+	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+	"pnconnector/src/routers/m9k/model"
+	"pnconnector/src/util"
 	"strconv"
 	"time"
 )
@@ -247,11 +247,11 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 }
 
 func maxCountExceeded(count int, array string) (int, bool) {
-  param := model.VolumeParam{Array: array}
+	param := model.VolumeParam{Array: array}
 	listXrid, _ := uuid.NewUUID()
 	countXrid, _ := uuid.NewUUID()
-  _, volList, err := iBoFOS.ListVolume(listXrid.String(), param)
-  _, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
+	_, volList, err := iBoFOS.ListVolume(listXrid.String(), param)
+	_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -264,7 +264,7 @@ func maxCountExceeded(count int, array string) (int, bool) {
 		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
 		volCount = len(volumes.([]interface{}))
 	}
-  maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
+	maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -274,34 +274,34 @@ func maxCountExceeded(count int, array string) (int, bool) {
 	return COUNT_EXCEEDED_ERROR, true
 }
 func checkArrayExist(array string) (int, bool) {
-	param := model.ArrayParam{Name:array}
+	param := model.ArrayParam{Name: array}
 	listXrid, _ := uuid.NewUUID()
 	_, resp, err := iBoFOS.ArrayInfo(listXrid.String(), param)
-        if err != nil {
-                return POS_API_ERROR, true
-        }
-	if resp.Result.Status.Code!=0 {
-		return resp.Result.Status.Code,true
+	if err != nil {
+		return POS_API_ERROR, true
+	}
+	if resp.Result.Status.Code != 0 {
+		return resp.Result.Status.Code, true
 	}
 	if resp.Result.Data.(map[string]interface{})["state"] == "OFFLINE" {
-		return ARRAY_UNMOUNT_ERROR,true
+		return ARRAY_UNMOUNT_ERROR, true
 	}
 	return 0, false
 }
 func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
-	if volParam.Name=="" {
-                res.Result.Status, _ = util.GetStatusInfo(2020)
-                ctx.AbortWithStatusJSON(http.StatusBadRequest, &res)
-                return
-        }
+	if volParam.Name == "" {
+		res.Result.Status, _ = util.GetStatusInfo(2020)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, &res)
+		return
+	}
 
-        if status, ok := checkArrayExist(volParam.Array); ok {
-                res.Result.Status, _ = util.GetStatusInfo(status)
-                ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
-                return
-        }
+	if status, ok := checkArrayExist(volParam.Array); ok {
+		res.Result.Status, _ = util.GetStatusInfo(status)
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+		return
+	}
 
 	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)

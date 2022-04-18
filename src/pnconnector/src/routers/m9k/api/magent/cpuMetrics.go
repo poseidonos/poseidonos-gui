@@ -56,10 +56,11 @@ type CPUField struct {
 }
 
 type Time struct {
-	StartTime	int64 `json:"startTime"`
-	EndTime		int64 `json:"endTime"`
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime"`
 }
 type Times []Time
+
 // CPUFields is an array of CPUField
 type CPUFields []CPUField
 
@@ -69,10 +70,10 @@ func GetCPUData(param interface{}) (model.Response, error) {
 	var query string
 	fieldsList := make(CPUFields, 0)
 	paramStruct := param.(model.MAgentParam)
-	timeVal := make(Times,0)
+	timeVal := make(Times, 0)
 	currentTime := time.Now().UnixNano()
-	timeVal = append(timeVal,Time{currentTime - TimeSecondsMap[paramStruct.Time],currentTime})
-        var resultList []interface{}
+	timeVal = append(timeVal, Time{currentTime - TimeSecondsMap[paramStruct.Time], currentTime})
+	var resultList []interface{}
 	if paramStruct.Time != "" {
 		timeInterval := param.(model.MAgentParam).Time
 		if _, found := TimeGroupsDefault[timeInterval]; !found {
@@ -107,9 +108,9 @@ func GetCPUData(param interface{}) (model.Response, error) {
 			fieldsList = append(fieldsList, CPUField{values[0].(json.Number), values[1].(json.Number)})
 		}
 	}
-        res.Result.Status, _ = util.GetStatusInfo(0)
-        resultList = append(resultList,fieldsList)
-        resultList = append(resultList,timeVal)
-        res.Result.Data = resultList
+	res.Result.Status, _ = util.GetStatusInfo(0)
+	resultList = append(resultList, fieldsList)
+	resultList = append(resultList, timeVal)
+	res.Result.Data = resultList
 	return res, nil
 }
