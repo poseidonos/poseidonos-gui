@@ -341,10 +341,10 @@ func Route(router *gin.Engine) {
 
 	// Developer Commands
 	iBoFOSPath.POST("/devel/event-wrr/reset", func(ctx *gin.Context) {
-		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateEventWrr)
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ResetEventWrr)
 	})
 	iBoFOSPath.POST("/devel/event-wrr/update", func(ctx *gin.Context) {
-		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.ResetEventWrr)
+		ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UpdateEventWrr)
 	})
 	iBoFOSPath.DELETE("/devel/:arrayName/rebuild", func(ctx *gin.Context) {
 		arrayName := ctx.Param("arrayName")
