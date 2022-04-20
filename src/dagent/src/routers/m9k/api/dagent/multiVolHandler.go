@@ -64,6 +64,7 @@ const (
 	COUNT_EXCEEDED_ERROR = 11050
 	ARRAY_UNMOUNT_ERROR  = 2090
 	DELAY                = 50 * time.Millisecond
+	MAX_VOLS_COUNT       = 256
 )
 
 var (
@@ -249,14 +250,14 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 func maxCountExceeded(count int, array string) (int, bool) {
 	param := model.VolumeParam{Array: array}
 	listXrid, _ := uuid.NewUUID()
-	countXrid, _ := uuid.NewUUID()
+	//countXrid, _ := uuid.NewUUID()
 	_, volList, err := iBoFOS.ListVolume(listXrid.String(), param)
-	_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
+	//_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
 	volCount := 0
-	maxCount := 0
+	maxCount := MAX_VOLS_COUNT
 	/*if volList.Info.(map[string]interface{})["state"].(string) != "NORMAL" {
 		return 12090, true
 	}*/
@@ -264,10 +265,10 @@ func maxCountExceeded(count int, array string) (int, bool) {
 		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
 		volCount = len(volumes.([]interface{}))
 	}
-	maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
+	/*maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
 	if err != nil {
 		return POS_API_ERROR, true
-	}
+	}*/
 	if count <= (maxCount - volCount) {
 		return 0, false
 	}
