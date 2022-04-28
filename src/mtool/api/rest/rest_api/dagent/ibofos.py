@@ -722,6 +722,8 @@ def create_volume(
         stop_on_error,
         maxbw=0,
         maxiops=0,
+        minbw=0,
+        miniops=0,
         subsystem={},
         auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -732,6 +734,8 @@ def create_volume(
             "size": size,
             "maxbw": maxbw,
             "maxiops": maxiops,
+            "minbw": minbw,
+            "miniops": miniops,
             "totalcount": count,
             "stoponerror": stop_on_error,
             "namesuffix": suffix,

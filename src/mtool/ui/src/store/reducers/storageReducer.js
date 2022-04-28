@@ -126,13 +126,13 @@ const storageReducer = (state = initialState, action) => {
             let arraySize = 0;
             let totalVolSize = 0;
             const arrayMap = {};
-            for(let i = 0; i < action.payload.length; i += 1) {
+            for (let i = 0; i < action.payload.length; i += 1) {
                 arraySize += action.payload[i].totalsize;
                 totalVolSize += action.payload[i].usedspace;
                 arrayMap[action.payload[i].arrayname] = action.payload[i];
             }
             let arrayname = state.arrayname && arrayMap[state.arrayname] ? state.arrayname : '';
-            if(!arrayname && action.payload.length > 0) {
+            if (!arrayname && action.payload.length > 0) {
                 arrayname = action.payload[0].arrayname;
             }
             return {
@@ -157,7 +157,7 @@ const storageReducer = (state = initialState, action) => {
                 },
                 selectedRaid: action.payload.raidTypes.length ? action.payload.raidTypes[0] : ""
             }
-        case actionTypes.SELECT_RAID:{
+        case actionTypes.SELECT_RAID: {
             return {
                 ...state,
                 selectedRaid: action.payload
@@ -187,6 +187,9 @@ const storageReducer = (state = initialState, action) => {
             }
         }
         case actionTypes.ADD_VOLUME: {
+            const min_type = action.volume.Oem.MinBandwidth === 0 && action.volume.Oem.MinIOPS === 0 ?
+                    "" : action.volume.Oem.MinBandwidth === 0 ? "miniops" : "minbw";
+
             if (Object.prototype.hasOwnProperty.call(state.volumeMap, action.volume.Id)) {
                 const index = state.volumeMap[action.volume.Id];
                 return {
@@ -199,13 +202,19 @@ const storageReducer = (state = initialState, action) => {
                             newName: action.volume.Name,
                             size: action.volume.Capacity.Data.AllocatedBytes,
                             usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
+                            miniops: action.volume.Oem.MinIOPS,
+                            minbw: action.volume.Oem.MinBandwidth,
+                            oldMiniops: action.volume.Oem.MinIOPS,
+                            oldMinbw: action.volume.Oem.MinBandwidth,
                             maxiops: action.volume.Oem.MaxIOPS,
                             maxbw: action.volume.Oem.MaxBandwidth,
                             oldMaxiops: action.volume.Oem.MaxIOPS,
                             oldMaxbw: action.volume.Oem.MaxBandwidth,
                             status: action.volume.Status.Oem.VolumeStatus,
                             url: action.volume["@odata.id"],
-                            edit: false
+                            edit: false,
+                            minType: min_type,
+                            resetType: "",
                         },
                         ...state.volumes.slice(index + 1)
                     ]
@@ -222,12 +231,18 @@ const storageReducer = (state = initialState, action) => {
                         id: action.volume.Id,
                         size: action.volume.Capacity.Data.AllocatedBytes,
                         usedspace: formatBytes(action.volume.Capacity.Data.ConsumedBytes),
+                        miniops: action.volume.Oem.MinIOPS,
+                        minbw: action.volume.Oem.MinBandwidth,
+                        oldMiniops: action.volume.Oem.MinIOPS,
+                        oldMinbw: action.volume.Oem.MinBandwidth,
                         maxiops: action.volume.Oem.MaxIOPS,
                         maxbw: action.volume.Oem.MaxBandwidth,
                         oldMaxiops: action.volume.Oem.MaxIOPS,
                         oldMaxbw: action.volume.Oem.MaxBandwidth,
                         status: action.volume.Status.Oem.VolumeStatus,
-                        url: action.volume["@odata.id"]
+                        url: action.volume["@odata.id"],
+                        minType: min_type,
+                        resetType: "",
                     }
                 ],
                 volumeMap: {
@@ -247,9 +262,9 @@ const storageReducer = (state = initialState, action) => {
                     ...vol,
                     edit: true
                 } : {
-                        ...vol,
-                        edit: false
-                    };
+                    ...vol,
+                    edit: false
+                };
             });
             return {
                 ...state,
@@ -261,9 +276,37 @@ const storageReducer = (state = initialState, action) => {
                 return vol.id === action.payload.id ? {
                     ...vol,
                     [action.payload.name]: action.payload.value
-                } /* istanbul ignore next */: {
-                        ...vol,
-                    };
+                } /* istanbul ignore next */ : {
+                    ...vol,
+                };
+            });
+            return {
+                ...state,
+                volumes
+            }
+        }
+        case actionTypes.CHANGE_MIN_TYPE: {
+            const volumes = state.volumes.map((vol) => {
+                return vol.id === action.payload.id ? {
+                    ...vol,
+                    minType: action.payload.minType
+                } /* istanbul ignore next */ : {
+                    ...vol,
+                };
+            });
+            return {
+                ...state,
+                volumes
+            }
+        }
+        case actionTypes.CHANGE_RESET_TYPE: {
+            const volumes = state.volumes.map((vol) => {
+                return vol.id === action.payload.id ? {
+                    ...vol,
+                    resetType: action.payload.resetType
+                } /* istanbul ignore next */ : {
+                    ...vol,
+                };
             });
             return {
                 ...state,
@@ -304,6 +347,6 @@ const storageReducer = (state = initialState, action) => {
     }
 }
 
-export const arrayname = (state = {storageReducer:{}}) => state.storageReducer.arrayname
-export const arrayMap = (state = {storageReducer:{}}) => state.storageReducer.arrayMap
+export const arrayname = (state = { storageReducer: {} }) => state.storageReducer.arrayname
+export const arrayMap = (state = { storageReducer: {} }) => state.storageReducer.arrayMap
 export default storageReducer;

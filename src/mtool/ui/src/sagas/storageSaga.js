@@ -35,7 +35,7 @@ import { call, takeEvery, put, select } from "redux-saga/effects";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
 import { arrayname } from "../store/reducers/storageReducer";
-import {fetchSubsystems} from "./subsystemSaga";
+import { fetchSubsystems } from "./subsystemSaga";
 
 function* fetchVolumeDetails(action) {
   try {
@@ -48,7 +48,7 @@ function* fetchVolumeDetails(action) {
     });
     /* istanbul ignore else */
     if (response.status === 200) {
-      if((yield select(arrayname)) === action.payload.array) {
+      if ((yield select(arrayname)) === action.payload.array) {
         yield put(actionCreators.addVolumeDetails(response.data));
       }
     }
@@ -74,7 +74,7 @@ function* fetchVolumes(action) {
     /* istanbul ignore else */
     if (response.status === 200) {
       for (let i = response.data.Members.length - 1; i >= 0; i -= 1) {
-        if((yield select(arrayname)) === action.payload.array) {
+        if ((yield select(arrayname)) === action.payload.array) {
           yield fetchVolumeDetails({
             payload: {
               url: response.data.Members[i]["@odata.id"],
@@ -95,7 +95,7 @@ function* fetchVolumes(action) {
       actionCreators.fetchStorageVolumes({ volumes: [], totalVolSize: 0 })
     );
   } finally {
-    if(action.payload.callback) {
+    if (action.payload.callback) {
       action.payload.callback();
     }
   }
@@ -181,8 +181,8 @@ function* fetchDevices() {
           alertTitle: "Fetch Devices",
           errorMsg: "Unable to get devices!",
           errorCode: `Description: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-              : ""
+            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            : ""
             }`,
         })
       );
@@ -192,8 +192,8 @@ function* fetchDevices() {
       yield put(actionCreators.showStorageAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
-            : "Agent Communication Error"
+          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          : "Agent Communication Error"
           }`
       }));
       yield put(actionCreators.fetchDevices(defaultResponse));
@@ -249,8 +249,8 @@ function* createVolume(action) {
               alertTitle: "Create Volume",
               errorMsg: "Volume(s) creation failed",
               errorCode: `Description: ${response.data.result && response.data.result.status
-                  ? `${response.data.result.status.problem} , Error code:${response.data.result.status.code}`
-                  : ""
+                ? `${response.data.result.status.problem} , Error code:${response.data.result.status.code}`
+                : ""
                 }`,
             })
           );
@@ -289,10 +289,10 @@ function* createVolume(action) {
             alertTitle: "Create Volume",
             errorMsg: "Error while creating Volume",
             errorCode: `${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}
+              ? `${response.data.result.status.description}
 			    ${response.data.result.status.posDescription}
 			    Error code:${response.data.result.status.code}`
-                : ""
+              : ""
               }`,
           })
         );
@@ -519,15 +519,15 @@ function* renameVolume(action) {
             })
           );
         }
-      } else if(action.payload.qosSame) {
+      } else if (action.payload.qosSame) {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Failed",
             errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
-                : ""
+              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              : ""
               }`
           })
         );
@@ -539,8 +539,8 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Succeeded partially",
             errorCode: `${action.payload.error}\nError in Renaming volume: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
-                : ""
+              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              : ""
               }`
           })
         );
@@ -552,8 +552,8 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `${action.payload.error}\nError in updating Volume name: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
-                : ""
+              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              : ""
               }`,
           })
         );
@@ -595,11 +595,12 @@ function isValidQOS(iops, bw) {
   return true;
 }
 
+
 function* updateVolume(action) {
   const arrayName = yield select(arrayname)
   try {
     yield put(actionCreators.startStorageLoader("Updating Volume"));
-    if (!isValidQOS(action.payload.maxiops, action.payload.maxbw)) {
+    if (!isValidQOS(action.payload.maxiops, action.payload.maxbw) || !isValidQOS(action.payload.miniops, action.payload.minbw)) {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
@@ -610,11 +611,13 @@ function* updateVolume(action) {
       );
       return;
     }
-    if(
+    if (
       action.payload.maxiops === action.payload.oldMaxiops &&
-      action.payload.maxbw === action.payload.oldMaxbw
+      action.payload.miniops === action.payload.oldMiniops &&
+      action.payload.maxbw === action.payload.oldMaxbw &&
+      action.payload.minbw === action.payload.oldMinbw
     ) {
-      if(action.payload.name !== action.payload.newName) {
+      if (action.payload.name !== action.payload.newName) {
         yield renameVolume({
           payload: {
             name: action.payload.name,
@@ -634,10 +637,23 @@ function* updateVolume(action) {
       });
       return;
     }
-    const data = {
+
+    const data = action.payload.minbw !== action.payload.oldMinbw ? {
+      maxiops: action.payload.maxiops,
+      minbw: action.payload.minbw,
+      maxbw: action.payload.maxbw,
+      volumes: [{ "volumeName": action.payload.name }],
+      array: arrayName,
+    } : action.payload.miniops !== action.payload.oldMiniops ? {
+      miniops: action.payload.miniops,
       maxiops: action.payload.maxiops,
       maxbw: action.payload.maxbw,
-      volumes: [{"volumeName":action.payload.name}],
+      volumes: [{ "volumeName": action.payload.name }],
+      array: arrayName,
+    } : {
+      maxiops: action.payload.maxiops,
+      maxbw: action.payload.maxbw,
+      volumes: [{ "volumeName": action.payload.name }],
       array: arrayName,
     };
     const response = yield call(
@@ -689,8 +705,8 @@ function* updateVolume(action) {
             newName: action.payload.newName,
             array: arrayName,
             error: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
-                : ""
+              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              : ""
               }`
           },
         });
@@ -703,7 +719,7 @@ function* updateVolume(action) {
             errorCode: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
               ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
               : ""
-            }`
+              }`
           })
         );
       }
@@ -722,26 +738,26 @@ function* updateVolume(action) {
           error: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
         },
       });
-      } else {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            alertTitle: "Update Volume",
-            errorMsg: "Volume Updation failed",
-            errorCode: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
-          })
-        );
-      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Update Volume",
+          errorMsg: "Volume Updation failed",
+          errorCode: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
+        })
+      );
+    }
   } catch (error) {
     if (action.payload.newName !== action.payload.name) {
-    yield renameVolume({
-      payload: {
-        name: action.payload.name,
-        newName: action.payload.newName,
-        array: arrayName,
-        error: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
-      },
-    });
+      yield renameVolume({
+        payload: {
+          name: action.payload.name,
+          newName: action.payload.newName,
+          array: arrayName,
+          error: `Max IOPS and Bandwidth update failed: ${error ? error.message : ''}\n`
+        },
+      });
     } else {
       yield put(
         actionCreators.showStorageAlert({
@@ -752,6 +768,85 @@ function* updateVolume(action) {
         })
       );
     }
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
+  }
+}
+
+function* resetAndUpdateVolume(action) {
+  if (action.payload.resetType === "" || action.payload.minType === action.payload.resetType) {
+    yield updateVolume({ payload: action.payload });
+    return;
+  }
+
+  const arrayName = yield select(arrayname)
+  try {
+    yield put(actionCreators.startStorageLoader("Updating Volume"));
+
+    const data = action.payload.resetType === "miniops" ? {
+      maxiops: action.payload.oldMaxiops,
+      maxbw: action.payload.oldMaxbw,
+      miniops: 0,
+      volumes: [{ "volumeName": action.payload.name }],
+      array: arrayName,
+    } : {
+      maxiops: action.payload.oldMaxiops,
+      maxbw: action.payload.oldMaxbw,
+      minbw: 0,
+      volumes: [{ "volumeName": action.payload.name }],
+      array: arrayName,
+    }
+
+    const response = yield call(
+      [axios, axios.post],
+      "/api/v1/qos",
+      data,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+
+    if (response.status === 200 &&
+      response.data.result &&
+      response.data.result.status &&
+      (response.data.result.status.code === 2000 ||
+        response.data.result.status.code === 0)
+    ) {
+
+      yield updateVolume({ payload: action.payload });
+
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Reset Volume",
+          errorMsg: "Volume Reseting failed",
+          errorCode: `Min IOPS and Bandwidth reseting failed: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+            : ""
+            }`
+        })
+      );
+    }
+    yield fetchVolumeDetails({
+      payload: {
+        url: action.payload.url,
+        array: arrayName
+      }
+    });
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        alertTitle: "Reset Volume",
+        errorMsg: "Volume Reseting failed",
+        errorCode: `Min IOPS and Bandwidth reseting failed: ${error ? error.message : ''}\n`
+      })
+    );
   } finally {
     yield put(actionCreators.stopStorageLoader());
   }
@@ -974,7 +1069,7 @@ function* createArray(action) {
         alertType: "alert",
         errorMsg: error && error.response ? error.response.data : "Array Creation failed",
         errorCode: "",
-        alertTitle:  "Error in Array Creation"
+        alertTitle: "Error in Array Creation"
       })
     );
   } finally {
@@ -1247,7 +1342,7 @@ function* changeVolumeMountStatus(action) {
         {
           name: action.payload.name,
           array: arrayName,
-	  subnqn: action.payload.subsystem
+          subnqn: action.payload.subsystem
         },
         {
           headers: {
@@ -1538,6 +1633,7 @@ export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_CREATE_ARRAY, createArray);
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_DETAILS, fetchDeviceDetails);
   yield takeEvery(actionTypes.SAGA_UPDATE_VOLUME, updateVolume);
+  yield takeEvery(actionTypes.SAGA_RESET_AND_UPDATE_VOLUME, resetAndUpdateVolume);
   // yield takeEvery(actionTypes.SAGA_ATTACH_DISK, attachDisk);
   // yield takeEvery(actionTypes.SAGA_DETACH_DISK, detachDisk);
   yield takeEvery(actionTypes.SAGA_ADD_SPARE_DISK, addSpareDisk);

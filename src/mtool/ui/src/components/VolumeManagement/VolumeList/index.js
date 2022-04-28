@@ -47,7 +47,7 @@ import EditIcon from '@material-ui/icons/EditTwoTone';
 import TrashIcon from '@material-ui/icons/Delete';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import { Paper, Typography, TextField, Button, Switch } from '@material-ui/core';
+import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box } from '@material-ui/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
@@ -86,14 +86,25 @@ const styles = (theme) => ({
   }
 });
 
+const RESET_MIN_IOPS_TITLE = "To change minimum bandwidth reset Minimum IOPS"
+const RESET_MIN_BW_TITLE = "To change minimum iops reset minimum Bandwidth"
+const RESET_MIN_IOPS_DETAILS = "Are you sure want to reset Minimum IOPS?"
+const RESET_MIN_BW_DETAILS = "Are you sure want to reset minimum Bandwidth?"
+const MINIOPS = "miniops"
+const MINBW = "minbw"
+
 class VolumeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedVolumes: [],
       open: false,
-
+      popupOpen: false,
+      alertTile: "",
+      alertDetails: "",
+      resetVolumeRow: {}
     };
+
     this.theme = createTheme({
       typography: {
         fontSize: 14,
@@ -108,8 +119,38 @@ class VolumeList extends Component {
         },
       },
     });
+    this.showPopup = this.showPopup.bind(this);
+    this.closePopup = this.closePopup.bind(this);
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    // this.updateVolume = this.updateVolume.bind(this);
+  }
+
+  // updateVolume(row) {
+  //   this.props.saveVolume()
+  // }
+
+  showPopup(name) {
+    if (name === RESET_MIN_BW_TITLE) {
+      this.setState({
+        popupOpen: true,
+        alertTile: RESET_MIN_BW_TITLE,
+        alertDetails: RESET_MIN_BW_DETAILS
+      });
+      return
+    }
+    this.setState({
+      popupOpen: true,
+      alertTile: RESET_MIN_IOPS_TITLE,
+      alertDetails: RESET_MIN_IOPS_DETAILS
+    });
+  }
+
+  closePopup() {
+    this.setState({
+      ...this.state,
+      popupOpen: false,
+    });
   }
 
   handleClose() {
@@ -122,7 +163,66 @@ class VolumeList extends Component {
     });
   }
 
-  onVolumeEdit(value, name, id) {
+  onVolumeEdit(value, name, row) {
+    const id = row.id;
+    if (name === "select-minbw-miniops") {
+
+      if (value === MINIOPS) {
+        if (row.oldMinbw > 0) {
+          this.setState((state) => {
+            return {
+              ...state,
+              resetVolumeRow: {
+                ...state.resetVolumeRow,
+                minbw: 0
+              }
+            }
+          })
+          this.showPopup(RESET_MIN_BW_TITLE)
+        }
+        this.props.changeMinType({ id, minType: MINIOPS })
+      }
+      else if (value === MINBW) {
+        if (row.oldMiniops > 0) {
+          this.setState((state) => {
+            return {
+              ...state,
+              resetVolumeRow: {
+                ...state.resetVolumeRow,
+                miniops: 0
+              }
+            }
+          })
+          this.showPopup(RESET_MIN_IOPS_TITLE)
+        }
+        this.props.changeMinType({ id, minType: MINBW })
+      }
+      return;
+    }
+
+    if (name === "minbw-miniops") {
+      if (row.minType === MINBW) {
+        this.props.changeField({
+          value,
+          name: MINBW,
+          id
+        });
+        return;
+      }
+
+      //making miniops as default
+      if (row.minType === "") {
+        this.props.changeMinType({ id, minType: MINIOPS })
+      }
+
+      this.props.changeField({
+        value,
+        name: MINIOPS,
+        id
+      });
+      return;
+    }
+
     this.props.changeField({
       value,
       name,
@@ -156,7 +256,7 @@ class VolumeList extends Component {
                   min: 0,
                   'data-testid': `list-vol-name-${rowData.name}`
                 }}
-                onChange={(e) => this.onVolumeEdit(e.target.value, 'newName', rowData.id)}
+                onChange={(e) => this.onVolumeEdit(e.target.value, 'newName', rowData)}
               />
             )
           }
@@ -207,11 +307,11 @@ class VolumeList extends Component {
                   min: 0,
                   'data-testid': `list-vol-maxiops-${rowData.name}`
                 }}
-                onChange={(e) => this.onVolumeEdit(e.target.value, 'maxiops', rowData.id)}
+                onChange={(e) => this.onVolumeEdit(e.target.value, 'maxiops', rowData)}
               />
             )
           }
-          return rowData.maxiops === 0 /* istanbul ignore next */? 'MAX' : rowData.maxiops;
+          return rowData.maxiops === 0 /* istanbul ignore next */ ? 'MAX' : rowData.maxiops;
 
         }
       },
@@ -231,12 +331,96 @@ class VolumeList extends Component {
                   min: 0,
                   'data-testid': `list-vol-maxbw-${rowData.name}`
                 }}
-                onChange={(e) => this.onVolumeEdit(e.target.value, 'maxbw', rowData.id)}
+                onChange={(e) => this.onVolumeEdit(e.target.value, 'maxbw', rowData)}
               />
             )
           }
-          return rowData.maxbw === 0 /* istanbul ignore next */? 'MAX' : rowData.maxbw;
+          return rowData.maxbw === 0 /* istanbul ignore next */ ? 'MAX' : rowData.maxbw;
 
+        }
+      },
+      {
+        title: 'Min Bandwidth / Min IOPS',
+        field: 'minbw-miniops',
+        cellStyle: cellText,
+        customSort: (a, b) => {
+          if (a.minType === b.minType)
+            return a.minType === MINIOPS ? (a.miniops - b.miniops) : (a.minbw - b.minbw);
+          if (a.minType === MINIOPS)
+            return 1;
+          if (b.minType === MINIOPS)
+            return -1;
+          if (a.minType === MINBW)
+            return 1;
+          if (b.minType === MINBW)
+            return -1;
+
+          return 0;
+        },
+        render: rowData => {
+          const local_style = {
+            ...cellText,
+            display: "flex",
+            width: "130px",
+            justifyContent: "space-between",
+            gap: "4px"
+          }
+
+          //showing miniops as default
+          const local_value = rowData.minType === MINBW ? rowData.minbw : rowData.miniops;
+          const local_type = rowData.minType === MINBW ? MINBW : MINIOPS;
+
+          if (rowData.edit) {
+            return (
+              <Box sx={local_style}>
+                <TextField
+                  id={`VolumeList-textfield-minbw-miniops-${rowData.name}`}
+                  name="minbw-miniops"
+                  value={local_value}
+                  type="number"
+                  inputProps={{
+                    min: 0,
+                    'data-testid': `list-vol-minbw-miniops-${rowData.name}`
+                  }}
+                  onChange={(e) => {
+                    this.setState({
+                      resetVolumeRow: rowData
+                    })
+                    this.onVolumeEdit(e.target.value, 'minbw-miniops', rowData)
+                  }}
+                />
+                <Select
+                  style={cellText}
+                  value={local_type}
+                  onChange={(e) => {
+                    this.setState({
+                      resetVolumeRow: rowData
+                    })
+                    this.onVolumeEdit(e.target.value, 'select-minbw-miniops', rowData)
+                  }}
+                  inputProps={{
+                    name: "select_minbw/iops",
+                    id: `VolumeList-select-minbw-miniops${rowData.name}`,
+                    "data-testid": `list-vol-select-minbw-miniops-${rowData.name}`,
+                  }}
+                  SelectDisplayProps={{
+                    "data-testid": `list-vol-select-minbw-miniops-${rowData.name}`,
+                  }}
+                >
+                  <MenuItem value={MINIOPS} data-testid={MINIOPS}>
+                    KIOPS
+                  </MenuItem>
+                  <MenuItem value={MINBW} data-testid={MINBW}>
+                    MB/s
+                  </MenuItem>
+                </Select>
+              </Box>
+            )
+          }
+
+          return rowData.minType === MINBW ? `${rowData.minbw} MB/s` :
+            rowData.minType === MINIOPS ? `${rowData.miniops} KIOPS` :
+              'MIN';
         }
       },
       {
@@ -251,7 +435,7 @@ class VolumeList extends Component {
             color="primary"
             inputProps={{
               'aria-label': 'primary checkbox',
-              title: `${row.status}: Click to to toggle status`,
+              title: `${row.status}: Click to toggle status`,
               'data-testid': `vol-mount-btn-${row.name}`
             }}
             id={`list-vol-togglebtn-${row._id}`}
@@ -274,33 +458,33 @@ class VolumeList extends Component {
               <EditIcon />
             </Button>
           ) : (
-              <React.Fragment>
-                <Button
-                  className={classes.editBtn}
-                  data-testid={`vol-edit-save-btn-${row.name}`}
-                  onClick={() => this.props.saveVolume(row)}
-                  id={`VolumeList-btn-done-${row.name}`}
-                >
-                  <Done />
-                </Button>
-                <Button
-                  data-testid={`vol-edit-cancel-btn-${row.name}`}
-                  className={classes.editBtn}
-                  onClick={this.props.fetchVolumes}
-                  id={`VolumeList-btn-clear-${row.name}`}
-                >
-                  <Clear />
-                </Button>
-              </React.Fragment>
-            );
+            <React.Fragment>
+              <Button
+                className={classes.editBtn}
+                data-testid={`vol-edit-save-btn-${row.name}`}
+                onClick={() => this.props.saveVolume(row)}
+                id={`VolumeList-btn-done-${row.name}`}
+              >
+                <Done />
+              </Button>
+              <Button
+                data-testid={`vol-edit-cancel-btn-${row.name}`}
+                className={classes.editBtn}
+                onClick={this.props.fetchVolumes}
+                id={`VolumeList-btn-clear-${row.name}`}
+              >
+                <Clear />
+              </Button>
+            </React.Fragment>
+          );
         }
       }
 
     ];
     return (
       // <ThemeProvider theme={MToolTheme}>
-        <Paper data-testid="volumelist-table" id="VolumeList-table">
-          <ThemeProvider theme={this.theme}>
+      <Paper data-testid="volumelist-table" id="VolumeList-table">
+        <ThemeProvider theme={this.theme}>
           <MaterialTable
             title={(
               <Typography className={classes.cardHeader}>Volume List</Typography>
@@ -356,18 +540,38 @@ class VolumeList extends Component {
               }
             ]}
           />
-          </ThemeProvider>
-          <AlertDialog
-            title="Delete Volumes"
-            description="Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
-            open={this.state.open}
-            handleClose={this.handleClose}
-            onConfirm={() => {
-              this.handleClose()
-              this.props.deleteVolumes(this.state.selectedVolumes);
-            }}
-          />
-        </Paper>
+        </ThemeProvider>
+        <AlertDialog
+          title="Delete Volumes"
+          description="Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
+          open={this.state.open}
+          handleClose={this.handleClose}
+          onConfirm={() => {
+            this.handleClose()
+            this.props.deleteVolumes(this.state.selectedVolumes);
+          }}
+        />
+        <AlertDialog
+          title={this.state.alertTile}
+          description={this.state.alertDetails}
+          open={this.state.popupOpen}
+          handleClose={() => {
+            this.props.changeMinType({
+              id: this.state.resetVolumeRow.id,
+              minType: this.state.resetVolumeRow.minType
+            })
+            this.closePopup()
+          }}
+          onConfirm={() => {
+            this.closePopup()
+            // this.props.saveVolume(this.state.resetVolumeRow);
+            this.props.changeResetType({
+              id: this.state.resetVolumeRow.id,
+              resetType: this.state.resetVolumeRow.minType
+            })
+          }}
+        />
+      </Paper>
       // </ThemeProvider>
     );
   }

@@ -1721,19 +1721,31 @@ def make_block_aligned(size):
 def saveVolume():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
+    print("In Save Volume")
     # ifOldName=body['old']
-    volume_name = body['name']
-    vol_size = float(body['size'])
-    maxbw = body['maxbw']
-    array_name = body.get('array')
-    maxiops = int(body['maxiops'])
-    unit = body['unit'].upper()
-    mount_vol = body['mount_vol']
-    stop_on_error = body['stop_on_error']
-    count = body['count']
-    subsystem = body['subsystem']
-    suffix = body['suffix']
-    max_available_size = body['max_available_size']
+    try:
+        volume_name = body['name']
+        vol_size = float(body['size'])
+        minbw = 0
+        if 'minbw' in body:
+            minbw = body['minbw']
+        maxbw = body['maxbw']
+        array_name = body.get('array')
+        maxiops = int(body['maxiops'])
+        miniops = 0
+        if 'miniops' in body:
+            miniops = body['miniops']
+        unit = body['unit'].upper()
+        mount_vol = body['mount_vol']
+        stop_on_error = body['stop_on_error']
+        count = body['count']
+        subsystem = body['subsystem']
+        suffix = body['suffix']
+        max_available_size = body['max_available_size']
+    except Exception as e:
+        print("Exception Occured in Save Volume")
+        print(e)
+        return make_response('Required fields are missing: ' + e, 400)
 
     if array_name is None:
         array_name = dagent.array_names[0]
@@ -1762,6 +1774,8 @@ def saveVolume():
         stop_on_error,
         int(maxbw),
         int(maxiops),
+        int(minbw),
+        int(miniops),
         subsystem)
 
     # print("print save volllll", toJson(create_vol_res.json())

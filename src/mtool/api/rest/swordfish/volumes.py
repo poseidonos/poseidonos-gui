@@ -63,6 +63,7 @@ class VolumeCollection():
                 self.volumes_list["Members"].append({
                     "@odata.id": url + str(vol["id"])
                 })
+            print(self.volumes_list)
             return json_util.dumps(self.volumes_list)
         except Exception as e:
             print("Exception in listing Volumes", e)
@@ -99,6 +100,8 @@ class Volume():
             "Oem": {
                 "MaxBandwidth": 0,
                 "MaxIOPS": 0,
+                "MinIOPS": 0,
+                "MinBandwidth": 0,
                 "IP": get_ip_address(),
                 "Port": "NA",
                 "NQN": "NA"
@@ -123,6 +126,8 @@ class Volume():
                     self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
+                    self.volume["Oem"]["MinBandwidth"] = vol["minbw"]
+                    self.volume["Oem"]["MinIOPS"] = vol["miniops"]
                     self.volume["@odata.id"] = url + str(vol["id"])
                     return json_util.dumps(self.volume)
             return json_util.dumps({})

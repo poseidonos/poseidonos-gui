@@ -47,6 +47,8 @@ def create_volume(
         stop_on_error,
         maxbw=0,
         maxiops=0,
+        minbw=0,
+        miniops=0,
         subsystem=""):
     create_vol_response = dagent.create_volume(
         vol_name,
@@ -58,6 +60,8 @@ def create_volume(
         stop_on_error,
         maxbw,
         maxiops,
+        minbw,
+        miniops,
         subsystem)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:

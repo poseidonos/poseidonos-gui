@@ -618,8 +618,10 @@ class Volume extends Component {
                             editVolume={this.props.Edit_Volume}
                             changeField={this.props.Change_Volume_Field}
                             fetchVolumes={this.fetchVolumes}
-                            saveVolume={this.props.Update_Volume}
+                            saveVolume={this.props.Reset_And_Update_Volume}
                             changeMountStatus={this.changeMountStatus}
+                            changeMinType={this.props.Change_Min_Type}
+                            changeResetType={this.props.Change_Reset_Type}
                           />
                         </Grid>
                       </Grid>
@@ -716,8 +718,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
     Change_Volume_Field: (payload) =>
       dispatch({ type: actionTypes.CHANGE_VOLUME_FIELD, payload }),
-    Update_Volume: (payload) =>
-      dispatch({ type: actionTypes.SAGA_UPDATE_VOLUME, payload }),
+    Change_Min_Type: (payload) =>
+      dispatch({ type: actionTypes.CHANGE_MIN_TYPE, payload }),
+    Change_Reset_Type: (payload) =>
+      dispatch({ type: actionTypes.CHANGE_RESET_TYPE, payload }),
+    Reset_And_Update_Volume: (payload) =>
+      dispatch({ type: actionTypes.SAGA_RESET_AND_UPDATE_VOLUME, payload }),
     // Detach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_DETACH_DISK, payload }),
     // Attach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ATTACH_DISK, payload }),
     Add_Spare_Disk: (payload) =>
