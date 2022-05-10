@@ -538,7 +538,7 @@ def create_array(
     request_body = {
         "param": {
             "name": name,
-            "raidtype": "RAID5",
+            "raidtype": raidtype,
             "buffer": meta_devices,
             "data": data_devices,
             "spare": spare_devices}}

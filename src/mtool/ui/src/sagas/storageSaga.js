@@ -148,7 +148,7 @@ function* fetchConfig() {
       yield put(actionCreators.fetchConfig(response.data));
     }
   } catch (e) {
-    yield put(actionCreators.fetchConfig({ raidTypes: [] }));
+    yield put(actionCreators.fetchConfig([]));
   }
 }
 

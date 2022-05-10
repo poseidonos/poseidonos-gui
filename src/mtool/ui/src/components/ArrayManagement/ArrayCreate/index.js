@@ -227,19 +227,6 @@ class ArrayCreate extends Component {
     super(props);
     this.state = {
       arrayname: "",
-      raids: [
-        {
-          label: "RAID-5",
-          minStorage: 3,
-          minSpare: 1,
-          minWriteBUffer: 1,
-          value: "raid5",
-        },
-      ],
-      minStorage: 3,
-      minSpare: 1,
-      minWriteBUffer: 1,
-      raid: "raid5",
       slots: { [STORAGE_DISK]: [], "Write Buffer Disk": [], [SPARE_DISK]: [] },
       diskType: STORAGE_DISK,
       metaDisk: "",
@@ -271,7 +258,12 @@ class ArrayCreate extends Component {
   }
 
   onSelectRaid(event) {
-    this.props.selectRaid(event.target.value);
+    let local_raid = {};
+    this.props.config.raidTypes.map(type => {
+      if (type.raidType === event.target.value)
+        local_raid = { ...type }
+    })
+    this.props.selectRaid(local_raid);
   }
 
   onSelectDiskType(event) {
@@ -317,20 +309,20 @@ class ArrayCreate extends Component {
     const numas = [];
     const numaMap = {};
     const spareDisks = this.state.slots[SPARE_DISK];
-    for(let i = 0; i < spareDisks.length; i += 1) {
-      if(!numaMap[spareDisks[i].numa]) {
+    for (let i = 0; i < spareDisks.length; i += 1) {
+      if (!numaMap[spareDisks[i].numa]) {
         numaMap[spareDisks[i].numa] = true;
         numas.push(spareDisks[i].numa);
       }
     }
     const storageDisks = this.state.slots[STORAGE_DISK];
-    for(let i = 0; i < storageDisks.length; i += 1) {
-      if(!numaMap[storageDisks[i].numa]) {
+    for (let i = 0; i < storageDisks.length; i += 1) {
+      if (!numaMap[storageDisks[i].numa]) {
         numas.push(storageDisks[i].numa);
         numaMap[storageDisks[i].numa] = true;
       }
     }
-    if(numas.length > 1) {
+    if (numas.length > 1) {
       this.setState({
         ...this.state,
         confirmOpen: true,
@@ -356,20 +348,20 @@ class ArrayCreate extends Component {
       });
       return;
     }
-    if (this.props.config.minStorageDisks > this.state.slots[STORAGE_DISK].length) {
+    if (this.props.selectedRaid.minStorageDisks > this.state.slots[STORAGE_DISK].length) {
       this.setState({
         ...this.state,
         alertType: "alert",
-        errorMsg: `Select at least ${this.props.config.minStorageDisks} Storage Disk`,
+        errorMsg: `Select at least ${this.props.selectedRaid.minStorageDisks} Storage Disk`,
         alertOpen: true,
       });
       return;
     }
-    if (this.props.config.minSpareDisks > this.state.slots[SPARE_DISK].length) {
+    if (this.props.selectedRaid.minSpareDisks > this.state.slots[SPARE_DISK].length) {
       this.setState({
         ...this.state,
         alertType: 'alert',
-        errorMsg: `Select at least ${this.props.config.minSpareDisks} spare disk`,
+        errorMsg: `Select at least ${this.props.selectedRaid.minSpareDisks} spare disk`,
         alertOpen: true,
       });
       return;
@@ -391,7 +383,7 @@ class ArrayCreate extends Component {
     this.props.createArray({
       size: this.state.totalSize,
       arrayname: this.state.arrayname,
-      raidtype: this.props.selectedRaid,
+      raidtype: this.props.selectedRaid.raidType,
       storageDisks: this.state.slots[STORAGE_DISK],
       spareDisks: this.state.slots[SPARE_DISK],
       writeBufferDisk: this.state.slots["Write Buffer Disk"],
@@ -516,7 +508,7 @@ class ArrayCreate extends Component {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
-                value={this.props.selectedRaid}
+                value={this.props.selectedRaid.raidType}
                 onChange={this.onSelectRaid}
                 inputProps={{
                   name: "Fault Tolerance Type",
@@ -601,13 +593,13 @@ class ArrayCreate extends Component {
                           <React.Fragment>
                             <div className={classes.tooltipText}>
                               Name:
-                                {disk.name}
+                              {disk.name}
                             </div>
                             <div className={classes.tooltipText}>
                               Size: {formatBytes(disk.size)}
                             </div>
                             <div className={classes.tooltipText}>
-                                NUMA: {disk.numa}
+                              NUMA: {disk.numa}
                             </div>
                             <div
                               onClick={() => this.showPopup(disk.name)}

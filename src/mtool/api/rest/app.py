@@ -1270,10 +1270,6 @@ def create_arrays(current_user):
     storageDisks = body['storageDisks']
     totalsize = len(storageDisks)
 
-    if totalsize < 3:
-        return abort(404)
-    if arrayname is None:
-        arrayname = dagent.array_names[0]
     try:
         """a_info = arr_info(arrayname)
         if a_info.status_code == 200:
@@ -1292,18 +1288,45 @@ def create_arrays(current_user):
 @token_required
 def get_array_config(current_user):
     return toJson({
-    "raidTypes": ["RAID5"],
-    "minStorageDisks": 3,
-    "maxStorageDisks": 32,
-    "minSpareDisks": 0,
-    "maxSpareDisks": 29,
-	"totalDisks": 32
+    "raidTypes":
+    [
+        {
+        "raidType": "RAID0",
+        "minStorageDisks": 2,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 0,
+        },
+        {
+        "raidType": "RAID5",
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        },
+        {
+        "raidType": "RAID10",
+        "minStorageDisks": 2,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29,
+        },
+        {
+        "raidType": "NONE",
+        "minStorageDisks": 1,
+        "maxStorageDisks": 1,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 0,
+        },
+    ],
+    "totalDisks": 32,
     })
+
 
 
 def get_mod_array(array):
     _array = {}
-    _array["RAIDLevel"] = "5"
+    _array["RAIDLevel"] = array["result"]["data"]["data_raid"]
     _array["storagedisks"] = []
     _array["writebufferdisks"] = []
     _array["sparedisks"] = []
