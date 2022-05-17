@@ -34,6 +34,7 @@ export {
     updateTimestamp,
     asyncIsiBOFOSRunning,
     setOperationsMessage,
+    setPOSInfo,
 } from "./headerActions";
 
 export { 

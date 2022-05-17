@@ -189,6 +189,7 @@ class Header extends Component {
 
   componentDidMount() {
     this.props.getIbofOSTimeInterval();
+    this.props.getPOSInfo();
     window.addEventListener("resize", this.updateDropdown);
     // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
@@ -565,6 +566,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getIbofOSTimeInterval: () => dispatch({ type: actionTypes.SAGA_GET_IBOFOS_TIME_INTERVAL, }),
+    getPOSInfo: () => dispatch({ type: actionTypes.SAGA_GET_POS_INFO }),
     Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
     resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),
   };

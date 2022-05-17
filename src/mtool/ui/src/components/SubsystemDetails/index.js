@@ -75,6 +75,12 @@ const SubsystemDetails = (props) => {
   const addressColumns = [{
     title: "Target Address",
     field: "target_address"
+  }, {
+    title: "Port",
+    field: "transport_service_id"
+  }, {
+    title: "Family",
+    field: "address_family"
   }];
   const namespaceColumns = [{
     title: "BDEV Name",

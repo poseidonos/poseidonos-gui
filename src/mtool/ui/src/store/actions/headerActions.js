@@ -55,3 +55,9 @@ export const setOperationsMessage = (message) => {
     };
 };
 
+export const setPOSInfo = (payload) => {
+    return {
+	type: actionTypes.SET_POS_INFO,
+	payload
+    }
+};

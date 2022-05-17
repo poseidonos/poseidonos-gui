@@ -286,7 +286,7 @@ const Sidebar = (props) => {
             alt="Poseidon Logo"
           />
         </Paper>
-        <span style={{display: "none"}}>SAMSUNG &copy; {(new Date()).getFullYear()}</span>
+	<span>PoseidonOS {props.posVersion}</span>
       </div>
     </ThemeProvider>
   );
@@ -331,6 +331,7 @@ const Sidebar = (props) => {
 const mapStateToProps = state => {
   return {
    bmc_isLoggedIn:state.BMCAuthenticationReducer.bmc_isLoggedIn,
+   posVersion: state.headerReducer.posVersion
   };
 };
 

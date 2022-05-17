@@ -189,6 +189,22 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
         # return 'Could not get ibofos to stop... 500'
     return make_failure_response('Could not get ibofos to stop...', 500)
 
+def get_pos_info(auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response
+    except Exception as err:
+        print(f'Error in getting POS Info: {err}')
+    return make_failure_response('Could not get POS info...', 500)
+
+
 """
 def exit_system(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)

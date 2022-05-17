@@ -233,6 +233,12 @@ def log_collect():
 
 def get_ibof_os_status():
     return IBOF_OS_Running.Is_Ibof_Os_Running_Flag
+
+@app.route('/api/v1.0/pos/info', methods=['GET'])
+@token_required
+def get_pos_info(current_user):
+    return toJson(dagent.get_pos_info().json())
+
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
 @token_required
 def start_ibofos(current_user):

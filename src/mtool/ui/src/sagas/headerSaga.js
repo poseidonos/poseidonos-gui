@@ -206,6 +206,23 @@ function* unmountIBOFOs() {
     }
 }
 
+function* getPOSInfo() {
+    try {
+	const response = yield call([axios, axios.get], '/api/v1.0/pos/info', {
+	    headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+	});
+	if(response.status === 200) {
+	    yield put(actionCreators.setPOSInfo(response.data.result.data));
+	}
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, CallIsiBOFOSRunning);
     yield takeEvery(actionTypes.SAGA_START_IBOFOS, startIBOFOs);
@@ -213,4 +230,5 @@ export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_RESET_IBOFOS, resetIBOFOs);
     yield takeEvery(actionTypes.SAGA_MOUNT_IBOFOS, mountIBOFOs);
     yield takeEvery(actionTypes.SAGA_UNMOUNT_IBOFOS, unmountIBOFOs);
+    yield takeEvery(actionTypes.SAGA_GET_POS_INFO, getPOSInfo);
 }

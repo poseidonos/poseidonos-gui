@@ -37,7 +37,8 @@ export const initialState = {
     status:false,
     state: "",
     OS_Running_Status: "...",
-    operationsMessage: []
+    operationsMessage: [],
+    posVersion: "..."
 }
 
 
@@ -60,6 +61,11 @@ const headerReducer = (state = initialState, action) => {
                 ...state,
                 operationsMessage: action.message
             }
+	case actionTypes.SET_POS_INFO:
+	    return {
+		...state,
+		posVersion: action.payload.version
+	    }
         default:
             return state;
     }

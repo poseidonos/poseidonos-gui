@@ -421,7 +421,7 @@ class Dashboard extends Component {
       },
       {
         title: "RAID",
-        render: (rowData) => `RAID ${rowData.RAIDLevel}`
+        field: "RAIDLevel"
       },
       {
         title: "Total Space",
