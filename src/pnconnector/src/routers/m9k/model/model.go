@@ -129,20 +129,24 @@ type DeviceParam struct {
 	Array string `json:"array,omitempty"`
 }
 type VolumeParam struct {
-	Name        string `json:"name,omitempty"`
-	NewName     string `json:"newname,omitempty"`
-	Array       string `json:"array,omitempty"`
-	SubNQN      string `json:"subnqn,omitempty"`
-	Size        uint64 `json:"size,omitempty"`
-	Miniops     uint64 `json:"miniops,omitempty"`
-	Maxiops     uint64 `json:"maxiops,omitempty"`
-	Minbw       uint64 `json:"minbw,omitempty"`
-	Maxbw       uint64 `json:"maxbw,omitempty"`
-	NameSuffix  uint64 `json:"namesuffix,omitempty"`
-	TotalCount  uint64 `json:"totalcount,omitempty"`
-	StopOnError bool   `json:"stoponerror,omitempty"`
-	MountAll    bool   `json:"mountall,omitempty"`
+	Name               string `json:"name,omitempty"`
+	NewName            string `json:"newname,omitempty"`
+	Array              string `json:"array,omitempty"`
+	SubNQN             string `json:"subnqn,omitempty"`
+	Size               uint64 `json:"size,omitempty"`
+	Miniops            uint64 `json:"miniops,omitempty"`
+	Maxiops            uint64 `json:"maxiops,omitempty"`
+	Minbw              uint64 `json:"minbw,omitempty"`
+	Maxbw              uint64 `json:"maxbw,omitempty"`
+	NameSuffix         uint64 `json:"namesuffix,omitempty"`
+	TotalCount         uint64 `json:"totalcount,omitempty"`
+	StopOnError        bool   `json:"stoponerror,omitempty"`
+	MountAll           bool   `json:"mountall,omitempty"`
+	TRANSPORTTYPE      string `json:"transport_type,omitempty"`
+	TARGETADDRESS      string `json:"target_address"`
+	TRANSPORTSERVICEID string `json:"transport_service_id"`
 }
+
 
 type CallbackMultiVol struct {
 	TotalCount    int

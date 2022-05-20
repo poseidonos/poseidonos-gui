@@ -127,6 +127,8 @@ func callbackMethod(Buffer []model.Response, Auth string, PassCount int, totalCo
 func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam) {
 	volId := volParam.NameSuffix
 	volName := volParam.Name
+//	var volList []model.Volume{}
+        var volList []interface{}
 	for volItr := 0; volItr < int(volParam.TotalCount); volItr, volId = volItr+1, volId+1 {
 		posErr := false
 		volParam.Name = volName + strconv.Itoa(int(volId))
@@ -156,7 +158,15 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 				// Retry Mount Volume API if it fails
 				for mountItr := 1; mountItr <= MAX_RETRY_COUNT; mountItr = mountItr + 1 {
 					time.Sleep(DELAY)
-					_, res, err = iBoFOS.MountVolume(header.XrId(ctx), *volParam)
+					paramMap := make(map[string]interface{})
+					paramMap["name"] = volParam.Name
+					paramMap["array"] = volParam.Array
+					paramMap["subnqn"] = volParam.SubNQN
+					paramMap["size"] = volParam.Size
+					paramMap["transport_type"] = volParam.TRANSPORTTYPE
+					paramMap["target_address"] = volParam.TARGETADDRESS
+					paramMap["transport_service_id"] = volParam.TRANSPORTSERVICEID
+					_, res, err = iBoFOS.MountVolumeWithSubSystem(header.XrId(ctx), paramMap)
 					if err != nil || res.Result.Status.Code != 0 {
 						if mountItr == MAX_RETRY_COUNT {
 							posErr = true
@@ -168,15 +178,30 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 					break
 				}
 			}
+			volume := make(map[string]string)
+			volume["volumeName"] = volParam.Name
+			volList = append(volList,volume)
 			break
 
 		}
+
 		if !posErr {
 			CreateVolPassCount++
 		} else if volParam.StopOnError {
 			break
 		}
 	}
+	qosParam := make(map[string]interface{})
+	qosParam["array"] = volParam.Array
+	qosParam["vol"] = volList
+	if volParam.Minbw ==0 && volParam.Miniops ==0 {
+		qosParam["minbw"] = 0
+	} else if( volParam.Minbw > 0 ){
+		qosParam["minbw"] = volParam.Minbw
+	} else {
+		qosParam["miniops"] = volParam.Miniops
+	}
+	iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
 	close(CreateVolCh)
 
 }
