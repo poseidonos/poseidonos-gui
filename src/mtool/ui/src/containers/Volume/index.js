@@ -236,6 +236,8 @@ class Volume extends Component {
       unit: volume.volume_units,
       maxbw: volume.maxbw,
       maxiops: volume.maxiops,
+      minbw: volume.minbw,
+      miniops: volume.miniops,
       count: volume.volume_count,
       subsystem: volume.subsystem,
       suffix: volume.volume_suffix,

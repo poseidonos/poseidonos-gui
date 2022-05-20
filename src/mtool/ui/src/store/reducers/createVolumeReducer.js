@@ -20,7 +20,7 @@ export const initialState = {
     subnqn: "",
     transport_type: "TCP",
     target_address: "",
-    transport_service_id: 1158,
+    transport_service_id: "1158",
 };
 
 const createVolumeReducer = (state = initialState, action) => {
@@ -44,7 +44,7 @@ const createVolumeReducer = (state = initialState, action) => {
                 subnqn: "",
                 transport_type: "TCP",
                 target_address: "",
-                transport_service_id: 1158,
+                transport_service_id: "1158",
             }
         }
 

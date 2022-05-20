@@ -152,6 +152,7 @@ function AdvanceCreateVolume(props) {
 
   const volumeCountTitle = getVolumeCountTitle(props.volCount, props.maxVolumeCount);
 
+  console.log("MIN VALUE TYPE", typeof(props.minvalue))
   const volumeDetails = <React.Fragment>
     <Grid
       item
@@ -417,7 +418,6 @@ function AdvanceCreateVolume(props) {
               "data-testid": "create-vol-minvalue",
               min: 0
             }}
-            disabled={props.mintype === "NONE" && true}
           />
         </FormControl>
       </Tooltip>
@@ -426,7 +426,7 @@ function AdvanceCreateVolume(props) {
           value={props.mintype}
           onChange={handleChange}
           inputProps={{
-            name: "Minimum Type",
+            name: "mintype",
             id: "mintype",
             "data-testid": "mintype-input",
           }}
@@ -831,6 +831,9 @@ function AdvanceCreateVolume(props) {
 
 
   const createVolumeWithNewSubsystem = () => {
+    console.log("MIN VALUE TYPE", typeof(props.minvalue))
+    console.log("Max Iops TYPE", typeof(props.maxiops))
+    console.log("MIN Type TYPE", typeof(props.mintype))
     props.createVolume({
       volume_count: props.volume_count,
       volume_name: props.volume_name,
@@ -840,6 +843,8 @@ function AdvanceCreateVolume(props) {
       volume_units: props.volume_units,
       maxbw: props.maxbw,
       maxiops: props.maxiops,
+      minbw: props.mintype === "minbw" ? parseInt(props.minvalue) : 0,
+      miniops: props.mintype === "miniops" ? parseInt(props.minvalue) : 0,
       stop_on_error_checkbox: props.stop_on_error_checkbox,
       mount_vol: props.mount_vol,
       transport: props.transport,
