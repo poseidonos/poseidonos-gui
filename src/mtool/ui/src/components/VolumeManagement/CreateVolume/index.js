@@ -230,6 +230,10 @@ class CreateVolume extends Component {
     this.setState({ open: false, alert_open: false });
   }
 
+  showAlertHandler(msg) {
+    this.setState({ open: true, alert_description: msg });
+  }
+
   handleChange(event) {
     const { name, value } = event.target;
     if (name === "subsystem") {
@@ -561,7 +565,6 @@ class CreateVolume extends Component {
                 </Select>
               </FormControl>
             </Grid>
-            
             <Grid
               item
               container
