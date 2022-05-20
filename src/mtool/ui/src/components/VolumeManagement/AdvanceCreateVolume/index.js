@@ -1,0 +1,1009 @@
+import * as React from 'react';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Modal, Select, Step, StepLabel, Stepper, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
+import { customTheme } from '../../../theme';
+import * as actionCreators from "../../../store/actions/exportActionCreators";
+import * as actionTypes from "../../../store/actions/actionTypes";
+import { connect } from 'react-redux';
+import Dialog from '../../Dialog';
+import { Cancel } from '@material-ui/icons';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  // width: 600,
+  // height: 400,
+  bgcolor: 'background.paper',
+  padding: 8,
+  borderRadius: 4,
+}
+
+const styles = (theme) => ({
+  popupBox: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    height: 400,
+    bgcolor: 'background.paper',
+    padding: 8,
+    borderRadius: 4,
+  },
+  cancleIcon: {
+    position: "absolute",
+    right: theme.spacing(1),
+    padding: "2px",
+  },
+  main: {
+    width: '800px',
+    height: '400px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  mainContent: {
+    display: 'grid',
+    gridTemplateColumns: '200px auto',
+  },
+  stepContent: {
+    width: "100%",
+    minHeight: "300px",
+    display: "flex",
+    padding: theme.spacing(2, 3),
+    flexWrap: "wrap",
+    boxSizing: "border-box",
+    borderLeft: "2px solid grey",
+    // borderTop: "1px solid grey",
+    // borderBottom: "1px solid grey",
+    flexDirection: 'row',
+    alignContent: 'flex-start'
+  },
+  actionsContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: theme.spacing(2),
+    paddingRight: theme.spacing(2)
+  },
+  volBtnContainer: {
+    margin: theme.spacing(1, 0),
+  },
+  unitSelect: {
+    marginTop: theme.spacing(2),
+    height: 32,
+  },
+  unitText: {
+    width: "calc(80% - 60px)",
+    display: "flex",
+    justifyContent: "flex-end",
+    [theme.breakpoints.down("xs")]: {
+      width: "60%",
+    },
+  },
+  formControl: {
+    [theme.breakpoints.down("xs")]: {
+      justifyContent: "center",
+    },
+  },
+  button: {
+    height: "1.8rem",
+    lineHeight: "0px",
+  },
+  volumeName: {
+    width: "80%",
+  },
+  volumeUnit: {
+    minWidth: 60,
+    [theme.breakpoints.down("xs")]: {
+      width: "20%",
+    },
+  },
+  volumeCreatePaper: {
+    height: 400,
+    [theme.breakpoints.down('md')]: {
+      height: 450
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 600
+    }
+  },
+  createHeader: {
+    ...customTheme.card.header,
+  },
+  caption: {
+    color: "#424850",
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
+  },
+  labelCheckbox: {
+    marginTop: theme.spacing(0),
+  },
+  previewHeader: {
+    ...customTheme.card.header,
+    marginLeft: theme.spacing(0)
+  },
+  previewElements: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  previewElement: {
+    flex: "1 0 45%",
+    color: "#424850",
+    minWidth: "fit-content",
+    maxWidth: "100%"
+  },
+});
+
+const getVolumeCountTitle = (volCount, maxVolumeCount) => {
+  if (volCount > 1)
+    return `Specify the number of volumes to create. ${volCount} volumes already exist. POS supports max ${maxVolumeCount} volumes`;
+  else if (volCount === 1)
+    return `Specify the number of volumes to create. ${volCount} volume already exists. POS supports max ${maxVolumeCount} volumes`;
+  return `Specify the number of volumes to create. POS supports max ${maxVolumeCount} volumes`;
+}
+
+function AdvanceCreateVolume(props) {
+  const { showAdvanceOptions, classes, handleChange } = props;
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [alertOpen, setAlertOpen] = React.useState(false);
+  const [alertDescription, setAlertDescription] = React.useState("")
+  const [onAlertConfirm, setOnAlertConfirm] = React.useState(() => () => { });
+
+  const volumeCountTitle = getVolumeCountTitle(props.volCount, props.maxVolumeCount);
+
+  const volumeDetails = <React.Fragment>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <Tooltip title={volumeCountTitle} placement="bottom-start">
+        <FormControl className={classes.volumeName}>
+          <TextField
+            id="create-vol-count"
+            name="volume_count"
+            label="Volume Count"
+            type="number"
+            inputProps={{
+              min: 1,
+              max: props.maxVolumeCount,
+              "data-testid": "create-vol-count",
+            }}
+            value={props.volume_count}
+            onChange={handleChange}
+            required
+          />
+        </FormControl>
+      </Tooltip>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-end"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <Tooltip
+          title="Do you want to proceed with subsequent volume creation in case an error occurs or abort the remaining process?"
+          placement="bottom-start"
+          disableFocusListener={props.volume_count < 2}
+          disableHoverListener={props.volume_count < 2}
+          disableTouchListener={props.volume_count < 2}
+        >
+          <FormControlLabel
+            disabled={props.volume_count < 2}
+            control={(
+              <Checkbox
+                name="stop_on_error_checkbox"
+                color="primary"
+                id="create-vol-stop-on-error-checkbox"
+                checked={props.stop_on_error_checkbox}
+                value="Stop on error"
+                inputProps={{
+                  "data-testid": "stop-on-error-checkbox",
+                }}
+                onChange={handleChange}
+              />
+            )}
+            label="Stop Multi-Volume Creation on Error"
+            className={classes.labelCheckbox}
+          />
+        </Tooltip>
+      </FormControl>
+    </Grid>
+    <Grid item container xs={12}>
+      <Typography
+        variant="body2"
+        // component="h4"
+        className={classes.caption}
+        display="block"
+      >
+        For Volume Count &gt; 1, please provide a seed in the Suffix
+        Start Value field (e.g. 0,1)
+      </Typography>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <TextField
+          id="create-vol-name"
+          label="Volume Name"
+          name="volume_name"
+          value={props.volume_name}
+          onChange={handleChange}
+          inputProps={{
+            "data-testid": "create-vol-name",
+          }}
+          required
+        />
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-end"
+      className={classes.formControl}
+    >
+      <Tooltip
+        title=" Min suffix value allowed is 0.
+                        The suffix will be appended to the volume name to form the final volume name (e.g. vol_0, vol_1)"
+        placement="right-start"
+        disableFocusListener={props.volume_count < 2}
+        disableHoverListener={props.volume_count < 2}
+        disableTouchListener={props.volume_count < 2}
+      >
+        <FormControl className={classes.volumeName}>
+          <TextField
+            id="create-vol-suffix"
+            label="Suffix Start Value"
+            name="volume_suffix"
+            type="number"
+            InputProps={{
+              inputProps: {
+                min: 0,
+                "data-testid": "create-vol-suffix",
+              },
+            }}
+            value={props.volume_suffix}
+            onChange={handleChange}
+            disabled={props.volume_count < 2}
+          />
+        </FormControl>
+      </Tooltip>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <Tooltip
+        title="Please input 0 to utilize all the available space in the array"
+        placement="right-start"
+      >
+        <FormControl className={classes.unitText}>
+          <TextField
+            id="create-vol-size"
+            label="Volume Size"
+            name="volume_size"
+            value={props.volume_size}
+            onChange={handleChange}
+            type="number"
+            inputProps={{
+              "data-testid": "create-vol-size",
+              min: 0
+            }}
+            required
+          />
+        </FormControl>
+      </Tooltip>
+      <FormControl className={classes.volumeUnit}>
+        <Select
+          value={props.volume_units}
+          onChange={props.Set_Unit}
+          inputProps={{
+            name: "Volume Unit",
+            id: "vol_unit",
+            "data-testid": "volume-unit-input",
+          }}
+          SelectDisplayProps={{
+            "data-testid": "volume-unit",
+          }}
+          className={classes.unitSelect}
+        >
+          <MenuItem value="GB" data-testid="gb">
+            GB
+          </MenuItem>
+          <MenuItem value="TB" data-testid="tb">
+            TB
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </Grid>
+  </React.Fragment>
+
+  const qosValues = <React.Fragment>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <Tooltip
+        title="0 means max"
+        placement="right-start"
+      >
+        <FormControl className={classes.volumeName}>
+          <TextField
+            id="create-vol-maxiops"
+            label="Maximum IOPS (KIOPS)"
+            name="maxiops"
+            value={props.maxiops}
+            onChange={handleChange}
+            type="number"
+            // placeholder="Min Value 10. 0 means max"
+            inputProps={{
+              min: 0,
+              "data-testid": "create-vol-max-iops",
+            }}
+            required
+          />
+        </FormControl>
+      </Tooltip>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <Tooltip title="Min value 10. 0 means max" placement="right-start">
+        <FormControl className={classes.volumeName}>
+          <TextField
+            id="create-vol-maxbw"
+            label="Maximum Bandwidth (MB/s)"
+            name="maxbw"
+            value={props.maxbw}
+            onChange={handleChange}
+            type="number"
+            // placeholder="0 means max"
+            inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
+            required
+          />
+        </FormControl>
+      </Tooltip>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <Tooltip
+        title="0 means no minimum iops/bw"
+        placement="right-start"
+      >
+        <FormControl className={classes.unitText}>
+          <TextField
+            id="create-vol-minvalue"
+            label="Minimum IOPS/BW"
+            name="minvalue"
+            value={props.minvalue}
+            onChange={handleChange}
+            type="number"
+            inputProps={{
+              "data-testid": "create-vol-minvalue",
+              min: 0
+            }}
+            disabled={props.mintype === "NONE" && true}
+          />
+        </FormControl>
+      </Tooltip>
+      <FormControl className={classes.volumeUnit}>
+        <Select
+          value={props.mintype}
+          onChange={handleChange}
+          inputProps={{
+            name: "Minimum Type",
+            id: "mintype",
+            "data-testid": "mintype-input",
+          }}
+          SelectDisplayProps={{
+            "data-testid": "mintype",
+          }}
+          className={classes.unitSelect}
+        >
+          <MenuItem value="miniops" data-testid="miniops">
+            KIOPS
+          </MenuItem>
+          <MenuItem value="minbw" data-testid="minbw">
+            MB/s
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </Grid>
+
+  </React.Fragment>
+
+  const mountOptions = <React.Fragment>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <FormControlLabel
+          control={(
+            <Checkbox
+              name="mount_vol_checkbox"
+              color="primary"
+              id="mount-vol-checkbox"
+              checked={props.mount_vol}
+              value="Mount Volume"
+              inputProps={{
+                "data-testid": "mount-vol-checkbox",
+              }}
+              onChange={props.handleChange}
+            />
+          )}
+          label="Mount Volume"
+          className={classes.labelCheckbox}
+        />
+      </FormControl>
+    </Grid>
+    <Grid item container xs={12}>
+      <Typography
+        variant="body2"
+        // component="h4"
+        className={classes.caption}
+        display="block"
+      >
+      </Typography>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
+        <Select
+          value={props.subsystem}
+          onChange={handleChange}
+          label="Select Subsystem"
+          inputProps={{
+            name: "subsystem",
+            id: "subsystem",
+            "data-testid": "subsystem-input",
+          }}
+          SelectDisplayProps={{
+            "data-testid": "subsystem",
+          }}
+          className={classes.unitSelect}
+          required={!props.selectedNewSubsystem}
+          disabled={props.selectedNewSubsystem || !props.mount_vol}
+        >
+          {props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
+            (
+              <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
+                {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+              </MenuItem>
+            ) : null)}
+        </Select>
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-end"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <FormControlLabel
+          control={(
+            <Checkbox
+              name="selectedNewSubsystem"
+              color="primary"
+              id="selectedNewSubsystem"
+              checked={props.selectedNewSubsystem}
+              value="With A New Subsystem"
+              inputProps={{
+                "data-testid": "selectedNewSubsystem",
+              }}
+              onChange={props.handleChange}
+            />
+          )}
+          label="With A New Subsystem"
+          className={classes.labelCheckbox}
+          disabled={!props.mount_vol}
+        />
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <TextField
+          id="create-subsystem-name"
+          label="Subsystem Name"
+          name="subnqn"
+          value={props.subnqn}
+          onChange={handleChange}
+          inputProps={{
+            "data-testid": "create-subsystem-name",
+          }}
+          required={props.selectedNewSubsystem}
+          disabled={!props.selectedNewSubsystem || !props.mount_vol}
+        />
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-end"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <InputLabel htmlFor="transport_type">Select Transport Type</InputLabel>
+        <Select
+          value={props.transport_type}
+          onChange={handleChange}
+          label="Select Transport Type"
+          inputProps={{
+            name: "transport_type",
+            id: "transport_type",
+            "data-testid": "transport_type-input",
+          }}
+          SelectDisplayProps={{
+            "data-testid": "transport_type",
+          }}
+          className={classes.unitSelect}
+          required={props.selectedNewSubsystem}
+          disabled={!props.selectedNewSubsystem || !props.mount_vol}
+        >
+          <MenuItem value="TCP" key="TCP">
+            TCP
+          </MenuItem>
+          <MenuItem value="RBMI" key="RBMI">
+            RBMI
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-start"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <TextField
+          id="create-target-address"
+          label="Target Address"
+          name="target_address"
+          value={props.target_address}
+          onChange={handleChange}
+          inputProps={{
+            "data-testid": "create-target-address",
+          }}
+          required={props.selectedNewSubsystem}
+          disabled={!props.selectedNewSubsystem || !props.mount_vol}
+        />
+      </FormControl>
+    </Grid>
+    <Grid
+      item
+      container
+      xs={12}
+      sm={6}
+      justifyContent="flex-end"
+      className={classes.formControl}
+    >
+      <FormControl className={classes.volumeName}>
+        <TextField
+          id="create-transport-service-id"
+          label="Transport Service Id"
+          name="transport_service_id"
+          value={props.transport_service_id}
+          onChange={handleChange}
+          inputProps={{
+            "data-testid": "create-transport-service-id",
+          }}
+          required={props.selectedNewSubsystem}
+          disabled={!props.selectedNewSubsystem || !props.mount_vol}
+        />
+      </FormControl>
+    </Grid>
+
+  </React.Fragment>
+
+  const validateVolumeDetails = () => {
+    let isError = true;
+    let errorDesc = "";
+    let volSize = props.volume_size;
+    let maxAvailableSize;
+    if (props.volume_size.length === 0)
+      errorDesc = "Please Enter Volume Size";
+    else if (props.volume_size < 0)
+      errorDesc = "Volume Size cannot be negative";
+    else if (props.volume_name.length < 1)
+      errorDesc = "Please Enter Volume Name";
+    else if (props.volume_count.length === 0)
+      errorDesc = "Please Enter Volume Count";
+    // istanbul ignore next: cannot provide negative numbers to number field with min 0
+    else if (props.volume_count < 1)
+      errorDesc = "Volume Count should be greater than 0";
+    else if (props.volume_count > parseInt(props.maxVolumeCount, 10))
+      errorDesc = `Volume Count should not exceed ${props.maxVolumeCount}`;
+    else if (props.volume_count > 1 && props.volume_suffix < 0)
+      errorDesc = "Suffix Value cannot be negative";
+    else if (props.volume_count > 1 && props.volume_suffix === null)
+      errorDesc = "Please Enter Suffix Start Value";
+    else isError = false;
+
+    if (isError === true) {
+      props.showAlertHandler(errorDesc)
+      return true;
+    }
+
+    if (props.volume_size !== 0) {
+      maxAvailableSize = props.formatBytes(props.maxAvailableSize);
+      volSize =
+        `${props.volume_size.toString()} ${props.volume_units}`;
+
+      if (volSize === maxAvailableSize) {
+        volSize = 0;
+        props.Change_Input({ name: "volume_size", value: 0 });
+      }
+    }
+
+    if (props.volume_count > 1 && parseInt(volSize, 10) === 0) {
+      setAlertDescription("Multiple volumes cannot be created when volume size is set as 0(max). Do you want to create a single volume with the maximum available size?")
+      setAlertOpen(true);
+      setOnAlertConfirm(() => () => {
+        setAlertOpen(false);
+        props.Change_Input({ name: "volume_count", value: 1 })
+      })
+      return true;
+    }
+
+    return false;
+  }
+
+  const validateQosValues = () => {
+    let isError = true;
+    let errorDesc = "";
+    if (props.maxbw.length === 0)
+      errorDesc = "Please Enter Maximum Bandwidth (MB/s) ";
+    else if (props.maxiops.length === 0)
+      errorDesc = "Please Enter Maximum IOPS (KIOPS)";
+    else if (props.maxbw < 0)
+      errorDesc = "Max Bandwidth cannot be negative";
+    else if (props.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
+    else if ((props.maxbw > 0 && props.maxbw < 10) || props.maxbw > 17592186044415)
+      errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
+    else if ((props.maxiops > 0 && props.maxiops < 10) || props.maxiops > 18446744073709551)
+      errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
+    else isError = false;
+    if (isError === true) {
+      props.showAlertHandler(errorDesc)
+      return true;
+    }
+    return false;
+  }
+
+  const validateMountOptions = () => {
+    let isError = true;
+    let errorDesc = "";
+    const subsystem = props.getSubsystem(props.subsystem, props.subsystems);
+    if (props.mount_vol) {
+      if (!props.selectedNewSubsystem && subsystem.array && subsystem.array !== props.array)
+        errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
+      else if (props.selectedNewSubsystem) {
+        if (props.subnqn.length < 1)
+          errorDesc = "Please Enter Subsystem Name";
+        else if (props.target_address.length < 1)
+          errorDesc = "Please Enter Target Address";
+        else if (props.transport_service_id.length === 0)
+          errorDesc = "Please Enter Transport Service Type ";
+        else if (props.transport_service_id < 0)
+          errorDesc = "Transport Service Type cannot be negative";
+        else
+          isError = false;
+      } else
+        isError = false;
+    }
+    else isError = false;
+    if (isError === true) {
+      props.showAlertHandler(errorDesc)
+      return true;
+    }
+    return false;
+  }
+
+  const steps = ['Volume Details', 'Qos Values', 'Mount Options']
+  const stepContents = [volumeDetails, qosValues, mountOptions]
+  const validateContents = [validateVolumeDetails, validateQosValues, validateMountOptions]
+
+  const previewDetails =
+    <div style={{ width: "100%" }}>
+      <Typography className={classes.previewHeader}>Volume Details</Typography>
+      <div className={classes.previewElements}>
+        <Typography className={classes.previewElement}>Volume Count : {props.volume_count}</Typography>
+        {props.volume_count > 1 && <Typography className={classes.previewElement}>
+          Stop Multi-volume Creation on Error :
+          <Checkbox
+            size="small"
+            color="primary"
+            checked={props.stop_on_error_checkbox}
+            // disabled
+            style={{ padding: "0" }}
+          />
+        </Typography>}
+        <Typography className={classes.previewElement}>Volume Name : {props.volume_name}</Typography>
+        {props.volume_count > 1 &&
+          <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
+        }
+        <Typography className={classes.previewElement}>Volume Size : {props.volume_size} {props.volume_units}</Typography>
+      </div>
+      <Typography className={classes.previewHeader}>Qos Values</Typography>
+      <div className={classes.previewElements}>
+        <Typography className={classes.previewElement}>Max Bandwidth: {props.maxbw} MB/s</Typography>
+        <Typography className={classes.previewElement}>Max IOPS : {props.maxiops} KIOPS</Typography>
+        <Typography className={classes.previewElement}>Min IOPS/BW: {props.minvalue} {props.mintype === "miniops" ? "KIOPS" : "MB/s"}</Typography>
+      </div>
+      <Typography className={classes.previewHeader}>Mount Options</Typography>
+      <div className={classes.previewElements}>
+        <Typography className={classes.previewElement}>
+          Mount Volume :
+          <Checkbox
+            size="small"
+            color="primary"
+            checked={props.mount_vol}
+            // disabled
+            style={{ padding: "0" }}
+          />
+        </Typography>
+        {props.mount_vol &&
+          <React.Fragment>
+            <Typography className={classes.previewElement}>
+              With New Subsystem :
+              <Checkbox
+                size="small"
+                color="primary"
+                checked={props.selectedNewSubsystem}
+                // disabled
+                style={{ padding: "0" }}
+              />
+            </Typography>
+            {props.selectedNewSubsystem ?
+              <React.Fragment>
+                <Typography className={classes.previewElement}>Subsystem Name : {props.subnqn}</Typography>
+                <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
+                <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
+                <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>
+              </React.Fragment> :
+              <Typography className={classes.previewElement}>Selected Subsytem : {props.subsystem}</Typography>
+            }
+          </React.Fragment>
+        }
+      </div>
+    </div>
+
+
+  const createVolumeWithNewSubsystem = () => {
+    props.createVolume({
+      volume_count: props.volume_count,
+      volume_name: props.volume_name,
+      volume_suffix: props.volume_suffix,
+      volume_size: props.volume_size,
+      volume_description: props.description,
+      volume_units: props.volume_units,
+      maxbw: props.maxbw,
+      maxiops: props.maxiops,
+      stop_on_error_checkbox: props.stop_on_error_checkbox,
+      mount_vol: props.mount_vol,
+      transport: props.transport,
+      subsystem: {
+        transport_type: props.transport_type,
+        transport_service_id: props.transport_service_id,
+        target_address: props.target_address,
+        subnqn: props.subnqn
+      },
+    })
+  }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+    props.Reset_Inputs();
+  };
+
+  const handleNext = () => {
+    if (activeStep === steps.length) {
+      if (props.mount_vol && props.selectedNewSubsystem) {
+        createVolumeWithNewSubsystem();
+        return;
+      }
+      props.createVolumeInParent();
+      return;
+    }
+    if (validateContents[activeStep]() === true) {
+      return
+    }
+    console.log(activeStep, steps.length)
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleModalClose = () => {
+    setAlertDescription("Closing the Advance Create Volume popup will reset the input fields ?")
+    setAlertOpen(true);
+    setOnAlertConfirm(() => () => {
+      setAlertOpen(false);
+      handleReset();
+      props.Toggle_Advance_Create_Volume_Popup(false);
+    })
+  }
+
+  return (
+    <Modal
+      open={showAdvanceOptions}
+      onClose={handleModalClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style} >
+        <IconButton className={classes.cancleIcon} aria-label="Close" onClick={handleModalClose}>
+          <Cancel />
+        </IconButton>
+        <form className={classes.formContainer}>
+          <main className={classes.main}>
+            <div className={classes.mainContent}>
+              <div>
+                <Typography className={classes.createHeader}>Create Volume </Typography>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                  {steps.map((label, index) => (
+                    <Step key={index}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </div>
+
+              <div>
+                <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
+
+                <div className={classes.stepContent}>
+                  {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
+                </div>
+              </div>
+            </div>
+
+            <div className={classes.actionsContainer}>
+              <div>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  {activeStep === steps.length ? 'Create Volume' : 'Next'}
+                </Button>
+              </div>
+            </div>
+          </main>
+        </form>
+        <Dialog
+          title="Reset Fields"
+          description={alertDescription}
+          open={alertOpen}
+          handleClose={() => {
+            setAlertOpen(false)
+          }}
+          onConfirm={onAlertConfirm}
+        />
+      </Box>
+    </Modal>
+  );
+}
+
+const mapStateToProps = (state) => {
+  return {
+    createVolumeButton: state.storageReducer.createVolumeButton,
+    volume_count: state.createVolumeReducer.volume_count,
+    volume_name: state.createVolumeReducer.volume_name,
+    volume_suffix: state.createVolumeReducer.volume_suffix,
+    volume_size: state.createVolumeReducer.volume_size,
+    volume_description: state.createVolumeReducer.volume_description,
+    volume_units: state.createVolumeReducer.volume_units,
+    maxbw: state.createVolumeReducer.maxbw,
+    maxiops: state.createVolumeReducer.maxiops,
+    minvalue: state.createVolumeReducer.minvalue,
+    mintype: state.createVolumeReducer.mintype,
+    stop_on_error_checkbox: state.createVolumeReducer.stop_on_error_checkbox,
+    mount_vol: state.createVolumeReducer.mount_vol,
+    subsystem: state.createVolumeReducer.subsystem,
+    transport: state.createVolumeReducer.transport,
+    selectedNewSubsystem: state.createVolumeReducer.selectedNewSubsystem,
+    subnqn: state.createVolumeReducer.subnqn,
+    transport_type: state.createVolumeReducer.transport_type,
+    target_address: state.createVolumeReducer.target_address,
+    transport_service_id: state.createVolumeReducer.transport_service_id,
+    showAdvanceOptions: state.createVolumeReducer.showAdvanceOptions
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleCreateVolumeButton: (flag) =>
+      dispatch(actionCreators.toggleCreateVolumeButton(flag)),
+    showStorageAlert: (alertParams) =>
+      dispatch(actionCreators.showStorageAlert(alertParams)),
+    Reset_Inputs: () =>
+      dispatch({ type: actionTypes.RESET_INPUTS }),
+    Change_Input: (payload) =>
+      dispatch({ type: actionTypes.CHANGE_INPUT, payload }),
+    Update_Subsystem: (payload) =>
+      dispatch({ type: actionTypes.UPDATE_SUBSYSTEM, payload }),
+    Set_Unit: (payload) =>
+      dispatch({ type: actionTypes.SET_UNIT, payload }),
+    Toggle_Advance_Create_Volume_Popup: (flag) =>
+      dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag))
+  };
+};
+
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AdvanceCreateVolume));

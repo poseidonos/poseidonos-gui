@@ -47,14 +47,16 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-  Tooltip,
+  Tooltip
 } from "@material-ui/core";
 import { customTheme, PageTheme } from "../../../theme";
 import "../../../containers/Volume/Volume.css";
 import "./CreateVolume.css";
 import AlertDialog from "../../Dialog";
 import * as actionCreators from "../../../store/actions/exportActionCreators";
+import * as actionTypes from "../../../store/actions/actionTypes";
 import formatBytes from "../../../utils/format-bytes";
+import AdvanceCreateVolume from "../AdvanceCreateVolume";
 
 const styles = (theme) => ({
   formContainer: {
@@ -118,54 +120,42 @@ const styles = (theme) => ({
 });
 
 const getSubsystem = (subsystem, subsystems) => {
-	const result = subsystems.find((s) => s.nqn === subsystem);
-	if(result) return result;
-	return {
-		listen_addresses: [],
-		array: "-"
-	};
+  const result = subsystems.find((s) => s.nqn === subsystem);
+  if (result) return result;
+  return {
+    listen_addresses: [],
+    array: "-"
+  };
 }
 
 const getTransport = (subsystem, transport) => {
-	if(transport.indexOf(":") > 0) {
-		const ip = transport.split(":")[0];
-		const port = transport.split(":")[1];
-		for(let i = 0; i < subsystem.listen_addresses.length; i += 1) {
-			if(subsystem.listen_addresses[i].target_address === ip && subsystem.listen_addresses[i].transport_service_id === port) {
-				return subsystem.listen_addresses[i];
-			}
-		}
-	}
-	return {};
+  if (transport.indexOf(":") > 0) {
+    const ip = transport.split(":")[0];
+    const port = transport.split(":")[1];
+    for (let i = 0; i < subsystem.listen_addresses.length; i += 1) {
+      if (subsystem.listen_addresses[i].target_address === ip && subsystem.listen_addresses[i].transport_service_id === port) {
+        return subsystem.listen_addresses[i];
+      }
+    }
+  }
+  return {};
 }
 
 class CreateVolume extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      volume_count: 1,
-      volume_name: "vol",
-      volume_suffix: 0,
-      volume_size: 0,
-      volume_description: "",
-      volume_units: "GB",
       form_valid: true,
-      subsystem: "",
-      transport: "",
       open: false,
       alert_description: "",
-      maxbw: 0,
-      maxiops: 0,
-      stop_on_error_checkbox: false,
-      mount_vol: true,
       alert_open: false,
       onConfirm: null,
     };
 
-    this.setUnit = this.setUnit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.createVolumeInParent = this.createVolumeInParent.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.showAlertHandler = this.showAlertHandler.bind(this);
   }
 
   componentDidMount() {
@@ -199,19 +189,7 @@ class CreateVolume extends Component {
           errorCode: description,
         });
 
-        this.setState({
-          ...this.state,
-          volume_count: 1,
-          volume_name: "vol",
-          volume_suffix: 0,
-          volume_size: 0,
-          volume_description: "",
-          volume_units: "GB",
-          maxbw: 0,
-          maxiops: 0,
-          stop_on_error_checkbox: false,
-          mount_vol: true,
-        });
+        this.props.Reset_Inputs();
 
         this.props.fetchVolumes();
         this.props.fetchArray();
@@ -222,22 +200,24 @@ class CreateVolume extends Component {
   }
 
   componentDidUpdate() {
-    if(!this.state.subsystem && this.props.subsystems.length > 0) {
+    if (!this.props.subsystem && this.props.subsystems.length > 0) {
       /* eslint-disable react/no-did-update-set-state */
-      for(let i = 0; i < this.props.subsystems.length; i += 1) {
-        if(this.props.subsystems[i].subtype === "NVMe") {
-          this.setState({
-            subsystem: this.props.subsystems[i].nqn
-          });
-      if(this.props.subsystems[i].listen_addresses && this.props.subsystems[i].listen_addresses.length) {
-              this.setState({
-		      transport: `${this.props.subsystems[i].listen_addresses[0].target_address}:${this.props.subsystems[i].listen_addresses[0].transport_service_id}`
-              });
-      } else {
-              this.setState({
-                      transport: ""
-              });
-      }
+      for (let i = 0; i < this.props.subsystems.length; i += 1) {
+        if (this.props.subsystems[i].subtype === "NVMe") {
+
+          const subsystem = this.props.subsystems[i].nqn
+
+          if (this.props.subsystems[i].listen_addresses && this.props.subsystems[i].listen_addresses.length) {
+            this.props.Update_Subsystem({
+              subsystem: subsystem,
+              transport: `${this.props.subsystems[i].listen_addresses[0].target_address}:${this.props.subsystems[i].listen_addresses[0].transport_service_id}`
+            });
+          } else {
+            this.props.Update_Subsystem({
+              subsystem: subsystem,
+              transport: ""
+            });
+          }
 
           break;
         }
@@ -250,118 +230,137 @@ class CreateVolume extends Component {
     this.setState({ open: false, alert_open: false });
   }
 
-  handleChange(event) {
-    const { name, value } = event.target;
-    if (name === "stop_on_error_checkbox") {
-      this.setState({
-        stop_on_error_checkbox: !this.state.stop_on_error_checkbox,
-      });
-    } else if (name === "subsystem") {
-      const subSystem = getSubsystem(value, this.props.subsystems);
-      if(subSystem.listen_addresses && subSystem.listen_addresses.length) {
-	      this.setState({
-		      subsystem: value,
-		      transport: `${subSystem.listen_addresses[0].target_address}:${subSystem.listen_addresses[0].transport_service_id}`
-	      });
-      } else {
-	      this.setState({
-		      subsystem: value,
-		      transport: ""
-	      });
-      }
-    }else if (name === "mount_vol_checkbox") {
-      this.setState({ mount_vol: !this.state.mount_vol });
-    } else this.setState({ [name]: value });
+  showAlertHandler(msg) {
+    this.setState({ open: true, alert_description: msg });
   }
 
-  setUnit(event) {
-    this.setState({ volume_units: event.target.value });
+  handleChange(event) {
+    const { name, value } = event.target;
+    console.log("NAME", name, "VALUE", value)
+    if (name === "subsystem") {
+      const subSystem = getSubsystem(value, this.props.subsystems);
+      if (subSystem.listen_addresses && subSystem.listen_addresses.length) {
+        this.props.Update_Subsystem({
+          subsystem: value,
+          transport: `${subSystem.listen_addresses[0].target_address}:${subSystem.listen_addresses[0].transport_service_id}`
+        });
+      } else {
+        this.props.Update_Subsystem({
+          subsystem: value,
+          transport: ""
+        });
+      }
+    } else
+      this.props.Change_Input({ name: name, value: value })
   }
 
   createVolumeInParent() {
     let isError = true;
     let errorDesc = "";
-    let volSize = this.state.volume_size;
+    let volSize = this.props.volume_size;
     let maxAvailableSize;
-    const subsystem = getSubsystem(this.state.subsystem, this.props.subsystems);
-    if (this.state.volume_size.length === 0)
+    const subsystem = getSubsystem(this.props.subsystem, this.props.subsystems);
+    if (this.props.volume_size.length === 0)
       errorDesc = "Please Enter Volume Size";
-    else if (this.state.volume_size < 0)
+    else if (this.props.volume_size < 0)
       errorDesc = "Volume Size cannot be negative";
-    else if (this.state.volume_name.length < 1)
+    else if (this.props.volume_name.length < 1)
       errorDesc = "Please Enter Volume Name";
-    else if (this.state.volume_count.length === 0)
+    else if (this.props.volume_count.length === 0)
       errorDesc = "Please Enter Volume Count";
     // istanbul ignore next: cannot provide negative numbers to number field with min 0
-    else if (this.state.volume_count < 1)
+    else if (this.props.volume_count < 1)
       errorDesc = "Volume Count should be greater than 0";
-    else if (this.state.volume_count > parseInt(this.props.maxVolumeCount, 10))
+    else if (this.props.volume_count > parseInt(this.props.maxVolumeCount, 10))
       errorDesc = `Volume Count should not exceed ${this.props.maxVolumeCount}`;
-    else if (this.state.volume_count > 1 && this.state.volume_suffix < 0)
+    else if (this.props.volume_count > 1 && this.props.volume_suffix < 0)
       errorDesc = "Suffix Value cannot be negative";
-    else if (this.state.volume_count > 1 && this.state.volume_suffix === null)
+    else if (this.props.volume_count > 1 && this.props.volume_suffix === null)
       errorDesc = "Please Enter Suffix Start Value";
-    else if (this.state.maxbw.length === 0)
+    else if (this.props.maxbw.length === 0)
       errorDesc = "Please Enter Maximum Bandwidth (MB/s) ";
-    else if (this.state.maxiops.length === 0)
+    else if (this.props.maxiops.length === 0)
       errorDesc = "Please Enter Maximum IOPS (KIOPS)";
-    else if (this.state.maxbw < 0)
+    else if (this.props.maxbw < 0)
       errorDesc = "Max Bandwidth cannot be negative";
-    else if (this.state.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
-    else if ((this.state.maxbw > 0 && this.state.maxbw < 10) || this.state.maxbw > 17592186044415)
+    else if (this.props.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
+    else if ((this.props.maxbw > 0 && this.props.maxbw < 10) || this.props.maxbw > 17592186044415)
       errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
-    else if ((this.state.maxiops > 0 && this.state.maxiops < 10) || this.state.maxiops > 18446744073709551)
+    else if ((this.props.maxiops > 0 && this.props.maxiops < 10) || this.props.maxiops > 18446744073709551)
       errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
-    else if (this.state.mount_vol && subsystem.array && subsystem.array !== this.props.array)
+    else if (this.props.mount_vol && subsystem.array && subsystem.array !== this.props.array)
       errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
 
     if (isError === true) {
-      this.setState({ open: true, alert_description: errorDesc });
+      this.showAlertHandler(errorDesc)
       return;
     }
 
-    if (this.state.volume_size !== 0) {
+    if (this.props.volume_size !== 0) {
       maxAvailableSize = formatBytes(this.props.maxAvailableSize);
       volSize =
-        `${this.state.volume_size.toString() } ${ this.state.volume_units}`;
+        `${this.props.volume_size.toString()} ${this.props.volume_units}`;
 
       if (volSize === maxAvailableSize) {
         volSize = 0;
-        this.setState({ volume_size: 0 });
+        this.props.Change_Input({ name: "volume_size", value: 0 });
       }
     }
 
-    const transport = getTransport(subsystem, this.state.transport)
+    const transport = getTransport(subsystem, this.props.transport)
 
-    if (this.state.volume_count > 1 && parseInt(volSize, 10) === 0) {
+    if (this.props.volume_count > 1 && parseInt(volSize, 10) === 0) {
       this.setState({
         alert_open: true,
         onConfirm: () => {
           this.setState({
             alert_open: false,
-            volume_count: 1,
           });
-          this.props.createVolume({ ...this.state,
-		  subsystem: {
-			  transport_type: transport.transport_type,
-			  transport_service_id: transport.transport_service_id,
-			  target_address: transport.target_address,
-			  subnqn: this.state.subsystem
-		  },
-		  volume_count: 1
-	  });
+          this.props.Change_Input({ name: "volume_count", value: 1 })
+          this.props.createVolume({
+            ...this.state,
+            volume_name: this.props.volume_name,
+            volume_suffix: this.props.volume_suffix,
+            volume_size: this.props.volume_size,
+            volume_description: this.props.description,
+            volume_units: this.props.volume_units,
+            maxbw: this.props.maxbw,
+            maxiops: this.props.maxiops,
+            stop_on_error_checkbox: this.props.stop_on_error_checkbox,
+            mount_vol: this.props.mount_vol,
+            transport: this.props.transport,
+            subsystem: {
+              transport_type: transport.transport_type,
+              transport_service_id: transport.transport_service_id,
+              target_address: transport.target_address,
+              subnqn: this.props.subsystem
+            },
+            volume_count: 1
+          });
         },
       });
     } else {
-	    this.props.createVolume({ ...this.state,
-	    subsystem: {
-                          transport_type: transport.transport_type,
-                          transport_service_id: transport.transport_service_id,
-                          target_address: transport.target_address,
-                          subnqn: this.state.subsystem
-            },
-     })
+      this.props.createVolume({
+        ...this.state,
+        volume_count: this.props.volume_count,
+        volume_name: this.props.volume_name,
+        volume_suffix: this.props.volume_suffix,
+        volume_size: this.props.volume_size,
+        volume_description: this.props.description,
+        volume_units: this.props.volume_units,
+        maxbw: this.props.maxbw,
+        maxiops: this.props.maxiops,
+        stop_on_error_checkbox: this.props.stop_on_error_checkbox,
+        mount_vol: this.props.mount_vol,
+        transport: this.props.transport,
+        subsystem: {
+          transport_type: transport.transport_type,
+          transport_service_id: transport.transport_service_id,
+          target_address: transport.target_address,
+          subnqn: this.props.subsystem
+        },
+      })
     };
   }
 
@@ -404,7 +403,7 @@ class CreateVolume extends Component {
                       max: this.props.maxVolumeCount,
                       "data-testid": "create-vol-count",
                     }}
-                    value={this.state.volume_count}
+                    value={this.props.volume_count}
                     onChange={this.handleChange}
                     required
                   />
@@ -422,18 +421,18 @@ class CreateVolume extends Component {
               <FormControl className={classes.volumeName}>
                 <FormControlLabel
                   control={(
-<Checkbox
+                    <Checkbox
                       name="mount_vol_checkbox"
                       color="primary"
                       id="mount-vol-checkbox"
-                      checked={this.state.mount_vol}
+                      checked={this.props.mount_vol}
                       value="Mount Volume"
                       inputProps={{
                         "data-testid": "mount-vol-checkbox",
                       }}
                       onChange={this.handleChange}
-/>
-)}
+                    />
+                  )}
                   label="Mount Volume"
                   className={classes.labelCheckbox}
                 />
@@ -464,7 +463,7 @@ class CreateVolume extends Component {
                   id="create-vol-name"
                   label="Volume Name"
                   name="volume_name"
-                  value={this.state.volume_name}
+                  value={this.props.volume_name}
                   onChange={this.handleChange}
                   inputProps={{
                     "data-testid": "create-vol-name",
@@ -485,9 +484,9 @@ class CreateVolume extends Component {
                 title=" Min suffix value allowed is 0.
                         The suffix will be appended to the volume name to form the final volume name (e.g. vol_0, vol_1)"
                 placement="right-start"
-                disableFocusListener={this.state.volume_count < 2}
-                disableHoverListener={this.state.volume_count < 2}
-                disableTouchListener={this.state.volume_count < 2}
+                disableFocusListener={this.props.volume_count < 2}
+                disableHoverListener={this.props.volume_count < 2}
+                disableTouchListener={this.props.volume_count < 2}
               >
                 <FormControl className={classes.volumeName}>
                   <TextField
@@ -501,9 +500,9 @@ class CreateVolume extends Component {
                         "data-testid": "create-vol-suffix",
                       },
                     }}
-                    value={this.state.volume_suffix}
+                    value={this.props.volume_suffix}
                     onChange={this.handleChange}
-                    disabled={this.state.volume_count < 2}
+                    disabled={this.props.volume_count < 2}
                   />
                 </FormControl>
               </Tooltip>
@@ -525,7 +524,7 @@ class CreateVolume extends Component {
                     id="create-vol-size"
                     label="Volume Size"
                     name="volume_size"
-                    value={this.state.volume_size}
+                    value={this.props.volume_size}
                     onChange={this.handleChange}
                     type="number"
                     inputProps={{
@@ -538,8 +537,8 @@ class CreateVolume extends Component {
               </Tooltip>
               <FormControl className={classes.volumeUnit}>
                 <Select
-                  value={this.state.volume_units}
-                  onChange={this.setUnit}
+                  value={this.props.volume_units}
+                  onChange={this.props.Set_Unit}
                   inputProps={{
                     name: "Volume Unit",
                     id: "vol_unit",
@@ -577,7 +576,7 @@ class CreateVolume extends Component {
                     id="create-vol-maxiops"
                     label="Maximum IOPS (KIOPS)"
                     name="maxiops"
-                    value={this.state.maxiops}
+                    value={this.props.maxiops}
                     onChange={this.handleChange}
                     type="number"
                     // placeholder="Min Value 10. 0 means max"
@@ -604,7 +603,7 @@ class CreateVolume extends Component {
                     id="create-vol-maxbw"
                     label="Maximum Bandwidth (MB/s)"
                     name="maxbw"
-                    value={this.state.maxbw}
+                    value={this.props.maxbw}
                     onChange={this.handleChange}
                     type="number"
                     // placeholder="0 means max"
@@ -624,9 +623,9 @@ class CreateVolume extends Component {
               className={classes.formControl}
             >
               <FormControl className={classes.volumeName}>
-              <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
-              <Select
-                  value={this.state.subsystem}
+                <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
+                <Select
+                  value={this.props.subsystem}
                   onChange={this.handleChange}
                   label="Select Subsystem"
                   inputProps={{
@@ -638,17 +637,18 @@ class CreateVolume extends Component {
                     "data-testid": "subsystem",
                   }}
                   className={classes.unitSelect}
-              >
+                  disabled={!this.props.mount_vol}
+                >
                   {this.props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
-                  (
-                    <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
-                      {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
-                    </MenuItem>
-                  ) : null)}
-              </Select>
+                    (
+                      <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
+                        {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+                      </MenuItem>
+                    ) : null)}
+                </Select>
               </FormControl>
             </Grid>
-	    {/*
+            {/*
 	    <Grid
               item
               container
@@ -692,25 +692,25 @@ class CreateVolume extends Component {
                 <Tooltip
                   title="Do you want to proceed with subsequent volume creation in case an error occurs or abort the remaining process?"
                   placement="bottom-start"
-                  disableFocusListener={this.state.volume_count < 2}
-                  disableHoverListener={this.state.volume_count < 2}
-                  disableTouchListener={this.state.volume_count < 2}
+                  disableFocusListener={this.props.volume_count < 2}
+                  disableHoverListener={this.props.volume_count < 2}
+                  disableTouchListener={this.props.volume_count < 2}
                 >
                   <FormControlLabel
-                    disabled={this.state.volume_count < 2}
+                    disabled={this.props.volume_count < 2}
                     control={(
-<Checkbox
+                      <Checkbox
                         name="stop_on_error_checkbox"
                         color="primary"
                         id="create-vol-stop-on-error-checkbox"
-                        checked={this.state.stop_on_error_checkbox}
+                        checked={this.props.stop_on_error_checkbox}
                         value="Stop on error"
                         inputProps={{
                           "data-testid": "stop-on-error-checkbox",
                         }}
                         onChange={this.handleChange}
-/>
-)}
+                      />
+                    )}
                     label="Stop Multi-Volume Creation on Error"
                     className={classes.labelCheckbox}
                   />
@@ -738,7 +738,7 @@ class CreateVolume extends Component {
               container
               xs={12}
               display="flex"
-              justifyContent="flex-start"
+              justifyContent="space-between"
               className={`${classes.volBtnContainer} ${classes.formControl}`}
             >
               <Tooltip
@@ -757,6 +757,22 @@ class CreateVolume extends Component {
                   Create Volume
                 </Button>
               </Tooltip>
+
+              <Tooltip
+                title="Please wait... Volume creation is in progress. It may take anywhere between few seconds to few minutes"
+                placement="right-start"
+                open={this.props.createVolumeButton}
+              >
+                <Button
+                  onClick={() => this.props.Toggle_Advance_Create_Volume_Popup(true)}
+                  variant="outlined"
+                  color="secondary"
+                  data-testid="advanceoptions-btn"
+                  className={classes.button}
+                >
+                  Advance Options
+                </Button>
+              </Tooltip>
             </Grid>
           </form>
           <AlertDialog
@@ -773,6 +789,18 @@ class CreateVolume extends Component {
             handleClose={this.handleClose}
             onConfirm={this.state.onConfirm}
           />
+          <AdvanceCreateVolume
+            handleChange={this.handleChange}
+            createVolume={this.props.createVolume}
+            subsystems={this.props.subsystems}
+            maxVolumeCount={this.props.maxVolumeCount}
+            volCount={this.props.volCount}
+            showAlertHandler={this.showAlertHandler}
+            getSubsystem={getSubsystem}
+            formatBytes={formatBytes}
+            maxAvailableSize={this.props.maxAvailableSize}
+            createVolumeInParent={this.createVolumeInParent}
+          />
         </Paper>
       </ThemeProvider>
     );
@@ -786,6 +814,18 @@ CreateVolume.propTypes = {
 const mapStateToProps = (state) => {
   return {
     createVolumeButton: state.storageReducer.createVolumeButton,
+    volume_count: state.createVolumeReducer.volume_count,
+    volume_name: state.createVolumeReducer.volume_name,
+    volume_suffix: state.createVolumeReducer.volume_suffix,
+    volume_size: state.createVolumeReducer.volume_size,
+    volume_description: state.createVolumeReducer.volume_description,
+    volume_units: state.createVolumeReducer.volume_units,
+    maxbw: state.createVolumeReducer.maxbw,
+    maxiops: state.createVolumeReducer.maxiops,
+    stop_on_error_checkbox: state.createVolumeReducer.stop_on_error_checkbox,
+    mount_vol: state.createVolumeReducer.mount_vol,
+    subsystem: state.createVolumeReducer.subsystem,
+    transport: state.createVolumeReducer.transport,
   };
 };
 
@@ -794,7 +834,17 @@ const mapDispatchToProps = (dispatch) => {
     toggleCreateVolumeButton: (flag) =>
       dispatch(actionCreators.toggleCreateVolumeButton(flag)),
     showStorageAlert: (alertParams) =>
-      dispatch(actionCreators.showStorageAlert(alertParams))
+      dispatch(actionCreators.showStorageAlert(alertParams)),
+    Reset_Inputs: () =>
+      dispatch({ type: actionTypes.RESET_INPUTS }),
+    Change_Input: (payload) =>
+      dispatch({ type: actionTypes.CHANGE_INPUT, payload }),
+    Update_Subsystem: (payload) =>
+      dispatch({ type: actionTypes.UPDATE_SUBSYSTEM, payload }),
+    Set_Unit: (payload) =>
+      dispatch({ type: actionTypes.SET_UNIT, payload }),
+    Toggle_Advance_Create_Volume_Popup: (flag) =>
+      dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag))
   };
 };
 

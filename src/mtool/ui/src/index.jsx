@@ -53,6 +53,7 @@ import log from './utils/log/log';
 import * as serviceWorker from './serviceWorker';
 import headerReducer from "./store/reducers/headerReducer";
 import storageReducer from "./store/reducers/storageReducer";
+import createVolumeReducer from './store/reducers/createVolumeReducer';
 import dashboardReducer from "./store/reducers/dashboardReducer";
 import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
@@ -107,6 +108,7 @@ const rootReducers = combineReducers({
     configurationsettingReducer,
     alertManagementReducer,
     storageReducer,
+    createVolumeReducer,
     performanceReducer,
     authenticationReducer,
     userManagementReducer,

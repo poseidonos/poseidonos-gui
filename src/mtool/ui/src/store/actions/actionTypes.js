@@ -187,6 +187,17 @@ export const SAGA_MOUNT_POS = "SAGA_MOUNT_POS"
 
 export const SET_ARRAY = "SET_ARRAY"
 
+//Create Volume Actions
+export const RESET_INPUTS = "RESET_INPUTS"
+
+export const CHANGE_INPUT = "CHANGE_INPUT"
+
+export const UPDATE_SUBSYSTEM = "UPDATE_SUBSYSTEM"
+
+export const SET_UNIT = "SET_UNIT"
+
+export const TOGGLE_ADVANCE_CREATE_VOLUME_POPUP = "TOGGLE_ADVANCE_CREATE_VOLUME_POPUP"
+
 // Performance Page Actions
 export const FETCH_DISK_USED = "FETCH_DISK_USED"
 

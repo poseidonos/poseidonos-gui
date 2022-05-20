@@ -259,7 +259,7 @@ class ArrayCreate extends Component {
 
   onSelectRaid(event) {
     let local_raid = {};
-    this.props.config.raidTypes.map(type => {
+    this.props.config.raidTypes.forEach(type => {
       if (type.raidType === event.target.value)
         local_raid = { ...type }
     })

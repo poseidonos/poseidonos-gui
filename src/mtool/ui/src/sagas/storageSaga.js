@@ -282,6 +282,7 @@ function* createVolume(action) {
             errorCode: "",
           })
         );
+        yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
       } else {
         yield put(
           actionCreators.showStorageAlert({

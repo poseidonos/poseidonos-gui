@@ -42,7 +42,7 @@ const loaderStyle = {
   top: 0,
   left: 0,
   opacity: 0.9,
-  zIndex: 100,
+  zIndex: 10000,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
