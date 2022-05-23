@@ -70,6 +70,15 @@ const CreateSubsystem = (props) => {
         })
     }
 
+    const onCheckboxChange = (event) => {
+        const { name, checked } = event.target;
+        setSubsystem({
+            ...subsystem,
+            [name]: checked
+        })
+    }
+
+
     const { classes } = props;
     return (
         <form className={classes.createDiskForm}>
@@ -143,6 +152,7 @@ const CreateSubsystem = (props) => {
                                 id: "allowAnyHost",
                                 "data-testid": "allowAnyHost"
                             }}
+                            onChange={onCheckboxChange}
                         />
                     )}
                 />
