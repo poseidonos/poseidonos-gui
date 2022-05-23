@@ -71,6 +71,13 @@ def create_volume(
                return json_util.dumps({})
             if res.status_code != 200:
                 return res
+            if minbw == 0 and miniops == 0:
+                request_body = {"param": {"array": arr_name, "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
+            elif minbw > 0:
+                request_body = {"param": {"array": arr_name, "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
+            else:
+                request_body = {"param": {"array": arr_name, "miniops": miniops, "vol": [{"volumeName": vol_name}]}}
+            dagent.qos_create_volume_policies(request_body)
     return create_vol_response
 
 
