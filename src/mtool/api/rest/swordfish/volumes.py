@@ -61,9 +61,8 @@ class VolumeCollection():
             url = self.base_url.format(array_name)
             for vol in res:
                 self.volumes_list["Members"].append({
-                    "@odata.id": url + str(vol["id"])
+                    "@odata.id": url + str(vol["index"])
                 })
-            print(self.volumes_list)
             return json_util.dumps(self.volumes_list)
         except Exception as e:
             print("Exception in listing Volumes", e)
@@ -117,9 +116,9 @@ class Volume():
             ibof_vols = list_volume(array_name)
             url = self.base_url.format(array_name)
             for vol in ibof_vols:
-                if str(vol["id"]) == vol_id:
+                if str(vol["index"]) == vol_id:
                     self.volume["Name"] = vol["name"]
-                    self.volume["Id"] = vol["id"]
+                    self.volume["Id"] = vol["index"]
                     self.volume["Status"]["Oem"]["VolumeStatus"] = vol["status"]
                     if "remain" in vol:
                         self.volume["Capacity"]["Data"]["ConsumedBytes"] = float(vol["total"]) - float(vol["remain"])
@@ -128,7 +127,7 @@ class Volume():
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
                     self.volume["Oem"]["MinBandwidth"] = vol["minbw"]
                     self.volume["Oem"]["MinIOPS"] = vol["miniops"]
-                    self.volume["@odata.id"] = url + str(vol["id"])
+                    self.volume["@odata.id"] = url + str(vol["index"])
                     return json_util.dumps(self.volume)
             return json_util.dumps({})
         except Exception as e:

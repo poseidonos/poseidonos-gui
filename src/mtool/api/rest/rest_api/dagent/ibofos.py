@@ -844,13 +844,13 @@ def mount_volume_with_subsystem(name, arrayname, subsystem, auth=BASIC_AUTH_TOKE
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount/subsystem',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("url :",DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount')
+        print("url :",DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount/subsystem')
         print("---------------RESPONSE---------------")
         print("response",response)
         print(response.status_code , response.json())
