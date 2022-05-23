@@ -102,6 +102,9 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.POST("/system/property", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.SetPOSProperty)
 		})
+		iBoFOSPath.GET("/system/property", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.GetPOSProperty)
+		})
 		iBoFOSPath.DELETE("/system/mount", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, amoduleIBoFOS.UnmountiBoFOS)
 		})
@@ -267,6 +270,12 @@ func Route(router *gin.Engine) {
 			arrayName := ctx.Param("arrayName")
 			param := model.VolumeParam{Array: arrayName}
 			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.ListVolume, param)
+		})
+		iBoFOSPath.GET("/array/:arrayName/volume/:volumeName", func(ctx *gin.Context) {
+			arrayName := ctx.Param("arrayName")
+			volumeName := ctx.Param("volumeName")
+			param := model.VolumeParam{Array: arrayName, Name: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.VolumeInfo, param)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")

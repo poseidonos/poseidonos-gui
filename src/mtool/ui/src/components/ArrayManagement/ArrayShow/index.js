@@ -38,8 +38,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import {
   Button,
+  Checkbox,
   Grid,
   FormControl,
+  FormControlLabel,
   InputLabel,
   Select,
   GridList,
@@ -240,6 +242,7 @@ class ArrayShow extends Component {
       selectedSlot: null,
       onConfirm: null,
     };
+    this.interval = null;
     this.handleClick = this.handleClick.bind(this);
     this.handleMountClick = this.handleMountClick.bind(this);
     this.handleUnmountClick = this.handleUnmountClick.bind(this);
@@ -254,6 +257,19 @@ class ArrayShow extends Component {
     this.removeSpareDisk = this.removeSpareDisk.bind(this);
   }
 
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.props.getArrayInfo(this.props.arrayName);
+      this.props.getDevices({noLoad: true});
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    if(this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
   handleClick(event) {
     event.preventDefault();
     this.setState({
@@ -266,7 +282,10 @@ class ArrayShow extends Component {
   }
 
   handleMountClick() {
-    this.props.handleMountPOS();
+    this.props.handleMountPOS({
+	    writeThrough: this.props.writeThrough,
+	    array: this.props.arrayName
+    });
   }
 
   handleClose() {
@@ -434,6 +453,25 @@ class ArrayShow extends Component {
               </Select>
             </FormControl>
           </Grid>
+	  <FormControl className={classes.formControl}>
+	  <FormControlLabel
+              control={(
+                  <Checkbox
+                      name="mount_arr_writethrough"
+                      color="primary"
+                      id="mount-writethrough-checkbox"
+                      checked={this.props.writeThrough}
+		      disabled={this.props.mountStatus === "Mounted"}
+                      value="Write Through Mode"
+                      inputProps={{
+                        "data-testid": "mount-writethrough-checkbox",
+                      }}
+                      onChange={() => this.props.changeWriteThrough(this.props.arrayName)}
+                  />
+              )}
+              label="Write Through Mode"
+	  />
+	  </FormControl>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={32}>

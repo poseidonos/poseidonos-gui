@@ -139,6 +139,11 @@ func ListVolume(xrId string, param interface{}) (model.Request, model.Response, 
 	return volumeSender(xrId, param, "LISTVOLUME")
 }
 
+
+func VolumeInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
+    return volumeSender(xrId, param, "VOLUMEINFO")
+}
+
 func UpdateVolumeQoS(xrId string, param interface{}) (model.Request, model.Response, error) {
 	return volumeSender(xrId, param, "UPDATEVOLUMEQOS")
 }

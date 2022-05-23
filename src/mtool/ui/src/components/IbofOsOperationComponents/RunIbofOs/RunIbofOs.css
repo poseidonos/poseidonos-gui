@@ -88,6 +88,26 @@
   margin: 4px 2.8%;
   float: left;
 }
+
+.IBOFOSSetPropertyContainer {
+  padding: 4px;
+  margin: 4px 2.8%;
+  float: left;
+}
+
+.IBOFOSPropertySelect {
+  width: 170px;
+}
+
+.IBOFOSSetPropertyContainer > .IBOFOSPropertyButton {
+  height: 35px;
+  margin-left: 16px;
+}
+
+.IBOFOSSetPropertyContainer > .IBOFOSImpactText {
+ margin-left: 16px;
+}
+
 /* @media screen and (max-width: 1450px) {
   .IBOFOSStartLabel {
     width: 30%;
@@ -122,4 +142,8 @@
 }
 .IBOFOSStatusText {
   clear: both;
+}
+
+.IBOFOSUppercase {
+  text-transform: uppercase;
 }

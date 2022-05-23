@@ -45,6 +45,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import Remove from '@material-ui/icons/Remove';
 import EditIcon from '@material-ui/icons/EditTwoTone';
 import TrashIcon from '@material-ui/icons/Delete';
+import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
 import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box } from '@material-ui/core';
@@ -264,29 +265,19 @@ class VolumeList extends Component {
         }
       },
       {
-        title: 'Total Size',
-        render: rowData => formatBytes(rowData.size),
+        title: 'Size Usage',
+        render: rowData => `${rowData.usedspace }/${ formatBytes(rowData.size)}`,
         cellStyle: cellText
       },
       {
-        title: 'Used Size ',
-        field: 'usedspace',
-        cellStyle: cellText
+        title: 'NQN',
+        render: rowData => (
+          <>
+            <Typography variant="body2" displayBlock>NQN: {rowData.subnqn}</Typography>
+            <Typography variant="body2" displayBlock>UUID: {rowData.uuid}</Typography>
+          </>
+        )
       },
-      /*
-            {
-              title: 'IP Address',
-              field: 'ip',
-            },
-            {
-              title: 'Port',
-              field: 'subnqn',
-            },
-            {
-              title: 'NQN',
-              field: 'subnqn',
-            },
-      */
       {
         title: 'Max IOPS (KIOPS)',
         field: 'maxiops',
@@ -446,6 +437,7 @@ class VolumeList extends Component {
         sorting: false,
         render: row => {
           return !row.edit ? (
+	    <>
             <Button
               className={classes.editBtn}
               data-testid={`vol-edit-btn-${row.name}`}
@@ -454,6 +446,16 @@ class VolumeList extends Component {
             >
               <EditIcon />
             </Button>
+            <Button
+              className={classes.editBtn}
+              title="Reset QoS"
+              data-testid={`vol-reset-qos-btn-${row.name}`}
+              onClick={() => this.props.resetQoS(row)}
+              id={`VolumeList-reset-qos-edit-${row.name}`}
+            >
+              <ReplayIcon />
+            </Button>
+	    </>
           ) : (
             <React.Fragment>
               <Button

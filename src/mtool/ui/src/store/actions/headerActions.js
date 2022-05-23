@@ -61,3 +61,10 @@ export const setPOSInfo = (payload) => {
 	payload
     }
 };
+
+export const setPOSProperty = (payload) => {
+    return {
+    type: actionTypes.SET_POS_PROPERTY,
+    payload
+    }
+};

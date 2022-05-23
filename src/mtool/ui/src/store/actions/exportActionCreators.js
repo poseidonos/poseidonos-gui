@@ -35,6 +35,7 @@ export {
     asyncIsiBOFOSRunning,
     setOperationsMessage,
     setPOSInfo,
+    setPOSProperty
 } from "./headerActions";
 
 export { 
@@ -75,6 +76,7 @@ export {
     fetchDevices,
     fetchDeviceDetails,
     fetchArray,
+    fetchArrayDetails,
     fetchConfig,
     fetchArraySize,
     setNoArray,

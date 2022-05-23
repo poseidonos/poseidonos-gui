@@ -122,6 +122,16 @@ def list_volume(arr_name):
         return []
     # return list_vol()
 
+def volume_info(arr_name, vol_name):
+    vol = dagent.volume_info(arr_name, vol_name)
+    try:
+        if vol.status_code == 200:
+           vol = vol.json()
+           return vol['result']['data']
+        else:
+           return {}
+    except:
+        return {}
 
 def get_max_vol_count():
     return dagent.max_vol_count()

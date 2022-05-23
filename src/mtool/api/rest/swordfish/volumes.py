@@ -31,7 +31,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
-from rest.rest_api.volume.volume import list_volume
+from rest.rest_api.volume.volume import list_volume, volume_info
 from bson import json_util
 from util.com.common import get_ip_address
 
@@ -103,7 +103,8 @@ class Volume():
                 "MinBandwidth": 0,
                 "IP": get_ip_address(),
                 "Port": "NA",
-                "NQN": "NA"
+                "NQN": "NA",
+                "UUID": ""
             }
         }
         self.base_url = "/redfish/v1/StorageServices/{}/Volumes/"
@@ -115,19 +116,22 @@ class Volume():
         try:
             ibof_vols = list_volume(array_name)
             url = self.base_url.format(array_name)
-            for vol in ibof_vols:
-                if str(vol["index"]) == vol_id:
+            for ibof_vol in ibof_vols:
+                if str(ibof_vol["index"]) == vol_id:
+                    vol = volume_info(array_name, ibof_vol["name"])
                     self.volume["Name"] = vol["name"]
-                    self.volume["Id"] = vol["index"]
+                    self.volume["Id"] = vol_id
                     self.volume["Status"]["Oem"]["VolumeStatus"] = vol["status"]
                     if "remain" in vol:
                         self.volume["Capacity"]["Data"]["ConsumedBytes"] = float(vol["total"]) - float(vol["remain"])
                     self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
+                    self.volume["Oem"]["NQN"] = vol["subnqn"]
+                    self.volume["Oem"]["UUID"] = vol["uuid"]
                     self.volume["Oem"]["MinBandwidth"] = vol["minbw"]
                     self.volume["Oem"]["MinIOPS"] = vol["miniops"]
-                    self.volume["@odata.id"] = url + str(vol["index"])
+                    self.volume["@odata.id"] = url + str(vol_id)
                     return json_util.dumps(self.volume)
             return json_util.dumps({})
         except Exception as e:

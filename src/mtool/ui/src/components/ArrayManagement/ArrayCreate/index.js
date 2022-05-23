@@ -35,7 +35,9 @@ import "react-dropdown/style.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import {
+  Checkbox,
   FormControl,
+  FormControlLabel,
   InputLabel,
   Select,
   MenuItem,
@@ -237,6 +239,7 @@ class ArrayCreate extends Component {
       loading: false,
       errorMsg: "",
       createDiskOpen: false,
+      writeThroughMode: false,
       alertOpen: false,
       popupOpen: false,
       totalSize: 0,
@@ -250,6 +253,7 @@ class ArrayCreate extends Component {
     this.onSelectRaid = this.onSelectRaid.bind(this);
     this.onSelectDiskType = this.onSelectDiskType.bind(this);
     this.onSelectWriteBuffer = this.onSelectWriteBuffer.bind(this);
+    this.onSetWriteThroughMode = this.onSetWriteThroughMode.bind(this);
     this.showPopup = this.showPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
@@ -286,6 +290,13 @@ class ArrayCreate extends Component {
     this.setState({
       ...this.state,
       metaDisk: event.target.value,
+    });
+  }
+
+  onSetWriteThroughMode() {
+    this.setState({
+      ...this.state,
+      writeThroughMode: !this.state.writeThroughMode
     });
   }
 
@@ -400,6 +411,7 @@ class ArrayCreate extends Component {
       spareDisks: this.state.slots[SPARE_DISK],
       writeBufferDisk: this.state.slots["Write Buffer Disk"],
       metaDisk: this.state.metaDisk,
+      writeThroughModeEnabled: this.state.writeThroughMode
     });
   }
 
@@ -591,6 +603,26 @@ class ArrayCreate extends Component {
               <Link href="/operations/devices" align="right">Create Disk</Link>
             </FormControl>
           </Grid>
+	  <Grid item xs={12} sm={6} className={classes.inputGrid}>
+        <FormControl className={classes.formControl}>
+	      <FormControlLabel
+              control={(
+		       <Checkbox
+                      name="mount_arr_writethrough"
+                      color="primary"
+                      id="mount-writethrough-checkbox"
+                      checked={this.state.writeThroughMode}
+                      value="Write Through Mode"
+                      inputProps={{
+                        "data-testid": "mount-writethrough-checkbox",
+                      }}
+                      onChange={this.onSetWriteThroughMode}
+		       />
+	         )}
+	         label="Write Through Mode"
+	      />
+        </FormControl>
+	  </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={this.props.config.totalDisks}>

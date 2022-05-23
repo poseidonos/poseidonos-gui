@@ -38,14 +38,20 @@ import { customTheme, TableTheme } from '../../theme';
 import Popup from '../Popup';
 import AddListener from '../AddListener';
 
-const styles = () => ({
+const styles = (theme) => ({
   cardHeader: {
     ...customTheme.card.header,
     marginLeft: 0
   },
   detailText: {
-    fontWeight: 600
+    fontWeight: 600,
+    margin: theme.spacing(0, 4)
   },
+  internalRow: {
+    height: 50,
+    padding: theme.spacing(0, 8),
+    borderBottom: "1px solid lightgray"
+  }
 });
 
 
@@ -95,8 +101,8 @@ const SubsystemDetails = (props) => {
 
   return (
     <ThemeProvider theme={TableTheme}>
-      <Grid container spacing={1} padding={1}>
-        <Grid item container md={12} justifyContent="space-around">
+      <Grid container spacing={1}>
+        <Grid item container md={12} justifyContent="space-between" alignItems="center" className={classes.internalRow}>
           <Typography variant="p" className={classes.detailText}>Max Namespaces: {props.data.max_namespaces}</Typography>
           <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {props.data.allow_any_host ? "Yes" : "No"}</Typography>
           <Typography variant="p" className={classes.detailText}>Model No: {props.data.model_number}</Typography>
@@ -144,7 +150,6 @@ const SubsystemDetails = (props) => {
                 color: "#FFF",
               }
             }}
-
           />
         </Grid>
       </Grid>

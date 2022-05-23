@@ -108,6 +108,7 @@ function* startIBOFOs() {
 		    },
 		    ...errorResponses
 	    ]));
+        yield getPOSProperty();
         }
     } catch (e) {
         yield put(actionCreators.setOperationsMessage([{
@@ -223,6 +224,60 @@ function* getPOSInfo() {
     }
 }
 
+function* getPOSProperty() {
+    try {
+    const response = yield call([axios, axios.get], '/api/v1/pos/property', {
+        headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+    });
+    if(response.status === 200) {
+        yield put(actionCreators.setPOSProperty(response.data.result.data));
+    }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+
+function* setPOSProperty(action) {
+    yield put(actionCreators.setOperationsMessage([{
+      id: "ui",
+      code: 200,
+      description: "Starting Poseidon OS"
+    }]));
+    try {
+        const response = yield call([axios, axios.post], '/api/v1/pos/property', {
+            property: action.payload
+        },{
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setOperationsMessage([{
+               id: "POS",
+               code: response.data.result.status.code,
+               description: response.data.result.status.description
+            }]));
+        }
+    } catch (e) {
+        yield put(actionCreators.setOperationsMessage([{
+                code: 500,
+                id: "Server",
+                description: `Error in Stopping Poseidon OS: ${e}`
+        }]));
+
+    } finally {
+        yield getPOSProperty();
+    }
+}
+
+
 export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, CallIsiBOFOSRunning);
     yield takeEvery(actionTypes.SAGA_START_IBOFOS, startIBOFOs);
@@ -231,4 +286,6 @@ export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_MOUNT_IBOFOS, mountIBOFOs);
     yield takeEvery(actionTypes.SAGA_UNMOUNT_IBOFOS, unmountIBOFOs);
     yield takeEvery(actionTypes.SAGA_GET_POS_INFO, getPOSInfo);
+    yield takeEvery(actionTypes.SAGA_GET_POS_PROPERTY, getPOSProperty);
+    yield takeEvery(actionTypes.SAGA_SET_POS_PROPERTY, setPOSProperty);
 }

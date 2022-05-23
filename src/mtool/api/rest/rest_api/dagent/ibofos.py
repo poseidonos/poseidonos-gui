@@ -547,6 +547,7 @@ def create_array(
         spare_devices,
         data_devices,
         meta_devices,
+        write_through,
         auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info(
@@ -575,7 +576,7 @@ def create_array(
         #print("resp for create array",response.json())
         if response.status_code != 200:
             return response
-        response = mount_array(name)
+        response = mount_array(name, write_through)
         #print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
@@ -583,11 +584,12 @@ def create_array(
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to create array...', 500)
-def mount_array(arrayname, auth=BASIC_AUTH_TOKEN):
+def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
             "param": {
-                "array": arrayname
+                "array": arrayname,
+                "enable_write_through": write_through
             }
     }
     request_body = json.dumps(request_body)
@@ -710,6 +712,50 @@ def array_info(array_name, auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to get list array...', 500)
+
+def get_pos_property(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to get POS property ...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system/property',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to get list array...', 500)
+
+def set_pos_property(pos_property, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to set POS property ...')
+    req_headers = get_headers(auth)
+    request_body = {
+            "param": {
+                "level": pos_property,
+            }
+    }
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system/property',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to get list array...', 500)
+
 def list_arrays(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to get list arrays...')
@@ -958,6 +1004,22 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
                 read_timeout))
         #print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to list volumes...', 500)
+
+def volume_info(array_name, volume_name, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/array/' + array_name + '/volume/' + volume_name,
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')

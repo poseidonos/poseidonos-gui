@@ -103,7 +103,9 @@ function* fetchVolumes(action) {
 
 function* fetchArray(action) {
   try {
-    yield put(actionCreators.startStorageLoader("Fetching Arrays"));
+    if(!action || !action.payload || !action.payload.noLoad) {
+        yield put(actionCreators.startStorageLoader("Fetching Arrays"));
+    }
     const response = yield call(
       [axios, axios.get],
       `/api/v1/get_arrays/?ts=${Date.now()}`,
@@ -125,11 +127,37 @@ function* fetchArray(action) {
   } catch (e) {
     yield put(actionCreators.setNoArray());
   } finally {
-    yield select(arrayname);
-    yield put(actionCreators.stopStorageLoader());
-    yield fetchVolumes({ payload: { array: yield select(arrayname) } });
+    if(!action || !action.payload || !action.payload.noLoad) {
+        yield select(arrayname);
+        yield put(actionCreators.stopStorageLoader());
+        yield fetchVolumes({ payload: { array: yield select(arrayname) } });
+    }
   }
 }
+
+function* fetchArrayInfo(action) {
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1/array/${action.payload}/info?ts=${Date.now()}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.status === 200 && response.data) {
+      yield put(actionCreators.fetchArrayDetails(response.data.result.data));
+    } else if (response.status === 401) {
+      action.payload.push("/login");
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 function* fetchConfig() {
   try {
@@ -152,7 +180,7 @@ function* fetchConfig() {
   }
 }
 
-function* fetchDevices() {
+function* fetchDevices(action) {
   const defaultResponse = {
     devices: [],
     metadevices: [],
@@ -163,7 +191,9 @@ function* fetchDevices() {
     alertTitle: "Fetch Devices",
   };
   try {
-    yield put(actionCreators.startStorageLoader("Fetching Devices"));
+    if(!action || !action.payload || !action.payload.noLoad) {
+       yield put(actionCreators.startStorageLoader("Fetching Devices"));
+    }
     const response = yield call([axios, axios.get], "/api/v1.0/get_devices/", {
       headers: {
         "x-access-token": localStorage.getItem("token"),
@@ -206,8 +236,12 @@ function* fetchDevices() {
     }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
-    yield fetchArray();
-    yield put(actionCreators.stopStorageLoader());
+    if(!action || !action.payload || !action.payload.noLoad) {
+      yield put(actionCreators.stopStorageLoader());
+      yield fetchArray();
+    } else {
+      yield fetchArray({payload: {noLoad: true}});
+    }
   }
 }
 
@@ -472,6 +506,55 @@ function* createVolume(action) {
 //     }
 
 // }
+
+function* resetQoS(action) {
+  const volName = action.payload.name;
+  const volUrl = action.payload.url;
+  const arrayName = yield select(arrayname);
+  try {
+    yield put(actionCreators.startStorageLoader("Resetting Volume QoS"));
+    const response = yield call(
+        [axios, axios.post], '/api/v1/qos/reset', {
+            array: arrayName,
+            volumes: [{ volumeName: volName }]
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("token"),
+          },
+        }
+     );
+     if(response.status === 200) {
+        yield put(
+            actionCreators.showStorageAlert({
+              alertType: "info",
+              alertTitle: "Volume QoS Reset",
+              errorMsg: "QoS Reset successfull",
+              errorCode: "",
+            })
+          );
+     }
+  } catch(e) {
+     yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "Volume QoS Reset",
+          errorMsg: "Volume QoS Reset failed",
+          errorCode: `Error Message: ${e ? e.message : ''}`,
+        })
+      );
+  } finally {
+      yield fetchVolumeDetails({
+        payload: {
+          url: volUrl,
+          array: arrayName
+        }
+      });
+      yield put(actionCreators.stopStorageLoader());
+  }
+}
 
 function* renameVolume(action) {
   try {
@@ -1088,24 +1171,26 @@ function* createArray(action) {
 }
 
 function* autoCreateArray(action) {
+  let shouldReload = true;
   try {
-    const minSSD = 3;
-    const ssd = 3;
-    let spare = 0;
-    if(!action.payload.freeSSD ||
-      action.payload.freeSSD.length < minSSD) {
+    const raidType = action.payload.selectedRaid;
+    if(Number(action.payload.array.storageDisks) < Number(raidType.minStorageDisks) ||
+      Number(action.payload.array.spareDisks) < Number(raidType.minSpareDisks) ||
+      Number(action.payload.array.storageDisks) > Number(raidType.maxStorageDisks) ||
+      Number(action.payload.array.spareDisks) > Number(raidType.maxSpareDisks)) {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
-            errorMsg: `Minimum ${minSSD} Disks should be availabe for array creation`,
+            errorMsg: "Number of Storage Disks and Spare Disks should fall within the conditions as per the selected RAID type",
             errorCode: "",
             alertTitle:  "Error in Array Creation"
           })
         );
+        shouldReload = false;
         return;
     }
-    if(!action.payload.freeMetaDisk ||
-      !action.payload.freeMetaDisk.length) {
+    if(!action.payload.array.metaDisk ||
+      !action.payload.array.metaDisk.length) {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
@@ -1114,22 +1199,34 @@ function* autoCreateArray(action) {
             alertTitle:  "Error in Array Creation"
           })
         );
+        shouldReload = false;
         return;
     }
-    if(action.payload.freeSSD.length > 3) {
-      spare = 1;
+    if(action.payload.freeDisks <
+        (Number(action.payload.array.storageDisks) + Number(action.payload.array.spareDisks))) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Total number of disks available cannot satify the spare disk and storage disk requirement",
+            errorCode: "",
+            alertTitle:  "Error in Array Creation"
+          })
+        );
+        shouldReload = false;
+        return;
     }
-    const autoArrayname = `Auto_Array_${Date.now()}`;
+    const autoArrayname = action.payload.array.arrayName;
+ 
     yield put(actionCreators.startStorageLoader("Creating Array"));
     const response = yield call(
       [axios, axios.post],
       "/api/v1/autoarray/",
       {
-        autoArrayname,
-        raidtype: "RAID5",
-        metaDisk: action.payload.freeMetaDisk[0].name,
-        num_data: ssd,
-        num_spare: spare
+        arrayname: autoArrayname,
+        raidtype: action.payload.array.raidtype,
+        metaDisk: action.payload.array.metaDisk,
+        num_data: Number(action.payload.array.storageDisks),
+        num_spare: Number(action.payload.array.spareDisks)
       },
       {
         headers: {
@@ -1188,9 +1285,11 @@ function* autoCreateArray(action) {
       })
     );
   } finally {
-    yield fetchDevices();
-    yield fetchArray();
-    yield put(actionCreators.stopStorageLoader());
+    if(shouldReload) {
+      yield fetchDevices();
+      yield fetchArray();
+      yield put(actionCreators.stopStorageLoader());
+    }
   }
 }
 
@@ -1656,13 +1755,13 @@ function* unmountPOS() {
   }
 }
 
-function* mountPOS() {
+function* mountPOS(action) {
   const message = "Mount";
   try {
     let response = {};
     yield put(actionCreators.startStorageLoader("Mounting Array"));
     response = yield call([axios, axios.post], "/api/v1/array/mount", {
-      array: yield select(arrayname),
+      ...action.payload
     }, {
       headers: {
         Accept: "application/json",
@@ -1808,6 +1907,7 @@ export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_INFO, fetchDevices);
   yield takeEvery(actionTypes.SAGA_SAVE_VOLUME, createVolume);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY, fetchArray);
+  yield takeEvery(actionTypes.SAGA_GET_ARRAY_INFO, fetchArrayInfo);
   yield takeEvery(actionTypes.SAGA_FETCH_CONFIG, fetchConfig);
   yield takeEvery(actionTypes.SAGA_DELETE_ARRAY, deleteArray);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUMES, fetchVolumes);
@@ -1821,6 +1921,7 @@ export default function* storageWatcher() {
   // yield takeEvery(actionTypes.SAGA_ATTACH_DISK, attachDisk);
   // yield takeEvery(actionTypes.SAGA_DETACH_DISK, detachDisk);
   yield takeEvery(actionTypes.SAGA_ADD_SPARE_DISK, addSpareDisk);
+  yield takeEvery(actionTypes.SAGA_RESET_VOLUME_QOS, resetQoS);
 
   yield takeEvery(actionTypes.SAGA_REMOVE_SPARE_DISK, removeSpareDisk);
   yield takeEvery(actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT, fetchMaxVolumeCount);

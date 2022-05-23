@@ -134,3 +134,10 @@ export const fetchDeviceDetails = (payload) => {
         payload
     }
 }
+
+export const fetchArrayDetails = (payload) => {
+    return {
+        type: actionTypes.GET_ARRAY_INFO,
+        payload
+    }
+}

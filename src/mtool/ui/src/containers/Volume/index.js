@@ -31,13 +31,14 @@
  */
 
 import React, { Component } from "react";
-import { Box, Grid, Typography, Paper, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
+import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { withStyles , MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import io from "socket.io-client";
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
+import InfoIcon from "@material-ui/icons/Info";
 import AutoCreate from "../../components/AutoCreate";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
@@ -46,6 +47,7 @@ import ArrayShow from "../../components/ArrayManagement/ArrayShow";
 import CreateVolume from "../../components/VolumeManagement/CreateVolume";
 import VolumeList from "../../components/VolumeManagement/VolumeList";
 import MToolLoader from "../../components/MToolLoader";
+import RebuildProgress from "../../components/RebuildProgress";
 import AlertDialog from "../../components/Dialog";
 import "./Volume.css";
 import MToolTheme, { customTheme } from "../../theme";
@@ -128,7 +130,7 @@ const styles = (theme) => ({
   statusText: {
     display: "flex",
     alignItems: "center",
-    margin: theme.spacing(0.5, 2),
+    margin: theme.spacing(0.5, 1),
     [theme.breakpoints.down("xs")]: {
       justifyContent: "center"
     }
@@ -190,6 +192,8 @@ class Volume extends Component {
     this.changeMountSubsystem = this.changeMountSubsystem.bind(this);
     this.closeMountPopup = this.closeMountPopup.bind(this);
     this.isSubsystemReserved = this.isSubsystemReserved.bind(this);
+    this.openRebuildPopover = this.openRebuildPopover.bind(this);
+    this.closeRebuildPopover = this.closeRebuildPopover.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if(array) {
@@ -289,6 +293,19 @@ class Volume extends Component {
     });
   }
 
+  openRebuildPopover(event) {
+	 console.log(event)
+    this.setState({
+	    rebuildPopoverElement: event.currentTarget
+    });
+  }
+
+  closeRebuildPopover() {
+    this.setState({
+	    rebuildPopoverElement: null
+    });
+  }
+
   changeMountSubsystem(event) {
     this.setState({
 	mountSubsystem: event.target.value
@@ -380,6 +397,7 @@ class Volume extends Component {
       alignItems: "center",
       justifyContent: "center",
     };
+    const openPopover = this.state.rebuildPopoverElement;
     const { classes } = this.props;
 
     return (
@@ -449,6 +467,7 @@ class Volume extends Component {
                         disks={this.props.ssds}
                         metadisks={this.props.metadisks}
                         autoCreateArray={this.props.Auto_Create_Array}
+                        config={this.props.config}
                       />
                         {(this.props.posMountStatus === "EXIST_NORMAL") ? (
                           <Typography style={{color: "#b11b1b"}} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
@@ -502,26 +521,67 @@ class Volume extends Component {
                               >
                                 {this.props.arrayMap[this.props.selectedArray].status}
                               </span>
+                     <Grid container>, {this.props.arrayMap[this.props.selectedArray].situation}
+			        {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
+					<InfoIcon
+                        aria-owns={openPopover ? 'rebuild-popover' : undefined}
+                        aria-haspopup="true"
+                        color="primary"
+                        onClick={this.openRebuildPopover}
+                        onBlur={this.closeRebuildPopover}
+					/>
+				) : null
+				}
+                     </Grid>
                               </Typography>
+               {this.props.arrayMap[this.props.selectedArray].rebuildProgress ? (
+			      <Popover
+			        id="rebuild-popover"
+			        open={openPopover}
+			        anchorOrigin={{
+					vertical: "bottom",
+					horizontal: "left"
+				}}
+			        transformOrigin={{
+					vertical: "top",
+					horizontal: "left"
+				}}
+			        anchorEl={this.state.rebuildPopoverElement}
+			        onClose={this.closeRebuildPopover}
+			        disableRestoreFocus
+			      >
+			        <RebuildProgress
+                      arrayMap={this.props.arrayMap}
+                      array={this.props.selectedArray}
+			          progress={this.props.arrayMap[this.props.selectedArray].rebuildProgress}
+			          rebuildTime={this.props.arrayMap[this.props.selectedArray].rebuildTime}
+			        />
+			      </Popover>
+               ) : null }
                               </Grid>
                               <ArrayShow
                                 RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
                                 slots={this.props.ssds}
+			         arrayName={this.props.selectedArray}
                                 corrupted={this.props.arrayMap[this.props.selectedArray].corrupted}
                                 storagedisks={this.props.arrayMap[this.props.selectedArray].storagedisks}
                                 sparedisks={this.props.arrayMap[this.props.selectedArray].sparedisks}
                                 metadiskpath={this.props.arrayMap[this.props.selectedArray].metadiskpath}
                                 writebufferdisks={this.props.arrayMap[this.props.selectedArray].writebufferdisks}
                                 deleteArray={this.deleteArray}
+			         writeThrough={this.props.arrayMap[this.props.selectedArray].writeThroughEnabled}
                                 diskDetails={this.props.diskDetails}
                                 getDiskDetails={this.props.Get_Disk_Details}
                                 // detachDisk={this.props.Detach_Disk}
                                 // attachDisk={this.props.Attach_Disk}
                                 addSpareDisk={this.props.Add_Spare_Disk}
                                 removeSpareDisk={this.props.Remove_Spare_Disk}
+			         changeWriteThrough={this.props.Change_Write_Through}
                                 mountStatus={this.props.arrayMap[this.props.selectedArray].status}
                                 handleUnmountPOS={this.props.Unmount_POS}
                                 handleMountPOS={this.props.Mount_POS}
+                                getArrayInfo={this.props.Get_Array_Info}
+                                getDevices={this.props.Get_Devices}
                               />
                             </Grid>
                           </Paper>
@@ -623,6 +683,7 @@ class Volume extends Component {
                             volumeFetch={this.fetchVolumes}
                             volumes={this.props.volumes}
                             deleteVolumes={this.deleteVolumes}
+                            resetQoS={this.props.Reset_Volume_QoS}
                             editVolume={this.props.Edit_Volume}
                             changeField={this.props.Change_Volume_Field}
                             fetchVolumes={this.fetchVolumes}
@@ -741,12 +802,15 @@ const mapDispatchToProps = (dispatch) => {
     Get_Max_Volume_Count: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),
-    Mount_POS: () => dispatch({ type: actionTypes.SAGA_MOUNT_POS }),
+    Mount_POS: (payload) => dispatch({ type: actionTypes.SAGA_MOUNT_POS, payload }),
     Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload}),
     Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload}),
     Get_Subsystems: () => dispatch({type: actionTypes.SAGA_FETCH_SUBSYSTEMS}),
     Show_Storage_Alert: (payload) => dispatch({type: actionTypes.STORAGE_SHOW_ALERT, payload}),
-    Auto_Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_AUTO_CREATE_ARRAY, payload})
+    Auto_Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_AUTO_CREATE_ARRAY, payload}),
+    Change_Write_Through: (payload) => dispatch({type: actionTypes.CHANGE_WRITE_THROUGH, payload}),
+    Reset_Volume_QoS: (payload) => dispatch({type: actionTypes.SAGA_RESET_VOLUME_QOS, payload}),
+    Get_Array_Info: (payload) => dispatch({type: actionTypes.SAGA_GET_ARRAY_INFO, payload })
   };
 };
 

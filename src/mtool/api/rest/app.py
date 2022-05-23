@@ -1035,7 +1035,12 @@ def toggle_email_status():
 
 
 # Get Devices
-
+@app.route('/api/v1/array/<array_name>/info', methods=['GET'])
+@token_required
+def get_array_info(current_user, array_name):
+    array_info = arr_info(array_name)
+    array_info = array_info.json()
+    return toJson(array_info)
 
 @app.route('/api/v1.0/get_devices/', methods=['GET'])
 @token_required
@@ -1295,6 +1300,7 @@ def create_arrays(current_user):
     metaDisk = body["metaDisk"]
     storageDisks = body['storageDisks']
     totalsize = len(storageDisks)
+    write_through = body['writeThroughModeEnabled']
 
     try:
         """a_info = arr_info(arrayname)
@@ -1303,7 +1309,7 @@ def create_arrays(current_user):
             if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
                 return make_response(arrayname+' already exists', 400)"""
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
-                                      {"deviceName": metaDisk}])
+                                      {"deviceName": metaDisk}], write_through)
         array_create = array_create.json()
         return toJson(array_create)
     except Exception as e:
@@ -1402,6 +1408,7 @@ def get_arrays(current_user):
                 a_info["status"] = array["status"]
                 a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
+                a_info["writeThroughEnabled"] = res["result"]["data"]["write_through_enabled"]
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuilding_progress"]
                 arrays_info.append(a_info)
         except Exception as e:
@@ -1414,7 +1421,12 @@ def mount_arr():
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        mount_array_res = dagent.mount_array(body.get("array"))
+        write_through = False
+        try:
+            write_through = body.get("writeThrough")
+        except:
+            write_through = False
+        mount_array_res = dagent.mount_array(body.get("array"), write_through)
         return toJson(mount_array_res.json())
     except Exception as e:
         print("In exception mount_arr(): ", e)
@@ -2076,6 +2088,28 @@ def get_all_volumes():
     except Exception as e:
         print("Exception in /api/v1/get_all_volumes/ ", e)
     return toJson(volumes_list)
+
+@app.route('/api/v1/pos/property', methods=['GET'])
+def get_pos_property():
+   try:
+     pos_property = dagent.get_pos_property()
+     pos_property = pos_property.json()
+     return toJson(pos_property)
+   except Exception as e:
+     print(e)
+     return make_response('Could not get POS Property', 500)
+
+@app.route('/api/v1/pos/property', methods=['POST'])
+def set_pos_property():
+   try:
+     body_unicode = request.data.decode('utf-8')
+     body = json.loads(body_unicode)
+     pos_property = body["property"]
+     pos_property_response = dagent.set_pos_property(pos_property)
+     pos_property_response = pos_property_response.json()
+     return toJson(pos_property_response)
+   except Exception as e:
+     return make_response('Could not set POS Property', 500)
 
 '''
 <pre>{&apos;alertName&apos;: &apos;sdfsdf&apos;, &apos;alertType&apos;: &apos;&apos;, &apos;alertCondition&apos;: &apos;Greater Than&apos;, &apos;alertRange&apos;: &apos;7&apos;, &apos;description&apos;: &apos;sdfgsee eee&apos;}

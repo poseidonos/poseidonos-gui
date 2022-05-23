@@ -428,7 +428,7 @@ class Dashboard extends Component {
         render: (rowData) => formatBytes(rowData.totalsize)
       },
       {
-        title: "Number of Volumes",
+        title: "Volumes",
         render: (rowData) => this.props.arrayVolCount[rowData.arrayname] ? this.props.arrayVolCount[rowData.arrayname] : 0
       }
     ];

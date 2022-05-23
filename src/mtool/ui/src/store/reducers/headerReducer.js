@@ -38,7 +38,8 @@ export const initialState = {
     state: "",
     OS_Running_Status: "...",
     operationsMessage: [],
-    posVersion: "..."
+    posVersion: "...",
+    posProperty: "..."
 }
 
 
@@ -66,6 +67,11 @@ const headerReducer = (state = initialState, action) => {
 		...state,
 		posVersion: action.payload.version
 	    }
+        case actionTypes.SET_POS_PROPERTY:
+            return {
+                ...state,
+                posProperty: action.payload.rebuild_policy
+            }
         default:
             return state;
     }

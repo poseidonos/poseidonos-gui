@@ -36,8 +36,8 @@
 from rest.rest_api.dagent.ibofos import array_names, create_array, array_status, array_info
 
 
-def create_arr(name, raidtype, spare, devices, metadevice):
-    return create_array(name, raidtype, spare, devices, metadevice)
+def create_arr(name, raidtype, spare, devices, metadevice, write_through):
+    return create_array(name, raidtype, spare, devices, metadevice, write_through)
 
 def get_arr_status():
     return array_status()

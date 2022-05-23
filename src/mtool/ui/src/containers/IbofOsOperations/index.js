@@ -96,6 +96,7 @@ class IbofOsOperations extends Component {
 
     componentDidMount() {
         this.props.Set_Message("");
+        this.props.Get_POS_Property();
     }
 
     componentWillUnmount() {
@@ -192,12 +193,14 @@ class IbofOsOperations extends Component {
                     </AppBar>
                     <TabPanel value={this.props.history.location.pathname} index="/operations/pos">
                         <RunIbofOs
+                            property={this.props.posProperty}
                             status={this.props.bool_status}
                             responsefromos={this.props.operationsMessage}
                             openAlert={this.openAlert}
                             OS_Running_Status={this.props.OS_Running}
                             isButtonDisabled={this.state.isButtonDisabled}
                             mountState={this.props.posMountStatus}
+                            setProperty={this.props.Set_POS_Property}
                         />
                     </TabPanel>
                     <TabPanel value={this.props.history.location.pathname} index="/operations/devices">
@@ -226,7 +229,8 @@ const mapStateToProps = state => {
         OS_Running: state.headerReducer.OS_Running_Status,
         bool_status: state.headerReducer.status,
         operationsMessage: state.headerReducer.operationsMessage,
-        posMountStatus: state.headerReducer.state
+        posMountStatus: state.headerReducer.state,
+        posProperty: state.headerReducer.posProperty
     };
 }
 const mapDispatchToProps = dispatch => {
@@ -236,7 +240,9 @@ const mapDispatchToProps = dispatch => {
         Stop_POS: () => dispatch({type: actionTypes.SAGA_STOP_IBOFOS}),
         Start_POS: () => dispatch({type: actionTypes.SAGA_START_IBOFOS}),
         Reset_POS: () => dispatch({type: actionTypes.SAGA_RESET_IBOFOS}),
-        Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message})
+        Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message}),
+        Get_POS_Property: () => dispatch({ type: actionTypes.SAGA_GET_POS_PROPERTY }),
+        Set_POS_Property: (payload) => dispatch({ type: actionTypes.SAGA_SET_POS_PROPERTY, payload })
     };
 }
 export default ((connect(mapStateToProps, mapDispatchToProps))(withRouter(withStyles(styles)(IbofOsOperations))));

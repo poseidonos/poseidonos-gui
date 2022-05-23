@@ -129,7 +129,10 @@ const storageReducer = (state = initialState, action) => {
             for (let i = 0; i < action.payload.length; i += 1) {
                 arraySize += action.payload[i].totalsize;
                 totalVolSize += action.payload[i].usedspace;
-                arrayMap[action.payload[i].arrayname] = action.payload[i];
+                arrayMap[action.payload[i].arrayname] = {
+                   ...state.arrayMap[action.payload[i].arrayname],
+                   ...action.payload[i]
+                }
             }
             let arrayname = state.arrayname && arrayMap[state.arrayname] ? state.arrayname : '';
             if (!arrayname && action.payload.length > 0) {
@@ -145,6 +148,18 @@ const storageReducer = (state = initialState, action) => {
                 totalVolSize
             }
         }
+	case actionTypes.CHANGE_WRITE_THROUGH: {
+	    return {
+		...state,
+		arrayMap: {
+			...state.arrayMap,
+			[action.payload]: {
+				...state.arrayMap[action.payload],
+				writeThroughEnabled: !state.arrayMap[action.payload].writeThroughEnabled
+			}
+		}
+	    }
+	}
         case actionTypes.FETCH_CONFIG: {
             return {
                 ...state,
@@ -218,6 +233,8 @@ const storageReducer = (state = initialState, action) => {
                             oldMaxiops: action.volume.Oem.MaxIOPS,
                             oldMaxbw: action.volume.Oem.MaxBandwidth,
                             status: action.volume.Status.Oem.VolumeStatus,
+                            subnqn: action.volume.Oem.NQN,
+                            uuid: action.volume.Oem.UUID,
                             url: action.volume["@odata.id"],
                             edit: false,
                             minType: localMinType,
@@ -247,6 +264,8 @@ const storageReducer = (state = initialState, action) => {
                         oldMaxiops: action.volume.Oem.MaxIOPS,
                         oldMaxbw: action.volume.Oem.MaxBandwidth,
                         status: action.volume.Status.Oem.VolumeStatus,
+                        subnqn: action.volume.Oem.NQN,
+                        uuid: action.volume.Oem.UUID,
                         url: action.volume["@odata.id"],
                         minType: localMinType,
                         resetType: "",
@@ -326,6 +345,19 @@ const storageReducer = (state = initialState, action) => {
                 loading: true,
                 loadText: action.payload
             }
+        case actionTypes.GET_ARRAY_INFO: {
+            return {
+                ...state,
+                arrayMap: {
+                    ...state.arrayMap,
+                    [action.payload.name]: {
+                         ...state.arrayMap[action.payload.name],
+                         rebuildProgress: action.payload.rebuilding_progress,
+                         situation: action.payload.situation
+                    }
+                }
+            }
+}
         case actionTypes.STORAGE_STOP_LOADER:
             return {
                 ...state,
