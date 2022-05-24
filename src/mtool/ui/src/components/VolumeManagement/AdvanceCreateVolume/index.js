@@ -144,15 +144,13 @@ const getVolumeCountTitle = (volCount, maxVolumeCount) => {
 }
 
 function AdvanceCreateVolume(props) {
-  const { showAdvanceOptions, classes, handleChange } = props;
-  const [activeStep, setActiveStep] = React.useState(0);
+  const { showAdvanceOptions, classes, handleChange, activeStep, setActiveStep } = props;
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [alertDescription, setAlertDescription] = React.useState("")
   const [onAlertConfirm, setOnAlertConfirm] = React.useState(() => () => { });
 
   const volumeCountTitle = getVolumeCountTitle(props.volCount, props.maxVolumeCount);
 
-  console.log("MIN VALUE TYPE", typeof(props.minvalue))
   const volumeDetails = <React.Fragment>
     <Grid
       item
@@ -843,8 +841,8 @@ function AdvanceCreateVolume(props) {
       volume_units: props.volume_units,
       maxbw: props.maxbw,
       maxiops: props.maxiops,
-      minbw: props.mintype === "minbw" ? parseInt(props.minvalue) : 0,
-      miniops: props.mintype === "miniops" ? parseInt(props.minvalue) : 0,
+      minbw: props.mintype === "minbw" ? props.minvalue : 0,
+      miniops: props.mintype === "miniops" ? props.minvalue : 0,
       stop_on_error_checkbox: props.stop_on_error_checkbox,
       mount_vol: props.mount_vol,
       transport: props.transport,
@@ -858,7 +856,7 @@ function AdvanceCreateVolume(props) {
   }
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(activeStep - 1);
   };
 
   const handleReset = () => {
@@ -879,7 +877,7 @@ function AdvanceCreateVolume(props) {
       return
     }
     console.log(activeStep, steps.length)
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(activeStep + 1);
   };
 
   const handleModalClose = () => {
@@ -940,6 +938,7 @@ function AdvanceCreateVolume(props) {
                   color="primary"
                   onClick={handleNext}
                   className={classes.button}
+                  disabled={props.createVolumeButton}
                 >
                   {activeStep === steps.length ? 'Create Volume' : 'Next'}
                 </Button>
@@ -964,6 +963,7 @@ function AdvanceCreateVolume(props) {
 const mapStateToProps = (state) => {
   return {
     createVolumeButton: state.storageReducer.createVolumeButton,
+    activeStep: state.createVolumeReducer.activeStep,
     volume_count: state.createVolumeReducer.volume_count,
     volume_name: state.createVolumeReducer.volume_name,
     volume_suffix: state.createVolumeReducer.volume_suffix,
@@ -1002,7 +1002,10 @@ const mapDispatchToProps = (dispatch) => {
     Set_Unit: (payload) =>
       dispatch({ type: actionTypes.SET_UNIT, payload }),
     Toggle_Advance_Create_Volume_Popup: (flag) =>
-      dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag))
+      dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag)),
+    setActiveStep: (payload) =>{
+      dispatch({ type: actionTypes.SET_ACTIVE_STEP, payload})
+    }
   };
 };
 

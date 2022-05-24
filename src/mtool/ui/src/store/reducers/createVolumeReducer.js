@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 
 export const initialState = {
     showAdvanceOptions: false,
+    activeStep: 0,
     volume_count: 1,
     volume_name: "vol",
     volume_suffix: 0,
@@ -28,6 +29,7 @@ const createVolumeReducer = (state = initialState, action) => {
         case actionTypes.RESET_INPUTS: {
             return {
                 ...state,
+                activeStep: 0,
                 volume_count: 1,
                 volume_name: "vol",
                 volume_suffix: 0,
@@ -92,8 +94,16 @@ const createVolumeReducer = (state = initialState, action) => {
         case actionTypes.TOGGLE_ADVANCE_CREATE_VOLUME_POPUP: {
             return {
                 ...state,
+                activeStep: 0,
                 showAdvanceOptions: action.payload
             };
+        }
+
+        case actionTypes.SET_ACTIVE_STEP: {
+            return {
+                ...state,
+                activeStep: action.payload
+            }
         }
 
         default:

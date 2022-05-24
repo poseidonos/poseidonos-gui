@@ -198,6 +198,8 @@ export const SET_UNIT = "SET_UNIT"
 
 export const TOGGLE_ADVANCE_CREATE_VOLUME_POPUP = "TOGGLE_ADVANCE_CREATE_VOLUME_POPUP"
 
+export const SET_ACTIVE_STEP = "SET_ACTIVE_STEP"
+
 // Performance Page Actions
 export const FETCH_DISK_USED = "FETCH_DISK_USED"
 

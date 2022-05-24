@@ -327,8 +327,8 @@ class CreateVolume extends Component {
             volume_units: this.props.volume_units,
             maxbw: this.props.maxbw,
             maxiops: this.props.maxiops,
-            minbw: this.props.mintype === "minbw" ? parseInt(this.props.minvalue) : 0,
-            miniops: this.props.mintype === "miniops" ? parseInt(this.props.minvalue) : 0,
+            minbw: this.props.mintype === "minbw" ? this.props.minvalue : 0,
+            miniops: this.props.mintype === "miniops" ? this.props.minvalue : 0,
             stop_on_error_checkbox: this.props.stop_on_error_checkbox,
             mount_vol: this.props.mount_vol,
             transport: this.props.transport,
@@ -353,8 +353,8 @@ class CreateVolume extends Component {
         volume_units: this.props.volume_units,
         maxbw: this.props.maxbw,
         maxiops: this.props.maxiops,
-        minbw: this.props.mintype === "minbw" ? parseInt(this.props.minvalue) : 0,
-        miniops: this.props.mintype === "miniops" ? parseInt(this.props.minvalue) : 0,
+        minbw: this.props.mintype === "minbw" ? this.props.minvalue : 0,
+        miniops: this.props.mintype === "miniops" ? this.props.minvalue : 0,
         stop_on_error_checkbox: this.props.stop_on_error_checkbox,
         mount_vol: this.props.mount_vol,
         transport: this.props.transport,
@@ -562,62 +562,7 @@ class CreateVolume extends Component {
                 </Select>
               </FormControl>
             </Grid>
-
-            <Grid
-              item
-              container
-              xs={12}
-              sm={6}
-              justifyContent="flex-end"
-              className={classes.formControl}
-            >
-              <Tooltip
-                title="0 means max"
-                placement="right-start"
-              >
-                <FormControl className={classes.volumeName}>
-                  <TextField
-                    id="create-vol-maxiops"
-                    label="Maximum IOPS (KIOPS)"
-                    name="maxiops"
-                    value={this.props.maxiops}
-                    onChange={this.handleChange}
-                    type="number"
-                    // placeholder="Min Value 10. 0 means max"
-                    inputProps={{
-                      min: 0,
-                      "data-testid": "create-vol-max-iops",
-                    }}
-                    required
-                  />
-                </FormControl>
-              </Tooltip>
-            </Grid>
-            <Grid
-              item
-              container
-              xs={12}
-              sm={6}
-              justifyContent="flex-start"
-              className={classes.formControl}
-            >
-              <Tooltip title="Min value 10. 0 means max" placement="right-start">
-                <FormControl className={classes.volumeName}>
-                  <TextField
-                    id="create-vol-maxbw"
-                    label="Maximum Bandwidth (MB/s)"
-                    name="maxbw"
-                    value={this.props.maxbw}
-                    onChange={this.handleChange}
-                    type="number"
-                    // placeholder="0 means max"
-                    inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
-                    required
-                  />
-                </FormControl>
-              </Tooltip>
-            </Grid>
-
+            
             <Grid
               item
               container
@@ -773,6 +718,7 @@ class CreateVolume extends Component {
                   color="secondary"
                   data-testid="advanceoptions-btn"
                   className={classes.button}
+                  disabled={this.props.createVolumeButton}
                 >
                   Advance Options
                 </Button>

@@ -34,3 +34,10 @@ export const toggleAdvanceCreateVolumePopup = (payload) => {
         payload
     }
 }
+
+export const setActiveStep = (payload) =>{
+    return {
+        type: actionTypes.SET_ACTIVE_STEP,
+        payload
+    }
+}

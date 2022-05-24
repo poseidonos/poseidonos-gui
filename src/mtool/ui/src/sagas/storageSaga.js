@@ -239,6 +239,7 @@ function* createVolume(action) {
         // Create Multi-Volume request accepted and passed to POS
         if (response.data.result.status.code === requestAcceptedCode) {
           yield put(actionCreators.toggleCreateVolumeButton(true));
+          yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
         }
         // error code : 11050, volume count exceeds limit
         // error code : 11040, associated POS call failed
