@@ -793,12 +793,6 @@ describe("<Storage Management />", () => {
     fireEvent.click(volUnit);
     fireEvent.change(volUnit, { target: { value: "TB" } });
     //fireEvent.click(await waitForElement(() => getByText('TB')));
-    const volBW = await waitForElement(() => getByTestId("create-vol-max-bw"));
-    fireEvent.change(volBW, { target: { value:10 } });
-    const volIOPS = await waitForElement(() =>
-      getByTestId("create-vol-max-iops")
-    );
-    fireEvent.change(volIOPS, { target: { value: "10" } });
     const createVolButton = await waitForElement(() =>
       getByTestId("createvolume-btn")
     );
@@ -900,45 +894,6 @@ describe("<Storage Management />", () => {
     fireEvent.click(createVolButton);
     expect(
       await waitForElement(() => getByText("Volume Size cannot be negative"))
-    ).toBeDefined();
-    fireEvent.click(await waitForElement(() => getByText("OK")));
-    fireEvent.change(volSize, { target: { value: 2 } });
-    // fireEvent.change(volCount, { target: { value: '-1' } });
-    // fireEvent.click(createVolButton);
-    // expect(asFragment()).toMatchSnapshot();
-    // expect(await waitForElement(() => getByText('Volume Count Should be greater than 0'))).toBeDefined();
-    // fireEvent.click(await waitForElement(() => getByText('OK')));
-    // fireEvent.change(volCount, { target: { value: '1000' } });
-    // fireEvent.click(createVolButton);
-    // expect(await waitForElement(() => getByText('Volume Count should not exceed 256'))).toBeDefined();
-    // fireEvent.click(await waitForElement(() => getByText('OK')));
-    // fireEvent.change(volCount, { target: { value: 2 } });
-    // const volSuffix = await waitForElement(() => getByTestId('create-vol-suffix'));
-    // fireEvent.change(volSuffix, { target: { value: -1 } });
-    // fireEvent.click(createVolButton);
-    // expect(await waitForElement(() => getByText('Suffix Value cannot be negative'))).toBeDefined();
-    // fireEvent.click(await waitForElement(() => getByText('OK')));
-    // fireEvent.change(volSuffix, { target: { value:null } });
-    // fireEvent.click(createVolButton);
-    // expect(await waitForElement(() => getByText('Please Enter Suffix Start Value'))).toBeDefined();
-    // fireEvent.click(await waitForElement(() => getByText('OK')));
-    const volMaxBW = await waitForElement(() =>
-      getByTestId("create-vol-max-bw")
-    );
-    fireEvent.change(volMaxBW, { target: { value: 5 } });
-    fireEvent.click(createVolButton);
-    expect(
-      await waitForElement(() => getByText("Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum"))
-    ).toBeDefined();
-    fireEvent.click(await waitForElement(() => getByText("OK")));
-    fireEvent.change(volMaxBW, { target: { value: 10 } });
-    const volMaxIOPS = await waitForElement(() =>
-      getByTestId("create-vol-max-iops")
-    );
-    fireEvent.change(volMaxIOPS, { target: { value: 5 } });
-    fireEvent.click(createVolButton);
-    expect(
-      await waitForElement(() => getByText("Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
   });
@@ -1917,12 +1872,6 @@ describe("<Storage Management />", () => {
       fireEvent.change(volUnitInput, { target: { value: "TB" } });
     }
     //fireEvent.click(await waitForElement(() => getByText('TB')));
-    const volBW = await waitForElement(() => getByTestId("create-vol-max-bw"));
-    fireEvent.change(volBW, { target: { value: "10" } });
-    const volIOPS = await waitForElement(() =>
-      getByTestId("create-vol-max-iops")
-    );
-    fireEvent.change(volIOPS, { target: { value: "10" } });
     const createVolButton = await waitForElement(() =>
       getByTestId("createvolume-btn")
     );

@@ -131,10 +131,6 @@ test('it should show message on successful Volume Creation', async () => {
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
         fireEvent.change(volUnit, { target: {value: "TB"}});
     }
-    const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
-    fireEvent.change(volBW, { target: { value: '10' } });
-    const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
-    fireEvent.change(volIOPS, { target: { value: '10' } });
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);
     socket.emit("create_multi_volume", {
@@ -177,10 +173,6 @@ test('it should show message on failed Volume Creation', async () => {
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
         fireEvent.change(volUnit, { target: {value: "TB"}});
     }
-    const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
-    fireEvent.change(volBW, { target: { value: '10' } });
-    const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
-    fireEvent.change(volIOPS, { target: { value: '10' } });
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);
     socket.emit("create_multi_volume", {
@@ -215,10 +207,6 @@ test('it should show message on partial success in Volume Creation', async () =>
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
         fireEvent.change(volUnit, { target: {value: "TB"}});
     }
-    const volBW = await waitForElement(() => getByTestId('create-vol-max-bw'));
-    fireEvent.change(volBW, { target: { value: '10' } });
-    const volIOPS = await waitForElement(() => getByTestId('create-vol-max-iops'));
-    fireEvent.change(volIOPS, { target: { value: '10' } });
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);
     socket.emit("create_multi_volume", {
