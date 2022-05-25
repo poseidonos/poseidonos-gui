@@ -640,24 +640,30 @@ function* updateVolume(action) {
       return;
     }
 
-    const data = action.payload.minbw !== action.payload.oldMinbw ? {
-      maxiops: action.payload.maxiops,
-      minbw: action.payload.minbw,
-      maxbw: action.payload.maxbw,
-      volumes: [{ "volumeName": action.payload.name }],
-      array: arrayName,
-    } : action.payload.miniops !== action.payload.oldMiniops ? {
-      miniops: action.payload.miniops,
-      maxiops: action.payload.maxiops,
-      maxbw: action.payload.maxbw,
-      volumes: [{ "volumeName": action.payload.name }],
-      array: arrayName,
-    } : {
+    let data = {
       maxiops: action.payload.maxiops,
       maxbw: action.payload.maxbw,
       volumes: [{ "volumeName": action.payload.name }],
       array: arrayName,
     };
+    if (action.payload.minbw !== action.payload.oldMinbw) {
+      data = {
+        maxiops: action.payload.maxiops,
+        minbw: action.payload.minbw,
+        maxbw: action.payload.maxbw,
+        volumes: [{ "volumeName": action.payload.name }],
+        array: arrayName,
+      }
+    }
+    else if (action.payload.miniops !== action.payload.oldMiniops) {
+      data = {
+        miniops: action.payload.miniops,
+        maxiops: action.payload.maxiops,
+        maxbw: action.payload.maxbw,
+        volumes: [{ "volumeName": action.payload.name }],
+        array: arrayName,
+      }
+    }
     const response = yield call(
       [axios, axios.post],
       "/api/v1/qos",

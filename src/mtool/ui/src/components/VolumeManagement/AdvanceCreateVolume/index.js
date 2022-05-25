@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Modal, Select, Step, StepLabel, Stepper, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
+import { Cancel } from '@material-ui/icons';
 import { customTheme } from '../../../theme';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
-import { connect } from 'react-redux';
 import Dialog from '../../Dialog';
-import { Cancel } from '@material-ui/icons';
 
 const style = {
   position: 'absolute',
@@ -138,7 +138,7 @@ const styles = (theme) => ({
 const getVolumeCountTitle = (volCount, maxVolumeCount) => {
   if (volCount > 1)
     return `Specify the number of volumes to create. ${volCount} volumes already exist. POS supports max ${maxVolumeCount} volumes`;
-  else if (volCount === 1)
+  if (volCount === 1)
     return `Specify the number of volumes to create. ${volCount} volume already exists. POS supports max ${maxVolumeCount} volumes`;
   return `Specify the number of volumes to create. POS supports max ${maxVolumeCount} volumes`;
 }
@@ -151,508 +151,513 @@ function AdvanceCreateVolume(props) {
 
   const volumeCountTitle = getVolumeCountTitle(props.volCount, props.maxVolumeCount);
 
-  const volumeDetails = <React.Fragment>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <Tooltip title={volumeCountTitle} placement="bottom-start">
+  const volumeDetails = (
+    <React.Fragment>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <Tooltip title={volumeCountTitle} placement="bottom-start">
+          <FormControl className={classes.volumeName}>
+            <TextField
+              id="create-vol-count"
+              name="volume_count"
+              label="Volume Count"
+              type="number"
+              inputProps={{
+                min: 1,
+                max: props.maxVolumeCount,
+                "data-testid": "create-vol-count",
+              }}
+              value={props.volume_count}
+              onChange={handleChange}
+              required
+            />
+          </FormControl>
+        </Tooltip>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-end"
+        className={classes.formControl}
+      >
+        <FormControl className={classes.volumeName}>
+          <Tooltip
+            title="Do you want to proceed with subsequent volume creation in case an error occurs or abort the remaining process?"
+            placement="bottom-start"
+            disableFocusListener={props.volume_count < 2}
+            disableHoverListener={props.volume_count < 2}
+            disableTouchListener={props.volume_count < 2}
+          >
+            <FormControlLabel
+              disabled={props.volume_count < 2}
+              control={(
+                <Checkbox
+                  name="stop_on_error_checkbox"
+                  color="primary"
+                  id="create-vol-stop-on-error-checkbox"
+                  checked={props.stop_on_error_checkbox}
+                  value="Stop on error"
+                  inputProps={{
+                    "data-testid": "stop-on-error-checkbox",
+                  }}
+                  onChange={handleChange}
+                />
+              )}
+              label="Stop Multi-Volume Creation on Error"
+              className={classes.labelCheckbox}
+            />
+          </Tooltip>
+        </FormControl>
+      </Grid>
+      <Grid item container xs={12}>
+        <Typography
+          variant="body2"
+          // component="h4"
+          className={classes.caption}
+          display="block"
+        >
+          For Volume Count &gt; 1, please provide a seed in the Suffix
+          Start Value field (e.g. 0,1)
+        </Typography>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-count"
-            name="volume_count"
-            label="Volume Count"
-            type="number"
-            inputProps={{
-              min: 1,
-              max: props.maxVolumeCount,
-              "data-testid": "create-vol-count",
-            }}
-            value={props.volume_count}
+            id="create-vol-name"
+            label="Volume Name"
+            name="volume_name"
+            value={props.volume_name}
             onChange={handleChange}
+            inputProps={{
+              "data-testid": "create-vol-name",
+            }}
             required
           />
         </FormControl>
-      </Tooltip>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-end"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-end"
+        className={classes.formControl}
+      >
         <Tooltip
-          title="Do you want to proceed with subsequent volume creation in case an error occurs or abort the remaining process?"
-          placement="bottom-start"
+          title=" Min suffix value allowed is 0.
+                        The suffix will be appended to the volume name to form the final volume name (e.g. vol_0, vol_1)"
+          placement="right-start"
           disableFocusListener={props.volume_count < 2}
           disableHoverListener={props.volume_count < 2}
           disableTouchListener={props.volume_count < 2}
         >
+          <FormControl className={classes.volumeName}>
+            <TextField
+              id="create-vol-suffix"
+              label="Suffix Start Value"
+              name="volume_suffix"
+              type="number"
+              InputProps={{
+                inputProps: {
+                  min: 0,
+                  "data-testid": "create-vol-suffix",
+                },
+              }}
+              value={props.volume_suffix}
+              onChange={handleChange}
+              disabled={props.volume_count < 2}
+            />
+          </FormControl>
+        </Tooltip>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <Tooltip
+          title="Please input 0 to utilize all the available space in the array"
+          placement="right-start"
+        >
+          <FormControl className={classes.unitText}>
+            <TextField
+              id="create-vol-size"
+              label="Volume Size"
+              name="volume_size"
+              value={props.volume_size}
+              onChange={handleChange}
+              type="number"
+              inputProps={{
+                "data-testid": "create-vol-size",
+                min: 0
+              }}
+              required
+            />
+          </FormControl>
+        </Tooltip>
+        <FormControl className={classes.volumeUnit}>
+          <Select
+            value={props.volume_units}
+            onChange={props.Set_Unit}
+            inputProps={{
+              name: "Volume Unit",
+              id: "vol_unit",
+              "data-testid": "volume-unit-input",
+            }}
+            SelectDisplayProps={{
+              "data-testid": "volume-unit",
+            }}
+            className={classes.unitSelect}
+          >
+            <MenuItem value="GB" data-testid="gb">
+              GB
+            </MenuItem>
+            <MenuItem value="TB" data-testid="tb">
+              TB
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+    </React.Fragment>
+  )
+
+  const qosValues = (
+    <React.Fragment>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <Tooltip
+          title="0 means max"
+          placement="right-start"
+        >
+          <FormControl className={classes.volumeName}>
+            <TextField
+              id="create-vol-maxiops"
+              label="Maximum IOPS (KIOPS)"
+              name="maxiops"
+              value={props.maxiops}
+              onChange={handleChange}
+              type="number"
+              // placeholder="Min Value 10. 0 means max"
+              inputProps={{
+                min: 0,
+                "data-testid": "create-vol-max-iops",
+              }}
+              required
+            />
+          </FormControl>
+        </Tooltip>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <Tooltip title="Min value 10. 0 means max" placement="right-start">
+          <FormControl className={classes.volumeName}>
+            <TextField
+              id="create-vol-maxbw"
+              label="Maximum Bandwidth (MB/s)"
+              name="maxbw"
+              value={props.maxbw}
+              onChange={handleChange}
+              type="number"
+              // placeholder="0 means max"
+              inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
+              required
+            />
+          </FormControl>
+        </Tooltip>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <Tooltip
+          title="0 means no minimum iops/bw"
+          placement="right-start"
+        >
+          <FormControl className={classes.unitText}>
+            <TextField
+              id="create-vol-minvalue"
+              label="Minimum IOPS/BW"
+              name="minvalue"
+              value={props.minvalue}
+              onChange={handleChange}
+              type="number"
+              inputProps={{
+                "data-testid": "create-vol-minvalue",
+                min: 0
+              }}
+            />
+          </FormControl>
+        </Tooltip>
+        <FormControl className={classes.volumeUnit}>
+          <Select
+            value={props.mintype}
+            onChange={handleChange}
+            inputProps={{
+              name: "mintype",
+              id: "mintype",
+              "data-testid": "mintype-input",
+            }}
+            SelectDisplayProps={{
+              "data-testid": "mintype",
+            }}
+            className={classes.unitSelect}
+          >
+            <MenuItem value="miniops" data-testid="miniops">
+              KIOPS
+            </MenuItem>
+            <MenuItem value="minbw" data-testid="minbw">
+              MB/s
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+
+    </React.Fragment>
+  )
+
+  const mountOptions = (
+    <React.Fragment>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <FormControl className={classes.volumeName}>
           <FormControlLabel
-            disabled={props.volume_count < 2}
             control={(
               <Checkbox
-                name="stop_on_error_checkbox"
+                name="mount_vol_checkbox"
                 color="primary"
-                id="create-vol-stop-on-error-checkbox"
-                checked={props.stop_on_error_checkbox}
-                value="Stop on error"
+                id="mount-vol-checkbox"
+                checked={props.mount_vol}
+                value="Mount Volume"
                 inputProps={{
-                  "data-testid": "stop-on-error-checkbox",
+                  "data-testid": "mount-vol-checkbox",
                 }}
-                onChange={handleChange}
+                onChange={props.handleChange}
               />
             )}
-            label="Stop Multi-Volume Creation on Error"
+            label="Mount Volume"
             className={classes.labelCheckbox}
           />
-        </Tooltip>
-      </FormControl>
-    </Grid>
-    <Grid item container xs={12}>
-      <Typography
-        variant="body2"
-        // component="h4"
-        className={classes.caption}
-        display="block"
-      >
-        For Volume Count &gt; 1, please provide a seed in the Suffix
-        Start Value field (e.g. 0,1)
-      </Typography>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <TextField
-          id="create-vol-name"
-          label="Volume Name"
-          name="volume_name"
-          value={props.volume_name}
-          onChange={handleChange}
-          inputProps={{
-            "data-testid": "create-vol-name",
-          }}
-          required
+        </FormControl>
+      </Grid>
+      <Grid item container xs={12}>
+        <Typography
+          variant="body2"
+          // component="h4"
+          className={classes.caption}
+          display="block"
         />
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-end"
-      className={classes.formControl}
-    >
-      <Tooltip
-        title=" Min suffix value allowed is 0.
-                        The suffix will be appended to the volume name to form the final volume name (e.g. vol_0, vol_1)"
-        placement="right-start"
-        disableFocusListener={props.volume_count < 2}
-        disableHoverListener={props.volume_count < 2}
-        disableTouchListener={props.volume_count < 2}
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
+      >
+        <FormControl className={classes.volumeName}>
+          <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
+          <Select
+            value={props.subsystem}
+            onChange={handleChange}
+            label="Select Subsystem"
+            inputProps={{
+              name: "subsystem",
+              id: "subsystem",
+              "data-testid": "subsystem-input",
+            }}
+            SelectDisplayProps={{
+              "data-testid": "subsystem",
+            }}
+            className={classes.unitSelect}
+            required={!props.selectedNewSubsystem}
+            disabled={props.selectedNewSubsystem || !props.mount_vol}
+          >
+            {props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
+              (
+                <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
+                  {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+                </MenuItem>
+              ) : null)}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-end"
+        className={classes.formControl}
+      >
+        <FormControl className={classes.volumeName}>
+          <FormControlLabel
+            control={(
+              <Checkbox
+                name="selectedNewSubsystem"
+                color="primary"
+                id="selectedNewSubsystem"
+                checked={props.selectedNewSubsystem}
+                value="With A New Subsystem"
+                inputProps={{
+                  "data-testid": "selectedNewSubsystem",
+                }}
+                onChange={props.handleChange}
+              />
+            )}
+            label="With A New Subsystem"
+            className={classes.labelCheckbox}
+            disabled={!props.mount_vol}
+          />
+        </FormControl>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
       >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-suffix"
-            label="Suffix Start Value"
-            name="volume_suffix"
-            type="number"
-            InputProps={{
-              inputProps: {
-                min: 0,
-                "data-testid": "create-vol-suffix",
-              },
-            }}
-            value={props.volume_suffix}
+            id="create-subsystem-name"
+            label="Subsystem Name"
+            name="subnqn"
+            value={props.subnqn}
             onChange={handleChange}
-            disabled={props.volume_count < 2}
-          />
-        </FormControl>
-      </Tooltip>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <Tooltip
-        title="Please input 0 to utilize all the available space in the array"
-        placement="right-start"
-      >
-        <FormControl className={classes.unitText}>
-          <TextField
-            id="create-vol-size"
-            label="Volume Size"
-            name="volume_size"
-            value={props.volume_size}
-            onChange={handleChange}
-            type="number"
             inputProps={{
-              "data-testid": "create-vol-size",
-              min: 0
+              "data-testid": "create-subsystem-name",
             }}
-            required
+            required={props.selectedNewSubsystem}
+            disabled={!props.selectedNewSubsystem || !props.mount_vol}
           />
         </FormControl>
-      </Tooltip>
-      <FormControl className={classes.volumeUnit}>
-        <Select
-          value={props.volume_units}
-          onChange={props.Set_Unit}
-          inputProps={{
-            name: "Volume Unit",
-            id: "vol_unit",
-            "data-testid": "volume-unit-input",
-          }}
-          SelectDisplayProps={{
-            "data-testid": "volume-unit",
-          }}
-          className={classes.unitSelect}
-        >
-          <MenuItem value="GB" data-testid="gb">
-            GB
-          </MenuItem>
-          <MenuItem value="TB" data-testid="tb">
-            TB
-          </MenuItem>
-        </Select>
-      </FormControl>
-    </Grid>
-  </React.Fragment>
-
-  const qosValues = <React.Fragment>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <Tooltip
-        title="0 means max"
-        placement="right-start"
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-end"
+        className={classes.formControl}
+      >
+        <FormControl className={classes.volumeName}>
+          <InputLabel htmlFor="transport_type">Select Transport Type</InputLabel>
+          <Select
+            value={props.transport_type}
+            onChange={handleChange}
+            label="Select Transport Type"
+            inputProps={{
+              name: "transport_type",
+              id: "transport_type",
+              "data-testid": "transport_type-input",
+            }}
+            SelectDisplayProps={{
+              "data-testid": "transport_type",
+            }}
+            className={classes.unitSelect}
+            required={props.selectedNewSubsystem}
+            disabled={!props.selectedNewSubsystem || !props.mount_vol}
+          >
+            <MenuItem value="TCP" key="TCP">
+              TCP
+            </MenuItem>
+            <MenuItem value="RBMI" key="RBMI">
+              RBMI
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-start"
+        className={classes.formControl}
       >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-maxiops"
-            label="Maximum IOPS (KIOPS)"
-            name="maxiops"
-            value={props.maxiops}
+            id="create-target-address"
+            label="Target Address"
+            name="target_address"
+            value={props.target_address}
             onChange={handleChange}
-            type="number"
-            // placeholder="Min Value 10. 0 means max"
             inputProps={{
-              min: 0,
-              "data-testid": "create-vol-max-iops",
+              "data-testid": "create-target-address",
             }}
-            required
+            required={props.selectedNewSubsystem}
+            disabled={!props.selectedNewSubsystem || !props.mount_vol}
           />
         </FormControl>
-      </Tooltip>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <Tooltip title="Min value 10. 0 means max" placement="right-start">
+      </Grid>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={6}
+        justifyContent="flex-end"
+        className={classes.formControl}
+      >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-maxbw"
-            label="Maximum Bandwidth (MB/s)"
-            name="maxbw"
-            value={props.maxbw}
+            id="create-transport-service-id"
+            label="Transport Service Id"
+            name="transport_service_id"
+            value={props.transport_service_id}
             onChange={handleChange}
-            type="number"
-            // placeholder="0 means max"
-            inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
-            required
-          />
-        </FormControl>
-      </Tooltip>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <Tooltip
-        title="0 means no minimum iops/bw"
-        placement="right-start"
-      >
-        <FormControl className={classes.unitText}>
-          <TextField
-            id="create-vol-minvalue"
-            label="Minimum IOPS/BW"
-            name="minvalue"
-            value={props.minvalue}
-            onChange={handleChange}
-            type="number"
             inputProps={{
-              "data-testid": "create-vol-minvalue",
-              min: 0
+              "data-testid": "create-transport-service-id",
             }}
+            required={props.selectedNewSubsystem}
+            disabled={!props.selectedNewSubsystem || !props.mount_vol}
           />
         </FormControl>
-      </Tooltip>
-      <FormControl className={classes.volumeUnit}>
-        <Select
-          value={props.mintype}
-          onChange={handleChange}
-          inputProps={{
-            name: "mintype",
-            id: "mintype",
-            "data-testid": "mintype-input",
-          }}
-          SelectDisplayProps={{
-            "data-testid": "mintype",
-          }}
-          className={classes.unitSelect}
-        >
-          <MenuItem value="miniops" data-testid="miniops">
-            KIOPS
-          </MenuItem>
-          <MenuItem value="minbw" data-testid="minbw">
-            MB/s
-          </MenuItem>
-        </Select>
-      </FormControl>
-    </Grid>
+      </Grid>
 
-  </React.Fragment>
-
-  const mountOptions = <React.Fragment>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <FormControlLabel
-          control={(
-            <Checkbox
-              name="mount_vol_checkbox"
-              color="primary"
-              id="mount-vol-checkbox"
-              checked={props.mount_vol}
-              value="Mount Volume"
-              inputProps={{
-                "data-testid": "mount-vol-checkbox",
-              }}
-              onChange={props.handleChange}
-            />
-          )}
-          label="Mount Volume"
-          className={classes.labelCheckbox}
-        />
-      </FormControl>
-    </Grid>
-    <Grid item container xs={12}>
-      <Typography
-        variant="body2"
-        // component="h4"
-        className={classes.caption}
-        display="block"
-      >
-      </Typography>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <InputLabel htmlFor="subsystem">Select Subsystem</InputLabel>
-        <Select
-          value={props.subsystem}
-          onChange={handleChange}
-          label="Select Subsystem"
-          inputProps={{
-            name: "subsystem",
-            id: "subsystem",
-            "data-testid": "subsystem-input",
-          }}
-          SelectDisplayProps={{
-            "data-testid": "subsystem",
-          }}
-          className={classes.unitSelect}
-          required={!props.selectedNewSubsystem}
-          disabled={props.selectedNewSubsystem || !props.mount_vol}
-        >
-          {props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
-            (
-              <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
-                {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
-              </MenuItem>
-            ) : null)}
-        </Select>
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-end"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <FormControlLabel
-          control={(
-            <Checkbox
-              name="selectedNewSubsystem"
-              color="primary"
-              id="selectedNewSubsystem"
-              checked={props.selectedNewSubsystem}
-              value="With A New Subsystem"
-              inputProps={{
-                "data-testid": "selectedNewSubsystem",
-              }}
-              onChange={props.handleChange}
-            />
-          )}
-          label="With A New Subsystem"
-          className={classes.labelCheckbox}
-          disabled={!props.mount_vol}
-        />
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <TextField
-          id="create-subsystem-name"
-          label="Subsystem Name"
-          name="subnqn"
-          value={props.subnqn}
-          onChange={handleChange}
-          inputProps={{
-            "data-testid": "create-subsystem-name",
-          }}
-          required={props.selectedNewSubsystem}
-          disabled={!props.selectedNewSubsystem || !props.mount_vol}
-        />
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-end"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <InputLabel htmlFor="transport_type">Select Transport Type</InputLabel>
-        <Select
-          value={props.transport_type}
-          onChange={handleChange}
-          label="Select Transport Type"
-          inputProps={{
-            name: "transport_type",
-            id: "transport_type",
-            "data-testid": "transport_type-input",
-          }}
-          SelectDisplayProps={{
-            "data-testid": "transport_type",
-          }}
-          className={classes.unitSelect}
-          required={props.selectedNewSubsystem}
-          disabled={!props.selectedNewSubsystem || !props.mount_vol}
-        >
-          <MenuItem value="TCP" key="TCP">
-            TCP
-          </MenuItem>
-          <MenuItem value="RBMI" key="RBMI">
-            RBMI
-          </MenuItem>
-        </Select>
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-start"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <TextField
-          id="create-target-address"
-          label="Target Address"
-          name="target_address"
-          value={props.target_address}
-          onChange={handleChange}
-          inputProps={{
-            "data-testid": "create-target-address",
-          }}
-          required={props.selectedNewSubsystem}
-          disabled={!props.selectedNewSubsystem || !props.mount_vol}
-        />
-      </FormControl>
-    </Grid>
-    <Grid
-      item
-      container
-      xs={12}
-      sm={6}
-      justifyContent="flex-end"
-      className={classes.formControl}
-    >
-      <FormControl className={classes.volumeName}>
-        <TextField
-          id="create-transport-service-id"
-          label="Transport Service Id"
-          name="transport_service_id"
-          value={props.transport_service_id}
-          onChange={handleChange}
-          inputProps={{
-            "data-testid": "create-transport-service-id",
-          }}
-          required={props.selectedNewSubsystem}
-          disabled={!props.selectedNewSubsystem || !props.mount_vol}
-        />
-      </FormControl>
-    </Grid>
-
-  </React.Fragment>
+    </React.Fragment>
+  )
 
   const validateVolumeDetails = () => {
     let isError = true;
@@ -762,21 +767,25 @@ function AdvanceCreateVolume(props) {
   const stepContents = [volumeDetails, qosValues, mountOptions]
   const validateContents = [validateVolumeDetails, validateQosValues, validateMountOptions]
 
-  const previewDetails =
+  const previewDetails = (
     <div style={{ width: "100%" }}>
       <Typography className={classes.previewHeader}>Volume Details</Typography>
       <div className={classes.previewElements}>
         <Typography className={classes.previewElement}>Volume Count : {props.volume_count}</Typography>
-        {props.volume_count > 1 && <Typography className={classes.previewElement}>
-          Stop Multi-volume Creation on Error :
-          <Checkbox
-            size="small"
-            color="primary"
-            checked={props.stop_on_error_checkbox}
-            // disabled
-            style={{ padding: "0" }}
-          />
-        </Typography>}
+        {props.volume_count > 1 &&
+          (
+            <Typography className={classes.previewElement}>
+              Stop Multi-volume Creation on Error :
+              <Checkbox
+                size="small"
+                color="primary"
+                checked={props.stop_on_error_checkbox}
+                // disabled
+                style={{ padding: "0" }}
+              />
+            </Typography>
+          )
+        }
         <Typography className={classes.previewElement}>Volume Name : {props.volume_name}</Typography>
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
@@ -802,36 +811,39 @@ function AdvanceCreateVolume(props) {
           />
         </Typography>
         {props.mount_vol &&
-          <React.Fragment>
-            <Typography className={classes.previewElement}>
-              With New Subsystem :
-              <Checkbox
-                size="small"
-                color="primary"
-                checked={props.selectedNewSubsystem}
-                // disabled
-                style={{ padding: "0" }}
-              />
-            </Typography>
-            {props.selectedNewSubsystem ?
-              <React.Fragment>
-                <Typography className={classes.previewElement}>Subsystem Name : {props.subnqn}</Typography>
-                <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
-                <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
-                <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>
-              </React.Fragment> :
-              <Typography className={classes.previewElement}>Selected Subsytem : {props.subsystem}</Typography>
-            }
-          </React.Fragment>
+          (
+            <React.Fragment>
+              <Typography className={classes.previewElement}>
+                With New Subsystem :
+                <Checkbox
+                  size="small"
+                  color="primary"
+                  checked={props.selectedNewSubsystem}
+                  // disabled
+                  style={{ padding: "0" }}
+                />
+              </Typography>
+              {props.selectedNewSubsystem ?
+                (
+                  <React.Fragment>
+                    <Typography className={classes.previewElement}>Subsystem Name : {props.subnqn}</Typography>
+                    <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
+                    <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
+                    <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>
+                  </React.Fragment>
+                ) :
+                <Typography className={classes.previewElement}>Selected Subsytem : {props.subsystem}</Typography>
+              }
+            </React.Fragment>
+          )
         }
       </div>
     </div>
+  )
+
 
 
   const createVolumeWithNewSubsystem = () => {
-    console.log("MIN VALUE TYPE", typeof(props.minvalue))
-    console.log("Max Iops TYPE", typeof(props.maxiops))
-    console.log("MIN Type TYPE", typeof(props.mintype))
     props.createVolume({
       volume_count: props.volume_count,
       volume_name: props.volume_name,
@@ -876,7 +888,6 @@ function AdvanceCreateVolume(props) {
     if (validateContents[activeStep]() === true) {
       return
     }
-    console.log(activeStep, steps.length)
     setActiveStep(activeStep + 1);
   };
 
@@ -897,7 +908,7 @@ function AdvanceCreateVolume(props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} >
+      <Box sx={style}>
         <IconButton className={classes.cancleIcon} aria-label="Close" onClick={handleModalClose}>
           <Cancel />
         </IconButton>
@@ -907,8 +918,8 @@ function AdvanceCreateVolume(props) {
               <div>
                 <Typography className={classes.createHeader}>Create Volume </Typography>
                 <Stepper activeStep={activeStep} orientation="vertical">
-                  {steps.map((label, index) => (
-                    <Step key={index}>
+                  {steps.map((label) => (
+                    <Step key={label}>
                       <StepLabel>{label}</StepLabel>
                     </Step>
                   ))}
@@ -1003,8 +1014,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SET_UNIT, payload }),
     Toggle_Advance_Create_Volume_Popup: (flag) =>
       dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag)),
-    setActiveStep: (payload) =>{
-      dispatch({ type: actionTypes.SET_ACTIVE_STEP, payload})
+    setActiveStep: (payload) => {
+      dispatch({ type: actionTypes.SET_ACTIVE_STEP, payload })
     }
   };
 };

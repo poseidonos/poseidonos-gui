@@ -123,34 +123,6 @@ class VolumeList extends Component {
     this.closePopup = this.closePopup.bind(this);
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    // this.updateVolume = this.updateVolume.bind(this);
-  }
-
-  // updateVolume(row) {
-  //   this.props.saveVolume()
-  // }
-
-  showPopup(name) {
-    if (name === RESET_MIN_BW_TITLE) {
-      this.setState({
-        popupOpen: true,
-        alertTile: RESET_MIN_BW_TITLE,
-        alertDetails: RESET_MIN_BW_DETAILS
-      });
-      return
-    }
-    this.setState({
-      popupOpen: true,
-      alertTile: RESET_MIN_IOPS_TITLE,
-      alertDetails: RESET_MIN_IOPS_DETAILS
-    });
-  }
-
-  closePopup() {
-    this.setState({
-      ...this.state,
-      popupOpen: false,
-    });
   }
 
   handleClose() {
@@ -164,7 +136,7 @@ class VolumeList extends Component {
   }
 
   onVolumeEdit(value, name, row) {
-    const id = row.id;
+    const { id } = row;
     if (name === "select-minbw-miniops") {
 
       if (value === MINIOPS) {
@@ -210,7 +182,7 @@ class VolumeList extends Component {
         return;
       }
 
-      //making miniops as default
+      // making miniops as default
       if (row.minType === "") {
         this.props.changeMinType({ id, minType: MINIOPS })
       }
@@ -227,6 +199,29 @@ class VolumeList extends Component {
       value,
       name,
       id
+    });
+  }
+
+  showPopup(name) {
+    if (name === RESET_MIN_BW_TITLE) {
+      this.setState({
+        popupOpen: true,
+        alertTile: RESET_MIN_BW_TITLE,
+        alertDetails: RESET_MIN_BW_DETAILS
+      });
+      return
+    }
+    this.setState({
+      popupOpen: true,
+      alertTile: RESET_MIN_IOPS_TITLE,
+      alertDetails: RESET_MIN_IOPS_DETAILS
+    });
+  }
+
+  closePopup() {
+    this.setState({
+      ...this.state,
+      popupOpen: false,
     });
   }
 
@@ -358,7 +353,7 @@ class VolumeList extends Component {
           return 0;
         },
         render: rowData => {
-          const local_style = {
+          const localStyle = {
             ...cellText,
             display: "flex",
             width: "130px",
@@ -366,17 +361,17 @@ class VolumeList extends Component {
             gap: "4px"
           }
 
-          //showing miniops as default
-          const local_value = rowData.minType === MINBW ? rowData.minbw : rowData.miniops;
-          const local_type = rowData.minType === MINBW ? MINBW : MINIOPS;
+          // showing miniops as default
+          const localValue = rowData.minType === MINBW ? rowData.minbw : rowData.miniops;
+          const localType = rowData.minType === MINBW ? MINBW : MINIOPS;
 
           if (rowData.edit) {
             return (
-              <Box sx={local_style}>
+              <Box sx={localStyle}>
                 <TextField
                   id={`VolumeList-textfield-minbw-miniops-${rowData.name}`}
                   name="minbw-miniops"
-                  value={local_value}
+                  value={localValue}
                   type="number"
                   inputProps={{
                     min: 0,
@@ -391,7 +386,7 @@ class VolumeList extends Component {
                 />
                 <Select
                   style={cellText}
-                  value={local_type}
+                  value={localType}
                   onChange={(e) => {
                     this.setState({
                       resetVolumeRow: rowData
@@ -418,9 +413,11 @@ class VolumeList extends Component {
             )
           }
 
-          return rowData.minType === MINBW ? `${rowData.minbw} MB/s` :
-            rowData.minType === MINIOPS ? `${rowData.miniops} KIOPS` :
-              'MIN';
+          if (rowData.minType === MINBW)
+            return `${rowData.minbw} MB/s`
+          if (rowData.minType === MINIOPS)
+            return `${rowData.miniops} KIOPS`
+          return 'MIN';
         }
       },
       {

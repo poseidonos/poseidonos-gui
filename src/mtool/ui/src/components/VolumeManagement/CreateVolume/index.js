@@ -205,16 +205,16 @@ class CreateVolume extends Component {
       for (let i = 0; i < this.props.subsystems.length; i += 1) {
         if (this.props.subsystems[i].subtype === "NVMe") {
 
-          const subsystem = this.props.subsystems[i].nqn
+          const localSubsystem = this.props.subsystems[i].nqn
 
           if (this.props.subsystems[i].listen_addresses && this.props.subsystems[i].listen_addresses.length) {
             this.props.Update_Subsystem({
-              subsystem: subsystem,
+              subsystem: localSubsystem,
               transport: `${this.props.subsystems[i].listen_addresses[0].target_address}:${this.props.subsystems[i].listen_addresses[0].transport_service_id}`
             });
           } else {
             this.props.Update_Subsystem({
-              subsystem: subsystem,
+              subsystem: localSubsystem,
               transport: ""
             });
           }
@@ -230,19 +230,14 @@ class CreateVolume extends Component {
     this.setState({ open: false, alert_open: false });
   }
 
-  showAlertHandler(msg) {
-    this.setState({ open: true, alert_description: msg });
-  }
-
   handleChange(event) {
     const { name, value } = event.target;
-    console.log("NAME", name, "VALUE", value)
     if (name === "subsystem") {
-      const subSystem = getSubsystem(value, this.props.subsystems);
-      if (subSystem.listen_addresses && subSystem.listen_addresses.length) {
+      const localSubsystem = getSubsystem(value, this.props.subsystems);
+      if (localSubsystem.listen_addresses && localSubsystem.listen_addresses.length) {
         this.props.Update_Subsystem({
           subsystem: value,
-          transport: `${subSystem.listen_addresses[0].target_address}:${subSystem.listen_addresses[0].transport_service_id}`
+          transport: `${localSubsystem.listen_addresses[0].target_address}:${localSubsystem.listen_addresses[0].transport_service_id}`
         });
       } else {
         this.props.Update_Subsystem({
@@ -252,6 +247,10 @@ class CreateVolume extends Component {
       }
     } else
       this.props.Change_Input({ name: name, value: value })
+  }
+
+  showAlertHandler(msg) {
+    this.setState({ open: true, alert_description: msg });
   }
 
   createVolumeInParent() {

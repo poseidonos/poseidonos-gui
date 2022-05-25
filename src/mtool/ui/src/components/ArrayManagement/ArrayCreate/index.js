@@ -258,12 +258,12 @@ class ArrayCreate extends Component {
   }
 
   onSelectRaid(event) {
-    let local_raid = {};
+    let localRaid = {};
     this.props.config.raidTypes.forEach(type => {
       if (type.raidType === event.target.value)
-        local_raid = { ...type }
+        localRaid = { ...type }
     })
-    this.props.selectRaid(local_raid);
+    this.props.selectRaid(localRaid);
   }
 
   onSelectDiskType(event) {
