@@ -132,6 +132,7 @@ const CreateSubsystem = (props) => {
                     label="Maximum Namespaces"
                     value={subsystem.max_namespaces}
                     name="max_namespaces"
+                    type="number"
                     inputProps={{
                         "data-testid": "subsystemMaxNS"
                     }}

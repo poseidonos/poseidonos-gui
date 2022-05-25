@@ -294,7 +294,6 @@ class Volume extends Component {
   }
 
   openRebuildPopover(event) {
-	 console.log(event)
     this.setState({
 	    rebuildPopoverElement: event.currentTarget
     });
@@ -351,7 +350,7 @@ class Volume extends Component {
 
   changeMountStatus(payload) {
     if(payload.status !== "Mounted") {
-	this.mountConfirm(payload);
+	    this.mountConfirm(payload);
     } else {
         this.props.Change_Mount_Status(payload);
     }
@@ -476,8 +475,7 @@ class Volume extends Component {
                   </Grid>
                 </Route>
                 <Route path="/storage/array/manage*">
-
-
+<>
                   {this.props.arrayMap[this.props.selectedArray] ? (
                     <React.Fragment>
                       <Grid container spacing={1} className={classes.card}>
@@ -488,6 +486,7 @@ class Volume extends Component {
                               <Grid item sm={6} className={classes.arraySelectGrid}>
                               <FormControl
                                 className={classes.selectForm}
+                                data-testid="arrayshow-form"
                               >
                                 <InputLabel htmlFor="select-array">Select Array</InputLabel>
                                 <Select
@@ -696,6 +695,7 @@ class Volume extends Component {
                       </Grid>
                     </React.Fragment>
                   ) : null}
+</>
                 </Route>
               </Switch>
               <AlertDialog

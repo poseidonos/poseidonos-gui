@@ -154,7 +154,7 @@ function* fetchArrayInfo(action) {
       action.payload.push("/login");
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 }
 

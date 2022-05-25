@@ -217,7 +217,8 @@ function* getPOSInfo() {
             },
 	});
 	if(response.status === 200) {
-	    yield put(actionCreators.setPOSInfo(response.data.result.data));
+	    yield put(actionCreators.setPOSInfo(response.data && response.data.result ?
+            response.data.result.data : {}));
 	}
     } catch(e) {
         console.log(e)

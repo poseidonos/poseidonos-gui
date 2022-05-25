@@ -38,9 +38,10 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { ReactDOM, findDOMNode } from 'react-dom'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux'
+import { combineReducers, createStore } from 'redux';
 import { render, fireEvent, cleanup, waitForElement, getByText } from '@testing-library/react';
-import storageReducer from "../../../store/reducers/storageReducer"
+import storageReducer from "../../../store/reducers/storageReducer";
+import createVolumeReducer from "../../../store/reducers/createVolumeReducer";
 import i18n from "../../../i18n";
 import CreateVolume from './index';
 
@@ -84,6 +85,7 @@ beforeEach(() => {
 
     const rootReducers = combineReducers({
         storageReducer,
+        createVolumeReducer
     });
     const store = createStore(rootReducers, { createVolumeButton: true });
 

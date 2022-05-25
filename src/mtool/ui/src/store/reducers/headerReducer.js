@@ -65,7 +65,7 @@ const headerReducer = (state = initialState, action) => {
 	case actionTypes.SET_POS_INFO:
 	    return {
 		...state,
-		posVersion: action.payload.version
+		posVersion: action.payload ? action.payload.version : ""
 	    }
         case actionTypes.SET_POS_PROPERTY:
             return {

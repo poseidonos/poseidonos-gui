@@ -124,9 +124,6 @@ const AddListener = (props) => {
                         <MenuItem value="tcp">
                             TCP
                         </MenuItem>
-                        <MenuItem value="rdma">
-                            RDMA
-                        </MenuItem>
                     </Select>
                 </FormControl>
                 <Button

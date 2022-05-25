@@ -180,7 +180,8 @@ export function* createSubsystem(action) {
   try {
     yield put(actionCreators.startLoader("Creating Subsystems"));
     const response = yield call([axios, axios.post], "/api/v1/subsystem/", {
-      ...action.payload
+      ...action.payload,
+      max_namespaces: Number(action.payload.max_namespaces)
     }, {
       headers: {
         "x-access-token": localStorage.getItem("token"),

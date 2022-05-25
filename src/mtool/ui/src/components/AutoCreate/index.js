@@ -78,14 +78,16 @@ const styles = (theme) => ({
 });
 
 const getFreeDisk = function(disks) {
-   const freeDisks = disks.filter(disk => disk.isAvailable);
+   const freeDisks = disks && disks.filter ?
+       disks.filter(disk => disk.isAvailable) : [];
    if(freeDisks.length > 0) return freeDisks[0].name;
-   if(disks.length > 0) return disks[0].name;
+   if(disks && disks.length > 0) return disks[0].name;
    return "";
 }
 
 const getFreeDisks = function(disks) {
-   const freeDisks = disks.filter(disk => disk.isAvailable);
+   const freeDisks = disks && disks.filter ?
+       disks.filter(disk => disk.isAvailable) : [];
    return freeDisks.length;
 }
 
@@ -279,7 +281,7 @@ const AutoCreate = (props) => {
                 onClick={autoCreateArray}
                 variant="contained"
                 color="primary"
-                data-testid="createarray-btn"
+                data-testid="auto-createarray-btn"
                 className={classes.button}
 	    >
                 Create Array

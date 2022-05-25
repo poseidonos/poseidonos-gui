@@ -165,13 +165,14 @@ const storageReducer = (state = initialState, action) => {
                 ...state,
                 config: {
                     ...action.payload,
-                    raidTypes: action.payload.raidTypes.map((type) => ({
+                    raidTypes: action.payload.raidTypes ? action.payload.raidTypes.map((type) => ({
                         value: type.raidType,
                         label: type.raidType,
                         ...type
-                    }))
+                    })) : []
                 },
-                selectedRaid: action.payload.raidTypes.length ? { ...action.payload.raidTypes[0] } : {}
+                selectedRaid: action.payload.raidTypes &&
+                    action.payload.raidTypes.length ? { ...action.payload.raidTypes[0] } : {}
             }
         }
         case actionTypes.SELECT_RAID: {
