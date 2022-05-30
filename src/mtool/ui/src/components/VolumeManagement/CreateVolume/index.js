@@ -156,9 +156,11 @@ class CreateVolume extends Component {
     this.createVolumeInParent = this.createVolumeInParent.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.showAlertHandler = this.showAlertHandler.bind(this);
+    this.setSubsystem = this.setSubsystem.bind(this);
   }
 
   componentDidMount() {
+    this.setSubsystem();
     this.props.createVolSocket.on("connect", () => {
       console.log("connected to create volume socket"); // eslint-disable-line no-console
     });
@@ -200,6 +202,33 @@ class CreateVolume extends Component {
   }
 
   componentDidUpdate() {
+    this.setSubsystem()
+  }
+
+  handleClose() {
+    this.setState({ open: false, alert_open: false });
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+    if (name === "subsystem") {
+      const localSubsystem = getSubsystem(value, this.props.subsystems);
+      if (localSubsystem.listen_addresses && localSubsystem.listen_addresses.length) {
+        this.props.Update_Subsystem({
+          subsystem: value,
+          transport: `${localSubsystem.listen_addresses[0].target_address}:${localSubsystem.listen_addresses[0].transport_service_id}`
+        });
+      } else {
+        this.props.Update_Subsystem({
+          subsystem: value,
+          transport: ""
+        });
+      }
+    } else
+      this.props.Change_Input({ name: name, value: value })
+  }
+
+  setSubsystem() {
     if (!this.props.subsystem && this.props.subsystems.length > 0) {
       /* eslint-disable react/no-did-update-set-state */
       for (let i = 0; i < this.props.subsystems.length; i += 1) {
@@ -224,33 +253,6 @@ class CreateVolume extends Component {
       }
       /* eslint-enable react/no-did-update-set-state */
     }
-  }
-
-  handleClose() {
-    this.setState({ open: false, alert_open: false });
-  }
-
-  showAlertHandler(msg) {
-    this.setState({ open: true, alert_description: msg });
-  }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    if (name === "subsystem") {
-      const localSubsystem = getSubsystem(value, this.props.subsystems);
-      if (localSubsystem.listen_addresses && localSubsystem.listen_addresses.length) {
-        this.props.Update_Subsystem({
-          subsystem: value,
-          transport: `${localSubsystem.listen_addresses[0].target_address}:${localSubsystem.listen_addresses[0].transport_service_id}`
-        });
-      } else {
-        this.props.Update_Subsystem({
-          subsystem: value,
-          transport: ""
-        });
-      }
-    } else
-      this.props.Change_Input({ name: name, value: value })
   }
 
   showAlertHandler(msg) {
@@ -278,19 +280,8 @@ class CreateVolume extends Component {
       errorDesc = `Volume Count should not exceed ${this.props.maxVolumeCount}`;
     else if (this.props.volume_count > 1 && this.props.volume_suffix < 0)
       errorDesc = "Suffix Value cannot be negative";
-    else if (this.props.volume_count > 1 && this.props.volume_suffix === null)
+    else if (this.props.volume_count > 1 && this.props.volume_suffix.length === 0)
       errorDesc = "Please Enter Suffix Start Value";
-    else if (this.props.maxbw.length === 0)
-      errorDesc = "Please Enter Maximum Bandwidth (MB/s) ";
-    else if (this.props.maxiops.length === 0)
-      errorDesc = "Please Enter Maximum IOPS (KIOPS)";
-    else if (this.props.maxbw < 0)
-      errorDesc = "Max Bandwidth cannot be negative";
-    else if (this.props.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
-    else if ((this.props.maxbw > 0 && this.props.maxbw < 10) || this.props.maxbw > 17592186044415)
-      errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
-    else if ((this.props.maxiops > 0 && this.props.maxiops < 10) || this.props.maxiops > 18446744073709551)
-      errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
     else if (this.props.mount_vol && subsystem.array && subsystem.array !== this.props.array)
       errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
@@ -312,6 +303,8 @@ class CreateVolume extends Component {
     }
 
     const transport = getTransport(subsystem, this.props.transport)
+    const localMinBw = this.props.mintype === "minbw" ? this.props.minvalue : 0;
+    const localMinIOPS = this.props.mintype === "miniops" ? this.props.minvalue : 0;
 
     if (this.props.volume_count > 1 && parseInt(volSize, 10) === 0) {
       this.setState({
@@ -330,8 +323,8 @@ class CreateVolume extends Component {
             volume_units: this.props.volume_units,
             maxbw: this.props.maxbw,
             maxiops: this.props.maxiops,
-            minbw: this.props.mintype === "minbw" ? this.props.minvalue : 0,
-            miniops: this.props.mintype === "miniops" ? this.props.minvalue : 0,
+            minbw: localMinBw,
+            miniops: localMinIOPS,
             stop_on_error_checkbox: this.props.stop_on_error_checkbox,
             mount_vol: this.props.mount_vol,
             transport: this.props.transport,
@@ -356,8 +349,8 @@ class CreateVolume extends Component {
         volume_units: this.props.volume_units,
         maxbw: this.props.maxbw,
         maxiops: this.props.maxiops,
-        minbw: this.props.mintype === "minbw" ? this.props.minvalue : 0,
-        miniops: this.props.mintype === "miniops" ? this.props.minvalue : 0,
+        minbw: localMinBw,
+        miniops: localMinIOPS,
         stop_on_error_checkbox: this.props.stop_on_error_checkbox,
         mount_vol: this.props.mount_vol,
         transport: this.props.transport,
@@ -374,9 +367,7 @@ class CreateVolume extends Component {
   render() {
     const { classes } = this.props;
     let volumeCountTitle;
-    if (this.props.volCount > 1)
-      volumeCountTitle = `Specify the number of volumes to create. ${this.props.volCount} volumes already exist. POS supports max ${this.props.maxVolumeCount} volumes`;
-    else if (this.props.volCount === 1)
+    if (this.props.volCount >= 1)
       volumeCountTitle = `Specify the number of volumes to create. ${this.props.volCount} volume already exists. POS supports max ${this.props.maxVolumeCount} volumes`;
     else
       volumeCountTitle = `Specify the number of volumes to create. POS supports max ${this.props.maxVolumeCount} volumes`;
@@ -545,9 +536,9 @@ class CreateVolume extends Component {
               <FormControl className={classes.volumeUnit}>
                 <Select
                   value={this.props.volume_units}
-                  onChange={this.props.Set_Unit}
+                  onChange={this.handleChange}
                   inputProps={{
-                    name: "Volume Unit",
+                    name: "volume_units",
                     id: "vol_unit",
                     "data-testid": "volume-unit-input",
                   }}
@@ -795,8 +786,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.CHANGE_INPUT, payload }),
     Update_Subsystem: (payload) =>
       dispatch({ type: actionTypes.UPDATE_SUBSYSTEM, payload }),
-    Set_Unit: (payload) =>
-      dispatch({ type: actionTypes.SET_UNIT, payload }),
     Toggle_Advance_Create_Volume_Popup: (flag) =>
       dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag))
   };

@@ -84,13 +84,6 @@ const createVolumeReducer = (state = initialState, action) => {
             }
         }
 
-        case actionTypes.SET_UNIT: {
-            return {
-                ...state,
-                volume_units: action.payload.volume_units
-            }
-        }
-
         case actionTypes.TOGGLE_ADVANCE_CREATE_VOLUME_POPUP: {
             return {
                 ...state,

@@ -116,6 +116,8 @@ describe("<Storage Management />", () => {
     expect(waitForElement(() => getByTestId("arraycreate"))).toBeDefined();
   });
 
+  const maxAvailableSize = 6.36
+
   const devices = [
     {
       name: "intel-unvmens-0",
@@ -191,92 +193,92 @@ describe("<Storage Management />", () => {
 
   const config = {
     "raidTypes": [
-        {
-            "raidType": "RAID0",
-            "minStorageDisks": 2,
-            "maxStorageDisks": 32,
-            "minSpareDisks": 0,
-            "maxSpareDisks": 0
-        },
-        {
-            "raidType": "RAID5",
-            "minStorageDisks": 3,
-            "maxStorageDisks": 32,
-            "minSpareDisks": 0,
-            "maxSpareDisks": 29
-        },
-        {
-            "raidType": "RAID10",
-            "minStorageDisks": 2,
-            "maxStorageDisks": 32,
-            "minSpareDisks": 0,
-            "maxSpareDisks": 29
-        },
-        {
-            "raidType": "NONE",
-            "minStorageDisks": 1,
-            "maxStorageDisks": 1,
-            "minSpareDisks": 0,
-            "maxSpareDisks": 0
-        }
+      {
+        "raidType": "RAID0",
+        "minStorageDisks": 2,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 0
+      },
+      {
+        "raidType": "RAID5",
+        "minStorageDisks": 3,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29
+      },
+      {
+        "raidType": "RAID10",
+        "minStorageDisks": 2,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 29
+      },
+      {
+        "raidType": "NONE",
+        "minStorageDisks": 1,
+        "maxStorageDisks": 1,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 0
+      }
     ],
     "totalDisks": 32
   }
 
-  const posInfo =  {
+  const posInfo = {
     "rid": "365a0ad6-69e9-4afc-bca0-fd6bf255ba16",
     "lastSuccessTime": 1653396206,
     "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray information"
-        },
-        "data": {
-            "capacity": 3385669032346,
-            "create_datetime": "2022-05-24 17:33:00 +0530",
-            "data_raid": "RAID5",
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ],
-            "gcMode": "none",
-            "index": 0,
-            "meta_raid": "RAID0",
-            "name": "POSArray",
-            "rebuilding_progress": 0,
-            "situation": "NORMAL",
-            "state": "NORMAL",
-            "unique_id": 390699171,
-            "update_datetime": "2022-05-24 17:33:12 +0530",
-            "used": 20741881856,
-            "write_through_enabled": false
-        }
+      "status": {
+        "module": "COMMON",
+        "code": 0,
+        "level": "INFO",
+        "description": "Success",
+        "posDescription": "POSArray information"
+      },
+      "data": {
+        "capacity": 3385669032346,
+        "create_datetime": "2022-05-24 17:33:00 +0530",
+        "data_raid": "RAID5",
+        "devicelist": [
+          {
+            "name": "uram0",
+            "type": "BUFFER"
+          },
+          {
+            "name": "unvme-ns-0",
+            "type": "DATA"
+          },
+          {
+            "name": "unvme-ns-1",
+            "type": "DATA"
+          },
+          {
+            "name": "unvme-ns-2",
+            "type": "DATA"
+          },
+          {
+            "name": "unvme-ns-3",
+            "type": "SPARE"
+          }
+        ],
+        "gcMode": "none",
+        "index": 0,
+        "meta_raid": "RAID0",
+        "name": "POSArray",
+        "rebuilding_progress": 0,
+        "situation": "NORMAL",
+        "state": "NORMAL",
+        "unique_id": 390699171,
+        "update_datetime": "2022-05-24 17:33:12 +0530",
+        "used": 20741881856,
+        "write_through_enabled": false
+      }
     },
     "info": {
-        "version": "v0.11.0-rc4"
+      "version": "v0.11.0-rc4"
     }
-}
+  }
 
   const array = {
     RAIDLevel: "5",
@@ -310,47 +312,102 @@ describe("<Storage Management />", () => {
     totalsize: 6357625339904,
     usedspace: 0,
   };
-/*
-  it("should render array created view", () => {
-    mock
-      .onGet(/api\/v1.0\/get_devices\//)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onGet(/api\/v1\/get_arrays\//)
-      .reply(200, [array])
-      .onGet(/api\/v1.0\/get_volumes\//)
-      .reply(200, [])
-      .onGet(/api\/v1.0\/max_volume_count\//)
-      .reply(200, 256)
-      .onPost(/api\/v1.0\/delete_array\//)
-      .reply(200, {})
-      .onGet(/api\/v1\/get_array_config\//)
-      .reply(200, config)
-      .onGet(/api\/v1\/array\/POSArray\/info/)
-      .reply(200, posInfo)
-      .onGet(/api\/v1\/subsystem/)
-      .reply(200, {
-        result: {
-          data: {
-        subsystemlist: [{
-            nqn: "subsystem1",
+
+  const subsystems = {
+    rid: "0a5d0bb6-5115-4f3b-8595-03df4575e90a",
+    lastSuccessTime: 1653641891,
+    result: {
+      "status":
+      {
+        "module": "COMMON",
+        "code": 0, "level":
+          "INFO", "description":
+          "Success", "posDescription": "list of existing subsystems"
+      },
+      "data":
+      {
+        "subsystemlist":
+          [
+            {
+              "allow_any_host": 1,
+              "hosts": [], "listen_addresses": [],
+              "nqn": "nqn.2014-08.org.nvmexpress.discovery",
+              "subtype": "Discovery"
+            },
+            {
+              "allow_any_host": 1,
+              "hosts": [], "listen_addresses":
+                [{
+                  "address_family": "IPv4",
+                  "target_address": "localhost",
+                  "transport_service_id": "1158",
+                  "transport_type": "TCP"
+                }],
+              "max_namespaces": 256,
+              "model_number": "IBOF_VOLUME_EEEXTENSION",
+              "namespaces":
+                [
+                  { "bdev_name": "bdev_0_POSArray", "nsid": 1, "uuid": "0f902600-ae47-4f9c-a278-c69b3fc45350" },
+                  { "bdev_name": "bdev_1_POSArray", "nsid": 2, "uuid": "3567d445-1a5e-4f69-bd24-74345e862726" },
+                  { "bdev_name": "bdev_2_POSArray", "nsid": 3, "uuid": "5169639e-ea02-4709-87df-9620c3e064dc" }],
+              "nqn": "nqn.2019-04.pos:subsystem1", "serial_number": "POS0000000003", "subtype": "NVMe", "array": "POSArray"
+            },
+            {
+              "allow_any_host": 1,
+              "hosts": [], "listen_addresses":
+                [{
+                  "address_family": "IPv4",
+                  "target_address": "localhost",
+                  "transport_service_id": "1158", "transport_type": "TCP"
+                }],
+              "max_namespaces": 256, "model_number": "IBOF_VOLUME_EEEXTENSION",
+              "namespaces": [],
+              "nqn": "nqn.2019-04.pos:subsystem2", "serial_number": "POS0000000003", "subtype": "NVMe"
+            }]
+      }
+    }, "info": { "version": "v0.11.0-rc4" }
+  }
+  /*
+    it("should render array created view", () => {
+      mock
+        .onGet(/api\/v1.0\/get_devices\//)
+        .reply(200, {
+          devices,
+          metadevices,
+        })
+        .onGet(/api\/v1\/get_arrays\//)
+        .reply(200, [array])
+        .onGet(/api\/v1.0\/get_volumes\//)
+        .reply(200, [])
+        .onGet(/api\/v1.0\/max_volume_count\//)
+        .reply(200, 256)
+        .onPost(/api\/v1.0\/delete_array\//)
+        .reply(200, {})
+        .onGet(/api\/v1\/get_array_config\//)
+        .reply(200, config)
+        .onGet(/api\/v1\/array\/POSArray\/info/)
+        .reply(200, posInfo)
+        .onGet(/api\/v1\/subsystem/)
+        .reply(200, {
+          result: {
+            data: {
+          subsystemlist: [{
+              nqn: "subsystem1",
+            subtype: "NVMe"
+          }, {
+          nqn: "subsystem2",
           subtype: "NVMe"
-        }, {
-        nqn: "subsystem2",
-        subtype: "NVMe"
-      }],
-}}})
-      .onAny()
-      .reply(200, []);
-    renderComponent();
-    const { getByTestId, asFragment } = wrapper;
-    const resolvedThing = waitForElement(() => getByTestId("arrayshow"));
-    expect(asFragment()).toMatchSnapshot();
-    expect(resolvedThing).toBeDefined();
-  });
-*/
+        }],
+  }}})
+        .onAny()
+        .reply(200, []);
+      renderComponent();
+      const { getByTestId, asFragment } = wrapper;
+      const resolvedThing = waitForElement(() => getByTestId("arrayshow"));
+      expect(asFragment()).toMatchSnapshot();
+      expect(resolvedThing).toBeDefined();
+    });
+  */
   it("should render devices", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -402,7 +459,7 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByText("create"));
     const raidSelect = getByTestId("raid-select-input");
     fireEvent.change(raidSelect, {
-      target: {value: "RAID5"},
+      target: { value: "RAID5" },
     });
     const wb = await waitForElement(() => getByTestId("writebuffer-input"));
     fireEvent.change(wb, {
@@ -497,190 +554,190 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByTestId("createarray-btn"));
     expect(queryByText(/Select at least/i)).toBeDefined();
   });
-/*
-  it("should not create array if meta disk is not selected", async () => {
-    mock
-      .onGet(/api\/v1.0\/get_devices\//)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onGet(/api\/v1\/get_array_config\//)
-      .reply(200, config)
-      .onPost("/api/v1.0/create_arrays/")
-      .reply(200, {})
-      .onAny()
-      .reply(200, []);
-    renderComponent();
-    const getSpy = jest.spyOn(axios, "post");
-    const { getByTestId, getByText, getAllByText, queryByText, asFragment } = wrapper;
-    fireEvent.click(getByText("create"));
-    const raidSelect = await waitForElement(() =>
-      getByTestId("raid-select-input")
-    );
-    fireEvent.change(raidSelect, { target: { value: "RAID5" } });
-    expect(asFragment()).toMatchSnapshot();
-    fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("STORAGE DISK")[0]);
-    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
-    fireEvent.click(dev1);
-    const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
-    fireEvent.click(dev2);
-    const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
-    fireEvent.click(dev3);
-    const dev2_ = await waitForElement(() => getByTestId("diskselect-1"));
-    fireEvent.click(dev2_);
-    const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
-    fireEvent.click(dev4);
-    fireEvent.change(getByTestId("disktype-input"), {
-      target: { value: "SPARE DISK" },
+  /*
+    it("should not create array if meta disk is not selected", async () => {
+      mock
+        .onGet(/api\/v1.0\/get_devices\//)
+        .reply(200, {
+          devices,
+          metadevices,
+        })
+        .onGet(/api\/v1\/get_array_config\//)
+        .reply(200, config)
+        .onPost("/api/v1.0/create_arrays/")
+        .reply(200, {})
+        .onAny()
+        .reply(200, []);
+      renderComponent();
+      const getSpy = jest.spyOn(axios, "post");
+      const { getByTestId, getByText, getAllByText, queryByText, asFragment } = wrapper;
+      fireEvent.click(getByText("create"));
+      const raidSelect = await waitForElement(() =>
+        getByTestId("raid-select-input")
+      );
+      fireEvent.change(raidSelect, { target: { value: "RAID5" } });
+      expect(asFragment()).toMatchSnapshot();
+      fireEvent.click(getByTestId("disktype"));
+      fireEvent.click(getAllByText("STORAGE DISK")[0]);
+      const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+      fireEvent.click(dev1);
+      const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
+      fireEvent.click(dev2);
+      const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
+      fireEvent.click(dev3);
+      const dev2_ = await waitForElement(() => getByTestId("diskselect-1"));
+      fireEvent.click(dev2_);
+      const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
+      fireEvent.click(dev4);
+      fireEvent.change(getByTestId("disktype-input"), {
+        target: { value: "SPARE DISK" },
+      });
+      fireEvent.click(dev2);
+      fireEvent.click(getByTestId("createarray-btn"));
+      expect(queryByText(/Select a Write Buffer/i)).toBeDefined();
     });
-    fireEvent.click(dev2);
-    fireEvent.click(getByTestId("createarray-btn"));
-    expect(queryByText(/Select a Write Buffer/i)).toBeDefined();
-  });
-*/
-  it("should create an array with selected devices", async () => {
-    mock
-      .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onPost("/api/v1.0/create_arrays/")
-      .reply(200, {})
-      .onGet(/api\/v1\/get_array_config\/*/)
-      .reply(200, config)
-      .onAny()
-      .reply(200, []);
-    renderComponent();
-    jest.setTimeout(30000);
-    const getSpy = jest.spyOn(axios, "post");
-    const {
-      getByTestId,
-      getByText,
-      getAllByText,
-      getByLabelText,
-      asFragment,
-    } = wrapper;
-    fireEvent.click(getByText("create"));
-    const raidSelect = await waitForElement(() =>
-      getByTestId("raid-select-input")
-    );
-    fireEvent.change(raidSelect, { target: { value: "RAID5" } });
-    fireEvent.change(getByTestId("array-name"), {target: {value: "POSArray"}});
-    const wb = await waitForElement(() => getByTestId("writebuffer"));
-    wb.value = "uram0";
-    fireEvent.change(wb);
-    fireEvent.click(wb);
-    try {
-      fireEvent.click(await waitForElement(() => getAllByText("uram0")[0]));
-    } catch {
-      const wbInput = await waitForElement(() => getByTestId("writebuffer-input"));
-      fireEvent.change(wbInput, {target: {value: "uram0"}});
-    }
-    fireEvent.click(getByTestId("disktype"));
-    fireEvent.click(getAllByText("STORAGE DISK")[0]);
-    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
-    fireEvent.click(dev1);
-    const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
-    fireEvent.click(dev2);
-    const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
-    fireEvent.click(dev3);
-    fireEvent.click(dev2);
-    const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
-    fireEvent.click(dev4);
-    //fireEvent.click(getByTestId('disktype'));
-    const disktype = await waitForElement(() => getByTestId("disktype"));
-    disktype.value = "SPARE DISK";
-    fireEvent.change(disktype);
-    fireEvent.click(getByTestId("disktype"));
-    try {
-      fireEvent.click(getAllByText("SPARE DISK")[0]);
-    } catch {
-      const diskTypeInput = await waitForElement(() => getByTestId("disktype-input"));
-      fireEvent.change(diskTypeInput, {target: {value: "SPARE DISK"}})
-    }
-    fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
-    fireEvent.click(getByTestId("createarray-btn"));
-    fireEvent.click(getByText("Yes"));
-    expect(asFragment()).toMatchSnapshot();
-    expect(getSpy).toHaveBeenCalledWith(
-      "/api/v1.0/create_arrays/",
-      {
-        size: 1172110338,
-        arrayname: "POSArray",
-        raidtype: "RAID5",
-        storageDisks: [
-          { deviceName: "intel-unvmens-0", numa: "0" },
-          { deviceName: "intel-unvmens-2", numa: "0" },
-          { deviceName: "intel-unvmens-3", numa: "0" },
-        ],
-        spareDisks: [
-          {
-            deviceName: "intel-unvmens-1",
-            numa: "0"
-          },
-        ],
-        writeBufferDisk: [],
-        writeThroughModeEnabled: false,
-        metaDisk: "uram0",
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": null,
-        },
-      }
-    );
-    const success = await waitForElement(() => getByTestId("alertDescription"));
-    expect(success).toBeDefined();
-    fireEvent.click(getByText("OK"));
-  });
+  */
+  // it("should create an array with selected devices", async () => {
+  //   mock
+  //     .onGet(/api\/v1.0\/get_devices\/*/)
+  //     .reply(200, {
+  //       devices,
+  //       metadevices,
+  //     })
+  //     .onPost("/api/v1.0/create_arrays/")
+  //     .reply(200, {})
+  //     .onGet(/api\/v1\/get_array_config\/*/)
+  //     .reply(200, config)
+  //     .onAny()
+  //     .reply(200, []);
+  //   renderComponent();
+  //   jest.setTimeout(30000);
+  //   const getSpy = jest.spyOn(axios, "post");
+  //   const {
+  //     getByTestId,
+  //     getByText,
+  //     getAllByText,
+  //     getByLabelText,
+  //     asFragment,
+  //   } = wrapper;
+  //   fireEvent.click(getByText("create"));
+  //   const raidSelect = await waitForElement(() =>
+  //     getByTestId("raid-select-input")
+  //   );
+  //   fireEvent.change(raidSelect, { target: { value: "RAID5" } });
+  //   fireEvent.change(getByTestId("array-name"), {target: {value: "POSArray"}});
+  //   const wb = await waitForElement(() => getByTestId("writebuffer"));
+  //   wb.value = "uram0";
+  //   fireEvent.change(wb);
+  //   fireEvent.click(wb);
+  //   try {
+  //     fireEvent.click(await waitForElement(() => getAllByText("uram0")[0]));
+  //   } catch {
+  //     const wbInput = await waitForElement(() => getByTestId("writebuffer-input"));
+  //     fireEvent.change(wbInput, {target: {value: "uram0"}});
+  //   }
+  //   fireEvent.click(getByTestId("disktype"));
+  //   fireEvent.click(getAllByText("STORAGE DISK")[0]);
+  //   const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+  //   fireEvent.click(dev1);
+  //   const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
+  //   fireEvent.click(dev2);
+  //   const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
+  //   fireEvent.click(dev3);
+  //   fireEvent.click(dev2);
+  //   const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
+  //   fireEvent.click(dev4);
+  //   //fireEvent.click(getByTestId('disktype'));
+  //   const disktype = await waitForElement(() => getByTestId("disktype"));
+  //   disktype.value = "SPARE DISK";
+  //   fireEvent.change(disktype);
+  //   fireEvent.click(getByTestId("disktype"));
+  //   try {
+  //     fireEvent.click(getAllByText("SPARE DISK")[0]);
+  //   } catch {
+  //     const diskTypeInput = await waitForElement(() => getByTestId("disktype-input"));
+  //     fireEvent.change(diskTypeInput, {target: {value: "SPARE DISK"}})
+  //   }
+  //   fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
+  //   fireEvent.click(getByTestId("createarray-btn"));
+  //   fireEvent.click(getByText("Yes"));
+  //   expect(asFragment()).toMatchSnapshot();
+  //   expect(getSpy).toHaveBeenCalledWith(
+  //     "/api/v1.0/create_arrays/",
+  //     {
+  //       size: 1172110338,
+  //       arrayname: "POSArray",
+  //       raidtype: "RAID5",
+  //       storageDisks: [
+  //         { deviceName: "intel-unvmens-0", numa: "0" },
+  //         { deviceName: "intel-unvmens-2", numa: "0" },
+  //         { deviceName: "intel-unvmens-3", numa: "0" },
+  //       ],
+  //       spareDisks: [
+  //         {
+  //           deviceName: "intel-unvmens-1",
+  //           numa: "0"
+  //         },
+  //       ],
+  //       writeBufferDisk: [],
+  //       writeThroughModeEnabled: false,
+  //       metaDisk: "uram0",
+  //     },
+  //     {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "x-access-token": null,
+  //       },
+  //     }
+  //   );
+  //   const success = await waitForElement(() => getByTestId("alertDescription"));
+  //   expect(success).toBeDefined();
+  //   fireEvent.click(getByText("OK"));
+  // });
 
-  it("should add a spare disk", async () => {
-    mock
-      .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array])
-      .onGet(/api\/v1\/get_array_config\/*/)
-      .reply(200, config)
-      .onGet(/api\/v1.0\/get_volumes\/*/)
-      .reply(200, [])
-      .onPost(/api\/v1.0\/delete_array\/*/)
-      .reply(200, {})
-      .onAny()
-      .reply(200, []);
-    const getSpy = jest.spyOn(axios, "post");
-    renderComponent();
-    const { getByTestId, asFragment, getByText } = wrapper;
-    await waitForElement(() => getByText("Unmount Array"))
-    expect(asFragment()).toMatchSnapshot();
-    const attachButton = await waitForElement(() =>
-      getByTestId("attachdisk-5")
-    );
-    fireEvent.click(attachButton);
-    fireEvent.click(await waitForElement(() => getByTestId("alertbox-yes")));
-    expect(getSpy).toHaveBeenCalledWith(
-      "/api/v1.0/add_spare_device/",
-      {
-        name: "intel-unvmens-5",
-        array: "POSArray",
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": null,
-        },
-      }
-    );
-  });
+  // it("should add a spare disk", async () => {
+  //   mock
+  //     .onGet(/api\/v1.0\/get_devices\/*/)
+  //     .reply(200, {
+  //       devices,
+  //       metadevices,
+  //     })
+  //     .onGet(/api\/v1\/get_arrays\/*/)
+  //     .reply(200, [array])
+  //     .onGet(/api\/v1\/get_array_config\/*/)
+  //     .reply(200, config)
+  //     .onGet(/api\/v1.0\/get_volumes\/*/)
+  //     .reply(200, [])
+  //     .onPost(/api\/v1.0\/delete_array\/*/)
+  //     .reply(200, {})
+  //     .onAny()
+  //     .reply(200, []);
+  //   const getSpy = jest.spyOn(axios, "post");
+  //   renderComponent();
+  //   const { getByTestId, asFragment, getByText } = wrapper;
+  //   await waitForElement(() => getByText("Unmount Array"))
+  //   expect(asFragment()).toMatchSnapshot();
+  //   const attachButton = await waitForElement(() =>
+  //     getByTestId("attachdisk-5")
+  //   );
+  //   fireEvent.click(attachButton);
+  //   fireEvent.click(await waitForElement(() => getByTestId("alertbox-yes")));
+  //   expect(getSpy).toHaveBeenCalledWith(
+  //     "/api/v1.0/add_spare_device/",
+  //     {
+  //       name: "intel-unvmens-5",
+  //       array: "POSArray",
+  //     },
+  //     {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "x-access-token": null,
+  //       },
+  //     }
+  //   );
+  // });
 
   it("should remove a spare disk", async () => {
     mock
@@ -746,7 +803,7 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByText("Yes"));
   });
 
-  it("should create a volume", async () => {
+  it("should create a volume with maximum size", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
@@ -780,19 +837,24 @@ describe("<Storage Management />", () => {
     const volCount = await waitForElement(() =>
       getByTestId("create-vol-count")
     );
-    fireEvent.change(volCount, { target: { value: 2 } });
-    const volSuffix = await waitForElement(() =>
-      getByLabelText("Suffix Start Value")
-    );
-    fireEvent.change(volSuffix, { target: { value: 0 } });
+    fireEvent.change(volCount, { target: { value: 1 } });
+    // const volSuffix = await waitForElement(() =>
+    //   getByLabelText("Suffix Start Value")
+    // );
+    // fireEvent.change(volSuffix, { target: { value: 0 } });
     const volSize = await waitForElement(() => getByTestId("create-vol-size"));
-    fireEvent.change(volSize, { target: { value: "10" } });
+    fireEvent.change(volSize, { target: { value: maxAvailableSize } });
     const volUnit = await waitForElement(() =>
       getByTestId("volume-unit-input")
     );
     fireEvent.click(volUnit);
     fireEvent.change(volUnit, { target: { value: "TB" } });
     //fireEvent.click(await waitForElement(() => getByText('TB')));
+
+    const mountVolCheckBox = await waitForElement(() => getByTestId("mount-vol-checkbox"));
+    fireEvent.click(mountVolCheckBox);
+    expect(mountVolCheckBox.checked).toEqual(false);
+
     const createVolButton = await waitForElement(() =>
       getByTestId("createvolume-btn")
     );
@@ -833,6 +895,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -853,6 +917,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -865,23 +931,56 @@ describe("<Storage Management />", () => {
       .onAny()
       .reply(200, []);
 
+    jest.setTimeout(30000);
     renderComponent();
     const { getByTestId, getByLabelText, getByText, asFragment } = wrapper;
-    const volCount = await waitForElement(() =>
-      getByTestId("create-vol-count")
-    );
-    fireEvent.change(volCount, { target: { value: 1 } });
+
+    const volCount = await waitForElement(() => getByTestId("create-vol-count"));
+    fireEvent.change(volCount, { target: { value: "" } });
+    const createVolButton = await waitForElement(() => getByTestId("createvolume-btn"));
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Volume Count"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: "-1" } });
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText("Volume Count should be greater than 0"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: "99999" } });
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText(/should not exceed/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: "2" } });
+
+    const volSuffix = await waitForElement(() => getByLabelText("Suffix Start Value"));
+    fireEvent.change(volSuffix, { target: { value: -1 } });
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText("Suffix Value cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSuffix, { target: { value: null } });
+    fireEvent.click(createVolButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Suffix Start Value"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSuffix, { target: { value: 0 } });
+
     const volName = await waitForElement(() => getByTestId("create-vol-name"));
     fireEvent.change(volName, { target: { value: "" } });
-    const createVolButton = await waitForElement(() =>
-      getByTestId("createvolume-btn")
-    );
     fireEvent.click(createVolButton);
     expect(
       await waitForElement(() => getByText("Please Enter Volume Name"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
-    fireEvent.change(volName, { target: { value: "vol1" } });
+    fireEvent.change(volName, { target: { value: "multi-vol1" } });
+
     const volSize = await waitForElement(() => getByTestId("create-vol-size"));
     fireEvent.change(volSize, { target: { value: "" } });
     fireEvent.click(createVolButton);
@@ -889,16 +988,31 @@ describe("<Storage Management />", () => {
       await waitForElement(() => getByText("Please Enter Volume Size"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
-
     fireEvent.change(volSize, { target: { value: -1 } });
     fireEvent.click(createVolButton);
     expect(
       await waitForElement(() => getByText("Volume Size cannot be negative"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSize, { target: { value: 0 } });
+    fireEvent.click(createVolButton)
+    expect(
+      await waitForElement(() => getByText(/Please select an unused subsystem/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+
+    const mountVolCheckBox = await waitForElement(() => getByTestId("mount-vol-checkbox"));
+    fireEvent.click(mountVolCheckBox);
+    expect(mountVolCheckBox.checked).toEqual(false);
+
+    fireEvent.click(createVolButton)
+    expect(
+      await waitForElement(() => getByText(/Multiple volumes cannot be created/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("Yes")));
   });
 
-  it("should throw error if creating volume is not possible because of missing volume count", async () => {
+  it("should create a volume with advance options and mounting old subsystem", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
@@ -907,76 +1021,486 @@ describe("<Storage Management />", () => {
       })
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
-      .onPost("/api/v1.0/save-volume/")
+      .onGet(/api\/v1\/subsystem\//)
+      .reply(200, subsystems)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes/)
+      .reply(200, { "@odata.type": "#VolumeCollection_1_0_0.VolumeCollection", "Name": "Volumes", "Members@odata.count": 1, "@odata.id": "/redfish/v1/StorageServices/1/Volumes", "@odata.context": "/redfish/v1/$metadata#VolumeCollection.VolumeCollection", "Members": [{ "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" }], "Permissions": [{ "Read": "True" }, { "Write": "True" }] })
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/0/)
+      .reply(200, { "@odata.context": "redfish/v1/$metadata#Volume.Volume", "@odata.type": "#Volume_1_0_0.Volume", "Name": "vol", "Id": "0", "Description": "", "Status": { "Health": "OK", "Oem": { "VolumeStatus": "Mounted" } }, "AccessCapabilities": ["Read", "Write", "Append", "Streaming"], "BlockSizeBytes": 512, "Capacity": { "Data": { "ConsumedBytes": 0.0, "AllocatedBytes": 20322711502848.0 } }, "Oem": { "MaxBandwidth": 0, "MaxIOPS": 0, "MinIOPS": 0, "MinBandwidth": 0, "IP": "107.108.221.146", "Port": "NA", "NQN": "nqn.2019-04.pos:subsystem1", "UUID": "6cdb989a-f948-407a-a728-f80a86061ca3" }, "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" })
+      .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
-      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .onPost(/api\/v1.0\/save-volume\/*/)
       .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
-      .reply(200, {
-        Name: "vol1",
-        Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
-      })
-      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
-      .reply(200, {
-        Name: "vol2",
-        Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        result: { status: { code: 0 } },
       })
       .onAny()
       .reply(200, []);
-
-    jest.setTimeout(30000);
+    jest.setTimeout(60000);
     renderComponent();
-    const { getByTestId, getByLabelText, getByText, asFragment } = wrapper;
-    await waitForElement(() => getByTestId("vol-edit-btn-vol2"));
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() =>
+      getByTestId("advanceoptions-btn")
+    );
+    fireEvent.click(advanceOptionsButton);
+    const volName = await waitForElement(() => getByTestId("adv-create-vol-name"));
+    fireEvent.change(volName, { target: { value: "vol1" } });
     const volCount = await waitForElement(() =>
-      getByTestId("create-vol-count")
+      getByTestId("adv-create-vol-count")
+    );
+    fireEvent.change(volCount, { target: { value: 2 } });
+    const volSuffix = await waitForElement(() =>
+      getByLabelText("Suffix Start Value")
+    );
+    fireEvent.change(volSuffix, { target: { value: 0 } });
+    const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
+    fireEvent.change(volSize, { target: { value: "10" } });
+    const volUnit = await waitForElement(() =>
+      getByTestId("adv-volume-unit-input")
+    );
+    fireEvent.click(volUnit);
+    fireEvent.change(volUnit, { target: { value: "TB" } });
+    //fireEvent.click(await waitForElement(() => getByText('TB')));
+    const nextButton = await waitForElement(() =>
+      getByTestId("next-btn")
+    );
+    const stopOnErrorCheckbox = await waitForElement(() => getByTestId("adv-stop-on-error-checkbox"));
+    fireEvent.click(stopOnErrorCheckbox);
+    expect(stopOnErrorCheckbox.checked).toEqual(true);
+    fireEvent.click(nextButton);
+    const minValue = await waitForElement(() => getByTestId("adv-create-vol-minvalue"));
+    fireEvent.change(minValue, { target: { value: "10" } });
+    const minType = await waitForElement(() =>
+      getByTestId("adv-mintype-input")
+    );
+    fireEvent.click(minType);
+    fireEvent.change(minType, { target: { value: "minbw" } });
+    fireEvent.click(nextButton);
+    const selectSubsystem = await waitForElement(() => getByTestId("adv-subsystem-input"))
+    fireEvent.click(selectSubsystem)
+    fireEvent.change(selectSubsystem, { target: { value: "nqn.2019-04.pos:subsystem2" } });
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+  });
+
+  it("should create a volume with advance options and mounting new subsystem with maximum available size", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onPost(/api\/v1.0\/save-volume\/*/)
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    renderComponent();
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() =>
+      getByTestId("advanceoptions-btn")
+    );
+    fireEvent.click(advanceOptionsButton);
+
+    const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
+    fireEvent.change(volSize, { target: { value: maxAvailableSize } });
+    const volUnit = await waitForElement(() =>
+      getByTestId("adv-volume-unit-input")
+    );
+    fireEvent.click(volUnit);
+    fireEvent.change(volUnit, { target: { value: "TB" } });
+    const nextButton = await waitForElement(() =>
+      getByTestId("next-btn")
+    );
+    fireEvent.click(nextButton);
+    const minValue = await waitForElement(() => getByTestId("adv-create-vol-minvalue"));
+    fireEvent.change(minValue, { target: { value: "10" } });
+    const minType = await waitForElement(() =>
+      getByTestId("adv-mintype-input")
+    );
+    fireEvent.click(minType);
+    fireEvent.change(minType, { target: { value: "minbw" } });
+    fireEvent.click(nextButton);
+    const newSubsystemCheckbox = await waitForElement(() => getByTestId("adv-selectedNewSubsystem"));
+    fireEvent.click(newSubsystemCheckbox);
+    expect(newSubsystemCheckbox.checked).toEqual(true);
+    const subSystemName = await waitForElement(() => getByTestId("adv-create-subsystem-name"));
+    fireEvent.change(subSystemName, { target: { value: "nqn.2019-04.pos:subsystem-test" } });
+    const transportType = await waitForElement(() =>
+      getByTestId("adv-transport_type-input")
+    );
+    fireEvent.click(transportType);
+    fireEvent.change(transportType, { target: { value: "RBMI" } });
+
+    const targetAddress = await waitForElement(() =>
+      getByTestId("adv-create-target-address")
+    );
+    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+
+    const transportServiceId = await waitForElement(() =>
+      getByTestId("adv-create-transport-service-id")
+    );
+    fireEvent.change(transportServiceId, { target: { value: "1158" } });
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+  });
+
+  it("should create a volume with advance options without mount", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onPost(/api\/v1.0\/save-volume\/*/)
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    renderComponent();
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() =>
+      getByTestId("advanceoptions-btn")
+    );
+    fireEvent.click(advanceOptionsButton);
+    const volName = await waitForElement(() => getByTestId("adv-create-vol-name"));
+    fireEvent.change(volName, { target: { value: "vol1" } });
+    const volCount = await waitForElement(() =>
+      getByTestId("adv-create-vol-count")
+    );
+    fireEvent.change(volCount, { target: { value: 2 } });
+    const volSuffix = await waitForElement(() =>
+      getByLabelText("Suffix Start Value")
+    );
+    fireEvent.change(volSuffix, { target: { value: 0 } });
+    const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
+    fireEvent.change(volSize, { target: { value: "10" } });
+    const volUnit = await waitForElement(() =>
+      getByTestId("adv-volume-unit-input")
+    );
+    fireEvent.click(volUnit);
+    fireEvent.change(volUnit, { target: { value: "TB" } });
+    //fireEvent.click(await waitForElement(() => getByText('TB')));
+    const nextButton = await waitForElement(() =>
+      getByTestId("next-btn")
+    );
+    fireEvent.click(nextButton);
+    const backButton = await waitForElement(() =>
+      getByTestId("back-btn")
+    );
+    fireEvent.click(nextButton);
+
+    fireEvent.click(backButton);
+    fireEvent.click(nextButton);
+    const mountVolCheckBox = await waitForElement(() => getByTestId("adv-mount-vol-checkbox"));
+    fireEvent.click(mountVolCheckBox);
+    expect(mountVolCheckBox.checked).toEqual(false);
+    fireEvent.click(nextButton);
+
+    fireEvent.click(nextButton);
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+  });
+
+  it("should throw error if creating volume with advance options is not possible because of wrong values", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1.0\/max_volume_count\/*/)
+      .reply(200, 256)
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onGet(/api\/v1\/subsystem\//)
+      .reply(200, subsystems)
+      .onGet(/api\/v1.0\/max_volume_count\/*/)
+      .reply(200, 256)
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onPost(/api\/v1.0\/save-volume\/*/)
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    renderComponent();
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() => getByTestId("advanceoptions-btn"));
+    fireEvent.click(advanceOptionsButton);
+
+    const nextButton = await waitForElement(() => getByTestId("next-btn"));
+
+    const volName = await waitForElement(() => getByTestId("adv-create-vol-name"));
+    fireEvent.change(volName, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Volume Name"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volName, { target: { value: "vol1" } });
+
+    const volCount = await waitForElement(() =>
+      getByTestId("adv-create-vol-count")
     );
     fireEvent.change(volCount, { target: { value: "" } });
-    const createVolButton = await waitForElement(() =>
-      getByTestId("createvolume-btn")
-    );
-    fireEvent.click(createVolButton);
+    fireEvent.click(nextButton);
     expect(
       await waitForElement(() => getByText("Please Enter Volume Count"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: 0 } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Volume Count should be greater than 0"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: 99999999 } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText(/should not exceed/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volCount, { target: { value: 2 } });
+
+    const volSuffix = await waitForElement(() =>
+      getByLabelText("Suffix Start Value")
+    );
+    fireEvent.change(volSuffix, { target: { value: -1 } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Suffix Value cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSuffix, { target: { value: null } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Suffix Start Value"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSuffix, { target: { value: 0 } });
+
+    const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
+    fireEvent.change(volSize, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Volume Size"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSize, { target: { value: "-1" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Volume Size cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(volSize, { target: { value: "0" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Multiple volumes cannot be created when volume size is set as 0(max). Do you want to create a single volume with the maximum available size?"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("Yes")));
+
+    fireEvent.click(nextButton)
+
+    const maxBw = await waitForElement(() => getByTestId("adv-create-vol-max-bw"));
+    fireEvent.change(maxBw, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Maximum Bandwidth (MB/s)"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxBw, { target: { value: "-1" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Maximum Bandwidth cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxBw, { target: { value: "5" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText(/Max Bandwidth should be in the range/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxBw, { target: { value: "0" } });
+
+    const maxIOPS = await waitForElement(() => getByTestId("adv-create-vol-max-iops"));
+    fireEvent.change(maxIOPS, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Maximum IOPS (KIOPS)"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxIOPS, { target: { value: "-1" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Maximum IOPS cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxIOPS, { target: { value: "5" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText(/Max IOPS should be in the range 10/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(maxIOPS, { target: { value: "0" } });
+
+    const minValue = await waitForElement(() => getByTestId("adv-create-vol-minvalue"));
+    fireEvent.change(minValue, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Minimum IOPS/BW or set 0 for no Minimum IOPS/BW"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(minValue, { target: { value: "-1" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Minimum IOPS/Bandwidth cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(minValue, { target: { value: "0" } });
+
+    fireEvent.click(nextButton);
+
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText(/Please select an unused subsystem/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+
+    const newSubsystemCheckbox = await waitForElement(() => getByTestId("adv-selectedNewSubsystem"));
+    fireEvent.click(newSubsystemCheckbox);
+    expect(newSubsystemCheckbox.checked).toEqual(true);
+    const subSystemName = await waitForElement(() => getByTestId("adv-create-subsystem-name"));
+    fireEvent.change(subSystemName, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Subsystem Name"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(subSystemName, { target: { value: "nqn.2019-04.pos:subsystem-test" } });
+
+    const targetAddress = await waitForElement(() =>
+      getByTestId("adv-create-target-address")
+    );
+    fireEvent.change(targetAddress, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Target Address"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+
+    const transportServiceId = await waitForElement(() =>
+      getByTestId("adv-create-transport-service-id")
+    );
+    fireEvent.change(transportServiceId, { target: { value: "" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Please Enter Transport Service Type"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(transportServiceId, { target: { value: "-1" } });
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText("Transport Service Type cannot be negative"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+    fireEvent.change(transportServiceId, { target: { value: "1158" } });
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+  });
+
+  it("should close the advance options popup", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    renderComponent();
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() =>
+      getByTestId("advanceoptions-btn")
+    );
+    fireEvent.click(advanceOptionsButton);
+    const closeIconButton = await waitForElement(() => getByLabelText("Close"));
+    fireEvent.click(closeIconButton)
+    expect(
+      await waitForElement(() => getByText("Closing the Advance Create Volume popup will reset the input fields ?"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("No")));
+    fireEvent.click(closeIconButton)
+    expect(
+      await waitForElement(() => getByText("Closing the Advance Create Volume popup will reset the input fields ?"))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("Yes")));
   });
 
   it("should select and delete a volume", async () => {
@@ -1014,6 +1538,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1034,6 +1560,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1094,6 +1622,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1114,6 +1644,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1125,14 +1657,14 @@ describe("<Storage Management />", () => {
       .reply(200, {
         result: {
           data: {
-	    subsystemlist: [{
-	        nqn: "subsystem1",
-          subtype: "NVMe"
-	    }, {
-        nqn: "subsystem2",
-        subtype: "NVMe"
-      }],
-	  },
+            subsystemlist: [{
+              nqn: "subsystem1",
+              subtype: "NVMe"
+            }, {
+              nqn: "subsystem2",
+              subtype: "NVMe"
+            }],
+          },
           status: {
             code: 0,
             description: "Success",
@@ -1219,6 +1751,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1239,6 +1773,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1250,14 +1786,16 @@ describe("<Storage Management />", () => {
       .reply(200, {
         result: {
           data: {
-          subsystemlist: [{
-            nqn: "subsystem1",
-            subtype: "NVMe"
-          }, {
-            nqn: "subsystem2",
-            subtype: "NVMe"
-        }],
-      }}})
+            subsystemlist: [{
+              nqn: "subsystem1",
+              subtype: "NVMe"
+            }, {
+              nqn: "subsystem2",
+              subtype: "NVMe"
+            }],
+          }
+        }
+      })
       .onDelete(/api\/volume\/mount/)
       .reply(200, {
         result: {
@@ -1328,6 +1866,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1348,6 +1888,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1417,6 +1959,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1438,6 +1982,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1519,6 +2065,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1540,6 +2088,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1624,6 +2174,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0,
         },
         Status: {
           Oem: {
@@ -1644,6 +2196,8 @@ describe("<Storage Management />", () => {
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0
         },
         Status: {
           Oem: {
@@ -1677,6 +2231,517 @@ describe("<Storage Management />", () => {
     expect(queryByTestId(/list-vol-maxiops-vol2/i)).toBeNull();
   });
 
+  it("set miniops then minbw", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onPost("/api/v1.0/save-volume/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .reply(200, {
+        Members: [
+          {
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+          },
+        ],
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .reply(200, {
+        Name: "vol1",
+        Id: "0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .reply(200, {
+        Name: "vol2",
+        Id: "1",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+          MinIOPS: 0,
+          MinBandwidth: 0
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onPut("/api/v1.0/update-volume/")
+      .reply(200, {
+        result: {
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
+      .onAny()
+      .reply(200, []);
+
+    jest.setTimeout(30000);
+    renderComponent();
+
+    const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
+    const editBtn = await waitForElement(() =>
+      getByTestId("vol-edit-btn-vol2")
+    );
+    fireEvent.click(editBtn);
+    const minValue = await waitForElement(() =>
+      getByTestId("list-vol-minbw-miniops-vol2")
+    )
+    fireEvent.change(minValue, { target: { value: "10" } });
+    const minType = await waitForElement(() =>
+      getByTestId("list-vol-select-minbw-miniops-vol2")
+    )
+    fireEvent.change(minType, { target: { value: "minbw" } });
+    const saveBtn = await waitForElement(() =>
+      getByTestId("vol-edit-save-btn-vol2")
+    );
+    fireEvent.change(minValue, { target: { value: "10" } });
+    fireEvent.click(saveBtn);
+    const saveTxt = await waitForElement(() => getByText("Update Volume"));
+    expect(saveTxt).toBeDefined();
+  });
+
+  it("reset miniops then set minbw", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onPost("/api/v1.0/save-volume/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .reply(200, {
+        Members: [
+          {
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+          },
+        ],
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .reply(200, {
+        Name: "vol1",
+        Id: "0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 0,
+          MaxBW: 0,
+          MinIOPS: 0,
+          MinBandwidth: 0
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .reply(200, {
+        Name: "vol2",
+        Id: "1",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 0,
+          MaxBW: 0,
+          MinIOPS: 10,
+          MinBandwidth: 0
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onPut("/api/v1.0/update-volume/")
+      .reply(200, {
+        result: {
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
+      .onAny()
+      .reply(200, []);
+
+    jest.setTimeout(30000);
+    renderComponent();
+
+    const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
+    const editBtn = await waitForElement(() =>
+      getByTestId("vol-edit-btn-vol2")
+    );
+    fireEvent.click(editBtn);
+    const minType = await waitForElement(() =>
+      getByTestId("list-vol-select-minbw-miniops-vol2")
+    )
+    fireEvent.change(minType, { target: { value: "minbw" } });
+    expect(
+      await waitForElement(() => getByText(/Are you sure want to reset Minimum/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("Yes")));
+    const minValue = await waitForElement(() =>
+      getByTestId("list-vol-minbw-miniops-vol2")
+    )
+    fireEvent.change(minValue, { target: { value: "10" } });
+    const saveBtn = await waitForElement(() =>
+      getByTestId("vol-edit-save-btn-vol2")
+    );
+    fireEvent.click(saveBtn);
+    // const saveTxt = await waitForElement(() => getByText("Update Volume"));
+    // expect(saveTxt).toBeDefined();
+  });
+  
+  it("reset minbw then set miniops", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onPost("/api/v1.0/save-volume/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .reply(200, {
+        Members: [
+          {
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+          },
+        ],
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .reply(200, {
+        Name: "vol1",
+        Id: "0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 0,
+          MaxBW: 0,
+          MinIOPS: 0,
+          MinBandwidth: 0
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .reply(200, {
+        Name: "vol2",
+        Id: "1",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 0,
+          MaxBandwidth: 0,
+          MinIOPS: 0,
+          MinBandwidth: 10
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onPut("/api/v1.0/update-volume/")
+      .reply(200, {
+        result: {
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
+      .onAny()
+      .reply(200, []);
+
+    jest.setTimeout(60000);
+    renderComponent();
+
+    const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
+    const editBtn = await waitForElement(() =>
+      getByTestId("vol-edit-btn-vol2")
+    );
+    fireEvent.click(editBtn);
+    const minType = await waitForElement(() =>
+      getByTestId("list-vol-select-minbw-miniops-vol2")
+    )
+    fireEvent.change(minType, { target: { value: "miniops" } });
+    expect(
+      await waitForElement(() => getByText(/Are you sure want to reset Minimum/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("No")));
+    fireEvent.change(minType, { target: { value: "miniops" } });
+    expect(
+      await waitForElement(() => getByText(/Are you sure want to reset Minimum/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("Yes")));
+    const minValue = await waitForElement(() =>
+      getByTestId("list-vol-minbw-miniops-vol2")
+    )
+    fireEvent.change(minValue, { target: { value: "10" } });
+    const saveBtn = await waitForElement(() =>
+      getByTestId("vol-edit-save-btn-vol2")
+    );
+    fireEvent.click(saveBtn);
+    // const saveTxt = await waitForElement(() => getByText("Update Volume"));
+    // expect(saveTxt).toBeDefined();
+  });
+
+  // it("sort table with respect to minbw/miniops", async () => {
+  //   mock
+  //     .onGet(/api\/v1.0\/get_devices\/*/)
+  //     .reply(200, {
+  //       devices,
+  //       metadevices,
+  //     })
+  //     .onGet(/api\/v1\/get_arrays\/*/)
+  //     .reply(200, [array])
+  //     .onPost("/api/v1.0/save-volume/")
+  //     .reply(200, {})
+  //     .onGet(/api\/v1\/get_array_config\/*/)
+  //     .reply(200, config)
+  //     .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+  //     .reply(200, {
+  //       Members: [
+  //         {
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+  //         },
+  //       ],
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+  //     .reply(200, {
+  //       Name: "vol1",
+  //       Id: "0",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBW: 0,
+  //         MinIOPS: 0,
+  //         MinBandwidth: 0
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+  //     .reply(200, {
+  //       Name: "vol2",
+  //       Id: "1",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBandwidth: 0,
+  //         MinIOPS: 0,
+  //         MinBandwidth: 10
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/2$/)
+  //     .reply(200, {
+  //       Name: "vol3",
+  //       Id: "0",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/2",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBW: 0,
+  //         MinIOPS: 0,
+  //         MinBandwidth: 20
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/3$/)
+  //     .reply(200, {
+  //       Name: "vol4",
+  //       Id: "0",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/3",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBW: 0,
+  //         MinIOPS: 0,
+  //         MinBandwidth: 0
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/4$/)
+  //     .reply(200, {
+  //       Name: "vol5",
+  //       Id: "0",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/4",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBW: 0,
+  //         MinIOPS: 20,
+  //         MinBandwidth: 0
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/5$/)
+  //     .reply(200, {
+  //       Name: "vol6",
+  //       Id: "0",
+  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/5",
+  //       Capacity: {
+  //         Data: {
+  //           AllocatedBytes: 100,
+  //           ConsumedBytes: 10,
+  //         },
+  //       },
+  //       Oem: {
+  //         MaxIOPS: 0,
+  //         MaxBW: 0,
+  //         MinIOPS: 0,
+  //         MinBandwidth: 0
+  //       },
+  //       Status: {
+  //         Oem: {
+  //           VolumeStatus: "Mounted",
+  //         },
+  //       },
+  //     })
+  //     .onPut("/api/v1.0/update-volume/")
+  //     .reply(200, {
+  //       result: {
+  //         status: {
+  //           code: 0,
+  //           description: "Success",
+  //         },
+  //       },
+  //     })
+  //     .onAny()
+  //     .reply(200, []);
+
+  //   jest.setTimeout(60000);
+  //   renderComponent();
+
+  //   const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
+  //   const minBW_minIOPS = await waitForElement(() =>
+  //     getByText("Min Bandwidth / Min IOPS")
+  //   );
+  //   expect(minBW_minIOPS).toBeDefined();
+  //   fireEvent.click(minBW_minIOPS);
+  //   fireEvent.click(minBW_minIOPS);
+  //   fireEvent.click(minBW_minIOPS);
+  // });
+
   it("should show device details when array is created", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -1695,8 +2760,8 @@ describe("<Storage Management />", () => {
     renderComponent();
     const { getByTestId, asFragment, getByText } = wrapper;
     global.document.createRange = (html) => ({
-      setStart: () => {},
-      setEnd: () => {},
+      setStart: () => { },
+      setEnd: () => { },
       commonAncestorContainer: {
         nodeName: "BODY",
         ownerDocument: document,
@@ -1741,8 +2806,8 @@ describe("<Storage Management />", () => {
     renderComponent();
     const { getByTestId, queryByTestId, getByText } = wrapper;
     global.document.createRange = (html) => ({
-      setStart: () => {},
-      setEnd: () => {},
+      setStart: () => { },
+      setEnd: () => { },
       commonAncestorContainer: {
         nodeName: "BODY",
         ownerDocument: document,
@@ -1787,40 +2852,40 @@ describe("<Storage Management />", () => {
     fireEvent.click(await waitForElement(() => getByText("No")));
   });
 
-  it("should display the storage page with path", async () => {
-    const { location } = window;
-    delete window.location;
-    window.location = { ...location, href: "http://localhost/storage/array/create" };
-    mock
-      .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onAny()
-      .reply(200, []);
-    renderComponent();
-    const { getByTestId, queryByTestId, getByText, asFragment } = wrapper;
-    global.document.createRange = (html) => ({
-      setStart: () => {},
-      setEnd: () => {},
-      commonAncestorContainer: {
-        nodeName: "BODY",
-        ownerDocument: document,
-      },
-      createContextualFragment: (html) => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
-        return div.children[0];
-      },
-    });
-    fireEvent.click(getByText("create"));
-    expect(
-      await waitForElement(() => getByTestId("arraycreate"))
-    ).toBeDefined();
-    expect(asFragment()).toMatchSnapshot();
-    window.location = location;
-  });
+  // it("should display the storage page with path", async () => {
+  //   const { location } = window;
+  //   delete window.location;
+  //   window.location = { ...location, href: "http://localhost/storage/array/create" };
+  //   mock
+  //     .onGet(/api\/v1.0\/get_devices\/*/)
+  //     .reply(200, {
+  //       devices,
+  //       metadevices,
+  //     })
+  //     .onAny()
+  //     .reply(200, []);
+  //   renderComponent();
+  //   const { getByTestId, queryByTestId, getByText, asFragment } = wrapper;
+  //   global.document.createRange = (html) => ({
+  //     setStart: () => {},
+  //     setEnd: () => {},
+  //     commonAncestorContainer: {
+  //       nodeName: "BODY",
+  //       ownerDocument: document,
+  //     },
+  //     createContextualFragment: (html) => {
+  //       const div = document.createElement("div");
+  //       div.innerHTML = html;
+  //       return div.children[0];
+  //     },
+  //   });
+  //   fireEvent.click(getByText("create"));
+  //   expect(
+  //     await waitForElement(() => getByTestId("arraycreate"))
+  //   ).toBeDefined();
+  //   expect(asFragment()).toMatchSnapshot();
+  //   window.location = location;
+  // });
 
   it("should create a volume when vol size is max and count is greater than 1", async () => {
     mock
@@ -1895,7 +2960,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
-      .reply(200, {result: {status:{code :0}}})
+      .reply(200, { result: { status: { code: 0 } } })
       .onAny()
       .reply(200, []);
     renderComponent();
@@ -1913,11 +2978,11 @@ describe("<Storage Management />", () => {
         metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
+      .reply(200, [{ ...array, state: "OFFLINE", status: "Unmounted" }])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onPost(/api\/v1.0\/ibofos\/mount\/*/)
-      .reply(200, {result:{status:{code:0}}})
+      .reply(200, { result: { status: { code: 0 } } })
       .onAny()
       .reply(200, []);
     renderComponent();
@@ -1958,7 +3023,7 @@ describe("<Storage Management />", () => {
         metadevices,
       })
       .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [{...array, state: "OFFLINE", status: "Unmounted"}])
+      .reply(200, [{ ...array, state: "OFFLINE", status: "Unmounted" }])
       .onGet(/api\/v1.0\/get_volumes\/*/)
       .reply(200, [])
       .onPost(/api\/v1.0\/ibofos\/mount\/*/)

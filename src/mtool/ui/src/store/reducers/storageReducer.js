@@ -208,10 +208,10 @@ const storageReducer = (state = initialState, action) => {
             let localMinType;
             if (action.volume.Oem.MinBandwidth === 0 && action.volume.Oem.MinIOPS === 0)
                 localMinType = "";
-            else if (action.volume.Oem.MinBandwidth === 0)
-                localMinType = "miniops"
+            else if (action.volume.Oem.MinIOPS === 0)
+                localMinType = "minbw"
             else
-                localMinType = "minbw";
+                localMinType = "miniops";
 
             if (Object.prototype.hasOwnProperty.call(state.volumeMap, action.volume.Id)) {
                 const index = state.volumeMap[action.volume.Id];

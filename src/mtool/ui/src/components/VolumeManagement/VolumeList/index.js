@@ -90,7 +90,7 @@ const styles = (theme) => ({
 const RESET_MIN_IOPS_TITLE = "To change minimum bandwidth reset Minimum IOPS"
 const RESET_MIN_BW_TITLE = "To change minimum iops reset minimum Bandwidth"
 const RESET_MIN_IOPS_DETAILS = "Are you sure want to reset Minimum IOPS?"
-const RESET_MIN_BW_DETAILS = "Are you sure want to reset minimum Bandwidth?"
+const RESET_MIN_BW_DETAILS = "Are you sure want to reset Minimum Bandwidth?"
 const MINIOPS = "miniops"
 const MINBW = "minbw"
 
@@ -355,7 +355,6 @@ class VolumeList extends Component {
           // showing miniops as default
           const localValue = rowData.minType === MINBW ? rowData.minbw : rowData.miniops;
           const localType = rowData.minType === MINBW ? MINBW : MINIOPS;
-
           if (rowData.edit) {
             return (
               <Box sx={localStyle}>
@@ -390,7 +389,7 @@ class VolumeList extends Component {
                     "data-testid": `list-vol-select-minbw-miniops-${rowData.name}`,
                   }}
                   SelectDisplayProps={{
-                    "data-testid": `list-vol-select-minbw-miniops-${rowData.name}`,
+                    "data-testid": `list-vol-display-minbw-miniops-${rowData.name}`,
                   }}
                 >
                   <MenuItem value={MINIOPS} data-testid={MINIOPS}>

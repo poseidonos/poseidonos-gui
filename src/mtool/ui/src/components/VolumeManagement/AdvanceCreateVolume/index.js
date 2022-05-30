@@ -136,9 +136,7 @@ const styles = (theme) => ({
 });
 
 const getVolumeCountTitle = (volCount, maxVolumeCount) => {
-  if (volCount > 1)
-    return `Specify the number of volumes to create. ${volCount} volumes already exist. POS supports max ${maxVolumeCount} volumes`;
-  if (volCount === 1)
+  if (volCount !== 0)
     return `Specify the number of volumes to create. ${volCount} volume already exists. POS supports max ${maxVolumeCount} volumes`;
   return `Specify the number of volumes to create. POS supports max ${maxVolumeCount} volumes`;
 }
@@ -147,7 +145,7 @@ function AdvanceCreateVolume(props) {
   const { showAdvanceOptions, classes, handleChange, activeStep, setActiveStep } = props;
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [alertDescription, setAlertDescription] = React.useState("")
-  const [onAlertConfirm, setOnAlertConfirm] = React.useState(() => () => { });
+  const [onAlertConfirm, setOnAlertConfirm] = React.useState(() => { });
 
   const volumeCountTitle = getVolumeCountTitle(props.volCount, props.maxVolumeCount);
 
@@ -171,7 +169,7 @@ function AdvanceCreateVolume(props) {
               inputProps={{
                 min: 1,
                 max: props.maxVolumeCount,
-                "data-testid": "create-vol-count",
+                "data-testid": "adv-create-vol-count",
               }}
               value={props.volume_count}
               onChange={handleChange}
@@ -206,7 +204,7 @@ function AdvanceCreateVolume(props) {
                   checked={props.stop_on_error_checkbox}
                   value="Stop on error"
                   inputProps={{
-                    "data-testid": "stop-on-error-checkbox",
+                    "data-testid": "adv-stop-on-error-checkbox",
                   }}
                   onChange={handleChange}
                 />
@@ -244,7 +242,7 @@ function AdvanceCreateVolume(props) {
             value={props.volume_name}
             onChange={handleChange}
             inputProps={{
-              "data-testid": "create-vol-name",
+              "data-testid": "adv-create-vol-name",
             }}
             required
           />
@@ -275,7 +273,7 @@ function AdvanceCreateVolume(props) {
               InputProps={{
                 inputProps: {
                   min: 0,
-                  "data-testid": "create-vol-suffix",
+                  "data-testid": "adv-create-vol-suffix",
                 },
               }}
               value={props.volume_suffix}
@@ -306,7 +304,7 @@ function AdvanceCreateVolume(props) {
               onChange={handleChange}
               type="number"
               inputProps={{
-                "data-testid": "create-vol-size",
+                "data-testid": "adv-create-vol-size",
                 min: 0
               }}
               required
@@ -316,14 +314,14 @@ function AdvanceCreateVolume(props) {
         <FormControl className={classes.volumeUnit}>
           <Select
             value={props.volume_units}
-            onChange={props.Set_Unit}
+            onChange={handleChange}
             inputProps={{
-              name: "Volume Unit",
+              name: "volume_units",
               id: "vol_unit",
-              "data-testid": "volume-unit-input",
+              "data-testid": "adv-volume-unit-input",
             }}
             SelectDisplayProps={{
-              "data-testid": "volume-unit",
+              "data-testid": "adv-volume-unit",
             }}
             className={classes.unitSelect}
           >
@@ -364,7 +362,7 @@ function AdvanceCreateVolume(props) {
               // placeholder="Min Value 10. 0 means max"
               inputProps={{
                 min: 0,
-                "data-testid": "create-vol-max-iops",
+                "data-testid": "adv-create-vol-max-iops",
               }}
               required
             />
@@ -389,7 +387,7 @@ function AdvanceCreateVolume(props) {
               onChange={handleChange}
               type="number"
               // placeholder="0 means max"
-              inputProps={{ min: 0, "data-testid": "create-vol-max-bw" }}
+              inputProps={{ min: 0, "data-testid": "adv-create-vol-max-bw" }}
               required
             />
           </FormControl>
@@ -416,7 +414,7 @@ function AdvanceCreateVolume(props) {
               onChange={handleChange}
               type="number"
               inputProps={{
-                "data-testid": "create-vol-minvalue",
+                "data-testid": "adv-create-vol-minvalue",
                 min: 0
               }}
             />
@@ -429,10 +427,10 @@ function AdvanceCreateVolume(props) {
             inputProps={{
               name: "mintype",
               id: "mintype",
-              "data-testid": "mintype-input",
+              "data-testid": "adv-mintype-input",
             }}
             SelectDisplayProps={{
-              "data-testid": "mintype",
+              "data-testid": "adv-mintype",
             }}
             className={classes.unitSelect}
           >
@@ -469,7 +467,7 @@ function AdvanceCreateVolume(props) {
                 checked={props.mount_vol}
                 value="Mount Volume"
                 inputProps={{
-                  "data-testid": "mount-vol-checkbox",
+                  "data-testid": "adv-mount-vol-checkbox",
                 }}
                 onChange={props.handleChange}
               />
@@ -504,10 +502,10 @@ function AdvanceCreateVolume(props) {
             inputProps={{
               name: "subsystem",
               id: "subsystem",
-              "data-testid": "subsystem-input",
+              "data-testid": "adv-subsystem-input",
             }}
             SelectDisplayProps={{
-              "data-testid": "subsystem",
+              "data-testid": "adv-subsystem",
             }}
             className={classes.unitSelect}
             required={!props.selectedNewSubsystem}
@@ -540,7 +538,7 @@ function AdvanceCreateVolume(props) {
                 checked={props.selectedNewSubsystem}
                 value="With A New Subsystem"
                 inputProps={{
-                  "data-testid": "selectedNewSubsystem",
+                  "data-testid": "adv-selectedNewSubsystem",
                 }}
                 onChange={props.handleChange}
               />
@@ -567,7 +565,7 @@ function AdvanceCreateVolume(props) {
             value={props.subnqn}
             onChange={handleChange}
             inputProps={{
-              "data-testid": "create-subsystem-name",
+              "data-testid": "adv-create-subsystem-name",
             }}
             required={props.selectedNewSubsystem}
             disabled={!props.selectedNewSubsystem || !props.mount_vol}
@@ -591,10 +589,10 @@ function AdvanceCreateVolume(props) {
             inputProps={{
               name: "transport_type",
               id: "transport_type",
-              "data-testid": "transport_type-input",
+              "data-testid": "adv-transport_type-input",
             }}
             SelectDisplayProps={{
-              "data-testid": "transport_type",
+              "data-testid": "adv-transport_type",
             }}
             className={classes.unitSelect}
             required={props.selectedNewSubsystem}
@@ -625,7 +623,7 @@ function AdvanceCreateVolume(props) {
             value={props.target_address}
             onChange={handleChange}
             inputProps={{
-              "data-testid": "create-target-address",
+              "data-testid": "adv-create-target-address",
             }}
             required={props.selectedNewSubsystem}
             disabled={!props.selectedNewSubsystem || !props.mount_vol}
@@ -648,7 +646,7 @@ function AdvanceCreateVolume(props) {
             value={props.transport_service_id}
             onChange={handleChange}
             inputProps={{
-              "data-testid": "create-transport-service-id",
+              "data-testid": "adv-create-transport-service-id",
             }}
             required={props.selectedNewSubsystem}
             disabled={!props.selectedNewSubsystem || !props.mount_vol}
@@ -679,7 +677,7 @@ function AdvanceCreateVolume(props) {
       errorDesc = `Volume Count should not exceed ${props.maxVolumeCount}`;
     else if (props.volume_count > 1 && props.volume_suffix < 0)
       errorDesc = "Suffix Value cannot be negative";
-    else if (props.volume_count > 1 && props.volume_suffix === null)
+    else if (props.volume_count > 1 && props.volume_suffix.length === 0)
       errorDesc = "Please Enter Suffix Start Value";
     else isError = false;
 
@@ -692,7 +690,6 @@ function AdvanceCreateVolume(props) {
       maxAvailableSize = props.formatBytes(props.maxAvailableSize);
       volSize =
         `${props.volume_size.toString()} ${props.volume_units}`;
-
       if (volSize === maxAvailableSize) {
         volSize = 0;
         props.Change_Input({ name: "volume_size", value: 0 });
@@ -719,13 +716,16 @@ function AdvanceCreateVolume(props) {
       errorDesc = "Please Enter Maximum Bandwidth (MB/s) ";
     else if (props.maxiops.length === 0)
       errorDesc = "Please Enter Maximum IOPS (KIOPS)";
-    else if (props.maxbw < 0)
-      errorDesc = "Max Bandwidth cannot be negative";
+    else if (props.maxbw < 0) errorDesc = "Maximum Bandwidth cannot be negative";
     else if (props.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
     else if ((props.maxbw > 0 && props.maxbw < 10) || props.maxbw > 17592186044415)
       errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
     else if ((props.maxiops > 0 && props.maxiops < 10) || props.maxiops > 18446744073709551)
       errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
+    else if (props.minvalue.length === 0)
+      errorDesc = "Please Enter Minimum IOPS/BW or set 0 for no Minimum IOPS/BW"
+    else if (props.minvalue < 0)
+      errorDesc = "Minimum IOPS/Bandwidth cannot be negative";
     else isError = false;
     if (isError === true) {
       props.showAlertHandler(errorDesc)
@@ -747,7 +747,7 @@ function AdvanceCreateVolume(props) {
         else if (props.target_address.length < 1)
           errorDesc = "Please Enter Target Address";
         else if (props.transport_service_id.length === 0)
-          errorDesc = "Please Enter Transport Service Type ";
+          errorDesc = "Please Enter Transport Service Type";
         else if (props.transport_service_id < 0)
           errorDesc = "Transport Service Type cannot be negative";
         else
@@ -840,8 +840,6 @@ function AdvanceCreateVolume(props) {
       </div>
     </div>
   )
-
-
 
   const createVolumeWithNewSubsystem = () => {
     props.createVolume({
@@ -938,6 +936,7 @@ function AdvanceCreateVolume(props) {
             <div className={classes.actionsContainer}>
               <div>
                 <Button
+                  data-testid="back-btn"
                   disabled={activeStep === 0}
                   onClick={handleBack}
                   className={classes.button}
@@ -947,6 +946,7 @@ function AdvanceCreateVolume(props) {
                 <Button
                   variant="contained"
                   color="primary"
+                  data-testid="next-btn"
                   onClick={handleNext}
                   className={classes.button}
                   disabled={props.createVolumeButton}
@@ -1000,18 +1000,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleCreateVolumeButton: (flag) =>
-      dispatch(actionCreators.toggleCreateVolumeButton(flag)),
-    showStorageAlert: (alertParams) =>
-      dispatch(actionCreators.showStorageAlert(alertParams)),
     Reset_Inputs: () =>
       dispatch({ type: actionTypes.RESET_INPUTS }),
     Change_Input: (payload) =>
       dispatch({ type: actionTypes.CHANGE_INPUT, payload }),
-    Update_Subsystem: (payload) =>
-      dispatch({ type: actionTypes.UPDATE_SUBSYSTEM, payload }),
-    Set_Unit: (payload) =>
-      dispatch({ type: actionTypes.SET_UNIT, payload }),
     Toggle_Advance_Create_Volume_Popup: (flag) =>
       dispatch(actionCreators.toggleAdvanceCreateVolumePopup(flag)),
     setActiveStep: (payload) => {
