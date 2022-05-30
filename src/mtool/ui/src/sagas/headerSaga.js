@@ -86,6 +86,23 @@ function* CallIsiBOFOSRunning(action) {
 
 }
 
+function* getPOSProperty() {
+    try {
+    const response = yield call([axios, axios.get], '/api/v1/pos/property', {
+        headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token'),
+            },
+    });
+    if(response.status === 200) {
+        yield put(actionCreators.setPOSProperty(response.data.result.data));
+    }
+    } catch(e) {
+        // console.log(e)
+    }
+}
+
 function* startIBOFOs() {
     yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
     try {
@@ -185,27 +202,9 @@ function* getPOSInfo() {
             response.data.result.data : {}));
 	}
     } catch(e) {
-        console.log(e)
+        // console.log(e)
     }
 }
-
-function* getPOSProperty() {
-    try {
-    const response = yield call([axios, axios.get], '/api/v1/pos/property', {
-        headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-    });
-    if(response.status === 200) {
-        yield put(actionCreators.setPOSProperty(response.data.result.data));
-    }
-    } catch(e) {
-        console.log(e)
-    }
-}
-
 
 function* setPOSProperty(action) {
     yield put(actionCreators.setOperationsMessage([{

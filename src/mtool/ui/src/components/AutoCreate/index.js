@@ -77,7 +77,7 @@ const styles = (theme) => ({
     }
 });
 
-const getFreeDisk = function(disks) {
+const getFreeDisk = (disks) => {
    const freeDisks = disks && disks.filter ?
        disks.filter(disk => disk.isAvailable) : [];
    if(freeDisks.length > 0) return freeDisks[0].name;
@@ -85,15 +85,15 @@ const getFreeDisk = function(disks) {
    return "";
 }
 
-const getFreeDisks = function(disks) {
+const getFreeDisks = (disks) => {
    const freeDisks = disks && disks.filter ?
        disks.filter(disk => disk.isAvailable) : [];
    return freeDisks.length;
 }
 
-const getRaidType = function(raids, value) {
+const getRaidType = (raids, value) => {
    if(raids) {
-     const raid = raids.find(raid => raid.value === value);
+     const raid = raids.find(r => r.value === value);
      return raid || {};
    }
    return {}

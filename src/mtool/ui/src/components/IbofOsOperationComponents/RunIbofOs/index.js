@@ -178,14 +178,14 @@ const RunIbofOs = props => {
 	>
 	  <MenuItem value="highest" data-testid="highest">
                     Highest
-      </MenuItem>
+   </MenuItem>
       <MenuItem value="medium" data-testid="medium">
                     Medium
       </MenuItem>
 	  <MenuItem value="lowest" data-testid="lowest">
                     Lowest
-      </MenuItem>
-    </Select>
+   </MenuItem>
+ </Select>
 	</FormControl>
 	<Button
           variant="contained"
@@ -198,7 +198,7 @@ const RunIbofOs = props => {
           disabled={props.OS_Running_Status === 'Not Running'}
 	>
           Set Property
-    </Button>
+ </Button>
 	{props.OS_Running_Status !== 'Not Running' ? (
       <Typography className="IBOFOSImpactText"> Current Impact: <span className="IBOFOSUppercase">{props.property}</span></Typography>
       ) : null}

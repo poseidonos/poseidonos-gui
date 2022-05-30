@@ -225,7 +225,7 @@ class CreateVolume extends Component {
         });
       }
     } else
-      this.props.Change_Input({ name: name, value: value })
+      this.props.Change_Input({ name, value })
   }
 
   setSubsystem() {
