@@ -35,19 +35,19 @@
 
 #!/usr/bin/python
 from rest.swordfish.handler import swordfish_api
-from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
+#from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
-from rest.rest_api.logmanager.logmanager import download_logs
-from rest.rest_api.array.array import create_arr, arr_info, get_arr_status, check_arr_exists
+#from rest.rest_api.logmanager.logmanager import download_logs
+from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
-from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
+#from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_read_latency_usage, get_write_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency,get_disk_read_latency , \
     get_disk_current_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
@@ -562,8 +562,8 @@ def get_alert_info():
         return jsonify({'alerts': alertData})
     except BaseException:
         return jsonify({'alerts': alertData})
-"""
 
+'''
 @app.route('/api/v1.0/get_alert_types/', methods=['GET'])
 @token_required
 def get_alert_categories(current_user):
@@ -572,7 +572,9 @@ def get_alert_categories(current_user):
 
     alertCategories = get_alert_categories_from_influxdb() 
     return jsonify({'alert_types': alertCategories})
-"""
+'''
+
+
 @app.route('/api/v1.0/available_memory', methods=['GET'])
 def get_available_mem():
     res = get_available()
@@ -865,7 +867,7 @@ def trigger_email(serverip, serverport, emailid):
 
     # Terminate the SMTP session and close the connection
     s.quit()
-"""
+
 
 @app.route('/api/v1.0/test_smtpserver/', methods=['POST'])
 def test_smtpserver():
@@ -968,11 +970,11 @@ def get_email_ids():
     email_list = connection_factory.get_email_list()
     return toJson(email_list)
  
-"""
+
 @app.route('/api/v1.0/get_smtp_server_details/', methods=['GET'])
 def get_smtp_server_details():
     return toJson(connection_factory.get_smtp_details())
-"""
+
 
 @app.route('/api/v1.0/update_email/', methods=['POST'])
 def update_email():
@@ -1001,7 +1003,7 @@ def delete_emailids():
         result = connection_factory.delete_emailids_list(email_id)
     return result 
 
-"""
+
 @app.route('/api/v1.0/send_email/', methods=['POST'])
 def send_email():
     body_unicode = request.data.decode('utf-8')
@@ -1012,7 +1014,7 @@ def send_email():
     for email_id in ids:
         trigger_email(serverip, serverport, email_id)
     return 'Success'
-"""
+
 
 @app.route('/api/v1.0/toggle_email_status/', methods=['POST'])
 def toggle_email_status():
@@ -1023,7 +1025,7 @@ def toggle_email_status():
     result = connection_factory.toggle_email_update(status, email_id)
     print("result toggle",result)
     return result
-
+"""
 
 
 # Get Devices
@@ -1137,8 +1139,11 @@ def create_transport(current_user):
     num_shared_buf = body.get('num_shared_buf')
     try:
         resp = dagent.create_trans(transport_type, buf_cache_size, num_shared_buf)
-        resp = resp.json()
-        return toJson(resp)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in creating transport "+e)
         return abort(404)
@@ -1156,8 +1161,11 @@ def create_subsystem(current_user):
     allow_any_host = body.get('allow_any_host')
     try:
         resp = dagent.create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host)
-        resp = resp.json()
-        return toJson(resp)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in creating subsystem "+e)
         return abort(404)
@@ -1174,8 +1182,11 @@ def add_listener(current_user):
     transport_service_id = body.get('transport_service_id')
     try:
         resp = dagent.add_listener(name, transport_type, target_address, transport_service_id)
-        resp = resp.json()
-        return toJson(resp)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in adding listener "+e)
         return abort(404)
@@ -1207,8 +1218,11 @@ def delete_susbsystem(current_user):
     name = body.get('name')
     try:
         resp = dagent.delete_subsystem(name)
-        resp = resp.json()
-        return toJson(resp)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in deleting subsystem "+e)
         return abort(404)
@@ -1225,8 +1239,11 @@ def create_device(current_user):
     numa = body.get('numa')
     try:
         resp = dagent.create_device(name, num_blocks, block_size, dev_type, numa)
-        resp = resp.json()
-        return toJson(resp)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in deleting subsystem "+e)
         return abort(404)
@@ -1240,15 +1257,18 @@ def auto_create_array(current_user):
     body = json.loads(body_unicode)
     arrayname = body.get('arrayname')
     raidtype = body['raidtype']
-    metaDisk = body["metaDisk"]
+    metaDisk = body["buffer"]
     num_data = body['num_data']
     num_spare = body['num_spare']
     if arrayname is None:
         arrayname = dagent.array_names[0]
     try:
         array_create = dagent.auto_create_array(arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}])
-        array_create = array_create.json()
-        return toJson(array_create)
+        if array_create is not None:
+            array_create = array_create.json()
+            return toJson(array_create)
+        else:
+            return toJson({})
     except Exception as e:
         print("Exception in creating array: "+e)
         return abort(404)
@@ -1574,7 +1594,7 @@ def get_users(current_user):
     else:
         return toJson(usersList)
 
-
+"""
 @app.route('/api/v1.0/toggle_status/', methods=['POST'])
 def toggle_status():
     body_unicode = request.data.decode('utf-8')
@@ -1589,7 +1609,7 @@ def toggle_status():
             return jsonify({"message": "User status could not changed"})
     else:
         return jsonify({"message": "User status changed"})
-
+"""
 
 @app.route('/api/v1.0/update_user/', methods=['POST'])
 def update_user():
@@ -1879,7 +1899,7 @@ def saveVolume():
 
 """
 
-
+'''
 @app.route('/api/v1.0/update-volume/', methods=['PUT'])
 @token_required
 def updateVolume(current_user):
@@ -1887,7 +1907,7 @@ def updateVolume(current_user):
     body = json.loads(body_unicode)
     update_vol_res = update_volume(body)
     return toJson(update_vol_res.json())
-
+'''
 
 @app.route('/api/v1.0/volumes/<volume_name>', methods=['PATCH'])
 @token_required
@@ -2056,6 +2076,7 @@ def get_all_volumes():
 </pre>
 '''
 
+'''
 @app.route('/api/v1.0/add_alert/', methods=['POST'])
 @token_required
 def addAlert(current_user):
@@ -2102,7 +2123,7 @@ def get_alerts():
     else:
         return toJson(alerts)
 
-'''
+
 @app.route('/api/v1.0/alert', methods=['POST'])
 def alertHandler():
     #print("alert handler called")
@@ -2111,7 +2132,7 @@ def alertHandler():
     allAlerts = get_alerts()
     # print(list(allAlerts.get_points()))
     return jsonify(list(allAlerts.get_points()))
-'''
+
 
 @app.route('/api/v1.0/delete_alerts/', methods=['POST'])
 @token_required
@@ -2228,7 +2249,7 @@ def get_live_logs(current_user):
         print(e)
     print("returning", livedata)
     return jsonify(livedata)
-
+'''
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):

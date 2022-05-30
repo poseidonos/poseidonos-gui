@@ -509,26 +509,53 @@ def test_get_vol_write_bw(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_latency(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","1m"),
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readlatency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readlatency","7d"), status_code=500)
     kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","12h"), json="test", status_code=200)
     kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","30d"), exc=HTTPError)
-    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","1m"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readlatency","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","7d"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("readlatency","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","12h"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writelatency","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_VOLUME_URL.format("latency","30d"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_VOLUME_URL.format("writelatency","30d"), headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_array_latency(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readlatency","1m"),
+                       json={"result": {"status": {"description": "SUCCESS"},
+                                        "data": [{
+                                            "time": 123456789,
+                                            "usageUser": 10
+                                            }]}},
+                       status_code=200)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readlatency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","12h"), json="test", status_code=200)
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","30d"), exc=HTTPError)
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readlatency","1m"), headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readlatency","7d"), headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writelatency","12h"), headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writelatency","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -537,14 +564,14 @@ def test_get_vol_latency(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("latency","1m"),
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readlatency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","7d"), status_code=500)
+    kwargs["mock"].get(DAGENT_VOLUME_URL.format("readlatency","7d"), status_code=500)
     kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","12h"), json="test", status_code=200)
     kwargs["mock"].get(DAGENT_VOLUME_URL.format("writelatency","30d"), exc=HTTPError)
     response = app.test_client().get(
@@ -558,30 +585,30 @@ def test_get_vol_latency_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_latency(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency","1m"),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readlatency","1m"),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [{
                                             "time": 123456789,
                                             "usageUser": 10
                                             }]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","7d"),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readlatency","7d"),
                        status_code=500)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","30d"),
                         exc=HTTPError)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("writelatency","12h"),
                        json="test",
                        status_code=200)
-    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","1m"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readlatency","1m"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","7d"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("readlatency","7d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","12h"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writelatency","12h"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
-    response = app.test_client().get(MTOOL_ARRAY_URL.format("latency","30d"), headers={'x-access-token': json_token})
+    response = app.test_client().get(MTOOL_ARRAY_URL.format("writelatency","30d"), headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
@@ -604,7 +631,7 @@ def test_get_current_iops(mock_get_current_user, **kwargs):
                                             "bw": 10
                                             }]]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_ARRAY_URL.format("latency",""),
+    kwargs["mock"].get(DAGENT_ARRAY_URL.format("readlatency",""),
                        json={"result": {"status": {"description": "SUCCESS"},
                                         "data": [[{
                                             "time": 123456789,

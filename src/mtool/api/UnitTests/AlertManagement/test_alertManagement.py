@@ -31,6 +31,9 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
+ 
+ 
+"""
 import pytest
 # sys.path.append(os.path.abspath('/usr/local/lib/python3.8/dist-packages/'))
 # sys.path.append(os.path.abspath('/usr/local/lib/python3.6/dist-packages/'))
@@ -520,5 +523,4 @@ def test_get_smtp_details_failure_2(global_data, **kwargs):
 
 if __name__ == '__main__':
     print("main")
-
-
+"""

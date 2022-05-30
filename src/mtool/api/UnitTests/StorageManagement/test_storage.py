@@ -275,17 +275,61 @@ def test_get_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
         json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS"},
-                "data": {
-                    "volumes": [
-                        {
-                            "name": "vol1",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678}]}}},
-        status_code=200)
+    "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
+    "lastSuccessTime": 1653565027,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "list of volumes in POSArray"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "index": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-no-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "0018c5e7-f769-4eb4-b974-19f3a211da1d"
+                },
+                {
+                    "index": 1,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-with-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "ab583871-6640-48b7-a5da-8b9f7ec070f0"
+                },
+                {
+                    "index": 2,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-twice-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "6bc461af-e9fa-4d29-8db3-20f6c54ff787"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
     response = app.test_client().get(
         '/api/v1/'+ARRAY_NAME+'/get_volumes/',
         headers={'x-access-token': json_token})
@@ -382,26 +426,61 @@ def test_get_all_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
         json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS"},
-                "data": {
-                    "volumes": [
-                        {
-                            "name": "vol1",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678},
-							{
-                            "name": "vol2",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678},{
-                            "name": "vol3",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678}]}}},
-        status_code=200)
+    "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
+    "lastSuccessTime": 1653565027,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "list of volumes in POSArray"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "index": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-no-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "0018c5e7-f769-4eb4-b974-19f3a211da1d"
+                },
+                {
+                    "index": 1,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-with-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "ab583871-6640-48b7-a5da-8b9f7ec070f0"
+                },
+                {
+                    "index": 2,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-twice-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "6bc461af-e9fa-4d29-8db3-20f6c54ff787"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
 
     response = app.test_client().get(
         '/api/v1/get_all_volumes/',
@@ -615,7 +694,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/create_arrays/',
         data='''{
-                "name": "POSArray",
+                "arrayname": "POSArray",
                 "raidtype": 5,
                 "spareDisks": ["unvmens-0"],
                 "writeBufferDisk": [],
@@ -625,7 +704,8 @@ def test_create_arrays(mock_get_current_user, **kwargs):
                 }''',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
+    data = json.loads(response.get_data(as_text=True))
+    print("response data ",response.data)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -722,7 +802,7 @@ def test_create_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/volumes/vol1/mount',
+        '/api/ibofos/v1/volumes/vol1/mount/subsystem',
         json={
     "rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
@@ -740,6 +820,25 @@ def test_create_volumes(mock_get_current_user, **kwargs):
     }},
         status_code=200)
     kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
+
+    kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
         json={
@@ -752,9 +851,11 @@ def test_create_volumes(mock_get_current_user, **kwargs):
         '/api/v1.0/save-volume/',
         data='''{
                 "name": "vol1",
+                "arrayname":"POSArray",
                 "size": 123,
                 "maxbw": 100,
                 "maxiops": 100,
+                "miniops":15,
                 "description": "Volume 1",
                 "unit": "GB",
                 "mount_vol": true,
@@ -766,7 +867,8 @@ def test_create_volumes(mock_get_current_user, **kwargs):
                 }''',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
+    data = json.loads(response.get_data(as_text=True))
+    print("data>>>>>>>>>>>>>>>>>>>>>>>>>>> ",data )
     assert response.status_code == 200
 
 
@@ -817,7 +919,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
                     "code": 0}}},
         status_code=200)
 
-    kwargs["mock"].post( DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
+    kwargs["mock"].post( DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount/subsystem',
         json={"rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
     "result": {
@@ -831,6 +933,25 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
     "info": {
         "version": "v0.10.1"
     }}, status_code=200)
+
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -869,7 +990,7 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/volumes/vol1/mount',
+        '/api/ibofos/v1/volumes/vol1/mount/subsystem',
         json={
     "rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
@@ -886,6 +1007,26 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
         "version": "v0.10.1"
     }},
         status_code=200)
+
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
+
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -923,7 +1064,7 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/volumes/vol1/mount',
+        '/api/ibofos/v1/volumes/vol1/mount/subsystem',
         json={
     "rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
@@ -940,6 +1081,26 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
         "version": "v0.10.1"
     }},
         status_code=200)
+
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
+
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -977,7 +1138,7 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
-        '/api/ibofos/v1/volumes/vol1/mount',
+        '/api/ibofos/v1/volumes/vol1/mount/subsystem',
         json={
     "rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
@@ -994,6 +1155,24 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
         "version": "v0.10.1"
     }},
         status_code=200)
+    kwargs["mock"].post(
+        DAGENT_URL + '/api/ibofos/v1/qos',
+        json={
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+},status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -2011,26 +2190,24 @@ def test_get_arrays_func(**kwargs):
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
                        json={
-    "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
-    "lastSuccessTime": 1620717645,
+    "rid": "120cd662-4b1b-4fd3-b807-e31b9b901450",
+    "lastSuccessTime": 1653476200,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "POSArray information"
         },
         "data": {
-            "capacity": 0,
-            "createDatetime": "2021-05-10 19:41:08 +0530",
+            "capacity": 13548474335232,
+            "create_datetime": "2022-05-25 12:23:01 +0530",
+            "data_raid": "RAID5",
             "devicelist": [
                 {
-                    "name": "uram0",
+                    "name": "uram1",
                     "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
                 },
                 {
                     "name": "unvme-ns-1",
@@ -2042,19 +2219,23 @@ def test_get_arrays_func(**kwargs):
                 },
                 {
                     "name": "unvme-ns-3",
-                    "type": "SPARE"
+                    "type": "DATA"
                 }
             ],
+            "gcMode": "none",
+            "index": 0,
+            "meta_raid": "RAID10",
             "name": "POSArray",
-            "rebuildingProgress": "0",
-            "situation": "DEFAULT",
-            "state": "OFFLINE",
-            "updateDatetime": "2021-05-10 19:41:08 +0530",
-            "used": 0
+            "rebuilding_progress": 0,
+            "situation": "NORMAL",
+            "state": "NORMAL",
+            "unique_id": 1495652515,
+            "update_datetime": "2022-05-25 12:24:26 +0530",
+            "used": 204013043712,
         }
     },
     "info": {
-        "version": "pos-0.8.0-alpha1"
+        "version": "v0.11.0-rc4"
     }
 }, status_code=200)
 
@@ -2366,5 +2547,190 @@ def test_createMultiVolumeCallback(**kwargs):
                 "TotalCount":1
                 }''',
         headers={'x-access-token': json_token})
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_create_uram_device(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/device',
+                       json={
+    "rid": "fb68cfb5-48b6-46b4-8439-54d4df0b7a64",
+    "lastSuccessTime": 1653404955,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Device has been created"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
+    response = app.test_client().post('/api/v1/device/',data='''{
+        "name": "uram4",
+                "num_blocks" : 16777216,
+                "block_size" : 512,
+                "dev_type" : "uram",
+                "numa" : 0
+}''', headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_create_uram_device_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/device',
+                       json={
+    "rid": "d51ce059-3905-432c-af61-94ce69e0d893",
+    "lastSuccessTime": 1653385251,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 5526,
+            "description": "",
+            "posDescription": "Failed to create buffer device. Cannot allocate memory"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=400)
+    response = app.test_client().post('/api/v1/device/',data='''{
+        "name": "uram4",
+                "num_blocks" : 16777216,
+                "block_size" : 512,
+                "dev_type" : "uram",
+                "numa" : 0
+}''', headers={'x-access-token': json_token})
+    assert response.status_code == 200
+                                                
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_autocreate_array(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/autoarray',
+                       json={
+    "rid": "54b84f16-ab2a-4402-9b35-836e8d84ed65",
+    "lastSuccessTime": 1653387104,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray has been created successfully"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
+    
+    kwargs["mock"].post(
+        DAGENT_URL +
+        '/api/ibofos/v1/array/POSArray/mount',
+        json={
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}}},
+        status_code=200)
+
+    response = app.test_client().post('/api/v1/autoarray/',data='''{
+    "name": "POSArray",
+    "buffer": "uram0",
+    "num_data": 3,
+    "num_spare": 0,
+    "raidtype":"RAID5"
+}''', headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_qos_reset_policies(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/qos/reset',
+                       json={
+    "rid": "057226b1-97bd-4578-87a8-425a7fd52606",
+    "lastSuccessTime": 1653477441,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Reset"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
+    response = app.test_client().post('/api/v1/qos/reset',data='''{
+        "array": "{{arrayName}}",
+		"volumes":[{"volumeName":"vol_arr1_0"}]
+
+}''', headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_qos_policies(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/qos/policies',
+                       json={
+    "rid": "8e63c445-3b33-4c08-ac1b-5e80490bdb48",
+    "lastSuccessTime": 1653477602,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "List of Volume Policies in POSArray"
+        },
+        "data": {
+            "arrayName": [
+                {
+                    "ArrayName": "POSArray"
+                }
+            ],
+            "rebuildPolicy": [
+                {
+                    "rebuild": "highest"
+                }
+            ],
+            "volumePolicies": [
+                {
+                    "id": 21,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "min_bw_guarantee": "No",
+                    "min_iops_guarantee": "No",
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "vol"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
+    response = app.test_client().post('/api/v1/qos/policies',data='''{
+        "array": "{{arrayName}}",
+		"volumes":[{"volumeName":"vol"}]
+
+}''', headers={'x-access-token': json_token})
+    assert response.status_code == 200
 
 

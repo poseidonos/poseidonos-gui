@@ -38,8 +38,8 @@ import json
 #import re
 from flask import make_response
 import os
-from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
-from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
+#from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
+#from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
 
 """
 try:
@@ -240,150 +240,6 @@ class SQLiteConnection:
         cur.execute(UPDATE_TIME_QUERY, (last_running_time,))
         DB_CONNECTION.commit()
 
-    def insert_smtp_ip(self, serverip, serverport):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_SMTP_QUERY, (serverip,))
-        rows = cur.fetchone()
-        if rows is None or len(rows) == 0:
-            cur.execute(INSERT_SMTP_IP_QUERY, (serverip, serverip, serverport))
-        else:
-            cur.execute(
-                UPDATE_SMTP_QUERY,
-                (serverip,
-                 serverip,
-                 serverport,
-                 serverip))
-        DB_CONNECTION.commit()
-    def execute_get_email_list_query(self):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(EMAILLIST_QUERY)
-        rows = cur.fetchall()
-        return rows
-    def get_email_list(self):
-        rows = self.execute_get_email_list_query()
-        if rows is None or len(rows) == 0:
-            return False
-        else:
-            json_array = []
-            for row in rows:
-                temp_json = {}
-                temp_json["email"] = row[0]
-                temp_json["active"] = row[1]
-                json_array.append(temp_json)
-        return json_array
-
-    def get_smtp_details(self):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SMTP_QUERY)
-        rows = cur.fetchall()
-        if rows is None or len(rows) == 0:
-            return False
-        else:
-            return rows
-
-    def find_email(self, oldid):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(FIND_EMAIL_QUERY, (oldid.lower(),))
-        rows = cur.fetchall()
-        if rows is None or len(rows) == 0:
-            return False
-        else:
-            return True
-    def execute_insert_email_query(self, email):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(INSERT_EMAIL_QUERY, (email, True))
-
-    def insert_email(self, oldid, email):
-        try:
-            #cur = DB_CONNECTION.cursor()
-            #cur.execute(INSERT_EMAIL_QUERY, (email, True))
-            self.execute_insert_email_query(email)
-            result = Update_KapacitorList(oldid, email)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in insert_email:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()    
-            return make_response(json.dumps({"description": "Failed to update the Email List"}), 500)
-    def execute_update_email_query(self, email,oldid):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_EMAIL_QUERY, (email, oldid.lower()))
-
-    def update_email_list(self, oldid, email):
-        try:
-            #cur = DB_CONNECTION.cursor()
-            #cur.execute(UPDATE_EMAIL_QUERY, (email, oldid))
-            self.execute_update_email_query(email,oldid)
-            result = Update_KapacitorList(oldid.lower(), email)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in update_email:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description": "Failed to Update the Email List"}), 500)
-
-    def execute_email_insert_query(self,user_id):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_EMAIL_QUERY, (user_id.lower(),))
-        rows = cur.fetchone()
-        return rows
-    def execute_delete_query(self,user_id):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(DELETE_EMAIL_QUERY, (user_id.lower(),))
-
-    def delete_emailids_list(self, user_id):
-        try:
-            result = None
-            rows = self.execute_email_insert_query(user_id)
-            if rows is None or len(rows) == 0:
-                return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
-            else:
-                #cur.execute(DELETE_EMAIL_QUERY, (user_id,))
-                self.execute_delete_query(user_id)
-                print("after delete query >>>>>>")
-                result = Delete_MultipleID_From_KapacitorList(user_id.lower(), True)
-
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in delete_email:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
-    def execute_toggle_email_update_query(self, status, email_id):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_EMAIL_UPDATE_QUERY, (status, email_id.lower()))
-
-
-    def toggle_email_update(self, status, email_id):
-        try:
-            result = None
-            self.execute_toggle_email_update_query(status, email_id)
-            if(status):
-                result = Update_KapacitorList(None, email_id)
-            else:
-                result = Delete_MultipleID_From_KapacitorList(email_id.lower(), True)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-                return make_response(json.dumps({"description":"Success"}), 200)
-            else:
-                DB_CONNECTION.rollback()
-                make_response(json.dumps({"description": "Failed to Toggle Email ID"}), 500)
-        except DB_CONNECTION.Error:
-            print("exception in toggle_email_update:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description": "Failed to Toggle Email ID"}), 500)
-
-
-
     def check_user_id_exist(self,username):
         cur = DB_CONNECTION.cursor()
         cur.execute(CHECK_USER_QUERY, (username.lower(),))
@@ -456,12 +312,6 @@ class SQLiteConnection:
         else:
             return self.tupple_to_json(rows, USER_TABLE_COLUMNS)
 
-    def toggle_status_from_db(self, username, status):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_STATUS_UPDATE_QUERY, (status, username.lower()))
-        DB_CONNECTION.commit()
-        return True
-
     def update_user_in_db(self, username, email, phone_number, old_username):
         cur = DB_CONNECTION.cursor()
         cur.execute(UPDATE_USER_QUERY, (username, email.lower(), phone_number, old_username.lower()))
@@ -478,69 +328,6 @@ class SQLiteConnection:
         cur.execute(UPDATE_PASSWORD_QUERY, (new_password, username.lower()))
         DB_CONNECTION.commit()
         return True
-    def execute_alert_query(self,
-            alert_name,
-            alert_cluster,
-            alert_sub_cluster,
-            alert_type,
-            alert_condition,
-            alert_field,
-            description,
-            alert_range,
-            active):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(
-                ADD_ALERT_QUERY,
-                (alert_name,
-                alert_cluster,
-                alert_sub_cluster,
-                alert_type,
-                alert_condition,
-                alert_field,
-                description,
-                alert_range,
-                active))
-
-    def add_alert_in_db(
-            self,
-            alert_name,
-            alert_cluster,
-            alert_sub_cluster,
-            alert_type,
-            alert_condition,
-            alert_field,
-            description,
-            alert_range,
-            active):
-        try: 
-            self.execute_alert_query(
-            alert_name,
-            alert_cluster,
-            alert_sub_cluster,
-            alert_type,
-            alert_condition,
-            alert_field,
-            description,
-            alert_range,
-            active)
-            result = create_kapacitor_alert(
-                     alert_name,
-                     alert_type,
-                     alert_condition,
-                     alert_range,
-                     alert_field,
-                     alert_cluster,
-                     alert_sub_cluster,
-                     description)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in add alert:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description":"Failed to Add Alert"}),500) 
 
     def tupple_to_json(self, my_tuple, my_list):
         json_array = []
@@ -551,113 +338,6 @@ class SQLiteConnection:
             json_array.append(temp_json)
         return json_array
 
-    def get_alerts_from_db(self):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(GET_ALERTS_QUERY)
-        rows = cur.fetchall()
-        if rows is None or len(rows) == 0:
-            return False
-        else:
-            return self.tupple_to_json(rows, USER_ALERTS_TABLE_COLUMNS)
-    def execute_delete_alerts_query(self, alert_name):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(DELETE_ALERT_QUERY, (alert_name,))
-
-    def delete_alerts_in_db(self, alert_name):
-        try:
-            self.execute_delete_alerts_query(alert_name)
-            result = delete_alert_from_kapacitor(alert_name)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in delete alert:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description":"Failed to Delete Alert"}),500)
-    def execute_select_alert_query(self, alert_name):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_ALERT_QUERY, (alert_name,))
-        rows = cur.fetchone()
-        return rows
-    def execute_update_alert_query(self, description, alert_range, alert_condition, alert_name):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_ALERT_QUERY, (description, alert_range, alert_condition, alert_name))
-
-    def update_alerts_in_db(
-            self,
-            alert_name,
-            alert_cluster,
-            alert_sub_cluster,
-            alert_type,
-            alert_condition,
-            alert_field,
-            description,
-            alert_range):
-        try:
-            rows = self.execute_select_alert_query(alert_name)
-            if rows is None or len(rows) == 0:
-                return make_response(json.dumps({"description":"Failed to Update Alert"}),500)
-            self.execute_update_alert_query(description, alert_range, alert_condition, alert_name)
-            result = update_in_kapacitor(
-                         alert_name,
-                         alert_type,
-                         alert_condition,
-                         alert_range,
-                         alert_field,
-                         alert_cluster,
-                         alert_sub_cluster,
-                         description)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in update alert:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description":"Failed to Update Alert"}),500) 
-
-    def execute_toggle_alert_status_select_query(self, alert_name):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(TOGGLE_ALERT_STATUS_QUERY, (alert_name,))
-        rows = cur.fetchone()
-        return rows
-    def execute_toggle_alert_status_update_query(self, alert_name, status):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_TOGGLE_ALERT_QUERY, (status, alert_name))
-
-    def toggle_alert_status_in_db(self, alert_name, status):
-        try:
-            rows = self.execute_toggle_alert_status_select_query(alert_name)
-            if rows is None or len(rows) == 0:
-                return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
-            self.execute_toggle_alert_status_update_query(alert_name, status)
-            result = toggle_in_kapacitor(alert_name, status)
-            if(result.status_code == 200):
-                DB_CONNECTION.commit()
-            else:
-                DB_CONNECTION.rollback()
-            return result
-        except DB_CONNECTION.Error:
-            print("exception in toggle alert:",DB_CONNECTION.Error)
-            DB_CONNECTION.rollback()
-            return make_response(json.dumps({"description":"Failed to Toggle Alert"}),500)
-
-
-    def set_live_logs_in_db(self, data, username):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(UPDATE_LIVELOG_STATUS_QUERY, (data, username.lower()))
-        DB_CONNECTION.commit()
-
-    def get_live_logs_from_db(self, username):
-        cur = DB_CONNECTION.cursor()
-        cur.execute(SELECT_LIVELOG_STATUS_QUERY, (username.lower(),))
-        rows = cur.fetchall()
-        if rows is None or len(rows) == 0:
-            return False
-        return rows[0][0]
 
     def match_username_from_db(self, username, password):
         cur = DB_CONNECTION.cursor()

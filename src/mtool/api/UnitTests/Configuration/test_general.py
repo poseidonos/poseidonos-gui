@@ -53,7 +53,7 @@ def global_data(mock_match_username_from_db):
     login_data = json.loads(login_response.get_data(as_text=True))
     return {'token': login_data['token']}
 
-
+'''
 #@requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.execute_get_email_list_query", return_value=[["abc@abc.com",True]], autospec=True)
 def test_get_email_ids(mock_execute_get_email_list_query, global_data):
@@ -83,7 +83,7 @@ def test_get_email_ids_emptylist(mock_execute_get_email_list_query, global_data)
 
     #data = json.dumps(response.get_data(as_text=True))
     assert response.status_code == 200
-
+'''
 
 
 def test_getIpAndMac( global_data):
@@ -99,6 +99,7 @@ def test_getIpAndMac( global_data):
     #data = json.dumps(response.get_data(as_text=True))
     assert response.status_code == 200
 
+'''
 @requests_mock.Mocker(kw="mock")
 #@mock.patch("rest.app.connection_factory.delete_emailids_list",
 #             return_value=True,
@@ -120,7 +121,8 @@ def test_delete_emailids(mock_execute_delete_query, mock_execute_email_insert_qu
         content_type='application/json',
     )
     assert response.status_code == 200
-
+'''
+"""
 @requests_mock.Mocker(kw="mock")
 #@mock.patch("rest.app.connection_factory.toggle_email_update",
 #             autospec=True)
@@ -140,7 +142,7 @@ def test_toggle_email_status(mock_execute_toggle_email_update_query, global_data
     )
 
     assert response.status_code == 200
-
+"""
 """
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.insert_smtp_ip",
@@ -245,7 +247,7 @@ def test_set_ibofos_time_interval_failure(mock_toggle_email_update, global_data)
         content_type='application/json',
     )
     assert response.status_code == 500
-
+'''
 def test_downloadLogs(global_data):
     response = app.test_client().get(
         '/api/v1.0/download_logs?start_date=2020-07-08T12:55:25.612Z&end_date=2020-07-08T12:55:25.612Z',
@@ -256,8 +258,9 @@ def test_downloadLogs(global_data):
         content_type='application/json',
     )
     assert response.status_code == 200
+'''
 
-
+"""
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.find_email", return_value=False, autospec=True)
 @mock.patch("rest.app.connection_factory.execute_insert_email_query", return_value=True, autospec=True)
@@ -287,7 +290,7 @@ def test_add_email_with_update(mock_find_email, mock_execute_insert_email_query,
         content_type='application/json',
     )
     assert response.status_code == 200
-
+"""
 
 """
 @mock.patch("rest.app.connection_factory.find_email",

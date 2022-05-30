@@ -31,7 +31,8 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
- 
+
+'''
 from datetime import date
 from zipfile import ZipFile
 import os
@@ -63,7 +64,7 @@ def download_logs(startdate, enddate):
     zipFilesInDir('public/log', 'log.zip', 'w', startdate, enddate)
     zipFilesInDir('/etc/ibofos/log', 'log.zip', 'a', startdate, enddate)
     return send_file('../log.zip')
-
+'''
 """
 def get_ibofos_logs():
     connection = get_connection()

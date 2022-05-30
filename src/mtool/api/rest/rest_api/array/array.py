@@ -33,7 +33,7 @@
  '''
 
 #from socketclient.socketclient import scan_devices, create_array, list_array
-from rest.rest_api.dagent.ibofos import array_names, create_array, array_status, array_info, array_exists
+from rest.rest_api.dagent.ibofos import array_names, create_array, array_status, array_info
 
 
 def create_arr(name, raidtype, spare, devices, metadevice):
@@ -42,8 +42,8 @@ def create_arr(name, raidtype, spare, devices, metadevice):
 def get_arr_status():
     return array_status()
 
-def check_arr_exists(arrayname):
-    return array_exists(arrayname)
+#def check_arr_exists(arrayname):
+#    return array_exists(arrayname)
 
 def arr_info(array_name):
     # scan_devices()

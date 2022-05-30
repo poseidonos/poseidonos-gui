@@ -32,6 +32,7 @@
  */
  '''
 
+'''
 from util.db.influx import get_connection
 from util.macros.influxdb_config import mtool_db, infinite_rp
 
@@ -46,3 +47,4 @@ def get_rebuilding_status():
         return res
     except BaseException:
         return "error"
+'''

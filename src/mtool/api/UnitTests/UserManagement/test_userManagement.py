@@ -224,7 +224,7 @@ def test_delete_users(mock_delete_users_in_db, global_data):
     print("DATAAA", data)
 
 
-
+'''
 @mock.patch("rest.app.connection_factory.toggle_status_from_db",
             return_value=True, autospec=True)
 def test_toggle_user_status(mock_toggle_status_from_db, global_data):
@@ -239,7 +239,8 @@ def test_toggle_user_status(mock_toggle_status_from_db, global_data):
     print("DATAAA", data)
 
 
-
+'''
+'''
 @mock.patch("rest.app.connection_factory.toggle_status_from_db",
             return_value=False, autospec=True)
 def test_toggle_user_status_failure(mock_toggle_status_from_db, global_data):
@@ -262,7 +263,7 @@ def test_toggle_admin_status_failure(mock_toggle_status_from_db, global_data):
         content_type='application/json',
     )
     assert response.status_code == 200
-
+'''
 
 @mock.patch("rest.app.connection_factory.update_password_in_db",
             return_value=True, autospec=True)

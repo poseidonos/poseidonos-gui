@@ -32,7 +32,7 @@
  */
  '''
 
-
+'''
 import requests
 import json
 from bson import json_util
@@ -120,3 +120,4 @@ def Delete_MultipleID_From_KapacitorList(ids, singleIdFlag=False):
     except BaseException as e:
         print("exception in deleting email ids from kapacitor",e)
         return make_response(json.dumps({"description": "Failed to Delete Email ID"}), 500)
+'''

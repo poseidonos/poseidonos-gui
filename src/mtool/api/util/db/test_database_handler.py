@@ -48,7 +48,7 @@ OBJECT.create_default_database()
 TIME_STAMP = "Fri, 12 Feb 2020 02:14:42 PM IST"
 # print(OBJECT.get_email_list())
 
-
+'''
 def test_get_current_user():
     assert OBJECT.get_current_user("admin") == "admin"
     result = OBJECT.get_prev_time_stamp()
@@ -63,7 +63,7 @@ def test_get_current_user():
         assert OBJECT.update_time_stamp(TIME_STAMP) is None
     assert OBJECT.insert_smtp_ip("107.102.11.25", "8888") is None
     OBJECT.get_email_list()
-
+'''
 
 def check_email_exist_in_list(email):
     for i in range(0, len(EMAIL_LIST)):
@@ -125,12 +125,12 @@ def test_get_users():
     assert compare_user_list(list_from_db, USER_LIST)
     #assert OBJECT.get_users_from_db() == USER_LIST
 
-
+"""
 def test_toggle_status_from_db():
     assert OBJECT.toggle_status_from_db(USER_LIST[0]["_id"], False)
     assert OBJECT.toggle_status_from_db(USER_LIST[0]["_id"], True)
 
-"""
+
 def test_update_user_in_db():
     global USER_LIST
     assert OBJECT.update_user_in_db(
@@ -217,7 +217,7 @@ def test_toggle_alert_status_in_db():
     ALERT_LIST[2]["active"] = True
     test_get_alerts_from_db()
 """
-
+'''
 def test_set_live_logs_in_db():
     global USER_LIST
     assert OBJECT.set_live_logs_in_db(False, USER_LIST[1]["_id"]) is None
@@ -240,7 +240,7 @@ def test_get_live_logs_from_db():
         USER_LIST[3]["_id"]) == USER_LIST[3]["livedata"]
     assert OBJECT.get_live_logs_from_db(
         USER_LIST[4]["_id"]) == USER_LIST[4]["livedata"]
-
+'''
 
 def test_match_username_from_db():
     assert OBJECT.match_username_from_db(

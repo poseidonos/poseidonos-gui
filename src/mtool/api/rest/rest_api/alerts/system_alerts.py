@@ -32,7 +32,7 @@
  */
  '''
 
-
+'''
 from util.db.influx import get_connection
 import requests
 import json
@@ -351,7 +351,7 @@ def get_alerts_from_kapacitor():
     print("alertsssss",r.json())
     return r	
 """
-
+'''
 
 
 

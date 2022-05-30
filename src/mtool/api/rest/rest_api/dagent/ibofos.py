@@ -70,6 +70,7 @@ def make_failure_response(desc='unable to perform the task', code=500):
 def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
     retry_count = 0
     response = None
+    print("headers",headers)
     try:
         while(1):
             #print("sending request to dagent ",url)
@@ -314,7 +315,7 @@ def array_status(auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to get array status...', 500)
 
-
+'''
 def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
     #print("in array exists")
     logger = logging.getLogger(__name__)
@@ -348,6 +349,7 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
     except Exception as e:
         print("exception in exists: " + str(e))
         return False
+'''
 def add_listener(name, transport_type, target_address, transport_service_id, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to add listener api ...')
@@ -760,7 +762,7 @@ def create_volume(
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
-
+'''
 def update_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {"param": params}
@@ -782,7 +784,7 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
-
+'''
 
 def rename_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)

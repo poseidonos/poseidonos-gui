@@ -31,6 +31,8 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
+ 
+'''
 import pytest
 from rest.app import app
 from flask import json
@@ -96,6 +98,7 @@ def test_get_live_logs_no(mock_get_live_logs_from_db, global_data):
 
     #data = (response.get_data(as_text=True))
     assert response.status_code == 200
+'''
 
 """
 def test_ibofos_logs(global_data):

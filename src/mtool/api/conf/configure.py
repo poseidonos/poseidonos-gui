@@ -38,7 +38,7 @@
 
 # ! /usr/bin/python
 
-
+'''
 import configparser
 import os
 
@@ -211,3 +211,4 @@ config = Configuration()
 if __name__ == '__main__':
     # print(config.get_root_dir())
     pass
+'''
