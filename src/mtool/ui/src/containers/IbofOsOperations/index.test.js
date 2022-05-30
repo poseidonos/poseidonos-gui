@@ -154,21 +154,23 @@ describe("IbofOsOperations", () => {
     });
 
     it("starts POS", async () => {
+        const mock = new MockAdapter(axios);
+         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": {"module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS"}}}, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        ).onGet("api/v1/pos/property")
+        .reply(200, {
+            "result": {
+                "data": {
+                    "rebuild_policy": "lowest"
+                }
+            }
+        }).onAny().reply(200, {});
+
         renderComponent();
         const { getByTestId, getByText } = wrapper;
-
-        const response = {
-            "code": -1, "response": "POS is Already Running..."
-        };
-        jest.spyOn(global, "fetch").mockImplementation(() =>
-            Promise.resolve({
-                json: () => Promise.resolve(response),
-                status: 200
-            })
-        );
         fireEvent.click(getByTestId("startButton"));
         fireEvent.click(getByText("Yes"));
-        global.fetch.mockRestore();
+        expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
     });
     it("stops POS", async () => {
         const mock = new MockAdapter(axios);
@@ -191,6 +193,47 @@ describe("IbofOsOperations", () => {
         fireEvent.click(getByText("Yes"));
         global.fetch.mockRestore();
     });
+
+    it("should show the current Performance impact",async () => {
+        const mock = new MockAdapter(axios);
+         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        ).onGet("api/v1/pos/property")
+        .reply(200, {
+            "result": {
+                "data": {
+                    "rebuild_policy": "lowest"
+                }
+            }
+        }).onAny().reply(200, {});
+        renderComponent();
+        const { getByText } = wrapper;
+        expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
+    });
+
+    it("should set the Performance impact",async () => {
+        const mock = new MockAdapter(axios);
+        const property = {
+            rebuild_policy: "lowest"
+        }
+         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200, { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        ).onGet("api/v1/pos/property")
+        .reply(200, {
+            "result": {
+                "data": property
+            }
+        })
+        .onAny().reply(200, {});
+        renderComponent();
+        const { getByText, getByLabelText, getByTestId } = wrapper;
+        expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
+        fireEvent.change(getByTestId("set-property-input"), { target : { value: "medium"}});
+        property.rebuild_policy = "medium";
+        fireEvent.click(getByTestId("setPropertyButton"));
+        expect(await waitForElement(() => getByText("medium"))).toBeDefined();
+    });
+
+
 
     // it("mounts POS", async () => {
     //     const mock = new MockAdapter(axios);

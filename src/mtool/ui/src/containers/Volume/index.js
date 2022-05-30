@@ -520,12 +520,13 @@ class Volume extends Component {
                               >
                                 {this.props.arrayMap[this.props.selectedArray].status}
                               </span>
-                     <Grid container>, {this.props.arrayMap[this.props.selectedArray].situation}
+                     <Grid container>, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
 			        {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
 					<InfoIcon
                         aria-owns={openPopover ? 'rebuild-popover' : undefined}
                         aria-haspopup="true"
                         color="primary"
+                        data-testid="rebuild-popover-icon"
                         onClick={this.openRebuildPopover}
                         onBlur={this.closeRebuildPopover}
 					/>

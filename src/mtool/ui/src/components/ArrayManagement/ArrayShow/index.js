@@ -258,6 +258,8 @@ class ArrayShow extends Component {
   }
 
   componentDidMount() {
+    this.props.getArrayInfo(this.props.arrayName);
+    this.props.getDevices({noLoad: true});
     this.interval = setInterval(() => {
       this.props.getArrayInfo(this.props.arrayName);
       this.props.getDevices({noLoad: true});

@@ -15,7 +15,6 @@ const styles = (theme) => ({
 
 const RebuildProgress = (props) => {
   const {classes} = props;
-console.log(props)
   return (
 	<Grid container direction="column" className={classes.root}>
 	   <Box display="flex" minWidth={200} alignItems="center">
@@ -28,7 +27,6 @@ console.log(props)
 	       </Typography>
 	     </Box>
 	   </Box>
-       //	   <Grid>Time for Rebuild: 5s</Grid>
 	</Grid>
   );
 }

@@ -1174,6 +1174,17 @@ function* autoCreateArray(action) {
   let shouldReload = true;
   try {
     const raidType = action.payload.selectedRaid;
+    const autoArrayname = action.payload.array.arrayName;
+    if(!autoArrayname) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Please provide a name for the Array",
+            errorCode: "",
+            alertTitle:  "Error in Array Creation"
+          })
+        );
+    }
     if(Number(action.payload.array.storageDisks) < Number(raidType.minStorageDisks) ||
       Number(action.payload.array.spareDisks) < Number(raidType.minSpareDisks) ||
       Number(action.payload.array.storageDisks) > Number(raidType.maxStorageDisks) ||
@@ -1215,7 +1226,6 @@ function* autoCreateArray(action) {
         shouldReload = false;
         return;
     }
-    const autoArrayname = action.payload.array.arrayName;
  
     yield put(actionCreators.startStorageLoader("Creating Array"));
     const response = yield call(

@@ -1,5 +1,5 @@
 /*
- *   BSD LICENSE
+*   BSD LICENSE
  *   Copyright (c) 2021 Samsung Electronics Corporation
  *   All rights reserved.
  *
@@ -367,35 +367,83 @@ describe("<Storage Management />", () => {
       }
     }, "info": { "version": "v0.11.0-rc4" }
   }
-  /*
-    it("should render array created view", () => {
-      mock
-        .onGet(/api\/v1.0\/get_devices\//)
-        .reply(200, {
-          devices,
-          metadevices,
-        })
-        .onGet(/api\/v1\/get_arrays\//)
-        .reply(200, [array])
-        .onGet(/api\/v1.0\/get_volumes\//)
-        .reply(200, [])
-        .onGet(/api\/v1.0\/max_volume_count\//)
-        .reply(200, 256)
-        .onPost(/api\/v1.0\/delete_array\//)
-        .reply(200, {})
-        .onGet(/api\/v1\/get_array_config\//)
-        .reply(200, config)
-        .onGet(/api\/v1\/array\/POSArray\/info/)
-        .reply(200, posInfo)
-        .onGet(/api\/v1\/subsystem/)
-        .reply(200, {
-          result: {
-            data: {
-          subsystemlist: [{
-              nqn: "subsystem1",
-            subtype: "NVMe"
-          }, {
-          nqn: "subsystem2",
+
+  const arrayInfo = {
+    "rid": "386d44c5-ada8-4ce2-a33b-ee9f9b605d10",
+    "lastSuccessTime": 1653555896,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray information"
+        },
+        "data": {
+            "capacity": 13548474335232,
+            "create_datetime": "2022-05-25 12:23:01 +0530",
+            "data_raid": "RAID5",
+            "devicelist": [
+                {
+                    "name": "uram1",
+                    "type": "BUFFER"
+                },
+                {
+                    "name": "unvme-ns-1",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-2",
+                    "type": "DATA"
+                },
+                {
+                    "name": "unvme-ns-3",
+                    "type": "DATA"
+                }
+            ],
+            "gcMode": "none",
+            "index": 0,
+            "meta_raid": "RAID10",
+            "name": "POSArray",
+            "rebuilding_progress": 30,
+            "situation": "REBUILDING",
+            "state": "REBUILDING",
+            "unique_id": 1495652515,
+            "update_datetime": "2022-05-25 12:24:26 +0530",
+            "used": 404004798464,
+            "write_through_enabled": false
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}
+/*
+  it("should render array created view", () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\//)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\//)
+      .reply(200, [array])
+      .onGet(/api\/v1.0\/get_volumes\//)
+      .reply(200, [])
+      .onGet(/api\/v1.0\/max_volume_count\//)
+      .reply(200, 256)
+      .onPost(/api\/v1.0\/delete_array\//)
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\//)
+      .reply(200, config)
+      .onGet(/api\/v1\/array\/POSArray\/info/)
+      .reply(200, posInfo)
+      .onGet(/api\/v1\/subsystem/)
+      .reply(200, {
+        result: {
+          data: {
+        subsystemlist: [{
+            nqn: "subsystem1",
           subtype: "NVMe"
         }],
   }}})
@@ -2231,6 +2279,175 @@ describe("<Storage Management />", () => {
     expect(queryByTestId(/list-vol-maxiops-vol2/i)).toBeNull();
   });
 
+  it("should reset QoS of a volume", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onPost("/api/v1.0/save-volume/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .reply(200, {
+        Members: [
+          {
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+          },
+        ],
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .reply(200, {
+        Name: "vol1",
+        Id: "0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .reply(200, {
+        Name: "vol2",
+        Id: "1",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onPut("/api/v1.0/update-volume/")
+      .reply(200, {
+        result: {
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    jest.setTimeout(30000);
+    const { getByText, getByTitle, getByTestId, asFragment } = wrapper;
+    const resetBtn = await waitForElement(() => getByTestId("vol-reset-qos-btn-vol2"));
+    fireEvent.click(resetBtn);
+    expect(await waitForElement(() => getByText("QoS Reset successfull"))).toBeDefined();
+  });
+
+  it("should throw error when reset QoS of a volume fails", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onPost("/api/v1.0/save-volume/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .reply(200, {
+        Members: [
+          {
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+          },
+        ],
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
+      .reply(200, {
+        Name: "vol1",
+        Id: "0",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
+      .reply(200, {
+        Name: "vol2",
+        Id: "1",
+        "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+        Capacity: {
+          Data: {
+            AllocatedBytes: 100,
+            ConsumedBytes: 10,
+          },
+        },
+        Oem: {
+          MaxIOPS: 10,
+          MaxBW: 10,
+        },
+        Status: {
+          Oem: {
+            VolumeStatus: "Mounted",
+          },
+        },
+      })
+      .onPut("/api/v1.0/update-volume/")
+      .reply(200, {
+        result: {
+          status: {
+            code: 0,
+            description: "Success",
+          },
+        },
+      })
+      .onPost("/api/v1/qos/reset")
+      .reply(400, {})
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    jest.setTimeout(30000);
+    const { getByText, getByTitle, getByTestId, asFragment } = wrapper;
+    const resetBtn = await waitForElement(() => getByTestId("vol-reset-qos-btn-vol2"));
+    fireEvent.click(resetBtn);
+    expect(await waitForElement(() => getByText("Volume QoS Reset failed"))).toBeDefined();
+  });
+
+
   it("set miniops then minbw", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -3070,6 +3287,81 @@ describe("<Storage Management />", () => {
       })
       .onAny()
       .reply(200, []);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
+    const autoCreateBtn = getByText("Auto-Create");
+    fireEvent.click(autoCreateBtn);
+    fireEvent.change(await waitForElement(() => getByTestId("auto-array-name")), {
+      target: {value: "test"}
+    })
+    fireEvent.click(getByTestId("auto-createarray-btn"));
+    expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
+  });
+
+  it("should throw error while autocreate an array", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices: [
+          ...metadevices,
+          {
+            name: "uram2",
+            isAvailable: true,
+            arrayName: "",
+            displayMsg: "uram1",
+            trimmedDisplayMsg: "uram1"
+          }
+        ],
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onPost("/api/v1/autoarray/")
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(getByText("create"));
+    const autoCreateBtn = getByText("Auto-Create");
+    fireEvent.click(autoCreateBtn);
+    fireEvent.click(getByTestId("auto-createarray-btn"));
+    expect(waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
+  });
+
+
+  it("should close the autocreate popup", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices: [
+          ...metadevices,
+          {
+            name: "uram2",
+            isAvailable: true,
+            arrayName: "",
+            displayMsg: "uram1",
+            trimmedDisplayMsg: "uram1"
+          }
+        ],
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onPost("/api/v1/autoarray/")
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
     renderComponent();
     const { getByTestId, getByText } = wrapper;
     fireEvent.click(getByText("create"));
@@ -3077,8 +3369,7 @@ describe("<Storage Management />", () => {
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     expect(dev1).toBeDefined();
     fireEvent.click(autoCreateBtn);
-    fireEvent.click(await waitForElement(() => getByTestId("auto-createarray-btn")));
-    expect(waitForElement(() => getByText("Array created successfully"))).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByTestId("alertCloseButton")));
   });
 
   it("should display error message if 3 ssds are not available", async () => {
@@ -3130,8 +3421,6 @@ describe("<Storage Management />", () => {
       .reply(200, {})
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
-      .onGet(/api\/v1\/get_array_config\/*/)
-      .reply(200, config)
       .onPost("/api/v1/autoarray/")
       .reply(200, {
         result: { status: { code: 0 } },
@@ -3149,4 +3438,74 @@ describe("<Storage Management />", () => {
     fireEvent.click(await waitForElement(() => getByTestId("auto-createarray-btn")));
     expect(await waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
   });
+
+  it("should show rebuild progress", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/array\/POSArray\/info*/)
+      .reply(200, arrayInfo)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
+      .reply(400, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+    jest.useFakeTimers();
+    jest.spyOn(global, 'setInterval');
+    renderComponent();
+    const { getByTestId, getByText, asFragment } = wrapper;
+    expect(setInterval).toHaveBeenCalledTimes(1);
+    jest.runOnlyPendingTimers();
+    expect(asFragment()).toMatchSnapshot();
+    expect(await waitForElement(() => getByText("REBUILDING")));
+    fireEvent.click(getByTestId("rebuild-popover-icon"));
+  });
+
+  it("should show 0 rebuild progress", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/array\/POSArray\/info*/)
+      .reply(200, {
+        ...arrayInfo,
+        result: {
+          ...arrayInfo.result,
+          data: {
+            ...arrayInfo.result.data,
+            "rebuilding_progress": 0
+          }
+        }
+      })
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
+      .reply(400, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+    jest.useFakeTimers();
+    jest.spyOn(global, 'setInterval');
+    renderComponent();
+    const { getByTestId, getByText, asFragment } = wrapper;
+    expect(setInterval).toHaveBeenCalledTimes(1);
+    jest.runOnlyPendingTimers();
+    expect(asFragment()).toMatchSnapshot();
+    expect(await waitForElement(() => getByText("REBUILDING")));
+    fireEvent.click(getByTestId("rebuild-popover-icon"));
+  });
+
 });

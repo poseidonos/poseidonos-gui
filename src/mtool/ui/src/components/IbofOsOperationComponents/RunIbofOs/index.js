@@ -169,10 +169,10 @@ const RunIbofOs = props => {
            inputProps={{
              name: "Volume Unit",
              id: "vol_unit",
-             "data-testid": "volume-unit-input",
+             "data-testid": "set-property-input",
            }}
            SelectDisplayProps={{
-             "data-testid": "volume-unit",
+             "data-testid": "set-property-select",
            }}
 	       className="IBOFOSPropertySelect"
 	>

@@ -33,7 +33,7 @@
 import Dashboard from "./index";
 import { createMount } from '@material-ui/core/test-utils';
 import React from "react";
-import { render, fireEvent, cleanup, waitForElement, getNodeText } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, waitForElement, getNodeText } from "@testing-library/react";
 import { Provider } from "react-redux";
 import "@testing-library/jest-dom/extend-expect";
 import { I18nextProvider } from "react-i18next";
@@ -396,6 +396,89 @@ describe("Dashboard", () => {
     expect(await waitForElement(() => getByText("Dashboard"))).toBeDefined();
     window.location = location;
   });
+
+  it("should display volumes of an array correctly", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array, {...array, arrayname: "POSArray2"}])
+      .onGet(`/api/v1/get_all_volumes/`)
+      .reply(200, {
+        "POSArray": [
+        {
+          id: '0',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol-1',
+          status: 'Mounted',
+          total: 1073741824,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        },
+        {
+          id: '1',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol-2',
+          remain: 0,
+          status: 'Mounted',
+          total: 10737418240,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        }
+      ],
+      "POSArray2": [
+        {
+          id: '0',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol-1',
+          status: 'Mounted',
+          total: 1073741824,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        },
+        {
+          id: '1',
+          maxbw: 0,
+          maxiops: 0,
+          name: 'vol-2',
+          remain: 0,
+          status: 'Mounted',
+          total: 10737418240,
+          ip: '10.1.11.91',
+          port: 'NA',
+          subnqn: 'NA',
+          description: "",
+          unit: 'GB',
+          size: '10',
+          usedspace: 0
+        }
+      ]
+    }).onAny().reply(200, {});
+    renderComponent();
+    const { getByText, getAllByText, getByRole, getByTestId, queryByText, asFragment } = wrapper;
+    const arraySelect = await waitForElement(() => getByTestId("dashboard-array-select"));
+    fireEvent.change(await waitForElement(() => getByTestId("dashboard-array-select")), { target: { value: "POSArray2" }});
+    expect(await waitForElement(() => getAllByText("vol-1"))).toHaveLength(1);
+    fireEvent.change(getByTestId("dashboard-array-select"), { target: { value: "all" }});
+    expect(await waitForElement(() => getAllByText("vol-1"))).toHaveLength(2);
+   });
+
 
   // it("should display health metrics as received from API", async () => {
   //   jest.useFakeTimers();

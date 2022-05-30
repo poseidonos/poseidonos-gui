@@ -171,42 +171,6 @@ function* resetIBOFOs() {
     }
 }
 
-function* mountIBOFOs() {
-    yield put(actionCreators.setOperationsMessage("Mounting Poseidon OS"));
-    try {
-        const response = yield call([axios, axios.post], '/api/v1.0/ibofos/mount', {
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
-        if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage("Poseidon OS Mount Successful"));
-        }
-    } catch (e) {
-        yield put(actionCreators.setOperationsMessage("Error in Mounting Poseidon OS: ", e));
-    }
-}
-
-function* unmountIBOFOs() {
-    yield put(actionCreators.setOperationsMessage("Unmounting Poseidon OS"));
-    try {
-        const response = yield call([axios, axios.delete], '/api/v1.0/ibofos/mount', {
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
-        if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage("Poseidon OS Unmount Successful"));
-        }
-    } catch (e) {
-        yield put(actionCreators.setOperationsMessage("Error in Unmounting Poseidon Os: ", e));
-    }
-}
-
 function* getPOSInfo() {
     try {
 	const response = yield call([axios, axios.get], '/api/v1.0/pos/info', {
@@ -284,8 +248,6 @@ export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_START_IBOFOS, startIBOFOs);
     yield takeEvery(actionTypes.SAGA_STOP_IBOFOS, stopIBOFOs);
     yield takeEvery(actionTypes.SAGA_RESET_IBOFOS, resetIBOFOs);
-    yield takeEvery(actionTypes.SAGA_MOUNT_IBOFOS, mountIBOFOs);
-    yield takeEvery(actionTypes.SAGA_UNMOUNT_IBOFOS, unmountIBOFOs);
     yield takeEvery(actionTypes.SAGA_GET_POS_INFO, getPOSInfo);
     yield takeEvery(actionTypes.SAGA_GET_POS_PROPERTY, getPOSProperty);
     yield takeEvery(actionTypes.SAGA_SET_POS_PROPERTY, setPOSProperty);

@@ -895,13 +895,15 @@ class Dashboard extends Component {
                                 onChange={this.selectArray}
                                 inputProps={{
                                   id: "select-array",
+                                  "data-testid": "dashboard-array-select"
                                 }}
+                                data-testid="array-select"
                                 className={classes.arraySelect}
                               >
                                 <MenuItem value="all">All</MenuItem>
                                 {this.props.arrays.map((array) => (
                                   <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
-                                ))};
+                                ))}
                               </Select>
                               </FormControl>
                             </Grid>
