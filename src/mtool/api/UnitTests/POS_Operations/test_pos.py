@@ -40,8 +40,6 @@ import jwt
 import datetime
 from unittest import mock
 from rest.rest_api.dagent.ibofos import start_ibofos
-from bson import json_util
-from flask import json
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])

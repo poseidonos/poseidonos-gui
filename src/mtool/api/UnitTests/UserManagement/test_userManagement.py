@@ -73,7 +73,6 @@ def test_add_new_user(mock_add_new_user_in_db, global_data):
                                                        "error": ""}),
                                       content_type='application/json',
                                       )
-    data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
     #print("DATAAA", data)
 
@@ -274,7 +273,6 @@ def test_update_password(mock_update_password_in_db, global_data):
         data=json.dumps({"userid": "admin", 'oldPassword':'sss@1234', 'newPassword':'hhh@1234'}),
         content_type='application/json',
     )
-    data = response.get_data(as_text=True)
     assert response.status_code == 200
 
 

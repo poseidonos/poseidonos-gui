@@ -35,14 +35,14 @@
 #from socketclient.socketclient import get_devices, scan_devices, get_device_details
 
 # from dagent.ibofos import *
-from rest.rest_api.dagent.ibofos import scan_devices, get_devices, get_smart_info
+from rest.rest_api.dagent.ibofos import get_devices, get_smart_info
 
 
 def list_devices():
     #scan_dev = scan_devices()
     # if scan_dev.status_code != 200:
     #    return scan_dev
-    scan_dev = scan_devices()
+    #scan_dev = scan_devices()
     devices = get_devices()
     devices = devices.json()
     if "return" in devices and devices["return"] == -1:

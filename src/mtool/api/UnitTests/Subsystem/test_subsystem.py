@@ -39,8 +39,6 @@ import jwt
 import datetime
 from unittest import mock
 from flask import json
-from rest.rest_api.device.device import list_devices
-from rest.app import make_block_aligned
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])

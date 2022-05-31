@@ -161,7 +161,7 @@ def process_response(res, rule, field, _id, label):
                 result["value"] = str(round(usage_percent, 2))
                 result["unit"] = "%"
     except Exception as e:
-        #print("In Exception: ", e)
+        print("In Exception health status process_response: ", e)
         return result
     return result
 

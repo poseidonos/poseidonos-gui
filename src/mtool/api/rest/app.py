@@ -38,7 +38,7 @@ from rest.swordfish.handler import swordfish_api
 #from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
 from util.com.time_groups import time_groups
-from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, update_volume, get_max_vol_count, mount_volume, unmount_volume
+from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, get_max_vol_count, mount_volume, unmount_volume
 #from rest.rest_api.logmanager.logmanager import download_logs
 from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
@@ -48,7 +48,7 @@ from rest.rest_api.health_status.health_status import process_response, get_over
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_read_latency_usage, get_write_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency,get_disk_read_latency , \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_read_latency_usage, get_write_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, get_disk_read_latency, \
     get_disk_current_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
@@ -62,17 +62,14 @@ from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
 #from dateutil import parser
-import smtplib
 import datetime
 import jwt
-from werkzeug.security import generate_password_hash
 import uuid
 from base64 import b64encode
 import re
 from functools import wraps
 from bson import json_util
 import traceback
-import requests
 import json
 import threading
 import os
@@ -116,7 +113,8 @@ MACRO_OFFLINE_STATE = "OFFLINE"
 threshold = 0.9
 old_result = ""
 
-alertFields = {'cpu' : "usage_user", 'mem' : 'used_percent'}
+alertFields = {'cpu': "usage_user", 'mem': 'used_percent'}
+
 
 class IBOF_OS_Running:
     Is_Ibof_Os_Running_Flag = False
@@ -210,20 +208,23 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
+
 @app.route('/api/v1.0/version', methods=['GET'])
 def get_version():
-    package_json_path = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../ui/package.json"))
+    package_json_path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../../ui/package.json"))
     with open(package_json_path) as f:
         data = json.load(f)
         return toJson({"version": data["version"]})
-
 
 
 @app.route('/api/v1.0/logger', methods=['POST'])
 def log_collect():
     body_unicode = request.data.decode('utf-8')
     if len(body_unicode) > 0:
-        body=json.loads(body_unicode)
+        body = json.loads(body_unicode)
         try:
             log_to_influx(body)
         except Exception as e:
@@ -231,13 +232,16 @@ def log_collect():
         return "Log written sucessfully"
     return make_response("Received null log value", 200)
 
+
 def get_ibof_os_status():
     return IBOF_OS_Running.Is_Ibof_Os_Running_Flag
+
 
 @app.route('/api/v1.0/pos/info', methods=['GET'])
 @token_required
 def get_pos_info(current_user):
     return toJson(dagent.get_pos_info().json())
+
 
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
 @token_required
@@ -256,6 +260,8 @@ def start_ibofos(current_user):
     res = dagent.start_ibofos()
     res = res.json()
     return jsonify(res)
+
+
 """    if res.status_code == 200:
         res = res.json()
         if res["result"]["status"]["code"] == 0:
@@ -273,6 +279,8 @@ def start_ibofos(current_user):
 """
 
 # Delete Array
+
+
 @app.route('/api/v1.0/delete_array/<name>', methods=['POST'])
 @token_required
 def delete_array(current_user, name):
@@ -301,7 +309,7 @@ def stop_ibofos(current_user):
     :param current_user:
     :return: status
     """
-    print("current_user:",current_user)
+    print("current_user:", current_user)
     is_ibofos_running()
     if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
         return jsonify({"response": "POS has already stopped...", "code": -1})
@@ -318,7 +326,8 @@ def stop_ibofos(current_user):
                 description = res["result"]["status"]["description"]
                 description += ", Error Code:"
                 description += str(res["result"]["status"]["code"])
-                return jsonify({"response": description, "code": res["result"]["status"]["code"]})
+                return jsonify({"response": description,
+                                "code": res["result"]["status"]["code"]})
             return jsonify({"response": "unable to stop ibofos", "code": -1})
     except BaseException:
         return jsonify({"response": "unable to stop ibofos", "code": -1})
@@ -412,7 +421,7 @@ def is_ibofos_running(current_user="admin"):
         if('result' in response and 'data' in response['result']):
             state = response['result']['data']['state']
             situation = response['result']['data']['situation']
-    except Exception as e:
+    except BaseException:
         return toJson({"RESULT": response,
                        "lastRunningTime": lastRunningTime,
                        "timestamp": timestamp,
@@ -574,9 +583,9 @@ def get_alert_info():
 @token_required
 def get_alert_categories(current_user):
     #To get the alert subcategories, uncomment the following line
-    #alertCategories = get_alert_categories_new()   
+    #alertCategories = get_alert_categories_new()
 
-    alertCategories = get_alert_categories_from_influxdb() 
+    alertCategories = get_alert_categories_from_influxdb()
     return jsonify({'alert_types': alertCategories})
 '''
 
@@ -642,12 +651,14 @@ def get_read_iops(time_interval, arr_id, vol_id):
         print(e)
         return jsonify({"res": []})
 
+
 @app.route('/api/v1/readiops/arrays', methods=['GET'])
 def get_array_read_iops():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_read_iops(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/readiops/arrays/volumes', methods=['GET'])
 def get_volume_read_iops():
@@ -669,12 +680,15 @@ def get_write_iops(time_interval, arr_id, vol_id):
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+
+
 @app.route('/api/v1/writeiops/arrays', methods=['GET'])
 def get_array_write_iops():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_write_iops(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/writeiops/arrays/volumes', methods=['GET'])
 def get_volume_write_iops():
@@ -683,6 +697,7 @@ def get_volume_write_iops():
     vol_ids = params["volumeids"]
     time_interval = params["time"]
     return get_write_iops(time_interval, arr_ids, vol_ids)
+
 
 def get_latency(time_interval, arr_ids, vol_ids):
     if time_interval not in time_groups.keys():
@@ -696,12 +711,14 @@ def get_latency(time_interval, arr_ids, vol_ids):
         print(e)
         return jsonify({"res": []})
 
+
 @app.route('/api/v1/latency/arrays', methods=['GET'])
 def get_array_latency():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_latency(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/latency/arrays/volumes', methods=['GET'])
 def get_volume_latency():
@@ -710,6 +727,7 @@ def get_volume_latency():
     vol_ids = params["volumeids"]
     time_interval = params["time"]
     return get_latency(time_interval, arr_ids, vol_ids)
+
 
 def get_read_latency(time_interval, arr_ids, vol_ids):
     if time_interval not in time_groups.keys():
@@ -723,6 +741,7 @@ def get_read_latency(time_interval, arr_ids, vol_ids):
         print(e)
         return jsonify({"res": []})
 
+
 def get_write_latency(time_interval, arr_ids, vol_ids):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
@@ -735,12 +754,14 @@ def get_write_latency(time_interval, arr_ids, vol_ids):
         print(e)
         return jsonify({"res": []})
 
+
 @app.route('/api/v1/readlatency/arrays', methods=['GET'])
 def get_array_read_latency():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_read_latency(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/readlatency/arrays/volumes', methods=['GET'])
 def get_volume_read_latency():
@@ -750,12 +771,14 @@ def get_volume_read_latency():
     time_interval = params["time"]
     return get_read_latency(time_interval, arr_ids, vol_ids)
 
+
 @app.route('/api/v1/writelatency/arrays', methods=['GET'])
 def get_array_write_latency():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_write_latency(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/writelatency/arrays/volumes', methods=['GET'])
 def get_volume_write_latency():
@@ -765,12 +788,13 @@ def get_volume_write_latency():
     time_interval = params["time"]
     return get_write_latency(time_interval, arr_ids, vol_ids)
 
+
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
     array_ids = "0,1"
     res = get_disk_current_perf(array_ids)
     return jsonify(res)
-    """ 
+'''
     ### below code can be used if we get array ids from list_arrays API"
     arrays = dagent.list_arrays()
     arrays = arrays.json()
@@ -783,7 +807,10 @@ def get_current_iops():
         res = get_disk_current_perf(array_ids)
         return jsonify(res)
     else:
-        return jsonify({"res": []})"""
+        return jsonify({"res": []})
+'''
+
+
 def get_read_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
         raise InvalidUsage(
@@ -795,12 +822,15 @@ def get_read_bw(time_interval, arr_id, vol_id):
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+
+
 @app.route('/api/v1/readbw/arrays', methods=['GET'])
 def get_array_read_bw():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_read_bw(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/readbw/arrays/volumes', methods=['GET'])
 def get_volume_read_bw():
@@ -809,6 +839,7 @@ def get_volume_read_bw():
     vol_ids = params["volumeids"]
     time_interval = params["time"]
     return get_read_bw(time_interval, arr_ids, vol_ids)
+
 
 def get_write_bw(time_interval, arr_id, vol_id):
     if time_interval not in time_groups.keys():
@@ -821,12 +852,15 @@ def get_write_bw(time_interval, arr_id, vol_id):
     except Exception as e:
         print(e)
         return jsonify({"res": []})
+
+
 @app.route('/api/v1/writebw/arrays', methods=['GET'])
 def get_array_write_bw():
     params = request.args.to_dict()
     arr_ids = params["arrayids"]
     time_interval = params["time"]
     return get_write_bw(time_interval, arr_ids, "")
+
 
 @app.route('/api/v1/writebw/arrays/volumes', methods=['GET'])
 def get_volume_write_bw():
@@ -835,7 +869,6 @@ def get_volume_write_bw():
     vol_ids = params["volumeids"]
     time_interval = params["time"]
     return get_write_bw(time_interval, arr_ids, vol_ids)
-
 
 
 """
@@ -954,7 +987,7 @@ def get_smtp_details():
         r = requests.get(
         url="http://localhost:9092/kapacitor/v1/config/smtp/")
         data = r.json()
-        print("dataaaa",data) 
+        print("dataaaa",data)
         print("smtp detailsaaaaa",data['options'])
         if(r.status_code != 204 and r.status_code != 200):
             return abort(404)
@@ -975,7 +1008,7 @@ def get_smtp_details():
 def get_email_ids():
     email_list = connection_factory.get_email_list()
     return toJson(email_list)
- 
+
 
 @app.route('/api/v1.0/get_smtp_server_details/', methods=['GET'])
 def get_smtp_server_details():
@@ -986,7 +1019,7 @@ def get_smtp_server_details():
 def update_email():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-  
+
     oldid = body['oldid']
     email = body['email']
     print("in update_email() ", oldid, email)
@@ -997,7 +1030,7 @@ def update_email():
     else:
         result = connection_factory.update_email_list(oldid, email)
     return result
-  
+
 
 @app.route('/api/v1.0/delete_emailids/', methods=['POST'])
 def delete_emailids():
@@ -1007,7 +1040,7 @@ def delete_emailids():
     result = None
     for email_id in ids:
         result = connection_factory.delete_emailids_list(email_id)
-    return result 
+    return result
 
 
 @app.route('/api/v1.0/send_email/', methods=['POST'])
@@ -1042,36 +1075,41 @@ def get_array_info(current_user, array_name):
     array_info = array_info.json()
     return toJson(array_info)
 
+
 @app.route('/api/v1.0/get_devices/', methods=['GET'])
 @token_required
 def getDevices(current_user):
     devices = list_devices()
     if(not isinstance(devices, dict)):
-         devices = devices.json()
+        devices = devices.json()
     arrays = dagent.list_arrays()
     arrays = arrays.json()
     if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
         arrays = arrays["result"]["data"]["arrayList"]
     else:
         return toJson(devices)
-    if type(arrays) != list:
+    if not isinstance(arrays, list):
         return toJson(devices)
     for array in arrays:
         a_info = arr_info(array["name"])
         try:
             if a_info.status_code == 200:
                 a_info = a_info.json()
-                for device in chain(devices["devices"],devices["metadevices"]):
+                for device in chain(
+                        devices["devices"],
+                        devices["metadevices"]):
                     for arr_dev in a_info["result"]["data"]["devicelist"]:
                         if arr_dev["name"] == device["name"]:
                             device["isAvailable"] = False
                             device["arrayName"] = array["name"]
                             if "displayMsg" in device:
-                                device["displayMsg"] = device["name"] + " (used by "+array["name"]+")"
-                                device["trimmedDisplayMsg"] = device["name"] + " (used)"
+                                device["displayMsg"] = device["name"] + \
+                                    " (used by " + array["name"] + ")"
+                                device["trimmedDisplayMsg"] = device["name"] + \
+                                    " (used)"
                             break
         except Exception as e:
-            print("Exception in array_info() in /api/v1.0/get_devices/ ",e)
+            print("Exception in array_info() in /api/v1.0/get_devices/ ", e)
     return toJson(devices)
 
 
@@ -1140,6 +1178,8 @@ def getDeviceDetails(current_user, name):
         return make_response(res, 500)
 
 # create transport
+
+
 @app.route('/api/v1/transport/', methods=['POST'])
 @token_required
 def create_transport(current_user):
@@ -1149,17 +1189,22 @@ def create_transport(current_user):
     buf_cache_size = body.get('buf_cache_size')
     num_shared_buf = body.get('num_shared_buf')
     try:
-        resp = dagent.create_trans(transport_type, buf_cache_size, num_shared_buf)
+        resp = dagent.create_trans(
+            transport_type,
+            buf_cache_size,
+            num_shared_buf)
         if resp is not None:
             resp = resp.json()
             return toJson(resp)
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in creating transport "+e)
+        print("Exception in creating transport " + e)
         return abort(404)
 
 # create subsystem
+
+
 @app.route('/api/v1/subsystem/', methods=['POST'])
 @token_required
 def create_subsystem(current_user):
@@ -1171,17 +1216,24 @@ def create_subsystem(current_user):
     max_namespaces = body.get('max_namespaces')
     allow_any_host = body.get('allow_any_host')
     try:
-        resp = dagent.create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host)
+        resp = dagent.create_subsystem(
+            name,
+            serial_num,
+            model_num,
+            max_namespaces,
+            allow_any_host)
         if resp is not None:
             resp = resp.json()
             return toJson(resp)
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in creating subsystem "+e)
+        print("Exception in creating subsystem " + e)
         return abort(404)
 
 # add listener
+
+
 @app.route('/api/v1/listener/', methods=['POST'])
 @token_required
 def add_listener(current_user):
@@ -1192,17 +1244,23 @@ def add_listener(current_user):
     target_address = body.get('ip')
     transport_service_id = body.get('port')
     try:
-        resp = dagent.add_listener(name, transport_type, target_address, transport_service_id)
+        resp = dagent.add_listener(
+            name,
+            transport_type,
+            target_address,
+            transport_service_id)
         if resp is not None:
             resp = resp.json()
             return toJson(resp)
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in adding listener "+e)
+        print("Exception in adding listener " + e)
         return abort(404)
 
 # list subsystem
+
+
 @app.route('/api/v1/subsystem/', methods=['GET'])
 @token_required
 def list_subsystem(current_user):
@@ -1211,16 +1269,20 @@ def list_subsystem(current_user):
         resp = resp.json()
         for subsystem in resp["result"]["data"]["subsystemlist"]:
             if subsystem["subtype"] == "NVMe":
-                namespaces = subsystem["namespaces"] if "namespaces" in subsystem else []
+                namespaces = subsystem["namespaces"] if "namespaces" in subsystem else [
+                ]
                 if len(namespaces) > 0:
-                    arrayname = "_".join(namespaces[0]["bdev_name"].split("_")[2:])
+                    arrayname = "_".join(
+                        namespaces[0]["bdev_name"].split("_")[2:])
                     subsystem["array"] = arrayname
         return toJson(resp)
     except Exception as e:
-        print("Exception in list subsystem "+e)
+        print("Exception in list subsystem " + e)
         return abort(404)
 
 # delete susbsystem
+
+
 @app.route('/api/v1/subsystem/', methods=['DELETE'])
 @token_required
 def delete_susbsystem(current_user):
@@ -1235,9 +1297,11 @@ def delete_susbsystem(current_user):
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in deleting subsystem "+e)
+        print("Exception in deleting subsystem " + e)
         return abort(404)
 # create device
+
+
 @app.route('/api/v1/device/', methods=['POST'])
 @token_required
 def create_device(current_user):
@@ -1249,14 +1313,15 @@ def create_device(current_user):
     dev_type = body.get('dev_type')
     numa = body.get('numa')
     try:
-        resp = dagent.create_device(name, num_blocks, block_size, dev_type, numa)
+        resp = dagent.create_device(
+            name, num_blocks, block_size, dev_type, numa)
         if resp is not None:
             resp = resp.json()
             return toJson(resp)
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in deleting subsystem "+e)
+        print("Exception in deleting subsystem " + e)
         return abort(404)
 
 
@@ -1274,17 +1339,20 @@ def auto_create_array(current_user):
     if arrayname is None:
         arrayname = dagent.array_names[0]
     try:
-        array_create = dagent.auto_create_array(arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}])
+        array_create = dagent.auto_create_array(
+            arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}])
         if array_create is not None:
             array_create = array_create.json()
             return toJson(array_create)
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in creating array: "+e)
+        print("Exception in creating array: " + e)
         return abort(404)
 
 # Create Array
+
+
 @app.route('/api/v1.0/create_arrays/', methods=['POST'])
 @token_required
 def create_arrays(current_user):
@@ -1299,7 +1367,7 @@ def create_arrays(current_user):
     #writeBufferDisk = body['writeBufferDisk']
     metaDisk = body["metaDisk"]
     storageDisks = body['storageDisks']
-    totalsize = len(storageDisks)
+    #totalsize = len(storageDisks)
     write_through = body['writeThroughModeEnabled']
 
     try:
@@ -1309,51 +1377,51 @@ def create_arrays(current_user):
             if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
                 return make_response(arrayname+' already exists', 400)"""
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
-                                      {"deviceName": metaDisk}], write_through)
+            {"deviceName": metaDisk}], write_through)
         array_create = array_create.json()
         return toJson(array_create)
     except Exception as e:
-        print("Exception in creating array: "+e)
+        print("Exception in creating array: " + e)
         return abort(404)
+
 
 @app.route('/api/v1/get_array_config/', methods=['GET'])
 @token_required
 def get_array_config(current_user):
     return toJson({
-    "raidTypes":
-    [
-        {
-        "raidType": "RAID0",
-        "minStorageDisks": 2,
-        "maxStorageDisks": 32,
-        "minSpareDisks": 0,
-        "maxSpareDisks": 0,
-        },
-        {
-        "raidType": "RAID5",
-        "minStorageDisks": 3,
-        "maxStorageDisks": 32,
-        "minSpareDisks": 0,
-        "maxSpareDisks": 29,
-        },
-        {
-        "raidType": "RAID10",
-        "minStorageDisks": 2,
-        "maxStorageDisks": 32,
-        "minSpareDisks": 0,
-        "maxSpareDisks": 29,
-        },
-        {
-        "raidType": "NONE",
-        "minStorageDisks": 1,
-        "maxStorageDisks": 1,
-        "minSpareDisks": 0,
-        "maxSpareDisks": 0,
-        },
-    ],
-    "totalDisks": 32,
+        "raidTypes":
+        [
+            {
+                "raidType": "RAID0",
+                "minStorageDisks": 2,
+                "maxStorageDisks": 32,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 0,
+            },
+            {
+                "raidType": "RAID5",
+                "minStorageDisks": 3,
+                "maxStorageDisks": 32,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 29,
+            },
+            {
+                "raidType": "RAID10",
+                "minStorageDisks": 2,
+                "maxStorageDisks": 32,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 29,
+            },
+            {
+                "raidType": "NONE",
+                "minStorageDisks": 1,
+                "maxStorageDisks": 1,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 0,
+            },
+        ],
+        "totalDisks": 32,
     })
-
 
 
 def get_mod_array(array):
@@ -1389,7 +1457,7 @@ def get_arrays(current_user):
         arrays = arrays["result"]["data"]["arrayList"]
     else:
         return toJson([])
-    if type(arrays) != list:
+    if not isinstance(arrays, list):
         return toJson([])
     arrays_info = []
     for array in arrays:
@@ -1416,6 +1484,7 @@ def get_arrays(current_user):
             return toJson([])
     return jsonify(arrays_info)
 
+
 @app.route('/api/v1/array/mount', methods=['POST'])
 def mount_arr():
     try:
@@ -1424,13 +1493,15 @@ def mount_arr():
         write_through = False
         try:
             write_through = body.get("writeThrough")
-        except:
+        except BaseException:
             write_through = False
         mount_array_res = dagent.mount_array(body.get("array"), write_through)
         return toJson(mount_array_res.json())
     except Exception as e:
         print("In exception mount_arr(): ", e)
         return make_response('Could not mount array', 500)
+
+
 @app.route('/api/v1/array/mount', methods=['DELETE'])
 def unmount_arr():
     try:
@@ -1441,12 +1512,14 @@ def unmount_arr():
     except Exception as e:
         print("In exception unmount_arr(): ", e)
         return make_response('Could not Unmount array', 500)
+
+
 @app.route('/api/v1/qos', methods=['POST'])
 def qos_create_policies():
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        vol_names = body.get("volumes")
+        #vol_names = body.get("volumes")
         body['vol'] = body.pop('volumes')
         if "maxbw" in body:
             body["maxbw"] = int(body["maxbw"])
@@ -1457,18 +1530,21 @@ def qos_create_policies():
         if "miniops" in body:
             body["miniops"] = int(body["miniops"])
         request_body = {
-                "param": body
-                }
+            "param": body
+        }
         range_message = "Please enter valid range: \nValid range for IO =  10 - 18446744073709551 KIOPS\nValid range for BW = 10 - 17592186044415 MB/s"
         response = dagent.qos_create_volume_policies(request_body)
         response = response.json()
-        if "result" in response and "status" in response["result"] and "code" in response["result"]["status"] and response["result"]["status"]["code"] == 2080:
+        if "result" in response and "status" in response["result"] and "code" in response[
+                "result"]["status"] and response["result"]["status"]["code"] == 2080:
             if "description" in response["result"]["status"]:
-                response["result"]["status"]["description"] +=" "+range_message
+                response["result"]["status"]["description"] += " " + \
+                    range_message
         return toJson(response)
     except Exception as e:
         print("In exception qos_create_policies(): ", e)
         return make_response('Could not create volume policies', 500)
+
 
 @app.route('/api/v1/qos/reset', methods=['POST'])
 def qos_reset_policies():
@@ -1478,16 +1554,17 @@ def qos_reset_policies():
         array_name = body.get("array")
         vol_names = body.get("volumes")
         request_body = {
-                "param": {
-                        "array": array_name,
-                        "vol":vol_names
-                }
+            "param": {
+                "array": array_name,
+                "vol": vol_names
+            }
         }
         response = dagent.qos_reset_volume_policies(request_body)
         return toJson(response.json())
     except Exception as e:
         print("In exception qos_reset_volume_policies(): ", e)
         return make_response('Could not reset volume policies', 500)
+
 
 @app.route('/api/v1/qos/policies', methods=['POST'])
 def qos_policies():
@@ -1497,10 +1574,10 @@ def qos_policies():
         array_name = body.get("array")
         vol_names = body.get("volumes")
         request_body = {
-                "param": {
-                        "array": array_name,
-                        "vol":vol_names
-                }
+            "param": {
+                "array": array_name,
+                "vol": vol_names
+            }
         }
         response = dagent.qos_list_volume_policies(request_body)
         return toJson(response.json())
@@ -1508,25 +1585,30 @@ def qos_policies():
         print("In exception qos_list_volume_policies(): ", e)
         return make_response('Could not get volume policies', 500)
 
+
 def validate_email(email):
     regex = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-    if(re.search(regex,email)):
-        return True
-    else:
-        return False
-def validate_username(username):
-    regex = "^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
-    if(re.search(regex,username)):
+    if(re.search(regex, email)):
         return True
     else:
         return False
 
-def validate_phone_number(phone_number):
-    regex = "^\+(?:[0-9] ?){6,14}[0-9]$"
-    if(re.search(regex,phone_number)):
+
+def validate_username(username):
+    regex = "^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
+    if(re.search(regex, username)):
         return True
     else:
         return False
+
+
+def validate_phone_number(phone_number):
+    regex = "^\+(?:[0-9] ?){6,14}[0-9]$"
+    if(re.search(regex, phone_number)):
+        return True
+    else:
+        return False
+
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
@@ -1538,10 +1620,12 @@ def add_new_user(current_user):
     if not validate_username(username):
         return make_response("Username Should follow the below rules\nAlphanumeric characters only\n2-15 characters\nUnderscore and hyphens and spaces (but not in beginning or end)\nCannot be two underscores, two hypens or two spaces in a row\ne.g. ab, a-b-c, ab-cd, etc\nIncorrect: _abc, abc_, a__b, a--b, etc\n", 400)
     if len(username) < 2 or len(username) > 15:
-        return make_response("Username length should be between 2-15 characters", 400)
+        return make_response(
+            "Username length should be between 2-15 characters", 400)
     if len(password) < 8 or len(password) > 64:
-        return make_response("Password length should be between 8-64 characters", 400)
-    hashed_password = generate_password_hash(password, method='sha256')
+        return make_response(
+            "Password length should be between 8-64 characters", 400)
+    #hashed_password = generate_password_hash(password, method='sha256')
     role = body['user_role']
     mobilenumber = body['mobilenumber']
     if not validate_phone_number(mobilenumber):
@@ -1612,6 +1696,7 @@ def get_users(current_user):
     else:
         return toJson(usersList)
 
+
 """
 @app.route('/api/v1.0/toggle_status/', methods=['POST'])
 def toggle_status():
@@ -1628,6 +1713,7 @@ def toggle_status():
     else:
         return jsonify({"message": "User status changed"})
 """
+
 
 @app.route('/api/v1.0/update_user/', methods=['POST'])
 def update_user():
@@ -1655,9 +1741,11 @@ def update_password():
     old_password = body['oldPassword']
     new_password = body['newPassword']
     if len(new_password) < 8 or len(new_password) > 64:
-        return make_response("Password length should be between 8-64 characters", 400)
+        return make_response(
+            "Password length should be between 8-64 characters", 400)
     if old_password == new_password:
-        return make_response("New Password cannot be same as old password", 400)
+        return make_response(
+            "New Password cannot be same as old password", 400)
     if connection_factory.update_password_in_db(
             _id, old_password, new_password) == False:
         return abort(404)
@@ -1746,6 +1834,7 @@ def bmc_login():
     return jsonify({'Login': validation, }), 401
 """
 
+
 @app.route('/api/v1.0/get_ip_and_mac', methods=['GET'])
 def getIpAndMac():
     """
@@ -1819,7 +1908,8 @@ def saveVolume():
         elif unit == 'TB':
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         elif unit == 'PB':
-            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR * \
+                BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         else:
             # default case assuming the unit is TB
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
@@ -1927,6 +2017,7 @@ def updateVolume(current_user):
     return toJson(update_vol_res.json())
 '''
 
+
 @app.route('/api/v1.0/volumes/<volume_name>', methods=['PATCH'])
 @token_required
 def renameVolume(current_user, volume_name):
@@ -1946,11 +2037,16 @@ def mountVolume():
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        mount_vol_res = mount_volume(body["name"], body.get("array"), body.get("subnqn"))
+        mount_vol_res = mount_volume(
+            body["name"],
+            body.get("array"),
+            body.get("subnqn"))
         return toJson(mount_vol_res.json())
     except Exception as e:
         print("In exception mountVolume(): ", e)
         return make_response('Could not mount Volume', 500)
+
+
 @app.route('/api/v1.0/volume/mount', methods=['DELETE'])
 def unmountVolume():
     try:
@@ -1961,6 +2057,8 @@ def unmountVolume():
     except Exception as e:
         print("In exception unmountVolume(): ", e)
         return make_response('Could not Unmount Volume', 500)
+
+
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
 def mountPOS():
     try:
@@ -2072,6 +2170,7 @@ def getVolumes(array_name):
             vol["maxiops"] = int(vol["maxiops"])
     return toJson(volumes)
 
+
 @app.route('/api/v1/get_all_volumes/', methods=['GET'])
 def get_all_volumes():
     volumes_list = {}
@@ -2089,27 +2188,30 @@ def get_all_volumes():
         print("Exception in /api/v1/get_all_volumes/ ", e)
     return toJson(volumes_list)
 
+
 @app.route('/api/v1/pos/property', methods=['GET'])
 def get_pos_property():
-   try:
-     pos_property = dagent.get_pos_property()
-     pos_property = pos_property.json()
-     return toJson(pos_property)
-   except Exception as e:
-     print(e)
-     return make_response('Could not get POS Property', 500)
+    try:
+        pos_property = dagent.get_pos_property()
+        pos_property = pos_property.json()
+        return toJson(pos_property)
+    except Exception as e:
+        print(e)
+        return make_response('Could not get POS Property', 500)
+
 
 @app.route('/api/v1/pos/property', methods=['POST'])
 def set_pos_property():
-   try:
-     body_unicode = request.data.decode('utf-8')
-     body = json.loads(body_unicode)
-     pos_property = body["property"]
-     pos_property_response = dagent.set_pos_property(pos_property)
-     pos_property_response = pos_property_response.json()
-     return toJson(pos_property_response)
-   except Exception as e:
-     return make_response('Could not set POS Property', 500)
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        pos_property = body["property"]
+        pos_property_response = dagent.set_pos_property(pos_property)
+        pos_property_response = pos_property_response.json()
+        return toJson(pos_property_response)
+    except Exception as e:
+        return make_response('Could not set POS Property '+str(e), 500)
+
 
 '''
 <pre>{&apos;alertName&apos;: &apos;sdfsdf&apos;, &apos;alertType&apos;: &apos;&apos;, &apos;alertCondition&apos;: &apos;Greater Than&apos;, &apos;alertRange&apos;: &apos;7&apos;, &apos;description&apos;: &apos;sdfgsee eee&apos;}
@@ -2149,7 +2251,7 @@ def addAlert(current_user):
                 alertRange,
                 True)
     return result
-           
+
 @app.route('/api/v1.0/get_alerts/', methods=['GET'])
 def get_alerts():
     """
@@ -2205,10 +2307,10 @@ def update_alerts(current_user):
     alertRange = body['alertRange']
     description = body['description']
     alertCluster = body['alertCluster']
-   
+
     alertType = ""
     alertSubCluster = ""
-    
+
     alertField = alertFields[alertCluster]
     result = connection_factory.update_alerts_in_db(
                 alertName,
@@ -2217,7 +2319,7 @@ def update_alerts(current_user):
                 alertType,
                 alertCondition,
                 alertField,
-                description, 
+                description,
                 alertRange)
     return result
 
@@ -2237,7 +2339,7 @@ def toggle_alert_status(current_user):
     status = body['status']
     result = connection_factory.toggle_alert_status_in_db(alertName, status)
     return result
-    
+
 @app.route('/api/v1.0/download_logs', methods=['GET'])
 def downloadLogs():
     print(request.args)
@@ -2290,6 +2392,7 @@ def get_live_logs(current_user):
     print("returning", livedata)
     return jsonify(livedata)
 '''
+
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
@@ -2624,29 +2727,37 @@ def getHealthStatus():
         response = {}
         statuses = []
         res = get_user_cpu_usage("1m")
-        cpu_result = process_response(res, "cpu", "cpuUsagePercent", "cpu-status","CPU UTIL")
+        cpu_result = process_response(
+            res, "cpu", "cpuUsagePercent", "cpu-status", "CPU UTIL")
         if len(cpu_result) > 0:
             statuses.append(cpu_result)
         res = get_user_memory_usage("15m")
-        mem_result = process_response(res, "memory", "memoryUsagePercent", "mem-status","MEMORY UTIL")
+        mem_result = process_response(
+            res,
+            "memory",
+            "memoryUsagePercent",
+            "mem-status",
+            "MEMORY UTIL")
         if len(mem_result) > 0:
             statuses.append(mem_result)
         res = get_write_latency_usage("15m")
         if res is not None:
             set_max_latency(res, "latency")
         res = get_write_latency_usage("")
-        write_latency_result = process_response(res, "latency", "latency", "write-lat-status","IO WRITE LAT")
+        write_latency_result = process_response(
+            res, "latency", "latency", "write-lat-status", "IO WRITE LAT")
         if len(write_latency_result) > 0:
             statuses.append(write_latency_result)
         res = get_read_latency_usage("15m")
         if res is not None:
             set_max_latency(res, "latency")
         res = get_read_latency_usage("")
-        read_latency_result = process_response(res, "latency", "latency", "read-lat-status","IO READ LAT")
+        read_latency_result = process_response(
+            res, "latency", "latency", "read-lat-status", "IO READ LAT")
         if len(read_latency_result) > 0:
             statuses.append(read_latency_result)
         health_list = []
-        for i in range(0,len(statuses)):
+        for i in range(0, len(statuses)):
             health_list.append(statuses[i]["isHealthy"])
         health_result = get_overall_health(health_list)
         response["isHealthy"] = health_result
@@ -2655,6 +2766,7 @@ def getHealthStatus():
     except Exception as e:
         print("In Health Status Exception: ", e)
         return make_response('Could not get health status', 500)
+
 
 @app.route('/api/v1.0/cleanup/', methods=['GET'])
 @token_required
@@ -2667,6 +2779,8 @@ def do_cleanup(current_user):
         return make_response('Could not cleanup', 500)
 
 # connect handler for websocket
+
+
 @socketIo.on("connect", namespace='/health_status')
 def handleHealthStatusConn():
     global old_result
@@ -2681,46 +2795,57 @@ def handleHealthStatusConn():
     else:
         old_result = ""
 
+
 @socketIo.on('disconnect', namespace='/health_status')
 def disconnectHealthStatusSocket():
     print("Health status websocket client disconnected!")
-def compare_result(prev_result,curr_result):
+
+
+def compare_result(prev_result, curr_result):
     if prev_result == "":
         return True
     else:
         try:
-            if abs(float(prev_result["statuses"][0]["value"]) - float(curr_result["statuses"][0]["value"])) > threshold :
+            if abs(
+                float(
+                    prev_result["statuses"][0]["value"]) -
+                float(
+                    curr_result["statuses"][0]["value"])) > threshold:
                 return True
-            elif abs(float(prev_result["statuses"][1]["value"]) - float(curr_result["statuses"][1]["value"])) > threshold :
+            elif abs(float(prev_result["statuses"][1]["value"]) - float(curr_result["statuses"][1]["value"])) > threshold:
                 return True
-            elif abs(float(prev_result["statuses"][2]["value"]) - float(curr_result["statuses"][2]["value"])) > threshold :
+            elif abs(float(prev_result["statuses"][2]["value"]) - float(curr_result["statuses"][2]["value"])) > threshold:
                 return True
             return False
-        except Exception as e:
+        except BaseException:
             return False
+
 
 def send_health_status_data():
     global old_result
     try:
         while True:
             result = getHealthStatus()
-            if compare_result(old_result,result):
+            if compare_result(old_result, result):
                 old_result = result
-                socketIo.emit('health_status_response', result, namespace='/health_status')
+                socketIo.emit(
+                    'health_status_response',
+                    result,
+                    namespace='/health_status')
                 #print("!!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>   Data sent <<<<<<<<<<<<<<<<<<<<<<<<<< !!!!", threading.currentThread().ident)
                 time.sleep(2)
     except Exception as e:
-        print("Exception in health status polling: ",e)
-
+        print("Exception in health status polling: ", e)
 
 
 if __name__ == '__main__':
     #bmc_thread = threading.Thread(target=activate_bmc_thread)
-    #bmc_thread.start()
+    # bmc_thread.start()
     #power_thread = threading.Thread(target=activate_power_thread)
-    #power_thread.start()
+    # power_thread.start()
 
-    health_status_thread = threading.Thread(target=send_health_status_data, args=())
+    health_status_thread = threading.Thread(
+        target=send_health_status_data, args=())
     health_status_thread.start()
 
     socketIo.run(

@@ -31,7 +31,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
- 
+
 import os
 import requests
 import uuid
@@ -44,7 +44,7 @@ from logging.handlers import RotatingFileHandler
 ip = os.environ.get('DAGENT_HOST', 'localhost')
 port = '3000'
 
-array_names= [ 'POSArray', 'POSArray2' ]
+array_names = ['POSArray', 'POSArray2']
 DAGENT_URL = 'http://' + ip + ':' + port
 BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
@@ -70,7 +70,7 @@ def make_failure_response(desc='unable to perform the task', code=500):
 def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
     retry_count = 0
     response = None
-    print("headers",headers)
+    print("headers", headers)
     try:
         while(1):
             #print("sending request to dagent ",url)
@@ -107,7 +107,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     logger.info('%s', 'Get system state...')
     try:
         response = send_command_to_dagent("GET",
-                                          url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+                                          url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
                                           headers={"X-Request-Id": str(uuid.uuid4()),
                                                    "Accept": "application/json",
                                                    "Authorization": auth,
@@ -124,6 +124,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred in get_system_state : {err}', err)
     return {"result": "could not get the system state", "return": -1}
+
 
 """
 def get_dagent_state(auth=BASIC_AUTH_TOKEN):
@@ -146,6 +147,7 @@ def get_dagent_state(auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 """
 
+
 def start_ibofos(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to start ibofos...')
@@ -153,14 +155,14 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
-        #array_exists(array_names[0])
+        # array_exists(array_names[0])
         return response
     except Exception as err:
         print(f'Other error occurred start_ibofos: {err}')
@@ -175,12 +177,12 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -189,12 +191,13 @@ def stop_ibofos(auth=BASIC_AUTH_TOKEN):
         # return 'Could not get ibofos to stop... 500'
     return make_failure_response('Could not get ibofos to stop...', 500)
 
+
 def get_pos_info(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -229,6 +232,7 @@ def exit_system(auth=BASIC_AUTH_TOKEN):
     return make_failure_response('Could not get ibofos to exit...', 500)
 """
 
+
 def scan_devices(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to scan devices...')
@@ -236,12 +240,18 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'devices/all/scan',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'devices/all/scan',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------",response.json())
+        # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -269,6 +279,7 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
+
 def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to list devices ...')
@@ -276,12 +287,20 @@ def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'devices/' + name + '/smart',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'devices/' +
+            name +
+            '/smart',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -296,13 +315,20 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
-                "DELETE",
-                url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + name,
-                headers=req_headers,
-                timeout=(
-                    connect_timeout,
-                    read_timeout))
-        #print("---------------RESPONSE---------------")
+            "DELETE",
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            name,
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -318,18 +344,19 @@ def array_status(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'system',
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to get array status...', 500)
+
 
 '''
 def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
@@ -347,8 +374,8 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        
-    
+
+
         if (response.status_code == 200):
             response = send_command_to_dagent(
             "POST",
@@ -366,7 +393,14 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
         print("exception in exists: " + str(e))
         return False
 '''
-def add_listener(name, transport_type, target_address, transport_service_id, auth=BASIC_AUTH_TOKEN):
+
+
+def add_listener(
+        name,
+        transport_type,
+        target_address,
+        transport_service_id,
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to add listener api ...')
     req_headers = get_headers(auth)
@@ -380,7 +414,13 @@ def add_listener(name, transport_type, target_address, transport_service_id, aut
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' +'listener',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'listener',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -392,7 +432,14 @@ def add_listener(name, transport_type, target_address, transport_service_id, aut
     return make_failure_response(
         'Could not get ibofos to add listener...', 500)
 
-def create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host, auth=BASIC_AUTH_TOKEN):
+
+def create_subsystem(
+        name,
+        serial_num,
+        model_num,
+        max_namespaces,
+        allow_any_host,
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to create subsystem api ...')
     req_headers = get_headers(auth)
@@ -407,7 +454,13 @@ def create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'subsystem',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -419,6 +472,7 @@ def create_subsystem(name, serial_num, model_num, max_namespaces, allow_any_host
     return make_failure_response(
         'Could not get ibofos to create subsystem...', 500)
 
+
 def list_subsystem(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to list subsystem api ...')
@@ -426,13 +480,23 @@ def list_subsystem(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'subsystem',
             headers=req_headers,
-            timeout=(connect_timeout, read_timeout))
+            timeout=(
+                connect_timeout,
+                read_timeout))
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
-    return make_failure_response('Could not get ibofos to list subsystem...', 500)
+    return make_failure_response(
+        'Could not get ibofos to list subsystem...', 500)
+
 
 def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
@@ -445,7 +509,13 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'subsystem',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'subsystem',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -456,17 +526,27 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to delete subsystem...', 500)
-def create_device(name, num_blocks, block_size, dev_type, numa, auth=BASIC_AUTH_TOKEN):
+
+
+def create_device(
+        name,
+        num_blocks,
+        block_size,
+        dev_type,
+        numa,
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
-    logger.info('%s', 'Sending command to D-Agent to create uram device  api ...')
+    logger.info(
+        '%s',
+        'Sending command to D-Agent to create uram device  api ...')
     req_headers = get_headers(auth)
     request_body = {
         "param": {
             "name": name,
-            "num_blocks" : num_blocks,
+            "num_blocks": num_blocks,
             "block_size": block_size,
-            "dev_type" : dev_type,
-            "numa" : numa}}
+            "dev_type": dev_type,
+            "numa": numa}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
@@ -483,7 +563,12 @@ def create_device(name, num_blocks, block_size, dev_type, numa, auth=BASIC_AUTH_
     return make_failure_response(
         'Could not get ibofos to create uram device...', 500)
 
-def create_trans(transport_type, buf_cache_size, num_shared_buf, auth=BASIC_AUTH_TOKEN):
+
+def create_trans(
+        transport_type,
+        buf_cache_size,
+        num_shared_buf,
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to create transport api ...')
     req_headers = get_headers(auth)
@@ -496,7 +581,13 @@ def create_trans(transport_type, buf_cache_size, num_shared_buf, auth=BASIC_AUTH
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'transport',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'transport',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -509,9 +600,17 @@ def create_trans(transport_type, buf_cache_size, num_shared_buf, auth=BASIC_AUTH
         'Could not get ibofos to create transport...', 500)
 
 
-def auto_create_array(arrayname, raidtype, num_spare, num_data, meta_devices, auth=BASIC_AUTH_TOKEN):
+def auto_create_array(
+        arrayname,
+        raidtype,
+        num_spare,
+        num_data,
+        meta_devices,
+        auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
-    logger.info('%s', 'Sending command to D-Agent to auto create array using mount api ...')
+    logger.info(
+        '%s',
+        'Sending command to D-Agent to auto create array using mount api ...')
     req_headers = get_headers(auth)
     request_body = {
         "param": {
@@ -524,7 +623,13 @@ def auto_create_array(arrayname, raidtype, num_spare, num_data, meta_devices, au
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'autoarray',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'autoarray',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -538,7 +643,6 @@ def auto_create_array(arrayname, raidtype, num_spare, num_data, meta_devices, au
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to auto create array...', 500)
-
 
 
 def create_array(
@@ -562,7 +666,7 @@ def create_array(
             "data": data_devices,
             "spare": spare_devices}}
     request_body = json.dumps(request_body)
-    #print(request_body)
+    # print(request_body)
     try:
         #print("request body create array ", request_body)
         response = send_command_to_dagent(
@@ -577,62 +681,83 @@ def create_array(
         if response.status_code != 200:
             return response
         response = mount_array(name, write_through)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to create array...', 500)
+
+
 def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "array": arrayname,
-                "enable_write_through": write_through
-            }
+        "param": {
+            "array": arrayname,
+            "enable_write_through": write_through
+        }
     }
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + '/mount',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            arrayname +
+            '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not mount array.', 500)
+
+
 def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "array": arrayname
-            }
+        "param": {
+            "array": arrayname
+        }
     }
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + arrayname + '/mount',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            arrayname +
+            '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not unmount array', 500)
+
 
 def qos_create_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -646,13 +771,15 @@ def qos_create_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not create qos policies', 500)
+
+
 def qos_reset_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = json.dumps(request_body)
@@ -665,13 +792,14 @@ def qos_reset_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not reset qos policies', 500)
+
 
 def qos_list_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -685,7 +813,7 @@ def qos_list_volume_policies(request_body, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -701,17 +829,25 @@ def array_info(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'array/' + array_name,
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            array_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------",response.json())
+        # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to get list array...', 500)
+
 
 def get_pos_property(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
@@ -720,7 +856,13 @@ def get_pos_property(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system/property',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'system/property',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -731,20 +873,27 @@ def get_pos_property(auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to get list array...', 500)
 
+
 def set_pos_property(pos_property, auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Sending command to D-Agent to set POS property ...')
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "level": pos_property,
-            }
+        "param": {
+            "level": pos_property,
+        }
     }
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system/property',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'system/property',
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -755,6 +904,7 @@ def set_pos_property(pos_property, auth=BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to get list array...', 500)
+
 
 def list_arrays(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
@@ -768,7 +918,7 @@ def list_arrays(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------",response.json())
+        # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -788,7 +938,7 @@ def create_volume(
         maxiops=0,
         minbw=0,
         miniops=0,
-        subsystem={},
+        subsystem="",
         auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
@@ -817,12 +967,13 @@ def create_volume(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------",response.json())
+        # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
+
 
 '''
 def update_volume(params, auth=BASIC_AUTH_TOKEN):
@@ -848,13 +999,21 @@ def update_volume(params, auth=BASIC_AUTH_TOKEN):
         'Could not get ibofos to scan devices...', 500)
 '''
 
+
 def rename_volume(params, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = json.dumps(params)
     try:
         response = send_command_to_dagent(
             "PATCH",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + params["param"]["name"],
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            params["param"]["name"],
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -872,23 +1031,31 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
 def mount_volume(name, arrayname, subnqn, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "array": arrayname,
-                "subnqn": subnqn
-            }
+        "param": {
+            "array": arrayname,
+            "subnqn": subnqn
+        }
     }
     request_body = json.dumps(request_body)
-    #print(request_body)
+    # print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            name +
+            '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
         return response
     except Exception as err:
@@ -896,59 +1063,92 @@ def mount_volume(name, arrayname, subnqn, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
-def mount_volume_with_subsystem(name, arrayname, subsystem, auth=BASIC_AUTH_TOKEN):
+
+def mount_volume_with_subsystem(
+        name,
+        arrayname,
+        subsystem,
+        auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     param = subsystem.copy()
     param["array"] = arrayname
     request_body = {
-            "param": param
+        "param": param
     }
     request_body = json.dumps(request_body)
-    #print(request_body)
+    # print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount/subsystem',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            name +
+            '/mount/subsystem',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("url :",DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount/subsystem')
+        print(
+            "url :",
+            DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            name +
+            '/mount/subsystem')
         print("---------------RESPONSE---------------")
-        print("response",response)
-        print(response.status_code , response.json())
+        print("response", response)
+        print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
+
 def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "array": arrayname
-            }
+        "param": {
+            "array": arrayname
+        }
     }
     request_body = json.dumps(request_body)
-    #print(request_body)
+    # print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            name +
+            '/mount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get ibofos to unmount volumes...', 500)
+
 
 def mount_ibofos(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -963,13 +1163,14 @@ def mount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not mount POS...', 500)
+
 
 def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
@@ -984,7 +1185,7 @@ def unmount_ibofos(auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout))
 
-        #print("---------------RESPONSE---------------",response.json())
+        # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
@@ -997,12 +1198,19 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'volumelist/'+array_name,
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumelist/' +
+            array_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code , response.json())
         return response
     except Exception as err:
@@ -1010,12 +1218,21 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to list volumes...', 500)
 
+
 def volume_info(array_name, volume_name, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/array/' + array_name + '/volume/' + volume_name,
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/array/' +
+            array_name +
+            '/volume/' +
+            volume_name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
@@ -1031,33 +1248,48 @@ def delete_volume(vol, arrayname, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     name = vol["name"]
     request_body = {
-            "param": {
-                "name": name,
-                "array": arrayname
-            }
+        "param": {
+            "name": name,
+            "array": arrayname
+        }
     }
     request_body = json.dumps(request_body)
-    
+
     try:
         if "isMounted" in vol and vol["isMounted"]:
             send_command_to_dagent(
-            "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name + '/mount',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout),
-            data=request_body)
+                "DELETE",
+                url=DAGENT_URL +
+                '/' +
+                BASE_PATH +
+                '/' +
+                VERSION +
+                '/' +
+                'volumes/' +
+                name +
+                '/mount',
+                headers=req_headers,
+                timeout=(
+                    connect_timeout,
+                    read_timeout),
+                data=request_body)
 
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/' + name,
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/' +
+            name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -1071,12 +1303,18 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'volumes/maxcount',
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'volumes/maxcount',
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -1085,22 +1323,19 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
         'Could not get max vol count from POS...', 500)
 
 
-
-
-
 def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
-            "param": {
-                "spare":[
-                    {
-                        "deviceName" : name,
-                    }
-                 ]
-            }
+        "param": {
+            "spare": [
+                {
+                    "deviceName": name,
+                }
+            ]
+        }
     }
     request_body = json.dumps(request_body)
-    #print(request_body)
+    # print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",
@@ -1111,7 +1346,7 @@ def add_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
@@ -1125,19 +1360,27 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL + '/' + 
-            BASE_PATH + '/' + VERSION + '/array/' + arrayname + '/devices/' + name,
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/array/' +
+            arrayname +
+            '/devices/' +
+            name,
             headers=req_headers,
             timeout=(
                 connect_timeout,
                 read_timeout))
-        #print("---------------RESPONSE---------------")
+        # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
     return make_failure_response(
         'Could not get POS to remove spare disk...', 500)
+
 
 """
 def report_test(auth=BASIC_AUTH_TOKEN):

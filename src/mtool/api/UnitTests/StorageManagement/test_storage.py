@@ -39,7 +39,6 @@ import jwt
 import datetime
 from unittest import mock
 from flask import json
-from rest.rest_api.device.device import list_devices
 from rest.app import make_block_aligned
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
@@ -700,11 +699,11 @@ def test_create_arrays(mock_get_current_user, **kwargs):
                 "writeBufferDisk": [],
                 "metaDisk": [],
                 "storageDisks": ["unvme-ns-3", "unvme-ns-2", "unvme-ns-1"],
-                "size": 12345678
+                "size": 12345678,
+                "writeThroughModeEnabled":true
                 }''',
         headers={'x-access-token': json_token})
 
-    data = json.loads(response.get_data(as_text=True))
     print("response data ",response.data)
     assert response.status_code == 200
 
@@ -1507,7 +1506,6 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
                 }''',
         headers={'x-access-token': json_token})
 
-    data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
 
 
@@ -1977,7 +1975,6 @@ def test_list_devices(global_data, **kwargs):
     }
 }, status_code=200)
 
-    output = list_devices()
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
         headers={

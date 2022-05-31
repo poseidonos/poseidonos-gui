@@ -34,9 +34,8 @@
  
 import enum
 import sqlite3
-import json
 #import re
-from flask import make_response
+#from flask import make_response
 import os
 #from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
 #from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor

@@ -32,10 +32,10 @@
  */
  '''
 
-from util.db.influx import get_connection
-from util.com.time_groups import time_groups_default
+#from util.db.influx import get_connection
+#from util.com.time_groups import time_groups_default
 from rest.rest_api.dagent import metrics
-from util.macros.influxdb_config import mtool_db
+#from util.macros.influxdb_config import mtool_db
 
 
 def get_user_cpu_usage(time):

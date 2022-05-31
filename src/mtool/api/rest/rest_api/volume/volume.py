@@ -65,35 +65,41 @@ def create_volume(
         subsystem)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
-            res = dagent.mount_volume_with_subsystem(vol_name, arr_name, subsystem)
-            print("res :",res)
+            res = dagent.mount_volume_with_subsystem(
+                vol_name, arr_name, subsystem)
             if res is None:
-               return json_util.dumps({})
+                return json_util.dumps({})
             if res.status_code != 200:
                 return res
             if minbw == 0 and miniops == 0:
-                request_body = {"param": {"array": arr_name, "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
+                request_body = {"param": {"array": arr_name,
+                                          "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
             elif minbw > 0:
-                request_body = {"param": {"array": arr_name, "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
+                request_body = {"param": {"array": arr_name,
+                                          "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
             else:
-                request_body = {"param": {"array": arr_name, "miniops": miniops, "vol": [{"volumeName": vol_name}]}}
+                request_body = {"param": {"array": arr_name,
+                                          "miniops": miniops,
+                                          "vol": [{"volumeName": vol_name}]}}
             dagent.qos_create_volume_policies(request_body)
     return create_vol_response
 
 
-def update_volume(data):
+"""def update_volume(data):
     update_vol_response = dagent.update_volume(data)
-    return update_vol_response
+    return update_vol_response"""
+
 
 def rename_volume(data):
     rename_vol_response = dagent.rename_volume(data)
     return rename_vol_response
 
-def mount_volume(vol_name, array_name = dagent.array_names[0], subnqn = None):
+
+def mount_volume(vol_name, array_name=dagent.array_names[0], subnqn=None):
     return dagent.mount_volume(vol_name, array_name, subnqn)
 
 
-def unmount_volume(vol_name, array_name = dagent.array_names[0]):
+def unmount_volume(vol_name, array_name=dagent.array_names[0]):
     return dagent.unmount_volume(vol_name, array_name)
 
 
@@ -119,19 +125,22 @@ def list_volume(arr_name):
         else:
             return []
     except Exception as e:
+        print("Exception in list_volume()",e)
         return []
     # return list_vol()
+
 
 def volume_info(arr_name, vol_name):
     vol = dagent.volume_info(arr_name, vol_name)
     try:
         if vol.status_code == 200:
-           vol = vol.json()
-           return vol['result']['data']
+            vol = vol.json()
+            return vol['result']['data']
         else:
-           return {}
-    except:
+            return {}
+    except BaseException:
         return {}
+
 
 def get_max_vol_count():
     return dagent.max_vol_count()
