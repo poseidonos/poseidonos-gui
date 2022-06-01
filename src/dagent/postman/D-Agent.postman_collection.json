@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "72efcc4a-4c1a-4e1d-bd42-c8a56c56b772",
+		"_postman_id": "3e496740-dfa0-485e-8f2c-893753b2bb7c",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -2198,141 +2198,6 @@
 		{
 			"name": "Array",
 			"item": [
-				{
-					"name": "ARRAY RESET",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{host}}/api/ibofos/v1/arrays/reset",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"ibofos",
-								"v1",
-								"arrays",
-								"reset"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"url": {
-									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"mtool",
-										"api",
-										"ibofos",
-										"v1",
-										"array",
-										"device"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 08 May 2020 06:51:22 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "437"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"6e787e27-1964-44da-bcdf-b5f44ffbd1a3\",\n    \"lastSuccessTime\": 1588920682,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"unvme-ns-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebulidingProgress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
-						}
-					]
-				},
 				{
 					"name": "CREATE ARRAY 1st ARRAY",
 					"event": [
@@ -4845,10 +4710,146 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumelist",
+										"{{arrayName}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.14.0 (Ubuntu)"
 								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Apr 2022 04:45:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "390"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "7128c77b-9751-4413-8657-2e634c735de2"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"7128c77b-9751-4413-8657-2e634c735de2\",\n    \"lastSuccessTime\": 1650429907,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"list of volumes in POSArray\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 0,\n                    \"maxiops\": 0,\n                    \"minbw\": 0,\n                    \"miniops\": 0,\n                    \"name\": \"vol\",\n                    \"remain\": 99999547392,\n                    \"status\": \"Mounted\",\n                    \"total\": 99999547392\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc1\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "VOLUME INFO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LIST VOLUME\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/vol",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"volume",
+								"vol"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}",
 									"protocol": "http",
@@ -6863,10 +6864,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
 									"protocol": "http",
@@ -12126,6 +12123,141 @@
 			"name": "Developer",
 			"item": [
 				{
+					"name": "RESET MBR",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LIST ARRAY DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/arrays/reset",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"arrays",
+								"reset"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 May 2020 06:51:22 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "437"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"6e787e27-1964-44da-bcdf-b5f44ffbd1a3\",\n    \"lastSuccessTime\": 1588920682,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"unvme-ns-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebulidingProgress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+						}
+					]
+				},
+				{
 					"name": "UPDATE EVENT WRR",
 					"event": [
 						{
@@ -12709,6 +12841,145 @@
 						}
 					],
 					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"debug\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"logger",
+								"level"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"param\": {\r\n        \"level\": \"info\"\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"logger",
+										"level"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.14.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 13 Apr 2022 11:07:25 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "237"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "0e3172f5-be18-4c36-b13b-02741784ce5a"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"0e3172f5-be18-4c36-b13b-02741784ce5a\",\n    \"lastSuccessTime\": 1649848045,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"log level changed to info\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.10.6\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "GET LOG LEVEL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LIST DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
 						"method": "GET",
 						"header": [
 							{
@@ -12956,6 +13227,287 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"2c96f80b-a996-42e6-81c5-f7baf3bd3292\",\n    \"lastSuccessTime\": 1650341763,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Logger\",\n            \"code\": 4581,\n            \"level\": \"WARN\",\n            \"description\": \"no filter file in the path\",\n            \"posDescription\": \"failed to apply filter(code:4581)\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.10.6\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Telemetry",
+			"item": [
+				{
+					"name": "START TELEMETRY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LIST DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devel",
+								"event-wrr",
+								"update"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"event-wrr",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.14.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Apr 2022 08:04:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "216"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "4a86bf3f-20b1-4b42-8ad5-c2b7d8f52f27"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"4a86bf3f-20b1-4b42-8ad5-c2b7d8f52f27\",\n    \"lastSuccessTime\": 1650355475,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"DONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.10.6\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "STOP TELEMETRY",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LIST DEVICE\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/telemetry",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"telemetry"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"{{arrayName}}",
+										"rebuild"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.14.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Apr 2022 08:47:39 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "247"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "cfa88181-8b96-48c1-b473-2ca45da5b01e"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"cfa88181-8b96-48c1-b473-2ca45da5b01e\",\n    \"lastSuccessTime\": 1650358059,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"Rebuilding of 'POSArray' is stopped\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.10.6\"\n    }\n}"
 						}
 					]
 				}
