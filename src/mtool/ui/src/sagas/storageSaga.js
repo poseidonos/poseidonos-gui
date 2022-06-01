@@ -1184,6 +1184,7 @@ function* autoCreateArray(action) {
             alertTitle:  "Error in Array Creation"
           })
         );
+        return;
     }
     if(Number(action.payload.array.storageDisks) < Number(raidType.minStorageDisks) ||
       Number(action.payload.array.spareDisks) < Number(raidType.minSpareDisks) ||
