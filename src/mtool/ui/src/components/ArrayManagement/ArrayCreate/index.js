@@ -380,6 +380,24 @@ class ArrayCreate extends Component {
       });
       return;
     }
+    if (this.props.selectedRaid.maxStorageDisks < this.state.slots[STORAGE_DISK].length) {
+      this.setState({
+        ...this.state,
+        alertType: "alert",
+        errorMsg: `Select at most ${this.props.selectedRaid.minStorageDisks} Storage Disk`,
+        alertOpen: true,
+      });
+      return;
+    }
+    if (this.props.selectedRaid.maxSpareDisks < this.state.slots[SPARE_DISK].length) {
+      this.setState({
+        ...this.state,
+        alertType: 'alert',
+        errorMsg: `Select at most ${this.props.selectedRaid.minSpareDisks} Spare disk`,
+        alertOpen: true,
+      });
+      return;
+    }
     if (this.props.selectedRaid.minSpareDisks > this.state.slots[SPARE_DISK].length) {
       this.setState({
         ...this.state,

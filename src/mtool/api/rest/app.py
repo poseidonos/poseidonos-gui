@@ -1333,7 +1333,7 @@ def auto_create_array(current_user):
     body = json.loads(body_unicode)
     arrayname = body.get('arrayname')
     raidtype = body['raidtype']
-    metaDisk = body["buffer"]
+    metaDisk = body["metaDisk"]
     num_data = body['num_data']
     num_spare = body['num_spare']
     if arrayname is None:

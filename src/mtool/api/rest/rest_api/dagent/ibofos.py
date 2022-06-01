@@ -70,7 +70,6 @@ def make_failure_response(desc='unable to perform the task', code=500):
 def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
     retry_count = 0
     response = None
-    print("headers", headers)
     try:
         while(1):
             #print("sending request to dagent ",url)
