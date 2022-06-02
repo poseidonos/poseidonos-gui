@@ -57,9 +57,7 @@ const CreateDisk = (props) => {
             num_blocks: parseInt(numBlocks.value, 10),
             numa: parseInt(numa.value, 10),
             dev_type: devType.value
-        });
-        event.target.reset();
-        props.cleanup();
+        }, props.cleanup);
     }
 
     return (
@@ -83,6 +81,7 @@ const CreateDisk = (props) => {
                     label="Block Size"
                     name="block_size"
                     type="number"
+                    defaultValue={512}
                     inputProps={{
                         "data-testid": "blockSize"
                     }}
@@ -96,6 +95,7 @@ const CreateDisk = (props) => {
                     label="Number of Blocks"
                     name="num_blocks"
                     type="number"
+                    defaultValue={8388608}
                     inputProps={{
                         "data-testid": "numBlocks"
                     }}
@@ -127,9 +127,6 @@ const CreateDisk = (props) => {
                   <MenuItem value="uram" data-testid="uram">
                     URAM
                   </MenuItem>
-                  <MenuItem value="pram" data-testid="pram">
-                    PRAM
-                  </MenuItem>
                 </Select>
             </FormControl>
             <Button
@@ -148,7 +145,7 @@ const CreateDisk = (props) => {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-    Create_Disk: (payload) => dispatch({type: actionTypes.SAGA_CREATE_DISK, payload})
+    Create_Disk: (payload, cleanup) => dispatch({type: actionTypes.SAGA_CREATE_DISK, payload, cleanup})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateDisk));

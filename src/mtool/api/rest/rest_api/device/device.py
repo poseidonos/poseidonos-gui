@@ -35,7 +35,7 @@
 #from socketclient.socketclient import get_devices, scan_devices, get_device_details
 
 # from dagent.ibofos import *
-from rest.rest_api.dagent.ibofos import get_devices, get_smart_info
+from rest.rest_api.dagent.ibofos import get_devices, get_smart_info, scan_devices
 
 
 def list_devices():

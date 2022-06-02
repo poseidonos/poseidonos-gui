@@ -3565,8 +3565,12 @@ describe("<Storage Management />", () => {
     fireEvent.click(autoCreateBtn);
     fireEvent.change(await waitForElement(() => getByTestId("auto-array-name")), {
       target: { value: "test" }
-    })
+    });
+    fireEvent.change(await waitForElement(() => getByTestId("auto-writebuffer-input")), {
+      target: { value: "uram2" }
+    });
     fireEvent.click(getByTestId("auto-createarray-btn"));
+
     expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
   });
 

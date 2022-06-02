@@ -1494,6 +1494,7 @@ function* createDisk(action) {
             errorCode: "",
           })
         );
+        action.cleanup();
       } else {
         yield put(
           actionCreators.showStorageAlert({
@@ -1517,6 +1518,7 @@ function* createDisk(action) {
         })
       );
     }
+    yield fetchDevices();
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -1528,7 +1530,6 @@ function* createDisk(action) {
     );
   } finally {
     yield put(actionCreators.stopStorageLoader());
-    yield fetchDevices();
   }
 }
 

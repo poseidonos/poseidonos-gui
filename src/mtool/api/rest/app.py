@@ -1321,8 +1321,8 @@ def create_device(current_user):
         else:
             return toJson({})
     except Exception as e:
-        print("Exception in deleting subsystem " + e)
-        return abort(404)
+        print("Exception in creating device " + e)
+        return make_response("Error creating Device: " + e, 500)
 
 
 # auto create array
