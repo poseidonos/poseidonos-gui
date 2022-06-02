@@ -1171,7 +1171,6 @@ function* createArray(action) {
 }
 
 function* autoCreateArray(action) {
-  let shouldReload = true;
   try {
     const raidType = action.payload.selectedRaid;
     const autoArrayname = action.payload.array.arrayName;
@@ -1198,7 +1197,6 @@ function* autoCreateArray(action) {
             alertTitle:  "Error in Array Creation"
           })
         );
-        shouldReload = false;
         return;
     }
     if(!action.payload.array.metaDisk ||
@@ -1211,7 +1209,6 @@ function* autoCreateArray(action) {
             alertTitle:  "Error in Array Creation"
           })
         );
-        shouldReload = false;
         return;
     }
     if(action.payload.freeDisks <
@@ -1224,10 +1221,8 @@ function* autoCreateArray(action) {
             alertTitle:  "Error in Array Creation"
           })
         );
-        shouldReload = false;
         return;
     }
- 
     yield put(actionCreators.startStorageLoader("Creating Array"));
     const response = yield call(
       [axios, axios.post],
@@ -1286,6 +1281,8 @@ function* autoCreateArray(action) {
         })
       );
     }
+    yield fetchDevices();
+    yield fetchArray();
   } catch (error) {
     yield put(
       actionCreators.showStorageAlert({
@@ -1296,11 +1293,7 @@ function* autoCreateArray(action) {
       })
     );
   } finally {
-    if(shouldReload) {
-      yield fetchDevices();
-      yield fetchArray();
       yield put(actionCreators.stopStorageLoader());
-    }
   }
 }
 

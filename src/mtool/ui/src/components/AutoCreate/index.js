@@ -135,7 +135,8 @@ const AutoCreate = (props) => {
         spareDisks: 0
       });
       setDiskConstraints();
-    }, [props]);
+    }, []);
+
 
     useEffect(() => {
       setDiskConstraints();
@@ -178,7 +179,7 @@ const AutoCreate = (props) => {
                   id="auto-array-name"
                   name="arrayName"
                   label="Array Name"
-                  value={array.arrayname}
+                  value={array.arrayName}
                   onChange={handleChange}
                   inputProps={{
                     "data-testid": "auto-array-name",
