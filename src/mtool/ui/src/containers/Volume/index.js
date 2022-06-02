@@ -491,13 +491,15 @@ class Volume extends Component {
                                 <InputLabel htmlFor="select-array">Select Array</InputLabel>
                                 <Select
                                   inputProps={{
-                                    id: "select-array"
+                                    id: "select-array",
+                                    "data-testid": "select-array-input",
                                   }}
                                   SelectDisplayProps={{
                                     style: {
                                       overflow: "hidden",
                                       textOverflow: "ellipsis"
-                                    }
+                                    },
+                                    "data-testid": "select-array",
                                   }}
                                   onChange={this.changeArray}
                                   value={this.props.selectedArray}

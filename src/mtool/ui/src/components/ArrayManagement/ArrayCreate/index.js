@@ -238,7 +238,6 @@ class ArrayCreate extends Component {
       metaDisk: "",
       loading: false,
       errorMsg: "",
-      createDiskOpen: false,
       writeThroughMode: false,
       alertOpen: false,
       popupOpen: false,
@@ -259,7 +258,6 @@ class ArrayCreate extends Component {
     this.getDiskDetails = this.getDiskDetails.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.openCreatePopup = this.openCreatePopup.bind(this);
-    this.openCreateDiskForm = this.openCreateDiskForm.bind(this);
   }
 
   handleChange(event) {
@@ -280,9 +278,7 @@ class ArrayCreate extends Component {
     this.setState({
       ...this.state,
       diskType:
-        event && event.target
-          ? event.target.value /* istanbul ignore next */
-          : "",
+        event && event.target && event.target.value,
     });
   }
 
@@ -352,12 +348,6 @@ class ArrayCreate extends Component {
         createMsg: "Do you want to proceed and create Array?"
       })
     }
-  }
-
-  openCreateDiskForm() {
-    this.setState({
-      createDiskOpen: true
-    })
   }
 
   createArray() {
@@ -550,7 +540,7 @@ class ArrayCreate extends Component {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
-                value={this.props.selectedRaid.raidType}
+                value={this.props.selectedRaid.raidType ? this.props.selectedRaid.raidType : ""}
                 onChange={this.onSelectRaid}
                 inputProps={{
                   name: "Fault Tolerance Type",
@@ -621,26 +611,26 @@ class ArrayCreate extends Component {
               <Link href="/operations/devices" align="right">Create Disk</Link>
             </FormControl>
           </Grid>
-	  <Grid item xs={12} sm={6} className={classes.inputGrid}>
-        <FormControl className={classes.formControl}>
-	      <FormControlLabel
-              control={(
-		       <Checkbox
-                      name="mount_arr_writethrough"
-                      color="primary"
-                      id="mount-writethrough-checkbox"
-                      checked={this.state.writeThroughMode}
-                      value="Write Through Mode"
-                      inputProps={{
-                        "data-testid": "mount-writethrough-checkbox",
-                      }}
-                      onChange={this.onSetWriteThroughMode}
-		       />
-	         )}
-	         label="Write Through Mode"
-	      />
-        </FormControl>
-	  </Grid>
+          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    name="mount_arr_writethrough"
+                    color="primary"
+                    id="mount-writethrough-checkbox"
+                    checked={this.state.writeThroughMode}
+                    value="Write Through Mode"
+                    inputProps={{
+                      "data-testid": "mount-writethrough-checkbox",
+                    }}
+                    onChange={this.onSetWriteThroughMode}
+                  />
+                )}
+                label="Write Through Mode"
+              />
+            </FormControl>
+          </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={this.props.config.totalDisks}>

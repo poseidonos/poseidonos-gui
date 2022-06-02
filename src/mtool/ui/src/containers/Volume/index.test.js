@@ -372,90 +372,90 @@ describe("<Storage Management />", () => {
     "rid": "386d44c5-ada8-4ce2-a33b-ee9f9b605d10",
     "lastSuccessTime": 1653555896,
     "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray information"
-        },
-        "data": {
-            "capacity": 13548474335232,
-            "create_datetime": "2022-05-25 12:23:01 +0530",
-            "data_raid": "RAID5",
-            "devicelist": [
-                {
-                    "name": "uram1",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "DATA"
-                }
-            ],
-            "gcMode": "none",
-            "index": 0,
-            "meta_raid": "RAID10",
-            "name": "POSArray",
-            "rebuilding_progress": 30,
-            "situation": "REBUILDING",
-            "state": "REBUILDING",
-            "unique_id": 1495652515,
-            "update_datetime": "2022-05-25 12:24:26 +0530",
-            "used": 404004798464,
-            "write_through_enabled": false
-        }
+      "status": {
+        "module": "COMMON",
+        "code": 0,
+        "level": "INFO",
+        "description": "Success",
+        "posDescription": "POSArray information"
+      },
+      "data": {
+        "capacity": 13548474335232,
+        "create_datetime": "2022-05-25 12:23:01 +0530",
+        "data_raid": "RAID5",
+        "devicelist": [
+          {
+            "name": "uram1",
+            "type": "BUFFER"
+          },
+          {
+            "name": "unvme-ns-1",
+            "type": "DATA"
+          },
+          {
+            "name": "unvme-ns-2",
+            "type": "DATA"
+          },
+          {
+            "name": "unvme-ns-3",
+            "type": "DATA"
+          }
+        ],
+        "gcMode": "none",
+        "index": 0,
+        "meta_raid": "RAID10",
+        "name": "POSArray",
+        "rebuilding_progress": 30,
+        "situation": "REBUILDING",
+        "state": "REBUILDING",
+        "unique_id": 1495652515,
+        "update_datetime": "2022-05-25 12:24:26 +0530",
+        "used": 404004798464,
+        "write_through_enabled": false
+      }
     },
     "info": {
-        "version": "v0.11.0-rc4"
+      "version": "v0.11.0-rc4"
     }
-}
-/*
-  it("should render array created view", () => {
-    mock
-      .onGet(/api\/v1.0\/get_devices\//)
-      .reply(200, {
-        devices,
-        metadevices,
-      })
-      .onGet(/api\/v1\/get_arrays\//)
-      .reply(200, [array])
-      .onGet(/api\/v1.0\/get_volumes\//)
-      .reply(200, [])
-      .onGet(/api\/v1.0\/max_volume_count\//)
-      .reply(200, 256)
-      .onPost(/api\/v1.0\/delete_array\//)
-      .reply(200, {})
-      .onGet(/api\/v1\/get_array_config\//)
-      .reply(200, config)
-      .onGet(/api\/v1\/array\/POSArray\/info/)
-      .reply(200, posInfo)
-      .onGet(/api\/v1\/subsystem/)
-      .reply(200, {
-        result: {
-          data: {
-        subsystemlist: [{
-            nqn: "subsystem1",
-          subtype: "NVMe"
-        }],
-  }}})
-        .onAny()
-        .reply(200, []);
-      renderComponent();
-      const { getByTestId, asFragment } = wrapper;
-      const resolvedThing = waitForElement(() => getByTestId("arrayshow"));
-      expect(asFragment()).toMatchSnapshot();
-      expect(resolvedThing).toBeDefined();
-    });
-  */
+  }
+  /*
+    it("should render array created view", () => {
+      mock
+        .onGet(/api\/v1.0\/get_devices\//)
+        .reply(200, {
+          devices,
+          metadevices,
+        })
+        .onGet(/api\/v1\/get_arrays\//)
+        .reply(200, [array])
+        .onGet(/api\/v1.0\/get_volumes\//)
+        .reply(200, [])
+        .onGet(/api\/v1.0\/max_volume_count\//)
+        .reply(200, 256)
+        .onPost(/api\/v1.0\/delete_array\//)
+        .reply(200, {})
+        .onGet(/api\/v1\/get_array_config\//)
+        .reply(200, config)
+        .onGet(/api\/v1\/array\/POSArray\/info/)
+        .reply(200, posInfo)
+        .onGet(/api\/v1\/subsystem/)
+        .reply(200, {
+          result: {
+            data: {
+          subsystemlist: [{
+              nqn: "subsystem1",
+            subtype: "NVMe"
+          }],
+    }}})
+          .onAny()
+          .reply(200, []);
+        renderComponent();
+        const { getByTestId, asFragment } = wrapper;
+        const resolvedThing = waitForElement(() => getByTestId("arrayshow"));
+        expect(asFragment()).toMatchSnapshot();
+        expect(resolvedThing).toBeDefined();
+      });
+    */
   it("should render devices", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -528,6 +528,76 @@ describe("<Storage Management />", () => {
     fireEvent.click(dev4);
     const arrayname = getByTestId('array-name');
     fireEvent.change(arrayname, { target: { value: 'POSArray2' } });
+    const writeThroughModeCheckbox = await waitForElement(() => getByTestId("mount-writethrough-checkbox"));
+    fireEvent.click(writeThroughModeCheckbox);
+    expect(writeThroughModeCheckbox.checked).toEqual(true);
+    fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
+    const success = await waitForElement(() => getByTestId("alertDescription"));
+    expect(success).toBeDefined();
+    fireEvent.click(getByText("OK"));
+  });
+
+  it("should show alert while creating an array if wrong values given", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    fireEvent.click(getByText("create"));
+    const arrayname = getByTestId('array-name');
+    fireEvent.change(arrayname, { target: { value: '' } });
+    fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
+    expect(
+      await waitForElement(() => getByText("Please provide a valid Array name"))
+    ).toBeDefined();
+    fireEvent.click(getByText("OK"));
+    fireEvent.change(arrayname, { target: { value: 'POSArray2' } });
+
+    const raidSelect = getByTestId("raid-select-input");
+    fireEvent.change(raidSelect, {
+      target: { value: "RAID5" },
+    });
+    fireEvent.click(getByTestId("disktype"));
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    fireEvent.click(dev1);
+    fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
+    expect(
+      await waitForElement(() => getByText(/Select at least/))
+    ).toBeDefined();
+    fireEvent.click(getByText("OK"));
+    const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
+    fireEvent.click(dev2);
+    const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
+    fireEvent.click(dev3);
+    fireEvent.change(getByTestId("disktype-input"), {
+      target: { value: "SPARE DISK" },
+    });
+    const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
+    fireEvent.click(dev4);
+    fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
+    expect(
+      await waitForElement(() => getByText("Select a Write Buffer"))
+    ).toBeDefined();
+    fireEvent.click(getByText("OK"));
+    const wb = await waitForElement(() => getByTestId("writebuffer-input"));
+    fireEvent.change(wb, {
+      target: { value: "uram0" },
+    });
     fireEvent.click(getByTestId("createarray-btn"));
     fireEvent.click(getByText("Yes"));
     const success = await waitForElement(() => getByTestId("alertDescription"));
@@ -602,49 +672,45 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByTestId("createarray-btn"));
     expect(queryByText(/Select at least/i)).toBeDefined();
   });
-  /*
-    it("should not create array if meta disk is not selected", async () => {
-      mock
-        .onGet(/api\/v1.0\/get_devices\//)
-        .reply(200, {
-          devices,
-          metadevices,
-        })
-        .onGet(/api\/v1\/get_array_config\//)
-        .reply(200, config)
-        .onPost("/api/v1.0/create_arrays/")
-        .reply(200, {})
-        .onAny()
-        .reply(200, []);
-      renderComponent();
-      const getSpy = jest.spyOn(axios, "post");
-      const { getByTestId, getByText, getAllByText, queryByText, asFragment } = wrapper;
-      fireEvent.click(getByText("create"));
-      const raidSelect = await waitForElement(() =>
-        getByTestId("raid-select-input")
-      );
-      fireEvent.change(raidSelect, { target: { value: "RAID5" } });
-      expect(asFragment()).toMatchSnapshot();
-      fireEvent.click(getByTestId("disktype"));
-      fireEvent.click(getAllByText("STORAGE DISK")[0]);
-      const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
-      fireEvent.click(dev1);
-      const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
-      fireEvent.click(dev2);
-      const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
-      fireEvent.click(dev3);
-      const dev2_ = await waitForElement(() => getByTestId("diskselect-1"));
-      fireEvent.click(dev2_);
-      const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
-      fireEvent.click(dev4);
-      fireEvent.change(getByTestId("disktype-input"), {
-        target: { value: "SPARE DISK" },
-      });
-      fireEvent.click(dev2);
-      fireEvent.click(getByTestId("createarray-btn"));
-      expect(queryByText(/Select a Write Buffer/i)).toBeDefined();
+
+  it("should not select device if it is unavailable", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        "devices": [{
+          name: "intel-unvmens-6",
+          size: 390703446,
+          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+          sn: "S4C9NF0M500043",
+          isAvailable: false,
+          numa: "0"
+        }],
+        metadevices,
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    fireEvent.click(getByText("create"));
+    const raidSelect = getByTestId("raid-select-input");
+    fireEvent.change(raidSelect, {
+      target: { value: "RAID5" },
     });
-  */
+    const wb = await waitForElement(() => getByTestId("writebuffer-input"));
+    fireEvent.change(wb, {
+      target: { value: "uram0" },
+    });
+    fireEvent.click(getByTestId("disktype"));
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    fireEvent.click(dev1);
+  });
+
   // it("should create an array with selected devices", async () => {
   //   mock
   //     .onGet(/api\/v1.0\/get_devices\/*/)
@@ -744,48 +810,48 @@ describe("<Storage Management />", () => {
   //   fireEvent.click(getByText("OK"));
   // });
 
-  // it("should add a spare disk", async () => {
-  //   mock
-  //     .onGet(/api\/v1.0\/get_devices\/*/)
-  //     .reply(200, {
-  //       devices,
-  //       metadevices,
-  //     })
-  //     .onGet(/api\/v1\/get_arrays\/*/)
-  //     .reply(200, [array])
-  //     .onGet(/api\/v1\/get_array_config\/*/)
-  //     .reply(200, config)
-  //     .onGet(/api\/v1.0\/get_volumes\/*/)
-  //     .reply(200, [])
-  //     .onPost(/api\/v1.0\/delete_array\/*/)
-  //     .reply(200, {})
-  //     .onAny()
-  //     .reply(200, []);
-  //   const getSpy = jest.spyOn(axios, "post");
-  //   renderComponent();
-  //   const { getByTestId, asFragment, getByText } = wrapper;
-  //   await waitForElement(() => getByText("Unmount Array"))
-  //   expect(asFragment()).toMatchSnapshot();
-  //   const attachButton = await waitForElement(() =>
-  //     getByTestId("attachdisk-5")
-  //   );
-  //   fireEvent.click(attachButton);
-  //   fireEvent.click(await waitForElement(() => getByTestId("alertbox-yes")));
-  //   expect(getSpy).toHaveBeenCalledWith(
-  //     "/api/v1.0/add_spare_device/",
-  //     {
-  //       name: "intel-unvmens-5",
-  //       array: "POSArray",
-  //     },
-  //     {
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "x-access-token": null,
-  //       },
-  //     }
-  //   );
-  // });
+  it("should add a spare disk", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, asFragment, getByText } = wrapper;
+    await waitForElement(() => getByText("Unmount Array"))
+    expect(asFragment()).toMatchSnapshot();
+    const attachButton = await waitForElement(() =>
+      getByTestId("attachdisk-5")
+    );
+    fireEvent.click(attachButton);
+    fireEvent.click(await waitForElement(() => getByTestId("alertbox-yes")));
+    expect(getSpy).toHaveBeenCalledWith(
+      "/api/v1.0/add_spare_device/",
+      {
+        name: "intel-unvmens-5",
+        array: "POSArray",
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null,
+        },
+      }
+    );
+  });
 
   it("should remove a spare disk", async () => {
     mock
@@ -828,6 +894,73 @@ describe("<Storage Management />", () => {
     );
   });
 
+  it("should not add an unavailable disk", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        "devices": [{
+          name: "intel-unvmens-6",
+          size: 390703446,
+          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+          sn: "S4C9NF0M500043",
+          isAvailable: false,
+          numa: "0"
+        }],
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, asFragment, getByText } = wrapper;
+    await waitForElement(() => getByText("Unmount Array"))
+    expect(asFragment()).toMatchSnapshot();
+    const dev1 = await waitForElement(() => getByTestId("diskshow-0"));
+    fireEvent.click(dev1);
+  });
+
+  it("should unmount an array and turn on write through mode", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        "devices": [{
+          name: "intel-unvmens-6",
+          size: 390703446,
+          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+          sn: "S4C9NF0M500043",
+          isAvailable: false,
+          numa: "0"
+        }],
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, asFragment, getByText } = wrapper;
+    const unmountArrayButton = await waitForElement(() => getByText("Unmount Array"))
+    fireEvent.click(unmountArrayButton);
+    const writeThroughModeCheckbox = await waitForElement(() => getByTestId("mount-writethrough-checkbox"));
+    fireEvent.click(writeThroughModeCheckbox);
+    expect(writeThroughModeCheckbox.checked).toEqual(true);
+  });
+
   it("should delete the array", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -849,6 +982,60 @@ describe("<Storage Management />", () => {
     fireEvent.click(deleteButton);
     expect(getByText("Yes")).toBeDefined();
     fireEvent.click(getByText("Yes"));
+  });
+
+  it("should select another array", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array, {
+        RAIDLevel: "5",
+        arrayname: "POSArray2",
+        metadiskpath: [
+          {
+            deviceName: "uram0",
+          },
+        ],
+        sparedisks: [
+          {
+            deviceName: "intel-unvmens-3",
+          },
+        ],
+        storagedisks: [
+          {
+            deviceName: "intel-unvmens-0",
+          },
+          {
+            deviceName: "intel-unvmens-1",
+          },
+          {
+            deviceName: "intel-unvmens-2",
+          },
+          {
+            deviceName: "intel-unvmens-4",
+          },
+        ],
+        status: "Mounted",
+        state: "EXIST",
+        totalsize: 6357625339904,
+        usedspace: 0,
+      }])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const arraySelect = await waitForElement(() => getByTestId("select-array-input"));
+    fireEvent.change(arraySelect, {
+      target: { value: "POSArray2" },
+    });
   });
 
   it("should create a volume with maximum size", async () => {
@@ -1288,6 +1475,81 @@ describe("<Storage Management />", () => {
     fireEvent.click(nextButton);
     expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
   });
+  
+  it("should throw error if creating volume with advance options is not possible because subsystem used by another array", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices: [{
+          name: "intel-unvmens-0",
+          size: 390703446,
+          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+          sn: "S4C9NF0M500043",
+          isAvailable: false,
+          numa: "0"
+        }],
+        metadevices,
+      })
+      .onGet(/api\/v1.0\/max_volume_count\/*/)
+      .reply(200, 256)
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [{
+        RAIDLevel: "0",
+        arrayname: "POSArray2",
+        metadiskpath: [
+          {
+            deviceName: "uram0",
+          },
+        ],
+        sparedisks: [
+          
+        ],
+        storagedisks: [
+          {
+            deviceName: "intel-unvmens-0",
+          }
+        ],
+        status: "Mounted",
+        state: "EXIST",
+        totalsize: 6357625339904,
+        usedspace: 0,
+      }])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onGet(/api\/v1\/subsystem\//)
+      .reply(200, subsystems)
+      .onGet(/api\/v1.0\/max_volume_count\/*/)
+      .reply(200, 256)
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onPost(/api\/v1.0\/save-volume\/*/)
+      .reply(200, {
+        result: { status: { code: 0 } },
+      })
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    renderComponent();
+    const {
+      getByTestId,
+      getByLabelText,
+      getAllByTitle,
+      asFragment,
+      getByText,
+      getAllByText,
+    } = wrapper;
+    const advanceOptionsButton = await waitForElement(() => getByTestId("advanceoptions-btn"));
+    fireEvent.click(advanceOptionsButton);
+
+    const nextButton = await waitForElement(() => getByTestId("next-btn"));
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+    expect(
+      await waitForElement(() => getByText(/Please select an unused subsystem/))
+    ).toBeDefined();
+    fireEvent.click(await waitForElement(() => getByText("OK")));
+  }); 
 
   it("should throw error if creating volume with advance options is not possible because of wrong values", async () => {
     mock
@@ -1458,12 +1720,6 @@ describe("<Storage Management />", () => {
     fireEvent.change(minValue, { target: { value: "0" } });
 
     fireEvent.click(nextButton);
-
-    fireEvent.click(nextButton);
-    expect(
-      await waitForElement(() => getByText(/Please select an unused subsystem/))
-    ).toBeDefined();
-    fireEvent.click(await waitForElement(() => getByText("OK")));
 
     const newSubsystemCheckbox = await waitForElement(() => getByTestId("adv-selectedNewSubsystem"));
     fireEvent.click(newSubsystemCheckbox);
@@ -2447,7 +2703,6 @@ describe("<Storage Management />", () => {
     expect(await waitForElement(() => getByText("Volume QoS Reset failed"))).toBeDefined();
   });
 
-
   it("set miniops then minbw", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -2660,7 +2915,7 @@ describe("<Storage Management />", () => {
     // const saveTxt = await waitForElement(() => getByText("Update Volume"));
     // expect(saveTxt).toBeDefined();
   });
-  
+
   it("reset minbw then set miniops", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -2793,6 +3048,10 @@ describe("<Storage Management />", () => {
   //         {
   //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
   //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/2",
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/3",
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/4",
+  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/5",
   //         },
   //       ],
   //     })
@@ -2950,10 +3209,19 @@ describe("<Storage Management />", () => {
   //   renderComponent();
 
   //   const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
+
   //   const minBW_minIOPS = await waitForElement(() =>
   //     getByText("Min Bandwidth / Min IOPS")
   //   );
   //   expect(minBW_minIOPS).toBeDefined();
+  //   fireEvent.click(minBW_minIOPS);
+  //   fireEvent.click(await waitForElement(() =>
+  //     getByText("Min Bandwidth / Min IOPS")
+  //   ));
+  //   fireEvent.click(await waitForElement(() =>
+  //     getByText("Min Bandwidth / Min IOPS")
+  //   ));
+  //   fireEvent.click(minBW_minIOPS);
   //   fireEvent.click(minBW_minIOPS);
   //   fireEvent.click(minBW_minIOPS);
   //   fireEvent.click(minBW_minIOPS);
@@ -3187,6 +3455,7 @@ describe("<Storage Management />", () => {
     );
     fireEvent.click(unmountButton);
   });
+
   it("should mount the array", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -3232,6 +3501,7 @@ describe("<Storage Management />", () => {
     );
     fireEvent.click(unmountButton);
   });
+
   it("should fail to mount the array", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -3294,7 +3564,7 @@ describe("<Storage Management />", () => {
     const autoCreateBtn = getByText("Auto-Create");
     fireEvent.click(autoCreateBtn);
     fireEvent.change(await waitForElement(() => getByTestId("auto-array-name")), {
-      target: {value: "test"}
+      target: { value: "test" }
     })
     fireEvent.click(getByTestId("auto-createarray-btn"));
     expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
@@ -3334,7 +3604,6 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByTestId("auto-createarray-btn"));
     expect(waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
   });
-
 
   it("should close the autocreate popup", async () => {
     mock

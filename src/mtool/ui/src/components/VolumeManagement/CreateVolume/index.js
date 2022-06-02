@@ -285,7 +285,7 @@ class CreateVolume extends Component {
     else if (this.props.mount_vol && subsystem.array && subsystem.array !== this.props.array)
       errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
-
+    
     if (isError === true) {
       this.showAlertHandler(errorDesc)
       return;
@@ -733,6 +733,7 @@ class CreateVolume extends Component {
             onConfirm={this.state.onConfirm}
           />
           <AdvanceCreateVolume
+            array={this.props.array}
             handleChange={this.handleChange}
             createVolume={this.props.createVolume}
             subsystems={this.props.subsystems}
