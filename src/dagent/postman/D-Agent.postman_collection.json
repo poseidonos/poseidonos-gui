@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3e496740-dfa0-485e-8f2c-893753b2bb7c",
+		"_postman_id": "eb5f7af7-0d0d-43ff-8b18-4cf2f1bc0eb0",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -4811,7 +4811,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/vol",
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -4823,7 +4823,7 @@
 								"array",
 								"{{arrayName}}",
 								"volume",
-								"vol"
+								"{{volumeName1}}"
 							]
 						}
 					},
@@ -4850,8 +4850,12 @@
 										"value": "{{basic_auth}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}",
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -4860,8 +4864,10 @@
 										"api",
 										"ibofos",
 										"v1",
-										"volumelist",
-										"{{arrayName}}"
+										"array",
+										"{{arrayName}}",
+										"volume",
+										"{{volumeName1}}"
 									]
 								}
 							},
@@ -4875,7 +4881,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 20 Apr 2022 04:45:07 GMT"
+									"value": "Thu, 02 Jun 2022 18:46:01 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -4883,7 +4889,7 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "390"
+									"value": "497"
 								},
 								{
 									"key": "Connection",
@@ -4891,11 +4897,11 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "7128c77b-9751-4413-8657-2e634c735de2"
+									"value": "e9a222ce-ec7b-4c2d-86a3-17253f189279"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"7128c77b-9751-4413-8657-2e634c735de2\",\n    \"lastSuccessTime\": 1650429907,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"list of volumes in POSArray\"\n        },\n        \"data\": {\n            \"volumes\": [\n                {\n                    \"id\": 0,\n                    \"maxbw\": 0,\n                    \"maxiops\": 0,\n                    \"minbw\": 0,\n                    \"miniops\": 0,\n                    \"name\": \"vol\",\n                    \"remain\": 99999547392,\n                    \"status\": \"Mounted\",\n                    \"total\": 99999547392\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc1\"\n    }\n}"
+							"body": "{\n    \"rid\": \"e9a222ce-ec7b-4c2d-86a3-17253f189279\",\n    \"lastSuccessTime\": 1654195561,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"information of volume: vol01 of array: POSArray\"\n        },\n        \"data\": {\n            \"array_name\": \"POSArray\",\n            \"maxbw\": 0,\n            \"maxiops\": 0,\n            \"minbw\": 0,\n            \"miniops\": 0,\n            \"name\": \"vol01\",\n            \"remain\": 9999220736,\n            \"status\": \"Mounted\",\n            \"subnqn\": \"nqn.2019-04.pos:subsystem1\",\n            \"total\": 9999220736,\n            \"uuid\": \"d7314cde-dd74-48c0-b922-a2ed6f60179f\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
 						}
 					]
 				},
