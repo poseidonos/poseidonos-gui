@@ -796,7 +796,7 @@ function* updateVolume(action) {
             newName: action.payload.newName,
             array: arrayName,
             error: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.posDescription}\n Error code:${response.data.result.status.code}`
               : ""
               }`
           },
@@ -808,7 +808,7 @@ function* updateVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.posDescription}\n Error code:${response.data.result.status.code}`
               : ""
               }`
           })
