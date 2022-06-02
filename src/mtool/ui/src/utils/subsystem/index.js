@@ -14,7 +14,7 @@ const getSubsystemForArray = (subsystems, array) => {
       }
     })
   }
-  return subsystem.nqn;
+  return subsystem ? subsystem.nqn : "";
 }
 
 export default getSubsystemForArray;

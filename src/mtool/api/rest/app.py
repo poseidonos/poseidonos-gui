@@ -1285,7 +1285,7 @@ def list_subsystem(current_user):
 
 @app.route('/api/v1/subsystem/', methods=['DELETE'])
 @token_required
-def delete_susbsystem(current_user):
+def delete_subsystem(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     name = body.get('name')
