@@ -953,7 +953,10 @@ def create_volume(
             "stoponerror": stop_on_error,
             "namesuffix": suffix,
             "mountall": mount_all,
-            "subnqn": subsystem["subnqn"]}}
+            "subnqn": subsystem["subnqn"],
+            "transport_type":subsystem["transport_type"],
+            "transport_service_id":subsystem["transport_service_id"],
+            "target_address":subsystem["target_address"]}}
 
     request_body = json.dumps(request_body)
     #print("volume bodyyyy",request_body)
@@ -1075,7 +1078,6 @@ def mount_volume_with_subsystem(
         "param": param
     }
     request_body = json.dumps(request_body)
-    # print(request_body)
     try:
         response = send_command_to_dagent(
             "POST",

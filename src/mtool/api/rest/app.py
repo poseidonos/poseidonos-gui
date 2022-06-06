@@ -1871,7 +1871,6 @@ def make_block_aligned(size):
 def saveVolume():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    print("In Save Volume")
     # ifOldName=body['old']
     try:
         volume_name = body['name']
@@ -2700,18 +2699,25 @@ def createMultiVolumeCallback():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     description = ""
-
+    errorResponses = ""
+    errorCode = 0
     for entry in body['MultiVolArray']:
         if entry["result"]["status"]["code"] != 0:
             description += entry["result"]["status"]["description"]
             description += "\n"
+        if "errorInfo" in entry["result"]["status"]:
+            if errorResponses == "":
+                if "errorCode" in entry["result"]["status"]["errorInfo"] and entry["result"]["status"]["errorInfo"]["errorCode"] == 1:
+                    errorCode = 1
+                    errorResponses = entry["result"]["status"]["errorInfo"]["errorResponses"]
+                    
 
     passed = body['Pass']
     total_count = body['TotalCount']
     socketIo.emit('create_multi_volume',
                   {'pass': passed,
                    'total_count': total_count,
-                   'description': description},
+                   'description': description,'errorCode':errorCode,'errorResponses':errorResponses},
                   namespace='/create_vol')
     return "ok", 200
 
