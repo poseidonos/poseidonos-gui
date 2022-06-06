@@ -103,8 +103,8 @@ function* fetchVolumes(action) {
 
 function* fetchArray(action) {
   try {
-    if(!action || !action.payload || !action.payload.noLoad) {
-        yield put(actionCreators.startStorageLoader("Fetching Arrays"));
+    if (!action || !action.payload || !action.payload.noLoad) {
+      yield put(actionCreators.startStorageLoader("Fetching Arrays"));
     }
     const response = yield call(
       [axios, axios.get],
@@ -127,10 +127,10 @@ function* fetchArray(action) {
   } catch (e) {
     yield put(actionCreators.setNoArray());
   } finally {
-    if(!action || !action.payload || !action.payload.noLoad) {
-        yield select(arrayname);
-        yield put(actionCreators.stopStorageLoader());
-        yield fetchVolumes({ payload: { array: yield select(arrayname) } });
+    if (!action || !action.payload || !action.payload.noLoad) {
+      yield select(arrayname);
+      yield put(actionCreators.stopStorageLoader());
+      yield fetchVolumes({ payload: { array: yield select(arrayname) } });
     }
   }
 }
@@ -191,8 +191,8 @@ function* fetchDevices(action) {
     alertTitle: "Fetch Devices",
   };
   try {
-    if(!action || !action.payload || !action.payload.noLoad) {
-       yield put(actionCreators.startStorageLoader("Fetching Devices"));
+    if (!action || !action.payload || !action.payload.noLoad) {
+      yield put(actionCreators.startStorageLoader("Fetching Devices"));
     }
     const response = yield call([axios, axios.get], "/api/v1.0/get_devices/", {
       headers: {
@@ -236,11 +236,11 @@ function* fetchDevices(action) {
     }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
-    if(!action || !action.payload || !action.payload.noLoad) {
+    if (!action || !action.payload || !action.payload.noLoad) {
       yield put(actionCreators.stopStorageLoader());
       yield fetchArray();
     } else {
-      yield fetchArray({payload: {noLoad: true}});
+      yield fetchArray({ payload: { noLoad: true } });
     }
   }
 }
@@ -309,14 +309,36 @@ function* createVolume(action) {
         (response.data.result.status.code === 2000 ||
           response.data.result.status.code === 0)
       ) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "info",
-            alertTitle: "Create Volume",
-            errorMsg: "Volume(s) created successfully",
-            errorCode: "",
+        let errorInfo = response.data.result.status.errorInfo;
+        let isError = false;
+        let errorCodeDescription = '';
+        if (errorInfo && errorInfo.errorResponses.length > 0) {
+          errorInfo.errorResponses.map(err => {
+            errorCodeDescription += 'Error code:' + err.code + ': ' + err.description + '\n\n';
+            if (err.code !== 0)
+              isError = true;
+            return err;
           })
-        );
+        }
+        if (isError) {
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "alert",
+              alertTitle: "Create Volume",
+              errorMsg: "Volume is created with below errors",
+              errorCode: errorCodeDescription,
+            })
+          );
+        } else {
+          yield put(
+            actionCreators.showStorageAlert({
+              alertType: "info",
+              alertTitle: "Create Volume",
+              errorMsg: "Volume(s) created successfully",
+              errorCode: "",
+            })
+          );
+        }
         yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
       } else {
         yield put(
@@ -514,45 +536,45 @@ function* resetQoS(action) {
   try {
     yield put(actionCreators.startStorageLoader("Resetting Volume QoS"));
     const response = yield call(
-        [axios, axios.post], '/api/v1/qos/reset', {
-            array: arrayName,
-            volumes: [{ volumeName: volName }]
+      [axios, axios.post], '/api/v1/qos/reset', {
+      array: arrayName,
+      volumes: [{ volumeName: volName }]
+    },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
         },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem("token"),
-          },
-        }
-     );
-     if(response.status === 200) {
-        yield put(
-            actionCreators.showStorageAlert({
-              alertType: "info",
-              alertTitle: "Volume QoS Reset",
-              errorMsg: "QoS Reset successfull",
-              errorCode: "",
-            })
-          );
-     }
-  } catch(e) {
-     yield put(
+      }
+    );
+    if (response.status === 200) {
+      yield put(
         actionCreators.showStorageAlert({
-          alertType: "alert",
+          alertType: "info",
           alertTitle: "Volume QoS Reset",
-          errorMsg: "Volume QoS Reset failed",
-          errorCode: `Error Message: ${e ? e.message : ''}`,
+          errorMsg: "QoS Reset successfull",
+          errorCode: "",
         })
       );
+    }
+  } catch (e) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        alertTitle: "Volume QoS Reset",
+        errorMsg: "Volume QoS Reset failed",
+        errorCode: `Error Message: ${e ? e.message : ''}`,
+      })
+    );
   } finally {
-      yield fetchVolumeDetails({
-        payload: {
-          url: volUrl,
-          array: arrayName
-        }
-      });
-      yield put(actionCreators.stopStorageLoader());
+    yield fetchVolumeDetails({
+      payload: {
+        url: volUrl,
+        array: arrayName
+      }
+    });
+    yield put(actionCreators.stopStorageLoader());
   }
 }
 
@@ -1174,54 +1196,54 @@ function* autoCreateArray(action) {
   try {
     const raidType = action.payload.selectedRaid;
     const autoArrayname = action.payload.array.arrayName;
-    if(!autoArrayname) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            errorMsg: "Please provide a name for the Array",
-            errorCode: "",
-            alertTitle:  "Error in Array Creation"
-          })
-        );
-        return;
+    if (!autoArrayname) {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Please provide a name for the Array",
+          errorCode: "",
+          alertTitle: "Error in Array Creation"
+        })
+      );
+      return;
     }
-    if(Number(action.payload.array.storageDisks) < Number(raidType.minStorageDisks) ||
+    if (Number(action.payload.array.storageDisks) < Number(raidType.minStorageDisks) ||
       Number(action.payload.array.spareDisks) < Number(raidType.minSpareDisks) ||
       Number(action.payload.array.storageDisks) > Number(raidType.maxStorageDisks) ||
       Number(action.payload.array.spareDisks) > Number(raidType.maxSpareDisks)) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            errorMsg: "Number of Storage Disks and Spare Disks should fall within the conditions as per the selected RAID type",
-            errorCode: "",
-            alertTitle:  "Error in Array Creation"
-          })
-        );
-        return;
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Number of Storage Disks and Spare Disks should fall within the conditions as per the selected RAID type",
+          errorCode: "",
+          alertTitle: "Error in Array Creation"
+        })
+      );
+      return;
     }
-    if(!action.payload.array.metaDisk ||
+    if (!action.payload.array.metaDisk ||
       !action.payload.array.metaDisk.length) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            errorMsg: `Minimum 1 Write Buffer Path should be availabe for array creation`,
-            errorCode: "",
-            alertTitle:  "Error in Array Creation"
-          })
-        );
-        return;
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: `Minimum 1 Write Buffer Path should be availabe for array creation`,
+          errorCode: "",
+          alertTitle: "Error in Array Creation"
+        })
+      );
+      return;
     }
-    if(action.payload.freeDisks <
-        (Number(action.payload.array.storageDisks) + Number(action.payload.array.spareDisks))) {
-        yield put(
-          actionCreators.showStorageAlert({
-            alertType: "alert",
-            errorMsg: "Total number of disks available cannot satify the spare disk and storage disk requirement",
-            errorCode: "",
-            alertTitle:  "Error in Array Creation"
-          })
-        );
-        return;
+    if (action.payload.freeDisks <
+      (Number(action.payload.array.storageDisks) + Number(action.payload.array.spareDisks))) {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Total number of disks available cannot satify the spare disk and storage disk requirement",
+          errorCode: "",
+          alertTitle: "Error in Array Creation"
+        })
+      );
+      return;
     }
     yield put(actionCreators.startStorageLoader("Creating Array"));
     const response = yield call(
@@ -1289,11 +1311,11 @@ function* autoCreateArray(action) {
         alertType: "alert",
         errorMsg: error && error.response ? error.response.data : "Array Creation failed",
         errorCode: "",
-        alertTitle:  "Error in Array Creation"
+        alertTitle: "Error in Array Creation"
       })
     );
   } finally {
-      yield put(actionCreators.stopStorageLoader());
+    yield put(actionCreators.stopStorageLoader());
   }
 }
 

@@ -175,20 +175,33 @@ class CreateVolume extends Component {
     this.props.createVolSocket.on("create_multi_volume", (msg) => {
       /* eslint-disable camelcase */
       if (this.props.createVolumeButton === true) {
+
         let alertType = "info";
-        const { total_count, pass, description } = msg;
+        const { total_count, pass, description, errorCode, errorResponses } = msg;
         if (pass === 0) {
           alertType = "alert";
         } else if (pass > 0 && total_count - pass > 0)
           alertType = "partialError";
-        const errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
+        let errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
           pass}`;
+
+        let errorCodeDescription = description === ''? '': description + '\n\n';
+        if (errorCode) {
+          alertType = "alert";
+          errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
+            pass}` + ' with below errors';
+          errorResponses.map(err => {
+            errorCodeDescription += 'Error code:' + err.code + ': ' + err.description + '\n\n';
+            return err;
+          })
+        }
+
         this.props.toggleCreateVolumeButton(false);
         this.props.showStorageAlert({
           alertType,
           alertTitle: "Create Volume",
           errorMsg,
-          errorCode: description,
+          errorCode: errorCodeDescription,
         });
 
         this.props.Reset_Inputs();
@@ -285,7 +298,7 @@ class CreateVolume extends Component {
     else if (this.props.mount_vol && subsystem.array && subsystem.array !== this.props.array)
       errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
-    
+
     if (isError === true) {
       this.showAlertHandler(errorDesc)
       return;
@@ -305,7 +318,17 @@ class CreateVolume extends Component {
     const transport = getTransport(subsystem, this.props.transport)
     const localMinBw = this.props.mintype === "minbw" ? this.props.minvalue : 0;
     const localMinIOPS = this.props.mintype === "miniops" ? this.props.minvalue : 0;
-
+    const localSubsystem = Object.keys(transport).length === 0 ? {
+      transport_type: "tcp",
+      transport_service_id: "",
+      target_address: "",
+      subnqn: this.props.subsystem
+    } : {
+      transport_type: transport.transport_type,
+      transport_service_id: transport.transport_service_id,
+      target_address: transport.target_address,
+      subnqn: this.props.subsystem
+    }
     if (this.props.volume_count > 1 && parseInt(volSize, 10) === 0) {
       this.setState({
         alert_open: true,
@@ -328,12 +351,7 @@ class CreateVolume extends Component {
             stop_on_error_checkbox: this.props.stop_on_error_checkbox,
             mount_vol: this.props.mount_vol,
             transport: this.props.transport,
-            subsystem: {
-              transport_type: transport.transport_type,
-              transport_service_id: transport.transport_service_id,
-              target_address: transport.target_address,
-              subnqn: this.props.subsystem
-            },
+            subsystem: { ...localSubsystem },
             volume_count: 1
           });
         },
@@ -354,12 +372,7 @@ class CreateVolume extends Component {
         stop_on_error_checkbox: this.props.stop_on_error_checkbox,
         mount_vol: this.props.mount_vol,
         transport: this.props.transport,
-        subsystem: {
-          transport_type: transport.transport_type,
-          transport_service_id: transport.transport_service_id,
-          target_address: transport.target_address,
-          subnqn: this.props.subsystem
-        },
+        subsystem: { ...localSubsystem }
       })
     };
   }
