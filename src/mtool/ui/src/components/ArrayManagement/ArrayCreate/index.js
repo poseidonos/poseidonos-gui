@@ -374,7 +374,7 @@ class ArrayCreate extends Component {
       this.setState({
         ...this.state,
         alertType: "alert",
-        errorMsg: `Select at most ${this.props.selectedRaid.minStorageDisks} Storage Disk`,
+        errorMsg: `Select at most ${this.props.selectedRaid.maxStorageDisks} Storage Disk`,
         alertOpen: true,
       });
       return;
@@ -383,7 +383,7 @@ class ArrayCreate extends Component {
       this.setState({
         ...this.state,
         alertType: 'alert',
-        errorMsg: `Select at most ${this.props.selectedRaid.minSpareDisks} Spare disk`,
+        errorMsg: `Select at most ${this.props.selectedRaid.maxSpareDisks} Spare disk`,
         alertOpen: true,
       });
       return;
