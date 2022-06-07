@@ -309,12 +309,12 @@ function* createVolume(action) {
         (response.data.result.status.code === 2000 ||
           response.data.result.status.code === 0)
       ) {
-        let errorInfo = response.data.result.status.errorInfo;
+        const { errorInfo } = response.data.result.status;
         let isError = false;
         let errorCodeDescription = '';
         if (errorInfo && errorInfo.errorResponses.length > 0) {
           errorInfo.errorResponses.map(err => {
-            errorCodeDescription += 'Error code:' + err.code + ': ' + err.description + '\n\n';
+            errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
             if (err.code !== 0)
               isError = true;
             return err;

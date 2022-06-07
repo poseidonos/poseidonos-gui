@@ -35,7 +35,7 @@ export {
     asyncIsiBOFOSRunning,
     setOperationsMessage,
     setPOSInfo,
-    setPOSProperty
+    // setPOSProperty
 } from "./headerActions";
 
 export { 

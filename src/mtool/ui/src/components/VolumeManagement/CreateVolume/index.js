@@ -185,13 +185,13 @@ class CreateVolume extends Component {
         let errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
           pass}`;
 
-        let errorCodeDescription = description === ''? '': description + '\n\n';
+        let errorCodeDescription = description === ''? '': `${description} \n\n`;
         if (errorCode) {
           alertType = "alert";
           errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
-            pass}` + ' with below errors';
+            pass} with below errors`;
           errorResponses.map(err => {
-            errorCodeDescription += 'Error code:' + err.code + ': ' + err.description + '\n\n';
+            errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
             return err;
           })
         }

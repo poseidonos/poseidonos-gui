@@ -86,22 +86,22 @@ function* CallIsiBOFOSRunning(action) {
 
 }
 
-function* getPOSProperty() {
-    try {
-    const response = yield call([axios, axios.get], '/api/v1/pos/property', {
-        headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-    });
-    if(response.status === 200) {
-        yield put(actionCreators.setPOSProperty(response.data.result.data));
-    }
-    } catch(e) {
-        // console.log(e)
-    }
-}
+// function* getPOSProperty() {
+//     try {
+//     const response = yield call([axios, axios.get], '/api/v1/pos/property', {
+//         headers: {
+//                 Accept: 'application/json',
+//                 'Content-Type': 'application/json',
+//                 'x-access-token': localStorage.getItem('token'),
+//             },
+//     });
+//     if(response.status === 200) {
+//         yield put(actionCreators.setPOSProperty(response.data.result.data));
+//     }
+//     } catch(e) {
+//         // console.log(e)
+//     }
+// }
 
 function* startIBOFOs() {
     yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
@@ -125,7 +125,7 @@ function* startIBOFOs() {
 		    },
 		    ...errorResponses
 	    ]));
-        yield getPOSProperty();
+        // yield getPOSProperty();
         }
     } catch (e) {
         yield put(actionCreators.setOperationsMessage([{
@@ -206,40 +206,40 @@ function* getPOSInfo() {
     }
 }
 
-function* setPOSProperty(action) {
-    yield put(actionCreators.setOperationsMessage([{
-      id: "ui",
-      code: 200,
-      description: "Starting Poseidon OS"
-    }]));
-    try {
-        const response = yield call([axios, axios.post], '/api/v1/pos/property', {
-            property: action.payload
-        },{
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token'),
-            },
-        });
-        if (response.status === 200) {
-            yield put(actionCreators.setOperationsMessage([{
-               id: "POS",
-               code: response.data.result.status.code,
-               description: response.data.result.status.description
-            }]));
-        }
-    } catch (e) {
-        yield put(actionCreators.setOperationsMessage([{
-                code: 500,
-                id: "Server",
-                description: `Error in Stopping Poseidon OS: ${e}`
-        }]));
+// function* setPOSProperty(action) {
+//     yield put(actionCreators.setOperationsMessage([{
+//       id: "ui",
+//       code: 200,
+//       description: "Starting Poseidon OS"
+//     }]));
+//     try {
+//         const response = yield call([axios, axios.post], '/api/v1/pos/property', {
+//             property: action.payload
+//         },{
+//             headers: {
+//                 Accept: 'application/json',
+//                 'Content-Type': 'application/json',
+//                 'x-access-token': localStorage.getItem('token'),
+//             },
+//         });
+//         if (response.status === 200) {
+//             yield put(actionCreators.setOperationsMessage([{
+//                id: "POS",
+//                code: response.data.result.status.code,
+//                description: response.data.result.status.description
+//             }]));
+//         }
+//     } catch (e) {
+//         yield put(actionCreators.setOperationsMessage([{
+//                 code: 500,
+//                 id: "Server",
+//                 description: `Error in Stopping Poseidon OS: ${e}`
+//         }]));
 
-    } finally {
-        yield getPOSProperty();
-    }
-}
+//     } finally {
+//         yield getPOSProperty();
+//     }
+// }
 
 
 export default function* headerWatcher() {
@@ -248,6 +248,6 @@ export default function* headerWatcher() {
     yield takeEvery(actionTypes.SAGA_STOP_IBOFOS, stopIBOFOs);
     yield takeEvery(actionTypes.SAGA_RESET_IBOFOS, resetIBOFOs);
     yield takeEvery(actionTypes.SAGA_GET_POS_INFO, getPOSInfo);
-    yield takeEvery(actionTypes.SAGA_GET_POS_PROPERTY, getPOSProperty);
-    yield takeEvery(actionTypes.SAGA_SET_POS_PROPERTY, setPOSProperty);
+    // yield takeEvery(actionTypes.SAGA_GET_POS_PROPERTY, getPOSProperty);
+    // yield takeEvery(actionTypes.SAGA_SET_POS_PROPERTY, setPOSProperty);
 }
