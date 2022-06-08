@@ -2641,7 +2641,7 @@ def test_autocreate_array(mock_get_current_user, **kwargs):
 
     response = app.test_client().post('/api/v1/autoarray/',data='''{
     "name": "POSArray",
-    "buffer": "uram0",
+    "metaDisk": "uram0",
     "num_data": 3,
     "num_spare": 0,
     "raidtype":"RAID5"
