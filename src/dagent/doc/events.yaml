@@ -324,9 +324,9 @@ modules:
         solution: Check the minimum qos value that can be entered and try again.
       - code: 2090
         level: Warning
-        message: Array not mounted
-        problem: Volume cannot be created or loaded without ibofos mounted
-        solution: Try again after mount ibofos
+        message: Max Bandwidth value outside allowed range
+        problem: A value lesser or greater than the applicable qos value was entered
+        solution: Check the qos value that can be entered and try again
       - code: 2091
         level: Warning
         message: System Fault
