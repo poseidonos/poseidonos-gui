@@ -1254,7 +1254,8 @@ function* autoCreateArray(action) {
         raidtype: action.payload.array.raidtype,
         metaDisk: action.payload.array.metaDisk,
         num_data: Number(action.payload.array.storageDisks),
-        num_spare: Number(action.payload.array.spareDisks)
+        num_spare: Number(action.payload.array.spareDisks),
+        writeThroughModeEnabled: action.payload.array.writeThroughMode
       },
       {
         headers: {

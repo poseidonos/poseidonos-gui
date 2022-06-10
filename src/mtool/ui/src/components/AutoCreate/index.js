@@ -31,266 +31,297 @@
  */
 
 import {
-	Button,
-	FormControl,
-	Grid,
-	InputLabel,
-	MenuItem,
-	Paper,
-	Select,
-	Link,
-	TextField,
-	ThemeProvider,
-	Typography,
-	withStyles
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Link,
+  TextField,
+  ThemeProvider,
+  Typography,
+  withStyles,
+  FormControlLabel,
+  Checkbox
 } from "@material-ui/core";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import MToolTheme from "../../theme";
 import Popup from "../Popup";
 
 const styles = (theme) => ({
-    container: {
-        marginTop: theme.spacing(1),
-        textAlign: 'center',
-        padding: theme.spacing(1)
+  container: {
+    marginTop: theme.spacing(1),
+    textAlign: 'center',
+    padding: theme.spacing(1)
+  },
+  inputGrid: {
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      justifyContent: "center",
     },
-    inputGrid: {
-      [theme.breakpoints.down("xs")]: {
-        display: "flex",
-        justifyContent: "center",
-      },
-    },
-    formControl: {
-      margin: theme.spacing(2, 2),
-      minWidth: 170,
-      width: 200,
-      maxWidth: "80%",
-      [theme.breakpoints.down("xs")]: {
-        margin: theme.spacing(1, 0),
-      }
-    },
-    writeBufferSelect: {
-      "&>div>p": {
-        overflow: "hidden",
-        textOverflow: "ellipsis"
-      }
+  },
+  formControl: {
+    margin: theme.spacing(2, 2),
+    minWidth: 170,
+    width: 200,
+    maxWidth: "80%",
+    [theme.breakpoints.down("xs")]: {
+      margin: theme.spacing(1, 0),
     }
+  },
+  writeBufferSelect: {
+    "&>div>p": {
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    }
+  }
 });
 
 const getFreeDisk = (disks) => {
-   const freeDisks = disks && disks.filter ?
-       disks.filter(disk => disk.isAvailable) : [];
-   if(freeDisks.length > 0) return freeDisks[0].name;
-   if(disks && disks.length > 0) return disks[0].name;
-   return "";
+  const freeDisks = disks && disks.filter ?
+    disks.filter(disk => disk.isAvailable) : [];
+  if (freeDisks.length > 0) return freeDisks[0].name;
+  if (disks && disks.length > 0) return disks[0].name;
+  return "";
 }
 
 const getFreeDisks = (disks) => {
-   const freeDisks = disks && disks.filter ?
-       disks.filter(disk => disk.isAvailable) : [];
-   return freeDisks.length;
+  const freeDisks = disks && disks.filter ?
+    disks.filter(disk => disk.isAvailable) : [];
+  return freeDisks.length;
 }
 
 const getRaidType = (raids, value) => {
-   if(raids) {
-     const raid = raids.find(r => r.value === value);
-     return raid || {};
-   }
-   return {}
+  if (raids) {
+    const raid = raids.find(r => r.value === value);
+    return raid || {};
+  }
+  return {}
 }
 
 const AutoCreate = (props) => {
-    const {classes} = props;
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [array, setArray] = useState({
+  const { classes } = props;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [array, setArray] = useState({
+    arrayName: "",
+    metaDisk: "",
+    raidtype: "",
+    storageDisks: 0,
+    spareDisks: 0,
+    writeThroughMode: false,
+  });
+  const [constraints, setConstraints] = useState({
+    minStorage: 3,
+    minSpare: 0,
+    maxStorage: 32,
+    maxSpare: 32
+  });
+
+  const setDiskConstraints = () => {
+    const raidType = getRaidType(props.config.raidTypes, array.raidtype);
+    setConstraints({
+      minStorage: raidType.minStorageDisks,
+      minSpare: raidType.minSpareDisks,
+      maxStorage: raidType.maxStorageDisks,
+      maxSpare: raidType.maxSpareDisks
+    });
+  }
+
+  useEffect(() => {
+    setArray({
       arrayName: "",
-      metaDisk: "",
-      raidtype: "",
-      storageDisks: 0,
-      spareDisks: 0
+      metaDisk: getFreeDisk(props.metadisks),
+      raidtype: "RAID5",
+      storageDisks: 3,
+      spareDisks: 0,
+      writeThroughMode: false,
     });
-    const [constraints, setConstraints] = useState({
-       minStorage: 3,
-       minSpare: 0,
-       maxStorage: 32,
-       maxSpare: 32
+    setDiskConstraints();
+  }, []);
+
+
+  useEffect(() => {
+    setDiskConstraints();
+  }, [array, props]);
+
+  const closeDialog = () => setDialogOpen(false);
+  const openDialog = () => setDialogOpen(true);
+  const handleChange = (event) => {
+    setArray({
+      ...array,
+      [event.target.name]: event.target.value
     });
+  }
+  const autoCreateArray = () => {
+    const raidType = getRaidType(props.config.raidTypes, array.raidtype);
+    props.autoCreateArray({
+      array,
+      freeDisks: getFreeDisks(props.disks),
+      selectedRaid: raidType
+    });
+  };
 
-    const setDiskConstraints = () => {
-      const raidType = getRaidType(props.config.raidTypes, array.raidtype);
-      setConstraints({
-        minStorage: raidType.minStorageDisks,
-        minSpare: raidType.minSpareDisks,
-        maxStorage: raidType.maxStorageDisks,
-        maxSpare: raidType.maxSpareDisks
-      });
-    }
-
-    useEffect(() => {
-      setArray({
-	    arrayName: "",
-	    metaDisk: getFreeDisk(props.metadisks),
-        raidtype: "RAID5",
-        storageDisks: 3,
-        spareDisks: 0
-      });
-      setDiskConstraints();
-    }, []);
-
-
-    useEffect(() => {
-      setDiskConstraints();
-    }, [array, props]);
-
-    const closeDialog = () => setDialogOpen(false);
-    const openDialog = () => setDialogOpen(true);
-    const handleChange = (event) => {
-        setArray({
-            ...array,
-            [event.target.name]: event.target.value
-        });
-    }
-    const autoCreateArray = () => {
-        const raidType = getRaidType(props.config.raidTypes, array.raidtype);
-        props.autoCreateArray({
-             array,
-             freeDisks: getFreeDisks(props.disks),
-             selectedRaid: raidType
-        });
-    };
-    return (
-        <ThemeProvider theme={MToolTheme}>
-            <Paper
-                className={classes.container}
-                variant="contained"
-                color="primary"
-            >
-                <Typography>Need an Array Created Quickly?</Typography>
-                <Button onClick={openDialog} variant="contained" color="primary">Auto-Create</Button>
-            </Paper>
-	    <Popup
-                title="Create Array"
-                open={dialogOpen}
-                close={closeDialog}
-	    >
-             <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-	       <FormControl className={classes.formControl}>
-                <TextField
-                  id="auto-array-name"
-                  name="arrayName"
-                  label="Array Name"
-                  value={array.arrayName}
-                  onChange={handleChange}
-                  inputProps={{
-                    "data-testid": "auto-array-name",
-                  }}
-	          className={classes.formText}
-                />
-        </FormControl>
-             </Grid>
-	     <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-	       <FormControl className={classes.formControl}>
-               <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
-                <Select
-                value={array.metaDisk}
-                onChange={handleChange}
-                inputProps={{
-                  name: "metaDisk",
-                  id: "auto-writebuffer",
-                  "data-testid": "auto-writebuffer-input",
-                }}
-                SelectDisplayProps={{
-                  "data-testid": "auto-writebuffer",
-                }}
-                className={classes.writeBufferSelect}
-                >
-                {props.metadisks
-                  ? props.metadisks.map((disk) => (
-                    <MenuItem key={disk.name} value={disk.name}>
-                      <Typography color="secondary">{disk.displayMsg}</Typography>
-                    </MenuItem>
-                  ))
-                  : null}
-                </Select>
-                <Link href="/operations/devices" align="right">Create Disk</Link>
-        </FormControl>
-      </Grid>
-	    <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-	      <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="auto-raid">Fault tolerance Level</InputLabel>
-              <Select
-                value={array.raidtype}
-                onChange={handleChange}
-                inputProps={{
-                  name: "raidtype",
-                  id: "auto-raidtype",
-                  "data-testid": "auto-raid-select-input",
-                }}
-                SelectDisplayProps={{
-                  "data-testid": "auto-raid-select",
-                }}
-              >
-                {props.config.raidTypes && props.config.raidTypes.map((raid) => (
-                  <MenuItem value={raid.value} key={raid.value}>
-                    <Typography color="secondary">{raid.label}</Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-       </FormControl>
-	    </Grid>
-	    <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-          <span>Total Disks Available: {getFreeDisks(props.disks)}</span>
-     </Grid>
+  const onSetWriteThroughMode = () => {
+    setArray({
+      ...array,
+      writeThroughMode: !array.writeThroughMode
+    })
+  }
+  return (
+    <ThemeProvider theme={MToolTheme}>
+      <Paper
+        className={classes.container}
+        variant="contained"
+        color="primary"
+      >
+        <Typography>Need an Array Created Quickly?</Typography>
+        <Button onClick={openDialog} variant="contained" color="primary">Auto-Create</Button>
+      </Paper>
+      <Popup
+        title="Create Array"
+        open={dialogOpen}
+        close={closeDialog}
+      >
         <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-	    <FormControl className={classes.formControl}>
-                  <TextField
-                    id="no-of-storage-disk"
-                    label="Number of Storage Disks"
-                    name="storageDisks"
-                    value={array.storageDisks}
-                    onChange={handleChange}
-                    type="number"
-                    inputProps={{
-                      "data-testid": "auto-storage-disks",
-                      min: 0
-                    }}
-                    required
-                  />
-                  {`Minimum : ${constraints.minStorage}, Maximum : ${constraints.maxStorage}`}
-     </FormControl>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="auto-array-name"
+              name="arrayName"
+              label="Array Name"
+              value={array.arrayName}
+              onChange={handleChange}
+              inputProps={{
+                "data-testid": "auto-array-name",
+              }}
+              className={classes.formText}
+            />
+          </FormControl>
         </Grid>
-	    <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-            <FormControl className={classes.formControl}>
-                  <TextField
-                    id="no-of-spare-disk"
-                    label="Number of Spare Disks"
-                    name="spareDisks"
-                    value={array.spareDisks}
-                    onChange={handleChange}
-                    type="number"
-                    inputProps={{
-                      "data-testid": "auto-spare-disks",
-                      min: 0
-                    }}
-                    required
-                  />
-                  {`Minimum : ${constraints.minSpare}, Maximum : ${constraints.maxSpare}`}
-            </FormControl>
-     </Grid>
-	    <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
-	    <Button
-                onClick={autoCreateArray}
-                variant="contained"
-                color="primary"
-                data-testid="auto-createarray-btn"
-                className={classes.button}
-	    >
-                Create Array
-     </Button>
-     </Grid>
-     </Popup>
-        </ThemeProvider>
-    );
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
+            <Select
+              value={array.metaDisk}
+              onChange={handleChange}
+              inputProps={{
+                name: "metaDisk",
+                id: "auto-writebuffer",
+                "data-testid": "auto-writebuffer-input",
+              }}
+              SelectDisplayProps={{
+                "data-testid": "auto-writebuffer",
+              }}
+              className={classes.writeBufferSelect}
+            >
+              {props.metadisks
+                ? props.metadisks.map((disk) => (
+                  <MenuItem key={disk.name} value={disk.name}>
+                    <Typography color="secondary">{disk.displayMsg}</Typography>
+                  </MenuItem>
+                ))
+                : null}
+            </Select>
+            <Link href="/operations/devices" align="right">Create Disk</Link>
+          </FormControl>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="auto-raid">Fault tolerance Level</InputLabel>
+            <Select
+              value={array.raidtype}
+              onChange={handleChange}
+              inputProps={{
+                name: "raidtype",
+                id: "auto-raidtype",
+                "data-testid": "auto-raid-select-input",
+              }}
+              SelectDisplayProps={{
+                "data-testid": "auto-raid-select",
+              }}
+            >
+              {props.config.raidTypes && props.config.raidTypes.map((raid) => (
+                <MenuItem value={raid.value} key={raid.value}>
+                  <Typography color="secondary">{raid.label}</Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <span>Total Disks Available: {getFreeDisks(props.disks)}</span>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="no-of-storage-disk"
+              label="Number of Storage Disks"
+              name="storageDisks"
+              value={array.storageDisks}
+              onChange={handleChange}
+              type="number"
+              inputProps={{
+                "data-testid": "auto-storage-disks",
+                min: 0
+              }}
+              required
+            />
+            {`Minimum : ${constraints.minStorage}, Maximum : ${constraints.maxStorage}`}
+          </FormControl>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <FormControl className={classes.formControl}>
+            <TextField
+              id="no-of-spare-disk"
+              label="Number of Spare Disks"
+              name="spareDisks"
+              value={array.spareDisks}
+              onChange={handleChange}
+              type="number"
+              inputProps={{
+                "data-testid": "auto-spare-disks",
+                min: 0
+              }}
+              required
+            />
+            {`Minimum : ${constraints.minSpare}, Maximum : ${constraints.maxSpare}`}
+          </FormControl>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <FormControl className={classes.formControl}>
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  name="auto-mount_arr_writethrough"
+                  color="primary"
+                  id="mount-writethrough-checkbox"
+                  checked={array.writeThroughMode}
+                  value="Write Through Mode"
+                  inputProps={{
+                    "data-testid": "auto-mount-writethrough-checkbox",
+                  }}
+                  onChange={onSetWriteThroughMode}
+                />
+              )}
+              label="Write Through Mode"
+            />
+          </FormControl>
+        </Grid>
+        <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
+          <Button
+            onClick={autoCreateArray}
+            variant="contained"
+            color="primary"
+            data-testid="auto-createarray-btn"
+            className={classes.button}
+          >
+            Create Array
+          </Button>
+        </Grid>
+      </Popup>
+    </ThemeProvider>
+  );
 };
 
 export default withStyles(styles)(AutoCreate);

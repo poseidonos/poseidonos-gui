@@ -1336,11 +1336,12 @@ def auto_create_array(current_user):
     metaDisk = body["metaDisk"]
     num_data = body['num_data']
     num_spare = body['num_spare']
+    write_through = body['writeThroughModeEnabled']
     if arrayname is None:
         arrayname = dagent.array_names[0]
     try:
         array_create = dagent.auto_create_array(
-            arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}])
+            arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}], write_through)
         if array_create is not None:
             array_create = array_create.json()
             return toJson(array_create)

@@ -605,6 +605,7 @@ def auto_create_array(
         num_spare,
         num_data,
         meta_devices,
+        write_through,
         auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info(
@@ -636,7 +637,7 @@ def auto_create_array(
             data=request_body)
         if response.status_code != 200:
             return response
-        response = mount_array(arrayname)
+        response = mount_array(arrayname, write_through)
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
