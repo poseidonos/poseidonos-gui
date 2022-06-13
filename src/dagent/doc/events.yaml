@@ -653,6 +653,11 @@ modules:
         message: invalid logical address error
         problem:
         solution:
+      - code: 2517
+        level: ERROR
+        message: RAID10 only supports even number of data devices
+        problem: 
+        solution: Select even number of data devices with RAID10
       - code: 2518
         level: ERROR
         message: Wrong type for array device

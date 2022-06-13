@@ -156,13 +156,17 @@ func Route(router *gin.Engine) {
 	// Array
 	{
 		iBoFOSPath.POST("/array", func(ctx *gin.Context) {
-			param := model.ArrayParam{}
-			param.Name = ctx.Param("arrayName")
-			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateArray, param)
+			if validateNumOfDevice(ctx) {
+				param := model.ArrayParam{}
+				param.Name = ctx.Param("arrayName")
+				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.CreateArray, param)
+			}
 		})
 		iBoFOSPath.POST("/autoarray", func(ctx *gin.Context) {
-			param := model.AutocreateArrayParam{}
-			ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AutoCreateArray, param)
+			if validateNumOfDevice(ctx) {
+				param := model.AutocreateArrayParam{}
+				ibofos.CalliBoFOSwithParam(ctx, amoduleIBoFOS.AutoCreateArray, param)
+			}
 		})
 		iBoFOSPath.GET("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
@@ -512,4 +516,22 @@ func Route(router *gin.Engine) {
 		})
 
 	}
+}
+func validateNumOfDevice(ctx *gin.Context) bool {
+	req := model.Request{}
+	var numOfDevice int
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	reqMap := req.Param.(map[string]interface{})
+	res := model.Response{}
+	if _, ok := reqMap["data"]; ok {
+		numOfDevice = len(reqMap["data"].([]interface{}))
+	} else {
+		numOfDevice = int(reqMap["num_data"].(float64))
+	}
+	if strings.ToLower(reqMap["raidtype"].(string)) == "raid10" && numOfDevice%2 != 0 {
+		res.Result.Status, _ = util.GetStatusInfo(2517)
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+		return false
+	}
+	return true
 }
