@@ -241,6 +241,7 @@ class ArrayShow extends Component {
       messageTitle: "",
       selectedSlot: null,
       onConfirm: null,
+      writeThroughMode: this.props.writeThrough
     };
     this.interval = null;
     this.handleClick = this.handleClick.bind(this);
@@ -285,7 +286,7 @@ class ArrayShow extends Component {
 
   handleMountClick() {
     this.props.handleMountPOS({
-	    writeThrough: this.props.writeThrough,
+	    writeThrough: this.state.writeThroughMode,
 	    array: this.props.arrayName
     });
   }
@@ -462,13 +463,16 @@ class ArrayShow extends Component {
                       name="mount_arr_writethrough"
                       color="primary"
                       id="mount-writethrough-checkbox"
-                      checked={this.props.writeThrough}
+                      checked={this.state.writeThroughMode}
 		      disabled={this.props.mountStatus === "Mounted"}
                       value="Write Through Mode"
                       inputProps={{
                         "data-testid": "mount-writethrough-checkbox",
                       }}
-                      onChange={() => this.props.changeWriteThrough(this.props.arrayName)}
+                      onChange={() => this.setState({
+                        ...this.state,
+                        writeThroughMode: !this.state.writeThroughMode
+                      })}
                   />
               )}
               label="Write Through Mode"

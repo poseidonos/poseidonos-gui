@@ -130,8 +130,8 @@ const storageReducer = (state = initialState, action) => {
                 arraySize += action.payload[i].totalsize;
                 totalVolSize += action.payload[i].usedspace;
                 arrayMap[action.payload[i].arrayname] = {
-                   ...state.arrayMap[action.payload[i].arrayname],
-                   ...action.payload[i]
+                    ...state.arrayMap[action.payload[i].arrayname],
+                    ...action.payload[i]
                 }
             }
             let arrayname = state.arrayname && arrayMap[state.arrayname] ? state.arrayname : '';
@@ -148,18 +148,6 @@ const storageReducer = (state = initialState, action) => {
                 totalVolSize
             }
         }
-	case actionTypes.CHANGE_WRITE_THROUGH: {
-	    return {
-		...state,
-		arrayMap: {
-			...state.arrayMap,
-			[action.payload]: {
-				...state.arrayMap[action.payload],
-				writeThroughEnabled: !state.arrayMap[action.payload].writeThroughEnabled
-			}
-		}
-	    }
-	}
         case actionTypes.FETCH_CONFIG: {
             return {
                 ...state,
@@ -352,13 +340,13 @@ const storageReducer = (state = initialState, action) => {
                 arrayMap: {
                     ...state.arrayMap,
                     [action.payload.name]: {
-                         ...state.arrayMap[action.payload.name],
-                         rebuildProgress: action.payload.rebuilding_progress,
-                         situation: action.payload.situation
+                        ...state.arrayMap[action.payload.name],
+                        rebuildProgress: action.payload.rebuilding_progress,
+                        situation: action.payload.situation
                     }
                 }
             }
-}
+        }
         case actionTypes.STORAGE_STOP_LOADER:
             return {
                 ...state,
