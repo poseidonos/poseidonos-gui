@@ -679,6 +679,10 @@ function AdvanceCreateVolume(props) {
       errorDesc = "Suffix Value cannot be negative";
     else if (props.volume_count > 1 && props.volume_suffix.length === 0)
       errorDesc = "Please Enter Suffix Start Value";
+    else if (!(/^\d+$/.test(props.volume_count)))
+      errorDesc = "Please Enter Integer Value of Volume Count";
+    else if (props.volume_count > 1 && !(/^\d+$/.test(props.volume_suffix)))
+      errorDesc = "Please Enter Integer Value of Suffix Value";
     else isError = false;
 
     if (isError === true) {
@@ -726,6 +730,12 @@ function AdvanceCreateVolume(props) {
       errorDesc = "Please Enter Minimum IOPS/BW or set 0 for no Minimum IOPS/BW"
     else if (props.minvalue < 0)
       errorDesc = "Minimum IOPS/Bandwidth cannot be negative";
+    else if (!(/^\d+$/.test(props.maxiops)))
+      errorDesc = "Please Enter Integer Value of Maximum IOPS"
+    else if (!(/^\d+$/.test(props.maxbw)))
+      errorDesc = "Please Enter Integer Value of Maximum BW"
+    else if (!(/^\d+$/.test(props.minvalue)))
+      errorDesc = "Please Enter Integer Value of Minimum IOPS/BW"
     else isError = false;
     if (isError === true) {
       props.showAlertHandler(errorDesc)
@@ -750,6 +760,8 @@ function AdvanceCreateVolume(props) {
           errorDesc = "Please Enter Transport Service Type";
         else if (props.transport_service_id < 0)
           errorDesc = "Transport Service Type cannot be negative";
+        else if (!(/^\d+$/.test(props.transport_service_id)))
+          errorDesc = "Please Enter Integer Value of Transport Service Id";
         else
           isError = false;
       } else

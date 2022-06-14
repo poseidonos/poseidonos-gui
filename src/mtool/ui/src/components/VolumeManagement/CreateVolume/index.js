@@ -185,7 +185,7 @@ class CreateVolume extends Component {
         let errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
           pass}`;
 
-        let errorCodeDescription = description === ''? '': `${description} \n\n`;
+        let errorCodeDescription = description === '' ? '' : `${description} \n\n`;
         if (errorCode) {
           alertType = "alert";
           errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
@@ -295,6 +295,10 @@ class CreateVolume extends Component {
       errorDesc = "Suffix Value cannot be negative";
     else if (this.props.volume_count > 1 && this.props.volume_suffix.length === 0)
       errorDesc = "Please Enter Suffix Start Value";
+    else if (!(/^\d+$/.test(this.props.volume_count)))
+      errorDesc = "Please Enter Integer Value of Volume Count";
+    else if (this.props.volume_count > 1 && !(/^\d+$/.test(this.props.volume_suffix)))
+      errorDesc = "Please Enter Integer Value of Suffix Value";
     else if (this.props.mount_vol && subsystem.array && subsystem.array !== this.props.array)
       errorDesc = "Please select an unused subsystem, or a subsystem used by the current array, or create a new subsystem";
     else isError = false;
