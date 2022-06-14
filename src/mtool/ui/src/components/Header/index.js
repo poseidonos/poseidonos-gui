@@ -63,7 +63,7 @@ const styles = theme => ({
     zIndex: theme.zIndex.drawer + 1,
     backgroundImage: 'linear-gradient(to right, #171719, #788595)',
     boxShadow: 'none',
-    height:"55px",
+    height:62,
     // backgroundColor: theme.palette.primary
   },
 
@@ -74,12 +74,22 @@ const styles = theme => ({
   grow: {
     flexGrow: 1,
   },
+  logoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row'
+    }
+  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
     alignItems: 'center',
+  },
+  logoImg: {
+    cursor: 'default',
   },
   statusHeader: {
     fontSize: 16,
@@ -102,10 +112,11 @@ const styles = theme => ({
     },
   },
   version: {
+    alignSelf: 'flex-end',
+    marginTop: 2,
     [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
-    marginTop: "2px"
+      marginTop: 0
+    }
   },
   separator: {
     padding: '0 10px',
@@ -423,14 +434,16 @@ class Header extends Component {
             >
               <MenuIcon />
             </IconButton>
+            <div className={classes.logoContainer}>
             <img
               src={Heading}
-              style={{ cursor: 'default', marginBottom: '0.4rem' }}
+              className={classes.logoImg}
               alt="Poseidon Management Tool"
             />
             <Typography className={classes.version} variant="caption" display="block">
               Version 0.13.0
             </Typography>
+            </div>
             <div className={classes.grow} />
               <span
                 className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
