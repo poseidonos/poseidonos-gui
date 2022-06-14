@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "502b680b-66d2-4124-b2d1-9fe1b91591ae",
+		"_postman_id": "1bae90fc-1801-4897-a0aa-d2a9c44df817",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -14,7 +14,9 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": ""
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -71,7 +73,20 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://{{host}}/api/dagent/v1/doc/api.html"
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/doc/api.html",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"doc",
+								"api.html"
+							]
+						}
 					},
 					"response": [
 						{
@@ -96,7 +111,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/dagent/v1/version"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -155,7 +183,20 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://{{host}}/api/dagent/v1/doc/api.md"
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/doc/api.md",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"doc",
+								"api.md"
+							]
+						}
 					},
 					"response": []
 				},
@@ -203,7 +244,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/dagent/v1/doc/events.yaml",
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/doc/events.yaml",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"doc",
+								"events.yaml"
+							]
+						},
 						"description": "It will return all POS syste status code and description"
 					},
 					"response": [
@@ -229,7 +283,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/dagent/v1/statuscode"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/statuscode",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"statuscode"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -309,7 +376,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/dagent/v1/ibofos",
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/ibofos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"ibofos"
+							]
+						},
 						"description": "It just runs \"pkill -9 ibofos\"\n"
 					},
 					"response": [
@@ -339,7 +418,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/mtool/api/dagent/v1/ibofos"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"ibofos"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -419,7 +511,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/dagent/v1/dagent",
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/dagent",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"dagent"
+							]
+						},
 						"description": "It just run command \"run_ibof.sh\" and does not gurantee to run."
 					},
 					"response": [
@@ -449,7 +553,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/mtool/api/dagent/v1/dagent"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/dagent",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"dagent"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -551,7 +668,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/dagent/v1/version"
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/version",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"version"
+							]
+						}
 					},
 					"response": [
 						{
@@ -576,7 +705,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/dagent/v1/version"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -628,7 +770,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/dagent/v1/version"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/version",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"version"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -700,7 +855,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/dagent/v1/heartbeat",
+						"url": {
+							"raw": "http://{{host}}/api/dagent/v1/heartbeat",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"dagent",
+								"v1",
+								"heartbeat"
+							]
+						},
 						"description": "It will check POS status.\nD-Agent holds cached status of POS for 4sec."
 					},
 					"response": [
@@ -726,7 +893,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/dagent/v1/heartbeat"
+								"url": {
+									"raw": "http://{{host}}/api/dagent/v1/heartbeat",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"dagent",
+										"v1",
+										"heartbeat"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -778,7 +957,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/dagent/v1/heartbeat"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/dagent/v1/heartbeat",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"dagent",
+										"v1",
+										"heartbeat"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -880,7 +1072,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/system"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/system",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"system"
+							]
+						}
 					},
 					"response": [
 						{
@@ -905,7 +1109,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/system/ibofos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"system",
+										"ibofos"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -957,7 +1175,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/system"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/system",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"system"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -986,115 +1216,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 1597819762,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\"\n        }\n    }\n}"
-						}
-					]
-				},
-				{
-					"name": "SETPOSPROPERTY",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"RUNIBOFOS\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Request-Id",
-								"value": "{{$guid}}"
-							},
-							{
-								"key": "ts",
-								"value": "{{$timestamp}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{basic_auth}}"
-							}
-						],
-						"url": "http://{{host}}/api/ibofos/v1/system"
-					},
-					"response": [
-						{
-							"name": "SETPOSPROPERTY",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"level\": \"lowest\"\r\n    }\r\n}"
-								},
-								"url": "http://{{host}}/api/ibofos/v1/system/property"
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Server",
-									"value": "nginx/1.14.0 (Ubuntu)"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 13 Apr 2022 11:09:59 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "239"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "2ba1a6bf-7606-4d1b-a575-e5e0a4e30b15"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"2ba1a6bf-7606-4d1b-a575-e5e0a4e30b15\",\n    \"lastSuccessTime\": 1649848199,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"rebuild perf impact is set.\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.10.6\"\n    }\n}"
 						}
 					]
 				},
@@ -1149,7 +1270,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/system"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/system",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"system"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1174,7 +1307,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/system"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/system",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"system"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1250,7 +1395,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/system"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/system",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"system"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1275,7 +1432,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/system"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/system",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"system"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -1327,7 +1496,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/system"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/system",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"system"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1408,7 +1589,21 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/devices/all/scan"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devices/all/scan",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devices",
+								"all",
+								"scan"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1433,7 +1628,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/devices/all/scan"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices/all/scan",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices",
+										"all",
+										"scan"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1509,7 +1718,21 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/devices/{{deviceName1}}/smart"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName1}}/smart",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devices",
+								"{{deviceName1}}",
+								"smart"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1534,7 +1757,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/devices/{{deviceName1}}/smart"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName1}}/smart",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices",
+										"{{deviceName1}}",
+										"smart"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1610,7 +1847,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/devices"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devices"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1635,7 +1884,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1715,7 +1977,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\":{\r\n        \"name\": \"uram3\",\r\n\t\t\"num_blocks\" : 8388608,\r\n\t\t\"block_size\" : 512,\r\n\t\t\"dev_type\" : \"uram\",\r\n\t\t\"numa\" : 0\r\n}\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/device"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/device",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"device"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1740,7 +2014,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1825,7 +2112,19 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
 					},
 					"response": [
 						{
@@ -1854,7 +2153,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -1910,7 +2221,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -1990,7 +2313,19 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [{\"deviceName\": \"uram0\"}],\n        \"num_data\" : 3,\n        \"num_spare\" : 1\n    }\n}\n"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/autoarray"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/autoarray",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"autoarray"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2019,7 +2354,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\":[{\"deviceName\":\"uram0\"}],\n        \"num_data\" : 3,\n        \"num_spare\" : 1\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/autoarray"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/autoarray",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"autoarray"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -2075,7 +2422,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\":[{\"deviceName\":\"uram0\"}],\n        \"num_data\" : 3,\n        \"num_spare\" : 1\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/autoarray"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/autoarray",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"autoarray"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2155,7 +2514,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"enable_write_through\": true\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2180,7 +2553,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/POSArray/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/POSArray/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"POSArray",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2260,7 +2647,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2285,7 +2686,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2365,7 +2780,19 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}1\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram1\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName5}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName6}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName7}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName8}}\"\n            }\n        ]\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2394,7 +2821,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2450,7 +2889,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -2530,7 +2981,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}1\",\n        \"enable_write_through\": true\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}1/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}1/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}1",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2555,7 +3020,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2635,7 +3114,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/POSArray1/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/POSArray1/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"POSArray1",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2660,7 +3153,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2743,7 +3250,21 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"devices"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2768,7 +3289,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2851,7 +3386,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/arrays"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/arrays",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"arrays"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2876,7 +3423,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -2959,7 +3520,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -2984,7 +3558,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3064,7 +3652,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"devices"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3093,7 +3695,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devices"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -3149,7 +3763,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devices"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3229,7 +3855,22 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName4}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/devices/{{deviceName4}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"devices",
+								"{{deviceName4}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3258,7 +3899,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices",
+										"{{deviceName4}}"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -3314,7 +3968,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devices/{{deviceName4}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devices",
+										"{{deviceName4}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3394,7 +4061,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3423,7 +4103,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"{{arrayName}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3479,7 +4172,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"{{arrayName}}"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -3564,7 +4270,19 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 5242880,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3593,7 +4311,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3649,7 +4379,19 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"size\": 4194304,\n        \"maxbw\": 0,\n        \"maxiops\": 0\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -3729,7 +4471,19 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"volume-\",\n        \"size\": 5242880,\n        \"maxbw\": 0,\n        \"maxiops\": 0,\n        \"totalcount\": 5,\n        \"stoponerror\": false,\n        \"namesuffix\": 0,\n        \"mountall\": true,\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3784,7 +4538,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumelist",
+								"{{arrayName}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3809,7 +4576,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumelist/{{arrayName}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumelist",
+										"{{arrayName}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -3896,7 +4676,22 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array",
+								"{{arrayName}}",
+								"volume",
+								"{{volumeName1}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -3921,7 +4716,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array/{{arrayName}}/volume/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"{{arrayName}}",
+										"volume",
+										"{{volumeName1}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4005,7 +4815,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}],\r\n        \"maxbw\": 400,\r\n        \"maxiops\":300,\r\n        \"miniops\":10\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/qos"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/qos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"qos"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4034,7 +4856,19 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"vol\"}],\r\n        \"maxbw\": 8096000,\r\n        \"maxiops\": 30,\r\n        \"miniops\": 10\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/qos"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/qos",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"qos"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4118,7 +4952,20 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}]\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/qos/reset"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/qos/reset",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"qos",
+								"reset"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4147,7 +4994,20 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"vol\"}]\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/qos/reset"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/qos/reset",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"qos",
+										"reset"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4231,7 +5091,20 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"volume-0\"}]\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/qos/policies"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/qos/policies",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"qos",
+								"policies"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4260,7 +5133,20 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"vol\"}]\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/qos/policies"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/qos/policies",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"qos",
+										"policies"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4346,7 +5232,20 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes",
+								"{{volumeName1}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4377,7 +5276,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4435,7 +5347,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"newname\": \"newvol01\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -4515,7 +5440,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol0\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes",
+								"{{volumeName1}}",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4544,7 +5483,21 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4600,7 +5553,21 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -4680,7 +5647,22 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem9\",\n        \"transport_type\":\"tcp\",\n        \"target_address\":\"107.108.221.146\",\n        \"transport_service_id\":\"1158\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount/subsystem"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount/subsystem",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes",
+								"{{volumeName1}}",
+								"mount",
+								"subsystem"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4709,7 +5691,22 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem9\",\n        \"transport_type\":\"tcp\",\n        \"target_address\":\"107.108.221.146\",\n        \"transport_service_id\":\"1158\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount/subsystem"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount/subsystem",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount",
+										"subsystem"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -4769,7 +5766,22 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem9\",\n        \"transport_type\":\"tcp\",\n        \"target_address\":\"107.108.221.146\",\n        \"transport_service_id\":\"1158\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/vol/mount/subsystem"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/vol/mount/subsystem",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"vol",
+										"mount",
+										"subsystem"
+									]
+								}
 							},
 							"status": "Multi-Status",
 							"code": 207,
@@ -4853,7 +5865,21 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes",
+								"{{volumeName1}}",
+								"mount"
+							]
+						}
 					},
 					"response": [
 						{
@@ -4882,7 +5908,21 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -4938,7 +5978,21 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5018,7 +6072,20 @@
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}\n"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"volumes",
+								"{{volumeName1}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5047,7 +6114,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -5103,7 +6183,20 @@
 									"mode": "raw",
 									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5188,7 +6281,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"transport_type\": \"tcp\",\r\n        \"buf_cache_size\": 64,\r\n        \"num_shared_buf\": 4096\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/transport"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/transport",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"transport"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5217,7 +6322,19 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"transport_type\": \"tcp\",\r\n        \"buf_cache_size\": 64,\r\n        \"num_shared_buf\": 4096\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/transport"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/transport",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"transport"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -5301,7 +6418,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem1\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/subsystem"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"subsystem"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5330,7 +6459,19 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem3\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/subsystem"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"subsystem"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5414,7 +6555,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"107.108.83.97\",\r\n        \"transport_service_id\":\"1158\"\r\n}\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/listener"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/listener",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"listener"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5443,7 +6596,19 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem1\",\r\n        \"transport_type\":\"tcp\",\r\n        \"target_address\":\"107.108.221.146\",\r\n        \"transport_service_id\":\"1158\"\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/listener"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/listener",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"listener"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5530,7 +6695,19 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/subsystem"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"subsystem"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5555,7 +6732,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/subsystem"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"subsystem"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5639,7 +6828,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"nqn.2019-04.pos:subsystem1\"\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/subsystem"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"subsystem"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5668,7 +6869,19 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"name\": \"nqn.2019-04.pos:subsystem1\"\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/subsystem"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"subsystem"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5753,7 +6966,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/cpu"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/cpu",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"cpu"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5778,7 +7003,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/cpu"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/cpu",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"cpu"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -5854,7 +7091,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/cpu/15m"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/cpu/15m",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"cpu",
+								"15m"
+							]
+						}
 					},
 					"response": [
 						{
@@ -5879,7 +7129,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/cpu/20"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/cpu/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"cpu",
+										"20"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -5927,7 +7190,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/cpu/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/cpu/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"cpu",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6003,7 +7279,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/memory"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/memory",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"memory"
+							]
+						}
 					},
 					"response": [
 						{
@@ -6028,7 +7316,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/memory"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6104,7 +7404,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/memory/{{period}}"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/memory/{{period}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"memory",
+								"{{period}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -6129,7 +7442,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/memory/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6181,7 +7507,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/memory/20"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/memory/20",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"memory",
+										"20"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -6253,7 +7592,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/network"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/network",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"network"
+							]
+						}
 					},
 					"response": [
 						{
@@ -6278,7 +7629,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/network"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/network",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"network"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6354,7 +7717,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/metric/v1/network/{{period}}"
+						"url": {
+							"raw": "http://{{host}}/api/metric/v1/network/{{period}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"metric",
+								"v1",
+								"network",
+								"{{period}}"
+							]
+						}
 					},
 					"response": [
 						{
@@ -6379,7 +7755,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/network/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/network/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"network",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6431,7 +7820,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/network/100"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/network/100",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"network",
+										"100"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -6551,7 +7953,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readbw"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6675,7 +8089,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readbw/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -6723,7 +8150,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readbw/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readbw/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readbw",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6852,7 +8292,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readbw"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -6981,7 +8435,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readbw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readbw",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -7029,7 +8498,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/0/readbw/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/0/readbw/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"0",
+										"readbw",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7153,7 +8637,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writebw"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writebw",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writebw"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7277,7 +8773,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writebw/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writebw",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -7325,7 +8834,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writebw/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writebw/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writebw",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7454,7 +8976,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7583,7 +9119,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7635,7 +9186,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writebw/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writebw",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -7755,7 +9321,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readiops"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readiops",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readiops"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7879,7 +9457,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readiops/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readiops/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readiops",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -7931,7 +9522,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/readiops/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/readiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"readiops",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -8056,7 +9660,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readiops"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8185,7 +9803,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readiops",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8237,7 +9870,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/readiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"readiops",
+										"20hours"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8357,7 +10005,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writeiops"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writeiops",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writeiops"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8481,7 +10141,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writeiops/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writeiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writeiops",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -8529,7 +10202,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/writeiops/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/writeiops/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"writeiops",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8658,7 +10344,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writeiops"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8787,7 +10487,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writeiops",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -8835,7 +10550,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/writeiops/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"writeiops",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -8959,7 +10689,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9083,7 +10825,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -9131,7 +10886,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9260,7 +11028,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9389,7 +11171,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9441,7 +11238,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -9561,7 +11373,19 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9685,7 +11509,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -9733,7 +11570,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/latency/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"latency",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9862,7 +11712,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -9991,7 +11855,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/{{period}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"{{period}}"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10043,7 +11922,22 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours"
+								"url": {
+									"raw": "http://{{host}}/api/metric/v1/volumes/{{volid01}}/latency/20hours",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"metric",
+										"v1",
+										"volumes",
+										"{{volid01}}",
+										"latency",
+										"20hours"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -10147,7 +12041,20 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/arrays/reset"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/arrays/reset",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"arrays",
+								"reset"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10172,7 +12079,21 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
+								"url": {
+									"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"mtool",
+										"api",
+										"ibofos",
+										"v1",
+										"array",
+										"device"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10252,7 +12173,21 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devel",
+								"event-wrr",
+								"update"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10281,7 +12216,21 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"event-wrr",
+										"update"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10365,7 +12314,21 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/devel/event-wrr/reset"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/reset",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devel",
+								"event-wrr",
+								"reset"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10394,7 +12357,21 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devel/event-wrr/reset"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/reset",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"event-wrr",
+										"reset"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10478,7 +12455,21 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"devel",
+								"{{arrayName}}",
+								"rebuild"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10507,7 +12498,21 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"{{arrayName}}",
+										"rebuild"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10592,7 +12597,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/logger/info"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/logger/info",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"logger",
+								"info"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10617,7 +12635,20 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"url": "http://{{host}}/api/ibofos/v1/logger/info"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/logger/info",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"logger",
+										"info"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10701,7 +12732,20 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"debug\"\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/logger/level"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"logger",
+								"level"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10730,7 +12774,20 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"level\": \"info\"\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/logger/level"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"logger",
+										"level"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10810,7 +12867,20 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/logger/level"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"logger",
+								"level"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10839,7 +12909,20 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"level\": \"info\"\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/logger/level"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"logger",
+										"level"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -10923,7 +13006,21 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"DEBUG\"\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}:3001/api/ibofos/v1/logger/filter"
+						"url": {
+							"raw": "http://{{host}}:3001/api/ibofos/v1/logger/filter",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"logger",
+								"filter"
+							]
+						}
 					},
 					"response": [
 						{
@@ -10952,7 +13049,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/logger/filter"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/logger/filter",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"logger",
+										"filter"
+									]
+								}
 							},
 							"status": "Bad Request",
 							"code": 400,
@@ -11041,7 +13151,19 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
 						},
-						"url": "http://{{host}}/api/ibofos/v1/telemetry"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/telemetry",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"telemetry"
+							]
+						}
 					},
 					"response": [
 						{
@@ -11070,7 +13192,21 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"event-wrr",
+										"update"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -11150,7 +13286,19 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": "http://{{host}}/api/ibofos/v1/telemetry"
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/telemetry",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"telemetry"
+							]
+						}
 					},
 					"response": [
 						{
@@ -11179,7 +13327,21 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild"
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/devel/{{arrayName}}/rebuild",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"devel",
+										"{{arrayName}}",
+										"rebuild"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
