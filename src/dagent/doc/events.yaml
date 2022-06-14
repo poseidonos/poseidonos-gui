@@ -575,9 +575,9 @@ modules:
         solution:
       - code: 2501
         level: ERROR
-        message: Array is already umounted.
+        message: Failed to create array because the maximum number of possible arrays has been exceeded
         problem:
-        solution:
+        solution: If you remove the existing array, you can create a new array
       - code: 2502
         level: ERROR
         message: Array already exists
@@ -815,6 +815,10 @@ modules:
         level: INFO
         message: "Array already mounted"
         solution:
+      - code: 2790
+        level: INFO
+        message: "Failed to terminate POS, Mounted array exist"
+        solution: "Unmount the array"
   - name: "Rebuild"
     count: 100
     idStart: 2800
