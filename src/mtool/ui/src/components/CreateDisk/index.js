@@ -110,6 +110,11 @@ const CreateDisk = (props) => {
                     name="numa"
                     defaultValue={0}
                     type="number"
+                    InputProps={{
+                      inputProps: {
+                        min: 0
+                      }
+                    }}
                 />
             </FormControl>
             <FormControl
