@@ -248,7 +248,7 @@ class Volume extends Component {
       suffix: volume.volume_suffix,
       stop_on_error: volume.stop_on_error_checkbox,
       mount_vol: volume.mount_vol,
-      max_available_size: this.props.arraySize - this.props.totalVolSize,
+      max_available_size: this.props.arrayMap[this.props.selectedArray].totalsize - this.props.arrayMap[this.props.selectedArray].usedspace,
     });
   }
 

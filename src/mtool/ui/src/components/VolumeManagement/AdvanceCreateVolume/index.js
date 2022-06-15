@@ -701,7 +701,7 @@ function AdvanceCreateVolume(props) {
     }
 
     if (props.volume_count > 1 && parseInt(volSize, 10) === 0) {
-      setAlertDescription("Multiple volumes cannot be created when volume size is set as 0(max). Do you want to create a single volume with the maximum available size?")
+      setAlertDescription("Multiple volumes cannot be created when volume size is set as 0. Do you want to create a single volume with the maximum available size?")
       setAlertOpen(true);
       setOnAlertConfirm(() => () => {
         setAlertOpen(false);
