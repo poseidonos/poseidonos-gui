@@ -718,7 +718,6 @@ class CreateVolume extends Component {
               </Tooltip>
 
               <Tooltip
-                title="Please wait... Volume creation is in progress. It may take anywhere between few seconds to few minutes"
                 placement="right-start"
                 open={this.props.createVolumeButton}
               >
