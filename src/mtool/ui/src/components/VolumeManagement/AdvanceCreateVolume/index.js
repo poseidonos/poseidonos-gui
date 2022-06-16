@@ -12,8 +12,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  // width: 600,
-  // height: 400,
   bgcolor: 'background.paper',
   padding: 8,
   borderRadius: 4,
@@ -41,24 +39,52 @@ const styles = (theme) => ({
     height: '400px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.down("sm")]: {
+      width: "600px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "400px",
+      height: "80vh"
+    },
   },
   mainContent: {
     display: 'grid',
     gridTemplateColumns: '200px auto',
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: '150px auto',
+    },
+    [theme.breakpoints.down("xs")]: {
+      gridTemplateColumns: 'none',
+      gridTemplateRows: '140px auto',
+    },
+  },
+  xsHide: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+  xsShow: {
+    display: "none",
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+    },
   },
   stepContent: {
     width: "100%",
-    minHeight: "300px",
+    height: "300px",
     display: "flex",
     padding: theme.spacing(2, 3),
     flexWrap: "wrap",
     boxSizing: "border-box",
     borderLeft: "2px solid grey",
-    // borderTop: "1px solid grey",
-    // borderBottom: "1px solid grey",
     flexDirection: 'row',
-    alignContent: 'flex-start'
+    alignContent: 'flex-start',
+    overflow: "auto",
+    [theme.breakpoints.down("xs")]: {
+      height: "calc(80vh - 240px)",
+      borderLeft: "none",
+    },
   },
   actionsContainer: {
     display: 'flex',
@@ -70,8 +96,12 @@ const styles = (theme) => ({
     margin: theme.spacing(1, 0),
   },
   unitSelect: {
+    maxWidth: "240px",
     marginTop: theme.spacing(2),
     height: 32,
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "300px",
+    },
   },
   unitText: {
     width: "calc(80% - 60px)",
@@ -131,7 +161,8 @@ const styles = (theme) => ({
     flex: "1 0 45%",
     color: "#424850",
     minWidth: "fit-content",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    wordBreak: "break-word"
   },
 });
 
@@ -926,8 +957,15 @@ function AdvanceCreateVolume(props) {
           <main className={classes.main}>
             <div className={classes.mainContent}>
               <div>
-                <Typography className={classes.createHeader}>Create Volume </Typography>
-                <Stepper activeStep={activeStep} orientation="vertical">
+                <Typography className={classes.createHeader}>Create Volume</Typography>
+                <Stepper activeStep={activeStep} className={classes.xsHide} orientation="vertical">
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+                <Stepper activeStep={activeStep} className={classes.xsShow} style={{ borderBottom: "1px solid grey" }} orientation="horizontal">
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
