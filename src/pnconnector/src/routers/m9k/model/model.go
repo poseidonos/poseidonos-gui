@@ -147,7 +147,6 @@ type VolumeParam struct {
 	TRANSPORTSERVICEID string `json:"transport_service_id"`
 }
 
-
 type CallbackMultiVol struct {
 	TotalCount    int
 	Pass          int

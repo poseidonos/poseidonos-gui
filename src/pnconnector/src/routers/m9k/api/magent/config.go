@@ -89,7 +89,7 @@ var VolumeQuery = "SELECT * from %s.%s.volumes where volid=%s order by time desc
 
 var netAggRPQ = "SELECT bytes_recv AS mean_bytes_recv , bytes_sent AS mean_bytes_sent, drop_in AS mean_drop_in, drop_out AS mean_drop_out, err_in AS mean_err_in, err_out AS mean_err_out, packets_recv AS mean_packets_recv, packets_sent AS mean_packets_sent  FROM %s.%s.mean_net WHERE time > now() - %s"
 var netDefaultRPQ = "SELECT mean(bytes_recv) ,mean(bytes_sent), mean(drop_in), mean(drop_out), mean(err_in), mean(err_out), mean(packets_recv), mean(packets_sent)  FROM %s.%s.net WHERE time > now() - %s GROUP BY time(%s)"
-var netLastRecordQ = "SELECT last(bytes_recv), last(bytes_sent), last(drop_in), last(drop_out), last(err_in), last(err_out), last(packets_recv), last(packets_sent)  FROM %s.%s.net LIMIT 1"
+var netLastRecordQ = "select sum(*) from (SELECT last(bytes_recv) as bytes_recv,last(bytes_sent) as bytes_sent, last(drop_in) as drop_in, last(drop_out) as drop_out, last(err_in) as err_in, last(err_out) as err_out, last(packets_recv) as packets_recv, last(packets_sent) as packets_sent, last(unixTimestamp) as unixTimestamp  FROM %s.%s.net where time >= now() - 1m group by interface)"
 var netAddQ = "SELECT time, \"name\", address FROM %s.autogen.ethernet"
 var netDriverQ = "SELECT time, \"name\", driver FROM %s.autogen.ethernet"
 var cpuAggRPQ = "SELECT usage_user AS mean_usage_user FROM %s.%s.mean_cpu WHERE time > now() - %s"

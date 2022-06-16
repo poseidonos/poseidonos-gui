@@ -41,7 +41,7 @@ import (
 )
 
 type NetField struct {
-	Time        json.Number `json:"time"`
+	Time        interface{} `json:"time"`
 	BytesRecv   json.Number `json:"bytesRecv"`
 	BytesSent   json.Number `json:"bytesSent"`
 	DropIn      json.Number `json:"dropIn"`
@@ -95,7 +95,11 @@ func GetNetData(param interface{}) (model.Response, error) {
 
 	for _, values := range result[0].Series[0].Values {
 		if values[1] != nil {
-			fieldsList = append(fieldsList, NetField{values[0].(json.Number), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
+			if paramStruct.Time != "" {
+				fieldsList = append(fieldsList, NetField{values[0].(json.Number), values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
+			} else {
+				fieldsList = append(fieldsList, NetField{currentTime, values[1].(json.Number), values[2].(json.Number), values[3].(json.Number), values[4].(json.Number), values[5].(json.Number), values[6].(json.Number), values[7].(json.Number), values[8].(json.Number)})
+			}
 		}
 	}
 	res.Result.Status, _ = util.GetStatusInfo(0)

@@ -174,7 +174,7 @@ func SetPOSProperty(xrId string, param interface{}) (model.Request, model.Respon
 }
 
 func GetPOSProperty(xrId string, param interface{}) (model.Request, model.Response, error) {
-    return SystemSender(xrId, param, "GETSYSTEMPROPERTY")
+	return SystemSender(xrId, param, "GETSYSTEMPROPERTY")
 }
 
 func WBT(xrId string, param interface{}) (model.Request, model.Response, error) {
