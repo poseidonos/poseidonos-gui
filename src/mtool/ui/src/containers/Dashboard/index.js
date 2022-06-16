@@ -247,7 +247,7 @@ const healthStatusSocketEndPoint = ":5000/health_status";
 
 const getUsedSpace = (total, remain) => {
 
-  if(Number.isNaN(remain)) {
+  if (Number.isNaN(remain)) {
     return formatBytes(0);
   }
 
@@ -297,8 +297,7 @@ class Dashboard extends Component {
       "November",
       "December",
     ];
-    const date = `${
-      months[today.getMonth()]
+    const date = `${months[today.getMonth()]
       } ${today.getDate()}, ${today.getFullYear()},`;
     const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
     const dateTime = `${date} ${time}`;
@@ -321,7 +320,7 @@ class Dashboard extends Component {
   }
 
   selectArray(event) {
-    const {value} = event.target;
+    const { value } = event.target;
     this.props.selectArray(value);
   }
 
@@ -425,25 +424,30 @@ class Dashboard extends Component {
       },
       {
         title: "Total Space",
-        render: (rowData) => formatBytes(rowData.totalsize)
+        render: (rowData) => formatBytes(rowData.totalsize),
+        customSort: (a, b) => (a.totalsize - b.totalsize)
       },
       {
         title: "Volumes",
-        render: (rowData) => this.props.arrayVolCount[rowData.arrayname] ? this.props.arrayVolCount[rowData.arrayname] : 0
+        render: (rowData) => this.props.arrayVolCount[rowData.arrayname] ? this.props.arrayVolCount[rowData.arrayname] : 0,
+        customSort: (a,b) => (this.props.arrayVolCount[a.arrayname] - this.props.arrayVolCount[b.arrayname])
       }
     ];
     const volumeTableColumns = [
       {
         title: "Name",
-        render: (rowData) => <Typography className={classes.volName}>{rowData.name}</Typography>
+        render: (rowData) => <Typography className={classes.volName}>{rowData.name}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
       },
       {
         title: "Used Space",
-        render: (rowData) => getUsedSpace(rowData.total, rowData.remain)
+        render: (rowData) => getUsedSpace(rowData.total, rowData.remain),
+        customSort: (a, b) => (b.remain - a.remain)
       },
       {
         title: "Total Space",
         render: (rowData) => (rowData.total ? formatBytes(rowData.total) : formatBytes(0)),
+        customSort: (a, b) => (a.total - b.total)
       },
       {
         title: "Array",
@@ -856,6 +860,7 @@ class Dashboard extends Component {
                           minBodyHeight: 342,
                           maxBodyHeight: 342,
                           search: false,
+                          sorting: true
                         }}
                         style={{ height: "100%" }}
                         isLoading={this.props.arrayLoading}
@@ -880,7 +885,8 @@ class Dashboard extends Component {
                           },
                           minBodyHeight: 342,
                           maxBodyHeight: 342,
-                          search: false
+                          search: false,
+                          sorting: true
                         }}
                         components={{
                           Toolbar: () => (
@@ -889,22 +895,22 @@ class Dashboard extends Component {
                                 Volume Summary
                               </Typography>
                               <FormControl className={classes.volumeUnit}>
-                              <InputLabel htmlFor="select-array">Array</InputLabel>
-                              <Select
-                                value={this.props.selectedArray}
-                                onChange={this.selectArray}
-                                inputProps={{
-                                  id: "select-array",
-                                  "data-testid": "dashboard-array-select"
-                                }}
-                                data-testid="array-select"
-                                className={classes.arraySelect}
-                              >
-                                <MenuItem value="all">All</MenuItem>
-                                {this.props.arrays.map((array) => (
-                                  <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
-                                ))}
-                              </Select>
+                                <InputLabel htmlFor="select-array">Array</InputLabel>
+                                <Select
+                                  value={this.props.selectedArray}
+                                  onChange={this.selectArray}
+                                  inputProps={{
+                                    id: "select-array",
+                                    "data-testid": "dashboard-array-select"
+                                  }}
+                                  data-testid="array-select"
+                                  className={classes.arraySelect}
+                                >
+                                  <MenuItem value="all">All</MenuItem>
+                                  {this.props.arrays.map((array) => (
+                                    <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
+                                  ))}
+                                </Select>
                               </FormControl>
                             </Grid>
                           )
@@ -999,7 +1005,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchIpAndMacInfo: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
     selectArray: (array) =>
-      dispatch({ type: actionTypes.SELECT_ARRAY, array}),
+      dispatch({ type: actionTypes.SELECT_ARRAY, array }),
   };
 };
 export default withStyles(styles)(
