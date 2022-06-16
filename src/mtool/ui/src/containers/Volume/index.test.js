@@ -1389,7 +1389,6 @@ describe("<Storage Management />", () => {
       getByTestId("adv-transport_type-input")
     );
     fireEvent.click(transportType);
-    fireEvent.change(transportType, { target: { value: "RDMA" } });
 
     const targetAddress = await waitForElement(() =>
       getByTestId("adv-create-target-address")

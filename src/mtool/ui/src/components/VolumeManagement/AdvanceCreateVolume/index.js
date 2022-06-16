@@ -632,9 +632,6 @@ function AdvanceCreateVolume(props) {
             <MenuItem value="TCP" key="TCP">
               TCP
             </MenuItem>
-            <MenuItem value="RDMA" key="RDMA">
-              RDMA
-            </MenuItem>
           </Select>
         </FormControl>
       </Grid>
