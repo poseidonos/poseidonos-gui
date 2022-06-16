@@ -139,10 +139,12 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 			// Call the API after a delay
 			time.Sleep(DELAY)
 			_, res, err := iBoFOS.CreateVolume(header.XrId(ctx), *volParam)
-
 			// If Create Volume API fails, retry
 			if err != nil || res.Result.Status.Code != 0 {
 				if createItr == MAX_RETRY_COUNT {
+					posDescription := res.Result.Status.Description
+					res.Result.Status, _ = util.GetStatusInfo(res.Result.Status.Code)
+					res.Result.Status.PosDescription = posDescription
 					CreateVolCh <- res
 					posErr = true
 				}

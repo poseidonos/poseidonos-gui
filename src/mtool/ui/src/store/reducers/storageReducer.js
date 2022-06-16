@@ -228,6 +228,7 @@ const storageReducer = (state = initialState, action) => {
                             edit: false,
                             minType: localMinType,
                             resetType: "",
+                            tableData: state.volumes[index].tableData
                         },
                         ...state.volumes.slice(index + 1)
                     ]
