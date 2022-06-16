@@ -744,7 +744,7 @@ class CreateVolume extends Component {
           />
           <AlertDialog
             title="Create Volume"
-            description="Multiple volumes cannot be created when volume size is set as 0(max). Do you want to create a single volume with the maximum available size?"
+            description="Multiple volumes cannot be created when volume size is set as 0. Do you want to create a single volume with the maximum available size?"
             open={this.state.alert_open}
             handleClose={this.handleClose}
             onConfirm={this.state.onConfirm}

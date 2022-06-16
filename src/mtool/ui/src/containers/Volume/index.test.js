@@ -1656,7 +1656,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(volSize, { target: { value: "0" } });
     fireEvent.click(nextButton);
     expect(
-      await waitForElement(() => getByText("Multiple volumes cannot be created when volume size is set as 0(max). Do you want to create a single volume with the maximum available size?"))
+      await waitForElement(() => getByText("Multiple volumes cannot be created when volume size is set as 0. Do you want to create a single volume with the maximum available size?"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("Yes")));
 
