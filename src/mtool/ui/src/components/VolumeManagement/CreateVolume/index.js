@@ -117,6 +117,9 @@ const styles = (theme) => ({
   labelCheckbox: {
     marginTop: theme.spacing(3),
   },
+  largeFontTooltip: {
+    fontSize: "16px"
+  }
 });
 
 const getSubsystem = (subsystem, subsystems) => {
@@ -704,6 +707,7 @@ class CreateVolume extends Component {
                 title="Please wait... Volume creation is in progress. It may take anywhere between few seconds to few minutes"
                 placement="right-start"
                 open={this.props.createVolumeButton}
+                classes={{tooltip: classes.largeFontTooltip}}
               >
                 <Button
                   onClick={this.createVolumeInParent}

@@ -750,6 +750,10 @@ function AdvanceCreateVolume(props) {
       errorDesc = "Please Enter Maximum IOPS (KIOPS)";
     else if (props.maxbw < 0) errorDesc = "Maximum Bandwidth cannot be negative";
     else if (props.maxiops < 0) errorDesc = "Maximum IOPS cannot be negative";
+    else if (!(/^\d+$/.test(props.maxiops)))
+      errorDesc = "Please Enter Integer Value of Maximum IOPS"
+    else if (!(/^\d+$/.test(props.maxbw)))
+      errorDesc = "Please Enter Integer Value of Maximum BW"
     else if ((props.maxbw > 0 && props.maxbw < 10) || props.maxbw > 17592186044415)
       errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
     else if ((props.maxiops > 0 && props.maxiops < 10) || props.maxiops > 18446744073709551)
@@ -758,10 +762,6 @@ function AdvanceCreateVolume(props) {
       errorDesc = "Please Enter Minimum IOPS/BW or set 0 for no Minimum IOPS/BW"
     else if (props.minvalue < 0)
       errorDesc = "Minimum IOPS/Bandwidth cannot be negative";
-    else if (!(/^\d+$/.test(props.maxiops)))
-      errorDesc = "Please Enter Integer Value of Maximum IOPS"
-    else if (!(/^\d+$/.test(props.maxbw)))
-      errorDesc = "Please Enter Integer Value of Maximum BW"
     else if (!(/^\d+$/.test(props.minvalue)))
       errorDesc = "Please Enter Integer Value of Minimum IOPS/BW"
     else isError = false;

@@ -319,6 +319,7 @@ class Header extends Component {
             newPassword: '',
             confirmPassword: '',
           });
+          this.userLogout();
         } else if (result.status === 401) {
           this.props.history.push('/');
         } else {
@@ -389,6 +390,7 @@ class Header extends Component {
 
   userLogout() {
     localStorage.setItem("user", null);
+    localStorage.removeItem('token');
     this.props.resetIsLoggedIn();
     this.props.history.push('/');
   }
