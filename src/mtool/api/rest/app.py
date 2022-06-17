@@ -1913,7 +1913,7 @@ def saveVolume():
         else:
             # default case assuming the unit is TB
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
-        size = make_block_aligned(size)
+    size = make_block_aligned(size)
 
     create_vol_res = create_volume(
         volume_name,
