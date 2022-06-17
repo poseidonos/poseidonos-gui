@@ -2644,7 +2644,8 @@ def test_autocreate_array(mock_get_current_user, **kwargs):
     "metaDisk": "uram0",
     "num_data": 3,
     "num_spare": 0,
-    "raidtype":"RAID5"
+    "raidtype":"RAID5",
+    "writeThroughModeEnabled":true
 }''', headers={'x-access-token': json_token})
     assert response.status_code == 200
 
