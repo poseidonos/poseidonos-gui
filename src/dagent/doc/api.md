@@ -18,8 +18,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE ARRAY 1st ARRAY](#9-create-array-1st-array)
   * [CREATE ARRAY 2nd ARRAY](#10-create-array-2nd-array)
   * [DELETE ARRAY](#11-delete-array)
-  * [LIST ARRAY DEVICE](#12-list-array-device)
-  * [REMOVE DEVICE](#13-remove-device)
+  * [REMOVE DEVICE](#12-remove-device)
 
 * [Common](#common)
 
@@ -104,8 +103,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
   * [EXITIBOFOS](#1-exitibofos)
   * [RUNIBOFOS](#2-runibofos)
-  * [SETPOSPROPERTY](#3-setposproperty)
-  * [iBOFOSINFO](#4-ibofosinfo)
+  * [iBOFOSINFO](#3-ibofosinfo)
 
 * [Telemetry](#telemetry)
 
@@ -415,7 +413,8 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}"
+        "array": "{{arrayName}}",
+        "enable_write_through": true
     }
 }
 ```
@@ -521,7 +520,8 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}1"
+        "array": "{{arrayName}}1",
+        "enable_write_through": true
     }
 }
 ```
@@ -933,13 +933,14 @@ URL: http://{{host}}/api/ibofos/v1/autoarray
 ```js        
 {
     "param": {
-        "arrayname": "{{arrayName1}}",
+        "name": "{{arrayName}}",
         "raidtype": "RAID5",
-        "metaDisk": "uram0",
+        "buffer": [{"deviceName": "uram0"}],
         "num_data" : 3,
         "num_spare" : 1
     }
 }
+
 ```
 
 
@@ -1616,101 +1617,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-### 12. LIST ARRAY DEVICE
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
-        }
-    },
-    "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 13. REMOVE DEVICE
+### 12. REMOVE DEVICE
 
 
 
@@ -7827,87 +7734,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 3. SETPOSPROPERTY
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: 
-URL: http://{{host}}/api/ibofos/v1/system
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: SETPOSPROPERTY
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "level": "lowest"
-    }
-}
-```
-
-
-
-##### I. Example Response: SETPOSPROPERTY
-```js
-{
-    "rid": "2ba1a6bf-7606-4d1b-a575-e5e0a4e30b15",
-    "lastSuccessTime": 1649848199,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "rebuild perf impact is set."
-        }
-    },
-    "info": {
-        "version": "v0.10.6"
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 4. iBOFOSINFO
+### 3. iBOFOSINFO
 
 
 
@@ -7998,7 +7825,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/devel/event-wrr/update
+URL: http://{{host}}/api/ibofos/v1/telemetry
 ```
 
 
@@ -8980,8 +8807,9 @@ URL: http://{{host}}/api/ibofos/v1/qos
     "param": {
         "array": "{{arrayName}}",
 		"vol":[{"volumeName":"volume-0"}],
-        "maxbw": 40,
-        "maxiops":30
+        "maxbw": 400,
+        "maxiops":300,
+        "miniops":10
     }
 }
 ```
@@ -9673,4 +9501,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-03 00:19:50 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-20 16:37:34 by [docgen](https://github.com/thedevsaddam/docgen)
