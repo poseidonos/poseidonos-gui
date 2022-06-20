@@ -3300,7 +3300,7 @@ URL: http://{{host}}/api/dagent/v1/dagent
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}:3001/api/ibofos/v1/logger/filter
+URL: http://{{host}}/api/ibofos/v1/logger/filter
 ```
 
 
@@ -3312,18 +3312,6 @@ URL: http://{{host}}:3001/api/ibofos/v1/logger/filter
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "level": "DEBUG"
-    }
-}
-```
 
 
 
@@ -9501,4 +9489,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-20 16:37:34 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-21 05:13:29 by [docgen](https://github.com/thedevsaddam/docgen)

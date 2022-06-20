@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d49ed040-471b-4dbd-a2d7-52d4048a8657",
+		"_postman_id": "d53dcdaf-639a-4c32-b23f-b7b6b9ec6d25",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12868,15 +12868,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"DEBUG\"\r\n    }\r\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{host}}:3001/api/ibofos/v1/logger/filter",
+							"raw": "http://{{host}}/api/ibofos/v1/logger/filter",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"api",
 								"ibofos",
