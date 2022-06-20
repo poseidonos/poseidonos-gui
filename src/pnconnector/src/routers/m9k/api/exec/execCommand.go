@@ -42,7 +42,7 @@ func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
 	_, result, _ := ibofos.SystemSender(xrId, param, "GETPOSINFO")
 	res := model.Response{}
 	if result.Result.Status.Description == "DONE" {
-		util.ExecCmd("pkill -9 ibofos", false)
+		util.ExecCmd("pkill -9 poseidonos", false)
 		res.Result.Status.Code = 0
 
 	} else {
