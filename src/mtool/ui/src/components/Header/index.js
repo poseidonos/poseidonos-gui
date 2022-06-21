@@ -186,6 +186,7 @@ class Header extends Component {
       alertOpen: false,
       alertType: 'alert',
       alertLink: null,
+      alertRemoveCrossButton: false,
       title: 'Error',
       style: {
         left: '1000px',
@@ -309,10 +310,10 @@ class Header extends Component {
             ...this.state,
             msg: 'Password changed successfully',
             alertOpen: true,
-            // title: "Success",
             title: 'Change Password',
             alertType: 'info',
-            alertLink: '/'
+            alertLink: '/',
+            alertRemoveCrossButton: true,
           });
           this.setState({
             dropdown: false,
@@ -322,7 +323,6 @@ class Header extends Component {
             confirmPassword: '',
           });
           localStorage.setItem("user", null);
-          localStorage.removeItem('token');
           this.props.resetIsLoggedIn();
         } else if (result.status === 401) {
           this.props.history.push('/');
@@ -568,6 +568,7 @@ class Header extends Component {
           open={this.state.alertOpen}
           handleClose={this.alertClose}
           link={this.state.alertLink}
+          removeCrossButton={this.state.alertRemoveCrossButton}
         />
       </ThemeProvider>
     );

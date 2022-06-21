@@ -96,164 +96,165 @@ export const DialogTitle = withStyles(styles)(props => {
   return (
     <MuiDialogTitle disableTypography className={classes.title}>
       <Typography variant="h6">{children}</Typography>
-      <IconButton
+      {!props.removeCrossButton && <IconButton
         aria-label="Close"
         className={classes.closeButton}
         onClick={onClose}
-        data-testid = "alertCloseButton"
+        data-testid="alertCloseButton"
       >
         <span style={{ fontSize: 14, color: '#fff' }}>x</span>
-      </IconButton>
+      </IconButton>}
     </MuiDialogTitle>
   );
 });
 
 const AlertDialog = (props) => {
-    const { classes } = props;
-    const history = useHistory();
+  const { classes } = props;
+  const history = useHistory();
 
-    const handleConfirm = () => {
-      if(props.link) {
-        history.push(props.link);
-      }
-      props.handleClose();
+  const handleConfirm = () => {
+    if (props.link) {
+      history.push(props.link);
     }
+    props.handleClose();
+  }
 
-    const actions =
-      props.type !== 'alert' && props.type !== 'info' && props.type !== 'partialError' ? (
-        <DialogActions className={classes.actions}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={props.handleClose}
-            className={classes.submit}
-            autoFocus
-            data-testid="alertbox-no"
-          >
-            No
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={props.onConfirm}
-            className={classes.submit}
-            data-testid="alertbox-yes"
-          >
-            Yes
-          </Button>
-        </DialogActions>
-      ) : (
-        <DialogActions className={classes.actions}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleConfirm}
-            className={classes.submit}
-            autoFocus
-            data-testid="alertbox-ok"
-          >
-            OK
-          </Button>
-          {/* {props.link ? (
+  const actions =
+    props.type !== 'alert' && props.type !== 'info' && props.type !== 'partialError' ? (
+      <DialogActions className={classes.actions}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={props.handleClose}
+          className={classes.submit}
+          autoFocus
+          data-testid="alertbox-no"
+        >
+          No
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={props.onConfirm}
+          className={classes.submit}
+          data-testid="alertbox-yes"
+        >
+          Yes
+        </Button>
+      </DialogActions>
+    ) : (
+      <DialogActions className={classes.actions}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleConfirm}
+          className={classes.submit}
+          autoFocus
+          data-testid="alertbox-ok"
+        >
+          OK
+        </Button>
+        {/* {props.link ? (
             <Link to={props.link}>{props.linkText}</Link>
           ) : null} */}
-        </DialogActions>
-      );
-      const getIcon = (type) => {
-        if (type === 'alert')
-          return ErrorIcon;
-        if (type === 'info')
-          return InfoIcon;
-        if (type === 'partialError')
-          return AlertIcon;
-        return DeleteIcon;
-      };
-    return (
-      <div>
-        {/* <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+      </DialogActions>
+    );
+  const getIcon = (type) => {
+    if (type === 'alert')
+      return ErrorIcon;
+    if (type === 'info')
+      return InfoIcon;
+    if (type === 'partialError')
+      return AlertIcon;
+    return DeleteIcon;
+  };
+  return (
+    <div>
+      {/* <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
           Open alert dialog
         </Button> */}
-        <Dialog
-          // minWidth="xs"
-          maxWidth="xs"
-          disableBackdropClick
-          // fullWidth="false"
-          open={props.open ? props.open : false}
+      <Dialog
+        // minWidth="xs"
+        maxWidth="xs"
+        disableBackdropClick
+        // fullWidth="false"
+        open={props.open ? props.open : false}
+        onClose={props.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
           onClose={props.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+          id="alert-dialog-title"
+          className={classes.title}
+          removeCrossButton={props.removeCrossButton}
         >
-          <DialogTitle
-            onClose={props.handleClose}
-            id="alert-dialog-title"
-            className={classes.title}
+          <span
+            style={{
+              display: 'flex',
+              padding: '3px',
+              paddingLeft: '10px',
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 500,
+              alignItems: 'center',
+            }}
+          >
+            {props.title}
+          </span>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            className={classes.dialogContent}
           >
             <span
               style={{
-                display: 'flex',
-                padding: '3px',
-                paddingLeft: '10px',
-                color: '#fff',
-                fontSize: 14,
-                fontWeight: 500,
-                alignItems: 'center',
-              }}
-            >
-              {props.title}
-            </span>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              id="alert-dialog-description"
-              className={classes.dialogContent}
-            >
-              <span
-                style={{
-                  padding: '35px 1px 0px 30px',
-                  color: '#000',
-                  fontSize: 12,
-                  display: 'inline-block',
-                }}
-              >
-                <img
-                  style={{ height: '20px', marginRight: '7px' }}
-                  alt="icon"
-                  src={
-                    getIcon(props.type)
-                  }
-                />
-              </span>
-              <span
-                style={{
-                  padding: '35px 30px 0px 0px',
-                  color: '#000',
-                  fontSize: 12,
-                  display: 'block'
-                }}
-                data-testid = "alertDescription"
-              >
-                {props.description}
-              </span>
-            </DialogContentText>
-            <p
-              style={{
+                padding: '35px 1px 0px 30px',
                 color: '#000',
                 fontSize: 12,
-                padding: '0px 0px 0px 61px',
-                whiteSpace: 'pre-line',
-                display: 'block',
-                marginTop: '0px',
+                display: 'inline-block',
               }}
             >
-              {props.errCode}
-            </p>
-            {/* <p style={{color: "#000", fontSize: "12px", display: "block", width: "100%", textAlign: "center", marginTop: "0px"}}>{props.errCode}</p>            */}
-          </DialogContent>
+              <img
+                style={{ height: '20px', marginRight: '7px' }}
+                alt="icon"
+                src={
+                  getIcon(props.type)
+                }
+              />
+            </span>
+            <span
+              style={{
+                padding: '35px 30px 0px 0px',
+                color: '#000',
+                fontSize: 12,
+                display: 'block'
+              }}
+              data-testid="alertDescription"
+            >
+              {props.description}
+            </span>
+          </DialogContentText>
+          <p
+            style={{
+              color: '#000',
+              fontSize: 12,
+              padding: '0px 0px 0px 61px',
+              whiteSpace: 'pre-line',
+              display: 'block',
+              marginTop: '0px',
+            }}
+          >
+            {props.errCode}
+          </p>
+          {/* <p style={{color: "#000", fontSize: "12px", display: "block", width: "100%", textAlign: "center", marginTop: "0px"}}>{props.errCode}</p>            */}
+        </DialogContent>
 
-          {actions}
-        </Dialog>
-      </div>
-    );
+        {actions}
+      </Dialog>
+    </div>
+  );
 }
 
 export default withStyles(styles)(AlertDialog);
