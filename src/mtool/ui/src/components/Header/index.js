@@ -63,7 +63,7 @@ const styles = theme => ({
     zIndex: theme.zIndex.drawer + 1,
     backgroundImage: 'linear-gradient(to right, #171719, #788595)',
     boxShadow: 'none',
-    height:62,
+    height: 62,
     // backgroundColor: theme.palette.primary
   },
 
@@ -185,6 +185,7 @@ class Header extends Component {
       userid: localStorage.getItem('userid'),
       alertOpen: false,
       alertType: 'alert',
+      alertLink: null,
       title: 'Error',
       style: {
         left: '1000px',
@@ -207,15 +208,15 @@ class Header extends Component {
     const val = this.props.timeintervalue;
     this.interval = setInterval(() => {
       this.IsIbofOSRunning();
-    },(val || 4)*1000);
+    }, (val || 4) * 1000);
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     const val = this.props.timeintervalue;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       this.IsIbofOSRunning();
-    },(val || 4)*1000);
+    }, (val || 4) * 1000);
   }
 
   componentWillUnmount() {
@@ -281,7 +282,7 @@ class Header extends Component {
         title: 'Change Password',
         alertType: 'alert',
       });
-    } else if(this.state.oldPassword === this.state.newPassword) {
+    } else if (this.state.oldPassword === this.state.newPassword) {
       this.setState({
         ...this.state,
         msg: 'New Password cannot be same as old password',
@@ -289,7 +290,7 @@ class Header extends Component {
         title: 'Change Password',
         alertType: 'alert',
       });
-    }else {
+    } else {
       fetch('/api/v1.0/update_password/', {
         method: 'POST',
         headers: {
@@ -311,6 +312,7 @@ class Header extends Component {
             // title: "Success",
             title: 'Change Password',
             alertType: 'info',
+            alertLink: '/'
           });
           this.setState({
             dropdown: false,
@@ -319,7 +321,9 @@ class Header extends Component {
             newPassword: '',
             confirmPassword: '',
           });
-          this.userLogout();
+          localStorage.setItem("user", null);
+          localStorage.removeItem('token');
+          this.props.resetIsLoggedIn();
         } else if (result.status === 401) {
           this.props.history.push('/');
         } else {
@@ -346,7 +350,7 @@ class Header extends Component {
   }
 
   IsIbofOSRunning() {
-    this.props.Get_Is_iBOFOS_Running_Status({push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn});
+    this.props.Get_Is_iBOFOS_Running_Status({ push: this.props.history.push, resetIsLoggedIn: this.props.resetIsLoggedIn });
   }
 
   // istanbul ignore next
@@ -437,45 +441,45 @@ class Header extends Component {
               <MenuIcon />
             </IconButton>
             <div className={classes.logoContainer}>
-            <img
-              src={Heading}
-              className={classes.logoImg}
-              alt="Poseidon Management Tool"
-            />
-            <Typography className={classes.version} variant="caption" display="block">
-              Version 0.14.0
-            </Typography>
+              <img
+                src={Heading}
+                className={classes.logoImg}
+                alt="Poseidon Management Tool"
+              />
+              <Typography className={classes.version} variant="caption" display="block">
+                Version 0.14.0
+              </Typography>
             </div>
             <div className={classes.grow} />
-              <span
-                className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
-                title="Poseidon OS last running timestamp"
+            <span
+              className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
+              title="Poseidon OS last running timestamp"
+            >
+              POS Last Active Time: {this.props.timestamp === "..." ?
+                <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
+              {!this.props.timestamp ? "NA" : ""}
+            </span>
+            <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
+            <Typography className={classes.nextSeparator}>Status:</Typography>
+            <Typography className={classes.nextSeparator} />
+            {this.props.status ? (
+              <Typography
+                className={classes.running}
+                style={{ color: 'rgb(61, 249, 50)' }}
               >
-                POS Last Active Time: {this.props.timestamp === "..." ?
-                  <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
-                  {!this.props.timestamp ? "NA" : ""}
-              </span>
-              <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
-              <Typography className={classes.nextSeparator}>Status:</Typography>
-              <Typography className={classes.nextSeparator} />
-              {this.props.status ? (
-                <Typography
-                  className={classes.running}
-                  style={{ color: 'rgb(61, 249, 50)' }}
-                >
-                  Running
-                </Typography>
-              ) : null}
-              {!this.props.status && this.props.OS_Running_Status === "..." ?
-                <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : null}
-              {!this.props.status && this.props.OS_Running_Status !== "..." ? (
-                  <Typography
-                    className={classes.notRunning}
-                    style={{ color: 'rgb(243, 168, 55)'}}
-                  >
-		      {this.props.OS_Running_Status}
-                  </Typography>
-                ) : null}
+                Running
+              </Typography>
+            ) : null}
+            {!this.props.status && this.props.OS_Running_Status === "..." ?
+              <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : null}
+            {!this.props.status && this.props.OS_Running_Status !== "..." ? (
+              <Typography
+                className={classes.notRunning}
+                style={{ color: 'rgb(243, 168, 55)' }}
+              >
+                {this.props.OS_Running_Status}
+              </Typography>
+            ) : null}
             <div className={classes.sectionDesktop}>
 
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
@@ -493,10 +497,9 @@ class Header extends Component {
               </Typography> */}
               <Typography className={classes.separator}>|</Typography>
               <span
-                className={`${classes.userLink} ${
-                  window.location.href.indexOf('user') > 0 /* istanbul ignore next */ ? 'active' : ''
+                className={`${classes.userLink} ${window.location.href.indexOf('user') > 0 /* istanbul ignore next */ ? 'active' : ''
                   }`}
-	        aria-hidden="true"
+                aria-hidden="true"
                 id="user-link"
                 data-testid="header-dropdown"
                 onClick={this.renderDropDown}
@@ -564,13 +567,14 @@ class Header extends Component {
           description={this.state.msg}
           open={this.state.alertOpen}
           handleClose={this.alertClose}
+          link={this.state.alertLink}
         />
       </ThemeProvider>
     );
   }
 }
 
-const mapStateToProps = state => {  
+const mapStateToProps = state => {
   return {
     timestamp: state.headerReducer.timestamp,
     status: state.headerReducer.status,
