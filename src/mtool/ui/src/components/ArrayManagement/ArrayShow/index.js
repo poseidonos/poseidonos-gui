@@ -260,15 +260,15 @@ class ArrayShow extends Component {
 
   componentDidMount() {
     this.props.getArrayInfo(this.props.arrayName);
-    this.props.getDevices({noLoad: true});
+    this.props.getDevices({ noLoad: true });
     this.interval = setInterval(() => {
       this.props.getArrayInfo(this.props.arrayName);
-      this.props.getDevices({noLoad: true});
+      this.props.getDevices({ noLoad: true });
     }, 5000);
   }
 
   componentWillUnmount() {
-    if(this.interval) {
+    if (this.interval) {
       clearInterval(this.interval);
     }
   }
@@ -286,8 +286,8 @@ class ArrayShow extends Component {
 
   handleMountClick() {
     this.props.handleMountPOS({
-	    writeThrough: this.state.writeThroughMode,
-	    array: this.props.arrayName
+      writeThrough: this.state.writeThroughMode,
+      array: this.props.arrayName
     });
   }
 
@@ -456,28 +456,28 @@ class ArrayShow extends Component {
               </Select>
             </FormControl>
           </Grid>
-	  <FormControl className={classes.formControl}>
-	  <FormControlLabel
+          <FormControl className={classes.formControl}>
+            <FormControlLabel
               control={(
-                  <Checkbox
-                      name="mount_arr_writethrough"
-                      color="primary"
-                      id="mount-writethrough-checkbox"
-                      checked={this.state.writeThroughMode}
-		      disabled={this.props.mountStatus === "Mounted"}
-                      value="Write Through Mode"
-                      inputProps={{
-                        "data-testid": "mount-writethrough-checkbox",
-                      }}
-                      onChange={() => this.setState({
-                        ...this.state,
-                        writeThroughMode: !this.state.writeThroughMode
-                      })}
-                  />
+                <Checkbox
+                  name="mount_arr_writethrough"
+                  color="primary"
+                  id="mount-writethrough-checkbox"
+                  checked={this.state.writeThroughMode}
+                  disabled={this.props.mountStatus === "Mounted"}
+                  value="Write Through Mode"
+                  inputProps={{
+                    "data-testid": "mount-writethrough-checkbox",
+                  }}
+                  onChange={() => this.setState({
+                    ...this.state,
+                    writeThroughMode: !this.state.writeThroughMode
+                  })}
+                />
               )}
               label="Write Through Mode"
-	  />
-	  </FormControl>
+            />
+          </FormControl>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={32}>
@@ -627,14 +627,22 @@ class ArrayShow extends Component {
                   </Button>
                 </Tooltip>
               )}
-              <Button
-                onClick={this.handleClick}
-                variant="contained"
-                color="primary"
-                className={classes.button}
+              <Tooltip
+                title="Delete an unmounted array"
+                placement="bottom-start"
+                classes={{
+                  tooltip: classes.tooltip,
+                }}
               >
-                Delete Array
-              </Button>
+                <Button
+                  onClick={this.handleClick}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Delete Array
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
           <AlertDialog

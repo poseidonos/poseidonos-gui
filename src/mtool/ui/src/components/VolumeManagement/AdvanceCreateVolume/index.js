@@ -792,6 +792,14 @@ function AdvanceCreateVolume(props) {
           errorDesc = "Please Enter Integer Value of Transport Service Id";
         else
           isError = false;
+
+        if(!isError){
+          let isDuplicate = props.subsystems.find((s) => s.nqn === props.subnqn);
+          if(isDuplicate){
+            errorDesc = "Please Enter A New Subsystem Name" 
+            isError = true;
+          }
+        }
       } else
         isError = false;
     }
@@ -826,7 +834,7 @@ function AdvanceCreateVolume(props) {
             </Typography>
           )
         }
-        <Typography className={classes.previewElement}>Volume Name : {props.volume_name}</Typography>
+        <Typography className={classes.previewElement} style={{minWidth:"100%"}}>Volume Name : {props.volume_name}</Typography>
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
         }
@@ -866,7 +874,7 @@ function AdvanceCreateVolume(props) {
               {props.selectedNewSubsystem ?
                 (
                   <React.Fragment>
-                    <Typography className={classes.previewElement}>Subsystem Name : {props.subnqn}</Typography>
+                    <Typography className={classes.previewElement} style={{minWidth:"100%"}}>Subsystem Name : {props.subnqn}</Typography>
                     <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
                     <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
                     <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>
