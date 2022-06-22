@@ -717,22 +717,16 @@ class CreateVolume extends Component {
                   Create Volume
                 </Button>
               </Tooltip>
-
-              <Tooltip
-                placement="right-start"
-                open={this.props.createVolumeButton}
-              >
-                <Button
+              <Button
                   onClick={() => this.props.Toggle_Advance_Create_Volume_Popup(true)}
                   variant="outlined"
                   color="secondary"
                   data-testid="advanceoptions-btn"
                   className={classes.button}
                   disabled={this.props.createVolumeButton}
-                >
+              >
                   Advance Options
-                </Button>
-              </Tooltip>
+              </Button>
             </Grid>
           </form>
           <AlertDialog
