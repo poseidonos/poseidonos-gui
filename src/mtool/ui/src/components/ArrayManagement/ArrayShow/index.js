@@ -628,7 +628,7 @@ class ArrayShow extends Component {
                 </Tooltip>
               )}
               <Tooltip
-                title="Delete an unmounted array"
+                title="Delete array will delete the array and the volumes in it"
                 placement="bottom-start"
                 classes={{
                   tooltip: classes.tooltip,
