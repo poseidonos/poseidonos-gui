@@ -232,6 +232,11 @@ modules:
         message: Unacceptable volume name
         problem: Volume name entered contains a string that is not allowed
         solution: Enter the volume name that meets the volume name rules
+      - code: 2026
+        level: Error
+        message: Requested volume size  larger than remaining space in array
+        problem: The requested volume size is larger than the remaining space in array
+        solution: Please check the volume size and remaining Array space and try again
       - code: 2030
         level: WARN
         message: Requested size too large
