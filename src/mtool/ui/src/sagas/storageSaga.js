@@ -60,6 +60,7 @@ function* fetchVolumeDetails(action) {
 function* fetchVolumes(action) {
   try {
     yield put(actionCreators.clearVolumes());
+    yield put(actionCreators.startFetchingVolumes());
     const response = yield call(
       [axios, axios.get],
       `/redfish/v1/StorageServices/${action.payload.array}/Volumes`,
@@ -98,6 +99,7 @@ function* fetchVolumes(action) {
     if (action.payload.callback) {
       action.payload.callback();
     }
+    yield put(actionCreators.stopFetchingVolumes())
   }
 }
 

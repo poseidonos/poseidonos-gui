@@ -96,14 +96,16 @@ export const DialogTitle = withStyles(styles)(props => {
   return (
     <MuiDialogTitle disableTypography className={classes.title}>
       <Typography variant="h6">{children}</Typography>
-      {!props.removeCrossButton && <IconButton
-        aria-label="Close"
-        className={classes.closeButton}
-        onClick={onClose}
-        data-testid="alertCloseButton"
-      >
-        <span style={{ fontSize: 14, color: '#fff' }}>x</span>
-      </IconButton>}
+      {!props.removeCrossButton && (
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          onClick={onClose}
+          data-testid="alertCloseButton"
+        >
+          <span style={{ fontSize: 14, color: '#fff' }}>x</span>
+        </IconButton>
+      )}
     </MuiDialogTitle>
   );
 });

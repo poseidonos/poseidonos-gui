@@ -39,6 +39,7 @@ export const initialState = {
     arrayMap: {},
     config: {},
     volumes: [],
+    fetchingVolumes: false,
     volSpace: 0,
     metadisks: [],
     loading: false,
@@ -183,6 +184,18 @@ const storageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload,
+            }
+        }
+        case actionTypes.START_FETCHING_VOLUMES: {
+            return {
+                ...state,
+                fetchingVolumes: true,
+            }
+        }
+        case actionTypes.STOP_FETCHING_VOLUMES: {
+            return {
+                ...state,
+                fetchingVolumes: false,
             }
         }
         case actionTypes.CLEAR_VOLUMES: {

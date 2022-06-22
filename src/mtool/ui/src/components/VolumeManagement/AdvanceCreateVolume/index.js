@@ -747,14 +747,14 @@ function AdvanceCreateVolume(props) {
 
     const isGreaterThanEqualTo = (param) => {
       if(param <= 0) return false;
-      let max = "18446744073709551";
+      const max = "18446744073709551";
       if(param.length < max.length) return false;
       if(param.length > max.length) return true;
 
-      let max1 = max.substring(0,max.length-1);
-      let max2 = max.substring(max.length-1);
-      let param1 = param.substring(0,param.length-1);
-      let param2 = param.substring(param.length-1);
+      const max1 = max.substring(0,max.length-1);
+      const max2 = max.substring(max.length-1);
+      const param1 = param.substring(0,param.length-1);
+      const param2 = param.substring(param.length-1);
       
       if(param1 < max1) return false;
       if(param1 > max1) return true;
@@ -812,7 +812,7 @@ function AdvanceCreateVolume(props) {
           isError = false;
 
         if(!isError){
-          let isDuplicate = props.subsystems.find((s) => s.nqn === props.subnqn);
+          const isDuplicate = props.subsystems.find((s) => s.nqn === props.subnqn);
           if(isDuplicate){
             errorDesc = "Please Enter A New Subsystem Name" 
             isError = true;

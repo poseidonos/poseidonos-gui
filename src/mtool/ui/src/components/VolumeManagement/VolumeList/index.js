@@ -492,6 +492,7 @@ class VolumeList extends Component {
             options={{
               pageSize: 10,
               selection: true,
+              showSelectAllCheckbox: !this.props.fetchingVolumes,
               showTextRowsSelected: false,
               headerStyle: {
                 // backgroundColor: '#71859d',

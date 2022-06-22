@@ -60,6 +60,18 @@ export const fetchArray = (payload) => {
     }
 }
 
+export const startFetchingVolumes = () => {
+    return {
+        type: actionTypes.START_FETCHING_VOLUMES
+    }
+}
+
+export const stopFetchingVolumes = () => {
+    return {
+        type: actionTypes.STOP_FETCHING_VOLUMES
+    }
+}
+
 export const fetchConfig = (payload) => {
     return {
         type: actionTypes.FETCH_CONFIG,

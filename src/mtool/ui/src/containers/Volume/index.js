@@ -683,6 +683,7 @@ class Volume extends Component {
                               ref={this.child}
                               volumeFetch={this.fetchVolumes}
                               volumes={this.props.volumes}
+                              fetchingVolumes={this.props.fetchingVolumes}
                               deleteVolumes={this.deleteVolumes}
                               resetQoS={this.props.Reset_Volume_QoS}
                               editVolume={this.props.Edit_Volume}
@@ -738,6 +739,7 @@ const mapStateToProps = (state) => {
     ssds: state.storageReducer.ssds,
     metadisks: state.storageReducer.metadisks,
     volumes: state.storageReducer.volumes,
+    fetchingVolumes: state.storageReducer.fetchingVolumes,
     arrays: state.storageReducer.arrays,
     arrayMap: state.storageReducer.arrayMap,
     config: state.storageReducer.config,

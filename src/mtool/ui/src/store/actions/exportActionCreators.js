@@ -88,6 +88,8 @@ export {
     toggleCreateVolumeButton,
     addVolumeDetails,
     clearVolumes,
+    startFetchingVolumes,
+    stopFetchingVolumes
 } from "./storageActions";
 
 export {
