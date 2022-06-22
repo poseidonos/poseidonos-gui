@@ -746,19 +746,19 @@ function AdvanceCreateVolume(props) {
     let errorDesc = "";
 
     const isGreaterThanEqualTo = (param) => {
-      if(param <= 0) return false;
+      if (typeof (param) === 'number') return false;
       const max = "18446744073709551";
-      if(param.length < max.length) return false;
-      if(param.length > max.length) return true;
+      if (param.length < max.length) return false;
+      if (param.length > max.length) return true;
 
-      const max1 = max.substring(0,max.length-1);
-      const max2 = max.substring(max.length-1);
-      const param1 = param.substring(0,param.length-1);
-      const param2 = param.substring(param.length-1);
-      
-      if(param1 < max1) return false;
-      if(param1 > max1) return true;
-      if(param2 < max2) return false;
+      const max1 = max.substring(0, max.length - 1);
+      const max2 = max.substring(max.length - 1);
+      const param1 = param.substring(0, param.length - 1);
+      const param2 = param.substring(param.length - 1);
+
+      if (param1 < max1) return false;
+      if (param1 > max1) return true;
+      if (param2 < max2) return false;
       return true;
     }
 
@@ -811,10 +811,10 @@ function AdvanceCreateVolume(props) {
         else
           isError = false;
 
-        if(!isError){
+        if (!isError) {
           const isDuplicate = props.subsystems.find((s) => s.nqn === props.subnqn);
-          if(isDuplicate){
-            errorDesc = "Please Enter A New Subsystem Name" 
+          if (isDuplicate) {
+            errorDesc = "Please Enter A New Subsystem Name"
             isError = true;
           }
         }
@@ -852,7 +852,7 @@ function AdvanceCreateVolume(props) {
             </Typography>
           )
         }
-        <Typography className={classes.previewElement} style={{minWidth:"100%"}}>Volume Name : {props.volume_name}</Typography>
+        <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Volume Name : {props.volume_name}</Typography>
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
         }
@@ -892,7 +892,7 @@ function AdvanceCreateVolume(props) {
               {props.selectedNewSubsystem ?
                 (
                   <React.Fragment>
-                    <Typography className={classes.previewElement} style={{minWidth:"100%"}}>Subsystem Name : {props.subnqn}</Typography>
+                    <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Subsystem Name : {props.subnqn}</Typography>
                     <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
                     <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
                     <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>

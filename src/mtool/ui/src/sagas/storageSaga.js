@@ -889,6 +889,33 @@ function* updateVolume(action) {
 }
 
 function* resetAndUpdateVolume(action) {
+
+  const isGreaterThanEqualTo = (param) => {
+    if(typeof(param) === 'number') return false;
+    const max = "18446744073709551";
+    if(param.length < max.length) return false;
+    if(param.length > max.length) return true;
+
+    const max1 = max.substring(0,max.length-1);
+    const max2 = max.substring(max.length-1);
+    const param1 = param.substring(0,param.length-1);
+    const param2 = param.substring(param.length-1);
+    
+    if(param1 < max1) return false;
+    if(param1 > max1) return true;
+    if(param2 < max2) return false;
+    return true;
+  }
+
+  if(isGreaterThanEqualTo(action.payload.maxiops)) {
+    yield put(actionCreators.showStorageAlert({
+      alertType: "alert",
+      alertTitle: "Reset Volume",
+      errorMsg: "Max IOPS should be in the range 10 ~ 18446744073709550. Please input 0, for no limit for qos or Maximum",
+    }))
+    return;
+  }
+
   if (action.payload.resetType === "" || action.payload.minType === action.payload.resetType) {
     yield updateVolume({ payload: action.payload });
     return;
