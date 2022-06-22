@@ -450,9 +450,11 @@ class ArrayShow extends Component {
                 }}
                 disabled
               >
+               {this.props.metadiskpath && this.props.metadiskpath[0] && (
                 <MenuItem value={this.props.metadiskpath[0].deviceName}>
                   {this.props.metadiskpath[0].deviceName}
                 </MenuItem>
+               )}
               </Select>
             </FormControl>
           </Grid>
