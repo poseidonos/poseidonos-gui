@@ -204,27 +204,6 @@ class VolumeList extends Component {
     });
   }
 
-  setDeleteAlertDescription(volumes) {
-    let isAllUnmounted = true;
-    volumes.forEach(v => {
-      if (v.status === "Mounted")
-        isAllUnmounted = false;
-    })
-
-    if (isAllUnmounted) {
-      this.setState({
-        ...this.state,
-        deleteAlertDescription: "Are you sure you want to proceed?"
-      })
-      return;
-    }
-
-    this.setState({
-      ...this.state,
-      deleteAlertDescription: "Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
-    })
-  }
-
   showPopup(name) {
     if (name === RESET_MIN_BW_TITLE) {
       this.setState({
@@ -249,8 +228,26 @@ class VolumeList extends Component {
   }
 
   selectVolumes(volumes) {
+    let isAllUnmounted = true;
+    volumes.forEach(v => {
+      if (v.status === "Mounted")
+        isAllUnmounted = false;
+      return v;
+    })
+
+    if (isAllUnmounted) {
+      this.setState({
+        ...this.state,
+        selectedVolumes: volumes,
+        deleteAlertDescription: "Are you sure you want to proceed?"
+      })
+      return;
+    }
+
     this.setState({
-      selectedVolumes: volumes
+      ...this.state,
+      selectedVolumes: volumes,
+      deleteAlertDescription: "Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
     })
   }
 
@@ -549,7 +546,6 @@ class VolumeList extends Component {
             }}
             onSelectionChange={(rows) => {
               this.selectVolumes(rows);
-              this.setDeleteAlertDescription(rows);
             }}
             actions={[
               {
