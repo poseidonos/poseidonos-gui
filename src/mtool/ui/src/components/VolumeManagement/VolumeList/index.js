@@ -101,6 +101,7 @@ class VolumeList extends Component {
       selectedVolumes: [],
       open: false,
       popupOpen: false,
+      deleteAlertDescription: "",
       alertTile: "",
       alertDetails: "",
       resetVolumeRow: {}
@@ -203,6 +204,27 @@ class VolumeList extends Component {
     });
   }
 
+  setDeleteAlertDescription(volumes) {
+    let isAllUnmounted = true;
+    volumes.forEach(v => {
+      if (v.status === "Mounted")
+        isAllUnmounted = false;
+    })
+
+    if (isAllUnmounted) {
+      this.setState({
+        ...this.state,
+        deleteAlertDescription: "Are you sure you want to proceed?"
+      })
+      return;
+    }
+
+    this.setState({
+      ...this.state,
+      deleteAlertDescription: "Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
+    })
+  }
+
   showPopup(name) {
     if (name === RESET_MIN_BW_TITLE) {
       this.setState({
@@ -266,7 +288,7 @@ class VolumeList extends Component {
       },
       {
         title: 'Size Usage',
-        render: rowData => `${rowData.usedspace }/${ formatBytes(rowData.size)}`,
+        render: rowData => `${rowData.usedspace}/${formatBytes(rowData.size)}`,
         cellStyle: cellText
       },
       {
@@ -436,25 +458,25 @@ class VolumeList extends Component {
         sorting: false,
         render: row => {
           return !row.edit ? (
-	    <>
-            <Button
-              className={classes.editBtn}
-              data-testid={`vol-edit-btn-${row.name}`}
-              onClick={() => this.props.editVolume(row)}
-              id={`VolumeList-btn-edit-${row.name}`}
-            >
-              <EditIcon />
-            </Button>
-            <Button
-              className={classes.editBtn}
-              title="Reset QoS"
-              data-testid={`vol-reset-qos-btn-${row.name}`}
-              onClick={() => this.props.resetQoS(row)}
-              id={`VolumeList-reset-qos-edit-${row.name}`}
-            >
-              <ReplayIcon />
-            </Button>
-	    </>
+            <>
+              <Button
+                className={classes.editBtn}
+                data-testid={`vol-edit-btn-${row.name}`}
+                onClick={() => this.props.editVolume(row)}
+                id={`VolumeList-btn-edit-${row.name}`}
+              >
+                <EditIcon />
+              </Button>
+              <Button
+                className={classes.editBtn}
+                title="Reset QoS"
+                data-testid={`vol-reset-qos-btn-${row.name}`}
+                onClick={() => this.props.resetQoS(row)}
+                id={`VolumeList-reset-qos-edit-${row.name}`}
+              >
+                <ReplayIcon />
+              </Button>
+            </>
           ) : (
             <React.Fragment>
               <Button
@@ -527,6 +549,7 @@ class VolumeList extends Component {
             }}
             onSelectionChange={(rows) => {
               this.selectVolumes(rows);
+              this.setDeleteAlertDescription(rows);
             }}
             actions={[
               {
@@ -542,7 +565,7 @@ class VolumeList extends Component {
         </ThemeProvider>
         <AlertDialog
           title="Delete Volumes"
-          description="Deleting the volumes will automatically unmount the mounted volumes first. Are you sure you want to proceed?"
+          description={this.state.deleteAlertDescription}
           open={this.state.open}
           handleClose={this.handleClose}
           onConfirm={() => {

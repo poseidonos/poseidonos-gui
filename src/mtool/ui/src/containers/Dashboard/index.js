@@ -262,7 +262,6 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: "",
       mobileOpen: false,
       healthStatusSocket: io(healthStatusSocketEndPoint, {
         transports: ["websocket"],
@@ -281,27 +280,6 @@ class Dashboard extends Component {
     this.props.fetchArrays();
     this.props.fetchPerformance();
     this.props.fetchIpAndMacInfo();
-    // this.props.fetchAlertsInfo();
-    const today = new Date();
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const date = `${months[today.getMonth()]
-      } ${today.getDate()}, ${today.getFullYear()},`;
-    const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
-    const dateTime = `${date} ${time}`;
-    this.setState({ time: dateTime });
     this.props.enableFetchingAlerts(true);
     this.interval = setInterval(() => {
       this.props.fetchPerformance();
