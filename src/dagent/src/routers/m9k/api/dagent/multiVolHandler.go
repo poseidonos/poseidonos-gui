@@ -203,7 +203,8 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 	} else {
 		qosParam["miniops"] = volParam.Miniops
 	}
-	iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
+	_, qosResp,_ := iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
+	CreateVolCh <- qosResp
 	close(CreateVolCh)
 
 }

@@ -1930,7 +1930,7 @@ def saveVolume():
         subsystem)
 
     # print("print save volllll", toJson(create_vol_res.json())
-    return toJson(create_vol_res.json())
+    return toJson(create_vol_res)
 
 
 """
@@ -2702,7 +2702,8 @@ def createMultiVolumeCallback():
     description = ""
     errorResponses = ""
     errorCode = 0
-    for entry in body['MultiVolArray']:
+    respList = body['MultiVolArray']
+    for entry in respList:
         if entry["result"]["status"]["code"] != 0:
             description += entry["result"]["status"]["description"]
             description += "\n"
@@ -2711,8 +2712,9 @@ def createMultiVolumeCallback():
                 if "errorCode" in entry["result"]["status"]["errorInfo"] and entry["result"]["status"]["errorInfo"]["errorCode"] == 1:
                     errorCode = 1
                     errorResponses = entry["result"]["status"]["errorInfo"]["errorResponses"]
-                    
-
+    qosResp = respList[len(respList)-1]
+    if qosResp["result"]["status"]["code"] != 0:
+        errorCode = 1
     passed = body['Pass']
     total_count = body['TotalCount']
     socketIo.emit('create_multi_volume',

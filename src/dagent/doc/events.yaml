@@ -234,8 +234,8 @@ modules:
         solution: Enter the volume name that meets the volume name rules
       - code: 2026
         level: Error
-        message: Exceed creatable volume size
-        problem: The requested volume size is larger than the remaining space
+        message: Requested volume size  larger than remaining space in array
+        problem: The requested volume size is larger than the remaining space in array
         solution: Please check the volume size and remaining Array space and try again
       - code: 2030
         level: WARN

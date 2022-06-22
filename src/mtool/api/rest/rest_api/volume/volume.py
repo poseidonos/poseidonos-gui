@@ -35,7 +35,7 @@
 #from socketclient.socketclient import create_vol, delete_vol, list_vol, mount_vol
 import rest.rest_api.dagent.ibofos as dagent
 from bson import json_util
-
+import json
 
 def create_volume(
         vol_name,
@@ -70,7 +70,7 @@ def create_volume(
             if res is None:
                 return json_util.dumps({})
             if res.status_code != 200:
-                return res
+                return res.json()
             if minbw == 0 and miniops == 0:
                 request_body = {"param": {"array": arr_name,
                                           "minbw": minbw, "vol": [{"volumeName": vol_name}]}}
@@ -81,8 +81,17 @@ def create_volume(
                 request_body = {"param": {"array": arr_name,
                                           "miniops": miniops,
                                           "vol": [{"volumeName": vol_name}]}}
-            dagent.qos_create_volume_policies(request_body)
-    return create_vol_response
+            response = dagent.qos_create_volume_policies(request_body)
+            response = response.json()
+            if "result" in response and "status" in response["result"] and "code" in response[
+                    "result"]["status"] and response["result"]["status"]["code"] != 0:
+                create_vol_response = create_vol_response.json()
+                if "result" in create_vol_response and "status" in create_vol_response["result"] and "posDescription" in create_vol_response["result"]["status"]:
+                    create_vol_response["result"]["status"]["posDescription"] += " "+response["result"]["status"]["posDescription"] 
+                    create_vol_response["result"]["status"]["code"] = response["result"]["status"]["code"]
+                return create_vol_response
+            
+    return create_vol_response.json()
 
 
 """def update_volume(data):
