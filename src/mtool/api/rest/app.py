@@ -1849,7 +1849,8 @@ def getIpAndMac():
         if ip is None and mac == '':
             return make_response('Could not get ip and mac', 500)
         else:
-            return jsonify({"ip": ip, "mac": mac, "host": host})
+            lastUpdatedTime = datetime.datetime.now().strftime("%a, %d %b %Y %I:%M:%S %p %Z")
+            return jsonify({"ip": ip, "mac": mac, "host": host, "timestamp": lastUpdatedTime})
     except BaseException:
         return make_response('Could not get ip and mac', 500)
 

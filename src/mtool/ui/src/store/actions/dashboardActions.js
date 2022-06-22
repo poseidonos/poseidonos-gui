@@ -78,11 +78,12 @@ export const fetchStorage = (arraySize) => {
   };
 };
 
-export const fetchIpAndMac = (ip, mac, host) => {
+export const fetchIpAndMac = (ip, mac, host, timestamp) => {
   return {
     type: actionTypes.FETCH_IPANDMAC_INFO,
     ip,
     mac,
     host,
+    timestamp
   };
 };

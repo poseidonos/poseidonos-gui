@@ -142,7 +142,7 @@ function* fetchIpAndMacInfo() {
     /* istanbul ignore else */
     if (result) {
       yield put(
-        actionCreators.fetchIpAndMac(result.ip, result.mac, result.host)
+        actionCreators.fetchIpAndMac(result.ip, result.mac, result.host, result.timestamp)
       );
     }
   } catch (error) {

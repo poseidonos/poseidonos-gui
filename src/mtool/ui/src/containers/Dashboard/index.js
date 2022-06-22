@@ -826,7 +826,7 @@ class Dashboard extends Component {
                                   textAlign: "left",
                                 }}
                               >
-                                As of {this.state.time}
+                                As of {this.props.lastUpdateTime}
                               </span>
                             </div>
                           </React.Fragment>
@@ -981,6 +981,7 @@ const mapStateToProps = (state) => {
     ip: state.dashboardReducer.ip,
     arrayVolCount: state.dashboardReducer.arrayVols,
     mac: state.dashboardReducer.mac,
+    lastUpdateTime: state.dashboardReducer.lastUpdateTime,
     host: state.dashboardReducer.host,
     arraySize: state.storageReducer.arraySize,
     cpuUsage: state.dashboardReducer.cpuUsage,
