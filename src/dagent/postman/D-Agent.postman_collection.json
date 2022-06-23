@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d53dcdaf-639a-4c32-b23f-b7b6b9ec6d25",
+		"_postman_id": "7790fd53-7d0f-4089-98b7-af41ddbfb31a",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13012,7 +13012,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "http://{{host}}/api/ibofos/v1/telemetry",

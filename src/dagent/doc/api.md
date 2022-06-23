@@ -7828,19 +7828,6 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "flush",
-        "weight": 1
-    }
-}
-```
-
-
-
 ***More example Requests/Responses:***
 
 
@@ -9489,4 +9476,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-21 05:13:29 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-23 14:48:53 by [docgen](https://github.com/thedevsaddam/docgen)

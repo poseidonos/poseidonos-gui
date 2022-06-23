@@ -590,14 +590,14 @@ modules:
         solution:
       - code: 2503
         level: ERROR
-        message: Array does not exists
-        problem:
-        solution:
+        message: Array name is too short
+        problem: Failed to create array
+        solution: Enter the array name between 2 and 63 letters
       - code: 2504
         level: ERROR
-        message: Device not found
-        problem:
-        solution:
+        message: Array name is too long
+        problem: Failed to create array
+        solution: Enter the array name between 2 and 63 letters
       - code: 2505
         level: ERROR
         message: the number of ssds must be between 3 and 32
@@ -763,7 +763,8 @@ modules:
         message: "Array State : Exist Normal"
       - code: 2552
         level: INFO
-        message: "Array State : Exist Degraded"
+        message: "Failed to delete array because array of the requested name could not be found"
+        solution: "please check array's name to delete and try again"
       - code: 2553
         level: INFO
         message: "Array State : Exist Missing"
