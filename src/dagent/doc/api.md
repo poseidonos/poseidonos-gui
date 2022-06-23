@@ -441,47 +441,22 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
+    "rid": "5d23e81e-cb21-49e9-a73c-84ced5914397",
+    "lastSuccessTime": 1655976957,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray is mounted successfully"
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
+
 ```
 
 
@@ -548,47 +523,22 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
+    "rid": "5d23e81e-cb21-49e9-a73c-84ced5914397",
+    "lastSuccessTime": 1655976957,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray is mounted successfully"
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
+
 ```
 
 
@@ -7845,19 +7795,6 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "flush",
-        "weight": 1
-    }
-}
-```
-
-
-
 ##### I. Example Response: Success
 ```js
 {
@@ -9476,4 +9413,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-23 14:48:53 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-23 15:31:35 by [docgen](https://github.com/thedevsaddam/docgen)

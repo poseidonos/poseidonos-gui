@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7790fd53-7d0f-4089-98b7-af41ddbfb31a",
+		"_postman_id": "41f8e3d4-c3de-45bc-8afb-e87691b3668a",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -2595,7 +2595,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"6e787e27-1964-44da-bcdf-b5f44ffbd1a3\",\n    \"lastSuccessTime\": 1588920682,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"unvme-ns-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebulidingProgress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"5d23e81e-cb21-49e9-a73c-84ced5914397\",\n    \"lastSuccessTime\": 1655976957,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"POSArray is mounted successfully\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}\n"
 						}
 					]
 				},
@@ -3062,7 +3062,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"6e787e27-1964-44da-bcdf-b5f44ffbd1a3\",\n    \"lastSuccessTime\": 1588920682,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"DONE\"\n        },\n        \"data\": {\n            \"devicelist\": [\n                {\n                    \"name\": \"uram0\",\n                    \"type\": \"BUFFER\"\n                },\n                {\n                    \"name\": \"unvme-ns-0\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-1\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-2\",\n                    \"type\": \"DATA\"\n                },\n                {\n                    \"name\": \"unvme-ns-3\",\n                    \"type\": \"SPARE\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"state\": \"OFFLINE\",\n        \"situation\": \"DEFAULT\",\n        \"rebulidingProgress\": 0,\n        \"capacity\": 0,\n        \"used\": 0\n    }\n}"
+							"body": "{\n    \"rid\": \"5d23e81e-cb21-49e9-a73c-84ced5914397\",\n    \"lastSuccessTime\": 1655976957,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"POSArray is mounted successfully\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}\n"
 						}
 					]
 				},
@@ -13053,7 +13053,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\": \"flush\",\r\n        \"weight\": 1\r\n    }\r\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/devel/event-wrr/update",
