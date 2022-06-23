@@ -572,18 +572,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
 ***More example Requests/Responses:***
 
 
@@ -604,45 +592,19 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
+    "rid": "4b6284c0-8f38-4705-9cac-892fcea3c5a8",
+    "lastSuccessTime": 1656005235,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray has been unmounted successfully"
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -678,18 +640,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
 ***More example Requests/Responses:***
 
 
@@ -710,45 +660,19 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
+    "rid": "36e6aae9-4d8b-45e7-81cf-318031dd7bf6",
+    "lastSuccessTime": 1656005277,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ]
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "POSArray1 has been unmounted successfully"
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -804,45 +728,45 @@ URL: http://{{host}}/api/ibofos/v1/arrays
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "6e787e27-1964-44da-bcdf-b5f44ffbd1a3",
-    "lastSuccessTime": 1588920682,
+    "rid": "d0d3a7d5-2b2c-4f72-be5b-82c4a5b2b3e8",
+    "lastSuccessTime": 1656004793,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "list of array and its devices "
         },
         "data": {
-            "devicelist": [
+            "arrayList": [
                 {
-                    "name": "uram0",
-                    "type": "BUFFER"
+                    "capacity": 3385669032346,
+                    "create_datetime": "2022-06-23 04:11:23 +0530",
+                    "data_raid": "RAID5",
+                    "index": 1,
+                    "name": "POSArray",
+                    "status": "Mounted",
+                    "update_datetime": "2022-06-23 11:41:59 +0530",
+                    "used": 15367929856,
+                    "write_through_enabled": false
                 },
                 {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
+                    "capacity": 5078503548519,
+                    "create_datetime": "2022-06-23 04:05:11 +0530",
+                    "data_raid": "RAID0",
+                    "index": 0,
+                    "name": "POSArray1",
+                    "status": "Mounted",
+                    "update_datetime": "2022-06-23 11:42:55 +0530",
+                    "used": 0,
+                    "write_through_enabled": true
                 }
             ]
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebulidingProgress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -1215,15 +1139,12 @@ URL: http://{{host}}/api/ibofos/v1/array
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "POSArray has been created successfully"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -1348,21 +1269,18 @@ URL: http://{{host}}/api/ibofos/v1/array
 ```js
 {
     "rid": "cc3eed56-3478-4180-af0b-eac6b88f264f",
-    "lastSuccessTime": 1597819968,
+    "lastSuccessTime": 1597829857,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "POSArray has been created successfully"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -1496,22 +1414,19 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "f0755583-73c9-436c-9e10-c53d36418fa9",
-    "lastSuccessTime": 1597910488,
+    "rid": "40a9a0fd-58cb-4c19-be34-28443a58d0b9",
+    "lastSuccessTime": 1656005535,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "POSArray has been deleted successfully"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -1523,7 +1438,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-##### II. Example Request: Fail - 2500
+##### II. Example Request: Fail - 2551
 
 
 ***Headers:***
@@ -1537,25 +1452,22 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-##### II. Example Response: Fail - 2500
+##### II. Example Response: Fail - 2551
 ```js
 {
-    "rid": "6426aca5-2d99-496a-9341-7e1e962dcceb",
-    "lastSuccessTime": 1597820457,
+    "rid": "dcdaa564-536e-479c-a150-d150badba1fc",
+    "lastSuccessTime": 1656005583,
     "result": {
         "status": {
             "module": "Array",
-            "code": 2500,
-            "level": "ERROR",
-            "description": "Array is alreday mounted."
+            "code": 2551,
+            "level": "INFO",
+            "description": "Array State : Exist Normal",
+            "posDescription": "failed to delete POSArray1"
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -2389,13 +2301,13 @@ URL: http://{{host}}/api/ibofos/v1/device
 
 ```js        
 {
-    "param":{
+    "param": {
         "name": "uram3",
-		"num_blocks" : 8388608,
-		"block_size" : 512,
-		"dev_type" : "uram",
-		"numa" : 0
-}
+        "num_blocks": 8388608,
+        "block_size": 512,
+        "dev_type": "uram",
+        "numa": 0
+    }
 }
 ```
 
@@ -2421,70 +2333,19 @@ URL: http://{{host}}/api/ibofos/v1/device
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "7ec6e965-dc86-4a95-8a3a-353dc36478a1",
-    "lastSuccessTime": 1588920642,
+    "rid": "4095dbf5-2207-4b90-b678-3be9649ab728",
+    "lastSuccessTime": 1656005171,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "DONE"
-        },
-        "data": {
-            "devicelist": [
-                {
-                    "addr": "0000:04:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-0",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0002",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:0c:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-1",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0003",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:13:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-2",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0000",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "0000:1b:00.0",
-                    "class": "SYSTEM",
-                    "mn": "VMware Virtual NVMe Disk",
-                    "name": "unvme-ns-3",
-                    "size": 16777216,
-                    "sn": "VMWare NVME-0001",
-                    "type": "SSD"
-                },
-                {
-                    "addr": "",
-                    "class": "SYSTEM",
-                    "mn": "uram0",
-                    "name": "uram0",
-                    "size": 262144,
-                    "sn": "uram0",
-                    "type": "NVRAM"
-                }
-            ]
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Device has been created"
         }
     },
     "info": {
-        "state": "OFFLINE",
-        "situation": "DEFAULT",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -2659,22 +2520,19 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "3b6f2a86-7369-40e0-9c63-65cdf417fad4",
-    "lastSuccessTime": 1597819950,
+    "rid": "1216e563-72b6-4b37-8754-d71ea8949709",
+    "lastSuccessTime": 1656005959,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "device scanning complete"
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -3426,34 +3284,25 @@ URL: http://{{host}}/api/ibofos/v1/logger/level
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "level": "info"
-    }
-}
-```
-
-
-
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "0e3172f5-be18-4c36-b13b-02741784ce5a",
-    "lastSuccessTime": 1649848045,
+    "rid": "42fc7022-7ab8-4f5d-b1e6-27bd4a3d1c5c",
+    "lastSuccessTime": 1656005685,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
             "description": "Success",
-            "posDescription": "log level changed to info"
+            "posDescription": "current log level"
+        },
+        "data": {
+            "level": "debug"
         }
     },
     "info": {
-        "version": "v0.10.6"
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -4711,13 +4560,22 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
+            [
+                {
+                    "latency": 0,
+                    "time": 1656006077178028882
+                }
+            ],
+            [
+                {
+                    "endTime": 1656006077178028882,
+                    "startTime": 1656006077178028882
+                }
+            ]
         ]
     }
 }
@@ -4787,10 +4645,11 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "MAgent",
+            "module": "M-Agent",
             "code": 21010,
             "level": "ERROR",
             "description": "Time parameter error",
+            "posDescription": "Time parameter error",
             "problem": "Invalid time period specified",
             "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
         },
@@ -4827,21 +4686,58 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "Success"
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Success"
         },
-        "data": {
-            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
-            "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "data": [
+            [
+                {
+                    "latency": 0,
+                    "time": 1597736236000000000
+                },
+                {
+                    "latency": 6376,
+                    "time": 1597736237000000000
+                },
+                {
+                    "latency": 23973.25,
+                    "time": 1597736238000000000
+                },
+                {
+                    "latency": 96155,
+                    "time": 1597736239000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736240000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736241000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736242000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736243000000000
+                },
+                {
+                    "latency": 19665,
+                    "time": 1597736244000000000
+                }
+            ],
+            [
+                {
+                    "endTime": 1597736236000000000,
+                    "startTime": 1597736244000000000
+                }
+            ]
+        ]
     }
 }
 ```
@@ -5358,13 +5254,28 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays/volumes
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
+            [
+                {
+                    "data": [
+                        [
+                            {
+                                "latency": 0,
+                                "time": 1597737402983947953
+                            }
+                        ],
+                        [
+                            {
+                                "endTime": 1597737402983947953,
+                                "startTime": 1597737402983947953
+                            }
+                        ]
+                    ]
+                }
+            ]
         ]
     }
 }
@@ -5438,46 +5349,55 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays/volumes
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597736236000000000
-            },
-            {
-                "latency": 6376,
-                "time": 1597736237000000000
-            },
-            {
-                "latency": 23973.25,
-                "time": 1597736238000000000
-            },
-            {
-                "latency": 96155,
-                "time": 1597736239000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736240000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736241000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736242000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736243000000000
-            },
-            {
-                "latency": 19665,
-                "time": 1597736244000000000
-            }
-        ]
+            [
+                {
+                    "latency": 0,
+                    "time": 1597736236000000000
+                },
+                {
+                    "latency": 6376,
+                    "time": 1597736237000000000
+                },
+                {
+                    "latency": 23973.25,
+                    "time": 1597736238000000000
+                },
+                {
+                    "latency": 96155,
+                    "time": 1597736239000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736240000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736241000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736242000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736243000000000
+                },
+                {
+                    "latency": 19665,
+                    "time": 1597736244000000000
+                }
+            ],
+            [
+                {
+                    "endTime": 1597736236000000000,
+                    "startTime": 1597736244000000000
+                }
+            ]
+        ] 
     }
 }
 ```
@@ -5510,10 +5430,11 @@ URL: http://{{host}}/api/metric/v1/readlatency/arrays/volumes
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "MAgent",
+            "module": "M-Agent",
             "code": 21010,
             "level": "ERROR",
             "description": "Time parameter error",
+            "posDescription": "Time parameter error",
             "problem": "Invalid time period specified",
             "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
         },
@@ -6054,13 +5975,28 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays/volumes
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
+            [
+                {
+                    "data": [
+                        [
+                            {
+                                "latency": 0,
+                                "time": 1597737402983947953
+                            }
+                        ],
+                        [
+                            {
+                                "endTime": 1597737402983947953,
+                                "startTime": 1597737402983947953
+                            }
+                        ]
+                    ]
+                }
+            ]
         ]
     }
 }
@@ -6134,46 +6070,55 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays/volumes
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597736236000000000
-            },
-            {
-                "latency": 6376,
-                "time": 1597736237000000000
-            },
-            {
-                "latency": 23973.25,
-                "time": 1597736238000000000
-            },
-            {
-                "latency": 96155,
-                "time": 1597736239000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736240000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736241000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736242000000000
-            },
-            {
-                "latency": 0,
-                "time": 1597736243000000000
-            },
-            {
-                "latency": 19665,
-                "time": 1597736244000000000
-            }
-        ]
+            [
+                {
+                    "latency": 0,
+                    "time": 1597736236000000000
+                },
+                {
+                    "latency": 6376,
+                    "time": 1597736237000000000
+                },
+                {
+                    "latency": 23973.25,
+                    "time": 1597736238000000000
+                },
+                {
+                    "latency": 96155,
+                    "time": 1597736239000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736240000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736241000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736242000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736243000000000
+                },
+                {
+                    "latency": 19665,
+                    "time": 1597736244000000000
+                }
+            ],
+            [
+                {
+                    "endTime": 1597736236000000000,
+                    "startTime": 1597736244000000000
+                }
+            ]
+        ] 
     }
 }
 ```
@@ -6206,10 +6151,11 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays/volumes
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "MAgent",
+            "module": "M-Agent",
             "code": 21010,
             "level": "ERROR",
             "description": "Time parameter error",
+            "posDescription": "Time parameter error",
             "problem": "Invalid time period specified",
             "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
         },
@@ -6757,13 +6703,22 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "Success"
         },
         "data": [
-            {
-                "latency": 0,
-                "time": 1597737402983947953
-            }
+            [
+                {
+                    "latency": 0,
+                    "time": 1656006167445344583
+                }
+            ],
+            [
+                {
+                    "endTime": 1656006167445344583,
+                    "startTime": 1656006167445344583
+                }
+            ]
         ]
     }
 }
@@ -6833,10 +6788,11 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "MAgent",
+            "module": "M-Agent",
             "code": 21010,
             "level": "ERROR",
             "description": "Time parameter error",
+            "posDescription": "Time parameter error",
             "problem": "Invalid time period specified",
             "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
         },
@@ -6873,21 +6829,58 @@ URL: http://{{host}}/api/metric/v1/writelatency/arrays
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "",
+            "module": "COMMON",
             "code": 0,
-            "description": "Success"
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Success"
         },
-        "data": {
-            "githash": "b98039e5f8ab19351994044960cf0e27262665b4",
-            "build_time": "1591338851"
-        }
-    },
-    "info": {
-        "state": "",
-        "situation": "",
-        "rebuliding_progress": 0,
-        "capacity": 0,
-        "used": 0
+        "data": [
+            [
+                {
+                    "latency": 0,
+                    "time": 1597736236000000000
+                },
+                {
+                    "latency": 6376,
+                    "time": 1597736237000000000
+                },
+                {
+                    "latency": 23973.25,
+                    "time": 1597736238000000000
+                },
+                {
+                    "latency": 96155,
+                    "time": 1597736239000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736240000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736241000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736242000000000
+                },
+                {
+                    "latency": 0,
+                    "time": 1597736243000000000
+                },
+                {
+                    "latency": 19665,
+                    "time": 1597736244000000000
+                }
+            ],
+            [
+                {
+                    "endTime": 1597736236000000000,
+                    "startTime": 1597736244000000000
+                }
+            ]
+        ]
     }
 }
 ```
@@ -6932,11 +6925,11 @@ URL: http://{{host}}/api/ibofos/v1/listener
 ```js        
 {
     "param": {
-        "name":"nqn.2019-04.pos:subsystem1",
-        "transport_type":"tcp",
-        "target_address":"107.108.83.97",
-        "transport_service_id":"1158"
-}
+        "name": "nqn.2019-04.pos:subsystem1",
+        "transport_type": "tcp",
+        "target_address": "107.108.83.97",
+        "transport_service_id": "1158"
+    }
 }
 ```
 
@@ -7716,29 +7709,22 @@ URL: http://{{host}}/api/ibofos/v1/system
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d62522e2-336c-42dd-95dc-f7cd44c7e708",
-    "lastSuccessTime": 1597908994,
+    "rid": "619782d1-bad3-4dc3-8202-ab4b43144610",
+    "lastSuccessTime": 1656005726,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success"
+            "description": "Success",
+            "posDescription": "DONE"
         },
         "data": {
-            "capacity": 120312771380,
-            "rebuildingProgress": "0",
-            "situation": "NORMAL",
-            "state": "NORMAL",
-            "used": 4194304
+            "version": "v0.11.0-rc5"
         }
     },
     "info": {
-        "capacity": 120312771380,
-        "rebuildingProgress": "0",
-        "situation": "NORMAL",
-        "state": "NORMAL",
-        "used": 4194304
+        "version": "v0.11.0-rc5"
     }
 }
 ```
@@ -9413,4 +9399,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-23 15:31:35 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-23 23:44:23 by [docgen](https://github.com/thedevsaddam/docgen)
