@@ -193,7 +193,12 @@ class CreateVolume extends Component {
           alertType = "alert";
           errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
             pass} with below errors`;
-          errorCodeDescription = `${errorCodeDescription}\n${errorResponses}`
+          if(errorResponses && errorResponses.map) {
+            errorResponses.map(err => {
+              errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
+              return err;
+            });
+          }
         }
 
         this.props.toggleCreateVolumeButton(false);
