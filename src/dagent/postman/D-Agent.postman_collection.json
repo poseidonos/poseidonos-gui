@@ -5172,7 +5172,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol0\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
+							"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"name\": \"vol01\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
