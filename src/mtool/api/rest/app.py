@@ -200,9 +200,9 @@ def token_required(f):
         # jwt to see if tokens if valid
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
-            print("data in token_required(): ", data)
+            #print("data in token_required(): ", data)
             current_user = connection_factory.get_current_user(data['_id'])
-            print("current_user in token_required() ", current_user)
+            #print("current_user in token_required() ", current_user)
         except BaseException:
             return jsonify({'message': 'Token is invalid'}), 401
         return f(current_user, *args, **kwargs)
@@ -2701,15 +2701,16 @@ def createMultiVolumeCallback():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     description = ""
-    errorResponses = ""
+    errorResponses = []
     errorCode = 0
     respList = body['MultiVolArray']
     for entry in respList:
         if entry["result"]["status"]["code"] != 0:
             description += entry["result"]["status"]["description"]
-            description += "\n"
+            if len(description) > 0:
+                description += "\n"
         if "errorInfo" in entry["result"]["status"]:
-            if errorResponses == "":
+            if len(errorResponses) == 0:
                 if "errorCode" in entry["result"]["status"]["errorInfo"] and entry["result"]["status"]["errorInfo"]["errorCode"] == 1:
                     errorCode = 1
                     errorResponses = entry["result"]["status"]["errorInfo"]["errorResponses"]
