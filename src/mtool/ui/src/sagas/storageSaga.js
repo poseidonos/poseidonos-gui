@@ -276,6 +276,7 @@ function* createVolume(action) {
         if (response.data.result.status.code === requestAcceptedCode) {
           yield put(actionCreators.toggleCreateVolumeButton(true));
           yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
+          yield put(actionCreators.resetInputs());
         }
         // error code : 11050, volume count exceeds limit
         // error code : 11040, associated POS call failed
@@ -342,6 +343,7 @@ function* createVolume(action) {
           );
         }
         yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
+        yield put(actionCreators.resetInputs());
       } else {
         yield put(
           actionCreators.showStorageAlert({

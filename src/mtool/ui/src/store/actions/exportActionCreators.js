@@ -93,7 +93,8 @@ export {
 } from "./storageActions";
 
 export {
-    toggleAdvanceCreateVolumePopup
+    toggleAdvanceCreateVolumePopup,
+    resetInputs,
 } from "./createVolumeActions";
 
 export {

@@ -8,4 +8,8 @@ export const toggleAdvanceCreateVolumePopup = (payload) => {
     }
 }
 
-export default toggleAdvanceCreateVolumePopup;
+export const resetInputs = () => {
+    return {
+        type: actionTypes.RESET_INPUTS
+    }
+}

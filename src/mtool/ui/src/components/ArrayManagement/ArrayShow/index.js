@@ -266,6 +266,7 @@ class ArrayShow extends Component {
       this.props.getDevices({ noLoad: true });
     }, 5000);
   }
+  
 
   componentWillUnmount() {
     if (this.interval) {
@@ -282,6 +283,10 @@ class ArrayShow extends Component {
 
   handleUnmountClick() {
     this.props.handleUnmountPOS();
+    this.setState({
+      ...this.state,
+      writeThroughMode: this.props.writeThrough
+    })
   }
 
   handleMountClick() {
@@ -465,7 +470,7 @@ class ArrayShow extends Component {
                   name="mount_arr_writethrough"
                   color="primary"
                   id="mount-writethrough-checkbox"
-                  checked={this.state.writeThroughMode}
+                  checked={this.props.mountStatus === "Mounted"? this.props.writeThrough : this.state.writeThroughMode}
                   disabled={this.props.mountStatus === "Mounted"}
                   value="Write Through Mode"
                   inputProps={{
