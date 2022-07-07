@@ -142,14 +142,6 @@ http://localhost
 | 4    | GUI Log    | src/mtool/api/public/log | Rest API interaction logs; errors or exceptions |  This is created when GUI runs    |
 | 5    | System Log | /var/log/syslog          | Various system level logs                       |                                   |
 
-# Known Issues
-1. URAM disks are not available in Poseidonos-GUI array creation step, after the server or vm was restarted
-	- In such case, restart Poseidonos service from the Poseidonos-GUI using the "Admin -> Poseidon Operations -> START"
-	- Please note that restarting the Poseidonos service from CLI will not resolve this issue. The Poseidonos service should be restarted from Poseidonos-GUI.
-2. "Data Written" shows as 0 on the dashboard page of Poseidonos-GUI even when IO is performed
-	- This happens in specific cases like when the entire volume storage space is consumed. It will be resolved in a future version.
-
-
 # FAQ
 1.  How to check whether POS is running (or check POS status)?
     1.  _Using GUI - The Right hand top corner shows the POS status (e.g. RUNNING)_
