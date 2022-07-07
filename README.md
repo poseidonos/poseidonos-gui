@@ -105,11 +105,11 @@ http://localhost
 
 ## Device Management
 - (Location: src/mtool/ui/src/assets/images/device_management_ui.png)
-- ![User Management](src/mtool/ui/src/assets/images/device_management_ui.png)
+- ![Device Management](src/mtool/ui/src/assets/images/device_management_ui.png)
 
 ## Subsystem Management
 - (Location: src/mtool/ui/src/assets/images/subsystem_management_ui.png)
-- ![User Management](src/mtool/ui/src/assets/images/subsystem_management_ui.png)
+- ![Subsystem Management](src/mtool/ui/src/assets/images/subsystem_management_ui.png)
 
 ## Start and Stop Poseidon Operations
 - (Location: src/mtool/ui/src/assets/images/start_stop_ui.png)
