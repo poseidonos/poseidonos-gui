@@ -57,6 +57,10 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 ### Supported OS and Version
 1. Linux Ubuntu 18.04
 
+### Supported PoseidonOS Version
+
+1. POS v0.11.0-rc6 (Branch: release/v0.11.0 Commit: https://github.com/poseidonos/poseidonos/commit/47e69352f119ea03145051e5763df7ae3daddd95)
+
 ### Build and Run 
 1. Clone the project from GitHub - https://github.com/poseidonos/poseidonos-gui
 2. Navigate to poseidonos-gui directory
@@ -99,10 +103,17 @@ http://localhost
 - (Location: src/mtool/ui/src/assets/images/user_management_ui.png)
 - ![User Management](src/mtool/ui/src/assets/images/user_management_ui.png)
 
+## Device Management
+- (Location: src/mtool/ui/src/assets/images/device_management_ui.png)
+- ![User Management](src/mtool/ui/src/assets/images/device_management_ui.png)
+
+## Subsystem Management
+- (Location: src/mtool/ui/src/assets/images/subsystem_management_ui.png)
+- ![User Management](src/mtool/ui/src/assets/images/subsystem_management_ui.png)
+
 ## Start and Stop Poseidon Operations
 - (Location: src/mtool/ui/src/assets/images/start_stop_ui.png)
 - ![Start or Stop](src/mtool/ui/src/assets/images/start_stop_ui.png)
-
 
 # Scripts 
 | S.No | Script Name             | Location           | Description                                                                                      | Notes                                                        |
