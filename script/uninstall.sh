@@ -9,6 +9,7 @@ sudo apt-get purge influxdb
 sudo apt-get purge chronograf
 sudo apt-get purge kapacitor
 sudo apt-get purge nginx
+sudo apt-get remove grafana
 sudo systemctl stop start-iBofMtool
 sudo systemctl disable start-iBofMtool
 sudo rm /etc/systemd/system/start-iBofMtool.service
