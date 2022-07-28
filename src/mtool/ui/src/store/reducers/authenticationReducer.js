@@ -34,51 +34,82 @@ import * as actionTypes from '../actions/actionTypes';
 
 
 export const initialState = {
-    username: '',
-    password: '',
-    restIP: '',
-    restPort: '',
-    telemetryIP: '',
-    telemetryPort: '',
-    loginFailed: false,
-    isLoggedIn: false,
+  restIP: '',
+  restPort: '',
+  telemetryIP: '',
+  telemetryPort: '',
+  isConfigured: localStorage.getItem("isConfigured") ? true : false,
+  username: '',
+  password: '',
+  loginFailed: false,
+  isLoggedIn: false,
 };
 
 const authenticationReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case actionTypes.CHANGE_CREDENTIALS: {
+  switch (action.type) {
+    case actionTypes.CHECK_CONFIGURATION: {
+      if (localStorage.getItem("isConfigured")) {
         return {
           ...state,
-        [action.payload.name] : action.payload.value,
-        };
+          isConfigured: true,
+          restIP: localStorage.getItem("restIP"),
+          restPort: localStorage.getItem("restPort"),
+          telemetryIP: localStorage.getItem("telemetryIP"),
+          telemetryPort: localStorage.getItem("telemetryPort")
+        }
       }
-
-      case actionTypes.SET_IS_LOGGED_IN: {
-        return {
-          ...state,
-        isLoggedIn : true,
-        loginFailed : false,
-        };
-      }
-
-      case actionTypes.RESET_IS_LOGGED_IN: {
-        return {
-          ...state,
-        isLoggedIn : false,
-        };
-      }
-
-      case actionTypes.SET_LOGIN_FAILED: {
-        return {
-          ...state,
-        loginFailed : true,
-        };
-      }
-     
-      default:
-        return state;
+      return state;
     }
-  };
-  
-  export default authenticationReducer;
-  
+
+    case actionTypes.SET_IS_CONFIGURED: {
+      if (action.payload.isConfigured) {
+        return {
+          ...state,
+          isConfigured: true,
+          restIP: localStorage.getItem("restIP"),
+          restPort: localStorage.getItem("restPort"),
+          telemetryIP: localStorage.getItem("telemetryIP"),
+          telemetryPort: localStorage.getItem("telemetryPort")
+        }
+      }
+      return {
+        ...state,
+        isConfigured: action.payload.isConfigured
+      }
+    }
+
+    case actionTypes.CHANGE_CREDENTIALS: {
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+      };
+    }
+
+    case actionTypes.SET_IS_LOGGED_IN: {
+      return {
+        ...state,
+        isLoggedIn: true,
+        loginFailed: false,
+      };
+    }
+
+    case actionTypes.RESET_IS_LOGGED_IN: {
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
+    }
+
+    case actionTypes.SET_LOGIN_FAILED: {
+      return {
+        ...state,
+        loginFailed: true,
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
+export default authenticationReducer;

@@ -122,6 +122,7 @@ export {
 } from "./performanceActions";
 
 export {
+    setIsConfigured,
     changeCredentials,
     setIsLoggedIn,
     setLoginFailed,

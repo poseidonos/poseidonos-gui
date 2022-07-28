@@ -36,6 +36,13 @@ import * as actionTypes from '../store/actions/actionTypes';
 import * as actionCreators from '../store/actions/exportActionCreators';
 
 
+export function* saveConfig(action) {
+  /*=====For Succes Response======*/
+  localStorage.setItem('isConfigured', true);
+  localStorage.setItem('telemetryIP', "107.108.221.146");
+  localStorage.setItem('telemetryPort', "2112");
+  yield put(actionCreators.setIsConfigured({isConfigured: true}));
+}
 
 export function* login(action) {
   try {
@@ -62,5 +69,5 @@ export function* login(action) {
 
 export function* authenticationWatcher() {
   yield takeEvery(actionTypes.SAGA_LOGIN, login);
-  
+  yield takeEvery(actionTypes.SAGA_CONFIGURE, saveConfig);
 }

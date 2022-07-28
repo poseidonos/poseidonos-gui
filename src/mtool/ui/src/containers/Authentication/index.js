@@ -47,6 +47,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { connect } from 'react-redux';
 import MToolTheme from '../../theme';
 import './Authentication.css';
@@ -77,7 +78,7 @@ const styles = theme => ({
     display: "flex",
     justifyContent: "center",
   },
-  
+
   configPaper: {
     height: 450,
     maxWidth: 600,
@@ -125,9 +126,6 @@ const styles = theme => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     borderRadius: '4px',
-    '&>input': {
-      paddingRight: '40px',
-    },
   },
 
   input: {
@@ -160,9 +158,8 @@ const styles = theme => ({
   },
 
   apiDetails: {
-    width: "280px",
-    display: "flex",
-    justifyContent: "space-between",
+    display: "grid",
+    gridTemplateColumns: "120px auto",
     marginTop: theme.spacing(1),
   },
 
@@ -188,10 +185,13 @@ class Authentication extends Component {
     super(props);
     // localStorage.clear();
     this.state = {
-      showConfigurations: true,
       showPassword: false,
+      isValidationFailed: false,
+      validationFailedMessage: "",
     }
+    this.props.checkConfiguration();
     this.handleLogInSubmit = this.handleLogInSubmit.bind(this);
+    this.handleConfigSubmit = this.handleConfigSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
   }
@@ -212,7 +212,35 @@ class Authentication extends Component {
     }
     this.props.login(payload, this.props.history);
   }
-  
+
+  handleConfigSubmit(event) {
+    event.preventDefault();
+
+    let isError = true;
+    let errorDesc = "";
+
+    if (!(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(this.props.telemetryIP)))
+      errorDesc = "Please Enter a valid IP for Telemetry API";
+    else if (Number(this.props.telemetryPort) <= 0 || Number(this.props.telemetryPort) > 65535)
+      errorDesc = "Please Enter a valid Port for Rest API";
+    else
+      isError = false;
+
+    this.setState({
+      isValidationFailed: isError,
+      validationFailedMessage: errorDesc
+    });
+
+    if (isError) return;
+
+
+    const payload = {
+      telemetryIP: this.props.telemetryIP,
+      telemetryPort: this.props.telemetryPort,
+    }
+    this.props.saveConfig(payload, this.props.history);
+  }
+
   handleChange(event) {
     const { name, value } = event.target;
     const payload = {
@@ -235,47 +263,23 @@ class Authentication extends Component {
           <div></div> {/*For easy to manage flex*/}
           <main className={classes.main}>
             <Transition
-              mountOnEnter
               unmountOnExit
-              in={this.state.showConfigurations}
+              in={!this.props.isConfigured}
               timeout={200}
             >
               {state => (
                 <Paper
                   className={classes.configPaper}
                   style={{
-                    transition: "all 200ms ease-out",
-                    opacity: state === "exited" ? 0 : 1,
-                    transform: state === "exited" ? "translateX(0%) scale(0%)" : "translateX(37.5%) scale(100%)",
-                    zIndex: state === "exited" ? 10 : 20,
-                    flexGrow: state === "exited" ? 0 : 1,
+                    transition: "all 200ms linear",
+                    opacity: state === "exiting" ? 0 : 1,
+                    transform: state === "exiting" ? "translateX(0%) scale(0%)" : "translateX(37.5%) scale(100%)",
+                    zIndex: state === "exiting" ? 10 : 20,
+                    flexGrow: state === "exiting" ? 0 : 1,
                   }}
                 >
                   <h1 className={classes.header}>Configurations</h1>
-                  <form className={classes.form} >
-                    <h3 className={classes.header}>Rest API</h3>
-                    <div className={classes.apiForm}>
-                      <Input
-                        required
-                        fullWidth
-                        data-testid="restIPInput"
-                        id="restIP"
-                        placeholder={t('IP Address')}
-                        name="restIP"
-                        className={classes.textField}
-                        onChange={this.handleChange}
-                      />
-                      <Input
-                        required
-                        fullWidth
-                        data-testid="restPortInput"
-                        id="restPort"
-                        placeholder={t('Port')}
-                        name="restPort"
-                        className={classes.textField}
-                        onChange={this.handleChange}
-                      />
-                    </div>
+                  <form className={classes.form} onSubmit={this.handleConfigSubmit} >
                     <h3 className={classes.header}>Telemetry API</h3>
                     <div className={classes.apiForm}>
                       <Input
@@ -285,39 +289,41 @@ class Authentication extends Component {
                         id="telemetryIP"
                         placeholder={t('IP Address')}
                         name="telemetryIP"
+                        value={this.props.telemetryIP}
                         className={classes.textField}
                         onChange={this.handleChange}
                       />
                       <Input
                         required
                         fullWidth
+                        type="number"
                         data-testid="telemetryPortInput"
                         id="telemetryPort"
                         placeholder={t('Port')}
                         name="telemetryPort"
+                        value={this.props.telemetryPort}
                         className={classes.textField}
                         onChange={this.handleChange}
                       />
                     </div>
                     <Button
-                      // type="submit"
-                      data-testid="submit"
+                      type="submit"
+                      data-testid="submitConfig"
                       fullWidth
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      onClick={() => this.setState({ showConfigurations: false })}
                     >
                       {t('Save')}
                     </Button>
-                    {this.props.loginFailed ? (
+                    {this.state.isValidationFailed ? (
                       <Typography
                         variant="caption"
                         component="span"
                         data-testid="errorMsg"
                         style={{ marginLeft: '10%;', color: 'red' }}
                       >
-                        {t('Login failed! Invalid id or password')}
+                        {this.state.validationFailedMessage}
                       </Typography>
                     ) : (
                       <span>&nbsp;</span>
@@ -328,18 +334,18 @@ class Authentication extends Component {
               )}
             </Transition>
             <Transition
-              in={!this.state.showConfigurations}
+              in={this.props.isConfigured}
               timeout={200}
             >
               {state => (
                 <Paper
                   className={classes.loginPaper}
                   style={{
-                    transition: "all 200ms ease-out",
-                    zIndex: state === "exited" ? 10 : 20,
-                    transform: state === "exited" ? "scale(0.8)" : "scale(1)",
-                    transformOrigin: state === "exited" ? "left" : "none",
-                    opacity: state === "exited" ? 0.4 : 1,
+                    transition: "all 200ms linear",
+                    zIndex: state === "exited" || state === "exiting" ? 10 : 20,
+                    transform: state === "exited" || state === "exiting" ? "scale(0.8)" : "scale(1)",
+                    transformOrigin: state === "exited" || state === "exiting" ? "left" : "none",
+                    opacity: state === "exited" || state === "exiting" ? 0.4 : 1,
                   }}
                 >
                   <h1 className={classes.header}>LOG IN</h1>
@@ -398,7 +404,7 @@ class Authentication extends Component {
                     />
                     <Button
                       type="submit"
-                      data-testid="submit"
+                      data-testid="submitLogin"
                       fullWidth
                       variant="contained"
                       color="primary"
@@ -420,17 +426,23 @@ class Authentication extends Component {
                     )}
                   </form>
                   <div className={classes.configDetails}>
-                    <div>
-                      <div className={classes.apiDetails}>
-                        <Typography>Rest API</Typography>
-                        <Typography>107.108.221.146<b>:</b>3002</Typography>
-                      </div>
-                      <div className={classes.apiDetails}>
-                        <Typography>Telemetry API</Typography>
-                        <Typography>107.108.221.146<b>:</b>2112</Typography>
-                      </div>
+                    <div className={classes.apiDetails}>
+                      <Typography>Telemetry API</Typography>
+                      {this.props.isConfigured ?
+                        <Typography>{this.props.telemetryIP}<b>:</b>{this.props.telemetryPort}</Typography> :
+                        <Typography>xxx.xxx.xxx.xxx<b>:</b>xxxx</Typography>
+                      }
                     </div>
-                    <Button variant="outlined" className={classes.editOutlinedButton} onClick={() => this.setState({ showConfigurations: true })}>Edit Config</Button>
+                    <Button
+                      variant="outlined"
+                      className={classes.editOutlinedButton}
+                      onClick={
+                        () => this.props.setIsConfigured({ isConfigured: false })
+                      }
+                    >
+                      Edit&nbsp;&nbsp;
+                      <ExitToAppIcon></ExitToAppIcon>
+                    </Button>
                   </div>
                 </Paper>
               )
@@ -446,6 +458,9 @@ class Authentication extends Component {
 
 const mapStateToProps = state => {
   return {
+    telemetryIP: state.authenticationReducer.telemetryIP,
+    telemetryPort: state.authenticationReducer.telemetryPort,
+    isConfigured: state.authenticationReducer.isConfigured,
     username: state.authenticationReducer.username,
     password: state.authenticationReducer.password,
     loginFailed: state.authenticationReducer.loginFailed,
@@ -455,10 +470,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    checkConfiguration: () => dispatch({ type: actionTypes.CHECK_CONFIGURATION }),
+    saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
+    setIsConfigured: payload => dispatch({ type: actionTypes.SET_IS_CONFIGURED, payload }),
     changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
-    login: (data, fn) =>
-
-      dispatch({ type: actionTypes.SAGA_LOGIN, payload: data, history: fn }),
+    login: (data, fn) => dispatch({ type: actionTypes.SAGA_LOGIN, payload: data, history: fn }),
   };
 };
 
