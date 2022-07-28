@@ -16,6 +16,7 @@ then
 fi
 
 cd $SCRIPT_PATH/../src/mtool/ui
+npm install
 npm run build
 cp -r build/* public/
 
