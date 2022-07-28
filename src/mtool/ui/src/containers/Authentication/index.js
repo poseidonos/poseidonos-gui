@@ -168,9 +168,8 @@ const styles = theme => ({
   },
 
   editOutlinedButton: {
-    border: "2px solid #ccd3db",
-    fontWeight: "bold",
-    color: "#ccd3db"
+    color: "#ccd3db",
+    borderColor: "#ccd3db"
   },
 
   poseidonLogo: {
@@ -346,6 +345,7 @@ class Authentication extends Component {
                     transform: state === "exited" || state === "exiting" ? "scale(0.8)" : "scale(1)",
                     transformOrigin: state === "exited" || state === "exiting" ? "left" : "none",
                     opacity: state === "exited" || state === "exiting" ? 0.4 : 1,
+                    pointerEvents: state === "exited" || state === "exiting" ? "none" : "auto"
                   }}
                 >
                   <h1 className={classes.header}>LOG IN</h1>
@@ -434,7 +434,7 @@ class Authentication extends Component {
                       }
                     </div>
                     <Button
-                      variant="outlined"
+                      variant='outlined'
                       className={classes.editOutlinedButton}
                       onClick={
                         () => this.props.setIsConfigured({ isConfigured: false })

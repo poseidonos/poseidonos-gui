@@ -34,8 +34,6 @@ import * as actionTypes from '../actions/actionTypes';
 
 
 export const initialState = {
-  restIP: '',
-  restPort: '',
   telemetryIP: '',
   telemetryPort: '',
   isConfigured: localStorage.getItem("isConfigured") ? true : false,
@@ -52,8 +50,6 @@ const authenticationReducer = (state = initialState, action) => {
         return {
           ...state,
           isConfigured: true,
-          restIP: localStorage.getItem("restIP"),
-          restPort: localStorage.getItem("restPort"),
           telemetryIP: localStorage.getItem("telemetryIP"),
           telemetryPort: localStorage.getItem("telemetryPort")
         }
@@ -66,8 +62,6 @@ const authenticationReducer = (state = initialState, action) => {
         return {
           ...state,
           isConfigured: true,
-          restIP: localStorage.getItem("restIP"),
-          restPort: localStorage.getItem("restPort"),
           telemetryIP: localStorage.getItem("telemetryIP"),
           telemetryPort: localStorage.getItem("telemetryPort")
         }
