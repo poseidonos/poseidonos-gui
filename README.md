@@ -36,7 +36,7 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 4. InfluxDB (1.8.x)
 5. IP Address of Mellanox Port should be set (Please refer to the file src/dagent/README.md ([README](src/dagent/README.md)))
 6. POS service is assumed to be available at "/usr/local/bin". If POS binary is not available in the "usr/local/bin" directory, then user will see an error when staring the pos (e.g. Poseidonos binary not found in /usr/local/bin/). In such a case, please build the poseidonos and run 'make install' from poseidonos root directory to correctly install the POS service
-
+7. docker, docker-compose (If you want install M9K as a Docker container image)
 
 ### Other Considerations 
 1. Internet access is required for downloading the required packages
@@ -85,6 +85,27 @@ http://localhost
 http://localhost
 `
 ```
+ 
+### Run as Docker Container
+1. Clone the project from GitHub - https://github.com/poseidonos/poseidonos-gui
+2. Navigate to poseidonos-gui directory
+3. Create a new personal access token (PAT).
+   - Select the ```read:packages``` scope to download container images and read their metadata.
+4. Log in to Docker container registry
+5. Run scripts as described below to pull Docker container image and run the application container
+(<b><i>You need to run these scripts as root or with a user with elevated permissions</i></b>)
+6. Access the application in the browser (e.g. http://<local_ip_addr>)
+
+```
+1. git clone https://github.com/poseidonos/poseidonos-gui.git
+2. cd poseidonos-gui
+3. export CR_PAT=YOUR_TOKEN
+4. echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+5. ./script/pull_docker.sh
+6. ./script/run_docker.sh
+7. Access the application from the browser
+```
+
 
 # Screens
 ## Dashboard 
