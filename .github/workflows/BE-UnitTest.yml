@@ -27,4 +27,5 @@ jobs:
       run: |
         cd src/mtool/api
         export PYTHONPATH=$PYTHONPATH:$PWD
-        pytest -s
+        pytest -s UnitTests/Authentication/test_authentication.py::test_login
+        pytest -s UnitTests/Authentication/test_authentication.py::test_login_failure
