@@ -24,5 +24,6 @@ jobs:
         cd src/mtool/api
         export PYTHONPATH=$PYTHONPATH:$PWD
         pip3 install -r requirements.txt
+        pip3 install requests-mock
         pytest --version
         pytest -v
