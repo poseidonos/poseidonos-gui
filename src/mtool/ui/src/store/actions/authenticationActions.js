@@ -45,6 +45,12 @@ export const setIsConfigured = payload => {
   }
 }
 
+export const setconfigurationFailed = () => {
+  return {
+    type: actionTypes.SET_CONFIGURATION_FAILED,
+  }
+}
+
 export const changeCredentials = payload => {
   return {
     type: actionTypes.CHANGE_CREDENTIALS,

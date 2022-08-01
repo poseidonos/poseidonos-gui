@@ -195,6 +195,7 @@ class Authentication extends Component {
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
     this.props.i18n.changeLanguage(this.props.lang);
   }
@@ -259,7 +260,7 @@ class Authentication extends Component {
       <ThemeProvider theme={MToolTheme}>
         <CssBaseline />
         <div className={classes.container}>
-          <div></div> {/*For easy to manage flex*/}
+          <div /> {/* For easy to manage flex */}
           <main className={classes.main}>
             <Transition
               unmountOnExit
@@ -278,7 +279,7 @@ class Authentication extends Component {
                   }}
                 >
                   <h1 className={classes.header}>Configurations</h1>
-                  <form className={classes.form} onSubmit={this.handleConfigSubmit} >
+                  <form className={classes.form} onSubmit={this.handleConfigSubmit}>
                     <h3 className={classes.header}>Telemetry API</h3>
                     <div className={classes.apiForm}>
                       <Input
@@ -324,11 +325,22 @@ class Authentication extends Component {
                       >
                         {this.state.validationFailedMessage}
                       </Typography>
-                    ) : (
-                      <span>&nbsp;</span>
-                    )}
+                    ) : <span>&nbsp;</span>}
+                    {!this.state.isValidationFailed && this.props.configurationFailed ?
+                      (
+                        <Typography
+                          variant="caption"
+                          component="span"
+                          data-testid="errorMsg"
+                          style={{ marginLeft: '10%;', color: 'red' }}
+                        >
+                          {t('Configuration failed! Telemetry API is not reachable')}
+                        </Typography>
+                      ) : (
+                        <span>&nbsp;</span>
+                      )}
                   </form>
-                  <div></div> {/*For easy to manage flex*/}
+                  <div /> {/* For easy to manage flex */}
                 </Paper>
               )}
             </Transition>
@@ -434,14 +446,14 @@ class Authentication extends Component {
                       }
                     </div>
                     <Button
-                      variant='outlined'
+                      variant="outlined"
                       className={classes.editOutlinedButton}
                       onClick={
                         () => this.props.setIsConfigured({ isConfigured: false })
                       }
                     >
                       Edit&nbsp;&nbsp;
-                      <ExitToAppIcon></ExitToAppIcon>
+                      <ExitToAppIcon />
                     </Button>
                   </div>
                 </Paper>
@@ -461,6 +473,7 @@ const mapStateToProps = state => {
     telemetryIP: state.authenticationReducer.telemetryIP,
     telemetryPort: state.authenticationReducer.telemetryPort,
     isConfigured: state.authenticationReducer.isConfigured,
+    configurationFailed: state.authenticationReducer.configurationFailed,
     username: state.authenticationReducer.username,
     password: state.authenticationReducer.password,
     loginFailed: state.authenticationReducer.loginFailed,

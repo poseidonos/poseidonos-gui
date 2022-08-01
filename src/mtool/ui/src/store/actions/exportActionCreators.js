@@ -123,6 +123,7 @@ export {
 
 export {
     setIsConfigured,
+    setconfigurationFailed,
     changeCredentials,
     setIsLoggedIn,
     setLoginFailed,

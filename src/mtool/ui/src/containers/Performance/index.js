@@ -41,11 +41,13 @@ import { customTheme, PageTheme } from '../../theme';
 const styles = () => ({
   content: {
     flexGrow: 1,
+    backgroundColor: "#111217"
   },
   toolbar: customTheme.toolbar,
   iframe: {
-    width: "98%",
-    height: "calc(100vh - 65px)"
+    border: 0,
+    width: "100%",
+    height: "calc(100vh - 60px)"
   }
 });
 
