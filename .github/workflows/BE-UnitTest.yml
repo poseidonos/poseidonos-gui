@@ -1,4 +1,4 @@
-name: Pylint
+name: UnitTest
 
 on: [push]
 
@@ -17,13 +17,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
         pip install pytest
-    - name: Analysing the code with pylint
+    - name: Installing packages ...
       run: |
         cd src/mtool/api
         export PYTHONPATH=$PYTHONPATH:$PWD
         pip3 install -r requirements.txt
         pip3 install requests-mock
-        pytest --version
-        pytest -v
+    - name: Running Unit Tests ...
+      run: |
+        pytest -s
