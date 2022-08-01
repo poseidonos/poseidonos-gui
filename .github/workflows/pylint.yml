@@ -23,5 +23,6 @@ jobs:
       run: |
         cd src/mtool/api
         export PYTHONPATH=$PYTHONPATH:$PWD
+        pip3 install -r requirements.txt
         pytest --version
         pytest -v
