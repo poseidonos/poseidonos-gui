@@ -7,67 +7,66 @@ from flask import make_response
 def toJson(data):
     return json_util.dumps(data)
 
-
-grafana_url = "http://localhost:3500"
-data_source_name = "poseidon"
+grafa_url = "http://localhost:3500"
+ds_name = "poseidon"
 
 def set_telemetry_configuration(ip, port):
     try:
-        success_response = make_response("success",200)
-        prometheus_url = "http://{ip}:{port}".format(ip=ip, port=port)
+        success_res = make_response("success",200)
+        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
 
-        # Checking PrometheusDB is running or not
-        prometheus_response = requests.get(
-            '{prometheus_url}/api/v1/status/runtimeinfo'.format(prometheus_url=prometheus_url)
+        # Checking prometheusDB is running or not
+        prom_res = requests.get(
+            '{prom_url}/api/v1/status/runtimeinfo'.format(prom_url=prom_url)
         )
-        prometheus_response = json.loads(prometheus_response.content)
+        prom_res = json.loads(prom_res.content)
 
-        if prometheus_response["status"] != "success":
-            return make_response("Prometheus DB is not running", 500)
+        if prom_res["status"] != "success":
+            return make_response("prom DB is not running", 500)
 
         # Create data source in grafana
-        url = '{grafana_url}/api/datasources'.format(grafana_url=grafana_url)
+        url = '{grafa_url}/api/datasources'.format(grafa_url=grafa_url)
         headers = {
             "Accept": "*/*",
             "Content-Type": "application/json",
         }
         payload = {
-            "name": data_source_name,
-            "type": "prometheus",
-            "url": prometheus_url,
+            "name": ds_name,
+            "type": "prom",
+            "url": prom_url,
             "access": "proxy",
             "basicAuth": False
         }
-        grafana_create_data_source_response = requests.post(url, headers=headers, data=toJson(payload))
-        grafana_create_data_source_response = json.loads(grafana_create_data_source_response.content)
+        grafa_create_ds_res = requests.post(url, headers=headers, data=toJson(payload))
+        grafa_create_ds_res = json.loads(grafa_create_ds_res.content)
 
-        if grafana_create_data_source_response["message"] == "Datasource added":
-            return success_response
+        if grafa_create_ds_res["message"] == "Datasource added":
+            return success_res
 
-        # Else Get the data source id named $data_source_name
-        grafana_data_sources_response = requests.get(url)
-        grafana_data_sources_response = json.loads(grafana_data_sources_response.content)
+        # Else Get the data source id named $ds_name
+        grafa_ds_res = requests.get(url)
+        grafa_ds_res = json.loads(grafa_ds_res.content)
 
-        data_source_id = -1
-        if len(grafana_data_sources_response):
-            for data_source in grafana_data_sources_response:
-                if data_source["name"] == data_source_name and data_source["url"] != prometheus_url:
-                        data_source_id = data_source["id"]
+        ds_id = -1
+        if len(grafa_ds_res):
+            for ds in grafa_ds_res:
+                if ds["name"] == ds_name and ds["url"] != prom_url:
+                        ds_id = ds["id"]
             
-        if data_source_id == -1:
-            return success_response
+        if ds_id == -1:
+            return success_res
 
         # Update data source with the new ip and port
-        grafana_update_data_source_response = requests.put(
-            '{url}/{data_source_id}'.format(url=url, data_source_id=data_source_id), 
+        grafa_update_ds_res = requests.put(
+            '{url}/{ds_id}'.format(url=url, ds_id=ds_id), 
             headers=headers, 
             data=toJson(payload)
         )
-        grafana_create_data_source_response = json.loads(grafana_update_data_source_response.content)
+        grafa_update_ds_res = json.loads(grafa_update_ds_res.content)
         
-        if grafana_update_data_source_response["message"] == "Datasource updated":
-            return success_response
-        return grafana_update_data_source_response
+        if grafa_update_ds_res["message"] == "Datasource updated":
+            return success_res
+        return grafa_update_ds_res
 
     except requests.exceptions.HTTPError as errh:
         return make_response("An Http Error occurred:" + repr(errh), 503)
