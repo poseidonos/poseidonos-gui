@@ -44,8 +44,8 @@ import '@testing-library/jest-dom/extend-expect';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history';
-import {Router} from 'react-router-dom';
-import { createStore, combineReducers,applyMiddleware,compose } from "redux";
+import { Router } from 'react-router-dom';
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from 'redux-saga';
 import '@testing-library/jest-dom/extend-expect';
 import rootSaga from "../../sagas/indexSaga"
@@ -69,19 +69,19 @@ describe("Authentication", () => {
       authenticationReducer
     });
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(rootReducers,composeEnhancers(applyMiddleware(sagaMiddleware)))
+    store = createStore(rootReducers, composeEnhancers(applyMiddleware(sagaMiddleware)))
     sagaMiddleware.run(rootSaga);
     const route = '/';
     history = createMemoryHistory({ initialEntries: [route] })
 
     wrapper = render(
       <Router history={history}>
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          {" "}
-          <Authentication />
-        </Provider>
-      </I18nextProvider>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            {" "}
+            <Authentication />
+          </Provider>
+        </I18nextProvider>
       </Router>
     );
   });
@@ -92,106 +92,226 @@ describe("Authentication", () => {
     const { asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();
   });
-/*
-  it("Language select displays English and Korean", () => {
-    const { getByTestId, getAllByText } = wrapper;
-    const selectButton = getByTestId("selectDropdown");
-    fireEvent.click(selectButton);
-    getAllByText(/en/i);
-  });
 
-  it("Language is changed to English when English is selected", () => {
+  it("Throws invalid input error in configuration", async () => {
     const { getByTestId } = wrapper;
-    const selectButton = getByTestId("selectDropdown");
-    fireEvent.click(selectButton);
-    const englishButton = getByTestId("englishSelect");
-    fireEvent.click(englishButton);
-    expect(getByTestId("submit")).toHaveTextContent("Login");
-  });
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '-5', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    await waitForElement(() => getByTestId("errorMsgConfigValidation"));
 
-  it("Language is changed to Korean when Korean is selected", () => {
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107', name: 'telemetryIP' }
+    });
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    await waitForElement(() => getByTestId("errorMsgConfigValidation"));
+  })
+
+  it("Throws error If prometheus API is not running", async () => {
+    const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
-    const selectButton = getByTestId("selectDropdown");
-    fireEvent.click(selectButton);
-    const koreanButton = getByTestId("koreanSelect");
-    fireEvent.click(koreanButton);
-    expect(getByTestId("submit")).toHaveTextContent("로그인");
-  });
-*/
-  it("Changes Password Visibility", () => {
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    const data = "Prometheus is not running";
+    mock.onPost('/api/v1/configure').reply(500, data);
+    await waitForElement(() => getByTestId("errorMsgConfig"));
+  })
+
+  it("Changes Password Visibility should not work if telemetry api is not configured", () => {
     const { getByTestId } = wrapper;
     const visibilityButton = getByTestId("visibilityButton");
-    fireEvent.click(visibilityButton);
-    getByTestId("showPassword");
+    expect(visibilityButton).toBeDisabled()
   });
 
-  it("Changes the value of input field", () => {
+  it("Configure telemetry API", async () => {
+    const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
-    const usernameInput = getByTestId("usernameInput").querySelector("input");
-    fireEvent.change(usernameInput, {
-        target: { value: 'test', name: 'username' }
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
     });
-    expect(usernameInput.value).toBe("test");
-  });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    const data = "success";
+    mock.onPost('/api/v1/configure').reply(200, data);
+    expect(await waitForElement(() => getByTestId("submitLogin"))).not.toBeDisabled();
+  })
+
+  it("Telemetry API doesn't return data", async () => {
+    const mock = new MockAdapter(axios);
+    const { getByTestId } = wrapper;
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "");
+    expect(await waitForElement(() => getByTestId("submitLogin"))).toBeDisabled();
+  })
+
+  it("Changes Password Visibility should work if telemetry api configured", async () => {
+    const mock = new MockAdapter(axios);
+    const { getByTestId } = wrapper;
+
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    const data = "success";
+    mock.onPost('/api/v1/configure').reply(200, data);
+
+    const visibilityButton = await waitForElement(() => getByTestId("visibilityButton"));
+    fireEvent.click(visibilityButton);
+    getByTestId("showPassword");
+  })
 
   it("Redirects to Dashboard", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "success");
+
     const usernameInput = getByTestId("usernameInput").querySelector("input");
     fireEvent.change(usernameInput, {
-        target: { value: 'test', name: 'username' }
+      target: { value: 'test', name: 'username' }
     });
     const passwordInput = getByTestId("passwordInput").querySelector("input");
     fireEvent.change(passwordInput, {
-        target: { value: 'test', name: 'password' }
+      target: { value: 'test', name: 'password' }
     });
     const data = true;
     mock.onPost('/api/v1.0/login/').reply(200, data);
-    fireEvent.click(getByTestId("submit"));
+    const submitLogin = await waitForElement(() => getByTestId("submitLogin"))
+    expect(submitLogin).not.toBeDisabled();
+    fireEvent.click(submitLogin)
   });
 
   it("Throws invalid credentials error", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+    
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "success");
+    
     const usernameInput = getByTestId("usernameInput").querySelector("input");
     fireEvent.change(usernameInput, {
-        target: { value: 'test', name: 'username' }
+      target: { value: 'test', name: 'username' }
     });
     const passwordInput = getByTestId("passwordInput").querySelector("input");
     fireEvent.change(passwordInput, {
-        target: { value: 'test', name: 'password' }
+      target: { value: 'test', name: 'password' }
     });
     mock.onPost().reply(500);
-    fireEvent.click(getByTestId("submit"))
-    await waitForElement(() => getByTestId("errorMsg"));
+    const submitLogin = await waitForElement(() => getByTestId("submitLogin"))
+    fireEvent.click(submitLogin)
+    await waitForElement(() => getByTestId("errorMsgLogin"));
   });
 
   it("login api doesn't return data", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "success");
+
     const usernameInput = getByTestId("usernameInput").querySelector("input");
     fireEvent.change(usernameInput, {
-        target: { value: 'test', name: 'username' }
+      target: { value: 'test', name: 'username' }
     });
     const passwordInput = getByTestId("passwordInput").querySelector("input");
     fireEvent.change(passwordInput, {
-        target: { value: 'test', name: 'password' }
+      target: { value: 'test', name: 'password' }
     });
-    const data = true;
     mock.onPost('/api/v1.0/login/').reply(200);
-    fireEvent.click(getByTestId("submit"));
+    const submitLogin = await waitForElement(() => getByTestId("submitLogin"))
+    fireEvent.click(submitLogin)
   });
+
+  it("Edit Configuration", async () => {
+    const mock = new MockAdapter(axios);
+    const { getByTestId } = wrapper;
+
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "success");
+
+    const editConfig = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editConfig)
+
+    const submitLogin = await waitForElement(() => getByTestId("submitLogin"))
+    expect(submitLogin).toBeDisabled()
+  })
 
   it("Should redirect to dashboard if already logged in", () => {
     localStorage.getItem = () => true;
     wrapper = render(
       <Router history={history}>
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          {" "}
-          <Authentication />
-        </Provider>
-      </I18nextProvider>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            {" "}
+            <Authentication />
+          </Provider>
+        </I18nextProvider>
       </Router>
     );
   });

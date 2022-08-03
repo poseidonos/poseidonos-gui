@@ -222,7 +222,7 @@ class Authentication extends Component {
     if (!(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(this.props.telemetryIP)))
       errorDesc = "Please Enter a valid IP for Telemetry API";
     else if (Number(this.props.telemetryPort) <= 0 || Number(this.props.telemetryPort) > 65535)
-      errorDesc = "Please Enter a valid Port for Rest API";
+      errorDesc = "Please Enter a valid Port for Telemetry API";
     else
       isError = false;
 
@@ -320,8 +320,8 @@ class Authentication extends Component {
                       <Typography
                         variant="caption"
                         component="span"
-                        data-testid="errorMsg"
-                        style={{ marginLeft: '10%;', color: 'red' }}
+                        data-testid="errorMsgConfigValidation"
+                        style={{ marginLeft: '10%', color: 'red' }}
                       >
                         {this.state.validationFailedMessage}
                       </Typography>
@@ -331,8 +331,8 @@ class Authentication extends Component {
                         <Typography
                           variant="caption"
                           component="span"
-                          data-testid="errorMsg"
-                          style={{ marginLeft: '10%;', color: 'red' }}
+                          data-testid="errorMsgConfig"
+                          style={{ marginLeft: '10%', color: 'red' }}
                         >
                           {t('Configuration failed! Telemetry API is not reachable')}
                         </Typography>
@@ -363,6 +363,7 @@ class Authentication extends Component {
                   <h1 className={classes.header}>LOG IN</h1>
                   <form className={classes.form} onSubmit={this.handleLogInSubmit}>
                     <Input
+                      disabled={!this.props.isConfigured}
                       required
                       fullWidth
                       data-testid="usernameInput"
@@ -383,6 +384,7 @@ class Authentication extends Component {
                       }
                     />
                     <Input
+                      disabled={!this.props.isConfigured}
                       required
                       fullWidth
                       data-testid="passwordInput"
@@ -400,6 +402,7 @@ class Authentication extends Component {
                             position="end"
                           >
                             <IconButton
+                              disabled={!this.props.isConfigured}
                               aria-label="toggle password visibility"
                               onClick={this.handleClickShowPassword}
                               data-testid="visibilityButton"
@@ -415,6 +418,7 @@ class Authentication extends Component {
                       }
                     />
                     <Button
+                      disabled={!this.props.isConfigured}
                       type="submit"
                       data-testid="submitLogin"
                       fullWidth
@@ -428,8 +432,8 @@ class Authentication extends Component {
                       <Typography
                         variant="caption"
                         component="span"
-                        data-testid="errorMsg"
-                        style={{ marginLeft: '10%;', color: 'red' }}
+                        data-testid="errorMsgLogin"
+                        style={{ marginLeft: '10%', color: 'red' }}
                       >
                         {t('Login failed! Invalid id or password')}
                       </Typography>
@@ -448,6 +452,7 @@ class Authentication extends Component {
                     <Button
                       variant="outlined"
                       className={classes.editOutlinedButton}
+                      data-testid="editConfig"
                       onClick={
                         () => this.props.setIsConfigured({ isConfigured: false })
                       }

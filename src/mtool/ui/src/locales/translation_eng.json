@@ -5,5 +5,6 @@
     "Login failed! Invalid id or password" : "Login failed! Invalid id or password",
     "IP Address": "IP Address",
     "Port": "Port",
-    "Save": "Save"
+    "Save": "Save",
+    "Configuration failed! Telemetry API is not reachable" : "Configuration failed! Telemetry API is not reachable"
  }
