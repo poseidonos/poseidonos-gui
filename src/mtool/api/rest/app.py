@@ -45,6 +45,7 @@ from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
+from rest.rest_api.telemetry.telemetry import set_telemetry_configuration
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
@@ -2214,6 +2215,16 @@ def set_pos_property():
         return toJson(pos_property_response)
     except Exception as e:
         return make_response('Could not set POS Property '+str(e), 500)
+
+# Telemetry Related APIS
+@app.route('/api/v1/configure', methods=['POST'])
+def set_telemetry_config():
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    ip = body["telemetryIP"]
+    port = body["telemetryPort"]
+    return set_telemetry_configuration(ip, port)
+
 
 
 '''
