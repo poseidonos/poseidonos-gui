@@ -2,111 +2,87 @@
 version: '3.3'
 services:
   dagent:
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: always
     image: golang_dagent
     volumes:
       - /tmp/air_result.json:/tmp/air_result.json
       - /etc/pos:/etc/pos
+    network_mode: "host"
     expose:
       - 3000
       - 18716
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.20
     ports:
       - 3000:3000
     container_name: dagent
     environment:
-      - DAGENT_HOST=dagent
+      - DAGENT_HOST=localhost
   magent:
     restart: always
     image: golang_magent
     volumes:
       - /tmp/air_result.json:/tmp/air_result.json
       - /etc/pos:/etc/pos
+    network_mode: "host"
     ports:
       - 8090:8090
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.21
     container_name: magent
     environment:
-      - INFLUX_HOST=172.20.0.22:8086
+      - INFLUX_HOST=0.0.0.0:8086
   flask:
     restart: always
     image: python_mtool
+    network_mode: "host"
     ports:
       - 5000:5000
-    links:
-      - influxdb
     container_name: mtool
     environment:
-      - DAGENT_HOST=dagent
-      - INFLUX_HOST=172.20.0.22
-      - INFLUXDB_URL=http://172.20.0.22:8086
-      - KAPACITOR_URL=http://172.20.0.23:9092
+      - DAGENT_HOST=localhost
+      - INFLUX_HOST=0.0.0.0
+      - INFLUXDB_URL=http://0.0.0.0:8086
+      - KAPACITOR_URL=http://0.0.0.0:9092
       - PYTHONUNBUFFERED=1
       - PYTHONIOENCODING=UTF-8
     depends_on: ['influxdb','kapacitor']
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.25
   nginx:
     restart: always
     image: nginx_ui
     container_name: nginx
     ports:
-      - 0.0.0.0:80:80
+      - 80:80
     depends_on: ['influxdb','kapacitor','flask']
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.26
+    network_mode: "host"
   influxdb:
     image: influxdb_m9k
     container_name: influxdb
+    network_mode: "host"
     ports:
       # The API for InfluxDB is served on port 8086
       - 8086:8086
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.22
     environment:
-      - INFLUX_HOST=influxdb
+      - INFLUX_HOST=localhost
       - INFLUXDB_DB=poseidon
-      - KAPACITOR_URL=http://172.20.0.23:9092
+      - KAPACITOR_URL=http://0.0.0.0:9092
   kapacitor:
     image: kapacitor:1.5.9-alpine
     container_name: kapacitor
     volumes:
       - ./kapacitor:/var/lib/kapacitor:rw
     depends_on: ['influxdb']
+    network_mode: "host"
     ports:
       - 9092:9092
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.23
     environment:
-      - KAPACITOR_INFLUXDB_0_URLS_0=http://172.20.0.22:8086
-      - KAPACITOR_URL=http://172.20.0.23:9092
-      - KAPACITOR_HOSTNAME=kapacitor
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://0.0.0.0:8086
+      - KAPACITOR_URL=http://0.0.0.0:9092
+      - KAPACITOR_HOSTNAME=localhost
   chronograf:
     image: chronograf:1.8.10-alpine
     container_name: chronograf
     depends_on: ['influxdb','kapacitor']
+    network_mode: "host"
     ports:
       - 8888:8888
-    networks:
-      M9K:
-        ipv4_address: 172.20.0.24
     environment:
-      - INFLUX_HOST=influxdb
-      - INFLUXDB_URL=http://172.20.0.22:8086
+      - INFLUX_HOST=localhost
+      - INFLUXDB_URL=http://0.0.0.0:8086
       - RESOURCES_PATH=/usr/share/chronograf/resources
-networks:
-  M9K:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
