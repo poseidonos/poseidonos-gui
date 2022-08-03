@@ -32,7 +32,7 @@ def set_telemetry_configuration(ip, port):
         }
         payload = {
             "name": ds_name,
-            "type": "prom",
+            "type": "prometheus",
             "url": prom_url,
             "access": "proxy",
             "basicAuth": False
