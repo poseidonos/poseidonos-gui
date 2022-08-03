@@ -33,7 +33,6 @@
 import React, { Component } from 'react';
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
-import './Performance.css';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { customTheme, PageTheme } from '../../theme';
