@@ -2217,14 +2217,27 @@ def set_pos_property():
         return make_response('Could not set POS Property '+str(e), 500)
 
 # Telemetry Related APIS
+@app.route('/api/v1/configure', methods=['GET'])
+def get_telemetry_config():
+    received_telemetry = connection_factory.get_telemetery_url()
+    if not received_telemetry:
+        return jsonify({'isConfigured': False})
+    return jsonify({
+        'isConfigured': True,
+        'ip': received_telemetry[0],
+        'port': received_telemetry[1]
+        })
+
 @app.route('/api/v1/configure', methods=['POST'])
 def set_telemetry_config():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     ip = body["telemetryIP"]
     port = body["telemetryPort"]
-    return set_telemetry_configuration(ip, port)
-
+    response = set_telemetry_configuration(ip, port)
+    if response.response[0].decode('UTF-8') == "success":
+        connection_factory.update_telemetry_url(ip,port)
+    return response
 
 
 '''

@@ -21,7 +21,7 @@ def set_telemetry_configuration(ip, port):
         )
         prom_res = json.loads(prom_res.content)
 
-        if prom_res["status"] != "success":
+        if prom_res["status"] and prom_res["status"] != "success":
             return make_response("prom DB is not running", 500)
 
         # Create data source in grafana
@@ -40,7 +40,7 @@ def set_telemetry_configuration(ip, port):
         grafa_create_ds_res = requests.post(url, headers=headers, data=toJson(payload))
         grafa_create_ds_res = json.loads(grafa_create_ds_res.content)
 
-        if grafa_create_ds_res["message"] == "Datasource added":
+        if grafa_create_ds_res["message"] and grafa_create_ds_res["message"] == "Datasource added":
             return success_res
 
         # Else Get the data source id named $ds_name
@@ -50,7 +50,7 @@ def set_telemetry_configuration(ip, port):
         ds_id = -1
         if len(grafa_ds_res):
             for ds in grafa_ds_res:
-                if ds["name"] == ds_name and ds["url"] != prom_url:
+                if ds["name"] and ds["name"] == ds_name and ds["url"] and ds["url"] != prom_url:
                         ds_id = ds["id"]
             
         if ds_id == -1:
@@ -64,7 +64,7 @@ def set_telemetry_configuration(ip, port):
         )
         grafa_update_ds_res = json.loads(grafa_update_ds_res.content)
         
-        if grafa_update_ds_res["message"] == "Datasource updated":
+        if grafa_update_ds_res["message"] and grafa_update_ds_res["message"] == "Datasource updated":
             return success_res
         return grafa_update_ds_res
 

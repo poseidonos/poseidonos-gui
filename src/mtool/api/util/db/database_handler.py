@@ -60,6 +60,7 @@ conFactory.create_default_database()
 DB_CONNECTION = ""
 SQLITE_DB_PATH = os.getcwd() + "/"
 DB_NAME = "ibof.db"
+TELEMETRY_TABLE = "telemetry"
 USER_TABLE = "user"
 EMAILLIST_TABLE = "emaillist"
 COUNTERS_TABLE = "counters"
@@ -103,6 +104,8 @@ USER_ALERTS_TABLE_COLUMNS = (
     "alertRange",
     "active")
 
+TELEMETRY_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + TELEMETRY_TABLE + " (ip text,port text);"
+
 USER_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_TABLE + " (" + USER_TABLE_COLUMNS[0] + " text," + USER_TABLE_COLUMNS[1] + " text," + USER_TABLE_COLUMNS[2] + " text," + USER_TABLE_COLUMNS[3] + \
     " text," + USER_TABLE_COLUMNS[4] + " text," + USER_TABLE_COLUMNS[5] + " bool," + USER_TABLE_COLUMNS[6] + " text," + USER_TABLE_COLUMNS[7] + " integer," + USER_TABLE_COLUMNS[8] + " bool);"
 USER_ALERTS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_ALERTS_TABLE + " (" + USER_ALERTS_TABLE_COLUMNS[0] + " text," + USER_ALERTS_TABLE_COLUMNS[1] + " text," + USER_ALERTS_TABLE_COLUMNS[2] + " text," + USER_ALERTS_TABLE_COLUMNS[
@@ -117,6 +120,10 @@ COUNTERS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
 TIMESTAMP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
     IBOFOS_TIMESTAMP_TABLE + " (_id text,lastRunningTime text);"
 
+TELEMETRY_QUERY = "SELECT * FROM " + TELEMETRY_TABLE
+INSERT_TELEMETRY_QUERY = "INSERT INTO " + TELEMETRY_TABLE + " (ip,port) VALUES(?,?)"
+UPDATE_TELEMETRY_QUERY = "UPDATE " + TELEMETRY_TABLE + \
+    " SET ip = ?, port = ?"
 USER_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 DEFAULT_USER_QUERY = "SELECT _id FROM " + USER_TABLE
@@ -196,6 +203,7 @@ class SQLiteConnection:
 
     def create_default_database(self):
         cur = DB_CONNECTION.cursor()
+        cur.execute(TELEMETRY_TABLE_QUERY)
         cur.execute(USER_TABLE_QUERY)
         cur.execute(EMAILLIST_TABLE_QUERY)
         cur.execute(COUNTERS_TABLE_QUERY)
@@ -212,6 +220,25 @@ class SQLiteConnection:
         if is_user_table_exist is None:
             cur.execute(USER_TABLE_DEFAULT_QUERY, USER_TABLE_DEFAULTS_VALUES)
         DB_CONNECTION.commit()
+
+    def get_telemetery_url(self):
+        cur = DB_CONNECTION.cursor()
+        cur.execute(TELEMETRY_QUERY)
+        rows = cur.fetchone()
+        if rows is None or len(rows) == 0:
+            return False
+        return rows
+
+    def update_telemetry_url(self, ip, port):
+        cur = DB_CONNECTION.cursor()
+        cur.execute(TELEMETRY_QUERY)
+        rows = cur.fetchone()
+        if rows is None or len(rows) == 0:
+            cur.execute(INSERT_TELEMETRY_QUERY, (ip, port))
+        else:
+            cur.execute(UPDATE_TELEMETRY_QUERY, (ip, port))
+        DB_CONNECTION.commit()
+        
 
     def get_current_user(self, username):
         cur = DB_CONNECTION.cursor()
