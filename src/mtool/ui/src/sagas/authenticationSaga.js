@@ -39,7 +39,6 @@ import * as actionCreators from '../store/actions/exportActionCreators';
 export function* getConfig() {
   try {
     const response = yield call([axios, axios.get], '/api/v1/configure');
-    console.log(response)
     if (response.status === 200 && response.data && response.data.isConfigured === true) {
       yield put(actionCreators.setIsConfigured(
         {

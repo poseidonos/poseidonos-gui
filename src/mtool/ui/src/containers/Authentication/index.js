@@ -194,13 +194,13 @@ class Authentication extends Component {
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getConfig()
-  }
-
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
     this.props.i18n.changeLanguage(this.props.lang);
+  }
+
+  componentDidMount() {
+    this.props.getConfig()
   }
 
   handleClickShowPassword = () => {
