@@ -36,6 +36,26 @@ import * as actionTypes from '../store/actions/actionTypes';
 import * as actionCreators from '../store/actions/exportActionCreators';
 
 
+export function* getConfig() {
+  try {
+    const response = yield call([axios, axios.get], '/api/v1/configure');
+    console.log(response)
+    if (response.status === 200 && response.data && response.data.isConfigured === true) {
+      yield put(actionCreators.setIsConfigured(
+        {
+          isConfigured: true,
+          telemetryIP: response.data.ip,
+          telemetryPort: response.data.port
+        }
+      ));
+    } else {
+      yield put(actionCreators.setIsConfigured({ isConfigured: false }));
+    }
+  } catch (error) {
+    yield put(actionCreators.setIsConfigured({ isConfigured: false }));
+  }
+}
+
 export function* saveConfig(action) {
   try {
     const response = yield call(
@@ -45,10 +65,12 @@ export function* saveConfig(action) {
     );
 
     if (response.data === "success") {
-      localStorage.setItem('isConfigured', true);
-      localStorage.setItem('telemetryIP', action.payload.telemetryIP);
-      localStorage.setItem('telemetryPort', action.payload.telemetryPort);
-      yield put(actionCreators.setIsConfigured({ isConfigured: true }));
+      yield put(actionCreators.setIsConfigured(
+        {
+          isConfigured: true,
+          telemetryIP: action.payload.telemetryIP,
+          telemetryPort: action.payload.telemetryPort
+        }));
     } else {
       yield put(actionCreators.setconfigurationFailed())
     }
@@ -82,6 +104,7 @@ export function* login(action) {
 
 
 export function* authenticationWatcher() {
-  yield takeEvery(actionTypes.SAGA_LOGIN, login);
+  yield takeEvery(actionTypes.SAGA_CHECK_CONFIGURATION, getConfig);
   yield takeEvery(actionTypes.SAGA_CONFIGURE, saveConfig);
+  yield takeEvery(actionTypes.SAGA_LOGIN, login);
 }

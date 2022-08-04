@@ -188,11 +188,14 @@ class Authentication extends Component {
       isValidationFailed: false,
       validationFailedMessage: "",
     }
-    this.props.checkConfiguration();
     this.handleLogInSubmit = this.handleLogInSubmit.bind(this);
     this.handleConfigSubmit = this.handleConfigSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getConfig()
   }
 
   // eslint-disable-next-line camelcase
@@ -488,7 +491,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    checkConfiguration: () => dispatch({ type: actionTypes.CHECK_CONFIGURATION }),
+    getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION}),
     saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
     setIsConfigured: payload => dispatch({ type: actionTypes.SET_IS_CONFIGURED, payload }),
     changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),

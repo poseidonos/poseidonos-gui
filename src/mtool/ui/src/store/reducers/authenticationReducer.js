@@ -36,7 +36,7 @@ import * as actionTypes from '../actions/actionTypes';
 export const initialState = {
   telemetryIP: '',
   telemetryPort: '',
-  isConfigured: localStorage.getItem("isConfigured"),
+  isConfigured: false,
   configurationFailed: false,
   username: '',
   password: '',
@@ -46,26 +46,14 @@ export const initialState = {
 
 const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CHECK_CONFIGURATION: {
-      if (localStorage.getItem("isConfigured")) {
-        return {
-          ...state,
-          isConfigured: true,
-          telemetryIP: localStorage.getItem("telemetryIP"),
-          telemetryPort: localStorage.getItem("telemetryPort")
-        }
-      }
-      return state;
-    }
-
     case actionTypes.SET_IS_CONFIGURED: {
       if (action.payload.isConfigured) {
         return {
           ...state,
           isConfigured: true,
           configurationFailed: false,
-          telemetryIP: localStorage.getItem("telemetryIP"),
-          telemetryPort: localStorage.getItem("telemetryPort")
+          telemetryIP: action.payload.telemetryIP,
+          telemetryPort: action.payload.telemetryPort
         }
       }
       return {

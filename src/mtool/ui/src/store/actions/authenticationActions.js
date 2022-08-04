@@ -32,12 +32,6 @@
 
 import * as actionTypes from './actionTypes';
 
-export const checkConfiguration = () => {
-  return {
-    type: actionTypes.CHECK_CONFIGURATION
-  }
-}
-
 export const setIsConfigured = payload => {
   return {
     type: actionTypes.SET_IS_CONFIGURED,
