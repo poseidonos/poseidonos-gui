@@ -139,6 +139,22 @@ describe("Authentication", () => {
     expect(visibilityButton).toBeDisabled()
   });
 
+  it("Telemetry API doesn't return data", async () => {
+    const mock = new MockAdapter(axios);
+    const { getByTestId } = wrapper;
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '107.108.83.97', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    mock.onPost('/api/v1/configure').reply(200, "");
+    expect(await waitForElement(() => getByTestId("submitLogin"))).toBeDisabled();
+  })
+
   it("Configure telemetry API", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
@@ -154,22 +170,6 @@ describe("Authentication", () => {
     const data = "success";
     mock.onPost('/api/v1/configure').reply(200, data);
     expect(await waitForElement(() => getByTestId("submitLogin"))).not.toBeDisabled();
-  })
-
-  it("Telemetry API doesn't return data", async () => {
-    const mock = new MockAdapter(axios);
-    const { getByTestId } = wrapper;
-    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
-    fireEvent.change(telemetryIPInput, {
-      target: { value: '107.108.83.97', name: 'telemetryIP' }
-    });
-    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
-    fireEvent.change(telemetryPortInput, {
-      target: { value: '9090', name: 'telemetryPort' }
-    });
-    fireEvent.click(getByTestId("submitConfig"))
-    mock.onPost('/api/v1/configure').reply(200, "");
-    expect(await waitForElement(() => getByTestId("submitLogin"))).toBeDisabled();
   })
 
   it("Changes Password Visibility should work if telemetry api configured", async () => {
