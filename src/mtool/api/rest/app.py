@@ -2219,25 +2219,31 @@ def set_pos_property():
 # Telemetry Related APIS
 @app.route('/api/v1/configure', methods=['GET'])
 def get_telemetry_config():
-    received_telemetry = connection_factory.get_telemetery_url()
-    if not received_telemetry:
-        return jsonify({'isConfigured': False})
-    return jsonify({
-        'isConfigured': True,
-        'ip': received_telemetry[0],
-        'port': received_telemetry[1]
-        })
+    try:
+        received_telemetry = connection_factory.get_telemetery_url()
+        if received_telemetry is None or len(received_telemetry) == 0:
+            return jsonify({'isConfigured': False})
+        return jsonify({
+            'isConfigured': True,
+            'ip': received_telemetry[0],
+            'port': received_telemetry[1]
+            })
+    except Exception as e:
+        return make_response('Could not get Telemetry URL'+str(e), 500)
 
 @app.route('/api/v1/configure', methods=['POST'])
 def set_telemetry_config():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    ip = body["telemetryIP"]
-    port = body["telemetryPort"]
-    response = set_telemetry_configuration(ip, port)
-    if response.response[0].decode('UTF-8') == "success":
-        connection_factory.update_telemetry_url(ip,port)
-    return response
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        ip = body["telemetryIP"]
+        port = body["telemetryPort"]
+        response = set_telemetry_configuration(ip, port)
+        if response.response[0].decode('UTF-8') == "success":
+            connection_factory.update_telemetry_url(ip,port)
+        return response
+    except Exception as e:
+        return make_response('Could not configure Telemetry URL'+str(e), 500)
 
 
 '''

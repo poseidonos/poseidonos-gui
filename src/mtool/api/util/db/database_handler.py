@@ -225,8 +225,6 @@ class SQLiteConnection:
         cur = DB_CONNECTION.cursor()
         cur.execute(TELEMETRY_QUERY)
         rows = cur.fetchone()
-        if rows is None or len(rows) == 0:
-            return False
         return rows
 
     def update_telemetry_url(self, ip, port):

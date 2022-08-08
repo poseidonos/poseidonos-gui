@@ -33,9 +33,9 @@
 import React, { Component } from 'react';
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import { customTheme, PageTheme } from '../../theme';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import { customTheme, PageTheme } from '../../theme';
 
 const styles = () => ({
   content: {
@@ -70,16 +70,16 @@ class Performance extends Component {
 
   render() {
     const { classes } = this.props;
+    const url = `http://${window.location.hostname}:3500/explore?"datasource":"poseidon"`
     return (
       <ThemeProvider theme={PageTheme}>
         <Box display="flex">
           <Header toggleDrawer={this.handleDrawerToggle} />
           <Sidebar mobileOpen={this.state.mobileOpen} toggleDrawer={this.handleDrawerToggle} />
           <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <iframe
+            <div className={classes.toolbar} /><iframe
               title="iframe"
-              src="http://107.108.83.97:3500/dashboards"
+              src={url}
               className={classes.iframe}
             />
           </main>

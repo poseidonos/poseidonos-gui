@@ -63,7 +63,7 @@ export function* saveConfig(action) {
       action.payload
     );
 
-    if (response.data === "success") {
+    if (response.status === 200) {
       yield put(actionCreators.setIsConfigured(
         {
           isConfigured: true,

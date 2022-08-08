@@ -22,7 +22,7 @@ def set_telemetry_configuration(ip, port):
         prom_res = json.loads(prom_res.content)
 
         if "status" in prom_res and prom_res["status"] != "success":
-            return make_response("prom DB is not running", 500)
+            return make_response("prometheus DB is not running", 500)
 
         # Create data source in grafana
         url = '{grafa_url}/api/datasources'.format(grafa_url=grafa_url)
@@ -66,7 +66,7 @@ def set_telemetry_configuration(ip, port):
         
         if "message" in grafa_update_ds_res and grafa_update_ds_res["message"] == "Datasource updated":
             return success_res
-        return grafa_update_ds_res
+        return make_response("Unable to add data source in Grafana", 500)
 
     except requests.exceptions.HTTPError as errh:
         return make_response("An Http Error occurred:" + repr(errh), 503)

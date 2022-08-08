@@ -47,13 +47,14 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EditIcon from '@material-ui/icons/Edit';
 import { connect } from 'react-redux';
 import MToolTheme from '../../theme';
 import './Authentication.css';
 import PoseidonLogo from '../../assets/images/Poseidon.png';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
+import { IP_REGEX } from '../../utils/constants';
 
 const styles = theme => ({
   container: {
@@ -182,7 +183,7 @@ const styles = theme => ({
 class Authentication extends Component {
   constructor(props) {
     super(props);
-    // localStorage.clear();
+    localStorage.clear();
     this.state = {
       showPassword: false,
       isValidationFailed: false,
@@ -222,7 +223,7 @@ class Authentication extends Component {
     let isError = true;
     let errorDesc = "";
 
-    if (!(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(this.props.telemetryIP)))
+    if (!(IP_REGEX.test(this.props.telemetryIP)))
       errorDesc = "Please Enter a valid IP for Telemetry API";
     else if (Number(this.props.telemetryPort) <= 0 || Number(this.props.telemetryPort) > 65535)
       errorDesc = "Please Enter a valid Port for Telemetry API";
@@ -241,7 +242,7 @@ class Authentication extends Component {
       telemetryIP: this.props.telemetryIP,
       telemetryPort: this.props.telemetryPort,
     }
-    this.props.saveConfig(payload, this.props.history);
+    this.props.saveConfig(payload);
   }
 
   handleChange(event) {
@@ -460,8 +461,8 @@ class Authentication extends Component {
                         () => this.props.setIsConfigured({ isConfigured: false })
                       }
                     >
-                      Edit&nbsp;&nbsp;
-                      <ExitToAppIcon />
+                      <EditIcon fontSize='small'/>
+                      &nbsp;Edit
                     </Button>
                   </div>
                 </Paper>
@@ -491,7 +492,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION}),
+    getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
     setIsConfigured: payload => dispatch({ type: actionTypes.SET_IS_CONFIGURED, payload }),
     changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
