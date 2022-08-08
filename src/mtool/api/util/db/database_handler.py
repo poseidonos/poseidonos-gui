@@ -124,6 +124,7 @@ TELEMETRY_QUERY = "SELECT * FROM " + TELEMETRY_TABLE
 INSERT_TELEMETRY_QUERY = "INSERT INTO " + TELEMETRY_TABLE + " (ip,port) VALUES(?,?)"
 UPDATE_TELEMETRY_QUERY = "UPDATE " + TELEMETRY_TABLE + \
     " SET ip = ?, port = ?"
+DELETE_TELEMETRY_QUERY = "DELETE FROM " + TELEMETRY_TABLE
 USER_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 DEFAULT_USER_QUERY = "SELECT _id FROM " + USER_TABLE
@@ -238,7 +239,13 @@ class SQLiteConnection:
         else:
             cur.execute(UPDATE_TELEMETRY_QUERY, (ip, port))
         DB_CONNECTION.commit()
-        
+
+    def delete_telemetry_url(self):
+        cur = DB_CONNECTION.cursor()
+        cur.execute(DELETE_TELEMETRY_QUERY)
+        rows = cur.fetchone()
+        print(rows)
+        DB_CONNECTION.commit()
 
     def get_current_user(self, username):
         cur = DB_CONNECTION.cursor()

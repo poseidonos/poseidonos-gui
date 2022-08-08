@@ -65,6 +65,7 @@ def test_get_current_user():
     OBJECT.get_email_list()
 '''
 
+
 def check_email_exist_in_list(email):
     for i in range(0, len(EMAIL_LIST)):
         if EMAIL_LIST[i]['email'] == email:
@@ -86,6 +87,23 @@ def test_email_func():
     OBJECT.get_smtp_details()
     #assert OBJECT.get_email_list() == email_list
 """
+def test_telemetry_url():
+    assert OBJECT.get_telemetery_url() is False
+    IP="122.122.122.122"
+    PORT="5555"
+    assert OBJECT.update_telemetry_url(IP,PORT) is None
+    telemetry_url = OBJECT.get_telemetery_url()
+    assert telemetry_url[0] == IP
+    assert telemetry_url[1] == PORT
+    NEW_IP="121.121.121.121"
+    NEW_PORT="2222"
+    assert OBJECT.update_telemetry_url(NEW_IP,NEW_PORT) is None
+    telemetry_url = OBJECT.get_telemetery_url()
+    assert telemetry_url[0] == NEW_IP
+    assert telemetry_url[1] == NEW_PORT
+    assert OBJECT.delete_telemetry_url() is None
+    assert OBJECT.get_telemetery_url() is False
+
 
 def test_add_new_user():
     for i in range(1, len(USER_LIST)):
