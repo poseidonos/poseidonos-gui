@@ -139,7 +139,7 @@ describe("Authentication", () => {
     expect(visibilityButton).toBeDisabled()
   });
 
-  it("Telemetry API doesn't return data", async () => {
+  it("Telemetry API is not configured", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
@@ -151,7 +151,7 @@ describe("Authentication", () => {
       target: { value: '9090', name: 'telemetryPort' }
     });
     fireEvent.click(getByTestId("submitConfig"))
-    mock.onPost('/api/v1/configure').reply(200, "");
+    mock.onPost('/api/v1/configure').reply(300, "");
     expect(await waitForElement(() => getByTestId("submitLogin"))).toBeDisabled();
   })
 

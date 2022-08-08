@@ -461,7 +461,7 @@ class Authentication extends Component {
                         () => this.props.setIsConfigured({ isConfigured: false })
                       }
                     >
-                      <EditIcon fontSize='small'/>
+                      <EditIcon fontSize="small" />
                       &nbsp;Edit
                     </Button>
                   </div>

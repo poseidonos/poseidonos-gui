@@ -55,11 +55,10 @@ def test_get_telemetry_config(mock_get_telemetry_url):
     assert data["isConfigured"] == True
 
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
-            return_value=False, autospec=True)
+            return_value=[], autospec=True)
 def test_get_telemetry_config_none(mock_get_telemetry_url):
     response = app.test_client().get('/api/v1/configure')
     data = json.loads(response.get_data(as_text=True))
-    print("Response", response)
     assert response.status_code == 200 
     assert data["isConfigured"] == False
 
