@@ -50,7 +50,6 @@ ALERT_CONDITION_LIST = [
     'Less Than',
     'Greater Than Equal To',
     'Equal To']
-NUM_OF_TELEMETRY_URLS = 1
 NUM_OF_EMAILS = 6
 NUM_OF_USER = 6
 NUM_OF_ALERTS = 6
