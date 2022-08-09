@@ -289,11 +289,11 @@ class VolumeList extends Component {
         cellStyle: cellText
       },
       {
-        title: 'NQN',
+        title: 'UUID (NQN)',
         render: rowData => (
           <>
-            <Typography variant="body2" displayBlock>NQN: {rowData.subnqn}</Typography>
-            <Typography variant="body2" displayBlock>UUID: {rowData.uuid}</Typography>
+            <Typography variant="body2" displayBlock>{rowData.uuid}</Typography>
+            <Typography variant="body2" displayBlock>({rowData.subnqn})</Typography>
           </>
         )
       },
