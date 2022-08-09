@@ -284,7 +284,7 @@ class VolumeList extends Component {
         }
       },
       {
-        title: 'Size Usage',
+        title: 'Volume Usage',
         render: rowData => `${rowData.usedspace}/${formatBytes(rowData.size)}`,
         cellStyle: cellText
       },
@@ -557,6 +557,11 @@ class VolumeList extends Component {
                 onClick: () => { this.handleClickOpen() }
               }
             ]}
+            localization={{
+              toolbar: {
+                searchPlaceholder: "Search Volume Name",
+              }
+            }}
           />
         </ThemeProvider>
         <AlertDialog
