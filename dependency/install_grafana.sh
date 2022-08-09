@@ -1,6 +1,13 @@
-echo -----------------------Installing Grafana--------------------------------
 #Remove previous GrafanaDB
-rm /var/lib/grafana/grafana.db
+while true; do
+    read -p "Do you wish to reset GrafanaDB before installing grafana?" yn
+    case $yn in
+        [Yy]* ) rm /var/lib/grafana/grafana.db; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+echo -----------------------Installing Grafana--------------------------------
 #Remove previos Default Init
 rm /etc/grafana/grafana.ini
 #Add dependencies

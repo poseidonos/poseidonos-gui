@@ -70,7 +70,7 @@ class Performance extends Component {
 
   render() {
     const { classes } = this.props;
-    const url = `http://${window.location.hostname}:3500/explore?"datasource":"poseidon"`
+    const url = `http://${window.location.hostname}:3500/datasources`
     return (
       <ThemeProvider theme={PageTheme}>
         <Box display="flex">
