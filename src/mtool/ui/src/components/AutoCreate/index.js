@@ -171,13 +171,15 @@ const AutoCreate = (props) => {
   }
   return (
     <ThemeProvider theme={PageTheme}>
-      <Paper
-        className={classes.container}
-        variant="contained"
-        color="primary"
-      >
+      <Paper className={classes.container}>
         <Typography>Need an Array Created Quickly?</Typography>
-        <Button onClick={openDialog} variant="contained" color="primary">Auto-Create</Button>
+        <Button
+          onClick={openDialog}
+          variant="outlined"
+          color="secondary"
+        >
+          Auto-Create
+        </Button>
       </Paper>
       <Popup
         title="Create Array"
@@ -311,8 +313,8 @@ const AutoCreate = (props) => {
         <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
           <Button
             onClick={autoCreateArray}
-            variant="contained"
-            color="primary"
+            variant="outlined"
+            color="secondary"
             data-testid="auto-createarray-btn"
             className={classes.button}
           >

@@ -106,21 +106,14 @@ const styles = (theme) => ({
   gridTileDisabled: {
     backgroundColor: "#e2e1e1",
   },
-  diskGridContainer: {
-    width: "100%",
-    overflowX: "auto",
-    [theme.breakpoints.down("xs")]: {
-      width: "calc(100% - 32px)",
-    },
-  },
   diskContainer: {
+    width: "100%",
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(0, 2),
-    minWidth: 800,
   },
   legendContainer: {
     padding: theme.spacing(0, 2),
@@ -491,76 +484,75 @@ class ArrayShow extends Component {
             <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
             <Legend bgColor="#087575" title="NUMA" />
           </Grid>
-          <div className={classes.diskGridContainer}>
-            <Grid container className={classes.diskContainer}>
-              <GridList cellHeight={110} className={classes.gridList} cols={32}>
-                {this.props.slots
-                  ? this.props.slots.map((slot, index) => {
-                    return (
-                      <Tooltip
-                        classes={{
-                          tooltip: classes.tooltip,
-                        }}
-                        key={slot.name}
-                        title={(
-                          <React.Fragment>
-                            <div>
-                              Name:
-                              {slot.name}
-                            </div>
-                            <div>
-                              Size:
-                              {formatBytes(slot.size)}
-                            </div>
-                            <div>
-                              NUMA: {slot.numa}
-                            </div>
-                            <div
-                              onClick={() => this.showPopup(slot.name)}
-                              aria-hidden="true"
-                              style={{
-                                cursor: "pointer",
-                                textAlign: "right",
-                                margin: "10px",
-                              }}
-                            >
-                              <u>More Details</u>
-                            </div>
-                          </React.Fragment>
-                        )}
-                        interactive
-                      >
-                        <Grid
-                          className={`${classes.gridTile} ${getClass(slot)}`}
-                          id={index}
-                          data-testid={`diskshow-${index}`}
-                        >
-                          <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
-                          <Typography
-                            color="secondary"
-                            className={classes.diskNo}
+          <Grid container className={classes.diskContainer}>
+            <GridList cellHeight={110} className={classes.gridList} cols={32}>
+              {this.props.slots
+                ? this.props.slots.map((slot, index) => {
+                  return (
+                    <Tooltip
+                      classes={{
+                        tooltip: classes.tooltip,
+                      }}
+                      key={slot.name}
+                      title={(
+                        <React.Fragment>
+                          <div>
+                            Name:
+                            {slot.name}
+                          </div>
+                          <div>
+                            Size:
+                            {formatBytes(slot.size)}
+                          </div>
+                          <div>
+                            NUMA: {slot.numa}
+                          </div>
+                          <div
+                            onClick={() => this.showPopup(slot.name)}
+                            aria-hidden="true"
+                            style={{
+                              cursor: "pointer",
+                              textAlign: "right",
+                              margin: "10px",
+                            }}
                           >
-                            {index + 1}
-                          </Typography>
-                          {getClass(slot) === classes.freedisk ? (
-                            <Button
-                              className={classes.detachBtn}
-                              data-testid={`attachdisk-${index}`}
-                              onClick={() => this.addSpareDisk(slot)}
-                            >
-                              Add Spare Disk
-                            </Button>
-                          ) : getClass(slot) === classes.sparedisk ? (
-                            <Button
-                              className={classes.detachBtn}
-                              data-testid={`detachdisk-${index}`}
-                              onClick={() => this.removeSpareDisk(slot)}
-                            >
-                              Remove Spare Disk
-                            </Button>
-                          ) : <p />}
+                            <u>More Details</u>
+                          </div>
+                        </React.Fragment>
+                      )}
+                      interactive
+                    >
+                      <Grid
+                        className={`${classes.gridTile} ${getClass(slot)}`}
+                        id={index}
+                        data-testid={`diskshow-${index}`}
+                      >
+                        <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
+                        <Typography
+                          color="secondary"
+                          className={classes.diskNo}
+                        >
+                          {index + 1}
+                        </Typography>
+                        {getClass(slot) === classes.freedisk ? (
+                          <Button
+                            className={classes.detachBtn}
+                            data-testid={`attachdisk-${index}`}
+                            onClick={() => this.addSpareDisk(slot)}
+                          >
+                            Add Spare Disk
+                          </Button>
+                        ) : getClass(slot) === classes.sparedisk ? (
+                          <Button
+                            className={classes.detachBtn}
+                            data-testid={`detachdisk-${index}`}
+                            onClick={() => this.removeSpareDisk(slot)}
+                          >
+                            Remove Spare Disk
+                          </Button>
+                        ) : <p />}
 
-                          {/* {(getClass(slot) === classes.freedisk) ? (
+                        {/* {(getClass(slot) === classes.freedisk) ? (
                         <Button
                           className={classes.detachBtn}
                           data-testid={`attachdisk-${index}`}
@@ -573,15 +565,14 @@ class ArrayShow extends Component {
                           onClick={() => this.detachDisk(slot)}
                         >Detach</Button>
                       )} */}
-                        </Grid>
-                      </Tooltip>
-                    );
-                  })
-                  : /* istanbul ignore next */ null}
-                {freeSlots}
-              </GridList>
-            </Grid>
-          </div>
+                      </Grid>
+                    </Tooltip>
+                  );
+                })
+                : /* istanbul ignore next */ null}
+              {freeSlots}
+            </GridList>
+          </Grid>
           <Grid
             item
             container

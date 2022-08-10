@@ -48,7 +48,7 @@ import TrashIcon from '@material-ui/icons/Delete';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box } from '@material-ui/core';
+import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box, Tooltip, Zoom } from '@material-ui/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
@@ -84,6 +84,12 @@ const styles = (theme) => ({
       overflow: "visible",
       wordBreak: "break-all"
     }
+  },
+  ellipseSpan: {
+    maxWidth: "150px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   }
 });
 
@@ -93,6 +99,23 @@ const RESET_MIN_IOPS_DETAILS = "Are you sure want to reset Minimum IOPS?"
 const RESET_MIN_BW_DETAILS = "Are you sure want to reset Minimum Bandwidth?"
 const MINIOPS = "miniops"
 const MINBW = "minbw"
+
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: '#212121',
+    boxShadow: theme.shadows[3],
+    fontSize: 14,
+    padding: theme.spacing(.5, 1),
+    maxWidth: "280px",
+    wordSpacing: "9999px",
+    "& span": {
+      color: "#FFF",
+      filter: "drop-shadow(-1px -1px 1px #E1E1E1)"
+    }
+  },
+}))(Tooltip);
 
 class VolumeList extends Component {
   constructor(props) {
@@ -254,7 +277,9 @@ class VolumeList extends Component {
   render() {
     const { classes } = this.props;
     const cellText = {
-      fontSize: 12
+      fontSize: 12,
+      paddingTop: 8,
+      paddingBottom: 8,
     }
     const volumeTableColumns = [
       {
@@ -290,12 +315,21 @@ class VolumeList extends Component {
       },
       {
         title: 'UUID (NQN)',
-        render: rowData => (
-          <>
-            <Typography variant="body2" displayBlock>{rowData.uuid}</Typography>
-            <Typography variant="body2" displayBlock>({rowData.subnqn})</Typography>
-          </>
-        )
+        cellStyle: cellText,
+        render: rowData => {
+          const subnqn = rowData.subnqn && `(${rowData.subnqn})`
+
+          return (
+            <>
+              <LightTooltip title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
+                <div>
+                  <Typography variant="body2" className={classes.ellipseSpan}>{rowData.uuid}</Typography>
+                  <Typography variant="body2" className={classes.ellipseSpan}> {subnqn}</Typography>
+                </div>
+              </LightTooltip>
+            </>
+          )
+        }
       },
       {
         title: 'Max IOPS (KIOPS)',
@@ -432,6 +466,7 @@ class VolumeList extends Component {
       {
         title: 'Mount Status',
         field: 'status',
+        cellStyle: cellText,
         render: row => (
           <Switch
             size="small"
@@ -453,6 +488,7 @@ class VolumeList extends Component {
         field: 'edit',
         editable: 'never',
         sorting: false,
+        cellStyle: cellText,
         render: row => {
           return !row.edit ? (
             <>
@@ -517,7 +553,9 @@ class VolumeList extends Component {
                 // backgroundColor: '#71859d',
                 // backgroundColor: '#424850',
                 backgroundColor: '#788595',
-                color: '#FFF'
+                color: '#FFF',
+                paddingTop: 8,
+                paddingBottom: 8
               },
               selectionProps: rowData => ({
                 'data-testid': rowData.name,
