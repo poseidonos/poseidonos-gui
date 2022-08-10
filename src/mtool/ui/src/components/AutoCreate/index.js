@@ -47,7 +47,7 @@ import {
   Checkbox
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import MToolTheme from "../../theme";
+import { PageTheme } from "../../theme";
 import Popup from "../Popup";
 
 const styles = (theme) => ({
@@ -170,7 +170,7 @@ const AutoCreate = (props) => {
     })
   }
   return (
-    <ThemeProvider theme={MToolTheme}>
+    <ThemeProvider theme={PageTheme}>
       <Paper
         className={classes.container}
         variant="contained"

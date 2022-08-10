@@ -150,14 +150,11 @@ const styles = (theme) => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 2, 0, 2),
+    padding: theme.spacing(0, 2),
     minWidth: 800,
   },
   tooltipText: {
     margin: 10
-  },
-  legendButtonGrid: {
-    marginBottom: theme.spacing(1),
   },
   diskText: {
     textAlign: "center",
@@ -174,17 +171,13 @@ const styles = (theme) => ({
   },
   legendContainer: {
     padding: theme.spacing(0, 2),
-  },
-  button: {
-    textTransform: "none",
+    justifyContent: "flex-end"
   },
   buttonContainer: {
-    justifyContent: "flex-end",
+    justifyContent: "center",
     padding: theme.spacing(0, 2),
     marginTop: theme.spacing(0.5),
-    [theme.breakpoints.down("xs")]: {
-      justifyContent: "center",
-    },
+    marginBottom: theme.spacing(1)
   },
   legendItem: {
     display: "flex",
@@ -462,22 +455,6 @@ class ArrayCreate extends Component {
           },
           totalSize: this.state.totalSize + disk.size,
         });
-        // } else if (
-        //   this.state.diskType === 'Write Buffer Disk' &&
-        //   this.state.slots[this.state.diskType].length < 1 &&
-        //   this.state.metaDisk === ''
-        // ) {
-        //   el.style.backgroundColor = diskColorMap[this.state.diskType];
-        //   const joined = this.state.slots[this.state.diskType].push({
-        //     deviceName: position,
-        //   });
-        //   this.setState({
-        //     ...this.state,
-        //     slots: {
-        //       ...this.state.slots,
-        //       'Write Disk Buffer': joined,
-        //     },
-        //   });
       }
     } else {
       el.style.backgroundColor = "white";
@@ -631,6 +608,19 @@ class ArrayCreate extends Component {
               />
             </FormControl>
           </Grid>
+          <Grid
+            item
+            container
+            wrap="wrap"
+            className={classes.legendContainer}
+          >
+            <Legend bgColor="#51ce46" title="Selected Storage Disk" />
+            <Legend bgColor="#339eff" title="Selected Spare Disk" />
+            <Legend bgColor="#ffffff" title="Not Selected" />
+            <Legend bgColor="#8c6b5d" title="Used Disk" />
+            <Legend bgColor="#e2e1e1" title="Empty Slot" />
+            <Legend bgColor="#087575" title="NUMA" />
+          </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={this.props.config.totalDisks}>
@@ -689,53 +679,33 @@ class ArrayCreate extends Component {
               </GridList>
             </Grid>
           </div>
-          <Grid container className={classes.legendButtonGrid}>
-            <Grid
-              item
-              container
-              sm={8}
-              xs={12}
-              wrap="wrap"
-              className={classes.legendContainer}
+          <Grid
+            item
+            container
+            className={classes.buttonContainer}
+          >
+            <Button
+              onClick={this.openCreatePopup}
+              variant="contained"
+              color="primary"
+              data-testid="createarray-btn"
             >
-              <Legend bgColor="#51ce46" title="Selected Storage Disk" />
-              <Legend bgColor="#339eff" title="Selected Spare Disk" />
-              <Legend bgColor="#ffffff" title="Not Selected" />
-              <Legend bgColor="#8c6b5d" title="Used Disk" />
-              <Legend bgColor="#e2e1e1" title="Empty Slot" />
-              <Legend bgColor="#087575" title="NUMA" />
-            </Grid>
-            <Grid
-              item
-              container
-              sm={4}
-              xs={12}
-              className={classes.buttonContainer}
-            >
-              <Button
-                onClick={this.openCreatePopup}
-                variant="contained"
-                color="primary"
-                data-testid="createarray-btn"
-                className={classes.button}
-              >
-                Create Array
-              </Button>
-              <AlertDialog
-                type="confirm"
-                title="Create Array"
-                description={this.state.createMsg}
-                open={this.state.confirmOpen}
-                onConfirm={() => {
-                  this.setState({
-                    confirmOpen: false
-                  }, () => {
-                    this.createArray();
-                  })
-                }}
-                handleClose={this.closePopup}
-              />
-            </Grid>
+              Create Array
+            </Button>
+            <AlertDialog
+              type="confirm"
+              title="Create Array"
+              description={this.state.createMsg}
+              open={this.state.confirmOpen}
+              onConfirm={() => {
+                this.setState({
+                  confirmOpen: false
+                }, () => {
+                  this.createArray();
+                })
+              }}
+              handleClose={this.closePopup}
+            />
           </Grid>
           {this.props.loading /* istanbul ignore next */ ? (
             <MToolLoader />

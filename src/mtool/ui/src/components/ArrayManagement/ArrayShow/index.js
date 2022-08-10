@@ -119,30 +119,23 @@ const styles = (theme) => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 2, 0, 2),
+    padding: theme.spacing(0, 2),
     minWidth: 800,
-  },
-  legendButtonGrid: {
-    marginBottom: theme.spacing(1),
   },
   legendContainer: {
     padding: theme.spacing(0, 2),
+    justifyContent: "flex-end"
   },
   buttonContainer: {
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 2, 0, 0),
-    // paddingLeft:"0px",
+    justifyContent: "flex-start",
+    gap: "8px",
+    padding: theme.spacing(0, 2),
     marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down("xs")]: {
-      justifyContent: "center",
+      justifyContent: "space-between",
     },
-  },
 
-  button: {
-    height: "1.8rem",
-    lineHeight: "0px",
-    marginLeft: "2px",
-    marginBottom: "4px",
   },
   legendItem: {
     display: "flex",
@@ -266,7 +259,7 @@ class ArrayShow extends Component {
       this.props.getDevices({ noLoad: true });
     }, 5000);
   }
-  
+
 
   componentWillUnmount() {
     if (this.interval) {
@@ -455,11 +448,11 @@ class ArrayShow extends Component {
                 }}
                 disabled
               >
-               {this.props.metadiskpath && this.props.metadiskpath[0] && (
-                <MenuItem value={this.props.metadiskpath[0].deviceName}>
-                  {this.props.metadiskpath[0].deviceName}
-                </MenuItem>
-               )}
+                {this.props.metadiskpath && this.props.metadiskpath[0] && (
+                  <MenuItem value={this.props.metadiskpath[0].deviceName}>
+                    {this.props.metadiskpath[0].deviceName}
+                  </MenuItem>
+                )}
               </Select>
             </FormControl>
           </Grid>
@@ -470,7 +463,7 @@ class ArrayShow extends Component {
                   name="mount_arr_writethrough"
                   color="primary"
                   id="mount-writethrough-checkbox"
-                  checked={this.props.mountStatus === "Mounted"? this.props.writeThrough : this.state.writeThroughMode}
+                  checked={this.props.mountStatus === "Mounted" ? this.props.writeThrough : this.state.writeThroughMode}
                   disabled={this.props.mountStatus === "Mounted"}
                   value="Write Through Mode"
                   inputProps={{
@@ -485,6 +478,19 @@ class ArrayShow extends Component {
               label="Write Through Mode"
             />
           </FormControl>
+          <Grid
+            item
+            container
+            wrap="wrap"
+            className={classes.legendContainer}
+          >
+            <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
+            <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
+            <Legend bgColor="#8c6b5d" title="Used by Another Array" />
+            <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
+            <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
+            <Legend bgColor="#087575" title="NUMA" />
+          </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={110} className={classes.gridList} cols={32}>
@@ -576,81 +582,60 @@ class ArrayShow extends Component {
               </GridList>
             </Grid>
           </div>
-          <Grid container className={classes.legendButtonGrid}>
-            <Grid
-              item
-              container
-              sm={8}
-              xs={12}
-              wrap="wrap"
-              className={classes.legendContainer}
-            >
-              <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
-              <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
-              <Legend bgColor="#8c6b5d" title="Used by Another Array" />
-              <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
-              <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
-              <Legend bgColor="#087575" title="NUMA" />
-            </Grid>
-            <Grid
-              item
-              container
-              sm={4}
-              xs={12}
-              className={classes.buttonContainer}
-            >
-              {this.props.mountStatus !== "Mounted" ? (
-                <Tooltip
-                  title="Mount the array to perform volume level operations"
-                  placement="bottom-start"
-                  classes={{
-                    tooltip: classes.tooltip,
-                  }}
-                >
-                  <Button
-                    onClick={this.handleMountClick}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    Mount Array
-                  </Button>
-                </Tooltip>
-              ) : (
-                <Tooltip
-                  title="Unmounting the array will disable all the volume level operations for the user"
-                  placement="bottom-start"
-                  classes={{
-                    tooltip: classes.tooltip,
-                  }}
-                >
-                  <Button
-                    onClick={this.handleUnmountClick}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    Unmount Array
-                  </Button>
-                </Tooltip>
-              )}
+          <Grid
+            item
+            container
+            className={classes.buttonContainer}
+          >
+            {this.props.mountStatus !== "Mounted" ? (
               <Tooltip
-                title="Delete array will delete the array and the volumes in it"
+                title="Mount the array to perform volume level operations"
                 placement="bottom-start"
                 classes={{
                   tooltip: classes.tooltip,
                 }}
               >
                 <Button
-                  onClick={this.handleClick}
+                  onClick={this.handleMountClick}
                   variant="contained"
                   color="primary"
                   className={classes.button}
                 >
-                  Delete Array
+                  Mount Array
                 </Button>
               </Tooltip>
-            </Grid>
+            ) : (
+              <Tooltip
+                title="Unmounting the array will disable all the volume level operations for the user"
+                placement="bottom-start"
+                classes={{
+                  tooltip: classes.tooltip,
+                }}
+              >
+                <Button
+                  onClick={this.handleUnmountClick}
+                  variant="contained"
+                  color="primary"
+                >
+                  Unmount Array
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip
+              title="Delete array will delete the array and the volumes in it"
+              placement="bottom-start"
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+            >
+              <Button
+                onClick={this.handleClick}
+                variant="outlined"
+                color="secondary"
+              >
+                Delete Array
+              </Button>
+            </Tooltip>
           </Grid>
           <AlertDialog
             title="Delete Array"
