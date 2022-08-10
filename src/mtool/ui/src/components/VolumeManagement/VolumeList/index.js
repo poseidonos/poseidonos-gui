@@ -68,24 +68,11 @@ const styles = (theme) => ({
     borderRadius: 100
   },
   volName: {
-    width: "inherit",
+    width: "150px",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    [theme.breakpoints.down("md")]: {
-      maxWidth: 150,
-    },
-    "&:hover": {
-      width: "auto",
-      maxWidth: "calc(100% - 100px)",
-      backgroundColor: "white",
-      position: "absolute",
-      marginTop: -theme.spacing(2),
-      zIndex: 1000,
-      overflow: "visible",
-      wordBreak: "break-all"
-    }
   },
-  ellipseSpan: {
+  uuidName: {
     maxWidth: "150px",
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -107,7 +94,7 @@ const LightTooltip = withStyles((theme) => ({
     color: '#212121',
     boxShadow: theme.shadows[3],
     fontSize: 14,
-    padding: theme.spacing(.5, 1),
+    padding: theme.spacing(.75, 1.25),
     maxWidth: "280px",
     wordSpacing: "9999px",
     "& span": {
@@ -276,16 +263,16 @@ class VolumeList extends Component {
 
   render() {
     const { classes } = this.props;
-    const cellText = {
+    const cellStyle = {
       fontSize: 12,
       paddingTop: 8,
-      paddingBottom: 8,
+      paddingBottom: 8
     }
     const volumeTableColumns = [
       {
         title: 'Name',
         field: 'name',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -301,9 +288,11 @@ class VolumeList extends Component {
             )
           }
           return (
-            <Typography className={classes.volName}>
-              {rowData.name}
-            </Typography>
+            <LightTooltip interactive={true} title={rowData.name} TransitionComponent={Zoom} arrow>
+              <Typography className={classes.volName}>
+                {rowData.name}
+              </Typography>
+            </LightTooltip>
           );
 
         }
@@ -311,20 +300,20 @@ class VolumeList extends Component {
       {
         title: 'Volume Usage',
         render: rowData => `${rowData.usedspace}/${formatBytes(rowData.size)}`,
-        cellStyle: cellText
+        cellStyle: cellStyle
       },
       {
         title: 'UUID (NQN)',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: rowData => {
           const subnqn = rowData.subnqn && `(${rowData.subnqn})`
 
           return (
             <>
-              <LightTooltip title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
+              <LightTooltip interactive={true} title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
                 <div>
-                  <Typography variant="body2" className={classes.ellipseSpan}>{rowData.uuid}</Typography>
-                  <Typography variant="body2" className={classes.ellipseSpan}> {subnqn}</Typography>
+                  <Typography variant="body2" className={classes.uuidName}>{rowData.uuid}</Typography>
+                  <Typography variant="body2" className={classes.uuidName}> {subnqn}</Typography>
                 </div>
               </LightTooltip>
             </>
@@ -334,7 +323,7 @@ class VolumeList extends Component {
       {
         title: 'Max IOPS (KIOPS)',
         field: 'maxiops',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -357,7 +346,7 @@ class VolumeList extends Component {
       {
         title: 'Max Bandwidth (MB/s)',
         field: 'maxbw',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -381,7 +370,7 @@ class VolumeList extends Component {
       {
         title: 'Min Bandwidth / Min IOPS',
         field: 'minbw-miniops',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         customSort: (a, b) => {
           if (a.minType === b.minType)
             return a.minType === MINIOPS ? (a.miniops - b.miniops) : (a.minbw - b.minbw);
@@ -398,7 +387,6 @@ class VolumeList extends Component {
         },
         render: rowData => {
           const localStyle = {
-            ...cellText,
             display: "flex",
             width: "130px",
             justifyContent: "space-between",
@@ -428,7 +416,7 @@ class VolumeList extends Component {
                   }}
                 />
                 <Select
-                  style={cellText}
+                  style={{ fontSize: 12 }}
                   value={localType}
                   onChange={(e) => {
                     this.setState({
@@ -466,7 +454,7 @@ class VolumeList extends Component {
       {
         title: 'Mount Status',
         field: 'status',
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: row => (
           <Switch
             size="small"
@@ -488,10 +476,10 @@ class VolumeList extends Component {
         field: 'edit',
         editable: 'never',
         sorting: false,
-        cellStyle: cellText,
+        cellStyle: cellStyle,
         render: row => {
           return !row.edit ? (
-            <>
+            <div style={{ width: "80px" }}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-btn-${row.name}`}
@@ -509,9 +497,9 @@ class VolumeList extends Component {
               >
                 <ReplayIcon />
               </Button>
-            </>
+            </div>
           ) : (
-            <React.Fragment>
+            <div style={{ width: "80px" }}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-save-btn-${row.name}`}
@@ -528,7 +516,7 @@ class VolumeList extends Component {
               >
                 <Clear />
               </Button>
-            </React.Fragment>
+            </div>
           );
         }
       }
@@ -550,12 +538,10 @@ class VolumeList extends Component {
               showSelectAllCheckbox: !this.props.fetchingVolumes,
               showTextRowsSelected: false,
               headerStyle: {
-                // backgroundColor: '#71859d',
-                // backgroundColor: '#424850',
                 backgroundColor: '#788595',
                 color: '#FFF',
                 paddingTop: 8,
-                paddingBottom: 8
+                paddingBottom: 8,
               },
               selectionProps: rowData => ({
                 'data-testid': rowData.name,
