@@ -1,4 +1,5 @@
 FROM influxdb:1.7.10-alpine
+LABEL org.opencontainers.image.source https://github.com/poseidonos/poseidonos-gui
 
 WORKDIR /
 
