@@ -1,5 +1,6 @@
 # Start from latest GO base image
 FROM ubuntu:18.04
+LABEL org.opencontainers.image.source https://github.com/poseidonos/poseidonos-gui
 
 # Set working directory inside container
 WORKDIR /app

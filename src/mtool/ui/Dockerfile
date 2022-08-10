@@ -1,4 +1,5 @@
 FROM nginx:1.21.6-alpine
+LABEL org.opencontainers.image.source https://github.com/poseidonos/poseidonos-gui
 
 RUN rm /etc/nginx/conf.d/*
 

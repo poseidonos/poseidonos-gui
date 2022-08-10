@@ -1,4 +1,5 @@
 FROM python:3.6-slim
+LABEL org.opencontainers.image.source https://github.com/poseidonos/poseidonos-gui
 
 WORKDIR /app
 
