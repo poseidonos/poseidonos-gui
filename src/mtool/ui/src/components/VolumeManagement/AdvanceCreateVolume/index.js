@@ -1,11 +1,30 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Modal, Select, Step, StepLabel, Stepper, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
-import { Cancel } from '@material-ui/icons';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  Step,
+  StepLabel,
+  Stepper,
+  TextField,
+  Tooltip,
+  Typography,
+  withStyles
+} from '@material-ui/core';
 import { customTheme } from '../../../theme';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
+import DialogTitle from '../../DialogTitle';
+
 
 const style = {
   position: 'absolute',
@@ -13,8 +32,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  padding: 8,
   borderRadius: 4,
+  overflow: "hidden"
 }
 
 const styles = (theme) => ({
@@ -26,13 +45,7 @@ const styles = (theme) => ({
     width: 600,
     height: 400,
     bgcolor: 'background.paper',
-    padding: 8,
     borderRadius: 4,
-  },
-  cancleIcon: {
-    position: "absolute",
-    right: theme.spacing(1),
-    padding: "2px",
   },
   main: {
     width: '800px',
@@ -74,7 +87,7 @@ const styles = (theme) => ({
     width: "100%",
     height: "300px",
     display: "flex",
-    padding: theme.spacing(2, 3),
+    padding: theme.spacing(2),
     flexWrap: "wrap",
     boxSizing: "border-box",
     borderLeft: "2px solid grey",
@@ -82,7 +95,7 @@ const styles = (theme) => ({
     alignContent: 'flex-start',
     overflow: "auto",
     [theme.breakpoints.down("xs")]: {
-      height: "calc(80vh - 240px)",
+      height: "calc(80vh - 220px)",
       borderLeft: "none",
     },
   },
@@ -139,7 +152,12 @@ const styles = (theme) => ({
     }
   },
   createHeader: {
-    ...customTheme.card.header,
+    color: "#424850",
+    fontSize: "16px",
+    textAlign: "left",
+    marginLeft: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   caption: {
     color: "#424850",
@@ -858,9 +876,9 @@ function AdvanceCreateVolume(props) {
         }
         {props.volume_size === 0 ? (
           <Typography className={classes.previewElement}>Volume Size : Remaining space in the Array</Typography>
-         ) : (
+        ) : (
           <Typography className={classes.previewElement}>Volume Size : {props.volume_size} {props.volume_units}</Typography>
-         )
+        )
         }
       </div>
       <Typography className={classes.previewHeader}>Qos Values</Typography>
@@ -978,15 +996,15 @@ function AdvanceCreateVolume(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <IconButton className={classes.cancleIcon} aria-label="Close" onClick={handleModalClose}>
-          <Cancel />
-        </IconButton>
+        <DialogTitle onClose={handleModalClose}>
+          Advance Create Volume
+        </DialogTitle>
         <form className={classes.formContainer}>
           <main className={classes.main}>
             <div className={classes.mainContent}>
               <div>
-                <Typography className={classes.createHeader}>Create Volume</Typography>
-                <Stepper activeStep={activeStep} className={classes.xsHide} orientation="vertical">
+                <Typography className={classes.createHeader}>Steps</Typography>
+                <Stepper activeStep={activeStep} className={classes.xsHide} style={{ padding: "16px" }}orientation="vertical">
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
@@ -1004,7 +1022,6 @@ function AdvanceCreateVolume(props) {
 
               <div>
                 <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
-
                 <div className={classes.stepContent}>
                   {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
                 </div>

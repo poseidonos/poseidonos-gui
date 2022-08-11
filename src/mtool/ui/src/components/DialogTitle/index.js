@@ -8,14 +8,19 @@ const styles = (theme) => ({
   title: {
     // backgroundColor: '#18355f',
     backgroundColor: '#424850',
-    color: theme.palette.common.white,
-    padding: '5px',
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    display: 'flex',
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 500,
+    alignItems: 'center',
   },
 
   closeButton: {
     position: 'absolute',
-    right: theme.spacing(),
-    top: theme.spacing(),
+    right: theme.spacing(1),
+    top: '0px',
     color: theme.palette.grey[500],
   }
 });
@@ -30,7 +35,7 @@ const DialogTitle = props => {
         className={classes.closeButton}
         onClick={onClose}
       >
-        <span data-testid="diskdetails-close" style={{ fontSize: 14, color: '#fff' }}>x</span>
+        <span style={{ fontSize: 14, color: '#fff' }}>x</span>
       </IconButton>
     </MuiDialogTitle>
   );

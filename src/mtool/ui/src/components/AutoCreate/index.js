@@ -313,8 +313,8 @@ const AutoCreate = (props) => {
         <Grid item container justifyContent="center" xs={12} className={classes.inputGrid}>
           <Button
             onClick={autoCreateArray}
-            variant="outlined"
-            color="secondary"
+            variant="contained"
+            color="primary"
             data-testid="auto-createarray-btn"
             className={classes.button}
           >
