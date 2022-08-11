@@ -32,7 +32,9 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+import Loader from 'react-loader-spinner';
 import {
   AppBar,
   Toolbar,
@@ -40,12 +42,12 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
+import { InfoOutlined } from "@material-ui/icons";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
-import { withRouter } from 'react-router-dom';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Loader from 'react-loader-spinner';
+
 import Heading from '../../assets/images/Header-logo.png';
 // import Dropdown from './Dropdown';
 import AlertDialog from '../Dialog';
@@ -157,6 +159,17 @@ const styles = theme => ({
     marginRight: theme.spacing(2),
     [theme.breakpoints.up('md')]: {
       display: 'none',
+    },
+  },
+  tooltip: {
+    backgroundColor: "#f5f5f9",
+    opacity: 1,
+    color: "rgba(0, 0, 0, 1)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+    "& b": {
+      fontWeight: theme.typography.fontWeightMedium,
     },
   },
 });
@@ -451,15 +464,7 @@ class Header extends Component {
               </Typography>
             </div>
             <div className={classes.grow} />
-            <span
-              className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
-              title="Poseidon OS last running timestamp"
-            >
-              POS Last Active Time: {this.props.timestamp === "..." ?
-                <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
-              {!this.props.timestamp ? "NA" : ""}
-            </span>
-            <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
+
             <Typography className={classes.nextSeparator}>Status:</Typography>
             <Typography className={classes.nextSeparator} />
             {this.props.status ? (
@@ -480,6 +485,28 @@ class Header extends Component {
                 {this.props.OS_Running_Status}
               </Typography>
             ) : null}
+            <Tooltip
+              title={(
+                <>
+                  POS Last Active Time:
+                  {this.props.timestamp === "..." ?
+                    <Loader type="Bars" color="primary" height={20} width={20} /> :
+                    (
+                      <>
+                        <br />
+                        {this.props.timestamp}
+                      </>
+                    )
+                  }
+                  {!this.props.timestamp ? "NA" : ""}
+                </>
+              )}
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+            >
+              <InfoOutlined style={{ marginLeft: 4, width: 18 }} />
+            </Tooltip>
             <div className={classes.sectionDesktop}>
 
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
