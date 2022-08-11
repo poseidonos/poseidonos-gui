@@ -44,7 +44,7 @@ import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
@@ -55,6 +55,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
 import HealthMetrics from "../../components/HealthMetrics";
+import LightTooltip from "../../components/LightTooltip";
 
 const styles = (theme) => {
   return {
@@ -138,16 +139,6 @@ const styles = (theme) => {
       [theme.breakpoints.down(1150)]: {
         maxWidth: 100,
       },
-      "&:hover": {
-        width: "auto",
-        maxWidth: "calc(100% - 100px)",
-        backgroundColor: "white",
-        position: "absolute",
-        marginTop: -theme.spacing(1),
-        zIndex: 1000,
-        overflow: "visible",
-        wordBreak: "break-all"
-      }
     },
     volumeContainer: {
       marginTop: theme.spacing(1),
@@ -388,48 +379,65 @@ class Dashboard extends Component {
     //     // sorting: false,
     //  // },
     // ];
+    const localCellStyle = {
+      paddingTop: 8,
+      paddingBottom: 8,
+    }
+
     const arrayTableColumns = [
       {
         title: "Name",
         field: "arrayname",
+        cellStyle: localCellStyle,
         render: (rowData) => (
           <Link className={classes.volName} href={`/storage/array/manage?array=${rowData.arrayname}`}>{rowData.arrayname}</Link>
         )
       },
       {
         title: "RAID",
-        field: "RAIDLevel"
+        field: "RAIDLevel",
+        cellStyle: localCellStyle
       },
       {
         title: "Total Space",
+        cellStyle: localCellStyle,
         render: (rowData) => formatBytes(rowData.totalsize),
         customSort: (a, b) => (a.totalsize - b.totalsize)
       },
       {
         title: "Volumes",
+        cellStyle: localCellStyle,
         render: (rowData) => this.props.arrayVolCount[rowData.arrayname] ? this.props.arrayVolCount[rowData.arrayname] : 0,
-        customSort: (a,b) => (this.props.arrayVolCount[a.arrayname] - this.props.arrayVolCount[b.arrayname])
+        customSort: (a, b) => (this.props.arrayVolCount[a.arrayname] - this.props.arrayVolCount[b.arrayname])
       }
     ];
     const volumeTableColumns = [
       {
         title: "Name",
-        render: (rowData) => <Typography className={classes.volName}>{rowData.name}</Typography>,
+        cellStyle: localCellStyle,
+        render: (rowData) => (
+          <LightTooltip interactive title={rowData.name} TransitionComponent={Zoom}>
+            <Typography className={classes.volName}>{rowData.name}</Typography>
+          </LightTooltip>
+        ),
         customSort: (a, b) => (a.name.localeCompare(b.name))
       },
       {
         title: "Used Space",
+        cellStyle: localCellStyle,
         render: (rowData) => getUsedSpace(rowData.total, rowData.remain),
         customSort: (a, b) => (b.remain - a.remain)
       },
       {
         title: "Total Space",
+        cellStyle: localCellStyle,
         render: (rowData) => (rowData.total ? formatBytes(rowData.total) : formatBytes(0)),
         customSort: (a, b) => (a.total - b.total)
       },
       {
         title: "Array",
-        field: "array"
+        field: "array",
+        cellStyle: localCellStyle
       }
     ];
 
@@ -834,6 +842,8 @@ class Dashboard extends Component {
                           headerStyle: {
                             backgroundColor: "#788595",
                             color: "#FFF",
+                            paddingTop: 8,
+                            paddingBottom: 8
                           },
                           minBodyHeight: 342,
                           maxBodyHeight: 342,
@@ -860,6 +870,8 @@ class Dashboard extends Component {
                           headerStyle: {
                             backgroundColor: "#788595",
                             color: "#FFF",
+                            paddingTop: 8,
+                            paddingBottom: 8
                           },
                           minBodyHeight: 342,
                           maxBodyHeight: 342,

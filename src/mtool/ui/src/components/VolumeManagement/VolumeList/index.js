@@ -48,7 +48,7 @@ import TrashIcon from '@material-ui/icons/Delete';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box, Tooltip, Zoom } from '@material-ui/core';
+import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box, Zoom } from '@material-ui/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
@@ -56,9 +56,10 @@ import { Done } from '@material-ui/icons';
 import AlertDialog from '../../Dialog';
 import { customTheme } from '../../../theme';
 import formatBytes from '../../../utils/format-bytes';
+import LightTooltip from '../../LightTooltip';
 
 
-const styles = (theme) => ({
+const styles = () => ({
   cardHeader: {
     ...customTheme.card.header,
     marginLeft: 0
@@ -86,23 +87,6 @@ const RESET_MIN_IOPS_DETAILS = "Are you sure want to reset Minimum IOPS?"
 const RESET_MIN_BW_DETAILS = "Are you sure want to reset Minimum Bandwidth?"
 const MINIOPS = "miniops"
 const MINBW = "minbw"
-
-
-const LightTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: '#212121',
-    boxShadow: theme.shadows[3],
-    fontSize: 14,
-    padding: theme.spacing(.75, 1.25),
-    maxWidth: "280px",
-    wordSpacing: "9999px",
-    "& span": {
-      color: "#FFF",
-      filter: "drop-shadow(-1px -1px 1px #E1E1E1)"
-    }
-  },
-}))(Tooltip);
 
 class VolumeList extends Component {
   constructor(props) {
@@ -263,7 +247,7 @@ class VolumeList extends Component {
 
   render() {
     const { classes } = this.props;
-    const cellStyle = {
+    const localCellStyle = {
       fontSize: 12,
       paddingTop: 8,
       paddingBottom: 8
@@ -272,7 +256,7 @@ class VolumeList extends Component {
       {
         title: 'Name',
         field: 'name',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -288,29 +272,28 @@ class VolumeList extends Component {
             )
           }
           return (
-            <LightTooltip interactive={true} title={rowData.name} TransitionComponent={Zoom} arrow>
+            <LightTooltip interactive title={rowData.name} TransitionComponent={Zoom} arrow>
               <Typography className={classes.volName}>
                 {rowData.name}
               </Typography>
             </LightTooltip>
           );
-
         }
       },
       {
         title: 'Volume Usage',
         render: rowData => `${rowData.usedspace}/${formatBytes(rowData.size)}`,
-        cellStyle: cellStyle
+        cellStyle: localCellStyle
       },
       {
         title: 'UUID (NQN)',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: rowData => {
           const subnqn = rowData.subnqn && `(${rowData.subnqn})`
 
           return (
             <>
-              <LightTooltip interactive={true} title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
+              <LightTooltip interactive title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
                 <div>
                   <Typography variant="body2" className={classes.uuidName}>{rowData.uuid}</Typography>
                   <Typography variant="body2" className={classes.uuidName}> {subnqn}</Typography>
@@ -323,7 +306,7 @@ class VolumeList extends Component {
       {
         title: 'Max IOPS (KIOPS)',
         field: 'maxiops',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -346,7 +329,7 @@ class VolumeList extends Component {
       {
         title: 'Max Bandwidth (MB/s)',
         field: 'maxbw',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -370,7 +353,7 @@ class VolumeList extends Component {
       {
         title: 'Min Bandwidth / Min IOPS',
         field: 'minbw-miniops',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         customSort: (a, b) => {
           if (a.minType === b.minType)
             return a.minType === MINIOPS ? (a.miniops - b.miniops) : (a.minbw - b.minbw);
@@ -454,7 +437,7 @@ class VolumeList extends Component {
       {
         title: 'Mount Status',
         field: 'status',
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: row => (
           <Switch
             size="small"
@@ -476,7 +459,7 @@ class VolumeList extends Component {
         field: 'edit',
         editable: 'never',
         sorting: false,
-        cellStyle: cellStyle,
+        cellStyle: localCellStyle,
         render: row => {
           return !row.edit ? (
             <div style={{ width: "80px" }}>
