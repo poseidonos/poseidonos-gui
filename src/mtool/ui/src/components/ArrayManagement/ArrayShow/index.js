@@ -62,6 +62,7 @@ const styles = (theme) => ({
     width: `calc(100% - ${theme.spacing(4)}px)`,
     padding: theme.spacing(0, 2),
     [theme.breakpoints.down("sm")]: {
+      width: `calc(100% - ${theme.spacing(2)}px)`,
       padding: theme.spacing(0, 1),
     },
   },
@@ -78,9 +79,11 @@ const styles = (theme) => ({
   },
   formControl: {
     margin: theme.spacing(0.5, 2),
-    minWidth: 170,
+    width: "60%",
+    minWidth: "170px",
     [theme.breakpoints.down("xs")]: {
       margin: theme.spacing(1, 0),
+      width: "80%"
     },
   },
   gridList: {
@@ -413,7 +416,7 @@ class ArrayShow extends Component {
     return (
       <ThemeProvider theme={PageTheme}>
         <form className={classes.root} data-testid="arrayshow">
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} lg={4} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
@@ -430,7 +433,7 @@ class ArrayShow extends Component {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} lg={4} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
               <Select
@@ -449,28 +452,30 @@ class ArrayShow extends Component {
               </Select>
             </FormControl>
           </Grid>
-          <FormControl className={classes.formControl}>
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  name="mount_arr_writethrough"
-                  color="primary"
-                  id="mount-writethrough-checkbox"
-                  checked={this.props.mountStatus === "Mounted" ? this.props.writeThrough : this.state.writeThroughMode}
-                  disabled={this.props.mountStatus === "Mounted"}
-                  value="Write Through Mode"
-                  inputProps={{
-                    "data-testid": "mount-writethrough-checkbox",
-                  }}
-                  onChange={() => this.setState({
-                    ...this.state,
-                    writeThroughMode: !this.state.writeThroughMode
-                  })}
-                />
-              )}
-              label="Write Through Mode"
-            />
-          </FormControl>
+          <Grid item xs={12} sm={6} lg={4} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    name="mount_arr_writethrough"
+                    color="primary"
+                    id="mount-writethrough-checkbox"
+                    checked={this.props.mountStatus === "Mounted" ? this.props.writeThrough : this.state.writeThroughMode}
+                    disabled={this.props.mountStatus === "Mounted"}
+                    value="Write Through Mode"
+                    inputProps={{
+                      "data-testid": "mount-writethrough-checkbox",
+                    }}
+                    onChange={() => this.setState({
+                      ...this.state,
+                      writeThroughMode: !this.state.writeThroughMode
+                    })}
+                  />
+                )}
+                label="Write Through Mode"
+              />
+            </FormControl>
+          </Grid>
           <Grid
             item
             container

@@ -102,7 +102,7 @@ const styles = (theme) => ({
   formControl: {
     margin: theme.spacing(0.5, 2),
     minWidth: 170,
-    maxWidth: "80%",
+    width: "80%",
     [theme.breakpoints.down("xs")]: {
       margin: theme.spacing(1, 0),
     }
@@ -499,7 +499,7 @@ class ArrayCreate extends Component {
     return (
       <ThemeProvider theme={PageTheme}>
         <form className={classes.root} data-testid="arraycreate">
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} md={4} lg={3} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <TextField
                 id="array-name"
@@ -513,7 +513,7 @@ class ArrayCreate extends Component {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} md={4} lg={3} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="raid">Fault tolerance Level</InputLabel>
               <Select
@@ -536,31 +536,7 @@ class ArrayCreate extends Component {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="disktype">Disk Type</InputLabel>
-              <Select
-                value={this.state.diskType}
-                onChange={this.onSelectDiskType}
-                inputProps={{
-                  name: "Disk Type",
-                  id: "disktype",
-                  "data-testid": "disktype-input",
-                }}
-                SelectDisplayProps={{
-                  "data-testid": "disktype",
-                }}
-              >
-                {diskTypes.map((type) => (
-                  <MenuItem value={type} key={type}>
-                    <Typography color="secondary">{type}</Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} md={4} lg={3} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
               <Select
@@ -588,7 +564,30 @@ class ArrayCreate extends Component {
               <Link href="/operations/devices" align="right">Create Disk</Link>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} className={classes.inputGrid}>
+          <Grid item xs={12} sm={6} md={4} lg={3} className={classes.inputGrid}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="disktype">Disk Type</InputLabel>
+              <Select
+                value={this.state.diskType}
+                onChange={this.onSelectDiskType}
+                inputProps={{
+                  name: "Disk Type",
+                  id: "disktype",
+                  "data-testid": "disktype-input",
+                }}
+                SelectDisplayProps={{
+                  "data-testid": "disktype",
+                }}
+              >
+                {diskTypes.map((type) => (
+                  <MenuItem value={type} key={type}>
+                    <Typography color="secondary">{type}</Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.inputGrid}>
             <FormControl className={classes.formControl}>
               <FormControlLabel
                 control={(
@@ -610,6 +609,7 @@ class ArrayCreate extends Component {
           </Grid>
           <Grid
             item
+            lg={10}
             container
             wrap="wrap"
             className={classes.legendContainer}

@@ -102,9 +102,12 @@ const styles = (theme) => ({
     }
   },
   arraySelectStatus: {
+    padding: theme.spacing(0, 2),
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(0, 1),
+    },
     [theme.breakpoints.down("xs")]: {
-      flexDirection: "column",
-      justifyContent: "center"
+      justifyContent: "center",
     }
   },
   arraySelectGrid: {
@@ -114,14 +117,13 @@ const styles = (theme) => ({
     }
   },
   selectForm: {
-    margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 4)}`,
-    maxWidth: "80%",
-    [theme.breakpoints.down("sm")]: {
-      margin: `${theme.spacing(0, 2)} ${theme.spacing(0, 3)}`,
-    },
+    margin: theme.spacing(0.5, 2),
+    width: "60%",
+    minWidth: "170px",
     [theme.breakpoints.down("xs")]: {
-      maxWidth: "80%"
-    }
+      margin: theme.spacing(1, 0),
+      width: "80%",
+    },
   },
   toolbar: customTheme.toolbar,
   titleContainer: {
@@ -129,11 +131,15 @@ const styles = (theme) => ({
   },
   statusText: {
     display: "flex",
+    height: "100%",
     alignItems: "center",
-    margin: theme.spacing(0.5, 1),
+    margin: theme.spacing(0.5, 2),
+    width: "80%",
+    minWidth: "170px",
     [theme.breakpoints.down("xs")]: {
-      justifyContent: "center"
-    }
+      margin: theme.spacing(1, 0),
+      display: "inline-flex",
+    },
   },
   volumeStatsPaper: {
     height: 400,
@@ -483,7 +489,7 @@ class Volume extends Component {
                             <Paper spacing={3} className={classes.spaced}>
                               <Grid container justifyContent="space-between">
                                 <Grid container className={classes.arraySelectStatus}>
-                                  <Grid item sm={6} className={classes.arraySelectGrid}>
+                                  <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
                                     <FormControl
                                       className={classes.selectForm}
                                       data-testid="arrayshow-form"
@@ -513,29 +519,31 @@ class Volume extends Component {
                                       </Select>
                                     </FormControl>
                                   </Grid>
-                                  <Typography className={classes.statusText}>Status:
-                                    <span
-                                      style={{
-                                        fontWeight: 600,
-                                        color: this.props.arrayMap[this.props.selectedArray].status === "Mounted" ? "green" : "orange"
-                                      }}
-                                    >
-                                      {this.props.arrayMap[this.props.selectedArray].status}
-                                    </span>
-                                    <Grid container>, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
-                                      {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
-                                        <InfoIcon
-                                          aria-owns={openPopover ? 'rebuild-popover' : undefined}
-                                          aria-haspopup="true"
-                                          color="primary"
-                                          data-testid="rebuild-popover-icon"
-                                          onClick={this.openRebuildPopover}
-                                          onBlur={this.closeRebuildPopover}
-                                        />
-                                      ) : null
-                                      }
-                                    </Grid>
-                                  </Typography>
+                                  <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
+                                    <Typography className={classes.statusText}>Status:
+                                      <span
+                                        style={{
+                                          fontWeight: 600,
+                                          color: this.props.arrayMap[this.props.selectedArray].status === "Mounted" ? "green" : "orange"
+                                        }}
+                                      >
+                                        {this.props.arrayMap[this.props.selectedArray].status}
+                                      </span>
+                                      <Grid container>, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
+                                        {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
+                                          <InfoIcon
+                                            aria-owns={openPopover ? 'rebuild-popover' : undefined}
+                                            aria-haspopup="true"
+                                            color="primary"
+                                            data-testid="rebuild-popover-icon"
+                                            onClick={this.openRebuildPopover}
+                                            onBlur={this.closeRebuildPopover}
+                                          />
+                                        ) : null
+                                        }
+                                      </Grid>
+                                    </Typography>
+                                  </Grid>
                                   {this.props.arrayMap[this.props.selectedArray].rebuildProgress ? (
                                     <Popover
                                       id="rebuild-popover"
