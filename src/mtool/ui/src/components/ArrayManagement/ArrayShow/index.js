@@ -48,6 +48,7 @@ import {
   Typography,
   MenuItem,
 } from "@material-ui/core";
+import { Add, Remove } from "@material-ui/icons";
 import formatBytes from "../../../utils/format-bytes";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
@@ -170,22 +171,25 @@ const styles = (theme) => ({
     backgroundColor: "rgb(232, 114, 114)",
   },
   detachBtn: {
-    bottom: "-3px",
-    width: "80%",
     position: "absolute",
-    fontSize: "0.6rem",
+    bottom: 8,
+    minWidth: 20,
+    width: 20,
+    height: 20,
+    borderRadius: 100,
+    padding: 0,
   },
   diskNo: {
     position: "absolute",
   },
   diskTextNuma: {
-    top: 8,
     position: "absolute",
-    background: "#087575",
-    textAlign: "center",
-    color: "white",
+    top: 8,
     width: 20,
     height: 20,
+    textAlign: "center",
+    background: "#087575",
+    color: "white",
     borderRadius: 100
   },
   usedDisk: {
@@ -483,7 +487,8 @@ class ArrayShow extends Component {
             className={classes.legendContainer}
           >
             <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
-            <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
+            <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Remove Spare disk" />
+            <Legend bgColor="rgb(137,163,196)" title="Add Spare disk" />
             <Legend bgColor="#8c6b5d" title="Used by Another Array" />
             <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
             <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
@@ -541,19 +546,23 @@ class ArrayShow extends Component {
                         </Typography>
                         {getClass(slot) === classes.freedisk ? (
                           <Button
+                            variant="outlined"
+                            color="secondary"
                             className={classes.detachBtn}
                             data-testid={`attachdisk-${index}`}
                             onClick={() => this.addSpareDisk(slot)}
                           >
-                            Add Spare Disk
+                            <Add fontSize="small" />
                           </Button>
                         ) : getClass(slot) === classes.sparedisk ? (
                           <Button
+                            variant="outlined"
+                            color="secondary"
                             className={classes.detachBtn}
                             data-testid={`detachdisk-${index}`}
                             onClick={() => this.removeSpareDisk(slot)}
                           >
-                            Remove Spare Disk
+                            <Remove fontSize="small" />
                           </Button>
                         ) : <p />}
 
