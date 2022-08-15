@@ -100,13 +100,7 @@ const styles = (theme) => ({
     },
   },
   volumeCreatePaper: {
-    height: 400,
-    [theme.breakpoints.down('md')]: {
-      height: 450
-    },
-    [theme.breakpoints.down('xs')]: {
-      height: 600
-    }
+    height: "100%",
   },
   createHeader: customTheme.card.header,
   caption: {

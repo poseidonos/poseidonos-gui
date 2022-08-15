@@ -67,13 +67,11 @@ const styles = (theme) => ({
     width: "100%",
     boxSizing: "border-box",
     zIndex: 100,
-    position: "absolute",
     flexBasis: "100%",
     height: "100%",
     alignContent: "center",
     padding: theme.spacing(0, 3),
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(0, 1),
       marginTop: theme.spacing(1),
     },
   },
@@ -142,16 +140,13 @@ const styles = (theme) => ({
     },
   },
   volumeStatsPaper: {
-    height: 400,
+    height: "100%",
     display: "flex",
     position: "relative",
-    flexDirection: "column",
-    [theme.breakpoints.down("md")]: {
-      height: 450,
-    },
-    [theme.breakpoints.down("xs")]: {
-      height: 270,
-    },
+    flexDirection: "column"
+  },
+  legendContainer: {
+    justifyContent: "flex-end"
   },
   selectedTab: {
     color: 'rgb(33, 34, 37)',
@@ -628,11 +623,9 @@ class Volume extends Component {
 
                           <Grid item xs={12} md={6}>
                             <Paper className={classes.volumeStatsPaper}>
-                              <Grid item xs={12}>
-                                <Typography className={classes.cardHeader}>
-                                  Volume Statistics
-                                </Typography>
-                              </Grid>
+                              <Typography className={classes.cardHeader}>
+                                Volume Statistics
+                              </Typography>
                               <div className={classes.statsWrapper}>
                                 <Grid item xs={12}>
                                   <Typography color="secondary">
