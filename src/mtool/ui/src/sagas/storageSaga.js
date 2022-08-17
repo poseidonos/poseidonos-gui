@@ -213,7 +213,7 @@ function* fetchDevices(action) {
           alertTitle: "Fetch Devices",
           errorMsg: "Unable to get devices!",
           errorCode: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.description}`
             : ""
             }`,
         })
@@ -224,7 +224,7 @@ function* fetchDevices(action) {
       yield put(actionCreators.showStorageAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          ? `${response.data.result.status.description}`
           : "Agent Communication Error"
           }`
       }));
@@ -287,7 +287,7 @@ function* createVolume(action) {
               alertTitle: "Create Volume",
               errorMsg: "Volume(s) creation failed",
               errorCode: `Description: ${response.data.result && response.data.result.status
-                ? `${response.data.result.status.problem} , Error code:${response.data.result.status.code}`
+                ? `${response.data.result.status.problem}`
                 : ""
                 }`,
             })
@@ -317,7 +317,7 @@ function* createVolume(action) {
         let errorCodeDescription = '';
         if (errorInfo && errorInfo.errorResponses.length > 0) {
           errorInfo.errorResponses.map(err => {
-            errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
+            errorCodeDescription += `${err.description}\n\n`;
             if (err.code !== 0)
               isError = true;
             return err;
@@ -352,8 +352,7 @@ function* createVolume(action) {
             errorMsg: "Error while creating Volume",
             errorCode: `${response.data.result && response.data.result.status
               ? `${response.data.result.status.description}
-			    ${response.data.result.status.posDescription}
-			    Error code:${response.data.result.status.code}`
+			    ${response.data.result.status.posDescription}`
               : ""
               }`,
           })
@@ -386,152 +385,6 @@ function* createVolume(action) {
     yield put(actionCreators.stopStorageLoader());
   }
 }
-/* function* createVolume(action) {
-    let vol_successful = 0
-    try {
-        let count
-        let prefix = action.payload.name
-        
-        yield put(actionCreators.toggleCreateVolumeButton(true));
-
-        console.log("payloaddd",action.payload)
-        for (count = 1; count <= action.payload.count; count++) {
-            if (action.payload.count != 1) {
-                action.payload.name = prefix + "_" + action.payload.suffix.toString()
-                action.payload.suffix++
-            }
-            const response = yield call([axios, axios.post], '/api/v1.0/save-volume/', {
-                ...action.payload
-            }, {
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-access-token': localStorage.getItem('token'),
-                }
-            })
-
-            if (response.status === 200) {
-                if (response.data.result && response.data.result.status && (response.data.result.status.code === 2000 || response.data.result.status.code === 0)) {
-                    vol_successful++
-                }
-            }
-            if (action.payload.stop_on_error === true) {
-                if (response.status === 200) {
-                    if (response.data.result && response.data.result.status && (response.data.result.status.code === 2000 || response.data.result.status.code === 0))
-                        continue;
-                    else
-                        break;
-                }
-                else if (yield cancelled() || response.status !== 200) {
-                    break;
-                }
-            }
-        }
-    }
-    catch (error) {
-        yield put(actionCreators.showStorageAlert({
-            alertType: 'alert',
-            alertTitle: 'Create Volume',
-            errorMsg: 'Volume(s) creation failed',
-            errorCode: ``
-        }))
-    } finally {
-        if (yield cancelled()) {
-            yield put(actionCreators.showStorageAlert({
-                alertType: 'alert',
-                alertTitle: 'Create Volume',
-                errorMsg: 'Volume(s) creation failed',
-                errorCode: ``
-            }))
-        }
-        else {
-            let alert_type = vol_successful === 0 ? 'alert' : 'info'
-            let error_msg
-            if(vol_successful == action.payload.count)
-            {
-                if(action.payload.count === 1)
-                    error_msg = 'Volume created successfully'
-                else
-                    error_msg = 'Status: ' + vol_successful + ' volumes created successfully'
-            }
-            else
-            {
-                if(action.payload.count === 1)
-                    error_msg = 'Volume creation failed'
-                else
-                    error_msg = 'Status: ' + vol_successful + "/" + action.payload.count + ' volume(s) created successfully'
-            }
-
-            yield put(actionCreators.showStorageAlert({
-                alertType: alert_type,
-                alertTitle: 'Create Volume',
-                errorMsg: error_msg,
-                errorCode: '',
-            }));
-        }
-        yield put(actionCreators.toggleCreateVolumeButton(false));
-        yield fetchVolumes();
-    }
-}
-*/
-
-// function* createVolume(action) {
-//     try {
-//         yield put(actionCreators.startStorageLoader('Creating Volume'));
-//         const response = yield call([axios, axios.post], '/api/v1.0/save-volume/', {
-//             ...action.payload
-//         }, {
-//             headers: {
-//                 Accept: 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'x-access-token': localStorage.getItem('token'),
-//             }
-//         });
-//         if (response.status === 200) {
-//             if (response.data.result && response.data.result.status && (response.data.result.status.code === 2000 || response.data.result.status.code === 0)) {
-//                 yield put(actionCreators.showStorageAlert({
-//                     alertType: 'info',
-//                     alertTitle: 'Create Volume',
-//                     errorMsg: 'Volume(s) created successfully',
-//                     errorCode: '',
-//                 }));
-//             } else {
-//                 yield put(actionCreators.showStorageAlert({
-//                     alertType: 'alert',
-//                     alertTitle: 'Create Volume',
-//                     errorMsg: 'Volume(s) creation failed',
-//                     errorCode: `Message from server: ${response.data.result && response.data.result.status ? response.data.result.status.description : ''}`
-//                 }))
-//             }
-//             yield fetchVolumes();
-//         } else {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 alertTitle: 'Create Volume',
-//                 errorMsg: 'Volume(s) creation failed',
-//                 errorCode: `Message from server: ${response.data ? response.data.result : ''}`
-//             }))
-//         }
-//     } catch (error) {
-//         yield put(actionCreators.showStorageAlert({
-//             alertType: 'alert',
-//             alertTitle: 'Create Volume',
-//             errorMsg: 'Volume(s) creation failed',
-//             errorCode: ``
-//         }))
-//     } finally {
-//         if (yield cancelled()) {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 alertTitle: 'Create Volume',
-//                 errorMsg: 'Volume(s) creation failed',
-//                 errorCode: ``
-//             }))
-//         }
-//         yield put(actionCreators.stopStorageLoader());
-//     }
-
-// }
 
 function* resetQoS(action) {
   const volName = action.payload.name;
@@ -637,7 +490,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Failed",
             errorCode: `Error in Renaming volume: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.description}`
               : ""
               }`
           })
@@ -650,7 +503,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation Succeeded partially",
             errorCode: `${action.payload.error}\nError in Renaming volume: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.description}`
               : ""
               }`
           })
@@ -663,7 +516,7 @@ function* renameVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `${action.payload.error}\nError in updating Volume name: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.description}`
               : ""
               }`,
           })
@@ -822,7 +675,7 @@ function* updateVolume(action) {
             newName: action.payload.newName,
             array: arrayName,
             error: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.posDescription}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.posDescription}`
               : ""
               }`
           },
@@ -834,7 +687,7 @@ function* updateVolume(action) {
             alertTitle: "Update Volume",
             errorMsg: "Volume Updation failed",
             errorCode: `Max IOPS and Bandwidth update failed: ${response.data.result && response.data.result.status
-              ? `${response.data.result.status.posDescription}\n Error code:${response.data.result.status.code}`
+              ? `${response.data.result.status.posDescription}`
               : ""
               }`
           })
@@ -852,7 +705,7 @@ function* updateVolume(action) {
           name: action.payload.name,
           newName: action.payload.newName,
           array: arrayName,
-          error: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
+          error: `Max IOPS and Bandwidth update failed: ${response.data}\n`
         },
       });
     } else {
@@ -861,7 +714,7 @@ function* updateVolume(action) {
           alertType: "alert",
           alertTitle: "Update Volume",
           errorMsg: "Volume Updation failed",
-          errorCode: `Max IOPS and Bandwidth update failed: ${response.data}\n Error code:${response.status}\n`
+          errorCode: `Max IOPS and Bandwidth update failed: ${response.data}\n`
         })
       );
     }
@@ -893,23 +746,23 @@ function* updateVolume(action) {
 function* resetAndUpdateVolume(action) {
 
   const isGreaterThanEqualTo = (param) => {
-    if(typeof(param) === 'number') return false;
+    if (typeof (param) === 'number') return false;
     const max = "18446744073709551";
-    if(param.length < max.length) return false;
-    if(param.length > max.length) return true;
+    if (param.length < max.length) return false;
+    if (param.length > max.length) return true;
 
-    const max1 = max.substring(0,max.length-1);
-    const max2 = max.substring(max.length-1);
-    const param1 = param.substring(0,param.length-1);
-    const param2 = param.substring(param.length-1);
-    
-    if(param1 < max1) return false;
-    if(param1 > max1) return true;
-    if(param2 < max2) return false;
+    const max1 = max.substring(0, max.length - 1);
+    const max2 = max.substring(max.length - 1);
+    const param1 = param.substring(0, param.length - 1);
+    const param2 = param.substring(param.length - 1);
+
+    if (param1 < max1) return false;
+    if (param1 > max1) return true;
+    if (param2 < max2) return false;
     return true;
   }
 
-  if(isGreaterThanEqualTo(action.payload.maxiops)) {
+  if (isGreaterThanEqualTo(action.payload.maxiops)) {
     yield put(actionCreators.showStorageAlert({
       alertType: "alert",
       alertTitle: "Reset Volume",
@@ -970,7 +823,7 @@ function* resetAndUpdateVolume(action) {
           alertTitle: "Reset Volume",
           errorMsg: "Volume Reseting failed",
           errorCode: `Min IOPS and Bandwidth reseting failed: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}\n Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.description}`
             : ""
             }`
         })
@@ -1052,7 +905,7 @@ function* deleteArray(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Deleting Array",
-            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            errorCode: `Description:${response.data.result.description}`,
             alertTitle: "Delete Array",
           })
         );
@@ -1120,7 +973,6 @@ function* deleteVolumes(action) {
             alertType: response.data.passed === 0 ? "alert" : "partialError",
             alertTitle: "Delete Volume",
             errorCode: response.data.description,
-            // errorCode: `Description:${`${response.data.result.description }, Error Code:${ response.data.result.code}`}`,
           })
         );
       }
@@ -1351,57 +1203,6 @@ function* autoCreateArray(action) {
   }
 }
 
-
-// function* attachDisk(action) {
-//     try {
-//         yield put(actionCreators.startStorageLoader('Attaching Device'));
-//         const response = yield call([axios, axios.post], '/api/v1.0/attach_device/', {
-//             name: action.payload.name
-//         }, {
-//             headers: {
-//                 Accept: 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'x-access-token': localStorage.getItem('token'),
-//             }
-//         });
-//         if (response.status === 200 && response.data.return !== -1) {
-//             yield put(actionCreators.showStorageAlert({
-//                 errorMsg: 'Device Attached successfully',
-//                 alertTitle: 'Attach Device',
-//                 alertType: 'info',
-//                 errorCode: '',
-//             }));
-//         } else {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 errorMsg: 'Error while Attaching Device',
-//                 errorCode: response.data && response.data.result ?
-//                     response.data.result :
-//                     'Device Attaching failed',
-//                 alertTitle: 'Device Attach'
-//             }));
-//         }
-//         yield fetchArray();
-//     } catch (e) {
-//         yield put(actionCreators.showStorageAlert({
-//             alertType: 'alert',
-//             errorMsg: 'Error in Attaching Device',
-//             errorCode: '',
-//             alertTitle: 'Attach Device'
-//         }))
-//     } finally {
-//         if (yield cancelled()) {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 errorMsg: 'Error in Attaching Device',
-//                 errorCode: '',
-//                 alertTitle: 'Attach Device'
-//             }))
-//         }
-//         yield put(actionCreators.stopStorageLoader());
-//     }
-// }
-
 function* addSpareDisk(action) {
   try {
     const arrayName = yield select(arrayname)
@@ -1437,7 +1238,7 @@ function* addSpareDisk(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Adding Spare Device",
-            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            errorCode: `Description:${response.data.result.description}`,
             alertTitle: "Add Spare Device",
           })
         );
@@ -1469,56 +1270,6 @@ function* addSpareDisk(action) {
     yield fetchDevices();
   }
 }
-
-// function* detachDisk(action) {
-//     try {
-//         yield put(actionCreators.startStorageLoader('Detaching Device'));
-//         const response = yield call([axios, axios.post], '/api/v1.0/detach_device/', {
-//             name: action.payload.name
-//         }, {
-//             headers: {
-//                 Accept: 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'x-access-token': localStorage.getItem('token'),
-//             }
-//         });
-//         if (response.status === 200 && response.data.return !== -1) {
-//             yield put(actionCreators.showStorageAlert({
-//                 errorMsg: 'Device Detached successfully',
-//                 alertTitle: 'Detach Device',
-//                 alertType: 'info',
-//                 errorCode: '',
-//             }));
-//         } else {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 errorMsg: 'Error while Detaching Device',
-//                 errorCode: response.data && response.data.result ?
-//                     response.data.result :
-//                     'Device Detaching failed',
-//                 alertTitle: 'Device Detach'
-//             }));
-//         }
-//         yield fetchArray();
-//     } catch (e) {
-//         yield put(actionCreators.showStorageAlert({
-//             alertType: 'alert',
-//             errorMsg: 'Error in Detaching Device',
-//             errorCode: '',
-//             alertTitle: 'Detach Device'
-//         }))
-//     } finally {
-//         if (yield cancelled()) {
-//             yield put(actionCreators.showStorageAlert({
-//                 alertType: 'alert',
-//                 errorMsg: 'Error in Detaching Device',
-//                 errorCode: '',
-//                 alertTitle: 'Detach Device'
-//             }))
-//         }
-//         yield put(actionCreators.stopStorageLoader());
-//     }
-// }
 
 function* createDisk(action) {
   try {
@@ -1554,7 +1305,7 @@ function* createDisk(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while creating disk",
-            errorCode: `Description:${response.data?.result?.status?.posDescription}, Error Code:${response.data?.result?.status?.code}`,
+            errorCode: `Description:${response.data?.result?.status?.posDescription}`,
             alertTitle: "Create Disk",
           })
         );
@@ -1622,7 +1373,7 @@ function* removeSpareDisk(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Removing Spare Device",
-            errorCode: `Description:${response.data.result.description}, Error Code:${response.data.result.code}`,
+            errorCode: `Description:${response.data.result.description}`,
             alertTitle: "Remove Spare Device",
           })
         );
@@ -1710,7 +1461,7 @@ function* changeVolumeMountStatus(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: `Error while ${message}ing Volume`,
-            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            errorCode: `Description:${response.data.result.status.description}`,
             alertTitle: `${message}ing Volume`,
           })
         );
@@ -1781,7 +1532,7 @@ function* unmountPOS() {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: `Error while ${message}ing Array`,
-            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            errorCode: `Description:${response.data.result.status.description}`,
             alertTitle: `${message}ing Array`,
           })
         );
@@ -1844,7 +1595,7 @@ function* mountPOS(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: `Error while ${message}ing Array`,
-            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            errorCode: `Description:${response.data.result.status.description}`,
             alertTitle: `${message}ing Array`,
           })
         );
@@ -1932,7 +1683,7 @@ function* fetchDeviceDetails(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Fetching Device SMART info",
-            errorCode: `Description:${response.data.result.status.description}, Error Code:${response.data.result.status.code}`,
+            errorCode: `Description:${response.data.result.status.description}`,
             alertTitle: "Smart Info",
           })
         );
@@ -1943,7 +1694,7 @@ function* fetchDeviceDetails(action) {
         actionCreators.showStorageAlert({
           alertType: "alert",
           errorMsg: "Error while Fetching Device SMART info",
-          errorCode: `Description: UI or Agent Error, Error Code:${response.status}`,
+          errorCode: `Description: UI or Agent Error`,
           alertTitle: "Smart Info",
         })
       );

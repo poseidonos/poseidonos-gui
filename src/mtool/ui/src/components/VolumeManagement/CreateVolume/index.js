@@ -198,7 +198,7 @@ class CreateVolume extends Component {
             pass} with below errors`;
           if(errorResponses && errorResponses.map) {
             errorResponses.map(err => {
-              errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
+              errorCodeDescription += `${err.description}\n\n`;
               return err;
             });
           }
