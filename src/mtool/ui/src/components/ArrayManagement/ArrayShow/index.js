@@ -96,7 +96,7 @@ const styles = (theme) => ({
   },
   gridTile: {
     width: 200,
-    minWidth: 35,
+    minWidth: 24,
     border: "2px solid lightgray",
     display: "flex",
     justifyContent: "center",

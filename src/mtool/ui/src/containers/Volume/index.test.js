@@ -1474,7 +1474,7 @@ describe("<Storage Management />", () => {
     fireEvent.click(nextButton);
     expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
   });
-  
+
   it("should throw error if creating volume with advance options is not possible because subsystem used by another array", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -1501,7 +1501,7 @@ describe("<Storage Management />", () => {
           },
         ],
         sparedisks: [
-          
+
         ],
         storagedisks: [
           {
@@ -1548,7 +1548,7 @@ describe("<Storage Management />", () => {
       await waitForElement(() => getByText(/Please select an unused subsystem/))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
-  }); 
+  });
 
   it("should throw error if creating volume with advance options is not possible because of wrong values", async () => {
     mock
@@ -1819,11 +1819,12 @@ describe("<Storage Management />", () => {
       .reply(200, {})
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
-      .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+      .onGet("/redfish/v1/StorageServices/POSArray/Volumes")
       .reply(200, {
         Members: [
           {
             "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+          }, {
             "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
           },
         ],
@@ -1877,8 +1878,8 @@ describe("<Storage Management />", () => {
 
     jest.setTimeout(30000);
     renderComponent();
-    const { getByText, getByTitle, asFragment } = wrapper;
-    const checkBox2 = await waitForElement(() => getByTitle("vol2"));
+    const { getByText, getByTestId, getByTitle } = wrapper;
+    const checkBox2 = await waitForElement(() => getByTestId("vol-select-checkbox-vol2"));
     fireEvent.click(checkBox2);
     const deleteBtn = await waitForElement(() => getByTitle("Delete"));
     fireEvent.click(deleteBtn);

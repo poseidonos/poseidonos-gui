@@ -527,10 +527,10 @@ class VolumeList extends Component {
                 paddingBottom: 8,
               },
               selectionProps: rowData => ({
-                'data-testid': rowData.name,
                 'id': `VolumeList-checkbox-${rowData.name}`,
                 inputProps: {
-                  'title': rowData.name
+                  'title': rowData.name,
+                  'data-testid': `vol-select-checkbox-${rowData.name}`,
                 }
               })
             }}
@@ -556,7 +556,7 @@ class VolumeList extends Component {
             }}
             actions={[
               {
-                tooltip: 'Delete',
+                tooltip: "Delete",
                 icon: TrashIcon,
                 iconProps: {
                   'id': "VolumeList-icon-delete"
