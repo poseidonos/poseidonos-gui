@@ -1,0 +1,19 @@
+{
+    "host_url" :"127.0.0.1:3000",
+    "first_array_name" : "POSArray1",
+    "second_array_name" : "POSArray2",
+    "volume_name" : "dagent_volume",
+    "target_login" : {
+        "ip" : "127.0.0.1",
+        "user" : "root",
+        "password" : "siso@123",
+        "path" : "/root/workspace/ibofos"
+    },
+     "initiator_login" : {
+        "ip" : "107.111.150.105",
+        "user" : "root",
+        "password" : "siso@123",
+        "tar_mlnx_ip" : "10.0.0.105"
+     }
+
+}

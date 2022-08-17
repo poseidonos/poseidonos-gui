@@ -1,0 +1,340 @@
+{
+  "run_ibofos" : {
+    "url" : "http://{}/api/ibofos/v1/system",
+    "headers" : {
+      "X-Request-Id": "0c4da5d9-e019-4e36-973b-5d96fa10ed38"
+    }
+  },
+  "ibofos_info" : {
+    "url" : "http://{}/api/ibofos/v1/system",
+    "headers" : {
+      "X-Request-Id": "16f75950-edad-475e-be79-e4fb62578d85"
+    }
+  },
+  "exit_ibofos" : {
+    "url" : "http://{}/api/ibofos/v1/system",
+    "headers" : {
+      "X-Request-Id": "16f75950-edad-475e-be79-e4fb62578d85"
+    }
+  },
+  
+  "scan_device" : {
+    "url" : "http://{}/api/ibofos/v1/devices/all/scan",
+    "headers" : {
+      "X-Request-Id": "b7397952-9752-4edb-a94c-556a4afbe62c"
+    }
+  },
+  "smart_log" : {
+    "url" : "http://{}/api/ibofos/v1/devices/{}/smart",
+    "headers" : {
+      "X-Request-Id": "b11e21ce-1856-416f-8f44-4346a4a2d133"
+    }
+  },
+  "list_devices" : {
+    "url" : "http://{}/api/ibofos/v1/devices",
+    "headers" : {
+      "X-Request-Id": "e8f76728-6dd0-4171-857f-0c109eb42e85"
+    }
+  },
+  "create_device" : {
+    "url" : "http://{}/api/ibofos/v1/device",
+    "headers" : {
+      "X-Request-Id": "9f14919b-c635-44e0-9d81-794b40312879"
+    }
+  },
+  
+  "array_reset" : {
+    "url" : "http://{}/api/ibofos/v1/arrays/reset",
+    "headers" : {
+      "X-Request-Id": "ef0c6ba7-b13c-44c6-a8df-c58e9eb29f81"
+    }
+  },
+  "create_array_first" : {
+    "url" : "http://{}/api/ibofos/v1/array",
+    "headers" : {
+      "X-Request-Id": "fd0c6d91-dc05-47a9-be33-3df85b5ee6f7"
+    }
+  },
+  "create_array_second" : {
+    "url" : "http://{}/api/ibofos/v1/array",
+    "headers" : {
+      "X-Request-Id": "fd0c6d91-dc05-47a9-be33-3df85b5ee6f7"
+    }
+  },
+  "auto_create_array" : {
+    "url" : "http://{}/api/ibofos/v1/autoarray",
+    "headers" : {
+      "X-Request-Id": "d6f1dff8-c96a-40ca-98ec-39c1f882282c"
+    }
+  },
+  "array_mount_first" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/mount",
+    "headers" : {
+      "X-Request-Id": "ba965b1d-9f34-4e79-b39f-828eb091df02"
+    }
+  },
+  "array_unmount_first" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/mount",
+    "headers" : {
+      "X-Request-Id": "7ac47035-8e89-4abc-a633-ab1deee69f87"
+    }
+  },
+  "array_mount_second" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/mount",
+    "headers" : {
+      "X-Request-Id": "e50f3b6e-b22d-42ea-9c3d-4d1177ff68ab"
+    }
+  },
+  "array_unmount_second" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/mount",
+    "headers" : {
+      "X-Request-Id": "608cdcd7-8798-4650-88a2-4b729f631212"
+    }
+  },
+  "array_info" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}",
+    "headers" : {
+      "X-Request-Id": "ba771120-5606-4358-b931-ab8b9cece0e3"
+    }
+  },
+  "add_device" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/devices",
+    "headers" : {
+      "X-Request-Id": "6c1112fc-c2ed-49dc-858f-b2e6795cba24"
+    }
+  },
+  "remove_device" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/devices/{}",
+    "headers" : {
+      "X-Request-Id": "8e59926b-5c86-4307-a0bf-052b2f32c12e"
+    }
+  },
+  "delete_array" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}",
+    "headers" : {
+      "X-Request-Id": "3e00bda5-bf01-4bc6-8543-cff663cced3f"
+    }
+  },
+  "array_list" : {
+    "url" : "http://{}/api/ibofos/v1/arrays",
+    "headers" : {
+      "X-Request-Id": "8fc2cea9-3fc2-4f7a-aa45-05d4d1c10eb0"
+    }
+  },
+  
+  "create_volume" : {
+    "url" : "http://{}/api/ibofos/v1/volumes",
+    "headers" : {
+      "X-Request-Id": "ca122b5e-8264-4cb7-b1e2-06a663197da9"
+    }
+  },
+  "volume_info" : {
+    "url" : "http://{}/api/ibofos/v1/array/{}/volume/{}"
+
+  },
+  "create_volume_multi" : {
+    "url" : "http://{}/api/ibofos/v1/volumes",
+    "headers" : {
+      "X-Request-Id": "7bcddd3f-0290-4335-bb74-46acb8756df0"
+    }
+  },
+  "list_volume" : {
+    "url" : "http://{}/api/ibofos/v1/volumelist/{}",
+    "headers" : {
+      "X-Request-Id": "3b720d9e-f6ce-4561-8f01-a871ad836d81"
+    }
+  },
+  "qos_create_volume_policies" : {
+    "url" : "http://{}/api/ibofos/v1/qos",
+    "headers" : {
+      "X-Request-Id": "562d113c-ea5b-4ab3-9430-98ee3f2ed91b"
+    }
+  },
+  "qos_reset_volume" : {
+    "url" : "http://{}/api/ibofos/v1/qos/reset",
+    "headers" : {
+      "X-Request-Id": "965d170f-80ad-4304-8e09-0fd99c0be335"
+    }
+  },
+  "qos_list_volume_policies" : {
+    "url" : "http://{}/api/ibofos/v1/qos/policies",
+    "headers" : {
+      "X-Request-Id": "eee86c9d-cb40-40d9-9134-2252940aaffc"
+    }
+  },
+  "mount_vol" : {
+    "url" : "http://{}/api/ibofos/v1/volumes/vol01/mount",
+    "headers" : {
+      "X-Request-Id": "abd03f5c-f65c-4e60-b609-5419e5da4c29"
+    }
+  },
+  "mount_vol_with_subsystem" : {
+    "url" : "http://{}/api/ibofos/v1/volumes/{}/mount/subsystem"
+  },
+  "unmount_vol" : {
+    "url" : "http://{}/api/ibofos/v1/volumes/{}/mount",
+    "headers" : {
+      "X-Request-Id": "c04cde61-cd92-47bd-b7ac-6f0c26f887ee"
+    }
+  },
+  "delete_volume" : {
+    "url" : "http://{}/api/ibofos/v1/volumes/{}",
+    "headers" : {
+      "X-Request-Id": "01bf0bae-37e4-4470-b632-ed8dd1e423ad"
+    }
+  },
+  "rename_volume"  : {
+    "url" : "http://{}/api/ibofos/v1/volumes/{}",
+    "headers" : {
+      "X-Request-Id": "9cc256e0-6d72-4cac-9685-fc6a0f1abeb3"
+    }
+  },
+  "get_max_volume_count" : {
+    "url" : "http://{}/api/ibofos/v1/volumes/maxcount",
+    "headers" : {
+      "X-Request-Id": "65dde35f-039d-4360-8ea9-0feedde0070f"
+    }
+  },
+  
+  "create_transport" : {
+    "url" : "http://{}/api/ibofos/v1/transport",
+    "headers" : {
+      "X-Request-Id": "cad7d1d7-c33a-468b-89e3-43f5cb43274a"
+    }
+  },
+  "create_subsystem" : {
+    "url" : "http://{}/api/ibofos/v1/subsystem",
+    "headers" : {
+      "X-Request-Id": "6c3ab71e-4bdd-4166-8758-b2d78c0b99bb"
+    }
+  },
+  "add_listner" : {
+    "url" : "http://{}/api/ibofos/v1/listener",
+    "headers" : {
+      "X-Request-Id": "96689810-fecc-4c86-b0f9-2a50a7591445"
+    }
+  },
+  "list_subsystem" : {
+    "url": "http://{}/api/ibofos/v1/subsystem",
+    "headers": {
+      "X-Request-I": "7365838a-bc13-432e-ad3b-916249627f2b"
+    }
+  },
+  "cpu" : {
+    "url" : "http://{}/api/metric/v1/cpu",
+    "headers" : {
+      "X-Request-Id": "6fb1bb65-dac2-4e40-adaa-2c10a1c10182"
+    }
+  },
+  "cpu_with_period" : {
+    "url" : "http://{}/api/metric/v1/cpu/{}",
+    "headers" : {
+      "X-Request-Id": "cacc8e3d-5258-4201-88d0-dc68d0c7b9ff"
+    }
+  },
+  "memory" : {
+    "url" : "http://{}/api/metric/v1/memory",
+    "headers" : {
+      "X-Request-Id": "27c5324f-e2b7-468b-a408-18d246348665"
+    }
+  },
+  "memory_with_period" : {
+    "url" : "http://{}/api/metric/v1/memory/{}",
+    "headers" : {
+      "X-Request-Id": "27c5324f-e2b7-468b-a408-18d246348665"
+    }
+  },
+  "network" : {
+    "url" : "http://{}/api/metric/v1/network",
+    "headers" : {
+      "X-Request-Id": "bda4970a-e6a8-4d4f-8846-c2fd6ead55e1"
+    }
+  },
+  "network_with_period" : {
+    "url" : "http://{}/api/metric/v1/network/{}",
+    "headers" : {
+      "X-Request-Id": "a8f11efd-1f4b-4df6-b86e-0a6ce557435e"
+    }
+  },
+  "read_bw" : {
+    "url" : "http://{}/api/metric/v1/readbw/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "a84b73df-604c-45a8-83eb-63cd4b97acb6"
+    }
+  },
+  "read_bw_with_period" : {
+    "url" : "http://{}/api/metric/v1/readbw/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "4972c1ce-45b6-4858-80b1-40b4c32cae5f"
+    }
+  },
+  "write_bw" : {
+    "url" : "http://{}/api/metric/v1/writebw/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "d9cf3701-f186-41c5-8c65-92de962d6310"
+    }
+  },
+  "write_bw_with_period" : {
+    "url" : "http://{}/api/metric/v1/writebw/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "c7462d48-78f7-4a1f-b39d-63980fcda198"
+    }
+  },
+  "read_iops" : {
+    "url" : "http://{}/api/metric/v1/readiops/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "9a897c98-4638-437e-99c0-8e8b6ec683b1"
+    }
+  },
+  "read_iops_with_period" : {
+    "url" : "http://{}/api/metric/v1/readiops/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "b2044063-0dfb-4e4b-ab57-3b28fdde02cf"
+    }
+  },
+  "write_iops" : {
+    "url" : "http://{}/api/metric/v1/writeiops/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "f25950ad-95d2-46d2-b69f-2b057a24215d"
+    }
+  },
+  "write_iops_with_period" : {
+    "url" : "http://{}/api/metric/v1/writeiops/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "2afe5d9c-f039-48e2-8fea-5880794854df"
+    }
+  },
+  "write_latency" : {
+    "url" : "http://{}/api/metric/v1/writelatency/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "338fad54-8bf3-4e39-9d6b-34c599691ffc"
+    }
+  },
+  "write_latency_with_period" : {
+    "url" : "http://{}/api/metric/v1/writelatency/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "477526fa-3d60-4713-8c95-04071f876a09"
+    }
+  },
+  "read_latency" : {
+    "url" : "http://{}/api/metric/v1/readlatency/arrays?arrayids=0&time=",
+    "headers" : {
+      "X-Request-Id": "d3ba5111-a53b-4a17-89f7-e392cb4963b8"
+    }
+  },
+  "read_latency_with_period" : {
+    "url" : "http://{}/api/metric/v1/readlatency/arrays?arrayids=0&time={}",
+    "headers" : {
+      "X-Request-Id": "837de776-ce5c-493a-9206-bbe7ebdbedb4"
+    }
+  },
+  "update_event_wrr" : {
+    "url" : "http://{}/api/ibofos/v1/devel/event-wrr/update"
+    },
+    "reset_event_wrr" : {
+        "url" : "http://{}/api/ibofos/v1/devel/event-wrr/reset"
+    },
+  "stop_rebuilding" : {
+    "url" : "http://{}/api/ibofos/v1/devel/POSArray/rebuild"
+  }
+}

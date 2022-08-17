@@ -1,0 +1,307 @@
+{
+  "Functional": {
+	 "SPS_4275": {
+	 "raid_type" : "RAID10",
+	 "data_devices" : 4
+		},
+	"SPS_4259": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "vol_count": 2,
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2",
+      "target_ip": "10.0.0.105"
+    },
+    "SPS_4323": {
+      "array_name" : "POSArray",
+      "raid_type" : "RAID0",
+      "data_devices" : 2,
+      "subsystem" : "nqn.2019-04.pos:subsystem1",
+      "target_ip" : "10.0.0.105"
+    },
+    "SPS_4320": {
+      "array_name" : "POSArray",
+      "raid_type" : "RAID5",
+      "data_devices" : 4,
+      "subsystem" : "nqn.2019-04.pos:subsystem1",
+      "target_ip" : "10.0.0.105"
+    },
+    "SPS_4319": {
+      "array_name" : "POSArray",
+      "raid_type" : "RAID10",
+      "data_devices" : 4,
+      "subsystem" : "nqn.2019-04.pos:subsystem1",
+      "target_ip" : "10.0.0.105"
+    },
+    "SPS_4318": {
+      "array_name" : "POSArray",
+      "raid_type" : "NONE",
+      "data_devices" : 1,
+      "subsystem" : "nqn.2019-04.pos:subsystem1",
+      "target_ip" : "10.0.0.105"
+    },
+    "SPS_4292": {
+      "array_name": "POSArray",
+      "raid_type": "NONE",
+      "data_devices": 1
+    },
+    "SPS_4350" : {
+    "raid_type" : "RAID10",
+    "data_devices" : 2
+    },
+    "SPS_4348" : {
+    "raid_type" : "NONE",
+    "data_devices" : 1
+    },
+    "SPS_4347" : {
+    "raid_type" : "RAID0",
+    "data_devices" : 2,
+      "first_array_name"  : "POSArray1",
+      "second_array_name" : "POSArray2"
+    },
+    "SPS_4340": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type_first" : "NONE",
+      "raid_type_second" : "RAID5",
+      "data_devices_first" : 1,
+      "data_devices_second" : 3
+    },
+    "SPS_4329": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type_first" : "RAID0",
+      "raid_type_second" : "RAID10",
+      "data_devices_first" : 2,
+      "data_devices_second" : 2,
+      "buffer_device_second": "uram1"
+    },
+    "SPS_4288": {
+      "array_name" : "POSArray",
+      "raid_type" : "NONE",
+      "data_devices" : 1,
+      "new_name" : "new_dagent_volume"
+    },
+    "SPS_4286": {
+      "first_array_name" : "POSArray",
+      "raid_type" : "NONE",
+      "data_devices" : 2
+    },
+    "SPS_4284": {
+      "first_array_name" : "POSArray",
+      "raid_type" : "NONE",
+      "data_devices" : 1
+    },
+    "SPS_4273": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type_first" : "RAID10",
+      "raid_type_second" : "RAID10",
+      "data_devices_first" : 3,
+      "data_devices_second" : 3,
+      "buffer_device_second": "uram1"
+    },
+    "SPS_4272": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type_first" : "RAID10",
+      "raid_type_second" : "RAID10",
+      "data_devices_first" : 4,
+      "data_devices_second" : 4,
+      "buffer_device_second": "uram1"
+    },
+    "SPS_4286": {
+      "array_name" : "POSArray",
+      "raid_type" : "NONE",
+      "data_devices" : 2
+    },
+    "SPS_4274": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type" : "RAID10",
+      "data_devices" : 2,
+      "volume_name" : "dagent_volume",
+      "volume" : 5242880
+    },
+    "SPS_4289": {
+      "first_array_name" : "POSArray1",
+      "second_array_name" : "POSArray2",
+      "raid_type" : "NONE",
+      "data_devices" : 1,
+      "volume_name" : "dagent_volume",
+      "second_array_buffer" : "uram1"
+    },
+    "SPS_4284": {
+      "array_name" : "POSArray1",
+      "raid_type" : "NONE",
+      "data_devices" : 1
+    },
+    "SPS_4230": {
+      "event_name": "rebuild"
+    },
+    "SPS_4229": {
+      "event_name": "re@@ild"
+    },
+    "SPS_4228": {
+      "event_name1": "rebuild",
+      "event_name2": "flush",
+      "event_name3": "gc"
+    },
+    "SPS_4241": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive_10_0": 2,
+      "spare_drive_5": 1,
+      "data_drive_5": 3,
+      "data_drive_no": 1,
+      "raid_type_10": "RAID10",
+      "raid_type_0": "RAID0",
+      "raid_type_5": "RAID5",
+      "raid_type_no": "NONE"
+    },
+    "SPS_4242": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0"
+    },
+    "SPS_4244": {
+      "array_name": "POSARRAY1",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "vol_name": "volume1",
+      "vol_new_name": "vol_name1",
+      "max_bw": 400,
+      "max_iops": 200
+    },
+    "SPS_4245": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 8,
+      "raid_type": "RAID0"
+    },
+    "SPS_4248": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "vol_name": "vol",
+      "max_bw": 500,
+      "min_bw": 10,
+      "max_iops": 400,
+      "min_iops": 20,
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4250": {
+      "array_name": "POSARRAY1",
+      "data_drive": 1,
+      "raid_type": "RAID0"
+    },
+    "SPS_4256": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive_0": 2,
+      "data_drive_no": 1,
+      "raid_type_0": "RAID0",
+      "raid_type_no": "NO RAID",
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4257": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive_0": 2,
+      "spare_drive_5": 1,
+      "data_drive_5": 3,
+      "raid_type_0": "RAID0",
+      "raid_type_5": "RAID5"
+    },
+    "SPS_4259": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "vol_count": 2,
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4260": {
+      "array_name": "POSARRAY",
+      "data_drive": 2,
+      "raid_type": "RAID0"
+    },
+     "SPS_4262": {
+      "array_name": "POSARRAY",
+      "data_drive": 2,
+      "raid_type": "RAID0"
+    },
+    "SPS_4263": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0"
+    },
+    "SPS_4264": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "spare_drive": 0,
+      "buffer1": "uram0",
+      "buffer2": "uram1",
+      "vol_name": "vol",
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4266": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID0",
+      "vol_count": 3,
+      "maxbw": 500,
+      "minbw": 100,
+      "maxiops": 400,
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4267": {
+      "array_name": "POSARRAY1",
+      "data_drive": 4,
+      "raid_type": "RAID10"
+    },
+    "SPS_4269": {
+      "array_name": "POSARRAY1",
+      "data_drive": 4,
+      "raid_type": "RAID10",
+      "vol_name": "volume1",
+      "new_name": "vol_name1",
+      "subsystem": "nqn.2019-04.pos:subsystem1"
+    },
+    "SPS_4270": {
+      "array_name": "POSARRAY",
+      "data_drive": 1,
+      "raid_type": "RAID10"
+    },
+    "SPS_4271": {
+      "array_name1": "POSARRAY1",
+      "array_name2": "POSARRAY2",
+      "data_drive": 2,
+      "raid_type": "RAID10",
+      "vol_name": "vol",
+      "vol_size": 214748364800,
+      "subsystem1": "nqn.2019-04.pos:subsystem1",
+      "subsystem2": "nqn.2019-04.pos:subsystem2"
+    },
+    "SPS_4219": {
+          "array_name1": "POSARRAY1",
+          "array_name2": "POSARRAY2",
+          "volume_name": "vol-1",
+          "min_iops": 10,
+          "min_bw": 10
+      }
+    }
+}
