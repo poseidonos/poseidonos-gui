@@ -222,6 +222,10 @@ const findDisk = (diskName) => {
   };
 };
 
+const DEFAULT_TITLE = "";
+const ADD_TITLE = "add";
+const REMOVE_TITLE = "remove";
+
 class ArrayShow extends Component {
   constructor(props) {
     super(props);
@@ -234,7 +238,8 @@ class ArrayShow extends Component {
       messageTitle: "",
       selectedSlot: null,
       onConfirm: null,
-      writeThroughMode: this.props.writeThrough
+      writeThroughMode: this.props.writeThrough,
+      diskTitle: DEFAULT_TITLE
     };
     this.interval = null;
     this.handleClick = this.handleClick.bind(this);
@@ -245,10 +250,9 @@ class ArrayShow extends Component {
     this.closePopup = this.closePopup.bind(this);
     this.deleteArray = this.deleteArray.bind(this);
     this.getDiskDetails = this.getDiskDetails.bind(this);
-    // this.attachDisk = this.attachDisk.bind(this);
-    // this.detachDisk = this.detachDisk.bind(this);
     this.addSpareDisk = this.addSpareDisk.bind(this);
     this.removeSpareDisk = this.removeSpareDisk.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
   }
 
   componentDidMount() {
@@ -266,14 +270,14 @@ class ArrayShow extends Component {
       clearInterval(this.interval);
     }
   }
-
+  
   handleClick(event) {
     event.preventDefault();
     this.setState({
       open: true,
     });
   }
-
+  
   handleUnmountClick() {
     this.props.handleUnmountPOS();
     this.setState({
@@ -297,11 +301,17 @@ class ArrayShow extends Component {
       diskDetails: { ...defaultDiskDetails },
     });
   }
-
+  
   getDiskDetails(name) {
     this.props.getDiskDetails({ name });
   }
-
+  
+    changeTitle(title) {
+      this.setState({
+        diskTitle: title
+      })
+    }
+  
   showPopup(name) {
     this.getDiskDetails(name);
     this.setState({
@@ -309,35 +319,20 @@ class ArrayShow extends Component {
       popupOpen: true,
     });
   }
-
+  
   closePopup() {
     this.setState({
       ...this.state,
       popupOpen: false,
     });
   }
-
+  
   deleteArray() {
     this.setState({
       open: false,
     });
     this.props.deleteArray();
   }
-
-  // attachDisk(slot) {
-  //   this.setState({
-  //     selectedSlot: slot,
-  //     messageOpen: true,
-  //     messageDescription: 'Are you sure you want to Attach Disk?',
-  //     messageTitle: 'Attach Disk',
-  //     onConfirm: () => {
-  //       this.props.attachDisk(this.state.selectedSlot);
-  //       this.setState({
-  //         messageOpen: false
-  //       });
-  //     }
-  //   })
-  // }
 
   addSpareDisk(slot) {
     this.setState({
@@ -353,21 +348,6 @@ class ArrayShow extends Component {
       },
     });
   }
-
-  // detachDisk(slot) {
-  //   this.setState({
-  //     selectedSlot: slot,
-  //     messageOpen: true,
-  //     messageDescription: 'Are you sure you want to Detach Disk?',
-  //     messageTitle: 'Detach Disk',
-  //     onConfirm: () => {
-  //       this.props.detachDisk(this.state.selectedSlot);
-  //       this.setState({
-  //         messageOpen: false
-  //       });
-  //     }
-  //   })
-  // }
 
   removeSpareDisk(slot) {
     this.setState({
@@ -417,6 +397,40 @@ class ArrayShow extends Component {
 
       return classes.freedisk;
     };
+
+    const getTitle = (slot) => {
+      if (this.state.diskTitle === ADD_TITLE)
+        return "Add Spare Disk"
+      if (this.state.diskTitle === REMOVE_TITLE)
+        return "Remove Spare Disk"
+      return (
+        <React.Fragment>
+          <div>
+            Name:
+            {slot.name}
+          </div>
+          <div>
+            Size:
+            {formatBytes(slot.size)}
+          </div>
+          <div>
+            NUMA: {slot.numa}
+          </div>
+          <div
+            onClick={() => this.showPopup(slot.name)}
+            aria-hidden="true"
+            style={{
+              cursor: "pointer",
+              textAlign: "right",
+              margin: "10px",
+            }}
+          >
+            <u>More Details</u>
+          </div>
+        </React.Fragment>
+      );
+    }
+
     return (
       <ThemeProvider theme={PageTheme}>
         <form className={classes.root} data-testid="arrayshow">
@@ -487,8 +501,8 @@ class ArrayShow extends Component {
             className={classes.legendContainer}
           >
             <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
-            <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Remove Spare disk" />
-            <Legend bgColor="rgb(137,163,196)" title="Add Spare disk" />
+            <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
+            <Legend bgColor="rgb(137,163,196)" title="Free disk" />
             <Legend bgColor="#8c6b5d" title="Used by Another Array" />
             <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
             <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
@@ -504,32 +518,7 @@ class ArrayShow extends Component {
                         tooltip: classes.tooltip,
                       }}
                       key={slot.name}
-                      title={(
-                        <React.Fragment>
-                          <div>
-                            Name:
-                            {slot.name}
-                          </div>
-                          <div>
-                            Size:
-                            {formatBytes(slot.size)}
-                          </div>
-                          <div>
-                            NUMA: {slot.numa}
-                          </div>
-                          <div
-                            onClick={() => this.showPopup(slot.name)}
-                            aria-hidden="true"
-                            style={{
-                              cursor: "pointer",
-                              textAlign: "right",
-                              margin: "10px",
-                            }}
-                          >
-                            <u>More Details</u>
-                          </div>
-                        </React.Fragment>
-                      )}
+                      title={getTitle(slot)}
                       interactive
                     >
                       <Grid
@@ -546,6 +535,8 @@ class ArrayShow extends Component {
                         </Typography>
                         {getClass(slot) === classes.freedisk ? (
                           <Button
+                            onMouseEnter={() => this.changeTitle(ADD_TITLE)}
+                            onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
                             color="secondary"
                             className={classes.detachBtn}
@@ -556,6 +547,8 @@ class ArrayShow extends Component {
                           </Button>
                         ) : getClass(slot) === classes.sparedisk ? (
                           <Button
+                            onMouseEnter={() => this.changeTitle(ADD_TITLE)}
+                            onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
                             color="secondary"
                             className={classes.detachBtn}
@@ -565,20 +558,6 @@ class ArrayShow extends Component {
                             <Remove fontSize="small" />
                           </Button>
                         ) : <p />}
-
-                        {/* {(getClass(slot) === classes.freedisk) ? (
-                        <Button
-                          className={classes.detachBtn}
-                          data-testid={`attachdisk-${index}`}
-                          onClick={() => this.attachDisk(slot)}
-                        >Attach</Button>
-                      ) : (
-                        <Button
-                          className={classes.detachBtn}
-                          data-testid={`detachdisk-${index}`}
-                          onClick={() => this.detachDisk(slot)}
-                        >Detach</Button>
-                      )} */}
                       </Grid>
                     </Tooltip>
                   );
