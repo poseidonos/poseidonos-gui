@@ -69,11 +69,13 @@ const styles = () => ({
     borderRadius: 100
   },
   volName: {
+    fontSize: 12,
     width: "150px",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
   uuidName: {
+    fontSize: 12,
     maxWidth: "150px",
     whiteSpace: "nowrap",
     overflow: "hidden",

@@ -495,7 +495,7 @@ class ArrayShow extends Component {
             <Legend bgColor="#087575" title="NUMA" />
           </Grid>
           <Grid container className={classes.diskContainer}>
-            <GridList cellHeight={110} className={classes.gridList} cols={32}>
+            <GridList cellHeight={90} className={classes.gridList} cols={32}>
               {this.props.slots
                 ? this.props.slots.map((slot, index) => {
                   return (

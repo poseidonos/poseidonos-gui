@@ -116,6 +116,7 @@ const styles = (theme) => ({
   },
   gridTile: {
     width: 200,
+    minWidth: 24,
     border: "2px solid lightgray",
     display: "flex",
     height: "100%",
@@ -623,7 +624,7 @@ class ArrayCreate extends Component {
           </Grid>
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
-              <GridList cellHeight={110} className={classes.gridList} cols={this.props.config.totalDisks}>
+              <GridList cellHeight={90} className={classes.gridList} cols={this.props.config.totalDisks}>
                 {this.props.disks
                   ? this.props.disks.map((disk, i) => {
                     return (

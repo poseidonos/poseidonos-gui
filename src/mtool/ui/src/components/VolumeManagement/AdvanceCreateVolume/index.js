@@ -19,7 +19,6 @@ import {
   Typography,
   withStyles
 } from '@material-ui/core';
-import { customTheme } from '../../../theme';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
@@ -154,6 +153,7 @@ const styles = (theme) => ({
   createHeader: {
     color: "#424850",
     fontSize: "16px",
+    fontWeight: "bold",
     textAlign: "left",
     marginLeft: theme.spacing(2),
     paddingTop: theme.spacing(1),
@@ -168,12 +168,13 @@ const styles = (theme) => ({
     marginTop: theme.spacing(0),
   },
   previewHeader: {
-    ...customTheme.card.header,
-    marginLeft: theme.spacing(0)
+    color: "#424850",
+    fontWeight: "bold",
   },
   previewElements: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    marginBottom: 8
   },
   previewElement: {
     flex: "1 0 45%",
