@@ -526,7 +526,7 @@ func validateNumOfDevice(ctx *gin.Context) bool {
 	if _, ok := reqMap["data"]; ok {
 		numOfDevice = len(reqMap["data"].([]interface{}))
 	} else {
-		numOfDevice = int(reqMap["num_data"].(float64))
+		numOfDevice = int(reqMap["numData"].(float64))
 	}
 	if strings.ToLower(reqMap["raidtype"].(string)) == "raid10" && numOfDevice%2 != 0 {
 		res.Result.Status, _ = util.GetStatusInfo(2517)

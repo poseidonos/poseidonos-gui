@@ -72,10 +72,10 @@ def list_devices():
                 res['devices'].append({
                     "name": device["name"],
                     "size": device["size"],
-                    "addr": device["addr"],
+                    "addr": device["address"],
                     "class": device["class"],
-                    "mn": device["mn"],
-                    "sn": device["sn"],
+                    "mn": device["modelNumber"],
+                    "sn": device["serialNumber"],
                     "isAvailable":True,
                     "numa": device["numa"],
                     "arrayName" : ""

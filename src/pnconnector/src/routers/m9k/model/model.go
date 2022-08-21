@@ -89,8 +89,8 @@ type ArrayParam struct {
 type AutocreateArrayParam struct {
 	ARRAYNAME    string            `json:"name"`
 	BUFFER       [1]DeviceNameList `json:"buffer"`
-	NUMDATADEVS  int               `json:"num_data"`
-	NUMSPAREDEVS int               `json:"num_spare,omitempty"`
+	NUMDATADEVS  int               `json:"numData"`
+	NUMSPAREDEVS int               `json:"numSpare,omitempty"`
 	RAID         string            `json:"raidtype,omitempty"`
 }
 type DeviceNameList struct {
@@ -98,9 +98,9 @@ type DeviceNameList struct {
 }
 type CreateDeviceReqParam struct {
 	DEVICENAME string `json:"name"`
-	NUMBLOCKS  int    `json:"num_blocks"`
-	BLOCKSIZE  int    `json:"block_size"`
-	DEVICETYPE string `json:"dev_type"`
+	NUMBLOCKS  int    `json:"numBlocks"`
+	BLOCKSIZE  int    `json:"blockSize"`
+	DEVICETYPE string `json:"devType"`
 	NUMA       int    `json:"numa"`
 }
 type SubSystemParam struct {
@@ -145,6 +145,7 @@ type VolumeParam struct {
 	TRANSPORTTYPE      string `json:"transport_type,omitempty"`
 	TARGETADDRESS      string `json:"target_address"`
 	TRANSPORTSERVICEID string `json:"transport_service_id"`
+	ISWALVOL           bool   `json:"iswalvol"`
 }
 
 type CallbackMultiVol struct {

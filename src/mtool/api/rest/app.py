@@ -1239,10 +1239,10 @@ def create_subsystem(current_user):
 def add_listener(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    name = body.get('nqn')
-    transport_type = body.get('type')
-    target_address = body.get('ip')
-    transport_service_id = body.get('port')
+    name = body.get('name')
+    transport_type = body.get('transport_type')
+    target_address = body.get('target_address')
+    transport_service_id = body.get('transport_service_id')
     try:
         resp = dagent.add_listener(
             name,
@@ -1427,7 +1427,7 @@ def get_array_config(current_user):
 
 def get_mod_array(array):
     _array = {}
-    _array["RAIDLevel"] = array["result"]["data"]["data_raid"]
+    _array["RAIDLevel"] = array["result"]["data"]["dataRaid"]
     _array["storagedisks"] = []
     _array["writebufferdisks"] = []
     _array["sparedisks"] = []
@@ -1477,8 +1477,8 @@ def get_arrays(current_user):
                 a_info["status"] = array["status"]
                 a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
-                a_info["writeThroughEnabled"] = res["result"]["data"]["write_through_enabled"]
-                a_info["rebuildingprogress"] = res["result"]["data"]["rebuilding_progress"]
+                a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
+                a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)
         except Exception as e:
             print("Exception in /api/v1/get_arrays/ API:", e)
@@ -1893,6 +1893,7 @@ def saveVolume():
         subsystem = body['subsystem']
         suffix = body['suffix']
         max_available_size = body['max_available_size']
+        iswalvol = body['iswalvol']
     except Exception as e:
         print("Exception Occured in Save Volume")
         print(e)
@@ -1928,7 +1929,8 @@ def saveVolume():
         int(maxiops),
         int(minbw),
         int(miniops),
-        subsystem)
+        subsystem,
+        iswalvol)
 
     # print("print save volllll", toJson(create_vol_res.json())
     return toJson(create_vol_res)

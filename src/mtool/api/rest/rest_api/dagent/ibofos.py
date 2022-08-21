@@ -542,9 +542,9 @@ def create_device(
     request_body = {
         "param": {
             "name": name,
-            "num_blocks": num_blocks,
-            "block_size": block_size,
-            "dev_type": dev_type,
+            "numBlocks": num_blocks,
+            "blockSize": block_size,
+            "devType": dev_type,
             "numa": numa}}
     request_body = json.dumps(request_body)
     try:
@@ -617,8 +617,8 @@ def auto_create_array(
             "name": arrayname,
             "raidtype": raidtype,
             "buffer": meta_devices,
-            "num_data": num_data,
-            "num_spare": num_spare}}
+            "numData": num_data,
+            "numSpare": num_spare}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
@@ -666,7 +666,6 @@ def create_array(
             "data": data_devices,
             "spare": spare_devices}}
     request_body = json.dumps(request_body)
-    # print(request_body)
     try:
         #print("request body create array ", request_body)
         response = send_command_to_dagent(
@@ -677,7 +676,6 @@ def create_array(
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        #print("resp for create array",response.json())
         if response.status_code != 200:
             return response
         response = mount_array(name, write_through)
@@ -938,7 +936,8 @@ def create_volume(
         maxiops=0,
         minbw=0,
         miniops=0,
-        subsystem="",
+        subnqn="",
+        iswalvol=False,
         auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
@@ -954,13 +953,10 @@ def create_volume(
             "stoponerror": stop_on_error,
             "namesuffix": suffix,
             "mountall": mount_all,
-            "subnqn": subsystem["subnqn"],
-            "transport_type":subsystem["transport_type"],
-            "transport_service_id":subsystem["transport_service_id"],
-            "target_address":subsystem["target_address"]}}
+            "iswalvol":iswalvol,
+            "subnqn": subnqn}}
 
     request_body = json.dumps(request_body)
-    #print("volume bodyyyy",request_body)
     try:
         response = send_command_to_dagent(
             "POST",
