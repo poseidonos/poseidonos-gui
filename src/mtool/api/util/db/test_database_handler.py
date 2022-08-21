@@ -153,7 +153,6 @@ def test_update_user_in_db():
 """
 
 def test_update_password():
-    global USER_LIST
     assert OBJECT.update_password_in_db(
         USER_LIST[1]["_id"], USER_LIST[1]["password"], "456")
     assert OBJECT.update_password_in_db(

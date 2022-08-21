@@ -131,7 +131,6 @@ def set_max_latency(res, field):
 
 def get_percentage(usage_percent):
     try:
-        global max_latency
         if usage_percent > max_latency:
             return 100
         return (usage_percent * 100) / max_latency

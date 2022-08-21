@@ -215,7 +215,7 @@ def get_version():
         os.path.join(
             os.path.dirname(__file__),
             "../../ui/package.json"))
-    with open(package_json_path) as f:
+    with open(package_json_path, encoding="utf-8") as f:
         data = json.load(f)
         return toJson({"version": data["version"]})
 

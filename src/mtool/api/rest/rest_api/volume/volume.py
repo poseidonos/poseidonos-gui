@@ -35,7 +35,6 @@
 #from socketclient.socketclient import create_vol, delete_vol, list_vol, mount_vol
 import rest.rest_api.dagent.ibofos as dagent
 from bson import json_util
-import json
 
 def create_volume(
         vol_name,
