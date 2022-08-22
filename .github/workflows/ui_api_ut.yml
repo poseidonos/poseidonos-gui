@@ -1,0 +1,59 @@
+# This workflow will do a clean installation of node and python dependencies, cache/restore them, build the source code and run tests
+
+name: POS GUI Unit Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    defaults:
+       run:
+         working-directory: ${{github.workspace}}
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        python-version: ["3.6.9"]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install pylint
+    - name: Installing packages ...
+      run: |
+        cd ${{github.workspace}}
+        ./script/install_all.sh
+        cd ${{github.workspace}}/src/mtool/api
+        pip3 install -r requirements.txt
+        pip3 install requests-mock
+    - name: Build and Test UI
+      env:
+        CI: false
+      run: |
+        cd ${{github.workspace}}/src/mtool/ui
+        npm install
+        npm run build --if-present
+        npm run lint
+        npm run test -- -u
+    - name: Running Unit Tests ...
+      run: |
+        cd ${{github.workspace}}/src/mtool/api
+        export PYTHONPATH=$PYTHONPATH:$PWD
+        pytest -v ./
+        find . -iname "*.py" | xargs pylint --output-format=colorized --max-line-length=300 --disable=R,C,pointless-string-statement,unused-argument,broad-except,anomalous-backslash-in-string,redefined-outer-name,global-statement
