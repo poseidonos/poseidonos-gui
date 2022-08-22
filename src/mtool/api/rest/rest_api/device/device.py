@@ -42,7 +42,7 @@ def list_devices():
     #scan_dev = scan_devices()
     # if scan_dev.status_code != 200:
     #    return scan_dev
-    scan_dev = scan_devices()
+    scan_devices()
     devices = get_devices()
     devices = devices.json()
     if "return" in devices and devices["return"] == -1:
