@@ -154,7 +154,7 @@ func RuniBoFOS(xrId string, param interface{}) (model.Request, model.Response, e
 }
 
 func IBoFOSInfo(xrId string, param interface{}) (model.Request, model.Response, error) {
-	return SystemSender(xrId, param, "GETPOSINFO")
+	return SystemSender(xrId, param, "SYSTEMINFO")
 }
 
 func IBoFOSVersion(xrId string, param interface{}) (model.Request, model.Response, error) {

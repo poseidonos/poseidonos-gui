@@ -76,9 +76,9 @@ def test_get_devices(mock_get_current_user, **kwargs):
                                         "data": {"devicelist": [{"name": "uram0",
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
-                                                                 "mn": "DEFG",
-                                                                 "sn": "SN",
-                                                                 "addr":
+                                                                 "modelNumber": "DEFG",
+                                                                 "serialNumber": "SN",
+                                                                 "address":
                                                                  "0000:68:00.0",
                                                                  "class":
                                                                  "SYSTEM",
@@ -90,9 +90,9 @@ def test_get_devices(mock_get_current_user, **kwargs):
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
-                                                                 "mn": "ABCD",
-                                                                 "sn": "SN!",
-                                                                 "addr":
+                                                                 "modelNumber": "ABCD",
+                                                                 "serialNumber": "SN!",
+                                                                 "address":
                                                                  "0000:68:00.0",
                                                                  "class":
                                                                  "SYSTEM",
@@ -862,7 +862,8 @@ def test_create_volumes(mock_get_current_user, **kwargs):
                 "count": 1,
                 "suffix": 1,
                 "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
-                "max_available_size": 1722281885696
+                "max_available_size": 1722281885696,
+                "iswalvol":false
                 }''',
         headers={'x-access-token': json_token})
 
@@ -966,7 +967,8 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
                 "count": 1,
                 "suffix": 1,
                 "max_available_size": 1722281885696,
-				"subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
+				"subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
+                "iswalvol":false
                 }''',
         headers={'x-access-token': json_token})
 
@@ -1040,7 +1042,8 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
                 "count": 1,
                 "suffix": 1,
                 "max_available_size": 1722281885696,
-                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
+                "iswalvol":false
                 }''',
         headers={'x-access-token': json_token})
 
@@ -1114,7 +1117,8 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
                 "count": 1,
                 "suffix": 1,
                 "max_available_size": 1722281885696,
-                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
+                "iswalvol":false
                 }''',
         headers={'x-access-token': json_token})
 
@@ -1186,7 +1190,8 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
                 "count": 1,
                 "suffix": 1,
                 "max_available_size": 1722281885696,
-                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"}
+                "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
+                "iswalvol":false
                 }''',
         headers={'x-access-token': json_token})
 
@@ -1822,9 +1827,9 @@ def test_list_devices(global_data, **kwargs):
                                         "data": {"devicelist": [{"name": "uram0",
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
-                                                                 "mn": "DEFG",
-                                                                 "sn": "SN",
-                                                                 "addr":"0000:68:00.0",
+                                                                 "modelNumber": "DEFG",
+                                                                 "serialNumber": "SN",
+                                                                 "address":"0000:68:00.0",
                                                                  "class":
                                                                  "SYSTEM",
                                                                  "isAvailable":True,
@@ -1834,9 +1839,9 @@ def test_list_devices(global_data, **kwargs):
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
-                                                                 "mn": "ABCD",
-                                                                 "sn": "SN",
-                                                                 "addr":"0000:68:00.0",
+                                                                 "modelNumber": "ABCD",
+                                                                 "serialNumber": "SN",
+                                                                 "address":"0000:68:00.0",
                                                                  "class":
                                                                  "SYSTEM",
                                                                  "isAvailable":True,
