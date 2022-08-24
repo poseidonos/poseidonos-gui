@@ -744,94 +744,6 @@
 			"response": []
 		},
 		{
-			"name": "Auto Create Array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"//pm.test(\"Created an array...\", function () {\r",
-							"//   pm.response.to.have.status(200);\r",
-							"//});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"console.log(jsonData.result.status.description);\r",
-							"let status = \"Code: \" + jsonData.result.status.code + \" Level: \" + jsonData.result.status.level + \" Description: \" + jsonData.result.status.description;\r",
-							"console.log(jsonData.result);\r",
-							"//let description = jsonData.result.status;\r",
-							"pm.test(\"DAgent response is... \" + status, function () {\r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
-							"});\r",
-							"/*\r",
-							"let statusDesc = jsonData.result.status.description;\r",
-							"\r",
-							"if (statusDesc.toLowerCase() == \"success\") {\r",
-							"    setTimeout(function () {\r",
-							"    }, 2000);\r",
-							"\r",
-							"    // Create Volume\r",
-							"    postman.setNextRequest(\"Create Volume\")\r",
-							"} else {\r",
-							"\r",
-							"    console.log('Array creating failed .... exiting..');\r",
-							"\r",
-							"    // try restarting POS\r",
-							"    let restartCount = pm.environment.get(\"posRestartCount\");\r",
-							"    if (restartCount <= 3) {\r",
-							"        // increment restart count \r",
-							"        pm.environment.set(\"posRestartCount\", (restartCount + 1));\r",
-							"        // Try restart \r",
-							"        postman.setNextRequest(\"Stop ibofos\");\r",
-							"\r",
-							"    } else {\r",
-							"        // Fail and logout\r",
-							"        postman.setNextRequest(\"logout\");\r",
-							"    }\r",
-							"\r",
-							"\r",
-							"}\r",
-							"*/"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"arrayname\": \"{{arrayName1}}1\",\r\n    \"raidtype\": \"RAID5\",\r\n    \"metaDisk\": \"uram1\",\r\n    \"num_data\" : 3,\r\n\t\"num_spare\" : 0\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/autoarray/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"autoarray",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create 1st Array",
 			"event": [
 				{
@@ -920,7 +832,7 @@
 			"response": []
 		},
 		{
-			"name": "Create 2nd Array",
+			"name": "Auto Create Array",
 			"event": [
 				{
 					"listen": "test",
@@ -938,7 +850,6 @@
 							"pm.test(\"DAgent response is... \" + status, function () {\r",
 							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
 							"});\r",
-							"\r",
 							"/*\r",
 							"let statusDesc = jsonData.result.status.description;\r",
 							"\r",
@@ -964,6 +875,8 @@
 							"        // Fail and logout\r",
 							"        postman.setNextRequest(\"logout\");\r",
 							"    }\r",
+							"\r",
+							"\r",
 							"}\r",
 							"*/"
 						],
@@ -982,7 +895,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"size\": \"01600321314816160032131481616003213148161600321314816\",\r\n    \"arrayname\": \"{{arrayName2}}\",\r\n    \"raidtype\": \"RAID5\",\r\n    \"storageDisks\": [\r\n        {\r\n            \"deviceName\": \"{{storageDisk4}}\"\r\n        },\r\n        {\r\n            \"deviceName\": \"{{storageDisk5}}\"\r\n        },\r\n        {\r\n            \"deviceName\": \"{{storageDisk6}}\"\r\n        }\r\n    ],\r\n    \"spareDisks\": [\r\n        {\r\n            \"deviceName\": \"{{spareDisk2}}\"\r\n        }\r\n    ],\r\n    \"writeBufferDisk\": [],\r\n    \"metaDisk\": \"{{WBPDisk2}}\",\r\n    \"writeThroughModeEnabled\":true\r\n}",
+					"raw": "{\r\n    \"arrayname\": \"{{arrayName2}}\",\r\n    \"raidtype\": \"RAID5\",\r\n    \"metaDisk\": \"{{WBPDisk2}}\",\r\n    \"num_data\" : 3,\r\n\t\"num_spare\" : 0,\r\n    \"writeThroughModeEnabled\":true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -990,7 +903,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
+					"raw": "http://{{host}}:{{port}}/api/v1/autoarray/",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -998,8 +911,8 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"v1.0",
-						"create_arrays",
+						"v1",
+						"autoarray",
 						""
 					]
 				}
@@ -1416,69 +1329,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\"name\": \"{{spareDisk1}}\", \"array\": \"{{arrayName1}}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/remove_spare_device/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"remove_spare_device",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "remove spare disk in 2nd array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response code \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
-							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
-							"    \r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"{{spareDisk2}}\", \"array\": \"{{arrayName2}}\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2789,64 +2639,6 @@
 			"response": []
 		},
 		{
-			"name": "unmount vol_arr2_0 in 2nd array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"\r",
-							"pm.test(\"Volume updated...\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json(); \r",
-							"console.log(jsonData.result.status.description)\r",
-							"pm.test(\"Verify Json values\", function () { \r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\"}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volume",
-						"mount"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "mount vol_arr1_0 in 1st array",
 			"event": [
 				{
@@ -2886,69 +2678,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\"name\": \"{{volNameArr1}}0\", \"array\": \"{{arrayName1}}\",\"subnqn\": \"nqn.2019-04.pos:subsystem1\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volume",
-						"mount"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "mount vol_arr2_0 in 2nd array",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Response code \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
-							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
-							"    \r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"{{volNameArr2}}0\", \"array\": \"{{arrayName2}}\",\"subnqn\": \"nqn.2019-04.pos:subsystem2\"}",
 					"options": {
 						"raw": {
 							"language": "json"
