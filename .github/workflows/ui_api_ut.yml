@@ -36,6 +36,8 @@ jobs:
         pip install pytest
         pip install pylint
     - name: Installing packages ...
+      env:
+        RESET_GRAFANA: true
       run: |
         cd ${{github.workspace}}
         ./script/install_all.sh
