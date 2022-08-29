@@ -51,7 +51,7 @@ def set_telemetry_configuration(ip, port):
         if len(grafa_ds_res):
             for ds in grafa_ds_res:
                 if "name" in ds and ds["name"] == ds_name and "url" in ds and ds["url"] != prom_url:
-                        ds_id = ds["id"]
+                    ds_id = ds["id"]
             
         if ds_id == -1:
             return success_res
