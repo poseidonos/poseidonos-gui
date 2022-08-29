@@ -286,11 +286,11 @@ describe("Authentication", () => {
 
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
-      target: { value: '107.108.83.97', name: 'telemetryIP' }
+      target: { value: '127.0.0.1', name: 'telemetryIP' }
     });
     const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
     fireEvent.change(telemetryPortInput, {
-      target: { value: '9090', name: 'telemetryPort' }
+      target: { value: '8000', name: 'telemetryPort' }
     });
     fireEvent.click(getByTestId("submitConfig"))
     mock.onPost('/api/v1/configure').reply(200, "success");

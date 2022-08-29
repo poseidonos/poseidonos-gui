@@ -5,6 +5,6 @@
     "Login failed! Invalid id or password" : "로그인 실패! ID나 비밀번호가 잘못되었습니다.",
     "IP Address": "IP 주소",
     "Port": "포트",
-    "Save": "득점 방해",
+    "Save": "저장",
     "Configuration failed! Telemetry API is not reachable" : "구성이 실패했습니다! 원격 측정 API에 도달할 수 없습니다."
 }
