@@ -1,4 +1,6 @@
-package main
+// Package kouros implements functions that can be used by clients developed in go to access the poseidonos
+// and give commands to PoseidonOS and 2-Node HA
+package kouros
 
 import (
 	"fmt"
@@ -8,7 +10,8 @@ import (
 )
 
 
-
+// NewPOSManager creates a new manager object based on the type provided
+// Currently only type "grpc" is supported
 func NewPOSManager(managerType string) (pos.POSManager, error) {
 	switch managerType {
 	case "grpc":
@@ -18,6 +21,8 @@ func NewPOSManager(managerType string) (pos.POSManager, error) {
 	}
 }
 
+// NewPOSManager creates a new manager object based on the type provided
+// Currently only type "postgres" is supported
 func NewHAManager(managerType string) (ha.HAManager, error) {
 	switch managerType {
 	case "postgres":
@@ -25,14 +30,4 @@ func NewHAManager(managerType string) (ha.HAManager, error) {
 	default:
 		return nil, errors.New("Invalid HA Manager type")
 	}
-}
-
-func main() {
-	posManager, err := NewPOSManager("grpc")
-	if err != nil {
-		fmt.Println("GRPC method is not supported")
-	}
-	posManager.Init("127.0.0.1:50055")
-	res, _ := posManager.ListDevices()
-	fmt.Println(string(res))
 }
