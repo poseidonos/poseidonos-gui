@@ -1,3 +1,7 @@
+#!/bin/bash
+
+RESET_GRAFANA=$1
+
 #Remove previous GrafanaDB
 if [ -n "${RESET_GRAFANA+1}" ] && [ $RESET_GRAFANA == true ]; then
     rm /var/lib/grafana/grafana.db;
