@@ -138,7 +138,6 @@ const DiskDetails = props => {
               <Grid xs={3}><Typography variant="subtitle2">Model:</Typography></Grid>
               <Grid xs={9}><Typography variant="body1">{props.details.mn}</Typography></Grid>
             </div>
-            <Typography variant="subtitle1">SMART VALUES</Typography>
             <Paper className={classes.root}>
               <Table>
                 <TableHead>
