@@ -32,25 +32,25 @@
 
 import { Dialog, DialogContent } from '@material-ui/core';
 import React from 'react';
-import { DialogTitle } from '../Dialog';
+import DialogTitle from '../DialogTitle';
 
 const Popup = (props) => {
-    return (
-        <Dialog
-          open={props.open}
-          maxWidth="sm"
-          fullWidth
-        >
-        <DialogTitle
-          onClose={props.close}
-        >
-            {props.title}
-        </DialogTitle>
-        <DialogContent>
-            {props.children}
-        </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Dialog
+      open={props.open}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogTitle
+        onClose={props.close}
+      >
+        {props.title}
+      </DialogTitle>
+      <DialogContent>
+        {props.children}
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default Popup;

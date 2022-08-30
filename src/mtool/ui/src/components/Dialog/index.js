@@ -51,7 +51,7 @@ const styles = theme => ({
     // backgroundColor: '#18355f',
     backgroundColor: '#424850',
     color: theme.palette.common.white,
-    padding: '5px',
+    padding: theme.spacing(1),
   },
   dialogContent: {
     display: 'flex',
@@ -68,8 +68,8 @@ const styles = theme => ({
 
   closeButton: {
     position: 'absolute',
-    right: theme.spacing(),
-    top: '0px',
+    right: theme.spacing(1),
+    top: '4px',
     color: theme.palette.grey[500],
   },
   buttonStyle: {
