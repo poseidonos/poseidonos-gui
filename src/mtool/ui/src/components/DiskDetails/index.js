@@ -131,12 +131,12 @@ const DiskDetails = props => {
             className={classes.alertDialogText}
           >
             <div className={classes.primaryContent}>
-              <Grid xs={3}><Typography variant="subtitle2">Name:</Typography></Grid>
-              <Grid xs={9}><Typography variant="body1">{props.details.name}</Typography></Grid>
-              <Grid xs={3}><Typography variant="subtitle2">Serial No:</Typography></Grid>
-              <Grid xs={9}><Typography variant="body1">{props.details.sn}</Typography></Grid>
-              <Grid xs={3}><Typography variant="subtitle2">Model:</Typography></Grid>
-              <Grid xs={9}><Typography variant="body1">{props.details.mn}</Typography></Grid>
+              <Grid xs={3}><Typography variant="subtitle1">Name :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.name}</Typography></Grid>
+              <Grid xs={3}><Typography variant="subtitle1">Serial No :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.sn}</Typography></Grid>
+              <Grid xs={3}><Typography variant="subtitle1">Model :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.mn}</Typography></Grid>
             </div>
             <Paper className={classes.root}>
               <Table>
