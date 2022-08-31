@@ -3636,13 +3636,13 @@ describe("<Storage Management />", () => {
       .onAny()
       .reply(200, []);
     renderComponent();
-    const { getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText, getByLabelText } = wrapper;
     fireEvent.click(getByText("create"));
     const autoCreateBtn = getByText("Auto-Create");
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     expect(dev1).toBeDefined();
     fireEvent.click(autoCreateBtn);
-    fireEvent.click(await waitForElement(() => getByTestId("alertCloseButton")));
+    fireEvent.click(await waitForElement(() => getByLabelText("Close")));
   });
 
   it("should display error message if 3 ssds are not available", async () => {

@@ -36,7 +36,7 @@ const DialogTitle = props => {
         className={classes.closeButton}
         onClick={onClose}
       >
-        <span style={{ fontSize: 14, color: '#fff' }}>x</span>
+        <span data-testid="diskdetails-close" style={{ fontSize: 14, color: '#fff' }}>x</span>
       </IconButton>
     </MuiDialogTitle>
   );
