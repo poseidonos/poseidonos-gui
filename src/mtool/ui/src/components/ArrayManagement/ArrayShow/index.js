@@ -270,14 +270,14 @@ class ArrayShow extends Component {
       clearInterval(this.interval);
     }
   }
-  
+
   handleClick(event) {
     event.preventDefault();
     this.setState({
       open: true,
     });
   }
-  
+
   handleUnmountClick() {
     this.props.handleUnmountPOS();
     this.setState({
@@ -301,17 +301,17 @@ class ArrayShow extends Component {
       diskDetails: { ...defaultDiskDetails },
     });
   }
-  
+
   getDiskDetails(name) {
     this.props.getDiskDetails({ name });
   }
-  
-    changeTitle(title) {
-      this.setState({
-        diskTitle: title
-      })
-    }
-  
+
+  changeTitle(title) {
+    this.setState({
+      diskTitle: title
+    })
+  }
+
   showPopup(name) {
     this.getDiskDetails(name);
     this.setState({
@@ -319,14 +319,14 @@ class ArrayShow extends Component {
       popupOpen: true,
     });
   }
-  
+
   closePopup() {
     this.setState({
       ...this.state,
       popupOpen: false,
     });
   }
-  
+
   deleteArray() {
     this.setState({
       open: false,
@@ -547,7 +547,7 @@ class ArrayShow extends Component {
                           </Button>
                         ) : getClass(slot) === classes.sparedisk ? (
                           <Button
-                            onMouseEnter={() => this.changeTitle(ADD_TITLE)}
+                            onMouseEnter={() => this.changeTitle(REMOVE_TITLE)}
                             onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
                             color="secondary"
