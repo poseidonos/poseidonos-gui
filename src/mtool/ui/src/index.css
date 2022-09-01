@@ -8,6 +8,26 @@ body {
   font-size: 12px;
 }
 
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5C6177;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
 code {
   font-family: Arial, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

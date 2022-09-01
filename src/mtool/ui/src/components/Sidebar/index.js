@@ -211,7 +211,7 @@ const Sidebar = (props) => {
                 alt="l"
               />
             </span>
-            <Typography className={classes.sidebarText}>Performance</Typography>
+            <Typography className={classes.sidebarText}>Grafana for Telemetry</Typography>
           </ListItem>
         </NavLink>
         {/* <Divider className={classes.listDivider} />

@@ -36,6 +36,48 @@ import * as actionTypes from '../store/actions/actionTypes';
 import * as actionCreators from '../store/actions/exportActionCreators';
 
 
+export function* getConfig() {
+  try {
+    const response = yield call([axios, axios.get], '/api/v1/configure');
+    if (response.status === 200 && response.data && response.data.isConfigured === true) {
+      yield put(actionCreators.setIsConfigured(
+        {
+          isConfigured: true,
+          telemetryIP: response.data.ip,
+          telemetryPort: response.data.port
+        }
+      ));
+    } else {
+      yield put(actionCreators.setIsConfigured({ isConfigured: false }));
+    }
+  } catch (error) {
+    yield put(actionCreators.setIsConfigured({ isConfigured: false }));
+  }
+}
+
+export function* saveConfig(action) {
+  try {
+    const response = yield call(
+      [axios, axios.post],
+      '/api/v1/configure',
+      action.payload
+    );
+
+    if (response.status === 200) {
+      yield put(actionCreators.setIsConfigured(
+        {
+          isConfigured: true,
+          telemetryIP: action.payload.telemetryIP,
+          telemetryPort: action.payload.telemetryPort
+        }));
+    } else {
+      yield put(actionCreators.setconfigurationFailed())
+    }
+
+  } catch (error) {
+    yield put(actionCreators.setconfigurationFailed())
+  }
+}
 
 export function* login(action) {
   try {
@@ -44,23 +86,24 @@ export function* login(action) {
       [axios, axios.post],
       '/api/v1.0/login/',
       action.payload
-    );  
+    );
     if (response.data) {
-        localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('userid', response.data.username);
-        localStorage.setItem('token', response.data.token);
-        yield put(actionCreators.setIsLoggedIn());
-        action.history.push('/dashboard');
-      }
-    } catch (error) {
-        yield put(actionCreators.setLoginFailed());
-        localStorage.setItem('isLoggedIn', false);
-        localStorage.setItem('BMC_LoggedIn', false);
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('userid', response.data.username);
+      localStorage.setItem('token', response.data.token);
+      yield put(actionCreators.setIsLoggedIn());
+      action.history.push('/dashboard');
+    }
+  } catch (error) {
+    yield put(actionCreators.setLoginFailed());
+    localStorage.setItem('isLoggedIn', false);
+    localStorage.setItem('BMC_LoggedIn', false);
   }
 }
 
 
 export function* authenticationWatcher() {
+  yield takeEvery(actionTypes.SAGA_CHECK_CONFIGURATION, getConfig);
+  yield takeEvery(actionTypes.SAGA_CONFIGURE, saveConfig);
   yield takeEvery(actionTypes.SAGA_LOGIN, login);
-  
 }
