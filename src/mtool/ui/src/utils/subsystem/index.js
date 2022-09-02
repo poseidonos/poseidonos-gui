@@ -5,16 +5,16 @@ const getSubsystemForArray = (subsystems, array) => {
       const isSubsystemOfArray = s.array === array;
       const isSubsystemDiscovery = s.subtype && s.subtype.toLowerCase() === "discovery";
       const isSubsystemFree = !isSubsystemDiscovery && !subsystem && !s.array;
-      if(isSubsystemOfArray) {
+      if (isSubsystemOfArray) {
         subsystem = s;
         return;
       }
-      if(isSubsystemFree) {
+      if (isSubsystemFree) {
         subsystem = s;
       }
     })
   }
-  return subsystem ? subsystem.nqn : "";
+  return subsystem ? subsystem.subnqn : "";
 }
 
 export default getSubsystemForArray;

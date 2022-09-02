@@ -275,12 +275,12 @@ def test_list_subsystem(mock_get_current_user, **kwargs):
                     "model_number": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [
                         {
-                            "bdev_name": "bdev_0_POSArray",
+                            "bdevName": "bdev_0_POSArray",
                             "nsid": 1,
                             "uuid": "f2f3111e-4599-4fba-b65b-aae3c243395b"
                         },
                         {
-                            "bdev_name": "bdev_1_POSArray",
+                            "bdevName": "bdev_1_POSArray",
                             "nsid": 2,
                             "uuid": "e0b8314b-dbfa-45ed-9986-606a45728584"
                         }

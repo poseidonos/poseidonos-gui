@@ -49,13 +49,13 @@ const styles = (theme) => ({
         marginLeft: 0
     },
     detailText: {
-	fontWeight: 600
+        fontWeight: 600
     },
     deleteIcon: {
-	cursor: "pointer",
-	"&:hover": {
-		boxShadow: 5
-	}
+        cursor: "pointer",
+        "&:hover": {
+            boxShadow: 5
+        }
     },
     item: {
         marginTop: theme.spacing(1)
@@ -82,17 +82,17 @@ class Subsystem extends Component {
         super()
         this.state = {
             dialogOpen: false,
-	    actionTitle: "",
-	    actionOpen: false,
-	    actionMsg: "",
-	    actionType: "confirm",
-	    confirmAction: () => {}
+            actionTitle: "",
+            actionOpen: false,
+            actionMsg: "",
+            actionType: "confirm",
+            confirmAction: () => { }
         };
         this.openCreateSubsystemDialog = this.openCreateSubsystemDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
-	this.closeAlert = this.closeAlert.bind(this);
-	this.openAction = this.openAction.bind(this);
-	this.closeAction = this.closeAction.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
+        this.openAction = this.openAction.bind(this);
+        this.closeAction = this.closeAction.bind(this);
     }
 
     componentDidMount() {
@@ -112,55 +112,55 @@ class Subsystem extends Component {
     }
 
     closeAlert() {
-	    this.props.Close_Alert();
-	    this.setState({
-		    actionOpen: false,
-		    dialogOpen: this.props.errorCode ?
-		        this.state.dialogOpen : false
-	    });
+        this.props.Close_Alert();
+        this.setState({
+            actionOpen: false,
+            dialogOpen: this.props.errorCode ?
+                this.state.dialogOpen : false
+        });
     }
-    
+
     closeAction() {
-	    this.setState({
-		    actionOpen: false
-	    });
+        this.setState({
+            actionOpen: false
+        });
     }
-    
+
     openAction(title, message, callback) {
-	this.setState({
-		actionMsg: message,
-		actionTitle: title,
-		actionOpen: true,
-		confirmAction: callback
-	});
+        this.setState({
+            actionMsg: message,
+            actionTitle: title,
+            actionOpen: true,
+            confirmAction: callback
+        });
     }
 
     render() {
         const subsystemTableColumns = [{
-            title: "NQN",
-            field: "nqn"
+            title: "SUBNQN",
+            field: "subnqn"
         }, {
             title: "Subtype",
             field: "subtype"
         }, {
-	    title: "Array",
-	    field: "array"
-	}, {
-	    title: "Actions",
-	    render: (rowData) => (
-		    <Tooltip title="Delete Subsystem">
-		    <IconButton
-		      onClick={() => {
-                           this.openAction("Delete Subsystem",
-                                   `Are you sure you want to delete the subsystem ${rowData.nqn}`,
-                                   () => this.props.Delete_Subsystem({name: rowData.nqn}))
-                      }}
-		    >
-		    <Delete />
-		    </IconButton>
-		    </Tooltip>
-	    )
-	}];
+            title: "Array",
+            field: "array"
+        }, {
+            title: "Actions",
+            render: (rowData) => (
+                <Tooltip title="Delete Subsystem">
+                    <IconButton
+                        onClick={() => {
+                            this.openAction("Delete Subsystem",
+                                `Are you sure you want to delete the subsystem ${rowData.subnqn}`,
+                                () => this.props.Delete_Subsystem({ name: rowData.subnqn }))
+                        }}
+                    >
+                        <Delete />
+                    </IconButton>
+                </Tooltip>
+            )
+        }];
         const { classes } = this.props;
         return (
             <Grid container direction="column">
@@ -178,14 +178,14 @@ class Subsystem extends Component {
                                     this.openCreateSubsystemDialog();
                                 }
                             }]}
-		            detailPanel={[{
-				    tooltip: "Show Subsystem Details",
-				    render: rowData => (
-					    <SubsystemDetails
-                          data={rowData}
-					    />
-				    )
-			    }]}
+                            detailPanel={[{
+                                tooltip: "Show Subsystem Details",
+                                render: rowData => (
+                                    <SubsystemDetails
+                                        data={rowData}
+                                    />
+                                )
+                            }]}
                             data={this.props.subsystems}
                             options={{
                                 headerStyle: {
@@ -205,25 +205,25 @@ class Subsystem extends Component {
                 >
                     <CreateSubsystem createSubsystem={this.props.Create_Subsystem} confirmAction={this.openAction} />
                 </Popup>
-		<AlertDialog
-                  title={this.state.actionTitle}
-                  description={this.state.actionMsg}
-                  open={this.state.actionOpen}
-                  type={this.state.actionType}
-                  onConfirm={this.state.confirmAction}
-                  handleClose={this.closeAction}
-		/>
-		<AlertDialog
-                  title={this.props.alertTitle}
-                  description={this.props.errorMsg}
-                  open={this.props.alertOpen}
-                  type={this.props.alertType}
-                  link={this.props.alertLink}
-                  linkText={this.props.alertLinkText}
-                  onConfirm={this.closeAlert}
-                  handleClose={this.closeAlert}
-                  errCode={this.props.errorCode}
-		/>
+                <AlertDialog
+                    title={this.state.actionTitle}
+                    description={this.state.actionMsg}
+                    open={this.state.actionOpen}
+                    type={this.state.actionType}
+                    onConfirm={this.state.confirmAction}
+                    handleClose={this.closeAction}
+                />
+                <AlertDialog
+                    title={this.props.alertTitle}
+                    description={this.props.errorMsg}
+                    open={this.props.alertOpen}
+                    type={this.props.alertType}
+                    link={this.props.alertLink}
+                    linkText={this.props.alertLinkText}
+                    onConfirm={this.closeAlert}
+                    handleClose={this.closeAlert}
+                    errCode={this.props.errorCode}
+                />
                 {this.props.loading ?
                     <MToolLoader text={this.props.loadText} /> : null}
             </Grid>
@@ -232,7 +232,7 @@ class Subsystem extends Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.waitLoaderReducer.loading,
-    loadText:state.waitLoaderReducer.loadText,
+    loadText: state.waitLoaderReducer.loadText,
     subsystems: state.subsystemReducer.subsystems,
     alertTitle: state.subsystemReducer.alert.title,
     alertOpen: state.subsystemReducer.alert.open,
@@ -245,11 +245,11 @@ const mapDispatchToProps = (dispatch) => ({
     Get_Subsystems: () =>
         dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
     Create_Subsystem: (payload) =>
-	dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload}),
+        dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload }),
     Delete_Subsystem: (payload) =>
-	dispatch({ type: actionTypes.SAGA_DELETE_SUBSYSTEM, payload}),
+        dispatch({ type: actionTypes.SAGA_DELETE_SUBSYSTEM, payload }),
     Close_Alert: () =>
-	dispatch({ type: actionTypes.CLOSE_SUBSYSTEM_ALERT })
+        dispatch({ type: actionTypes.CLOSE_SUBSYSTEM_ALERT })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Subsystem));

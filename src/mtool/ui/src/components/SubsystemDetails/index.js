@@ -90,7 +90,7 @@ const SubsystemDetails = (props) => {
   }];
   const namespaceColumns = [{
     title: "BDEV Name",
-    field: "bdev_name"
+    field: "bdevName"
   }, {
     title: "ID",
     field: "nsid"
@@ -99,14 +99,15 @@ const SubsystemDetails = (props) => {
     field: "uuid"
   }];
 
+  console.log(props.data)
   return (
     <ThemeProvider theme={TableTheme}>
       <Grid container spacing={1}>
         <Grid item container md={12} justifyContent="space-between" alignItems="center" className={classes.internalRow}>
-          <Typography variant="p" className={classes.detailText}>Max Namespaces: {props.data.max_namespaces}</Typography>
-          <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {props.data.allow_any_host ? "Yes" : "No"}</Typography>
-          <Typography variant="p" className={classes.detailText}>Model No: {props.data.model_number}</Typography>
-          <Typography variant="p" className={classes.detailText}>Serial No: {props.data.serial_number}</Typography>
+          <Typography variant="p" className={classes.detailText}>Max Namespaces: {props.data.maxNamespaces}</Typography>
+          <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {props.data.allowAnyHost ? "Yes" : "No"}</Typography>
+          <Typography variant="p" className={classes.detailText}>Model No: {props.data.modelNumber}</Typography>
+          <Typography variant="p" className={classes.detailText}>Serial No: {props.data.serialNumber}</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <MaterialTable
@@ -158,8 +159,7 @@ const SubsystemDetails = (props) => {
         open={isPopupOpen}
         close={closePopup}
       >
-        <AddListener nqn={props.data.nqn} />
-        {/* <Create_Subsystem createSubsystem={{}} confirmAction={this.openAction} /> */}
+        <AddListener subnqn={props.data.subnqn} />
       </Popup>
 
     </ThemeProvider>

@@ -315,7 +315,7 @@ class Volume extends Component {
   isSubsystemReserved() {
     for (let i = 0; i < this.props.subsystems.length; i += 1) {
       const subsystem = this.props.subsystems[i];
-      const isSubsystemSelected = subsystem.nqn === this.state.mountSubsystem;
+      const isSubsystemSelected = subsystem.subnqn === this.state.mountSubsystem;
       const isArrayFreeOrValid = !subsystem.array || subsystem.array === this.props.selectedArray;
       if (isSubsystemSelected && isArrayFreeOrValid) {
         return false;
