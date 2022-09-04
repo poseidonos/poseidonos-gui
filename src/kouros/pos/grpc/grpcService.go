@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	pb "kouros/pos/grpc/api"
+	pb "kouros/api"
 
 	googleGRPC "google.golang.org/grpc"
 )

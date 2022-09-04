@@ -3,18 +3,16 @@
 package kouros
 
 import (
-	"fmt"
 	"errors"
 	"kouros/ha"
 	"kouros/pos"
 )
 
-
 // NewPOSManager creates a new manager object based on the type provided
 // Currently only type "grpc" is supported
-func NewPOSManager(managerType string) (pos.POSManager, error) {
+func NewPOSManager(managerType pos.POSInterface) (pos.POSManager, error) {
 	switch managerType {
-	case "grpc":
+	case pos.GRPC:
 		return &pos.POSGRPCManager{}, nil
 	default:
 		return nil, errors.New("Invalid POS Manager type")
@@ -23,9 +21,9 @@ func NewPOSManager(managerType string) (pos.POSManager, error) {
 
 // NewPOSManager creates a new manager object based on the type provided
 // Currently only type "postgres" is supported
-func NewHAManager(managerType string) (ha.HAManager, error) {
+func NewHAManager(managerType ha.HAInterface) (ha.HAManager, error) {
 	switch managerType {
-	case "postgres":
+	case ha.Postgres:
 		return &ha.PostgresHAManager{}, nil
 	default:
 		return nil, errors.New("Invalid HA Manager type")

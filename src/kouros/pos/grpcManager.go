@@ -1,26 +1,16 @@
 package pos
 
 import (
-	"log"
-	"github.com/google/uuid"
-	"google.golang.org/protobuf/encoding/protojson"
+	pb "kouros/api"
 	"kouros/pos/grpc"
-	pb "kouros/pos/grpc/api"
+	"kouros/utils"
 )
 
 const dialTimeout = 10
 
 type POSGRPCManager struct {
 	connection grpc.POSGRPCConnection
-	requestor string
-}
-
-func generateUUID() string {
-	reqID, err := uuid.NewUUID()
-	if err != nil {
-		log.Print("Error in Generating UUID ", err.Error())
-	}
-	return reqID.String()
+	requestor  string
 }
 
 func (p *POSGRPCManager) Init(client string, address interface{}) {
@@ -54,14 +44,10 @@ func (p *POSGRPCManager) Init(client string, address interface{}) {
 //        8. serialNumber: Serial number of the device (string)
 // info: info object contains the following fields
 //    1. version: PoseidonOS version (string)
-func (p *POSGRPCManager) ListDevices() ([]byte, error) {
+func (p *POSGRPCManager) ListDevices() (*pb.ListDeviceResponse, error) {
 	command := "LISTDEVICE"
-	req := &pb.ListDeviceRequest{Command: command, Rid: generateUUID(), Requestor: "cli"}
-	res, err := grpc.SendListDevice(p.connection, req)
-	if err != nil {
-		return nil, err
-	}
-	return protojson.Marshal(res)
+	req := &pb.ListDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: "cli"}
+	return grpc.SendListDevice(p.connection, req)
 }
 
 // Create Array method creates an array in PoseidonOS
@@ -87,14 +73,8 @@ func (p *POSGRPCManager) ListDevices() ([]byte, error) {
 //     - solution: Solution of the problem occured, if any (string)
 // info: info object contains the following fields
 //    1. version: PoseidonOS version (string)
-func (p *POSGRPCManager) CreateArray(createArrayCommand []byte) ([]byte, error) {
+func (p *POSGRPCManager) CreateArray(param pb.CreateArrayRequest_Param) (*pb.CreateArrayResponse, error) {
 	command := "CREATEARRAY"
-	var createArrayPB pb.CreateArrayRequest_Param
-	protojson.Unmarshal(createArrayCommand, &createArrayPB)
-	req := &pb.CreateArrayRequest{Command: command, Rid: generateUUID(), Requestor: "cli", Param: &createArrayPB}
-	res, err := grpc.SendCreateArray(p.connection, req)
-	if err != nil {
-		return nil, err
-	}
-	return protojson.Marshal(res)
+	req := &pb.CreateArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: "cli", Param: &createArrayPB}
+	return grpc.SendCreateArray(p.connection, req)
 }
