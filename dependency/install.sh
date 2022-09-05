@@ -27,6 +27,8 @@ sudo echo "--influxdb-url=http:///0.0.0.0:8086" | sudo tee /usr/share/chronograf
 pip3 install -r $SCRIPT_PATH/requirements.txt
 python3 $SCRIPT_PATH/create_retention_policy.py
 
+sudo $SCRIPT_PATH/install_grafana.sh "${RESET_GRAFANA}"
+
 # For uninstalling, comment out the above lines and uncomment below lines
 # sudo apt-get purge influxdb
 # sudo apt-get purge chronograf
