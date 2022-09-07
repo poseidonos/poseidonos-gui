@@ -71,6 +71,12 @@ const styles = (theme) => ({
       gridTemplateRows: '140px auto',
     },
   },
+  fullWidth: {
+    width: "100%"
+  },
+  removePadding: {
+    padding: "0"
+  },
   leftPadding: {
     padding: "16px"
   },
@@ -859,7 +865,7 @@ function AdvanceCreateVolume(props) {
   const validateContents = [validateVolumeDetails, validateQosValues, validateMountOptions]
 
   const previewDetails = (
-    <div style={{ width: "100%" }}>
+    <div className={classes.fullWidth}>
       <Typography className={classes.previewHeader}>Volume Details</Typography>
       <div className={classes.previewElements}>
         <Typography className={classes.previewElement}>Volume Count : {props.volume_count}</Typography>
@@ -871,13 +877,12 @@ function AdvanceCreateVolume(props) {
                 size="small"
                 color="primary"
                 checked={props.stop_on_error_checkbox}
-                // disabled
-                style={{ padding: "0" }}
+                className={classes.removePadding}
               />
             </Typography>
           )
         }
-        <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Volume Name : {props.volume_name}</Typography>
+        <Typography className={`${classes.previewElement} ${classes.fullWidth}`}>Volume Name : {props.volume_name}</Typography>
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
         }
@@ -903,7 +908,7 @@ function AdvanceCreateVolume(props) {
             color="primary"
             checked={props.mount_vol}
             // disabled
-            style={{ padding: "0" }}
+            className={classes.removePadding}
           />
         </Typography>
         {props.mount_vol &&
@@ -916,13 +921,13 @@ function AdvanceCreateVolume(props) {
                   color="primary"
                   checked={props.selectedNewSubsystem}
                   // disabled
-                  style={{ padding: "0" }}
+                  className={classes.removePadding}
                 />
               </Typography>
               {props.selectedNewSubsystem ?
                 (
                   <React.Fragment>
-                    <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Subsystem Name : {props.subnqn}</Typography>
+                    <Typography className={`${classes.previewElement} ${classes.fullWidth}`}>Subsystem Name : {props.subnqn}</Typography>
                     <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
                     <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
                     <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>

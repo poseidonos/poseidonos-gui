@@ -73,6 +73,10 @@ const styles = (theme) => ({
       maxWidth: 280
     }
   },
+  flexCenter: {
+    display: "flex",
+    alignItems: "center"
+  },
   writeBufferSelect: {
     "&>div>p": {
       overflow: "hidden",
@@ -318,7 +322,7 @@ const AutoCreate = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.inputGrid}>
-            <Typography variant="subtitle2" className={classes.formControl} style={{display:"flex", alignItems:"center"}}>
+            <Typography variant="subtitle2" className={`${classes.formControl} ${classes.flexCenter}`}>
               Total Disks Available: {getFreeDisks(props.disks)}
             </Typography>
           </Grid>

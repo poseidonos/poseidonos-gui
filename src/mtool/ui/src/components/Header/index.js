@@ -99,6 +99,16 @@ const styles = theme => ({
     cursor: 'default',
     height: 65
   },
+  running: {
+    color: 'rgb(61, 249, 50)'
+  },
+  notRunning: {
+    color: 'rgb(243, 168, 55)'
+  },
+  infoOutlined: {
+    marginLeft: 4,
+    width: 18
+  },
   sectionNonTiny: {
     display: 'flex',
     [theme.breakpoints.down(500)]: {
@@ -470,7 +480,6 @@ class Header extends Component {
             {this.props.status ? (
               <Typography
                 className={classes.running}
-                style={{ color: 'rgb(61, 249, 50)' }}
               >
                 Running
               </Typography>
@@ -480,7 +489,6 @@ class Header extends Component {
             {!this.props.status && this.props.OS_Running_Status !== "..." ? (
               <Typography
                 className={classes.notRunning}
-                style={{ color: 'rgb(243, 168, 55)' }}
               >
                 {this.props.OS_Running_Status}
               </Typography>
@@ -505,7 +513,7 @@ class Header extends Component {
                 tooltip: classes.tooltip,
               }}
             >
-              <InfoOutlined style={{ marginLeft: 4, width: 18 }} />
+              <InfoOutlined className={classes.infoOutlined} />
             </Tooltip>
             <div className={classes.sectionDesktop}>
 

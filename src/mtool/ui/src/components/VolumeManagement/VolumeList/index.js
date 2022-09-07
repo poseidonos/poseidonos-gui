@@ -80,6 +80,12 @@ const styles = () => ({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+  },
+  fontSize: {
+    fontSize: 12
+  },
+  editIcons: {
+    width: "80px"
   }
 });
 
@@ -401,7 +407,7 @@ class VolumeList extends Component {
                   }}
                 />
                 <Select
-                  style={{ fontSize: 12 }}
+                  className={classes.fontSize}
                   value={localType}
                   onChange={(e) => {
                     this.setState({
@@ -464,7 +470,7 @@ class VolumeList extends Component {
         cellStyle: localCellStyle,
         render: row => {
           return !row.edit ? (
-            <div style={{ width: "80px" }}>
+            <div className={classes.editIcons}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-btn-${row.name}`}
@@ -484,7 +490,7 @@ class VolumeList extends Component {
               </Button>
             </div>
           ) : (
-            <div style={{ width: "80px" }}>
+            <div className={classes.editIcons}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-save-btn-${row.name}`}
