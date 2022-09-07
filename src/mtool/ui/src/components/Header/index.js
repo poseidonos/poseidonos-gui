@@ -488,7 +488,7 @@ class Header extends Component {
             <Tooltip
               title={(
                 <>
-                  POS Last Active Time:
+                  PoseidonOS Last Active Time:
                   {this.props.timestamp === "..." ?
                     <Loader type="Bars" color="primary" height={20} width={20} /> :
                     (

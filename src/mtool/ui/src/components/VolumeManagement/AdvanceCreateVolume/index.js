@@ -71,6 +71,12 @@ const styles = (theme) => ({
       gridTemplateRows: '140px auto',
     },
   },
+  leftPadding: {
+    padding: "16px"
+  },
+  borderBottom: {
+    borderBottom: "1px solid grey"
+  },
   xsHide: {
     [theme.breakpoints.down("xs")]: {
       display: "none",
@@ -1005,14 +1011,22 @@ function AdvanceCreateVolume(props) {
             <div className={classes.mainContent}>
               <div>
                 <Typography className={classes.createHeader}>Steps</Typography>
-                <Stepper activeStep={activeStep} className={classes.xsHide} style={{ padding: "16px" }}orientation="vertical">
+                <Stepper
+                  activeStep={activeStep}
+                  className={[classes.xsHide, classes.leftPadding].join(' ')}
+                  orientation="vertical"
+                >
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
                     </Step>
                   ))}
                 </Stepper>
-                <Stepper activeStep={activeStep} className={classes.xsShow} style={{ borderBottom: "1px solid grey" }} orientation="horizontal">
+                <Stepper
+                  activeStep={activeStep}
+                  className={[classes.xsShow, classes.borderBottom].join(' ')}
+                  orientation="horizontal"
+                >
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
