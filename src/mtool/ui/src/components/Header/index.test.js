@@ -98,11 +98,10 @@ describe('<Header />', () => {
   });
 
 
-  it("should render the correct version and last active time", () => {
+  it("should render the correct version", () => {
     renderComponent();
     const  { getByText } = wrapper;
-    expect(getByText("Version 0.15.0")).toBeDefined();
-    expect(getByText(/POS Last Active Time:/)).toBeDefined();
+    expect(getByText("v0.15.0")).toBeDefined();
   })
 
   it("should change the Password", async () => {

@@ -65,9 +65,18 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 4),
     flexWrap: "wrap",
     boxSizing: "border-box",
+    margin: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: `calc(100% - ${theme.spacing(4)}px)`,
+      padding: theme.spacing(0, 1),
+    },
   },
   volBtnContainer: {
     margin: theme.spacing(1, 0),
+    gap: 8,
+    [theme.breakpoints.down("xs")]: {
+      justifyContent: "space-around",
+    },
   },
   unitSelect: {
     marginTop: theme.spacing(2),
@@ -86,10 +95,6 @@ const styles = (theme) => ({
       justifyContent: "center",
     },
   },
-  button: {
-    height: "1.8rem",
-    lineHeight: "0px",
-  },
   volumeName: {
     width: "80%",
   },
@@ -100,19 +105,17 @@ const styles = (theme) => ({
     },
   },
   volumeCreatePaper: {
-    height: 400,
-    [theme.breakpoints.down('md')]: {
-      height: 450
-    },
-    [theme.breakpoints.down('xs')]: {
-      height: 600
-    }
+    height: "100%",
   },
   createHeader: customTheme.card.header,
   caption: {
     color: "#424850",
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "10%",
+      marginRight: "20%"
+    },
   },
   labelCheckbox: {
     marginTop: theme.spacing(3),
@@ -195,7 +198,7 @@ class CreateVolume extends Component {
             pass} with below errors`;
           if(errorResponses && errorResponses.map) {
             errorResponses.map(err => {
-              errorCodeDescription += `Error code: ${err.code} : ${err.description}\n\n`;
+              errorCodeDescription += `${err.description}\n\n`;
               return err;
             });
           }
@@ -612,38 +615,6 @@ class CreateVolume extends Component {
                 </Select>
               </FormControl>
             </Grid>
-            {/*
-	    <Grid
-              item
-              container
-              xs={12}
-              sm={6}
-              justifyContent="flex-start"
-              className={classes.formControl}
-            >
-              <FormControl className={classes.volumeName}>
-              <Select
-                  value={this.state.transport}
-                  onChange={this.handleChange}
-                  inputProps={{
-                    name: "transport",
-                    id: "transport",
-                    "data-testid": "transport-input",
-                  }}
-                  SelectDisplayProps={{
-                    "data-testid": "transport",
-                  }}
-                  className={classes.unitSelect}
-                >
-                  {getSubsystem(this.state.subsystem, this.props.subsystems).listen_addresses.map((transport) => (
-                    <MenuItem value={`${transport.target_address}:${transport.transport_service_id}`} key={`${transport.target_address}:${transport.transport_service_id}`}>
-                      {`${transport.target_address}:${transport.transport_service_id}`}
-                    </MenuItem>
-                  ))}
-              </Select>
-              </FormControl>
-            </Grid>
-	    */}
             <Grid
               item
               container
@@ -681,32 +652,15 @@ class CreateVolume extends Component {
                 </Tooltip>
               </FormControl>
             </Grid>
-            {/* <Grid item container xs={12} sm={6} justifyContent="flex-end" className={classes.formControl}>
-              <FormControl className={classes.volumeName}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox name="mount_vol_checkbox" color="primary" id="mount-vol-checkbox"
-                        checked={this.state.mount_vol}
-                        value="Mount Volume"
-                        onChange={this.handleChange}
-                      />
-                    }
-
-                    label="Mount Volume"
-                    className={classes.labelCheckbox}
-                  />
-              </FormControl>
-            </Grid> */}
             <Grid
               item
               container
               xs={12}
               display="flex"
-              justifyContent="space-between"
-              className={`${classes.volBtnContainer} ${classes.formControl}`}
+              className={classes.volBtnContainer}
             >
               <Tooltip
-                title="Please wait... Volume creation is in progress. It may take anywhere between few seconds to few minutes"
+                title="Please wait... Volume creation is in progress. It may take from a few seconds to few minutes"
                 placement="right-start"
                 open={this.props.createVolumeButton}
                 classes={{tooltip: classes.largeFontTooltip}}
@@ -716,7 +670,6 @@ class CreateVolume extends Component {
                   variant="contained"
                   color="primary"
                   data-testid="createvolume-btn"
-                  className={classes.button}
                   disabled={this.props.createVolumeButton}
                 >
                   Create Volume
@@ -727,7 +680,6 @@ class CreateVolume extends Component {
                   variant="outlined"
                   color="secondary"
                   data-testid="advanceoptions-btn"
-                  className={classes.button}
                   disabled={this.props.createVolumeButton}
               >
                   Advance Options

@@ -48,7 +48,7 @@ import TrashIcon from '@material-ui/icons/Delete';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
-import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box } from '@material-ui/core';
+import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box, Zoom } from '@material-ui/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
@@ -56,9 +56,10 @@ import { Done } from '@material-ui/icons';
 import AlertDialog from '../../Dialog';
 import { customTheme } from '../../../theme';
 import formatBytes from '../../../utils/format-bytes';
+import LightTooltip from '../../LightTooltip';
 
 
-const styles = (theme) => ({
+const styles = () => ({
   cardHeader: {
     ...customTheme.card.header,
     marginLeft: 0
@@ -68,22 +69,23 @@ const styles = (theme) => ({
     borderRadius: 100
   },
   volName: {
-    width: "inherit",
+    fontSize: 12,
+    width: "150px",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    [theme.breakpoints.down("md")]: {
-      maxWidth: 150,
-    },
-    "&:hover": {
-      width: "auto",
-      maxWidth: "calc(100% - 100px)",
-      backgroundColor: "white",
-      position: "absolute",
-      marginTop: -theme.spacing(2),
-      zIndex: 1000,
-      overflow: "visible",
-      wordBreak: "break-all"
-    }
+  },
+  uuidName: {
+    fontSize: 12,
+    maxWidth: "150px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  fontSize: {
+    fontSize: 12
+  },
+  editIcons: {
+    width: "80px"
   }
 });
 
@@ -253,14 +255,16 @@ class VolumeList extends Component {
 
   render() {
     const { classes } = this.props;
-    const cellText = {
-      fontSize: 12
+    const localCellStyle = {
+      fontSize: 12,
+      paddingTop: 8,
+      paddingBottom: 8
     }
     const volumeTableColumns = [
       {
         title: 'Name',
         field: 'name',
-        cellStyle: cellText,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -276,31 +280,41 @@ class VolumeList extends Component {
             )
           }
           return (
-            <Typography className={classes.volName}>
-              {rowData.name}
-            </Typography>
+            <LightTooltip interactive title={rowData.name} TransitionComponent={Zoom} arrow>
+              <Typography className={classes.volName}>
+                {rowData.name}
+              </Typography>
+            </LightTooltip>
           );
-
         }
       },
       {
-        title: 'Size Usage',
+        title: 'Volume Usage',
         render: rowData => `${rowData.usedspace}/${formatBytes(rowData.size)}`,
-        cellStyle: cellText
+        cellStyle: localCellStyle
       },
       {
-        title: 'NQN',
-        render: rowData => (
-          <>
-            <Typography variant="body2" displayBlock>NQN: {rowData.subnqn}</Typography>
-            <Typography variant="body2" displayBlock>UUID: {rowData.uuid}</Typography>
-          </>
-        )
+        title: 'UUID (NQN)',
+        cellStyle: localCellStyle,
+        render: rowData => {
+          const subnqn = rowData.subnqn && `(${rowData.subnqn})`
+
+          return (
+            <>
+              <LightTooltip interactive title={`${rowData.uuid} ${subnqn}`} TransitionComponent={Zoom} arrow>
+                <div>
+                  <Typography variant="body2" className={classes.uuidName}>{rowData.uuid}</Typography>
+                  <Typography variant="body2" className={classes.uuidName}> {subnqn}</Typography>
+                </div>
+              </LightTooltip>
+            </>
+          )
+        }
       },
       {
         title: 'Max IOPS (KIOPS)',
         field: 'maxiops',
-        cellStyle: cellText,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -323,7 +337,7 @@ class VolumeList extends Component {
       {
         title: 'Max Bandwidth (MB/s)',
         field: 'maxbw',
-        cellStyle: cellText,
+        cellStyle: localCellStyle,
         render: rowData => {
           if (rowData.edit) {
             return (
@@ -347,7 +361,7 @@ class VolumeList extends Component {
       {
         title: 'Min Bandwidth / Min IOPS',
         field: 'minbw-miniops',
-        cellStyle: cellText,
+        cellStyle: localCellStyle,
         customSort: (a, b) => {
           if (a.minType === b.minType)
             return a.minType === MINIOPS ? (a.miniops - b.miniops) : (a.minbw - b.minbw);
@@ -364,7 +378,6 @@ class VolumeList extends Component {
         },
         render: rowData => {
           const localStyle = {
-            ...cellText,
             display: "flex",
             width: "130px",
             justifyContent: "space-between",
@@ -394,7 +407,7 @@ class VolumeList extends Component {
                   }}
                 />
                 <Select
-                  style={cellText}
+                  className={classes.fontSize}
                   value={localType}
                   onChange={(e) => {
                     this.setState({
@@ -432,6 +445,7 @@ class VolumeList extends Component {
       {
         title: 'Mount Status',
         field: 'status',
+        cellStyle: localCellStyle,
         render: row => (
           <Switch
             size="small"
@@ -453,9 +467,10 @@ class VolumeList extends Component {
         field: 'edit',
         editable: 'never',
         sorting: false,
+        cellStyle: localCellStyle,
         render: row => {
           return !row.edit ? (
-            <>
+            <div className={classes.editIcons}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-btn-${row.name}`}
@@ -473,9 +488,9 @@ class VolumeList extends Component {
               >
                 <ReplayIcon />
               </Button>
-            </>
+            </div>
           ) : (
-            <React.Fragment>
+            <div className={classes.editIcons}>
               <Button
                 className={classes.editBtn}
                 data-testid={`vol-edit-save-btn-${row.name}`}
@@ -492,7 +507,7 @@ class VolumeList extends Component {
               >
                 <Clear />
               </Button>
-            </React.Fragment>
+            </div>
           );
         }
       }
@@ -514,16 +529,16 @@ class VolumeList extends Component {
               showSelectAllCheckbox: !this.props.fetchingVolumes,
               showTextRowsSelected: false,
               headerStyle: {
-                // backgroundColor: '#71859d',
-                // backgroundColor: '#424850',
                 backgroundColor: '#788595',
-                color: '#FFF'
+                color: '#FFF',
+                paddingTop: 8,
+                paddingBottom: 8,
               },
               selectionProps: rowData => ({
-                'data-testid': rowData.name,
                 'id': `VolumeList-checkbox-${rowData.name}`,
                 inputProps: {
-                  'title': rowData.name
+                  'title': rowData.name,
+                  'data-testid': `vol-select-checkbox-${rowData.name}`,
                 }
               })
             }}
@@ -549,7 +564,7 @@ class VolumeList extends Component {
             }}
             actions={[
               {
-                tooltip: 'Delete',
+                tooltip: "Delete",
                 icon: TrashIcon,
                 iconProps: {
                   'id': "VolumeList-icon-delete"
@@ -557,6 +572,11 @@ class VolumeList extends Component {
                 onClick: () => { this.handleClickOpen() }
               }
             ]}
+            localization={{
+              toolbar: {
+                searchPlaceholder: "Search Volume Name",
+              }
+            }}
           />
         </ThemeProvider>
         <AlertDialog

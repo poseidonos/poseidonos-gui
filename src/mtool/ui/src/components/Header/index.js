@@ -32,7 +32,9 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+import Loader from 'react-loader-spinner';
 import {
   AppBar,
   Toolbar,
@@ -40,12 +42,12 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
+import { InfoOutlined } from "@material-ui/icons";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
-import { withRouter } from 'react-router-dom';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Loader from 'react-loader-spinner';
+
 import Heading from '../../assets/images/Header-logo.png';
 // import Dropdown from './Dropdown';
 import AlertDialog from '../Dialog';
@@ -96,6 +98,16 @@ const styles = theme => ({
     padding: 5,
     cursor: 'default',
     height: 65
+  },
+  running: {
+    color: 'rgb(61, 249, 50)'
+  },
+  notRunning: {
+    color: 'rgb(243, 168, 55)'
+  },
+  infoOutlined: {
+    marginLeft: 4,
+    width: 18
   },
   sectionNonTiny: {
     display: 'flex',
@@ -157,6 +169,17 @@ const styles = theme => ({
     marginRight: theme.spacing(2),
     [theme.breakpoints.up('md')]: {
       display: 'none',
+    },
+  },
+  tooltip: {
+    backgroundColor: "#f5f5f9",
+    opacity: 1,
+    color: "rgba(0, 0, 0, 1)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+    "& b": {
+      fontWeight: theme.typography.fontWeightMedium,
     },
   },
 });
@@ -447,25 +470,16 @@ class Header extends Component {
                 alt="Poseidon Management Tool"
               />
               <Typography className={classes.version} variant="caption" display="block">
-                Version 0.15.0
+                v0.15.0
               </Typography>
             </div>
             <div className={classes.grow} />
-            <span
-              className={`${classes.statusHeader} ${classes.sectionNonTiny}`}
-              title="Poseidon OS last running timestamp"
-            >
-              POS Last Active Time: {this.props.timestamp === "..." ?
-                <Loader type="Bars" color="#FFFFFF" height={20} width={20} /> : this.props.timestamp}
-              {!this.props.timestamp ? "NA" : ""}
-            </span>
-            <Typography className={`${classes.separator} ${classes.sectionNonTiny}`}>|</Typography>
+
             <Typography className={classes.nextSeparator}>Status:</Typography>
             <Typography className={classes.nextSeparator} />
             {this.props.status ? (
               <Typography
                 className={classes.running}
-                style={{ color: 'rgb(61, 249, 50)' }}
               >
                 Running
               </Typography>
@@ -475,11 +489,32 @@ class Header extends Component {
             {!this.props.status && this.props.OS_Running_Status !== "..." ? (
               <Typography
                 className={classes.notRunning}
-                style={{ color: 'rgb(243, 168, 55)' }}
               >
                 {this.props.OS_Running_Status}
               </Typography>
             ) : null}
+            <Tooltip
+              title={(
+                <>
+                  PoseidonOS Last Active Time:
+                  {this.props.timestamp === "..." ?
+                    <Loader type="Bars" color="primary" height={20} width={20} /> :
+                    (
+                      <>
+                        <br />
+                        {this.props.timestamp}
+                      </>
+                    )
+                  }
+                  {!this.props.timestamp ? "NA" : ""}
+                </>
+              )}
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+            >
+              <InfoOutlined className={classes.infoOutlined} />
+            </Tooltip>
             <div className={classes.sectionDesktop}>
 
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (

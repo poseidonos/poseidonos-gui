@@ -76,7 +76,7 @@ export function* fetchSubsystems() {
           title: "Fetch Subsystems",
           msg: "Unable to get Subsystems!",
           code: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.description}`
             : ""
             }`,
         })
@@ -87,7 +87,7 @@ export function* fetchSubsystems() {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          ? `${response.data.result.status.description}`
           : "Agent Communication Error"
           }`
       }));
@@ -137,7 +137,7 @@ export function* addListener(action) {
           title: "Add Listener",
           msg: "Failed to add Listener!",
           code: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.posDescription}`
             : ""
             }`,
         })
@@ -156,7 +156,7 @@ export function* addListener(action) {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+          ? `${response.data.result.status.posDescription}`
           : "Agent Communication Error"
           }`
       }));
@@ -197,7 +197,7 @@ export function* createSubsystem(action) {
           title: "Create Subsystem",
           msg: "Failed to create Subsystem!",
           code: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.posDescription}`
             : ""
             }`,
         })
@@ -214,7 +214,7 @@ export function* createSubsystem(action) {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+          ? `${response.data.result.status.posDescription}`
           : "Agent Communication Error"
           }`
       }));
@@ -256,7 +256,7 @@ export function* deleteSubsystem(action) {
           title: "Delete Subsystem",
           msg: "Failed to delete Subsystem!",
           code: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.posDescription}, Error code:${response.data.result.status.code}`
+            ? `${response.data.result.status.posDescription}`
             : ""
             }`,
         })
@@ -273,7 +273,7 @@ export function* deleteSubsystem(action) {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
         errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.description}, Error code:${response.data.result.status.code}`
+          ? `${response.data.result.status.description}`
           : "Agent Communication Error"
           }`
       }));

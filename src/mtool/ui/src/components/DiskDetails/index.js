@@ -31,22 +31,28 @@
  */
 
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import './DiskDetails.css';
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
+  primaryContent: {
+    display: "flex",
+    flexWrap: "wrap",
+    marginBottom: theme.spacing(1)
+  },
   root: {
     width: '100%',
     marginTop: theme.spacing(),
@@ -63,11 +69,6 @@ const styles = theme => ({
     right: theme.spacing(),
     top: theme.spacing(),
     color: theme.palette.grey[500],
-  },
-  title: {
-    backgroundColor: '#18355f',
-    color: theme.palette.common.white,
-    padding: '10px',
   },
   headRow: {
     height: '20px',
@@ -94,29 +95,15 @@ const styles = theme => ({
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: 'rgba(91, 155, 213, 1)',
+    backgroundColor: '#788595',
     color: theme.palette.common.white,
+    padding: theme.spacing(1, 2),
   },
   body: {
     fontSize: 12,
+    padding: theme.spacing(1, 2),
   },
 }))(TableCell);
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.title}>
-      <Typography variant="h6">{children}</Typography>
-      <IconButton
-        aria-label="Close"
-        className={classes.closeButton}
-        onClick={onClose}
-      >
-        <span data-testid="diskdetails-close" style={{ fontSize: 14, color: '#fff' }}>x</span>
-      </IconButton>
-    </MuiDialogTitle>
-  );
-});
 
 const DiskDetails = props => {
   const { classes } = props;
@@ -135,37 +122,21 @@ const DiskDetails = props => {
         <DialogTitle
           onClose={props.onConfirm}
           id="alert-dialog-title"
-          className={classes.title}
         >
-          <span style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
-            {props.title}
-          </span>
+          {props.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText
             id="alert-dialog-description"
             className={classes.alertDialogText}
           >
-	    <div className="DiskDetails-value-wrap">
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Name:</span>
-                <span>{props.details.name}</span>
-              </span>
-     </div>
-            <div className="DiskDetails-value-wrap">
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Serial No:</span>
-                <span>{props.details.sn}</span>
-              </span>
-            </div>
-	    <div className="DiskDetails-value-wrap">
-              <span className="DiskDetails-value">
-                <span className="Diskdetails-value-label">Model:</span>
-                <span>{props.details.mn}</span>
-              </span>
-     </div>
-            <div style={{ fontSize: 12 }}>
-              <b>SMART Values</b>
+            <div className={classes.primaryContent}>
+              <Grid xs={3}><Typography variant="subtitle1">Name :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.name}</Typography></Grid>
+              <Grid xs={3}><Typography variant="subtitle1">Serial No :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.sn}</Typography></Grid>
+              <Grid xs={3}><Typography variant="subtitle1">Model :</Typography></Grid>
+              <Grid xs={9}><Typography variant="subtitle2">{props.details.mn}</Typography></Grid>
             </div>
             <Paper className={classes.root}>
               <Table>
@@ -186,20 +157,6 @@ const DiskDetails = props => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/*
-                  This code is commented so that in future, if we decide to use dynamic values, we can uncomment this
-                  {
-                    Object.keys(props.details).map((key) => (
-                      <TableRow className={classes.row}>
-                        <CustomTableCell align="left">
-                          {key.charAt(0).toUpperCase() + (key.replace(/([A-Z])/g, " $1")).slice(1)}
-                        </CustomTableCell>
-                        <CustomTableCell align="center">
-                          {props.details[key]}
-                        </CustomTableCell>
-                      </TableRow>
-                    ))
-                  } */}
                   <TableRow className={classes.row}>
                     <CustomTableCell align="left">
                       Available Spare

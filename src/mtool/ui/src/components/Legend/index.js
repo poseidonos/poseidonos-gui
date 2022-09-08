@@ -43,12 +43,13 @@ const useStyles = makeStyles(theme => ({
     legend: {
         border: '1px solid #ccc',
         float: 'left',
-        width: 20,
-        height: 20,
+        width: 12,
+        height: 12,
+        marginLeft: theme.spacing(1.5),
         marginRight: theme.spacing(0.5)
       },
       legendText: {
-        marginRight: theme.spacing(3),
+        // marginRight: theme.spacing(3),
         fontSize: 12
       }
 }));

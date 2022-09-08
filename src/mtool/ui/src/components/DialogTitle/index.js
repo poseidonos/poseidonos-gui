@@ -8,15 +8,21 @@ const styles = (theme) => ({
   title: {
     // backgroundColor: '#18355f',
     backgroundColor: '#424850',
-    color: theme.palette.common.white,
-    padding: '5px',
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    display: 'flex',
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 500,
+    alignItems: 'center',
   },
 
   closeButton: {
     position: 'absolute',
-    right: theme.spacing(),
-    top: theme.spacing(),
-    color: theme.palette.grey[500],
+    right: theme.spacing(1),
+    top: '4px',
+    fontWeight: 700,
+    textTransform: "capitalize"
   }
 });
 

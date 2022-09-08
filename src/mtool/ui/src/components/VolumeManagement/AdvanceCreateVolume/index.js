@@ -1,11 +1,29 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Modal, Select, Step, StepLabel, Stepper, TextField, Tooltip, Typography, withStyles } from '@material-ui/core';
-import { Cancel } from '@material-ui/icons';
-import { customTheme } from '../../../theme';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  Step,
+  StepLabel,
+  Stepper,
+  TextField,
+  Tooltip,
+  Typography,
+  withStyles
+} from '@material-ui/core';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
+import DialogTitle from '../../DialogTitle';
+
 
 const style = {
   position: 'absolute',
@@ -13,8 +31,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  padding: 8,
   borderRadius: 4,
+  overflow: "hidden"
 }
 
 const styles = (theme) => ({
@@ -26,13 +44,7 @@ const styles = (theme) => ({
     width: 600,
     height: 400,
     bgcolor: 'background.paper',
-    padding: 8,
     borderRadius: 4,
-  },
-  cancleIcon: {
-    position: "absolute",
-    right: theme.spacing(1),
-    padding: "2px",
   },
   main: {
     width: '800px',
@@ -59,6 +71,18 @@ const styles = (theme) => ({
       gridTemplateRows: '140px auto',
     },
   },
+  fullWidth: {
+    width: "100%"
+  },
+  removePadding: {
+    padding: "0"
+  },
+  leftPadding: {
+    padding: "16px"
+  },
+  borderBottom: {
+    borderBottom: "1px solid grey"
+  },
   xsHide: {
     [theme.breakpoints.down("xs")]: {
       display: "none",
@@ -74,7 +98,7 @@ const styles = (theme) => ({
     width: "100%",
     height: "300px",
     display: "flex",
-    padding: theme.spacing(2, 3),
+    padding: theme.spacing(2),
     flexWrap: "wrap",
     boxSizing: "border-box",
     borderLeft: "2px solid grey",
@@ -82,7 +106,7 @@ const styles = (theme) => ({
     alignContent: 'flex-start',
     overflow: "auto",
     [theme.breakpoints.down("xs")]: {
-      height: "calc(80vh - 240px)",
+      height: "calc(80vh - 220px)",
       borderLeft: "none",
     },
   },
@@ -139,7 +163,13 @@ const styles = (theme) => ({
     }
   },
   createHeader: {
-    ...customTheme.card.header,
+    color: "#424850",
+    fontSize: "16px",
+    fontWeight: "bold",
+    textAlign: "left",
+    marginLeft: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   caption: {
     color: "#424850",
@@ -150,12 +180,13 @@ const styles = (theme) => ({
     marginTop: theme.spacing(0),
   },
   previewHeader: {
-    ...customTheme.card.header,
-    marginLeft: theme.spacing(0)
+    color: "#424850",
+    fontWeight: "bold",
   },
   previewElements: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    marginBottom: 8
   },
   previewElement: {
     flex: "1 0 45%",
@@ -834,7 +865,7 @@ function AdvanceCreateVolume(props) {
   const validateContents = [validateVolumeDetails, validateQosValues, validateMountOptions]
 
   const previewDetails = (
-    <div style={{ width: "100%" }}>
+    <div className={classes.fullWidth}>
       <Typography className={classes.previewHeader}>Volume Details</Typography>
       <div className={classes.previewElements}>
         <Typography className={classes.previewElement}>Volume Count : {props.volume_count}</Typography>
@@ -846,21 +877,20 @@ function AdvanceCreateVolume(props) {
                 size="small"
                 color="primary"
                 checked={props.stop_on_error_checkbox}
-                // disabled
-                style={{ padding: "0" }}
+                className={classes.removePadding}
               />
             </Typography>
           )
         }
-        <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Volume Name : {props.volume_name}</Typography>
+        <Typography className={`${classes.previewElement} ${classes.fullWidth}`}>Volume Name : {props.volume_name}</Typography>
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
         }
         {props.volume_size === 0 ? (
           <Typography className={classes.previewElement}>Volume Size : Remaining space in the Array</Typography>
-         ) : (
+        ) : (
           <Typography className={classes.previewElement}>Volume Size : {props.volume_size} {props.volume_units}</Typography>
-         )
+        )
         }
       </div>
       <Typography className={classes.previewHeader}>Qos Values</Typography>
@@ -878,7 +908,7 @@ function AdvanceCreateVolume(props) {
             color="primary"
             checked={props.mount_vol}
             // disabled
-            style={{ padding: "0" }}
+            className={classes.removePadding}
           />
         </Typography>
         {props.mount_vol &&
@@ -891,13 +921,13 @@ function AdvanceCreateVolume(props) {
                   color="primary"
                   checked={props.selectedNewSubsystem}
                   // disabled
-                  style={{ padding: "0" }}
+                  className={classes.removePadding}
                 />
               </Typography>
               {props.selectedNewSubsystem ?
                 (
                   <React.Fragment>
-                    <Typography className={classes.previewElement} style={{ minWidth: "100%" }}>Subsystem Name : {props.subnqn}</Typography>
+                    <Typography className={`${classes.previewElement} ${classes.fullWidth}`}>Subsystem Name : {props.subnqn}</Typography>
                     <Typography className={classes.previewElement}>Transport Type : {props.transport_type}</Typography>
                     <Typography className={classes.previewElement}>Target Address : {props.target_address}</Typography>
                     <Typography className={classes.previewElement}>Transport Service Id : {props.transport_service_id}</Typography>
@@ -978,22 +1008,30 @@ function AdvanceCreateVolume(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <IconButton className={classes.cancleIcon} aria-label="Close" onClick={handleModalClose}>
-          <Cancel />
-        </IconButton>
+        <DialogTitle onClose={handleModalClose}>
+          Advance Create Volume
+        </DialogTitle>
         <form className={classes.formContainer}>
           <main className={classes.main}>
             <div className={classes.mainContent}>
               <div>
-                <Typography className={classes.createHeader}>Create Volume</Typography>
-                <Stepper activeStep={activeStep} className={classes.xsHide} orientation="vertical">
+                <Typography className={classes.createHeader}>Steps</Typography>
+                <Stepper
+                  activeStep={activeStep}
+                  className={[classes.xsHide, classes.leftPadding].join(' ')}
+                  orientation="vertical"
+                >
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
                     </Step>
                   ))}
                 </Stepper>
-                <Stepper activeStep={activeStep} className={classes.xsShow} style={{ borderBottom: "1px solid grey" }} orientation="horizontal">
+                <Stepper
+                  activeStep={activeStep}
+                  className={[classes.xsShow, classes.borderBottom].join(' ')}
+                  orientation="horizontal"
+                >
                   {steps.map((label) => (
                     <Step key={label}>
                       <StepLabel>{label}</StepLabel>
@@ -1004,7 +1042,6 @@ function AdvanceCreateVolume(props) {
 
               <div>
                 <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
-
                 <div className={classes.stepContent}>
                   {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
                 </div>
