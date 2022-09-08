@@ -18,7 +18,47 @@ type POSManager interface {
 	// The function takes 2 parameters
 	// 1. client specifies the name of the client
 	// 2. connectionInfo specifies the parameters for connection to POS
-	Init(client string, connectionInfo interface{})
+	Init(client string, connectionInfo interface{}) error
+
+	// StartPoseidonOS starts the PoseidonOS
+	// The function takes a command in JSON format as the parameter
+	// A successful Create call returns response in JSON format
+	StartPoseidonOS() (response []byte, err error)
+
+	// StopPoseidonos method the running PoseidonOS
+	// The function does not require any parameters
+	// A successful Create call returns response in the Protobuf format of StopSystemResponse
+	StopPoseidonOS() (response *pb.StopSystemResponse, err error)
+
+	// GetSystemInfo method the running PoseidonOS
+	// The function does not require any parameters
+	// A successful Create call returns response in the Protobuf format of SystemInfoResponse
+	GetSystemInfo() (response *pb.SystemInfoResponse, err error)
+
+	// GetSystemProperty method the running PoseidonOS
+	// The function does not require any parameters
+	// A successful Create call returns response in the Protobuf format of GetSystemPropertyResponse
+	GetSystemProperty() (response *pb.GetSystemPropertyResponse, err error)
+
+	// SetSystemProperty method creates an array in PoseidonOS
+	// The function takes a command in Protobuf format of SetSystemPropertyRequest_Param as the parameter
+	// A successful Create call returns response in the Protobuf format of SetSystemPropertyResponse
+	SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *SetSystemPropertyResponse, err error)
+
+	// CreateDevice method creates an array in PoseidonOS
+	// The function takes a command in Protobuf format of CreateDeviceRequest_Param as the parameter
+	// A successful Create call returns response in the Protobuf format of CreateDeviceResponse
+	CreateDevice(param *pb.CreateDeviceRequest_Param) (response *pb.CreateDeviceResponse, err error)
+
+	// ScanDevice method creates an array in PoseidonOS
+	// The function takes a command in Protobuf format of ScanDeviceRequest_Param as the parameter
+	// A successful Create call returns response in the Protobuf format of ScanDeviceResponse
+	ScanDevice() (reponse pb.ScanDeviceResponse, err error)
+
+	// GetDeviceSmartLog method creates an array in PoseidonOS
+	// The function takes a command in Protobuf format of GetSmartLogRequest_Param as the parameter
+	// A successful Create call returns response in the Protobuf format of GetSmartLogResponse
+	GetDeviceSmartLog(param *pb.GetSmartLogRequest_Param) (response *pb.GetSmartLogResponse, err error)
 
 	// ListDevices method lists the devices in PoseidonOS
 	// The function does not require any parameters

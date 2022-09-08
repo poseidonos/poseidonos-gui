@@ -1,9 +1,14 @@
 package pos
 
 import (
+	"encoding/json"
+	"errors"
 	pb "kouros/api"
 	"kouros/pos/grpc"
 	"kouros/utils"
+	"os"
+	"os/exec"
+	"path/filepath"
 )
 
 const dialTimeout = 10
@@ -13,11 +18,75 @@ type POSGRPCManager struct {
 	requestor  string
 }
 
-func (p *POSGRPCManager) Init(client string, address interface{}) {
-	p.connection = grpc.POSGRPCConnection{
-		Address: address.(string),
+func (p *POSGRPCManager) Init(client string, address interface{}) error {
+	if grpcAddress, ok := address.(string); !ok {
+		return errors.New("Please provide an address of type string")
+	} else {
+		p.connection = grpc.POSGRPCConnection{
+			Address: grpcAddress,
+		}
+		p.requestor = client
 	}
-	p.requestor = client
+	return nil
+}
+
+func (p *POSGRPCManager) GetSystemProperty() (response *pb.GetSystemPropertyResponse, err error) {
+	command := "GETSYSTEMPROPERTY"
+	req := &pb.GetSystemPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendGetSystemProperty(p.connection, req)
+}
+
+func (p *POSGRPCManager) SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *pb.SetSystemPropertyResponse, err error) {
+	command := "SETSYSTEMPROPERTY"
+	req := &pb.SetSystemPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: &param}
+	return grpc.SendSetSystemProperty(p.connection, req)
+}
+
+func (p *POSGRPCManager) StartPoseidonOS() ([]byte, error) {
+	startScriptPath, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	startScriptPath += "/../script/start_poseidonos.sh"
+	err := exec.Command("/bin/sh", "-c", "sudo "+startScriptPath).Run()
+	resJSON := ""
+	uuid := utils.GenerateUUID()
+	if err != nil {
+		resJSON = `{"command":"STARTPOS","rid":"` + uuid + `"` + `,"result":{"status":{"code":11000,` +
+			`"description":"PoseidonOS has failed to start with error code: 11000"}}}`
+	} else {
+		resJSON = `{"command":"STARTPOS","rid":"` + uuid + `","result":{"status":{"code":0,` +
+			`"description":"Done! PoseidonOS has started!"}}}`
+	}
+	res, err := json.Marshal(resJSON)
+	return res, err
+}
+
+func (p *POSGRPCManager) StopPoseidonOS() (response *StopSystemResponse, err error) {
+	command := "STOPSYSTEM"
+	req := &pb.StopSystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendStopSystem(p.connection, req)
+}
+
+func (p *POSGRPCManager) GetSystemInfo() (response *pb.SystemInfoResponse, err error) {
+	command := "SYSTEMINFO"
+	req := &pb.SystemInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendSystemInfo(p.connection, req)
+}
+
+func (p *POSGRPCManager) CreateDevice(param *pb.CreateDeviceRequest_Param) (*pb.CreateDeviceResponse, error) {
+	command := "CREATEDEVICE"
+	req := &pb.CreateDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendCreateDevice(p.connection, req)
+}
+
+func (p *POSGRPCManager) ScanDevice() (*pb.ScanDeviceResponse, error) {
+	command := "SCANDEVICE"
+	req := &pb.ScanDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendScanDevice(p.connection, req)
+}
+
+func (p *POSGRPCManager) GetDeviceSmartLog(param *pb.GetSmartLogRequest_Param) (*pb.GetSmartLogResponse, error) {
+	command := "SMARTLOG"
+	req := &pb.GetSmartLogRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendGetSmartLog(p.connection, req)
 }
 
 // ListDevices method lists the devices in PoseidonOS
@@ -82,11 +151,10 @@ func (p *POSGRPCManager) CreateArray(param *pb.CreateArrayRequest_Param) (*pb.Cr
 // Add device command add spare device in PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, error) {
-    command := "ADDDEVICE"
-    req := &pb.AddSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendAddSpare(p.connection, req)
+	command := "ADDDEVICE"
+	req := &pb.AddSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendAddSpare(p.connection, req)
 }
-
 
 // Remove device command removes spare device from PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
@@ -220,62 +288,59 @@ func (p *POSGRPCManager) SetLogPreference(param *pb.SetLogPreferenceRequest_Para
 // Add a listener to an NVMe-oF subsystem
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) AddListener(param *pb.AddListenerRequest_Param) (*pb.AddListenerResponse, error) {
-    command := "ADDLISTENER"
-    req := &pb.AddListenerRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendAddListener(p.connection, req)
+	command := "ADDLISTENER"
+	req := &pb.AddListenerRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendAddListener(p.connection, req)
 }
 
 // Create an NVMe-oF subsystem to PoseidonOS.
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) CreateSubsystem(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, error) {
-    command := "CREATESUBSYSTEM"
-    req := &pb.CreateSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendCreateSubsystem(p.connection, req)
+	command := "CREATESUBSYSTEM"
+	req := &pb.CreateSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendCreateSubsystem(p.connection, req)
 }
 
 // Create NVMf transport to PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) CreateTransport(param *pb.CreateTransportRequest_Param) (*pb.CreateTransportResponse, error) {
-    command := "CREATETRANSPORT"
-    req := &pb.CreateTransportRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendCreateTransport(p.connection, req)
+	command := "CREATETRANSPORT"
+	req := &pb.CreateTransportRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendCreateTransport(p.connection, req)
 }
-
 
 // Delete a subsystem from PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) DeleteSubsystem(param *pb.DeleteSubsystemRequest_Param) (*pb.DeleteSubsystemResponse, error) {
-    command := "DELETESUBSYSTEM"
-    req := &pb.DeleteSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendDeleteSubsystem(p.connection, req)
+	command := "DELETESUBSYSTEM"
+	req := &pb.DeleteSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendDeleteSubsystem(p.connection, req)
 }
 
 func (p *POSGRPCManager) SubsystemInfo(param *pb.SubsystemInfoRequest_Param) (*pb.SubsystemInfoResponse, error) {
-    command := "SUBSYSTEMINFO"
-    req := &pb.SubsystemInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendSubsystemInfo(p.connection, req)
+	command := "SUBSYSTEMINFO"
+	req := &pb.SubsystemInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendSubsystemInfo(p.connection, req)
 }
 
 func (p *POSGRPCManager) ListSubsystem() (*pb.ListSubsystemResponse, error) {
-    command := "LISTSUBSYSTEM"
-    req := &pb.ListSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-    return grpc.SendListSubsystem(p.connection, req)
+	command := "LISTSUBSYSTEM"
+	req := &pb.ListSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendListSubsystem(p.connection, req)
 }
 
 // Start the collection of telemetry data in PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) StartTelemetry() (*pb.StartTelemetryResponse, error) {
-    command := "STARTTELEMETRY"
-    req := &pb.StartTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-    return grpc.SendStartTelemetryRpc(p.connection, req)
+	command := "STARTTELEMETRY"
+	req := &pb.StartTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendStartTelemetryRpc(p.connection, req)
 }
 
 // Stop the collection of telemetry data in PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) StopTelemetry() (*pb.StopTelemetryResponse, error) {
-    command := "STOPTELEMETRY"
-    req := &pb.StopTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-    return grpc.SendStopTelemetryRpc(p.connection, req)
+	command := "STOPTELEMETRY"
+	req := &pb.StopTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendStopTelemetryRpc(p.connection, req)
 }
-
-
