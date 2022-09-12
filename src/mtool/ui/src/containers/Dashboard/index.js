@@ -54,7 +54,6 @@ import "./Dashboard.css";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
-import HealthMetrics from "../../components/HealthMetrics";
 import LightTooltip from "../../components/LightTooltip";
 
 const styles = (theme) => {
@@ -63,7 +62,7 @@ const styles = (theme) => {
       display: "flex",
     },
     storageDetailsPaper: {
-      height: 250,
+      height: 200,
       position: "relative",
       marginTop: theme.spacing(1),
     },
@@ -82,14 +81,26 @@ const styles = (theme) => {
     tableContainer: {
       minHeight: "372px",
     },
-    readMetric: {
-      backgroundColor: "rgba(59, 189, 179,0.7)",
+    writeBandwidth: {
+      backgroundColor: "rgba(58, 108, 255, 0.7)",
     },
-    writeMetric: {
-      backgroundColor: "rgba(58, 108, 255,0.6)",
+    readBandwidth: {
+      backgroundColor: "rgba(58, 108, 255, 0.7)",
+    },
+    writeIOPS: {
+      backgroundColor: "rgba(59, 189, 179, 0.7)",
+    },
+    readIOPS: {
+      backgroundColor: "rgba(59, 189, 179, 0.7)",
+    },
+    writeLatency: {
+      backgroundColor: "rgba(166, 153, 204, 0.7)",
+    },
+    readLatency: {
+      backgroundColor: "rgba(166, 153, 204, 0.7)",
     },
     totalMetric: {
-      backgroundColor: "rgba(228, 148, 42,0.6)",
+      backgroundColor: "rgba(228, 148, 42, 0.7)",
     },
     loadWrapper: {
       width: "100%",
@@ -122,12 +133,6 @@ const styles = (theme) => {
       width: "100%",
       textAlign: "center",
     },
-    volumeSummary: {
-      minHeight: 413,
-      [theme.breakpoints.down("md")]: {
-        minHeight: 460,
-      },
-    },
     volName: {
       display: "inline-block",
       width: "inherit",
@@ -146,13 +151,13 @@ const styles = (theme) => {
     metricBox: {
       display: "flex",
       alignItems: "center",
-      width: "50%",
-      height: "82.5px",
+      width: "120px",
+      height: "40px",
       justifyContent: "center",
       borderRadius: "10px",
       margin: "auto",
-      [theme.breakpoints.down(1200)]: {
-        width: "75%",
+      [theme.breakpoints.down("sm")]: {
+        width: "25vw",
       },
     },
     storageGraph: {
@@ -201,12 +206,17 @@ const styles = (theme) => {
       minWidth: 100
     },
     metricsPaper: {
-      minHeight: 250,
+      height: 200,
       display: "flex",
       alignItems: "center",
       flexDirection: "column",
       marginTop: theme.spacing(1),
     },
+    metricsContainer:{
+      width: "100%",
+      height: "100%",
+      justifyContent: "space-between",
+    }
   };
 };
 
@@ -221,30 +231,14 @@ const icons = {
   SortArrow: ArrowUpward,
 };
 
-/* eslint-enable react/no-multi-comp */
-
-// Disabling for PoC1
-// const alertIcons = {
-//   ...icons,
-//   FirstPage: () => <FirstPage id="Dashboard-alert-vol-firstpage" /> ,
-//   LastPage: () => <LastPage id="Dashboard-alert-vol-lastpage" />,
-//   NextPage: () => <ChevronRight id="Dashboard-alert-vol-nextpage" />,
-//   PreviousPage: () => <ChevronLeft id="Dashboard-alert-vol-previouspage" />,
-// };
-
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
-// const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
 
 const getUsedSpace = (total, remain) => {
-
   if (Number.isNaN(remain)) {
     return formatBytes(0);
   }
 
-  // if(remain > total) {
-  //   return formatBytes(total);
-  // }
   return formatBytes(total - remain);
 }
 
@@ -327,58 +321,7 @@ class Dashboard extends Component {
       position: "relative",
       backgroundColor: "#fff",
     };
-    const storageDangerStyle = {
-      width: "10%",
-      right: "0px",
-      height: "100%",
-      float: "right",
-      position: "absolute",
-      display: "inline-block",
-      borderLeft: "2px solid rgb(255, 173, 173)",
-    };
 
-    // Disabling for PoC1
-    // const alertColumns = [
-    //   {
-    //     title: 'Alert Name',
-    //     field: 'alertName',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Time Stamp',
-    //     field: 'time',
-    //     defaultSort: 'desc',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Status',
-    //     field: 'level',
-    //     width: 100,
-    //     sorting: false,
-    //     render: row => {
-    //       if (row.level === 'CRITICAL') {
-    //         return <span style={{ color: 'red' }}>{row.level}</span>;
-    //       }
-    //       return <span style={{ color: 'green' }}>{row.level}</span>;
-    //     },
-    //   },
-    //   {
-    //     title: 'Description',
-    //     field: 'message',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Duration(sec)',
-    //     field: 'duration',
-    //     width: 150,
-    //     sorting: false,
-    //   },
-    //  // {
-    //   //  title: 'Node',
-    //    // field: 'host',
-    //     // sorting: false,
-    //  // },
-    // ];
     const localCellStyle = {
       paddingTop: 8,
       paddingBottom: 8,
@@ -461,22 +404,21 @@ class Dashboard extends Component {
               </Grid>
               <Grid container spacing={1} className={classes.topGrid}>
                 <Grid container spacing={1}>
-                  <Grid xs={12} md={6} item>
-                    <HealthMetrics
-                      healthStatusSocket={this.state.healthStatusSocket}
-                    />
-                    {/* <Paper
-                      spacing={3}
-                      xs={6}
-                      className={classes.healthMetricsPaper}
-                    >
-                      <Grid container justify="space-around">
-                        {this.state.healthMetrics.map((metric) => (
+                  <Grid xs={12} md={7} lg={6} item>
+                    <Paper spacing={3} xs={6} className={classes.metricsPaper}>
+                      <Grid container justifyContent="space-between">
+                        <Typography
+                          className={classes.cardHeader}
+                          style={{ marginLeft: "24px" }}
+                          data-testid="dashboard-ip"
+                        >
+                          IP : {this.props.ip}
+                        </Typography>
+                      </Grid>
+                      <Grid container className={classes.metricsContainer}>
+                        <Grid xs={4} container direction="column" alignItems="center" justifyContent="space-around">
                           <Grid
-                            xs={10}
-                            md={4} // currently, it is assumed that there are only 3 health metrics
-                            justify="center"
-                            className={classes.healthMetricContainer}
+                            className={classes.metricContainer}
                             item
                             spacing-xs-1="true"
                           >
@@ -485,248 +427,161 @@ class Dashboard extends Component {
                               className={classes.textOverflow}
                               color="secondary"
                             >
-                              {metric.label}
+                              WRITE BANDWIDTH
                             </Typography>
-                            <Grid item xs={12}>
-                              <GaugeChart
-                                id={metric.id}
-                                styles={{ width: this.state.gaugeWidth }}
-                                nrOfLevels={3}
-                                arcsLength={metric.arcsLength}
-                                colors={[
-                                  "rgba(91,225,44,0.7)",
-                                  "rgba(245,205,25,0.7)",
-                                  "rgba(234,66,40,0.7",
-                                ]}
-                                percent={metric.percentage}
-                                arcPadding={0.02}
-                                needleColor="#D6DBDF"
-                                needleBaseColor="#D6DBDF"
-                                textColor="rgba(0,0,0,0.8)"
-                                formatTextValue={() =>
-                                  `${metric.value} ` + `${metric.unit}`
-                                }
-                              />
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.writeBandwidth}`}
+                            >
+                              <Typography
+                                variant="h5"
+                                data-testid="write-bw"
+                                className={classes.metricTxt}
+                              >
+                                {formatBytes(this.props.writeBW, 0)}ps
+                              </Typography>
                             </Grid>
                           </Grid>
-                        ))}
-                      </Grid>
-                    </Paper> */}
-                    <Paper spacing={3} xs={6} className={classes.metricsPaper}>
-                      <Grid container justifyContent="space-around">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            WRITE BANDWIDTH
-                          </Typography>
                           <Grid
+                            className={classes.metricContainer}
                             item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.writeMetric}`}
+                            spacing-xs-1="true"
                           >
                             <Typography
-                              variant="h5"
-                              data-testid="write-bw"
-                              className={classes.metricTxt}
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
                             >
-                              {formatBytes(this.props.writeBW, 0)}ps
+                              READ BANDWIDTH
                             </Typography>
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.readBandwidth}`}
+                            >
+                              <Typography
+                                variant="h5"
+                                data-testid="read-bw"
+                                className={classes.metricTxt}
+                              >
+                                {formatBytes(this.props.readBW, 0)}ps
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            READ BANDWIDTH
-                          </Typography>
+                        <Grid xs={4} container direction="column" alignItems="center" justifyContent="space-around">
                           <Grid
+                            className={classes.metricContainer}
                             item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.readMetric}`}
+                            spacing-xs-1="true"
                           >
                             <Typography
-                              variant="h5"
-                              data-testid="read-bw"
-                              className={classes.metricTxt}
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
                             >
-                              {formatBytes(this.props.readBW, 0)}ps
+                              WRITE IOPS
                             </Typography>
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.writeIOPS}`}
+                            >
+                              <Typography
+                                variant="h5"
+                                data-testid="write-iops"
+                                className={classes.metricTxt}
+                              >
+                                {this.props.writeIOPS}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                          <Grid
+                            className={classes.metricContainer}
+                            item
+                            spacing-xs-1="true"
+                          >
+                            <Typography
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
+                            >
+                              READ IOPS
+                            </Typography>
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.readIOPS}`}
+                            >
+                              <Typography
+                                variant="h5"
+                                data-testid="read-iops"
+                                className={classes.metricTxt}
+                              >
+                                {this.props.readIOPS}
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                      {/* <Grid container justify="center">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            LATENCY
-                          </Typography>
+                        <Grid xs={4} container direction="column" alignItems="center" justifyContent="space-around">
                           <Grid
+                            className={classes.metricContainer}
                             item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.totalMetric}`}
+                            spacing-xs-1="true"
                           >
                             <Typography
-                              variant="h5"
-                              data-testid="latency"
-                              className={classes.metricTxt}
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
                             >
-                              {this.props.latency}
+                              WRITE LATENCY
                             </Typography>
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.writeLatency}`}
+                            >
+                              <Typography
+                                variant="h5"
+                                data-testid="write-latency"
+                                className={classes.metricTxt}
+                              >
+                                {formatBytes(this.props.writeBW, 0)}ps
+                              </Typography>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </Grid> */}
-                      <Grid container justifyContent="space-around">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            WRITE IOPS
-                          </Typography>
                           <Grid
+                            className={classes.metricContainer}
                             item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.writeMetric}`}
+                            spacing-xs-1="true"
                           >
                             <Typography
-                              variant="h5"
-                              data-testid="write-iops"
-                              className={classes.metricTxt}
+                              align="center"
+                              className={classes.textOverflow}
+                              color="secondary"
                             >
-                              {this.props.writeIOPS}
+                              READ LATENCY
                             </Typography>
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            READ IOPS
-                          </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.readMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="read-iops"
-                              className={classes.metricTxt}
+                            <Grid
+                              item
+                              xs={12}
+                              className={`${classes.metricBox} ${classes.readLatency}`}
                             >
-                              {this.props.readIOPS}
-                            </Typography>
+                              <Typography
+                                variant="h5"
+                                data-testid="read-latency"
+                                className={classes.metricTxt}
+                              >
+                                {formatBytes(this.props.readBW, 0)}ps
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
                     </Paper>
                   </Grid>
-                  <Grid xs={12} md={6} item>
-                    <Paper className={classes.posInfo}>
-                      <Grid
-                        md={6}
-                        xs={12}
-                        item
-                        container
-                        direction="column"
-                        justifyContent="space-between"
-                      >
-                        <Typography
-                          data-testid="dashboard-ip"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            IP
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.ip}
-                          </span>
-                        </Typography>
-                        <Typography
-                          data-testid="dashboard-host"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            Poseidon Name
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.host}
-                          </span>
-                        </Typography>
-                        <Typography
-                          data-testid="dashboard-mac"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            MAC
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.mac}
-                          </span>
-                        </Typography>
-                      </Grid>
-                    </Paper>
+                  <Grid xs={12} md={5} lg={6} item>
                     <Paper
                       spacing={3}
                       xs={6}
@@ -766,11 +621,6 @@ class Dashboard extends Component {
                                 <div style={volUsedStyle} />
                               </div>
                               <div style={storageFreeStyle} />
-                              <div style={storageDangerStyle}>
-                                <div className="dashboard-threshold-label">
-                                  80%
-                                </div>
-                              </div>
                             </div>
                             <div
                               style={{
@@ -799,10 +649,10 @@ class Dashboard extends Component {
                                     this.props.arraySize - volSpace
                                   )}`}
                                 />
-                                <Legend
+                                {/* <Legend
                                   bgColor="rgb(255, 173, 173)"
                                   title="Threshold"
-                                />
+                                /> */}
                               </Grid>
                               <span
                                 style={{
@@ -829,7 +679,7 @@ class Dashboard extends Component {
                     item
                     className={classes.volumeContainer}
                   >
-                    <Paper spacing={3} className={classes.volumeSummary}>
+                    <Paper spacing={3}>
                       <MaterialTable
                         title={(
                           <Typography className={classes.cardHeader}>
@@ -845,8 +695,8 @@ class Dashboard extends Component {
                             paddingTop: 8,
                             paddingBottom: 8
                           },
-                          minBodyHeight: 342,
-                          maxBodyHeight: 342,
+                          minBodyHeight: 280,
+                          maxBodyHeight: 280,
                           search: false,
                           sorting: true
                         }}
@@ -862,7 +712,7 @@ class Dashboard extends Component {
                     item
                     className={classes.volumeContainer}
                   >
-                    <Paper spacing={3} className={classes.volumeSummary}>
+                    <Paper spacing={3}>
                       <MaterialTable
                         columns={volumeTableColumns}
                         data={this.props.arrayVolumes}
@@ -873,8 +723,8 @@ class Dashboard extends Component {
                             paddingTop: 8,
                             paddingBottom: 8
                           },
-                          minBodyHeight: 342,
-                          maxBodyHeight: 342,
+                          minBodyHeight: 280,
+                          maxBodyHeight: 280,
                           search: false,
                           sorting: true
                         }}
@@ -912,40 +762,6 @@ class Dashboard extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* <Grid container spacing={1} className={classes.spaced}>
-            <Grid xs={12} item>
-            <Paper>
-              {this.props.alerts.length > 0 ||
-                this.props.fetchingAlerts === false ? (
-                <MaterialTable
-                  title={(
-                    <Typography className={classes.cardHeader}>Storage Alerts</Typography>
-                  )}
-                  data-testid="Dashboard-table-alert"
-                  options={{
-                    headerStyle: {
-                      backgroundColor: '#788595',
-                      color: '#FFF'
-                    },
-                    search: false
-                  }}
-                  data={this.props.alerts}
-                  columns={alertColumns}
-                  icons={alertIcons}
-                />
-              ) : (
-                <div className={classes.loadWrapper}>
-                  <Loader
-                    type="Bars"
-                    color="#788595"
-                    marginTop="100px"
-                    width="50"
-                  />
-                </div>
-              )}
-            </Paper>
-            </Grid>
-          </Grid> */}
             </Grid>
           </main>
         </div>
@@ -989,8 +805,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.enableFetchingAlerts(flag)),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
-    // fetchAlertsInfo: () =>
-    //  dispatch({ type: actionTypes.SAGA_FETCH_ALERTS_INFO }),
     fetchPerformance: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
     fetchIpAndMacInfo: () =>

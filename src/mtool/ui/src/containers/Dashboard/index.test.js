@@ -180,14 +180,6 @@ describe("Dashboard", () => {
     const { getByTestId } = wrapper;
     const ipElement = await waitForElement(() => getByTestId("dashboard-ip"));
     expect(ipElement.innerHTML).toContain("10.1.11.91");
-
-
-    const hostElement = await waitForElement(() => getByTestId("dashboard-host"));
-    expect(hostElement.innerHTML).toContain("init");
-
-    const macElement = await waitForElement(() => getByTestId("dashboard-mac"));
-    expect(macElement.innerHTML).toContain("00:50:56:ad:88:56");
-
   });
 
   it("should display storage details", async () => {
