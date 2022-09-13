@@ -792,9 +792,14 @@ def get_volume_write_latency():
 
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
-    array_ids = "0,1"
-    res = get_disk_current_perf(array_ids)
-    return jsonify(res)
+    try:
+        received_telemetry = connection_factory.get_telemetery_url()
+        ip = received_telemetry[0]
+        port= received_telemetry[1]
+        res = get_disk_current_perf(ip, port)
+        return jsonify(res)
+    except Exception as e:
+        return make_response('Could not get performance metrics'+str(e), 500)
 '''
     ### below code can be used if we get array ids from list_arrays API"
     arrays = dagent.list_arrays()
@@ -2783,22 +2788,6 @@ def getHealthStatus():
             "MEMORY UTIL")
         if len(mem_result) > 0:
             statuses.append(mem_result)
-        res = get_write_latency_usage("15m")
-        if res is not None:
-            set_max_latency(res, "latency")
-        res = get_write_latency_usage("")
-        write_latency_result = process_response(
-            res, "latency", "latency", "write-lat-status", "IO WRITE LAT")
-        if len(write_latency_result) > 0:
-            statuses.append(write_latency_result)
-        res = get_read_latency_usage("15m")
-        if res is not None:
-            set_max_latency(res, "latency")
-        res = get_read_latency_usage("")
-        read_latency_result = process_response(
-            res, "latency", "latency", "read-lat-status", "IO READ LAT")
-        if len(read_latency_result) > 0:
-            statuses.append(read_latency_result)
         health_list = []
         for i in range(0, len(statuses)):
             health_list.append(statuses[i]["isHealthy"])

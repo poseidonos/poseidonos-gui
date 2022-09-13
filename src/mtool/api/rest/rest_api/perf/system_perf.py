@@ -131,40 +131,55 @@ def get_perf_from_influx(query):
     return val
 """
 
-def get_disk_current_perf(array_ids):
+def get_disk_current_perf(ip, port):
+    metric_query_path = "http://{ip}:{port}/api/v1/query?query=".format(ip=ip, port=port)
     res_dict = {}
     read_bw = 0
     write_bw = 0
-    read_bw_res = metrics.get_read_bw("", array_ids)
-    if read_bw_res is not None and "result" in read_bw_res and "data" in read_bw_res["result"] and len(read_bw_res["result"]["data"]) > 0 and \
-        len(read_bw_res["result"]["data"][0]) > 0:
-        read_bw = read_bw_res["result"]["data"][0][0]["bw"]
-    write_bw_res = metrics.get_write_bw("", array_ids)
-    if write_bw_res is not None and "result" in write_bw_res and "data" in write_bw_res["result"] and len(write_bw_res["result"]["data"]) > 0 and \
-        len(write_bw_res["result"]["data"][0]) > 0:
-        write_bw = write_bw_res["result"]["data"][0][0]["bw"]
+    read_bw_res = metrics.get_read_bw(metric_query_path)
+    if read_bw_res is not None and "data" in read_bw_res and "result" in read_bw_res["data"] and len(read_bw_res["data"]["result"]) > 0:
+        for data in read_bw_res["data"]["result"]:
+            if "value" in data:
+                read_bw += int(data["value"][1])
+    write_bw_res = metrics.get_write_bw(metric_query_path)
+    if write_bw_res is not None and "data" in write_bw_res and "result" in write_bw_res["data"] and len(write_bw_res["data"]["result"]) > 0:
+        for data in write_bw_res["data"]["result"]:
+            if "value" in data:
+                write_bw += int(data["value"][1])
     res_dict['bw_total'] = read_bw + write_bw
     res_dict['bw_read'] = read_bw
     res_dict['bw_write'] = write_bw
     read_iops = 0
     write_iops = 0
-    read_iops_res = metrics.get_read_iops("", array_ids)
-    if read_iops_res is not None and "result" in read_iops_res and "data" in read_iops_res["result"] and len(read_iops_res["result"]["data"]) > 0 and \
-        len(read_iops_res["result"]["data"][0]) > 0:
-        read_iops = read_iops_res["result"]["data"][0][0]["iops"]
-    write_iops_res = metrics.get_write_iops("", array_ids)
-    if write_iops_res is not None and "result" in write_iops_res and "data" in write_iops_res["result"] and len(write_iops_res["result"]["data"]) > 0 and \
-        len(write_iops_res["result"]["data"][0]) > 0:
-        write_iops = write_iops_res["result"]["data"][0][0]["iops"]
+    read_iops_res = metrics.get_read_iops(metric_query_path)
+    if read_iops_res is not None and "data" in read_iops_res and "result" in read_iops_res["data"] and len(read_iops_res["data"]["result"]) > 0:
+        for data in read_iops_res["data"]["result"]:
+            if "value" in data:
+                read_iops += int(data["value"][1])
+    write_iops_res = metrics.get_write_iops(metric_query_path)
+    if write_iops_res is not None and "data" in write_iops_res and "result" in write_iops_res["data"] and len(write_iops_res["data"]["result"]) > 0:
+        for data in write_iops_res["data"]["result"]:
+            if "value" in data:
+                write_iops += int(data["value"][1])
     res_dict['iops_total'] = read_iops + write_iops
     res_dict['iops_read'] = read_iops
     res_dict['iops_write'] = write_iops
-    latency = 0
-    latency_res = metrics.get_latency("", array_ids)
-    if latency_res is not None and "result" in latency_res and "data" in latency_res["result"] and len(latency_res["result"]["data"]) and \
-        len(latency_res["result"]["data"][0]) > 0:
-        latency = latency_res["result"]["data"][0][0]["latency"]
-    res_dict['latency'] = latency
+    read_latency = 0
+    write_latency = 0
+    read_latency_res = metrics.get_read_latency(metric_query_path)
+    if read_latency_res is not None and "data" in read_latency_res and "result" in read_latency_res["data"] and len(read_latency_res["data"]["result"]) > 0:
+        for data in read_latency_res["data"]["result"]:
+            if "value" in data:
+                read_latency += int(data["value"][1])
+    write_latency_res = metrics.get_write_latency(metric_query_path)
+    if write_latency_res is not None and "data" in write_latency_res and "result" in write_latency_res["data"] and len(write_latency_res["data"]["result"]) > 0:
+        for data in write_latency_res["data"]["result"]:
+            if "value" in data:
+                write_latency += int(data["value"][1])
+    res_dict['latency_total'] = read_latency + write_latency
+    res_dict['latency_read'] = read_latency
+    res_dict['latency_write'] = write_latency
+    
     return res_dict
 
 """

@@ -31,9 +31,17 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  '''
-
+import requests
+import json
 from requests.exceptions import HTTPError
 from rest.rest_api.dagent.ibofos import get_headers, send_command_to_dagent, DAGENT_URL, BASIC_AUTH_TOKEN, connect_timeout, read_timeout
+
+READ_IOPS_VOLUME = 'read_iops_volume'
+WRITE_IOPS_VOLUME = 'write_iops_volume'
+READ_BPS_VOLUME = 'read_bps_volume'
+WRITE_BPS_VOLUME = 'write_bps_volume'
+READ_AVG_LAT_VOLUME = 'read_avg_lat_volume'
+WRITE_AVG_LAT_VOLUME = 'write_avg_lat_volume'
 
 METRIC_PATH = '/api/metric/v1'
 ARRAY_PATH = DAGENT_URL + METRIC_PATH + '/{}/arrays?arrayids={}&time={}'
@@ -69,15 +77,12 @@ def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 
-def get_read_iops(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_read_iops(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("readiops",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{riv}".format(metric_query_path=metric_query_path, riv=READ_IOPS_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -99,15 +104,12 @@ def get_vol_read_iops(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_iops(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_write_iops(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("writeiops",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{wiv}".format(metric_query_path=metric_query_path, wiv=WRITE_IOPS_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -129,16 +131,12 @@ def get_vol_write_iops(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_read_bw(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_read_bw(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("readbw",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        #print(response)
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{rbv}".format(metric_query_path=metric_query_path, rbv=READ_BPS_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -161,15 +159,12 @@ def get_vol_read_bw(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_bw(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_write_bw(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("writebw",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{wbv}".format(metric_query_path=metric_query_path, wbv=WRITE_BPS_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -206,15 +201,12 @@ def get_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_read_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_read_latency(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("readlatency",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{ralv}".format(metric_query_path=metric_query_path, ralv=READ_AVG_LAT_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -251,15 +243,12 @@ def get_vol_read_latency(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_write_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
+def get_write_latency(metric_query_path, auth = BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
-        #print("Sending command to dagent")
-        PATH = ARRAY_PATH.format("writelatency",arr_ids,time)
-        response = send_command_to_dagent("GET",url = PATH, headers= req_headers,timeout=(connect_timeout,read_timeout))
-        #print("--------------RESPONSE-------------")
-        response = response.json()
-        #print("--------------RESPONSE-------------")
+        PATH = "{metric_query_path}{walv}".format(metric_query_path=metric_query_path, walv=WRITE_AVG_LAT_VOLUME)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
         return response
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
