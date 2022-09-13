@@ -57,7 +57,8 @@ export const fetchPerformance = (
   writeIOPS,
   readBW,
   writeBW,
-  latency
+  readLatency,
+  writeLatency,
 ) => {
   return {
     type: actionTypes.FETCH_PERFORMANCE_INFO,
@@ -65,7 +66,8 @@ export const fetchPerformance = (
     writeIOPS,
     readBW,
     writeBW,
-    latency,
+    readLatency,
+    writeLatency,
   };
 };
 

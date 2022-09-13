@@ -547,7 +547,7 @@ class Dashboard extends Component {
                                 data-testid="write-latency"
                                 className={classes.metricTxt}
                               >
-                                {formatBytes(this.props.writeBW, 0)}ps
+                                {this.props.writeLatency}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -573,7 +573,7 @@ class Dashboard extends Component {
                                 data-testid="read-latency"
                                 className={classes.metricTxt}
                               >
-                                {formatBytes(this.props.readBW, 0)}ps
+                                {this.props.readLatency}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -782,7 +782,8 @@ const mapStateToProps = (state) => {
     writeIOPS: state.dashboardReducer.writeIOPS,
     readBW: state.dashboardReducer.readBW,
     writeBW: state.dashboardReducer.writeBW,
-    latency: state.dashboardReducer.latency,
+    readLatency: state.dashboardReducer.readLatency,
+    writeLatency: state.dashboardReducer.writeLatency,
     fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
     arrayVolCount: state.dashboardReducer.arrayVols,

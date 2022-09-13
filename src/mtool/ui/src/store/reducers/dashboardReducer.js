@@ -42,7 +42,8 @@ const initialState = {
     writeIOPS: 0,
     readBW: 0,
     writeBW: 0,
-    latency: 0,
+    readLatency: 0,
+    writeLatency: 0,
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
@@ -124,7 +125,8 @@ const dashboardReducer = (state = initialState, action) => {
                 writeIOPS: action.writeIOPS,
                 readBW: action.readBW,
                 writeBW: action.writeBW,
-                latency: action.latency
+                readLatency: action.readLatency,
+                writeLatency: action.writeLatency
             };
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {

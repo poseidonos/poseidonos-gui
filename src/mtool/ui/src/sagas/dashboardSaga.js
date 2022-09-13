@@ -95,7 +95,7 @@ function* fetchPerformanceInfo() {
   try {
     const response = yield call(
       [axios, axios.get],
-      `/api/v1/perf/all?ts=${Date.now()}`,
+      `/api/v1/perf/all`,
       {
         headers: {
           Accept: "application/json",
@@ -113,9 +113,10 @@ function* fetchPerformanceInfo() {
         actionCreators.fetchPerformance(
           result.iops_read ? d3Format(".2s")(result.iops_read) : 0,
           result.iops_write ? d3Format(".2s")(result.iops_write) : 0,
-          Math.round((result.bw_read) * 100) / 100,
-          Math.round((result.bw_write) * 100) / 100,
-          formatNanoSeconds(Math.round(result.latency))
+          Math.round(result.bw_read),
+          Math.round(result.bw_write),
+          result.latency_read ? formatNanoSeconds(Math.round(result.latency_read)) : 0,
+          result.latency_write ? formatNanoSeconds(Math.round(result.latency_write)) : 0
         )
       );
     }
