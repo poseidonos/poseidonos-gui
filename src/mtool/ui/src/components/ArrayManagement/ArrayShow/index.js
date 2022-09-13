@@ -48,7 +48,7 @@ import {
   Typography,
   MenuItem,
 } from "@material-ui/core";
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove, SwapHorizOutlined } from "@material-ui/icons";
 import formatBytes from "../../../utils/format-bytes";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
@@ -177,6 +177,7 @@ const styles = (theme) => ({
     width: 20,
     height: 20,
     borderRadius: 100,
+    // border: 0,
     padding: 0,
   },
   diskNo: {
@@ -223,8 +224,9 @@ const findDisk = (diskName) => {
 };
 
 const DEFAULT_TITLE = "";
-const ADD_TITLE = "add";
-const REMOVE_TITLE = "remove";
+const ADD_TITLE = "ADD_TITLE";
+const REMOVE_TITLE = "REMOVE_TITLE";
+const REPLACE_TITLE = "REPLACE_TITLE";
 
 class ArrayShow extends Component {
   constructor(props) {
@@ -263,7 +265,6 @@ class ArrayShow extends Component {
       this.props.getDevices({ noLoad: true });
     }, 5000);
   }
-
 
   componentWillUnmount() {
     if (this.interval) {
@@ -379,6 +380,12 @@ class ArrayShow extends Component {
         );
       }
     }
+
+    let isFreeDiskAvailable = false;
+    this.props.slots.forEach(slot => {
+      if (slot.isAvailable) isFreeDiskAvailable = true;
+    })
+
     const getClass = (disk) => {
       if (this.props.storagedisks.find(findDisk(disk.name))) {
         return classes.storagedisk;
@@ -403,6 +410,8 @@ class ArrayShow extends Component {
         return "Add Spare Disk"
       if (this.state.diskTitle === REMOVE_TITLE)
         return "Remove Spare Disk"
+      if (this.state.diskTitle === REPLACE_TITLE)
+        return "Replace Disk"
       return (
         <React.Fragment>
           <div>
@@ -556,6 +565,18 @@ class ArrayShow extends Component {
                             onClick={() => this.removeSpareDisk(slot)}
                           >
                             <Remove fontSize="small" />
+                          </Button>
+                        ) : isFreeDiskAvailable ? (
+                          <Button
+                            onMouseEnter={() => this.changeTitle(REPLACE_TITLE)}
+                            onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
+                            variant="outlined"
+                            color="secondary"
+                            className={classes.detachBtn}
+                            data-testid={`replacedisk-${index}`}
+                            onClick={() => { }}
+                          >
+                            <SwapHorizOutlined fontSize="small" />
                           </Button>
                         ) : <p />}
                       </Grid>

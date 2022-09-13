@@ -1238,7 +1238,10 @@ function* addSpareDisk(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Adding Spare Device",
-            errorCode: `Description:${response.data.result.description}`,
+            errorCode:
+              response.data && response.data.result && response.data.result.description
+                ? response.data.result.description
+                : "Adding Spare Device Failed",
             alertTitle: "Add Spare Device",
           })
         );
