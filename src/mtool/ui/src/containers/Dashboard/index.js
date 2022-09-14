@@ -338,6 +338,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.props.getConfig();
     this.props.fetchVolumes();
     this.props.fetchArrays();
     this.props.fetchPerformance();
@@ -548,10 +549,10 @@ class Dashboard extends Component {
                         <Grid item xs={8}>
                           <Typography
                             variant="h6"
-                            data-testid="read-latency"
+                            data-testid="telemetry-ip"
                             className={classes.ipText}
                           >
-                            107.108.221.107 <b>:</b> 9090
+                            {this.props.telemetryIP && this.props.telemetryIP} <b>:</b> {this.props.telemetryPort && this.props.telemetryPort}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -757,12 +758,15 @@ const mapStateToProps = (state) => {
     cpuArcsLength: state.dashboardReducer.cpuArcsLength,
     memoryArcsLength: state.dashboardReducer.memoryArcsLength,
     latencyArcsLength: state.dashboardReducer.latencyArcsLength,
+    telemetryIP: state.authenticationReducer.telemetryIP,
+    telemetryPort: state.authenticationReducer.telemetryPort,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     enableFetchingAlerts: (flag) =>
       dispatch(actionCreators.enableFetchingAlerts(flag)),
+    getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     fetchPerformance: () =>
