@@ -35,7 +35,8 @@ import { call, takeEvery, put, cancelled } from "redux-saga/effects";
 import { format as d3Format } from "d3-format";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
-import { formatNanoSeconds } from "../utils/format-bytes";
+import formatBytes, { formatNanoSeconds } from "../utils/format-bytes";
+
 
 export function* fetchVolumeInfo() {
   try {
@@ -113,8 +114,8 @@ function* fetchPerformanceInfo() {
         actionCreators.fetchPerformance(
           result.iops_read ? d3Format(".2s")(result.iops_read) : 0,
           result.iops_write ? d3Format(".2s")(result.iops_write) : 0,
-          Math.round(result.bw_read),
-          Math.round(result.bw_write),
+          result.bw_read ? formatBytes(Math.round(result.bw_read), 0) : 0,
+          result.bw_write ? formatBytes(Math.round(result.bw_write), 0) : 0,
           result.latency_read ? formatNanoSeconds(Math.round(result.latency_read)) : 0,
           result.latency_write ? formatNanoSeconds(Math.round(result.latency_write)) : 0
         )

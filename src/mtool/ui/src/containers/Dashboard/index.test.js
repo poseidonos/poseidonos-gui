@@ -159,7 +159,7 @@ describe("Dashboard", () => {
     renderComponent();
     const { getByTestId } = wrapper;
     const readStorageElement = await waitForElement(() => getByTestId("dashboard-no-array"));
-    expect(readStorageElement.innerHTML).toBe("No Mounted Arrays");
+    expect(readStorageElement.innerHTML).toBe("Arrays are not available");
 
   });
 
@@ -333,7 +333,7 @@ describe("Dashboard", () => {
   it("should display iops value as received from API", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
+    mock.onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
         {
           bw_read: 0,
@@ -356,7 +356,7 @@ describe("Dashboard", () => {
   it("should display bw value with units according to values", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
+    mock.onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
         {
           bw_read: 1024,
@@ -372,10 +372,10 @@ describe("Dashboard", () => {
     renderComponent();
     const { getByTestId } = wrapper;
     jest.advanceTimersByTime(2000);
-    const readBwElement = await waitForElement(() => getByTestId("read-bw"));
-    expect(readBwElement.innerHTML).toBe("1 KBps");
-    const writeBwElement = await waitForElement(() => getByTestId("write-bw"));
-    expect(writeBwElement.innerHTML).toBe("1 GBps");
+    const readBwElement = await waitForElement(() => getByTestId("read-bandwidth"));
+    expect(readBwElement.innerHTML).toBe("1 KB");
+    const writeBwElement = await waitForElement(() => getByTestId("write-bandwidth"));
+    expect(writeBwElement.innerHTML).toBe("1 GB");
 
   });
 
