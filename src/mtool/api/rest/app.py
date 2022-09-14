@@ -44,12 +44,12 @@ from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
-from rest.rest_api.health_status.health_status import process_response, get_overall_health, set_max_latency
+from rest.rest_api.health_status.health_status import process_response, get_overall_health
 from rest.rest_api.telemetry.telemetry import set_telemetry_configuration
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_read_latency_usage, get_write_latency_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, get_disk_read_latency, \
+from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, get_disk_read_latency, \
     get_disk_current_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response

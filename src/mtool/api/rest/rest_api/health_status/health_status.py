@@ -118,16 +118,6 @@ def get_last_result(res, arr_len, field):
     else:
         return 0
 
-def set_max_latency(res, field):
-    global max_latency
-    max_usage_percent = 0
-    arr_len = len(res["result"]["data"][0])
-    if arr_len != 0:
-        for i in range(0, arr_len):
-            if res["result"]["data"][0][i][field] > max_usage_percent:
-                max_usage_percent = res["result"]["data"][0][i][field]
-    max_latency = max_usage_percent
-
 
 def get_percentage(usage_percent):
     try:

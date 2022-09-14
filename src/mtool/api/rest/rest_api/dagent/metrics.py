@@ -78,7 +78,6 @@ def get_memory_usage(time, auth = BASIC_AUTH_TOKEN):
 
 
 def get_read_iops(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{riv}".format(metric_query_path=metric_query_path, riv=READ_IOPS_VOLUME)
         response = requests.get(PATH)
@@ -105,7 +104,6 @@ def get_vol_read_iops(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 def get_write_iops(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{wiv}".format(metric_query_path=metric_query_path, wiv=WRITE_IOPS_VOLUME)
         response = requests.get(PATH)
@@ -132,7 +130,6 @@ def get_vol_write_iops(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 def get_read_bw(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{rbv}".format(metric_query_path=metric_query_path, rbv=READ_BPS_VOLUME)
         response = requests.get(PATH)
@@ -160,7 +157,6 @@ def get_vol_read_bw(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 def get_write_bw(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{wbv}".format(metric_query_path=metric_query_path, wbv=WRITE_BPS_VOLUME)
         response = requests.get(PATH)
@@ -202,7 +198,6 @@ def get_latency(time, arr_ids, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 def get_read_latency(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{ralv}".format(metric_query_path=metric_query_path, ralv=READ_AVG_LAT_VOLUME)
         response = requests.get(PATH)
@@ -244,7 +239,6 @@ def get_vol_read_latency(time, arr_ids, vol_ids, auth = BASIC_AUTH_TOKEN):
         print(f'Other error occurred: {err}')
 
 def get_write_latency(metric_query_path, auth = BASIC_AUTH_TOKEN):
-    req_headers = get_headers(auth)
     try:
         PATH = "{metric_query_path}{walv}".format(metric_query_path=metric_query_path, walv=WRITE_AVG_LAT_VOLUME)
         response = requests.get(PATH)

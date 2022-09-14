@@ -47,43 +47,6 @@ def get_user_memory_usage(time):
 def get_latency_usage(time):
     return metrics.get_latency(time, "0,1")
 
-def get_read_latency_usage(time):
-    return metrics.get_read_latency(time, "0,1")
-
-def get_write_latency_usage(time):
-    return metrics.get_write_latency(time, "0,1")
-
-"""
-def get_input_power_variation(time):
-    try:
-        res_dict = {}
-        result = []
-        connection = get_connection()
-        query = 'SELECT last("count") AS "total_count" FROM "' + \
-            mtool_db + '"."' + infinite_rp + '"."power"'
-        response = connection.query(query)
-        response = response.get_points()
-        range_value = 0
-        for data in list(response):
-            range_value = int(data['total_count'])
-        for i in range(0, range_value):
-            query = 'SELECT mean("value") AS "mean_power_value" FROM "' + mtool_db + '"."' + infinite_rp + '"."power"' + ' where time > now() - ' + \
-                time + ' AND "input_power"=' + '\'PSU' + str(i) + '\'' + ' GROUP BY time(' + time_groups_default[time] + ')'
-            res = connection.query(query)
-            res = res.get_points()
-            for data in list(res):
-                if data['mean_power_value'] is not None:
-                    result.append({
-                        'value': int(data['mean_power_value']),
-                        'time': data['time']
-                    })
-        res_dict['res'] = result
-        connection.close()
-        return res_dict
-    except Exception as e:
-        print(e)
-"""
-
 def get_disk_latency(time, arr_id, vol_id):
     if vol_id == "":
         return metrics.get_latency(time, arr_id)
