@@ -613,8 +613,8 @@ def test_get_latency(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=[ip,port], autospec=True)
 def test_get_current_iops(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_ARRAY_URL.format("readbw",""),
