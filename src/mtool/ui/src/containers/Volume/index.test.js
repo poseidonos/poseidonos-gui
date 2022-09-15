@@ -1226,7 +1226,7 @@ describe("<Storage Management />", () => {
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes/)
       .reply(200, { "@odata.type": "#VolumeCollection_1_0_0.VolumeCollection", "Name": "Volumes", "Members@odata.count": 1, "@odata.id": "/redfish/v1/StorageServices/1/Volumes", "@odata.context": "/redfish/v1/$metadata#VolumeCollection.VolumeCollection", "Members": [{ "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" }], "Permissions": [{ "Read": "True" }, { "Write": "True" }] })
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/0/)
-      .reply(200, { "@odata.context": "redfish/v1/$metadata#Volume.Volume", "@odata.type": "#Volume_1_0_0.Volume", "Name": "vol", "Id": "0", "Description": "", "Status": { "Health": "OK", "Oem": { "VolumeStatus": "Mounted" } }, "AccessCapabilities": ["Read", "Write", "Append", "Streaming"], "BlockSizeBytes": 512, "Capacity": { "Data": { "ConsumedBytes": 0.0, "AllocatedBytes": 20322711502848.0 } }, "Oem": { "MaxBandwidth": 0, "MaxIOPS": 0, "MinIOPS": 0, "MinBandwidth": 0, "IP": "107.108.221.146", "Port": "NA", "NQN": "nqn.2019-04.pos:subsystem1", "UUID": "6cdb989a-f948-407a-a728-f80a86061ca3" }, "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" })
+      .reply(200, { "@odata.context": "redfish/v1/$metadata#Volume.Volume", "@odata.type": "#Volume_1_0_0.Volume", "Name": "vol", "Id": "0", "Description": "", "Status": { "Health": "OK", "Oem": { "VolumeStatus": "Mounted" } }, "AccessCapabilities": ["Read", "Write", "Append", "Streaming"], "BlockSizeBytes": 512, "Capacity": { "Data": { "ConsumedBytes": 0.0, "AllocatedBytes": 20322711502848.0 } }, "Oem": { "MaxBandwidth": 0, "MaxIOPS": 0, "MinIOPS": 0, "MinBandwidth": 0, "IP": "127.0.0.1", "Port": "NA", "NQN": "nqn.2019-04.pos:subsystem1", "UUID": "6cdb989a-f948-407a-a728-f80a86061ca3" }, "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" })
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onPost(/api\/v1.0\/save-volume\/*/)
@@ -1356,7 +1356,7 @@ describe("<Storage Management />", () => {
     const targetAddress = await waitForElement(() =>
       getByTestId("adv-create-target-address")
     );
-    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+    fireEvent.change(targetAddress, { target: { value: "127.0.0.1" } });
 
     const transportServiceId = await waitForElement(() =>
       getByTestId("adv-create-transport-service-id")
@@ -1704,7 +1704,7 @@ describe("<Storage Management />", () => {
       await waitForElement(() => getByText("Please Enter Target Address"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
-    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+    fireEvent.change(targetAddress, { target: { value: "127.0.0.1" } });
 
     const transportServiceId = await waitForElement(() =>
       getByTestId("adv-create-transport-service-id")

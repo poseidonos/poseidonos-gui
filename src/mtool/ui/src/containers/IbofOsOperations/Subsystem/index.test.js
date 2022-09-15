@@ -117,10 +117,10 @@ describe("SubsystemOperations", () => {
                     "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [{
-                        "address_family": "IPv4",
-                        "target_address": "107.108.221.146",
-                        "transport_service_id": "1158",
-                        "transport_type": "TCP"
+                        "addressFamily": "IPv4",
+                        "targetAddress": "127.0.0.1",
+                        "transportServiceId": "1158",
+                        "transportType": "TCP"
                     }],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
@@ -137,10 +137,10 @@ describe("SubsystemOperations", () => {
                     "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [{
-                        "address_family": "IPv4",
-                        "target_address": "107.108.221.146",
-                        "transport_service_id": "1158",
-                        "transport_type": "TCP"
+                        "addressFamily": "IPv4",
+                        "targetAddress": "127.0.0.1",
+                        "transportServiceId": "1158",
+                        "transportType": "TCP"
                     }],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
@@ -257,7 +257,7 @@ describe("SubsystemOperations", () => {
             const { findAllByTitle, getByText } = wrapper;
             const detailBtns = await findAllByTitle("Show Subsystem Details");
             fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("107.108.221.146");
+            const ipAddress = getByText("127.0.0.1");
             expect(ipAddress).toBeDefined();
         });
 
@@ -287,7 +287,7 @@ describe("SubsystemOperations", () => {
             const { findAllByTitle, getByTestId, getByTitle, getByText } = wrapper;
             const detailBtns = await findAllByTitle("Show Subsystem Details");
             fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("107.108.221.146");
+            const ipAddress = getByText("127.0.0.1");
             expect(ipAddress).toBeDefined();
             const addListenerBtn = getByTitle("Add a Listener");
             fireEvent.click(addListenerBtn);

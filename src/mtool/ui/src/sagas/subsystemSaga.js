@@ -121,7 +121,10 @@ export function* addListener(action) {
   try {
     yield put(actionCreators.startLoader("Adding Listener"));
     const response = yield call([axios, axios.post], "/api/v1/listener/", {
-      ...action.payload
+      name: action.payload.subnqn,
+      transport_type: action.payload.type,
+      target_address: action.payload.ip,
+      transport_service_id: action.payload.port
     }, {
       headers: {
         "x-access-token": localStorage.getItem("token"),

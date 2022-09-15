@@ -80,13 +80,13 @@ const SubsystemDetails = (props) => {
 
   const addressColumns = [{
     title: "Target Address",
-    field: "target_address"
+    field: "targetAddress"
   }, {
     title: "Port",
-    field: "transport_service_id"
+    field: "transportServiceId"
   }, {
     title: "Family",
-    field: "address_family"
+    field: "addressFamily"
   }];
   const namespaceColumns = [{
     title: "BDEV Name",
@@ -99,7 +99,6 @@ const SubsystemDetails = (props) => {
     field: "uuid"
   }];
 
-  console.log(props.data)
   return (
     <ThemeProvider theme={TableTheme}>
       <Grid container spacing={1}>
