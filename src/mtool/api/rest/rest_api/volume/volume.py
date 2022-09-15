@@ -62,11 +62,17 @@ def create_volume(
         maxiops,
         minbw,
         miniops,
-        subsystem["subnqn"],iswalvol)
+        subsystem["subnqn"],
+        iswalvol)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:
-            res = dagent.mount_volume_with_subsystem(
-                vol_name, arr_name, subsystem)
+            res = None
+            if "target_address" in subsystem and subsystem["target_address"] != "" and "transport_service_id" in subsystem and subsystem["transport_service_id"] != "":
+                res = dagent.mount_volume_with_subsystem(
+                    vol_name, arr_name, subsystem)
+            elif "subnqn" in subsystem:
+                res = dagent.mount_volume(
+                    vol_name, arr_name, subsystem["subnqn"])
             if res is None:
                 return json_util.dumps({})
             if res.status_code != 200:
