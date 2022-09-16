@@ -54,6 +54,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
 import LightTooltip from "../../components/LightTooltip";
+import Dialog from "../../components/Dialog";
 
 const styles = (theme) => {
   return {
@@ -107,25 +108,15 @@ const styles = (theme) => {
         borderBottom: "2px solid #F1F0F5",
       },
     },
-    writeActiveColor: {
+    writeColor: {
       height: "40px",
       textAlign: "center",
       color: "rgba(58, 108, 255, 1)",
     },
-    readActiveColor: {
+    readColor: {
       height: "40px",
       textAlign: "center",
       color: "rgba(125, 106, 181, 1)",
-    },
-    writeInactiveColor: {
-      height: "40px",
-      textAlign: "center",
-      color: "rgba(58, 108, 255, 0.5)",
-    },
-    readInactiveColor: {
-      height: "40px",
-      textAlign: "center",
-      color: "rgba(125, 106, 181, 0.5)",
     },
     posInfoPaper: {
       height: 122,
@@ -270,7 +261,7 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
           <Typography
             align="center"
             className={classes.textOverflow}
-            color={writeValue === 0 ? "primary" : "secondary"}
+            color={writeValue ? "secondary" : "primary"}
             variant="h6"
           >
             Write
@@ -282,12 +273,12 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
           className={classes.metricBox}
         >
           <Typography
-            variant="h4"
+            variant={writeValue ? "h4" : "h6"}
             data-testid={`write-${header.toLowerCase()}`}
             color="secondary"
-            className={writeValue === 0 ? classes.writeInactiveColor : classes.writeActiveColor}
+            className={classes.writeColor}
           >
-            {writeValue === 0 ? "nill" : writeValue}
+            {writeValue !== 0 ? writeValue : "___"}
           </Typography>
         </Grid>
       </Grid>
@@ -296,7 +287,7 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
           <Typography
             align="center"
             className={classes.textOverflow}
-            color={readValue === 0 ? "primary" : "secondary"}
+            color={readValue ? "secondary" : "primary"}
             variant="h6"
           >
             Read
@@ -307,11 +298,11 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
           xs={8}
         >
           <Typography
-            variant="h4"
+            variant={readValue ? "h4" : "h6"}
             data-testid={`read-${header.toLowerCase()}`}
-            className={readValue === 0 ? classes.readInactiveColor : classes.readActiveColor}
+            className={classes.readColor}
           >
-            {readValue === 0 ? "nill" : readValue}
+            {readValue !== 0 ? readValue : "___"}
           </Typography>
         </Grid>
       </Grid>
@@ -338,6 +329,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchCheckTelemetry();
     this.props.getConfig();
     this.props.fetchVolumes();
     this.props.fetchArrays();
@@ -552,7 +544,7 @@ class Dashboard extends Component {
                             data-testid="telemetry-ip"
                             className={classes.ipText}
                           >
-                            {this.props.telemetryIP && this.props.telemetryIP} <b>:</b> {this.props.telemetryPort && this.props.telemetryPort}
+                            {this.props.telemetryIP && this.props.telemetryPort ? `${this.props.telemetryIP} : ${this.props.telemetryPort}` : "-"}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -724,6 +716,13 @@ class Dashboard extends Component {
               </Grid>
             </Grid>
           </main>
+          <Dialog
+            title="Create Volume"
+            description={this.props.errorMsg}
+            type="alert"
+            open={this.props.showTelemetryAlert}
+            handleClose={() => this.props.closeTelemetryAlert()}
+          />
         </div>
       </ThemeProvider>
     );
@@ -738,6 +737,8 @@ const mapStateToProps = (state) => {
     arrayLoading: state.storageReducer.loading,
     alerts: state.dashboardReducer.alerts,
     ibofs: state.dashboardReducer.ibofs,
+    showTelemetryAlert: state.dashboardReducer.showTelemetryAlert,
+    errorMsg: state.dashboardReducer.errorMsg,
     readIOPS: state.dashboardReducer.readIOPS,
     writeIOPS: state.dashboardReducer.writeIOPS,
     readBW: state.dashboardReducer.readBW,
@@ -764,17 +765,15 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    enableFetchingAlerts: (flag) =>
-      dispatch(actionCreators.enableFetchingAlerts(flag)),
+    fetchCheckTelemetry: () => dispatch({ type: actionTypes.SAGA_FETCH_CHECK_TELEMETRY }),
+    closeTelemetryAlert: () => dispatch({ type: actionTypes.CLOSE_TELEMETRY_ALERT}),
+    enableFetchingAlerts: (flag) => dispatch(actionCreators.enableFetchingAlerts(flag)),
     getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
-    fetchPerformance: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
-    fetchIpAndMacInfo: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
-    selectArray: (array) =>
-      dispatch({ type: actionTypes.SELECT_ARRAY, array }),
+    fetchPerformance: () => dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
+    fetchIpAndMacInfo: () => dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
+    selectArray: (array) => dispatch({ type: actionTypes.SELECT_ARRAY, array }),
   };
 };
 export default withStyles(styles)(

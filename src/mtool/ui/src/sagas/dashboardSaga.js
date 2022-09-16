@@ -92,6 +92,22 @@ export function* fetchAlertsInfo() {
 }
 */
 
+
+export function* fetchCheckTelemetry() {
+  try {
+    const response = yield call([axios, axios.get], '/api/v1/checktelemetry');
+    if (response.status === 200 && response.data) {
+      if (response.data.isTelemetryEndpointUp === true)
+        yield put(actionCreators.setShowTelemetryNotRunning(false, ""));
+      if (response.data.isTelemetryEndpointUp === false)
+        yield put(actionCreators.setShowTelemetryNotRunning(true, "Telemetry is not running, please restart telemetry"));
+    } else
+      yield put(actionCreators.setShowTelemetryNotRunning(true, "PrometheusDB might not be running. Please Check"));
+  } catch (error) {
+    yield put(actionCreators.setShowTelemetryNotRunning(true, "Please check and configure Telemetry Url"));
+  }
+}
+
 function* fetchPerformanceInfo() {
   try {
     const response = yield call(
@@ -153,6 +169,7 @@ function* fetchIpAndMacInfo() {
 }
 
 export function* dashboardWatcher() {
+  yield takeEvery(actionTypes.SAGA_FETCH_CHECK_TELEMETRY, fetchCheckTelemetry);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
   // yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
   yield takeEvery(

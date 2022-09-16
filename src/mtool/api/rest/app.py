@@ -45,12 +45,12 @@ from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.health_status.health_status import process_response, get_overall_health
-from rest.rest_api.telemetry.telemetry import set_telemetry_configuration
+from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, get_disk_read_latency, \
-    get_disk_current_perf, get_disk_write_latency
+    get_agg_volumes_perf, get_disk_write_latency
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -796,7 +796,7 @@ def get_current_iops():
         received_telemetry = connection_factory.get_telemetery_url()
         ip = received_telemetry[0]
         port= received_telemetry[1]
-        res = get_disk_current_perf(ip, port)
+        res = get_agg_volumes_perf(ip, port)
         return jsonify(res)
     except Exception as e:
         return make_response('Could not get performance metrics'+str(e), 500)
@@ -810,7 +810,7 @@ def get_current_iops():
         for array in arrays:
             index.append(array["index"])
         array_ids = ",".join(map(str,index))
-        res = get_disk_current_perf(array_ids)
+        res = get_agg_volumes_perf(array_ids)
         return jsonify(res)
     else:
         return jsonify({"res": []})
@@ -2250,6 +2250,18 @@ def set_telemetry_config():
     except Exception as e:
         return make_response('Could not configure Telemetry URL'+str(e), 500)
 
+@app.route('/api/v1/checktelemetry', methods=['GET'])
+def check_telemetry():
+    try:
+        received_telemetry = connection_factory.get_telemetery_url()
+        if received_telemetry is None or len(received_telemetry) == 0:
+            return make_response('Telemetry URL is not configured', 500)
+        ip = received_telemetry[0]
+        port= received_telemetry[1]
+        res = check_telemetry_endpoint(ip, port)
+        return res
+    except Exception as e:
+        return make_response('Prometheus DB is not running'+str(e), 500)
 
 '''
 <pre>{&apos;alertName&apos;: &apos;sdfsdf&apos;, &apos;alertType&apos;: &apos;&apos;, &apos;alertCondition&apos;: &apos;Greater Than&apos;, &apos;alertRange&apos;: &apos;7&apos;, &apos;description&apos;: &apos;sdfgsee eee&apos;}

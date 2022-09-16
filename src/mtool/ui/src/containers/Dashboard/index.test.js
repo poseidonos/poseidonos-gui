@@ -389,8 +389,9 @@ describe("Dashboard", () => {
       .reply(200, [])
       .onAny().reply(200, {});
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getAllByText } = wrapper;
     jest.advanceTimersByTime(2000);
+    await waitForElement(() => getAllByText("150"))
     const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
     expect(readIopsElement.innerHTML).toBe("150");
   });
@@ -398,7 +399,13 @@ describe("Dashboard", () => {
   it("should display bw value with units according to values", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1/configure`)
+    mock.onGet(`/api/v1/checktelemetry`)
+      .reply(200,
+        {
+          isTelemetryEndpointUp: true
+        }
+      )
+      .onGet(`/api/v1/configure`)
       .reply(200,
         {
           ip: '127.0.0.1',
@@ -414,14 +421,18 @@ describe("Dashboard", () => {
           bw_write: 1073741824,
           iops_read: 154,
           iops_total: 0,
-          iops_write: 154
+          iops_write: 154,
+          latency_read: 154,
+          latency_total: 0,
+          latency_write: 154,
         }
       ).onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [])
       .onAny().reply(200, {});
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     jest.advanceTimersByTime(2000);
+    await waitForElement(() => getByText("1 KB"))
     const readBwElement = await waitForElement(() => getByTestId("read-bandwidth"));
     expect(readBwElement.innerHTML).toBe("1 KB");
     const writeBwElement = await waitForElement(() => getByTestId("write-bandwidth"));

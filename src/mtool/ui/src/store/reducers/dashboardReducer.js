@@ -38,6 +38,8 @@ const initialState = {
     alerts: [],
     selectedArray: 'all',
     ibofs: ['None'],
+    showTelemetryAlert: false,
+    errorMsg: "",
     readIOPS: 0,
     writeIOPS: 0,
     readBW: 0,
@@ -56,6 +58,17 @@ const initialState = {
 
 const dashboardReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.CLOSE_TELEMETRY_ALERT:
+            return {
+                ...state,
+                showTelemetryAlert: false
+            }
+        case actionTypes.SET_SHOW_TELEMETRY_NOT_RUNNING:
+            return {
+                ...state,
+                showTelemetryAlert: action.showTelemetryAlert,
+                errorMsg: action.errorMsg
+            };
         case actionTypes.ENABLE_FETCHING_ALERTS:
             return {
                 ...state,
@@ -63,11 +76,11 @@ const dashboardReducer = (state = initialState, action) => {
             };
         case actionTypes.SELECT_ARRAY: {
             let arrayVolumes = [];
-            if(action.array === "all") {
+            if (action.array === "all") {
                 arrayVolumes = [...state.volumes]
             } else {
                 state.volumes.forEach((volume) => {
-                    if(volume.array === action.array) {
+                    if (volume.array === action.array) {
                         arrayVolumes.push({
                             ...volume
                         });
@@ -80,7 +93,7 @@ const dashboardReducer = (state = initialState, action) => {
                 arrayVolumes
             }
         }
-        case actionTypes.FETCH_VOLUME_INFO:{
+        case actionTypes.FETCH_VOLUME_INFO: {
             const volumes = [];
             const arrayVols = {};
             let arrayVolumes = [];
@@ -91,14 +104,14 @@ const dashboardReducer = (state = initialState, action) => {
                         ...vol,
                         array
                     });
-                    if(state.selectedArray !== "all" && array === state.selectedArray) {
+                    if (state.selectedArray !== "all" && array === state.selectedArray) {
                         arrayVolumes.push({
                             ...volumes[volumes.length - 1]
                         })
                     }
                 });
             });
-            if(state.selectedArray === "all") {
+            if (state.selectedArray === "all") {
                 arrayVolumes = [...volumes];
             }
             return {
