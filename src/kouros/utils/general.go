@@ -30,57 +30,25 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package utils
 
 import (
-	"pnconnector/src/routers/m9k/api/magent/mocks"
-	"pnconnector/src/routers/m9k/model"
-	"reflect"
-	"testing"
+	"encoding/json"
+	"github.com/google/uuid"
+	"kouros/log"
 )
 
-func TestGetNetAddress(t *testing.T) {
-	actualDBName := DBName
-	var tests = []struct {
-		input    model.MAgentParam
-		dbName   string
-		expected interface{}
-		err      error
-	}{
-		{
-			input:  model.MAgentParam{},
-			dbName: "poseidon",
-			expected: NetAddsFields{
-				{
-					Interface: "interface",
-					Address:   "address",
-				},
-			},
-			err: nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonQueryErr",
-			expected: []string{},
-			err:      nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonNoData",
-			expected: []string{},
-			err:      nil,
-		},
-	}
+func PrettyJson(jsonByte interface{}) []byte {
+	prettyJSON, err := json.MarshalIndent(jsonByte, "", "    ")
 
-	IDBClient = mocks.MockInfluxClient{}
-	for _, test := range tests {
-		DBName = test.dbName
-		result, err := GetNetAddress(test.input)
-		output := result.Result.Data
-		if !reflect.DeepEqual(output, test.expected) || err != test.err {
-			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
-		}
+	if err != nil {
+		log.Error(err)
+		return nil
 	}
-	DBName = actualDBName
+	return prettyJSON
+}
 
+func IsValidUUID(u string) bool {
+	_, err := uuid.Parse(u)
+	return err == nil
 }

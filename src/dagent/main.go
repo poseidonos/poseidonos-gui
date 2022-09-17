@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"pnconnector/src/log"
-	"pnconnector/src/setting"
-	"pnconnector/src/util"
+	"kouros/log"
+	"kouros/setting"
+	"kouros/utils"
 	"time"
 )
 
@@ -20,7 +20,7 @@ const TimeOut = 30
 func init() {
 	log.SetDebugMode()
 	setting.LoadConfig()
-	util.LoadEvents()
+	utils.LoadEvents()
 	gin.SetMode(gin.ReleaseMode)
 	//gin.SetMode(gin.DebugMode)
 	gin.DefaultWriter = ioutil.Discard

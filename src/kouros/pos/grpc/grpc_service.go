@@ -36,7 +36,7 @@ func SendSystemInfo(posConn POSGRPCConnection, req *pb.SystemInfoRequest) (*pb.S
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.SystemInfo(ctx, req)
@@ -58,7 +58,7 @@ func SendStopSystem(posConn POSGRPCConnection, req *pb.StopSystemRequest) (*pb.S
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.StopSystem(ctx, req)
@@ -81,7 +81,7 @@ func SendGetSystemProperty(posConn POSGRPCConnection, req *pb.GetSystemPropertyR
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.GetSystemProperty(ctx, req)
@@ -104,7 +104,7 @@ func SendSetSystemProperty(posConn POSGRPCConnection, req *pb.SetSystemPropertyR
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.SetSystemProperty(ctx, req)
@@ -126,7 +126,7 @@ func SendStartTelemetryRpc(posConn POSGRPCConnection, req *pb.StartTelemetryRequ
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.StartTelemetry(ctx, req)
@@ -149,7 +149,7 @@ func SendStopTelemetryRpc(posConn POSGRPCConnection, req *pb.StopTelemetryReques
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.StopTelemetry(ctx, req)
@@ -162,6 +162,31 @@ func SendStopTelemetryRpc(posConn POSGRPCConnection, req *pb.StopTelemetryReques
 	return res, err
 }
 
+func SendSetTelemetryPropertyRpc(posConn POSGRPCConnection, req *pb.SetTelemetryPropertyRequest) (*pb.SetTelemetryPropertyResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.SetTelemetryProperty(ctx, req)
+
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+
+
 func SendResetEventWrrPolicyRpc(posConn POSGRPCConnection, req *pb.ResetEventWrrRequest) (*pb.ResetEventWrrResponse, error) {
 	conn, err := dialToCliServer(posConn)
 	if err != nil {
@@ -172,7 +197,7 @@ func SendResetEventWrrPolicyRpc(posConn POSGRPCConnection, req *pb.ResetEventWrr
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ResetEventWrr(ctx, req)
@@ -194,7 +219,7 @@ func SendResetMbrRpc(posConn POSGRPCConnection, req *pb.ResetMbrRequest) (*pb.Re
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ResetMbr(ctx, req)
@@ -216,7 +241,7 @@ func SendStopRebuildingRpc(posConn POSGRPCConnection, req *pb.StopRebuildingRequ
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.StopRebuilding(ctx, req)
@@ -238,7 +263,7 @@ func SendUpdatEventWrr(posConn POSGRPCConnection, req *pb.UpdateEventWrrRequest)
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.UpdateEventWrr(ctx, req)
@@ -260,7 +285,7 @@ func SendAddSpare(posConn POSGRPCConnection, req *pb.AddSpareRequest) (*pb.AddSp
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.AddSpare(ctx, req)
@@ -282,7 +307,7 @@ func SendRemoveSpare(posConn POSGRPCConnection, req *pb.RemoveSpareRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.RemoveSpare(ctx, req)
@@ -304,7 +329,7 @@ func SendReplaceArrayDevice(posConn POSGRPCConnection, req *pb.ReplaceArrayDevic
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ReplaceArrayDevice(ctx, req)
@@ -326,7 +351,7 @@ func SendCreateArray(posConn POSGRPCConnection, req *pb.CreateArrayRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.CreateArray(ctx, req)
@@ -348,7 +373,7 @@ func SendAutocreateArray(posConn POSGRPCConnection, req *pb.AutocreateArrayReque
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.AutocreateArray(ctx, req)
@@ -370,7 +395,7 @@ func SendDeleteArray(posConn POSGRPCConnection, req *pb.DeleteArrayRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.DeleteArray(ctx, req)
@@ -392,7 +417,7 @@ func SendMountArray(posConn POSGRPCConnection, req *pb.MountArrayRequest) (*pb.M
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.MountArray(ctx, req)
@@ -414,7 +439,7 @@ func SendUnmountArray(posConn POSGRPCConnection, req *pb.UnmountArrayRequest) (*
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.UnmountArray(ctx, req)
@@ -436,10 +461,32 @@ func SendArrayInfo(posConn POSGRPCConnection, req *pb.ArrayInfoRequest) (*pb.Arr
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ArrayInfo(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendRebuildArray(posConn POSGRPCConnection, req *pb.RebuildArrayRequest) (*pb.RebuildArrayResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.RebuildArray(ctx, req)
 	if err != nil {
 		log.Print("error: ", err.Error())
 		return nil, err
@@ -458,7 +505,7 @@ func SendListArray(posConn POSGRPCConnection, req *pb.ListArrayRequest) (*pb.Lis
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ListArray(ctx, req)
@@ -480,7 +527,7 @@ func SendSetLogPreference(posConn POSGRPCConnection, req *pb.SetLogPreferenceReq
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.SetLogPreference(ctx, req)
@@ -502,7 +549,7 @@ func SendSetLogLevel(posConn POSGRPCConnection, req *pb.SetLogLevelRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.SetLogLevel(ctx, req)
@@ -524,7 +571,7 @@ func SendLoggerInfo(posConn POSGRPCConnection, req *pb.LoggerInfoRequest) (*pb.L
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.LoggerInfo(ctx, req)
@@ -534,6 +581,28 @@ func SendLoggerInfo(posConn POSGRPCConnection, req *pb.LoggerInfoRequest) (*pb.L
 	}
 
 	return res, err
+}
+
+func SendCreateVolume(posConn POSGRPCConnection, req *pb.CreateVolumeRequest) (*pb.CreateVolumeResponse, error) {
+    conn, err := dialToCliServer(posConn)
+    if err != nil {
+        log.Print(err)
+        errToReturn := errors.New(dialErrorMsg)
+        return nil, errToReturn
+    }
+    defer conn.Close()
+
+    c := pb.NewPosCliClient(conn)
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+    defer cancel()
+
+    res, err := c.CreateVolume(ctx, req)
+    if err != nil {
+        log.Print("error: ", err.Error())
+        return nil, err
+    }
+
+    return res, err
 }
 
 func SendGetLogLevel(posConn POSGRPCConnection, req *pb.GetLogLevelRequest) (*pb.GetLogLevelResponse, error) {
@@ -546,7 +615,7 @@ func SendGetLogLevel(posConn POSGRPCConnection, req *pb.GetLogLevelRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.GetLogLevel(ctx, req)
@@ -568,7 +637,7 @@ func SendApplyLogFilter(posConn POSGRPCConnection, req *pb.ApplyLogFilterRequest
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ApplyLogFilter(ctx, req)
@@ -590,7 +659,7 @@ func SendCreateDevice(posConn POSGRPCConnection, req *pb.CreateDeviceRequest) (*
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.CreateDevice(ctx, req)
@@ -612,7 +681,7 @@ func SendScanDevice(posConn POSGRPCConnection, req *pb.ScanDeviceRequest) (*pb.S
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ScanDevice(ctx, req)
@@ -634,7 +703,7 @@ func SendListDevice(posConn POSGRPCConnection, req *pb.ListDeviceRequest) (*pb.L
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ListDevice(ctx, req)
@@ -656,7 +725,7 @@ func SendGetSmartLog(posConn POSGRPCConnection, req *pb.GetSmartLogRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.GetSmartLog(ctx, req)
@@ -678,7 +747,7 @@ func SendCreateSubsystem(posConn POSGRPCConnection, req *pb.CreateSubsystemReque
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.CreateSubsystem(ctx, req)
@@ -700,7 +769,7 @@ func SendDeleteSubsystem(posConn POSGRPCConnection, req *pb.DeleteSubsystemReque
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.DeleteSubsystem(ctx, req)
@@ -722,7 +791,7 @@ func SendAddListener(posConn POSGRPCConnection, req *pb.AddListenerRequest) (*pb
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.AddListener(ctx, req)
@@ -744,7 +813,7 @@ func SendListSubsystem(posConn POSGRPCConnection, req *pb.ListSubsystemRequest) 
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.ListSubsystem(ctx, req)
@@ -766,7 +835,7 @@ func SendSubsystemInfo(posConn POSGRPCConnection, req *pb.SubsystemInfoRequest) 
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.SubsystemInfo(ctx, req)
@@ -788,7 +857,7 @@ func SendCreateTransport(posConn POSGRPCConnection, req *pb.CreateTransportReque
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*reqTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
 	defer cancel()
 
 	res, err := c.CreateTransport(ctx, req)
@@ -799,3 +868,27 @@ func SendCreateTransport(posConn POSGRPCConnection, req *pb.CreateTransportReque
 
 	return res, err
 }
+
+func SendVolumeProperty(posConn POSGRPCConnection, req *pb.SetVolumePropertyRequest) (*pb.SetVolumePropertyResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.SetVolumeProperty(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+

@@ -3,7 +3,7 @@ package postgres
 import (
 	sql "database/sql"
 	"fmt"
-	pb "kouros/pos/grpc/api"
+    pb "kouros/api"
 )
 
 const listNodeQuery = `SELECT "name","ip","lastseen" FROM "node"`

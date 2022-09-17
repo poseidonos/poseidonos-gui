@@ -1,7 +1,7 @@
-// Code generated for package util by go-bindata DO NOT EDIT. (@generated)
+// Code generated for package utils by go-bindata DO NOT EDIT. (@generated)
 // sources:
 // ../resources/events.yaml
-package util
+package utils
 
 import (
 	"bytes"
@@ -92,7 +92,7 @@ func ResourcesEventsYaml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "../resources/events.yaml", size: 39644, mode: os.FileMode(493), modTime: time.Unix(1663283320, 0)}
+	info := bindataFileInfo{name: "../resources/events.yaml", size: 39644, mode: os.FileMode(493), modTime: time.Unix(1663258624, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

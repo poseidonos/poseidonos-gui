@@ -30,11 +30,11 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package api
+package api_
 
 import (
-	"kouros/log"
-	"kouros/model"
+	"pnconnector/src/log"
+    "pnconnector/src/routers/m9k/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
     "dagent/src/routers/m9k/api/caller"

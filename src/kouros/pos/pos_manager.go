@@ -43,7 +43,7 @@ type POSManager interface {
 	// SetSystemProperty method creates an array in PoseidonOS
 	// The function takes a command in Protobuf format of SetSystemPropertyRequest_Param as the parameter
 	// A successful Create call returns response in the Protobuf format of SetSystemPropertyResponse
-	SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *SetSystemPropertyResponse, err error)
+	SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *pb.SetSystemPropertyResponse, err error)
 
 	// CreateDevice method creates an array in PoseidonOS
 	// The function takes a command in Protobuf format of CreateDeviceRequest_Param as the parameter
@@ -53,7 +53,7 @@ type POSManager interface {
 	// ScanDevice method creates an array in PoseidonOS
 	// The function takes a command in Protobuf format of ScanDeviceRequest_Param as the parameter
 	// A successful Create call returns response in the Protobuf format of ScanDeviceResponse
-	ScanDevice() (reponse pb.ScanDeviceResponse, err error)
+	ScanDevice() (reponse *pb.ScanDeviceResponse, err error)
 
 	// GetDeviceSmartLog method creates an array in PoseidonOS
 	// The function takes a command in Protobuf format of GetSmartLogRequest_Param as the parameter
@@ -161,4 +161,17 @@ type POSManager interface {
 	// Stop the collection of telemetry data in PoseidonOS
 	// The function takes a protobuf format as parameter and returns response in protobuf format
 	StopTelemetry() (*pb.StopTelemetryResponse, error)
+
+
+    // Create the volume in PoseidonOS Array
+    // The function takes a protobuf format as parameter and returns response in protobuf format
+    CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, error)
+
+    // Set property in telemetry 
+    // The function takes a protobuf format as parameter and returns response in protobuf format
+    SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error)
+
+    RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error)
+
+    VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error)
 }

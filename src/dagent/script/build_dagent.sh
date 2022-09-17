@@ -6,7 +6,10 @@ cd ..
 rm -rf ./vendor/pnconnector
 cp -rf ../pnconnector ./vendor/
 
-cp ../pnconnector/resources/events.yaml ./doc
+rm -rf ./vendor/kouros
+cp -rf ../kouros ./vendor/
+
+cp ../kouros/resources/events.yaml ./doc
 
 export GIT_COMMIT_DAGENT=$(git rev-list -1 HEAD)
 export BUILD_TIME_DAGENT=$(date +%s)

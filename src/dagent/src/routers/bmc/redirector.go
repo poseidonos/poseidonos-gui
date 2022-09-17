@@ -36,7 +36,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httputil"
-	"pnconnector/src/setting"
+	"kouros/setting"
 )
 
 func RedirectRedfish(ctx *gin.Context) {

@@ -30,37 +30,28 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package dagent
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
+    "kouros"
+	"kouros/model"
+    "dagent/src/routers/m9k/api/caller"
+	"kouros/utils"
+    "kouros/setting"
+    pos "kouros/pos"
 )
 
-// LogsField defines the structure in which log data is returned
-type LogsField struct {
-	Time  json.Number
-	Value string
-}
+func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
+    posMngr,_ := kouros.NewPOSManager(pos.GRPC)
+    posMngr.Init(model.RequesterName,setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+	result, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
+	res := model.Response{}
+	if result.Result.Status.Description == "DONE" {
+		utils.ExecCmd("pkill -9 poseidonos", false)
+		res.Result.Status.Code = 0
 
-// LogsFields is an array of LogsField
-type LogsFields []LogsField
-
-// GetRebuildLogs gets the logs from influxdb and returns a JSON response
-func GetRebuildLogs(param interface{}) (model.Response, error) {
-	var res model.Response
-	content, err := ioutil.ReadFile("/var/log/pos/rebuild_log")
-	if err != nil {
-		res.Result.Status, _ = util.GetStatusInfo(0)
-		res.Result.Data = ""
-		return res, nil
+	} else {
+		res.Result.Status.Code = 11021
 	}
-
-	res.Result.Status, _ = util.GetStatusInfo(0)
-	res.Result.Data = fmt.Sprintf("%s", content)
-
 	return res, nil
 }

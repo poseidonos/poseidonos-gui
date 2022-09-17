@@ -2,7 +2,6 @@ package utils
 
 import (
 	"log"
-
 	"github.com/google/uuid"
 )
 

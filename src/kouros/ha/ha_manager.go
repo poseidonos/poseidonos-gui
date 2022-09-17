@@ -11,5 +11,5 @@ const (
 )
 
 type HAManager interface {
-	listNodes() (*pb.ListNodeResponse, error)
+	ListNodes() (*pb.ListNodeResponse, error)
 }
