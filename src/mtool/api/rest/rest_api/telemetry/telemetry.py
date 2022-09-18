@@ -9,6 +9,7 @@ def toJson(data):
 
 grafa_url = "http://localhost:3500"
 ds_name = "poseidon"
+PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{job="pos"})'
 
 def is_prometheusDB_running(prom_url):
     try:
@@ -108,3 +109,17 @@ def set_telemetry_configuration(ip, port):
         return make_response("An Unknown Error occurred" + repr(err), 520)
     except Exception as e:
         return make_response("Error Occured" + repr(e), 500)
+
+def get_agg_value(ip, port, metric):
+    try:
+        PATH = PROM_AGG_QUERY_PATH.format(ip,port,metric)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
+        value = 0
+        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0 and "value" in response["data"]["result"] and len(response["data"]["result"]["value"]) == 2:
+            value += int(response["data"]["result"]["value"][1])
+        return value
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')

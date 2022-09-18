@@ -37,20 +37,17 @@
 from rest.swordfish.handler import swordfish_api
 #from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
-from util.com.time_groups import time_groups
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, get_max_vol_count, mount_volume, unmount_volume
 #from rest.rest_api.logmanager.logmanager import download_logs
 from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
-from rest.rest_api.health_status.health_status import process_response, get_overall_health
 from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_user_cpu_usage, get_user_memory_usage, get_disk_read_iops, get_disk_write_iops, get_disk_read_bw, get_disk_write_bw, get_disk_latency, get_disk_read_latency, \
-    get_agg_volumes_perf, get_disk_write_latency
+from rest.rest_api.perf.system_perf import get_agg_volumes_perf
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -58,7 +55,6 @@ import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
 from util.log.influx_handler import InfluxHandler
 from util.log.ui_logger import log_to_influx
-import time
 from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
@@ -72,7 +68,6 @@ from functools import wraps
 from bson import json_util
 import traceback
 import json
-import threading
 import os
 import eventlet
 import math
@@ -626,170 +621,6 @@ def get_storage_details(current_user):
     return jsonify(val)
 
 
-@app.route('/api/v1.0/usage_user/<time_interval>', methods=['GET'])
-def get_user_cpu_use(time_interval):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_user_cpu_usage(time_interval)
-        return jsonify(res["result"]["data"])
-    except Exception as e:
-        print(e)
-        return jsonify([])
-
-
-def get_read_iops(time_interval, arr_id, vol_id):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_read_iops(time_interval, arr_id, vol_id)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/readiops/arrays', methods=['GET'])
-def get_array_read_iops():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_read_iops(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/readiops/arrays/volumes', methods=['GET'])
-def get_volume_read_iops():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_read_iops(time_interval, arr_ids, vol_ids)
-
-
-def get_write_iops(time_interval, arr_id, vol_id):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_write_iops(time_interval, arr_id, vol_id)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/writeiops/arrays', methods=['GET'])
-def get_array_write_iops():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_write_iops(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/writeiops/arrays/volumes', methods=['GET'])
-def get_volume_write_iops():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_write_iops(time_interval, arr_ids, vol_ids)
-
-
-def get_latency(time_interval, arr_ids, vol_ids):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_latency(time_interval, arr_ids, vol_ids)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/latency/arrays', methods=['GET'])
-def get_array_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_latency(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/latency/arrays/volumes', methods=['GET'])
-def get_volume_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_latency(time_interval, arr_ids, vol_ids)
-
-
-def get_read_latency(time_interval, arr_ids, vol_ids):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_read_latency(time_interval, arr_ids, vol_ids)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-def get_write_latency(time_interval, arr_ids, vol_ids):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_write_latency(time_interval, arr_ids, vol_ids)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/readlatency/arrays', methods=['GET'])
-def get_array_read_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_read_latency(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/readlatency/arrays/volumes', methods=['GET'])
-def get_volume_read_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_read_latency(time_interval, arr_ids, vol_ids)
-
-
-@app.route('/api/v1/writelatency/arrays', methods=['GET'])
-def get_array_write_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_write_latency(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/writelatency/arrays/volumes', methods=['GET'])
-def get_volume_write_latency():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_write_latency(time_interval, arr_ids, vol_ids)
-
-
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
     try:
@@ -800,82 +631,6 @@ def get_current_iops():
         return jsonify(res)
     except Exception as e:
         return make_response('Could not get performance metrics'+str(e), 500)
-'''
-    ### below code can be used if we get array ids from list_arrays API"
-    arrays = dagent.list_arrays()
-    arrays = arrays.json()
-    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
-        arrays = arrays["result"]["data"]["arrayList"]
-        index = []
-        for array in arrays:
-            index.append(array["index"])
-        array_ids = ",".join(map(str,index))
-        res = get_agg_volumes_perf(array_ids)
-        return jsonify(res)
-    else:
-        return jsonify({"res": []})
-'''
-
-
-def get_read_bw(time_interval, arr_id, vol_id):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_read_bw(time_interval, arr_id, vol_id)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/readbw/arrays', methods=['GET'])
-def get_array_read_bw():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_read_bw(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/readbw/arrays/volumes', methods=['GET'])
-def get_volume_read_bw():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_read_bw(time_interval, arr_ids, vol_ids)
-
-
-def get_write_bw(time_interval, arr_id, vol_id):
-    if time_interval not in time_groups.keys():
-        raise InvalidUsage(
-            'Use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d',
-            status_code=404)
-    try:
-        res = get_disk_write_bw(time_interval, arr_id, vol_id)
-        return jsonify({"res": res["result"]["data"]})
-    except Exception as e:
-        print(e)
-        return jsonify({"res": []})
-
-
-@app.route('/api/v1/writebw/arrays', methods=['GET'])
-def get_array_write_bw():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    time_interval = params["time"]
-    return get_write_bw(time_interval, arr_ids, "")
-
-
-@app.route('/api/v1/writebw/arrays/volumes', methods=['GET'])
-def get_volume_write_bw():
-    params = request.args.to_dict()
-    arr_ids = params["arrayids"]
-    vol_ids = params["volumeids"]
-    time_interval = params["time"]
-    return get_write_bw(time_interval, arr_ids, vol_ids)
-
 
 """
 def trigger_email(serverip, serverport, emailid):
@@ -2783,37 +2538,6 @@ def default_error_handler(e):
     print('Websocket error occured:')
     print(e)
 
-
-def getHealthStatus():
-    try:
-        response = {}
-        statuses = []
-        res = get_user_cpu_usage("1m")
-        cpu_result = process_response(
-            res, "cpu", "cpuUsagePercent", "cpu-status", "CPU UTIL")
-        if len(cpu_result) > 0:
-            statuses.append(cpu_result)
-        res = get_user_memory_usage("15m")
-        mem_result = process_response(
-            res,
-            "memory",
-            "memoryUsagePercent",
-            "mem-status",
-            "MEMORY UTIL")
-        if len(mem_result) > 0:
-            statuses.append(mem_result)
-        health_list = []
-        for i in range(0, len(statuses)):
-            health_list.append(statuses[i]["isHealthy"])
-        health_result = get_overall_health(health_list)
-        response["isHealthy"] = health_result
-        response["statuses"] = statuses
-        return response
-    except Exception as e:
-        print("In Health Status Exception: ", e)
-        return make_response('Could not get health status', 500)
-
-
 @app.route('/api/v1.0/cleanup/', methods=['GET'])
 @token_required
 def do_cleanup(current_user):
@@ -2867,32 +2591,11 @@ def compare_result(prev_result, curr_result):
             return False
 
 
-def send_health_status_data():
-    global old_result
-    try:
-        while True:
-            result = getHealthStatus()
-            if compare_result(old_result, result):
-                old_result = result
-                socketIo.emit(
-                    'health_status_response',
-                    result,
-                    namespace='/health_status')
-                #print("!!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>   Data sent <<<<<<<<<<<<<<<<<<<<<<<<<< !!!!", threading.currentThread().ident)
-                time.sleep(2)
-    except Exception as e:
-        print("Exception in health status polling: ", e)
-
-
 if __name__ == '__main__':
     #bmc_thread = threading.Thread(target=activate_bmc_thread)
     # bmc_thread.start()
     #power_thread = threading.Thread(target=activate_power_thread)
     # power_thread.start()
-
-    health_status_thread = threading.Thread(
-        target=send_health_status_data, args=())
-    health_status_thread.start()
 
     socketIo.run(
         app,
