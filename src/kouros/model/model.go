@@ -154,6 +154,10 @@ type CreateTransportRequest_Param struct {
 	NumSharedBuf  int32  `protobuf:"varint,3,opt,name=numSharedBuf,proto3" json:"numSharedBuf,omitempty"`
 }
 
+type RebuildArrayRequest_Param struct {
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
 type MAgentParam struct {
 	ArrayIds  string `form:"arrayids"`
 	VolumeIds string `form:"volumeids"`

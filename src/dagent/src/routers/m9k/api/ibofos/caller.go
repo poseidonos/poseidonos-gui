@@ -47,6 +47,7 @@ import (
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
     req := model.Request{}
     ctx.ShouldBindBodyWith(&req, binding.JSON)
+    fmt.Println("res.param ",req.Param)
     res, err := f(header.XrId(ctx), req.Param, posMngr)
     api.HttpResponse(ctx, res, err)
 }
@@ -54,7 +55,6 @@ func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (m
 func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) {
     req := model.Request{}
     ctx.ShouldBindBodyWith(&req, binding.JSON)
-
     if req.Param != nil {
         param = merge(param, req.Param)
     }
@@ -65,13 +65,10 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSMa
 
 func merge(src interface{}, tar interface{}) interface{} {
 	var m map[string]interface{}
-
 	ja, _ := json.Marshal(src)
 	json.Unmarshal(ja, &m)
-
-	jb, _ := json.Marshal(tar)
+	jb, e1 := json.Marshal(tar)
 	json.Unmarshal(jb, &m)
-
 	jm, _ := json.Marshal(m)
 
 	var param interface{}

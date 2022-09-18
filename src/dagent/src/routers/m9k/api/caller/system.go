@@ -19,6 +19,7 @@ func CallGetSystemProperty(xrId string, param interface{}, posMngr pos.POSManage
     result, err1 := posMngr.GetSystemProperty()
     if err1 != nil {
         log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+        return model.Response{}, ErrConn
     }
     resByte, err2 := protojson.Marshal(result)
     return HandleResponse(resByte, err2)
@@ -29,13 +30,16 @@ func CallSetSystemProperty(xrId string, param interface{}, posMngr pos.POSManage
     pByte, err := json.Marshal(param)
     if err != nil {
         log.Errorf(marshalErrMsg, GetFuncName(1), err)
+        return model.Response{}, .ErrJson
     }
     if err = json.Unmarshal(pByte, &paramStruct); err != nil {
         log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
+        return model.Response{}, .ErrJson
     }
     result, err1 := posMngr.SetSystemProperty(&paramStruct)
     if err1 != nil {
         log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+        return model.Response{}, ErrConn
     }
     resByte, err2 := protojson.Marshal(result)
     return HandleResponse(resByte, err2)
@@ -46,6 +50,8 @@ func UpdateResponse(response model.Response, res *model.Response, opName string,
     info["id"] = opName
     info["code"] = response.Result.Status.Code
     info["description"] = response.Result.Status.Description
+    info["eventName"] = response.Result.Status.EVENTNAME
+    info["cause"] = response.Result.Status.CAUSE
     *errorInfoList = append(*errorInfoList, info)
 }
 
@@ -169,6 +175,7 @@ func CallGetSystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (
     result, err1 := posMngr.GetSystemInfo()
     if err1 != nil {
         log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+        return model.Response{}, ErrConn
     }
     resByte, err2 := protojson.Marshal(result)
     return HandleResponse(resByte, err2)

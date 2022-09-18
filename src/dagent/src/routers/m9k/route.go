@@ -33,32 +33,32 @@
 package m9k
 
 import (
+	"dagent/src/routers/m9k/api/caller"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
-    "dagent/src/routers/m9k/api/ibofos_"
-    "dagent/src/routers/m9k/api/caller"
+	"dagent/src/routers/m9k/api/ibofos_"
 	"dagent/src/routers/m9k/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"kouros/model"
+	"kouros/utils"
 	"net/http"
 	"os"
 	"path/filepath"
-    "kouros/utils"
 	amoduleIBoFOS "pnconnector/src/routers/m9k/api/ibofos"
-	"kouros/model"
-    //"pnconnector/src/routers/m9k/model"
+	//"pnconnector/src/routers/m9k/model"
+	"kouros"
+	pos "kouros/pos"
+	"kouros/setting"
+	"reflect"
 	"strings"
-    "kouros"
-    pos "kouros/pos"
-    "kouros/setting"
-    "reflect"
 )
 
 func Route(router *gin.Engine) {
 	uri := router.Group("/api")
-    posMngr,_ := kouros.NewPOSManager(pos.GRPC)
-    posMngr.Init(model.RequesterName,setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
-    
+	posMngr, _ := kouros.NewPOSManager(pos.GRPC)
+	posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+
 	// Doc Static
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	dir = strings.ReplaceAll(dir, "/bin", "/doc")
@@ -93,19 +93,19 @@ func Route(router *gin.Engine) {
 	// System
 	{
 		iBoFOSPath.POST("/system", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallStartPoseidonOS, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallStartPoseidonOS, posMngr)
 		})
 		iBoFOSPath.DELETE("/system", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallStopPoseidonOS, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallStopPoseidonOS, posMngr)
 		})
 		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallGetSystemInfo, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallGetSystemInfo, posMngr)
 		})
 		iBoFOSPath.POST("/system/property", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallSetSystemProperty, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallSetSystemProperty, posMngr)
 		})
 		iBoFOSPath.GET("/system/property", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallGetSystemProperty, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallGetSystemProperty, posMngr)
 		})
 	}
 
@@ -113,16 +113,16 @@ func Route(router *gin.Engine) {
 	{
 
 		iBoFOSPath.GET("/devices", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallListDevices, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallListDevices, posMngr)
 		})
 		iBoFOSPath.POST("/device", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallCreateDevice, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallCreateDevice, posMngr)
 
 		})
 		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
 			if deviceName == "all" {
-                ibofos.CalliBoFOS(ctx, caller.CallScanDevice, posMngr)
+				ibofos.CalliBoFOS(ctx, caller.CallScanDevice, posMngr)
 			} else {
 				// 404 return
 			}
@@ -130,7 +130,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/devices/:deviceName/smart", func(ctx *gin.Context) {
 			deviceName := ctx.Param("deviceName")
 			param := model.DeviceParam{Name: deviceName}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallGetDeviceSmartLog, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallGetDeviceSmartLog, param, posMngr)
 		})
 	}
 
@@ -140,90 +140,95 @@ func Route(router *gin.Engine) {
 			if validateNumOfDevice(ctx) {
 				param := model.ArrayParam{}
 				param.Name = ctx.Param("arrayName")
-                ibofos.CalliBoFOSwithParam(ctx, caller.CallCreateArray, param, posMngr)
+				ibofos.CalliBoFOSwithParam(ctx, caller.CallCreateArray, param, posMngr)
 
 			}
 		})
 		iBoFOSPath.POST("/autoarray", func(ctx *gin.Context) {
 			if validateNumOfDevice(ctx) {
 				param := model.AutocreateArrayParam{}
-                ibofos.CalliBoFOSwithParam(ctx, caller.CallAutoCreateArray, param, posMngr)
+				ibofos.CalliBoFOSwithParam(ctx, caller.CallAutoCreateArray, param, posMngr)
 			}
 		})
 		iBoFOSPath.GET("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Name = ctx.Param("arrayName")
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallArrayInfo, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallArrayInfo, param, posMngr)
 		})
 		iBoFOSPath.GET("/arrays", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallListArray, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallListArray, param, posMngr)
 		})
 		iBoFOSPath.POST("/array/:arrayName/mount", func(ctx *gin.Context) {
 			arrayName := ctx.Param("arrayName")
 			param := model.ArrayParam{Name: arrayName}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallMountArray, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallMountArray, param, posMngr)
 		})
 		iBoFOSPath.DELETE("/array/:arrayName/mount", func(ctx *gin.Context) {
 			arrayName := ctx.Param("arrayName")
 			param := model.ArrayParam{Name: arrayName}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallUnmountArray, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallUnmountArray, param, posMngr)
 		})
 		iBoFOSPath.GET("/arrays/reset", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallResetMBR, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallResetMBR, param, posMngr)
 		})
 
 		iBoFOSPath.DELETE("/array/:arrayName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Name = ctx.Param("arrayName")
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallDeleteArray, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallDeleteArray, param, posMngr)
 		})
 		iBoFOSPath.POST("/array/:arrayName/devices", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Array = ctx.Param("arrayName")
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallAddDevice, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallAddDevice, param, posMngr)
 		})
-        iBoFOSPath.POST("/array/:arrayName/replace", func(ctx *gin.Context) {
-            param := model.ArrayParam{}
-            param.Array = ctx.Param("arrayName")
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallReplaceArrayDevice, param, posMngr)
-        })
+		iBoFOSPath.POST("/array/:arrayName/replace", func(ctx *gin.Context) {
+			param := model.ArrayParam{}
+			param.Array = ctx.Param("arrayName")
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallReplaceArrayDevice, param, posMngr)
+		})
 		iBoFOSPath.DELETE("/array/:arrayName/devices/:deviceName", func(ctx *gin.Context) {
 			param := model.ArrayParam{}
 			param.Array = ctx.Param("arrayName")
 			param.Spare = []model.Device{{DeviceName: ctx.Param("deviceName")}}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallRemoveDevice, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallRemoveDevice, param, posMngr)
 
+		})
+		iBoFOSPath.POST("/array/:arrayName/rebuild", func(ctx *gin.Context) {
+			param := model.RebuildArrayRequest_Param{}
+			param.Name = ctx.Param("arrayName")
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallRebuildArray, param, posMngr)
 		})
 	}
 	//Subsystem
 	{
 		iBoFOSPath.POST("/transport", func(ctx *gin.Context) {
 			param := model.SubSystemParam{}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallCreateTransport, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallCreateTransport, param, posMngr)
 		})
 
 		iBoFOSPath.POST("/listener", func(ctx *gin.Context) {
 			param := model.SubSystemParam{}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallAddListener, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallAddListener, param, posMngr)
 		})
 		iBoFOSPath.GET("/subsystem", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallListSubsystem, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallListSubsystem, posMngr)
 		})
 		iBoFOSPath.POST("/subsystem", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallCreateSubsystem, posMngr)
+			ibofos.CalliBoFOS(ctx, caller.CallCreateSubsystem, posMngr)
 		})
-        iBoFOSPath.POST("/subsysteminfo", func(ctx *gin.Context) {
-            ibofos.CalliBoFOS(ctx, caller.CallSubsystemInfo, posMngr)
-        })
+		iBoFOSPath.POST("/subsysteminfo", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, caller.CallSubsystemInfo, posMngr)
+		})
 		iBoFOSPath.DELETE("/subsystem", func(ctx *gin.Context) {
 			param := model.SubSystemParam{}
-            ibofos.CalliBoFOSwithParam(ctx, caller.CallDeleteSubsystem, param, posMngr)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallDeleteSubsystem, param, posMngr)
 		})
 
 	}
-    
+
 	// Volume
 	{
 		iBoFOSPath.POST("/volumes", func(ctx *gin.Context) {
@@ -246,10 +251,10 @@ func Route(router *gin.Engine) {
 				}
 				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
 			} else {
-				ibofos.CalliBoFOS(ctx, caller.CallCreateVolume,posMngr)
+				ibofos.CalliBoFOS(ctx, caller.CallCreateVolume, posMngr)
 			}
 		})
-       
+
 		iBoFOSPath.GET("/volumelist/:arrayName", func(ctx *gin.Context) {
 			arrayName := ctx.Param("arrayName")
 			param := model.VolumeParam{Array: arrayName}
@@ -298,6 +303,10 @@ func Route(router *gin.Engine) {
 			param := model.VolumeParam{Name: volumeName}
 			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
 		})
+		iBoFOSPath.POST("/volume/property", func(ctx *gin.Context) {
+			ibofos.CalliBoFOS(ctx, caller.CallVolumeProperty, posMngr)
+		})
+
 	}
 	//QOS
 	iBoFOSPath.POST("/qos", func(ctx *gin.Context) {
@@ -312,43 +321,46 @@ func Route(router *gin.Engine) {
 
 	//Telemetry
 	iBoFOSPath.POST("/telemetry", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallStartTelemetry, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallStartTelemetry, posMngr)
 	})
 	iBoFOSPath.DELETE("/telemetry", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallStopTelemetry, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallStopTelemetry, posMngr)
+	})
+	iBoFOSPath.POST("/telemetry/property", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallSetTelemetryProperty, posMngr)
 	})
 
 	// Logger Commands
 	iBoFOSPath.POST("/logger/filter", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallApplyLogFilter, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallApplyLogFilter, posMngr)
 	})
 	iBoFOSPath.GET("/logger/info", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallLoggerInfo, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallLoggerInfo, posMngr)
 	})
 	iBoFOSPath.POST("/logger/level", func(ctx *gin.Context) {
-        level := ctx.Param("level")
-        param := model.LoggerParam{Level: level}
-        ibofos.CalliBoFOSwithParam(ctx, caller.CallSetLogLevel, param, posMngr)
+		level := ctx.Param("level")
+		param := model.LoggerParam{Level: level}
+		ibofos.CalliBoFOSwithParam(ctx, caller.CallSetLogLevel, param, posMngr)
 	})
 	iBoFOSPath.GET("/logger/level", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallGetLogLevel, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallGetLogLevel, posMngr)
 	})
-    iBoFOSPath.POST("/logger/preference", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallSetLogPreference, posMngr)
-    })
+	iBoFOSPath.POST("/logger/preference", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallSetLogPreference, posMngr)
+	})
 
 	// Developer Commands
 	iBoFOSPath.POST("/devel/event-wrr/reset", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallResetEventWRRPolicy, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallResetEventWRRPolicy, posMngr)
 	})
 	iBoFOSPath.POST("/devel/event-wrr/update", func(ctx *gin.Context) {
-        ibofos.CalliBoFOS(ctx, caller.CallUpdateEventWRRPolicy, posMngr)
+		ibofos.CalliBoFOS(ctx, caller.CallUpdateEventWRRPolicy, posMngr)
 
 	})
 	iBoFOSPath.DELETE("/devel/:arrayName/rebuild", func(ctx *gin.Context) {
 		arrayName := ctx.Param("arrayName")
 		param := model.ArrayParam{Name: arrayName}
-        ibofos.CalliBoFOSwithParam(ctx, caller.CallStopRebuilding, param, posMngr)
+		ibofos.CalliBoFOSwithParam(ctx, caller.CallStopRebuilding, param, posMngr)
 	})
 
 }
@@ -361,14 +373,16 @@ func validateNumOfDevice(ctx *gin.Context) bool {
 	if _, ok := reqMap["data"]; ok {
 		numOfDevice = len(reqMap["data"].([]interface{}))
 	} else {
-        if _, ok := reqMap["numData"]; ok {
-		    numOfDevice = int(reqMap["numData"].(float64))
-        }
+		if _, ok := reqMap["numData"]; ok {
+			numOfDevice = int(reqMap["numData"].(float64))
+		}
 	}
-	if strings.ToLower(reqMap["raidtype"].(string)) == "raid10" && numOfDevice%2 != 0 {
-		res.Result.Status, _ = utils.GetStatusInfo(2517)
-		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
-		return false
+	if _, ok := reqMap["raidtype"]; ok {
+		if reflect.TypeOf(reqMap["raidtype"]).Kind() == reflect.String && strings.ToLower(reqMap["raidtype"].(string)) == "raid10" && numOfDevice%2 != 0 {
+			res.Result.Status, _ = utils.GetStatusInfo(2517)
+			ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+			return false
+		}
 	}
 	return true
 }

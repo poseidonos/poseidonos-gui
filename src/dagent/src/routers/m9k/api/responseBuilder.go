@@ -38,6 +38,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
     "dagent/src/routers/m9k/api/caller"
+    "kouros/utils"
 )
 
 
@@ -86,6 +87,9 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	posDescription := res.Result.Status.Description
 	errorInfo := res.Result.Status.ErrorInfo
 	res.Result.Status.PosDescription = posDescription
+    if code == 11020 {
+        res.Result.Status, _ = utils.GetStatusInfo(code)
+    }
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)
 	} else {
