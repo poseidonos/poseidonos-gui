@@ -35,7 +35,6 @@ import (
 	"pnconnector/src/errors"
 	"pnconnector/src/influxdb"
 	"pnconnector/src/routers/m9k/model"
-    //"kouros/model"
 )
 
 func CreateVolume(xrId string, param interface{}) (model.Request, model.Response, error) {

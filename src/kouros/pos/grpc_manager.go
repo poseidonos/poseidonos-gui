@@ -51,10 +51,10 @@ func (p *POSGRPCManager) StartPoseidonOS() ([]byte, error) {
 		resJSON = `{"command":"STARTPOS","rid":"` + uuid + `"` + `,"result":{"status":{"code":11000,` +
 			`"description":"PoseidonOS has failed to start with error code: 11000"}}}`
 	} else {
-	    resJSON = `{"command":"STARTPOS","rid":"` + uuid + `","result":{"status":{"code":0,` +
+		resJSON = `{"command":"STARTPOS","rid":"` + uuid + `","result":{"status":{"code":0,` +
 			`"description":"Done! PoseidonOS has started!"}}}`
 	}
-    res := []byte(resJSON)
+	res := []byte(resJSON)
 	return res, nil
 }
 
@@ -345,26 +345,25 @@ func (p *POSGRPCManager) StopTelemetry() (*pb.StopTelemetryResponse, error) {
 }
 
 func (p *POSGRPCManager) CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, error) {
-    command := "CREATEVOLUME"
-    req := &pb.CreateVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendCreateVolume(p.connection, req)
+	command := "CREATEVOLUME"
+	req := &pb.CreateVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendCreateVolume(p.connection, req)
 }
 
 func (p *POSGRPCManager) SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error) {
-    command := "SETTELEMETRYPROPERTY"
-    req := &pb.SetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendSetTelemetryPropertyRpc(p.connection, req)
+	command := "SETTELEMETRYPROPERTY"
+	req := &pb.SetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendSetTelemetryPropertyRpc(p.connection, req)
 }
 
 func (p *POSGRPCManager) RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error) {
-    command := "REBUILDARRAY"
-    req := &pb.RebuildArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendRebuildArray(p.connection, req)
+	command := "REBUILDARRAY"
+	req := &pb.RebuildArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendRebuildArray(p.connection, req)
 }
 
 func (p *POSGRPCManager) VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error) {
-    command := "SETVOLUMEPROPERTY"
-    req := &pb.SetVolumePropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-    return grpc.SendVolumeProperty(p.connection, req)
+	command := "SETVOLUMEPROPERTY"
+	req := &pb.SetVolumePropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendVolumeProperty(p.connection, req)
 }
-

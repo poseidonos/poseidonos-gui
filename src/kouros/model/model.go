@@ -155,7 +155,7 @@ type CreateTransportRequest_Param struct {
 }
 
 type RebuildArrayRequest_Param struct {
-    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
 
 type MAgentParam struct {

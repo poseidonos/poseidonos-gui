@@ -33,14 +33,13 @@
 package api
 
 import (
+	"dagent/src/routers/m9k/api/caller"
+	"github.com/gin-gonic/gin"
 	"kouros/log"
 	"kouros/model"
-	"github.com/gin-gonic/gin"
+	"kouros/utils"
 	"net/http"
-    "dagent/src/routers/m9k/api/caller"
-    "kouros/utils"
 )
-
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {
@@ -87,9 +86,9 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	posDescription := res.Result.Status.Description
 	errorInfo := res.Result.Status.ErrorInfo
 	res.Result.Status.PosDescription = posDescription
-    if code == 11020 {
-        res.Result.Status, _ = utils.GetStatusInfo(code)
-    }
+	if code == 11020 {
+		res.Result.Status, _ = utils.GetStatusInfo(code)
+	}
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)
 	} else {

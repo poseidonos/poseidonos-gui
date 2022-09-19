@@ -162,16 +162,15 @@ type POSManager interface {
 	// The function takes a protobuf format as parameter and returns response in protobuf format
 	StopTelemetry() (*pb.StopTelemetryResponse, error)
 
+	// Create the volume in PoseidonOS Array
+	// The function takes a protobuf format as parameter and returns response in protobuf format
+	CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, error)
 
-    // Create the volume in PoseidonOS Array
-    // The function takes a protobuf format as parameter and returns response in protobuf format
-    CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, error)
+	// Set property in telemetry
+	// The function takes a protobuf format as parameter and returns response in protobuf format
+	SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error)
 
-    // Set property in telemetry 
-    // The function takes a protobuf format as parameter and returns response in protobuf format
-    SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error)
+	RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error)
 
-    RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error)
-
-    VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error)
+	VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error)
 }

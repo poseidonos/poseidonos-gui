@@ -35,9 +35,9 @@ package setting
 import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"kouros/log"
 	"os"
 	"path/filepath"
-	"kouros/log"
 )
 
 var Config ConfigScheme
@@ -56,7 +56,7 @@ type Server struct {
 type HostConf struct {
 	IP                 string `yaml:"ip"`
 	Port               string `yaml:"port"`
-    GrpcPort           string `yaml:"grpc_port"`
+	GrpcPort           string `yaml:"grpc_port"`
 	TargetAddress      string `yaml:"target_address"`
 	TransportType      string `yaml:"transport_type"`
 	BufCacheSize       int    `yaml:"buf_cache_size"`
@@ -74,7 +74,7 @@ type HostConf struct {
 	BlockSize          int    `yaml:"block_size"`
 	DevType            string `yaml:"dev_type"`
 	Numa               int    `yaml:"numa"`
-    AnaReporting       bool   `yaml:"ana_reporting"`
+	AnaReporting       bool   `yaml:"ana_reporting"`
 }
 
 func init() {

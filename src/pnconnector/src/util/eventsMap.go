@@ -37,7 +37,7 @@ import (
 	"pnconnector/src/errors"
 	"pnconnector/src/log"
 	//"kouros/model"
-    "pnconnector/src/routers/m9k/model"
+	"pnconnector/src/routers/m9k/model"
 )
 
 var eventsmap PosEvents

@@ -185,8 +185,6 @@ func SendSetTelemetryPropertyRpc(posConn POSGRPCConnection, req *pb.SetTelemetry
 	return res, err
 }
 
-
-
 func SendResetEventWrrPolicyRpc(posConn POSGRPCConnection, req *pb.ResetEventWrrRequest) (*pb.ResetEventWrrResponse, error) {
 	conn, err := dialToCliServer(posConn)
 	if err != nil {
@@ -584,25 +582,25 @@ func SendLoggerInfo(posConn POSGRPCConnection, req *pb.LoggerInfoRequest) (*pb.L
 }
 
 func SendCreateVolume(posConn POSGRPCConnection, req *pb.CreateVolumeRequest) (*pb.CreateVolumeResponse, error) {
-    conn, err := dialToCliServer(posConn)
-    if err != nil {
-        log.Print(err)
-        errToReturn := errors.New(dialErrorMsg)
-        return nil, errToReturn
-    }
-    defer conn.Close()
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
 
-    c := pb.NewPosCliClient(conn)
-    ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
-    defer cancel()
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
 
-    res, err := c.CreateVolume(ctx, req)
-    if err != nil {
-        log.Print("error: ", err.Error())
-        return nil, err
-    }
+	res, err := c.CreateVolume(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
 
-    return res, err
+	return res, err
 }
 
 func SendGetLogLevel(posConn POSGRPCConnection, req *pb.GetLogLevelRequest) (*pb.GetLogLevelResponse, error) {
@@ -890,5 +888,3 @@ func SendVolumeProperty(posConn POSGRPCConnection, req *pb.SetVolumePropertyRequ
 
 	return res, err
 }
-
-

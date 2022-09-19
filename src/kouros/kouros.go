@@ -18,6 +18,7 @@ func NewPOSManager(managerType pos.POSInterface) (pos.POSManager, error) {
 		return nil, errors.New("Invalid POS Manager type")
 	}
 }
+
 /*
 // NewPOSManager creates a new manager object based on the type provided
 // Currently only type "postgres" is supported

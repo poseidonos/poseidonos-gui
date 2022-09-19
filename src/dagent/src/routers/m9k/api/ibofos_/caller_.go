@@ -40,27 +40,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"pnconnector/src/log"
-    "pnconnector/src/routers/m9k/model"
+	"pnconnector/src/routers/m9k/model"
 )
 
-
 func CalliBoFOS_(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
-    req := model.Request{}
-    ctx.ShouldBindBodyWith(&req, binding.JSON)
-    _, res, err := f(header.XrId(ctx), req.Param)
-    api_.HttpResponse(ctx, res, err)
+	req := model.Request{}
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	_, res, err := f(header.XrId(ctx), req.Param)
+	api_.HttpResponse(ctx, res, err)
 }
 
 func CalliBoFOSwithParam_(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
-    req := model.Request{}
-    ctx.ShouldBindBodyWith(&req, binding.JSON)
+	req := model.Request{}
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
 
-    if req.Param != nil {
-        param = merge(param, req.Param)
-    }
+	if req.Param != nil {
+		param = merge(param, req.Param)
+	}
 
-    _, res, err := f(header.XrId(ctx), param)
-    api_.HttpResponse(ctx, res, err)
+	_, res, err := f(header.XrId(ctx), param)
+	api_.HttpResponse(ctx, res, err)
 }
 
 func merge(src interface{}, tar interface{}) interface{} {

@@ -33,13 +33,12 @@
 package api_
 
 import (
-	"pnconnector/src/log"
-    "pnconnector/src/routers/m9k/model"
+	"dagent/src/routers/m9k/api/caller"
 	"github.com/gin-gonic/gin"
 	"net/http"
-    "dagent/src/routers/m9k/api/caller"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 )
-
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {

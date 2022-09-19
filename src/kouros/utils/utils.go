@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"log"
 	"github.com/google/uuid"
+	"log"
 )
 
 func GenerateUUID() string {

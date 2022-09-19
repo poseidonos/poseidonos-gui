@@ -33,17 +33,17 @@
 package dagent
 
 import (
-    "kouros"
+	"dagent/src/routers/m9k/api/caller"
+	"kouros"
 	"kouros/model"
-    "dagent/src/routers/m9k/api/caller"
+	pos "kouros/pos"
+	"kouros/setting"
 	"kouros/utils"
-    "kouros/setting"
-    pos "kouros/pos"
 )
 
 func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
-    posMngr,_ := kouros.NewPOSManager(pos.GRPC)
-    posMngr.Init(model.RequesterName,setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+	posMngr, _ := kouros.NewPOSManager(pos.GRPC)
+	posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
 	result, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
 	res := model.Response{}
 	if result.Result.Status.Description == "DONE" {

@@ -32,16 +32,15 @@
 package dagent
 
 import (
+	"dagent/src/routers/m9k/api/caller"
 	"errors"
+	"kouros"
 	"kouros/model"
+	pos "kouros/pos"
+	"kouros/setting"
 	"kouros/utils"
 	"syscall"
 	"time"
-    "dagent/src/routers/m9k/api/caller"
-    "kouros"
-    "kouros/setting"
-    pos "kouros/pos"
-    "fmt"
 )
 
 var GitCommit string
@@ -71,10 +70,9 @@ func HeartBeat(xrId string, param interface{}) (model.Response, error) {
 func updateSuccessTime(xrId string) int64 {
 	if LastSuccessTime+MAXAGE < time.Now().UTC().Unix() {
 		param := model.DeviceParam{}
-        posMngr,_ := kouros.NewPOSManager(pos.GRPC)
-        posMngr.Init(model.RequesterName,setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
-		res, _ := caller.CallGetSystemInfo(xrId, param,posMngr)
-        fmt.Println("caller.CallGetSystemInfo ",res," time ",res.LastSuccessTime)
+		posMngr, _ := kouros.NewPOSManager(pos.GRPC)
+		posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+		res, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
 		return res.LastSuccessTime
 	} else {
 		return LastSuccessTime

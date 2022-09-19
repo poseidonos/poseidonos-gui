@@ -34,8 +34,8 @@ package utils
 
 import (
 	"fmt"
-	"os/exec"
 	"kouros/log"
+	"os/exec"
 )
 
 func ExecCmd(cmd string, background bool) error {
