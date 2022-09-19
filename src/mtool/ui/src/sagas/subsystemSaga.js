@@ -108,9 +108,9 @@ export function* addListener(action) {
     type: "alert",
     title: "Add Listener",
   };
-  if(!(IP_REGEX.test(action.payload.ip))) {
+  if (!(IP_REGEX.test(action.payload.ip))) {
     yield put(
-        actionCreators.showSubsystemAlert({
+      actionCreators.showSubsystemAlert({
         msg: "Please provide a valid IP address",
         type: "alert",
         title: "Invalid IP",
@@ -121,7 +121,10 @@ export function* addListener(action) {
   try {
     yield put(actionCreators.startLoader("Adding Listener"));
     const response = yield call([axios, axios.post], "/api/v1/listener/", {
-      ...action.payload
+      name: action.payload.subnqn,
+      transport_type: action.payload.type,
+      target_address: action.payload.ip,
+      transport_service_id: action.payload.port
     }, {
       headers: {
         "x-access-token": localStorage.getItem("token"),
@@ -181,7 +184,8 @@ export function* createSubsystem(action) {
     yield put(actionCreators.startLoader("Creating Subsystems"));
     const response = yield call([axios, axios.post], "/api/v1/subsystem/", {
       ...action.payload,
-      max_namespaces: Number(action.payload.max_namespaces)
+      allow_any_host: action.payload.allowAnyHost,
+      max_namespaces: Number(action.payload.maxNamespaces)
     }, {
       headers: {
         "x-access-token": localStorage.getItem("token"),

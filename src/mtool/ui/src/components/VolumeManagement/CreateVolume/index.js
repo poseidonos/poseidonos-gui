@@ -126,7 +126,7 @@ const styles = (theme) => ({
 });
 
 const getSubsystem = (subsystem, subsystems) => {
-  const result = subsystems.find((s) => s.nqn === subsystem);
+  const result = subsystems.find((s) => s.subnqn === subsystem);
   if (result) return result;
   return {
     listen_addresses: [],
@@ -196,7 +196,7 @@ class CreateVolume extends Component {
           alertType = "alert";
           errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
             pass} with below errors`;
-          if(errorResponses && errorResponses.map) {
+          if (errorResponses && errorResponses.map) {
             errorResponses.map(err => {
               errorCodeDescription += `${err.description}\n\n`;
               return err;
@@ -255,7 +255,7 @@ class CreateVolume extends Component {
       for (let i = 0; i < this.props.subsystems.length; i += 1) {
         if (this.props.subsystems[i].subtype === "NVMe") {
 
-          const localSubsystem = this.props.subsystems[i].nqn
+          const localSubsystem = this.props.subsystems[i].subnqn
 
           if (this.props.subsystems[i].listen_addresses && this.props.subsystems[i].listen_addresses.length) {
             this.props.Update_Subsystem({
@@ -608,8 +608,8 @@ class CreateVolume extends Component {
                 >
                   {this.props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
                     (
-                      <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
-                        {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+                      <MenuItem value={subsystem.subnqn} key={subsystem.subnqn}>
+                        {subsystem.subnqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
                       </MenuItem>
                     ) : null)}
                 </Select>
@@ -663,7 +663,7 @@ class CreateVolume extends Component {
                 title="Please wait... Volume creation is in progress. It may take from a few seconds to few minutes"
                 placement="right-start"
                 open={this.props.createVolumeButton}
-                classes={{tooltip: classes.largeFontTooltip}}
+                classes={{ tooltip: classes.largeFontTooltip }}
               >
                 <Button
                   onClick={this.createVolumeInParent}
@@ -676,13 +676,14 @@ class CreateVolume extends Component {
                 </Button>
               </Tooltip>
               <Button
-                  onClick={() => this.props.Toggle_Advance_Create_Volume_Popup(true)}
-                  variant="outlined"
-                  color="secondary"
-                  data-testid="advanceoptions-btn"
-                  disabled={this.props.createVolumeButton}
+                onClick={() => this.props.Toggle_Advance_Create_Volume_Popup(true)}
+                variant="outlined"
+                color="secondary"
+                data-testid="advanceoptions-btn"
+                className={classes.button}
+                disabled={this.props.createVolumeButton}
               >
-                  Advance Options
+                Advance Options
               </Button>
             </Grid>
           </form>

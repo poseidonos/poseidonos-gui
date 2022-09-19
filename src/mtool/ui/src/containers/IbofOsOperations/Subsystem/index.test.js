@@ -108,65 +108,65 @@ describe("SubsystemOperations", () => {
             },
             "data": {
                 "subsystemlist": [{
-                    "allow_any_host": 1,
+                    "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [],
-                    "nqn": "nqn.2014-08.org.nvmexpress.discovery",
+                    "subnqn": "nqn.2014-08.org.nvmexpress.discovery",
                     "subtype": "Discovery"
                 }, {
-                    "allow_any_host": 1,
+                    "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [{
-                        "address_family": "IPv4",
-                        "target_address": "107.108.221.146",
-                        "transport_service_id": "1158",
-                        "transport_type": "TCP"
+                        "addressFamily": "IPv4",
+                        "targetAddress": "127.0.0.1",
+                        "transportServiceId": "1158",
+                        "transportType": "TCP"
                     }],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [{
-                        "bdev_name": "bdev_0_POSArray",
+                        "bdevName": "bdev_0_POSArray",
                         "nsid": 1,
                         "uuid": "bcccc634-71d9-46f2-8035-89621135b670"
                     }],
-                    "nqn": "nqn.2019-04.pos:subsystem1",
-                    "serial_number": "POS0000000003",
+                    "subnqn": "nqn.2019-04.pos:subsystem1",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe",
                     "array": "POSArray"
                 }, {
-                    "allow_any_host": 1,
+                    "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [{
-                        "address_family": "IPv4",
-                        "target_address": "107.108.221.146",
-                        "transport_service_id": "1158",
-                        "transport_type": "TCP"
+                        "addressFamily": "IPv4",
+                        "targetAddress": "127.0.0.1",
+                        "transportServiceId": "1158",
+                        "transportType": "TCP"
                     }],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [],
-                    "nqn": "nqn.2019-04.pos:subsystem2",
-                    "serial_number": "POS0000000003",
+                    "subnqn": "nqn.2019-04.pos:subsystem2",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }, {
-                    "allow_any_host": 1,
+                    "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [],
-                    "nqn": "nqn.2019-04.pos:subsystem10",
-                    "serial_number": "POS0000000003",
+                    "subnqn": "nqn.2019-04.pos:subsystem10",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }, {
-                    "allow_any_host": 1,
+                    "allowAnyHost": 1,
                     "hosts": [],
                     "listen_addresses": [],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEABXTENSION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEABXTENSION",
                     "namespaces": [],
-                    "nqn": "nqn.2019-04.pos:subsystem_1",
-                    "serial_number": "POS0000100003",
+                    "subnqn": "nqn.2019-04.pos:subsystem_1",
+                    "serialNumber": "POS0000100003",
                     "subtype": "NVMe"
                 }]
 
@@ -257,7 +257,7 @@ describe("SubsystemOperations", () => {
             const { findAllByTitle, getByText } = wrapper;
             const detailBtns = await findAllByTitle("Show Subsystem Details");
             fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("107.108.221.146");
+            const ipAddress = getByText("127.0.0.1");
             expect(ipAddress).toBeDefined();
         });
 
@@ -287,7 +287,7 @@ describe("SubsystemOperations", () => {
             const { findAllByTitle, getByTestId, getByTitle, getByText } = wrapper;
             const detailBtns = await findAllByTitle("Show Subsystem Details");
             fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("107.108.221.146");
+            const ipAddress = getByText("127.0.0.1");
             expect(ipAddress).toBeDefined();
             const addListenerBtn = getByTitle("Add a Listener");
             fireEvent.click(addListenerBtn);
@@ -302,7 +302,7 @@ describe("SubsystemOperations", () => {
             expect(await waitForElement(() => getByText(/Listener Added Successfully/))).toBeDefined();
         });
 
-        it("should delete a subsystem",
+    it("should delete a subsystem",
         async () => {
             const mock = new MockAdapter(axios);
             mock.onGet("/api/v1/subsystem/")

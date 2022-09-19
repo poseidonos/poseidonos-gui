@@ -329,13 +329,13 @@ describe("<Storage Management />", () => {
         "subsystemlist":
           [
             {
-              "allow_any_host": 1,
+              "allowAnyHost": 1,
               "hosts": [], "listen_addresses": [],
-              "nqn": "nqn.2014-08.org.nvmexpress.discovery",
+              "subnqn": "nqn.2014-08.org.nvmexpress.discovery",
               "subtype": "Discovery"
             },
             {
-              "allow_any_host": 1,
+              "allowAnyHost": 1,
               "hosts": [], "listen_addresses":
                 [{
                   "address_family": "IPv4",
@@ -343,26 +343,26 @@ describe("<Storage Management />", () => {
                   "transport_service_id": "1158",
                   "transport_type": "TCP"
                 }],
-              "max_namespaces": 256,
-              "model_number": "IBOF_VOLUME_EEEXTENSION",
+              "maxNamespaces": 256,
+              "modelNumber": "IBOF_VOLUME_EEEXTENSION",
               "namespaces":
                 [
-                  { "bdev_name": "bdev_0_POSArray", "nsid": 1, "uuid": "0f902600-ae47-4f9c-a278-c69b3fc45350" },
-                  { "bdev_name": "bdev_1_POSArray", "nsid": 2, "uuid": "3567d445-1a5e-4f69-bd24-74345e862726" },
-                  { "bdev_name": "bdev_2_POSArray", "nsid": 3, "uuid": "5169639e-ea02-4709-87df-9620c3e064dc" }],
-              "nqn": "nqn.2019-04.pos:subsystem1", "serial_number": "POS0000000003", "subtype": "NVMe", "array": "POSArray"
+                  { "bdevName": "bdev_0_POSArray", "nsid": 1, "uuid": "0f902600-ae47-4f9c-a278-c69b3fc45350" },
+                  { "bdevName": "bdev_1_POSArray", "nsid": 2, "uuid": "3567d445-1a5e-4f69-bd24-74345e862726" },
+                  { "bdevName": "bdev_2_POSArray", "nsid": 3, "uuid": "5169639e-ea02-4709-87df-9620c3e064dc" }],
+              "subnqn": "nqn.2019-04.pos:subsystem1", "serialNumber": "POS0000000003", "subtype": "NVMe", "array": "POSArray"
             },
             {
-              "allow_any_host": 1,
+              "allowAnyHost": 1,
               "hosts": [], "listen_addresses":
                 [{
                   "address_family": "IPv4",
                   "target_address": "localhost",
                   "transport_service_id": "1158", "transport_type": "TCP"
                 }],
-              "max_namespaces": 256, "model_number": "IBOF_VOLUME_EEEXTENSION",
+              "maxNamespaces": 256, "modelNumber": "IBOF_VOLUME_EEEXTENSION",
               "namespaces": [],
-              "nqn": "nqn.2019-04.pos:subsystem2", "serial_number": "POS0000000003", "subtype": "NVMe"
+              "subnqn": "nqn.2019-04.pos:subsystem2", "serialNumber": "POS0000000003", "subtype": "NVMe"
             }]
       }
     }, "info": { "version": "v0.11.0-rc4" }
@@ -418,44 +418,7 @@ describe("<Storage Management />", () => {
       "version": "v0.11.0-rc4"
     }
   }
-  /*
-    it("should render array created view", () => {
-      mock
-        .onGet(/api\/v1.0\/get_devices\//)
-        .reply(200, {
-          devices,
-          metadevices,
-        })
-        .onGet(/api\/v1\/get_arrays\//)
-        .reply(200, [array])
-        .onGet(/api\/v1.0\/get_volumes\//)
-        .reply(200, [])
-        .onGet(/api\/v1.0\/max_volume_count\//)
-        .reply(200, 256)
-        .onPost(/api\/v1.0\/delete_array\//)
-        .reply(200, {})
-        .onGet(/api\/v1\/get_array_config\//)
-        .reply(200, config)
-        .onGet(/api\/v1\/array\/POSArray\/info/)
-        .reply(200, posInfo)
-        .onGet(/api\/v1\/subsystem/)
-        .reply(200, {
-          result: {
-            data: {
-          subsystemlist: [{
-              nqn: "subsystem1",
-            subtype: "NVMe"
-          }],
-    }}})
-          .onAny()
-          .reply(200, []);
-        renderComponent();
-        const { getByTestId, asFragment } = wrapper;
-        const resolvedThing = waitForElement(() => getByTestId("arrayshow"));
-        expect(asFragment()).toMatchSnapshot();
-        expect(resolvedThing).toBeDefined();
-      });
-    */
+
   it("should render devices", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -1263,7 +1226,7 @@ describe("<Storage Management />", () => {
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes/)
       .reply(200, { "@odata.type": "#VolumeCollection_1_0_0.VolumeCollection", "Name": "Volumes", "Members@odata.count": 1, "@odata.id": "/redfish/v1/StorageServices/1/Volumes", "@odata.context": "/redfish/v1/$metadata#VolumeCollection.VolumeCollection", "Members": [{ "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" }], "Permissions": [{ "Read": "True" }, { "Write": "True" }] })
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/0/)
-      .reply(200, { "@odata.context": "redfish/v1/$metadata#Volume.Volume", "@odata.type": "#Volume_1_0_0.Volume", "Name": "vol", "Id": "0", "Description": "", "Status": { "Health": "OK", "Oem": { "VolumeStatus": "Mounted" } }, "AccessCapabilities": ["Read", "Write", "Append", "Streaming"], "BlockSizeBytes": 512, "Capacity": { "Data": { "ConsumedBytes": 0.0, "AllocatedBytes": 20322711502848.0 } }, "Oem": { "MaxBandwidth": 0, "MaxIOPS": 0, "MinIOPS": 0, "MinBandwidth": 0, "IP": "107.108.221.146", "Port": "NA", "NQN": "nqn.2019-04.pos:subsystem1", "UUID": "6cdb989a-f948-407a-a728-f80a86061ca3" }, "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" })
+      .reply(200, { "@odata.context": "redfish/v1/$metadata#Volume.Volume", "@odata.type": "#Volume_1_0_0.Volume", "Name": "vol", "Id": "0", "Description": "", "Status": { "Health": "OK", "Oem": { "VolumeStatus": "Mounted" } }, "AccessCapabilities": ["Read", "Write", "Append", "Streaming"], "BlockSizeBytes": 512, "Capacity": { "Data": { "ConsumedBytes": 0.0, "AllocatedBytes": 20322711502848.0 } }, "Oem": { "MaxBandwidth": 0, "MaxIOPS": 0, "MinIOPS": 0, "MinBandwidth": 0, "IP": "127.0.0.1", "Port": "NA", "NQN": "nqn.2019-04.pos:subsystem1", "UUID": "6cdb989a-f948-407a-a728-f80a86061ca3" }, "@odata.id": "/redfish/v1/StorageServices/POSArray/Volumes/0" })
       .onPost(/api\/v1.0\/delete_array\/*/)
       .reply(200, {})
       .onPost(/api\/v1.0\/save-volume\/*/)
@@ -1393,7 +1356,7 @@ describe("<Storage Management />", () => {
     const targetAddress = await waitForElement(() =>
       getByTestId("adv-create-target-address")
     );
-    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+    fireEvent.change(targetAddress, { target: { value: "127.0.0.1" } });
 
     const transportServiceId = await waitForElement(() =>
       getByTestId("adv-create-transport-service-id")
@@ -1741,7 +1704,7 @@ describe("<Storage Management />", () => {
       await waitForElement(() => getByText("Please Enter Target Address"))
     ).toBeDefined();
     fireEvent.click(await waitForElement(() => getByText("OK")));
-    fireEvent.change(targetAddress, { target: { value: "107.108.221.146" } });
+    fireEvent.change(targetAddress, { target: { value: "127.0.0.1" } });
 
     const transportServiceId = await waitForElement(() =>
       getByTestId("adv-create-transport-service-id")
@@ -1962,10 +1925,10 @@ describe("<Storage Management />", () => {
         result: {
           data: {
             subsystemlist: [{
-              nqn: "subsystem1",
+              subnqn: "subsystem1",
               subtype: "NVMe"
             }, {
-              nqn: "subsystem2",
+              subnqn: "subsystem2",
               subtype: "NVMe"
             }],
           },
@@ -2091,10 +2054,10 @@ describe("<Storage Management />", () => {
         result: {
           data: {
             subsystemlist: [{
-              nqn: "subsystem1",
+              subnqn: "subsystem1",
               subtype: "NVMe"
             }, {
-              nqn: "subsystem2",
+              subnqn: "subsystem2",
               subtype: "NVMe"
             }],
           }
