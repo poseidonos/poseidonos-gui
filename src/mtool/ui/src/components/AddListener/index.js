@@ -61,7 +61,7 @@ const defaultListener = {
 const AddListener = (props) => {
     const [listener, setListener] = useState({
         ...defaultListener,
-        nqn: props.nqn
+        subnqn: props.subnqn
     });
 
     const onChange = (event) => {
@@ -80,9 +80,9 @@ const AddListener = (props) => {
                     className={classes.formItem}
                 >
                     <TextField
-                        label="NQN"
-                        value={props.nqn}
-                        name="nqn"
+                        label="SUBNQN"
+                        value={props.subnqn}
+                        name="subnqn"
                         disabled
                     />
                 </FormControl>

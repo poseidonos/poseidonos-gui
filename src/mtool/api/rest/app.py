@@ -1279,7 +1279,7 @@ def list_subsystem(current_user):
                 ]
                 if len(namespaces) > 0:
                     arrayname = "_".join(
-                        namespaces[0]["bdev_name"].split("_")[2:])
+                        namespaces[0]["bdevName"].split("_")[2:])
                     subsystem["array"] = arrayname
         return toJson(resp)
     except Exception as e:
@@ -1899,7 +1899,9 @@ def saveVolume():
         subsystem = body['subsystem']
         suffix = body['suffix']
         max_available_size = body['max_available_size']
-        iswalvol = body['iswalvol']
+        iswalvol = False
+        if 'iswalvol' in body:
+            iswalvol = body['iswalvol']
     except Exception as e:
         print("Exception Occured in Save Volume")
         print(e)

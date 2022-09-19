@@ -53,10 +53,10 @@ const styles = (theme) => ({
 
 const defaultSubsystem = {
     "name": "",
-    "allow_any_host": false,
+    "allowAnyHost": false,
     "mn": "",
     "sn": "",
-    "max_namespaces": 256
+    "maxNamespaces": 256
 };
 
 const CreateSubsystem = (props) => {
@@ -130,8 +130,8 @@ const CreateSubsystem = (props) => {
             >
                 <TextField
                     label="Maximum Namespaces"
-                    value={subsystem.max_namespaces}
-                    name="max_namespaces"
+                    value={subsystem.maxNamespaces}
+                    name="maxNamespaces"
                     type="number"
                     inputProps={{
                         "data-testid": "subsystemMaxNS"
@@ -141,14 +141,13 @@ const CreateSubsystem = (props) => {
             </FormControl>
             <FormControl
                 className={classes.formItem}
-
             >
                 <FormControlLabel
                     label="Allow Any Host?"
                     control={(
                         <Checkbox
-                            name="allow_any_host"
-                            value={subsystem.allow_any_host}
+                            name="allowAnyHost"
+                            value={subsystem.allowAnyHost}
                             inputProps={{
                                 id: "allowAnyHost",
                                 "data-testid": "allowAnyHost"
