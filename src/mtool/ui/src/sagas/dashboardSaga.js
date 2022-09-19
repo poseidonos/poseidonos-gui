@@ -35,7 +35,8 @@ import { call, takeEvery, put, cancelled } from "redux-saga/effects";
 import { format as d3Format } from "d3-format";
 import * as actionTypes from "../store/actions/actionTypes";
 import * as actionCreators from "../store/actions/exportActionCreators";
-import { formatNanoSeconds } from "../utils/format-bytes";
+import formatBytes, { formatNanoSeconds } from "../utils/format-bytes";
+
 
 export function* fetchVolumeInfo() {
   try {
@@ -91,11 +92,27 @@ export function* fetchAlertsInfo() {
 }
 */
 
+
+export function* fetchCheckTelemetry() {
+  try {
+    const response = yield call([axios, axios.get], '/api/v1/checktelemetry');
+    if (response.status === 200 && response.data) {
+      if (response.data.isTelemetryEndpointUp === true)
+        yield put(actionCreators.setShowTelemetryNotRunning(false, ""));
+      if (response.data.isTelemetryEndpointUp === false)
+        yield put(actionCreators.setShowTelemetryNotRunning(true, "Telemetry is not running, please restart telemetry"));
+    } else
+      yield put(actionCreators.setShowTelemetryNotRunning(true, "PrometheusDB might not be running. Please Check"));
+  } catch (error) {
+    yield put(actionCreators.setShowTelemetryNotRunning(true, "Please check and configure Telemetry Url"));
+  }
+}
+
 function* fetchPerformanceInfo() {
   try {
     const response = yield call(
       [axios, axios.get],
-      `/api/v1/perf/all?ts=${Date.now()}`,
+      `/api/v1/perf/all`,
       {
         headers: {
           Accept: "application/json",
@@ -113,9 +130,10 @@ function* fetchPerformanceInfo() {
         actionCreators.fetchPerformance(
           result.iops_read ? d3Format(".2s")(result.iops_read) : 0,
           result.iops_write ? d3Format(".2s")(result.iops_write) : 0,
-          Math.round((result.bw_read) * 100) / 100,
-          Math.round((result.bw_write) * 100) / 100,
-          formatNanoSeconds(Math.round(result.latency))
+          result.bw_read ? formatBytes(Math.round(result.bw_read), 0) : 0,
+          result.bw_write ? formatBytes(Math.round(result.bw_write), 0) : 0,
+          result.latency_read ? formatNanoSeconds(Math.round(result.latency_read)) : 0,
+          result.latency_write ? formatNanoSeconds(Math.round(result.latency_write)) : 0
         )
       );
     }
@@ -151,6 +169,7 @@ function* fetchIpAndMacInfo() {
 }
 
 export function* dashboardWatcher() {
+  yield takeEvery(actionTypes.SAGA_FETCH_CHECK_TELEMETRY, fetchCheckTelemetry);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
   // yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
   yield takeEvery(

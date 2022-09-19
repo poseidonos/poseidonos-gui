@@ -49,6 +49,7 @@ import rootSaga from "../../sagas/indexSaga"
 import storageReducer from "../../store/reducers/storageReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import dashboardReducer from "../../store/reducers/dashboardReducer";
+import authenticationReducer from "../../store/reducers/authenticationReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import i18n from "../../i18n";
@@ -57,21 +58,21 @@ jest.unmock('axios');
 
 let EVENTS = {};
 function emit(event, ...args) {
-    EVENTS[event].forEach(func => func(...args));
+  EVENTS[event].forEach(func => func(...args));
 }
 
 const socket = {
   on(event, func) {
-      if(EVENTS[event]) {
-          return EVENTS[event].push(func);
-      }
-      EVENTS[event]=[func];
+    if (EVENTS[event]) {
+      return EVENTS[event].push(func);
+    }
+    EVENTS[event] = [func];
   },
   emit,
   io: {
-      opts: {
-          transports: []
-      }
+    opts: {
+      transports: []
+    }
   }
 };
 
@@ -88,7 +89,8 @@ describe("Dashboard", () => {
       storageReducer,
       dashboardReducer,
       configurationsettingReducer,
-      BMCAuthenticationReducer
+      BMCAuthenticationReducer,
+      authenticationReducer
     });
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     store = createStore(rootReducers, composeEnhancers(applyMiddleware(sagaMiddleware)))
@@ -159,7 +161,7 @@ describe("Dashboard", () => {
     renderComponent();
     const { getByTestId } = wrapper;
     const readStorageElement = await waitForElement(() => getByTestId("dashboard-no-array"));
-    expect(readStorageElement.innerHTML).toBe("No Mounted Arrays");
+    expect(readStorageElement.innerHTML).toBe("Arrays are not available");
 
   });
 
@@ -167,7 +169,15 @@ describe("Dashboard", () => {
 
   it("should display system info as received from API", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1.0/get_ip_and_mac`)
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1.0/get_ip_and_mac`)
       .reply(200,
         {
           host: "init",
@@ -180,19 +190,19 @@ describe("Dashboard", () => {
     const { getByTestId } = wrapper;
     const ipElement = await waitForElement(() => getByTestId("dashboard-ip"));
     expect(ipElement.innerHTML).toContain("10.1.11.91");
-
-
-    const hostElement = await waitForElement(() => getByTestId("dashboard-host"));
-    expect(hostElement.innerHTML).toContain("init");
-
-    const macElement = await waitForElement(() => getByTestId("dashboard-mac"));
-    expect(macElement.innerHTML).toContain("00:50:56:ad:88:56");
-
   });
 
   it("should display storage details", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(/api\/v1\/get_arrays\/*/)
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
     renderComponent();
     const { getByText, asFragment } = wrapper;
@@ -203,43 +213,51 @@ describe("Dashboard", () => {
 
   it("should display volumes", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1/get_all_volumes/`)
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
         "POSArray": [
-        {
-          id: '0',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol2',
-          remain: 10737418240,
-          status: 'Mounted',
-          total: 10737418240,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        },
-        {
-          id: '2',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol3',
-          remain: 10737418240,
-          status: 'Mounted',
-          total: 10737418240,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 5
-        }
-      ]
-    });
+          {
+            id: '0',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol2',
+            remain: 10737418240,
+            status: 'Mounted',
+            total: 10737418240,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          },
+          {
+            id: '2',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol3',
+            remain: 10737418240,
+            status: 'Mounted',
+            total: 10737418240,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 5
+          }
+        ]
+      });
     renderComponent();
     const { getByText } = wrapper;
     const hostElement = await waitForElement(() => getByText("vol2"));
@@ -248,51 +266,59 @@ describe("Dashboard", () => {
 
   it("should display used space and total space of volumess correctly", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(/api\/v1\/get_arrays\/*/)
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
         "POSArray": [
-        {
-          id: '0',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol1',
-          status: 'Mounted',
-          total: 1073741824,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        },
-        {
-          id: '1',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol2',
-          remain: 0,
-          status: 'Mounted',
-          total: 10737418240,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        }
-      ]
-    });
+          {
+            id: '0',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol1',
+            status: 'Mounted',
+            total: 1073741824,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          },
+          {
+            id: '1',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol2',
+            remain: 0,
+            status: 'Mounted',
+            total: 10737418240,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          }
+        ]
+      });
     renderComponent();
     const { getAllByText, asFragment } = wrapper;
     const sizeDisplayedVol1 = await waitForElement(() => getAllByText("1.07 GB"));
     expect(sizeDisplayedVol1.length).toBe(1);
     const sizeDisplayedVol2 = await waitForElement(() => getAllByText("10.74 GB"));
     expect(sizeDisplayedVol2.length).toBe(2);
-   });
+  });
 
   //Disabling for PoC1
   // it("should display alerts", async () => {
@@ -341,7 +367,15 @@ describe("Dashboard", () => {
   it("should display iops value as received from API", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
         {
           bw_read: 0,
@@ -355,8 +389,9 @@ describe("Dashboard", () => {
       .reply(200, [])
       .onAny().reply(200, {});
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getAllByText } = wrapper;
     jest.advanceTimersByTime(2000);
+    await waitForElement(() => getAllByText("150"))
     const readIopsElement = await waitForElement(() => getByTestId("read-iops"));
     expect(readIopsElement.innerHTML).toBe("150");
   });
@@ -364,7 +399,21 @@ describe("Dashboard", () => {
   it("should display bw value with units according to values", async () => {
     jest.useFakeTimers();
     const mock = new MockAdapter(axios);
-    mock.onGet(/\/api\/v1\/perf\/all\?ts=*/)
+    mock.onGet(`/api/v1/checktelemetry`)
+      .reply(200,
+        {
+          isTelemetryEndpointUp: true
+        }
+      )
+      .onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
         {
           bw_read: 1024,
@@ -372,18 +421,22 @@ describe("Dashboard", () => {
           bw_write: 1073741824,
           iops_read: 154,
           iops_total: 0,
-          iops_write: 154
+          iops_write: 154,
+          latency_read: 154,
+          latency_total: 0,
+          latency_write: 154,
         }
       ).onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [])
       .onAny().reply(200, {});
     renderComponent();
-    const { getByTestId } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     jest.advanceTimersByTime(2000);
-    const readBwElement = await waitForElement(() => getByTestId("read-bw"));
-    expect(readBwElement.innerHTML).toBe("1 KBps");
-    const writeBwElement = await waitForElement(() => getByTestId("write-bw"));
-    expect(writeBwElement.innerHTML).toBe("1 GBps");
+    await waitForElement(() => getByText("1 KB"))
+    const readBwElement = await waitForElement(() => getByTestId("read-bandwidth"));
+    expect(readBwElement.innerHTML).toBe("1 KB");
+    const writeBwElement = await waitForElement(() => getByTestId("write-bandwidth"));
+    expect(writeBwElement.innerHTML).toBe("1 GB");
 
   });
 
@@ -399,85 +452,93 @@ describe("Dashboard", () => {
 
   it("should display volumes of an array correctly", async () => {
     const mock = new MockAdapter(axios);
-    mock.onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array, {...array, arrayname: "POSArray2"}])
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array, { ...array, arrayname: "POSArray2" }])
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
         "POSArray": [
-        {
-          id: '0',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol-1',
-          status: 'Mounted',
-          total: 1073741824,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        },
-        {
-          id: '1',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol-2',
-          remain: 0,
-          status: 'Mounted',
-          total: 10737418240,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        }
-      ],
-      "POSArray2": [
-        {
-          id: '0',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol-1',
-          status: 'Mounted',
-          total: 1073741824,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        },
-        {
-          id: '1',
-          maxbw: 0,
-          maxiops: 0,
-          name: 'vol-2',
-          remain: 0,
-          status: 'Mounted',
-          total: 10737418240,
-          ip: '10.1.11.91',
-          port: 'NA',
-          subnqn: 'NA',
-          description: "",
-          unit: 'GB',
-          size: '10',
-          usedspace: 0
-        }
-      ]
-    }).onAny().reply(200, {});
+          {
+            id: '0',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol-1',
+            status: 'Mounted',
+            total: 1073741824,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          },
+          {
+            id: '1',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol-2',
+            remain: 0,
+            status: 'Mounted',
+            total: 10737418240,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          }
+        ],
+        "POSArray2": [
+          {
+            id: '0',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol-1',
+            status: 'Mounted',
+            total: 1073741824,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          },
+          {
+            id: '1',
+            maxbw: 0,
+            maxiops: 0,
+            name: 'vol-2',
+            remain: 0,
+            status: 'Mounted',
+            total: 10737418240,
+            ip: '10.1.11.91',
+            port: 'NA',
+            subnqn: 'NA',
+            description: "",
+            unit: 'GB',
+            size: '10',
+            usedspace: 0
+          }
+        ]
+      }).onAny().reply(200, {});
     renderComponent();
     const { getByText, getAllByText, getByRole, getByTestId, queryByText, asFragment } = wrapper;
     const arraySelect = await waitForElement(() => getByTestId("dashboard-array-select"));
-    fireEvent.change(await waitForElement(() => getByTestId("dashboard-array-select")), { target: { value: "POSArray2" }});
+    fireEvent.change(await waitForElement(() => getByTestId("dashboard-array-select")), { target: { value: "POSArray2" } });
     expect(await waitForElement(() => getAllByText("vol-1"))).toHaveLength(1);
-    fireEvent.change(getByTestId("dashboard-array-select"), { target: { value: "all" }});
+    fireEvent.change(getByTestId("dashboard-array-select"), { target: { value: "all" } });
     expect(await waitForElement(() => getAllByText("vol-1"))).toHaveLength(2);
-   });
+  });
 
 
   // it("should display health metrics as received from API", async () => {

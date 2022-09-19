@@ -39,6 +39,7 @@ export {
 } from "./headerActions";
 
 export { 
+    setShowTelemetryNotRunning,
     enableFetchingAlerts,
     fetchVolumes, 
     fetchAlerts,

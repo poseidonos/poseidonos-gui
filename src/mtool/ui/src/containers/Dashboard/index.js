@@ -50,22 +50,16 @@ import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import "./Dashboard.css";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
-import HealthMetrics from "../../components/HealthMetrics";
 import LightTooltip from "../../components/LightTooltip";
+import Dialog from "../../components/Dialog";
 
 const styles = (theme) => {
   return {
     dashboardContainer: {
       display: "flex",
-    },
-    storageDetailsPaper: {
-      height: 250,
-      position: "relative",
-      marginTop: theme.spacing(1),
     },
     content: {
       flexGrow: 1,
@@ -79,54 +73,118 @@ const styles = (theme) => {
     titleContainer: {
       marginTop: theme.spacing(1),
     },
-    tableContainer: {
-      minHeight: "372px",
+    pageHeader: customTheme.page.title,
+    topGrid: {
+      marginBottom: "-8px",
+      marginTop: theme.spacing(1),
     },
-    readMetric: {
-      backgroundColor: "rgba(59, 189, 179,0.7)",
-    },
-    writeMetric: {
-      backgroundColor: "rgba(58, 108, 255,0.6)",
-    },
-    totalMetric: {
-      backgroundColor: "rgba(228, 148, 42,0.6)",
-    },
-    loadWrapper: {
-      width: "100%",
+    metricsPaper: {
       display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      padding: theme.spacing(1, 2),
+      paddingBottom: 0,
+      flexWrap: "wrap",
     },
     metricContainer: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-    posInfo: {
-      padding: theme.spacing(1),
-      height: 150,
-      display: "flex",
-      flexDirection: "column",
+      paddingBottom: theme.spacing(1),
       alignItems: "center",
       justifyContent: "center",
-      boxSizing: "border-box",
     },
-    posInfoKey: {
-      display: "inline-block",
-      width: "40%",
-    },
-    posInfoText: {
-      fontSize: 14,
-      fontWeight: 560,
-      color: "rgba(0, 0, 0, 0.7)",
-      margin: `${theme.spacing(1)}px auto`,
-      width: "100%",
-      textAlign: "center",
-    },
-    volumeSummary: {
-      minHeight: 413,
-      [theme.breakpoints.down("md")]: {
-        minHeight: 460,
+    metricBox: {
+      borderBottom: "2px solid #F1F0F5",
+      [theme.breakpoints.down("lg")]: {
+        borderRight: "4px solid #F1F0F5",
+        borderBottom: "none"
       },
+      [theme.breakpoints.down("md")]: {
+        borderRight: "none",
+        borderBottom: "2px solid #F1F0F5",
+      },
+      [theme.breakpoints.down("sm")]: {
+        borderRight: "4px solid #F1F0F5",
+        borderBottom: "none"
+      },
+      [theme.breakpoints.down("xs")]: {
+        borderRight: "none",
+        borderBottom: "2px solid #F1F0F5",
+      },
+    },
+    writeColor: {
+      height: "40px",
+      textAlign: "center",
+      color: "rgba(58, 108, 255, 1)",
+    },
+    readColor: {
+      height: "40px",
+      textAlign: "center",
+      color: "rgba(125, 106, 181, 1)",
+    },
+    posInfoPaper: {
+      height: 122,
+      display: "flex",
+      padding: theme.spacing(1, 2),
+      paddingBottom: 0,
+      flexWrap: "wrap",
+      [theme.breakpoints.down("md")]: {
+        height: "auto",
+      },
+    },
+    ipContainer: {
+      padding: theme.spacing(1, 0),
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    storageDetailsPaper: {
+      height: 122,
+      position: "relative",
+      padding: theme.spacing(1, 2),
+      paddingBottom: 0,
+      [theme.breakpoints.down("md")]: {
+        height: 140,
+      },
+      [theme.breakpoints.down("xs")]: {
+        height: 160,
+      },
+    },
+    storageGraph: {
+      position: "absolute",
+      height: "100%",
+      top: 16,
+      left: 0,
+      padding: theme.spacing(1, 2)
+    },
+    storageDetailContainer: {
+      border: "1px solid lightgray",
+      width: "100%",
+      margin: "auto",
+      marginTop: "5px",
+      height: 38,
+      overflow: "hidden",
+      position: "relative"
+    },
+    dashboardSizeLabelContainer: {
+      width: "100%"
+    },
+    dashboardMinLabel: {
+      float: "left",
+      display: "block",
+      width: "50%",
+      textAlign: "left"
+    },
+    dashboardMaxLabel: {
+      float: "right",
+      display: "block",
+      width: "50%",
+      textAlign: "right",
+    },
+    volumeContainer: {
+      marginTop: theme.spacing(1),
+    },
+    volumeHeader: {
+      minHeight: 64,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: theme.spacing(0, 2),
     },
     volName: {
       display: "inline-block",
@@ -140,72 +198,30 @@ const styles = (theme) => {
         maxWidth: 100,
       },
     },
-    volumeContainer: {
-      marginTop: theme.spacing(1),
-    },
-    metricBox: {
-      display: "flex",
-      alignItems: "center",
-      width: "50%",
-      height: "82.5px",
-      justifyContent: "center",
-      borderRadius: "10px",
-      margin: "auto",
-      [theme.breakpoints.down(1200)]: {
-        width: "75%",
-      },
-    },
-    storageGraph: {
-      position: "absolute",
-      height: "100%",
-      top: 0,
-    },
-    metricTxt: {
-      color: "#fff",
-    },
-    spaced: {
-      marginTop: theme.spacing(1),
-    },
-    topGrid: {
-      marginBottom: "-8px",
-      marginTop: theme.spacing(1),
-    },
     cardHeader: {
       ...customTheme.card.header,
       marginLeft: 0,
+      marginBottom: 0,
+      paddingTop: 0
     },
-    textRight: {
-      textAlign: "right",
-      marginRight: theme.spacing(1),
-    },
-    textLeft: {
-      textAlign: "left",
-      marginLeft: theme.spacing(1),
-    },
-    pageHeader: customTheme.page.title,
     textOverflow: {
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
       overflow: "hidden",
     },
-    volumeHeader: {
-      minHeight: 64,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingLeft: 24,
-      paddingRight: 24,
+    ipText: {
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      textAlign: "left"
+    },
+    ipBorder: {
+      borderRight: "2px solid lightgray",
+      marginRight: theme.spacing(1)
     },
     arraySelect: {
       textAlign: "center",
       minWidth: 100
-    },
-    metricsPaper: {
-      minHeight: 250,
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      marginTop: theme.spacing(1),
     },
   };
 };
@@ -221,31 +237,77 @@ const icons = {
   SortArrow: ArrowUpward,
 };
 
-/* eslint-enable react/no-multi-comp */
-
-// Disabling for PoC1
-// const alertIcons = {
-//   ...icons,
-//   FirstPage: () => <FirstPage id="Dashboard-alert-vol-firstpage" /> ,
-//   LastPage: () => <LastPage id="Dashboard-alert-vol-lastpage" />,
-//   NextPage: () => <ChevronRight id="Dashboard-alert-vol-nextpage" />,
-//   PreviousPage: () => <ChevronLeft id="Dashboard-alert-vol-previouspage" />,
-// };
-
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
-// const healthStatusSocketEndPoint = "http://localhost:3000/health_status";
 
 const getUsedSpace = (total, remain) => {
-
   if (Number.isNaN(remain)) {
     return formatBytes(0);
   }
 
-  // if(remain > total) {
-  //   return formatBytes(total);
-  // }
   return formatBytes(total - remain);
+}
+
+const MetricsCard = ({ classes, header, writeValue, readValue }) => {
+  return (
+    <Paper spacing={1} className={classes.metricsPaper}>
+      <Grid item container xs={12} justifyContent="space-between">
+        <Typography className={classes.cardHeader}>
+          {header}
+        </Typography>
+      </Grid>
+      <Grid item container xs={12} sm={6} md={12} lg={6} xl={12} className={classes.metricContainer}>
+        <Grid item xs={4}>
+          <Typography
+            align="center"
+            className={classes.textOverflow}
+            color={writeValue ? "secondary" : "primary"}
+            variant="h6"
+          >
+            Write
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={8}
+          className={classes.metricBox}
+        >
+          <Typography
+            variant={writeValue ? "h4" : "h6"}
+            data-testid={`write-${header.toLowerCase()}`}
+            color="secondary"
+            className={classes.writeColor}
+          >
+            {writeValue !== 0 ? writeValue : "___"}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} sm={6} md={12} lg={6} xl={12} className={classes.metricContainer}>
+        <Grid item xs={4}>
+          <Typography
+            align="center"
+            className={classes.textOverflow}
+            color={readValue ? "secondary" : "primary"}
+            variant="h6"
+          >
+            Read
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={8}
+        >
+          <Typography
+            variant={readValue ? "h4" : "h6"}
+            data-testid={`read-${header.toLowerCase()}`}
+            className={classes.readColor}
+          >
+            {readValue !== 0 ? readValue : "___"}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Paper>
+  )
 }
 
 // eslint-disable-next-line react/no-multi-comp
@@ -267,6 +329,8 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchCheckTelemetry();
+    this.props.getConfig();
     this.props.fetchVolumes();
     this.props.fetchArrays();
     this.props.fetchPerformance();
@@ -327,58 +391,7 @@ class Dashboard extends Component {
       position: "relative",
       backgroundColor: "#fff",
     };
-    const storageDangerStyle = {
-      width: "10%",
-      right: "0px",
-      height: "100%",
-      float: "right",
-      position: "absolute",
-      display: "inline-block",
-      borderLeft: "2px solid rgb(255, 173, 173)",
-    };
 
-    // Disabling for PoC1
-    // const alertColumns = [
-    //   {
-    //     title: 'Alert Name',
-    //     field: 'alertName',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Time Stamp',
-    //     field: 'time',
-    //     defaultSort: 'desc',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Status',
-    //     field: 'level',
-    //     width: 100,
-    //     sorting: false,
-    //     render: row => {
-    //       if (row.level === 'CRITICAL') {
-    //         return <span style={{ color: 'red' }}>{row.level}</span>;
-    //       }
-    //       return <span style={{ color: 'green' }}>{row.level}</span>;
-    //     },
-    //   },
-    //   {
-    //     title: 'Description',
-    //     field: 'message',
-    //     sorting: false,
-    //   },
-    //   {
-    //     title: 'Duration(sec)',
-    //     field: 'duration',
-    //     width: 150,
-    //     sorting: false,
-    //   },
-    //  // {
-    //   //  title: 'Node',
-    //    // field: 'host',
-    //     // sorting: false,
-    //  // },
-    // ];
     const localCellStyle = {
       paddingTop: 8,
       paddingBottom: 8,
@@ -461,284 +474,98 @@ class Dashboard extends Component {
               </Grid>
               <Grid container spacing={1} className={classes.topGrid}>
                 <Grid container spacing={1}>
-                  <Grid xs={12} md={6} item>
-                    <HealthMetrics
-                      healthStatusSocket={this.state.healthStatusSocket}
+                  <Grid xs={12} md={4} xl={2} item>
+                    <MetricsCard
+                      classes={classes}
+                      header="Bandwidth"
+                      writeValue={this.props.writeBW}
+                      readValue={this.props.readBW}
                     />
-                    {/* <Paper
-                      spacing={3}
-                      xs={6}
-                      className={classes.healthMetricsPaper}
-                    >
-                      <Grid container justify="space-around">
-                        {this.state.healthMetrics.map((metric) => (
-                          <Grid
-                            xs={10}
-                            md={4} // currently, it is assumed that there are only 3 health metrics
-                            justify="center"
-                            className={classes.healthMetricContainer}
-                            item
-                            spacing-xs-1="true"
-                          >
-                            <Typography
-                              align="center"
-                              className={classes.textOverflow}
-                              color="secondary"
-                            >
-                              {metric.label}
-                            </Typography>
-                            <Grid item xs={12}>
-                              <GaugeChart
-                                id={metric.id}
-                                styles={{ width: this.state.gaugeWidth }}
-                                nrOfLevels={3}
-                                arcsLength={metric.arcsLength}
-                                colors={[
-                                  "rgba(91,225,44,0.7)",
-                                  "rgba(245,205,25,0.7)",
-                                  "rgba(234,66,40,0.7",
-                                ]}
-                                percent={metric.percentage}
-                                arcPadding={0.02}
-                                needleColor="#D6DBDF"
-                                needleBaseColor="#D6DBDF"
-                                textColor="rgba(0,0,0,0.8)"
-                                formatTextValue={() =>
-                                  `${metric.value} ` + `${metric.unit}`
-                                }
-                              />
-                            </Grid>
-                          </Grid>
-                        ))}
+                  </Grid>
+                  <Grid xs={12} md={4} xl={2} item>
+                    <MetricsCard
+                      classes={classes}
+                      header="IOPS"
+                      writeValue={this.props.writeIOPS}
+                      readValue={this.props.readIOPS}
+                    />
+                  </Grid>
+                  <Grid xs={12} md={4} xl={2} item>
+                    <MetricsCard
+                      classes={classes}
+                      header="Latency"
+                      writeValue={this.props.writeLatency}
+                      readValue={this.props.readLatency}
+                    />
+                  </Grid>
+                  <Grid sm={12} md={12} lg={4} xl={3} item>
+                    <Paper spacing={1} className={classes.posInfoPaper}>
+                      <Grid item container xs={12} justifyContent="space-between">
+                        <Typography className={classes.cardHeader}>
+                          IP Info
+                        </Typography>
                       </Grid>
-                    </Paper> */}
-                    <Paper spacing={3} xs={6} className={classes.metricsPaper}>
-                      <Grid container justifyContent="space-around">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
+                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
+                        <Grid item xs={4}>
                           <Typography
                             align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
+                            className={`${classes.ipText} ${classes.ipBorder}`}
+                            color="primary"
+                            variant="h6"
                           >
-                            WRITE BANDWIDTH
+                            PoseidonOS
                           </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.writeMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="write-bw"
-                              className={classes.metricTxt}
-                            >
-                              {formatBytes(this.props.writeBW, 0)}ps
-                            </Typography>
-                          </Grid>
                         </Grid>
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
+                        <Grid item xs={8}>
                           <Typography
-                            align="center"
-                            className={classes.textOverflow}
+                            variant="h6"
                             color="secondary"
+                            data-testid="dashboard-ip"
+                            className={classes.ipText}
                           >
-                            READ BANDWIDTH
+                            {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
                           </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.readMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="read-bw"
-                              className={classes.metricTxt}
-                            >
-                              {formatBytes(this.props.readBW, 0)}ps
-                            </Typography>
-                          </Grid>
                         </Grid>
                       </Grid>
-                      {/* <Grid container justify="center">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
+                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
+                        <Grid item xs={4}>
                           <Typography
                             align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
+                            className={`${classes.ipText} ${classes.ipBorder}`}
+                            color="primary"
+                            variant="h6"
                           >
-                            LATENCY
+                            Telemetry
                           </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.totalMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="latency"
-                              className={classes.metricTxt}
-                            >
-                              {this.props.latency}
-                            </Typography>
-                          </Grid>
                         </Grid>
-                      </Grid> */}
-                      <Grid container justifyContent="space-around">
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
+                        <Grid item xs={8}>
                           <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
+                            variant="h6"
+                            data-testid="telemetry-ip"
+                            className={classes.ipText}
                           >
-                            WRITE IOPS
+                            {this.props.telemetryIP && this.props.telemetryPort ? `${this.props.telemetryIP} : ${this.props.telemetryPort}` : "-"}
                           </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.writeMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="write-iops"
-                              className={classes.metricTxt}
-                            >
-                              {this.props.writeIOPS}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          xs={10}
-                          md={6}
-                          className={classes.metricContainer}
-                          item
-                          spacing-xs-1="true"
-                        >
-                          <Typography
-                            align="center"
-                            className={classes.textOverflow}
-                            color="secondary"
-                          >
-                            READ IOPS
-                          </Typography>
-                          <Grid
-                            item
-                            xs={12}
-                            className={`${classes.metricBox} ${classes.readMetric}`}
-                          >
-                            <Typography
-                              variant="h5"
-                              data-testid="read-iops"
-                              className={classes.metricTxt}
-                            >
-                              {this.props.readIOPS}
-                            </Typography>
-                          </Grid>
                         </Grid>
                       </Grid>
                     </Paper>
                   </Grid>
-                  <Grid xs={12} md={6} item>
-                    <Paper className={classes.posInfo}>
-                      <Grid
-                        md={6}
-                        xs={12}
-                        item
-                        container
-                        direction="column"
-                        justifyContent="space-between"
-                      >
-                        <Typography
-                          data-testid="dashboard-ip"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            IP
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.ip}
-                          </span>
-                        </Typography>
-                        <Typography
-                          data-testid="dashboard-host"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            Poseidon Name
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.host}
-                          </span>
-                        </Typography>
-                        <Typography
-                          data-testid="dashboard-mac"
-                          className={classes.posInfoText}
-                          variant="body1"
-                          component="span"
-                        >
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            MAC
-                          </span>
-                          :
-                          <span
-                            className={`${classes.posInfoKey} ${classes.textLeft}`}
-                          >
-                            {this.props.mac}
-                          </span>
-                        </Typography>
-                      </Grid>
-                    </Paper>
+                  <Grid xs={12} md={12} lg={8} xl={3} item>
                     <Paper
-                      spacing={3}
-                      xs={6}
+                      spacing={1}
                       className={`${classes.storageDetailsPaper}`}
                     >
-                      <Grid container justifyContent="space-between">
-                        <Typography
-                          className={classes.cardHeader}
-                          style={{ marginLeft: "24px" }}
-                        >
+                      <Grid item container xs={12} justifyContent="space-between">
+                        <Typography className={classes.cardHeader}>
                           Storage Details
                         </Typography>
+                        {this.props.arraySize !== 0 &&
+                          (
+                            <Typography variant="body2" color="primary">
+                              As of {this.props.lastUpdateTime}
+                            </Typography>
+                          )
+                        }
                       </Grid>
                       <Grid
                         container
@@ -751,77 +578,48 @@ class Dashboard extends Component {
                             data-testid="dashboard-no-array"
                             color="secondary"
                           >
-                            No Mounted Arrays
+                            Arrays are not available
                           </Typography>
                         ) : (
-                          <React.Fragment>
-                            <div className="dashboard-size-label-container">
-                              <span className="dashboard-min-label">0TB</span>
-                              <span className="dashboard-max-label">
+                          <>
+                            <div className={classes.dashboardSizeLabelContainer}>
+                              <span className={classes.dashboardMinLabel}>0TB</span>
+                              <span className={classes.dashboardMaxLabel}>
                                 {formatBytes(this.props.arraySize)}
                               </span>
                             </div>
-                            <div className="storage-detail-container">
+                            <div className={classes.storageDetailContainer}>
                               <div style={volFilledStyle}>
                                 <div style={volUsedStyle} />
                               </div>
                               <div style={storageFreeStyle} />
-                              <div style={storageDangerStyle}>
-                                <div className="dashboard-threshold-label">
-                                  80%
-                                </div>
-                              </div>
                             </div>
-                            <div
-                              style={{
-                                width: "94%",
-                                margin: "5px auto auto",
-                                height: "auto",
-                                position: "relative",
-                              }}
-                            >
-                              <Grid item container xs={12} wrap="wrap">
-                                <Legend
-                                  bgColor="rgba(0, 186, 0, 0.6)"
-                                  title={`Data Written: ${formatBytes(
-                                    volUsedSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="#e0e0e0"
-                                  title={`Volume Space Allocated: ${formatBytes(
-                                    volSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="#fff"
-                                  title={`Available for Volume Creation: ${formatBytes(
-                                    this.props.arraySize - volSpace
-                                  )}`}
-                                />
-                                <Legend
-                                  bgColor="rgb(255, 173, 173)"
-                                  title="Threshold"
-                                />
-                              </Grid>
-                              <span
-                                style={{
-                                  width: "100%",
-                                  marginTop: "10px",
-                                  float: "left",
-                                  textAlign: "left",
-                                }}
-                              >
-                                As of {this.props.lastUpdateTime}
-                              </span>
-                            </div>
-                          </React.Fragment>
+                            <Grid container xs={12} wrap="wrap" justifyContent="flex-end">
+                              <Legend
+                                bgColor="rgba(0, 186, 0, 0.6)"
+                                title={`Data Written: ${formatBytes(
+                                  volUsedSpace
+                                )}`}
+                              />
+                              <Legend
+                                bgColor="#e0e0e0"
+                                title={`Volume Space Allocated: ${formatBytes(
+                                  volSpace
+                                )}`}
+                              />
+                              <Legend
+                                bgColor="#fff"
+                                title={`Available for Volume Creation: ${formatBytes(
+                                  this.props.arraySize - volSpace
+                                )}`}
+                              />
+                            </Grid>
+                          </>
                         )}
                       </Grid>
                     </Paper>
                   </Grid>
                 </Grid>
-
                 <Grid container spacing={1}>
                   <Grid
                     xs={12}
@@ -829,13 +627,17 @@ class Dashboard extends Component {
                     item
                     className={classes.volumeContainer}
                   >
-                    <Paper spacing={3} className={classes.volumeSummary}>
+                    <Paper spacing={3}>
                       <MaterialTable
-                        title={(
-                          <Typography className={classes.cardHeader}>
-                            Array Summary
-                          </Typography>
-                        )}
+                        components={{
+                          Toolbar: () => (
+                            <Grid className={classes.volumeHeader}>
+                              <Typography className={classes.cardHeader}>
+                                Array Summary
+                              </Typography>
+                            </Grid>
+                          )
+                        }}
                         columns={arrayTableColumns}
                         data={this.props.arrays}
                         options={{
@@ -845,8 +647,8 @@ class Dashboard extends Component {
                             paddingTop: 8,
                             paddingBottom: 8
                           },
-                          minBodyHeight: 342,
-                          maxBodyHeight: 342,
+                          minBodyHeight: 280,
+                          maxBodyHeight: 280,
                           search: false,
                           sorting: true
                         }}
@@ -862,7 +664,7 @@ class Dashboard extends Component {
                     item
                     className={classes.volumeContainer}
                   >
-                    <Paper spacing={3} className={classes.volumeSummary}>
+                    <Paper spacing={3}>
                       <MaterialTable
                         columns={volumeTableColumns}
                         data={this.props.arrayVolumes}
@@ -873,8 +675,8 @@ class Dashboard extends Component {
                             paddingTop: 8,
                             paddingBottom: 8
                           },
-                          minBodyHeight: 342,
-                          maxBodyHeight: 342,
+                          minBodyHeight: 280,
+                          maxBodyHeight: 280,
                           search: false,
                           sorting: true
                         }}
@@ -912,42 +714,15 @@ class Dashboard extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* <Grid container spacing={1} className={classes.spaced}>
-            <Grid xs={12} item>
-            <Paper>
-              {this.props.alerts.length > 0 ||
-                this.props.fetchingAlerts === false ? (
-                <MaterialTable
-                  title={(
-                    <Typography className={classes.cardHeader}>Storage Alerts</Typography>
-                  )}
-                  data-testid="Dashboard-table-alert"
-                  options={{
-                    headerStyle: {
-                      backgroundColor: '#788595',
-                      color: '#FFF'
-                    },
-                    search: false
-                  }}
-                  data={this.props.alerts}
-                  columns={alertColumns}
-                  icons={alertIcons}
-                />
-              ) : (
-                <div className={classes.loadWrapper}>
-                  <Loader
-                    type="Bars"
-                    color="#788595"
-                    marginTop="100px"
-                    width="50"
-                  />
-                </div>
-              )}
-            </Paper>
-            </Grid>
-          </Grid> */}
             </Grid>
           </main>
+          <Dialog
+            title="Create Volume"
+            description={this.props.errorMsg}
+            type="alert"
+            open={this.props.showTelemetryAlert}
+            handleClose={() => this.props.closeTelemetryAlert()}
+          />
         </div>
       </ThemeProvider>
     );
@@ -962,11 +737,14 @@ const mapStateToProps = (state) => {
     arrayLoading: state.storageReducer.loading,
     alerts: state.dashboardReducer.alerts,
     ibofs: state.dashboardReducer.ibofs,
+    showTelemetryAlert: state.dashboardReducer.showTelemetryAlert,
+    errorMsg: state.dashboardReducer.errorMsg,
     readIOPS: state.dashboardReducer.readIOPS,
     writeIOPS: state.dashboardReducer.writeIOPS,
     readBW: state.dashboardReducer.readBW,
     writeBW: state.dashboardReducer.writeBW,
-    latency: state.dashboardReducer.latency,
+    readLatency: state.dashboardReducer.readLatency,
+    writeLatency: state.dashboardReducer.writeLatency,
     fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
     arrayVolCount: state.dashboardReducer.arrayVols,
@@ -981,22 +759,21 @@ const mapStateToProps = (state) => {
     cpuArcsLength: state.dashboardReducer.cpuArcsLength,
     memoryArcsLength: state.dashboardReducer.memoryArcsLength,
     latencyArcsLength: state.dashboardReducer.latencyArcsLength,
+    telemetryIP: state.authenticationReducer.telemetryIP,
+    telemetryPort: state.authenticationReducer.telemetryPort,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    enableFetchingAlerts: (flag) =>
-      dispatch(actionCreators.enableFetchingAlerts(flag)),
+    fetchCheckTelemetry: () => dispatch({ type: actionTypes.SAGA_FETCH_CHECK_TELEMETRY }),
+    closeTelemetryAlert: () => dispatch({ type: actionTypes.CLOSE_TELEMETRY_ALERT}),
+    enableFetchingAlerts: (flag) => dispatch(actionCreators.enableFetchingAlerts(flag)),
+    getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
-    // fetchAlertsInfo: () =>
-    //  dispatch({ type: actionTypes.SAGA_FETCH_ALERTS_INFO }),
-    fetchPerformance: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
-    fetchIpAndMacInfo: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
-    selectArray: (array) =>
-      dispatch({ type: actionTypes.SELECT_ARRAY, array }),
+    fetchPerformance: () => dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
+    fetchIpAndMacInfo: () => dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
+    selectArray: (array) => dispatch({ type: actionTypes.SELECT_ARRAY, array }),
   };
 };
 export default withStyles(styles)(

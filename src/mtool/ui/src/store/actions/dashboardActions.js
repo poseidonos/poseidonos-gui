@@ -32,6 +32,14 @@
 
 import * as actionTypes from "./actionTypes";
 
+export const setShowTelemetryNotRunning = (showTelemetryAlert, errorMsg) => {
+  return {
+    type: actionTypes.SET_SHOW_TELEMETRY_NOT_RUNNING,
+    showTelemetryAlert,
+    errorMsg
+  };
+}
+
 export const enableFetchingAlerts = (flag) => {
   return {
     type: actionTypes.ENABLE_FETCHING_ALERTS,
@@ -57,7 +65,8 @@ export const fetchPerformance = (
   writeIOPS,
   readBW,
   writeBW,
-  latency
+  readLatency,
+  writeLatency,
 ) => {
   return {
     type: actionTypes.FETCH_PERFORMANCE_INFO,
@@ -65,7 +74,8 @@ export const fetchPerformance = (
     writeIOPS,
     readBW,
     writeBW,
-    latency,
+    readLatency,
+    writeLatency,
   };
 };
 
