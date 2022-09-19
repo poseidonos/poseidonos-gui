@@ -61,7 +61,7 @@ export const formatNanoSeconds = (duration) => {
     duration /= 1000;
     i += 1;
   };
-  return `${Math.round(duration * 100) / 100 } ${ level[i]}`;
+  return `${Math.round(duration)} ${ level[i]}`;
 
 }
 

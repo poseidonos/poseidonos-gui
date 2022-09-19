@@ -1,7 +1,7 @@
 import requests
 import json
 from bson import json_util
-from flask import make_response
+from flask import jsonify, make_response
 
 
 def toJson(data):
@@ -9,12 +9,11 @@ def toJson(data):
 
 grafa_url = "http://localhost:3500"
 ds_name = "poseidon"
+PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{job="pos"})'
 
-def set_telemetry_configuration(ip, port):
+def is_prometheusDB_running(prom_url):
     try:
         success_res = make_response("success",200)
-        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
-
         # Checking prometheusDB is running or not
         prom_res = requests.get(
             '{prom_url}/api/v1/status/runtimeinfo'.format(prom_url=prom_url)
@@ -23,7 +22,39 @@ def set_telemetry_configuration(ip, port):
 
         if "status" in prom_res and prom_res["status"] != "success":
             return make_response("prometheus DB is not running", 500)
+        return success_res
+            
+    except Exception as e:
+        return make_response("Error Occured" + repr(e), 500)
 
+
+def check_telemetry_endpoint(ip, port):
+    try:
+        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
+        response = is_prometheusDB_running(prom_url)
+        if response.response[0].decode('UTF-8') != "success":
+            return response
+        # Checking temetry is up or not
+        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url))
+        response = json.loads(response.content)
+        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
+            for data in response["data"]["result"]:
+                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "pos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
+                    return jsonify({'isTelemetryEndpointUp': True})
+        return jsonify({'isTelemetryEndpointUp': False})
+
+    except Exception as e:
+        return make_response("Error Occured" + repr(e), 500)
+
+
+def set_telemetry_configuration(ip, port):
+    try:
+        success_res = make_response("success",200)
+        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
+        response = is_prometheusDB_running(prom_url)
+        if response.response[0].decode('UTF-8') != "success":
+            return response
+        
         # Create data source in grafana
         url = '{grafa_url}/api/datasources'.format(grafa_url=grafa_url)
         headers = {
@@ -78,3 +109,17 @@ def set_telemetry_configuration(ip, port):
         return make_response("An Unknown Error occurred" + repr(err), 520)
     except Exception as e:
         return make_response("Error Occured" + repr(e), 500)
+
+def get_agg_value(ip, port, metric):
+    try:
+        PATH = PROM_AGG_QUERY_PATH.format(ip,port,metric)
+        response = requests.get(PATH)
+        response = json.loads(response.content)
+        value = 0
+        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0 and "value" in response["data"]["result"] and len(response["data"]["result"]["value"]) == 2:
+            value += int(response["data"]["result"]["value"][1])
+        return value
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')

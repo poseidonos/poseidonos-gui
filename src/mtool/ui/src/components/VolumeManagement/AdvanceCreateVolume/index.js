@@ -575,8 +575,8 @@ function AdvanceCreateVolume(props) {
           >
             {props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
               (
-                <MenuItem value={subsystem.nqn} key={subsystem.nqn}>
-                  {subsystem.nqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
+                <MenuItem value={subsystem.subnqn} key={subsystem.subnqn}>
+                  {subsystem.subnqn} {subsystem.array ? `(Used by ${subsystem.array})` : null}
                 </MenuItem>
               ) : null)}
           </Select>
@@ -843,7 +843,7 @@ function AdvanceCreateVolume(props) {
           isError = false;
 
         if (!isError) {
-          const isDuplicate = props.subsystems.find((s) => s.nqn === props.subnqn);
+          const isDuplicate = props.subsystems.find((s) => s.subnqn === props.subnqn);
           if (isDuplicate) {
             errorDesc = "Please Enter A New Subsystem Name"
             isError = true;
