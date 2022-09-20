@@ -1380,6 +1380,37 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
         'Could not get POS to remove spare disk...', 500)
 
 
+def replace_array_device(array_name, device, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "device": device
+        }
+    }
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            array_name +
+            '/replace',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not replace array device.', 500)
+
 """
 def report_test(auth=BASIC_AUTH_TOKEN):
     # •Report file directory : /etc/ibofos/report

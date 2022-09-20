@@ -927,6 +927,35 @@ def removeSpareDisk(current_user):
     return make_response(res, 500)
 
 
+# Replace Array Device
+@app.route('/api/v1/array/<array_name>/replace', methods=['POST'])
+def replace_arr_device(array_name):
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        print("body", body, array_name)
+        device = body['device']
+        return_msg = {}
+        res = dagent.replace_array_device(array_name, device)
+        if res.status_code == 200:
+            res = res.json()
+            if res["result"]["status"]["code"] == 0:
+                return toJson(res)
+        else:
+            print("spare error", res.json())
+            res = res.json()
+            if ("result" in res and "status" in res["result"]):
+                return_msg["result"] = res["result"]["status"]
+                return_msg["return"] = -1
+                return toJson(return_msg)
+
+        res = "unable to replace array device"
+        return make_response(res, 500)
+    except Exception as e:
+        print("In exception replace_arr_device(): ", e)
+        return make_response('Could not replace array device', 500)
+
+
 # Get Device Details
 @app.route('/api/v1.0/device/smart/<name>', methods=['GET'])
 @token_required
@@ -1029,9 +1058,8 @@ def list_subsystem(current_user):
         resp = dagent.list_subsystem()
         resp = resp.json()
         for subsystem in resp["result"]["data"]["subsystemlist"]:
-            if subsystem["subtype"] == "NVMe":
-                namespaces = subsystem["namespaces"] if "namespaces" in subsystem else [
-                ]
+            if subsystem["subtype"] == "NVMe" and "namespaces" in subsystem:
+                namespaces = subsystem["namespaces"]
                 if len(namespaces) > 0:
                     arrayname = "_".join(
                         namespaces[0]["bdevName"].split("_")[2:])
@@ -1166,6 +1194,13 @@ def get_array_config(current_user):
                 "maxStorageDisks": 32,
                 "minSpareDisks": 0,
                 "maxSpareDisks": 29,
+            },
+            {
+                "raidType": "RAID6",
+                "minStorageDisks": 4,
+                "maxStorageDisks": 32,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 28,
             },
             {
                 "raidType": "RAID10",

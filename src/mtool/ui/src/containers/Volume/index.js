@@ -581,6 +581,7 @@ class Volume extends Component {
                                   // attachDisk={this.props.Attach_Disk}
                                   addSpareDisk={this.props.Add_Spare_Disk}
                                   removeSpareDisk={this.props.Remove_Spare_Disk}
+                                  replaceDevice={this.props.Replace_Device}
                                   mountStatus={this.props.arrayMap[this.props.selectedArray].status}
                                   handleUnmountPOS={this.props.Unmount_POS}
                                   handleMountPOS={this.props.Mount_POS}
@@ -804,6 +805,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
     Remove_Spare_Disk: (payload) =>
       dispatch({ type: actionTypes.SAGA_REMOVE_SPARE_DISK, payload }),
+    Replace_Device: (payload) =>
+      dispatch({ type: actionTypes.SAGA_REPLACE_DEVICE, payload }),
     Get_Max_Volume_Count: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Unmount_POS: () => dispatch({ type: actionTypes.SAGA_UNMOUNT_POS }),

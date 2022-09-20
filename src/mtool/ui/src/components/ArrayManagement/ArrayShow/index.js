@@ -365,6 +365,21 @@ class ArrayShow extends Component {
     });
   }
 
+  replaceDevice(slot) {
+    this.setState({
+      selectedSlot: slot,
+      messageOpen: true,
+      messageDescription: "Are you sure you want to Replace this Device?",
+      messageTitle: "Replace Device",
+      onConfirm: () => {
+        this.props.replaceDevice(this.state.selectedSlot);
+        this.setState({
+          messageOpen: false,
+        });
+      },
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const freeSlots = [];
@@ -574,7 +589,7 @@ class ArrayShow extends Component {
                             color="secondary"
                             className={classes.detachBtn}
                             data-testid={`replacedisk-${index}`}
-                            onClick={() => { }}
+                            onClick={() => this.replaceDevice(slot)}
                           >
                             <SwapHorizOutlined fontSize="small" />
                           </Button>

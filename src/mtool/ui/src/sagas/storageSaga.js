@@ -1409,6 +1409,74 @@ function* removeSpareDisk(action) {
   }
 }
 
+function* replaceDevice(action) {
+  try {
+    const arrayName = yield select(arrayname)
+    yield put(actionCreators.startStorageLoader("Replacing Device"));
+    console.log(arrayName, action.payload)
+    const response = yield call(
+      [axios, axios.post],
+      `/api/v1/array/${arrayName}/replace`,
+      {
+        device: action.payload.name
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data.return !== -1) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: "Replacing Array Device successfully",
+            alertTitle: "Replace Array Device",
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while Replacing Array Device",
+            errorCode: `Description:${response.data.result.description}`,
+            alertTitle: "Replace Array Device",
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error while Removing Spare Device",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Removing Spare Device failed",
+          alertTitle: "Remove Spare Device",
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: "Error while Replacing Array Device",
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: "Replace Array Device",
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
+    yield fetchDevices();
+  }
+}
+
 function* changeVolumeMountStatus(action) {
   let message = "Mount";
   const arrayName = yield select(arrayname)
@@ -1737,6 +1805,7 @@ export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_RESET_VOLUME_QOS, resetQoS);
 
   yield takeEvery(actionTypes.SAGA_REMOVE_SPARE_DISK, removeSpareDisk);
+  yield takeEvery(actionTypes.SAGA_REPLACE_DEVICE, replaceDevice);
   yield takeEvery(actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT, fetchMaxVolumeCount);
   yield takeEvery(
     actionTypes.SAGA_VOLUME_MOUNT_CHANGE,
