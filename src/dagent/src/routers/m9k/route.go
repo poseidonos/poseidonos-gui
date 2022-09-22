@@ -326,8 +326,17 @@ func Route(router *gin.Engine) {
 	iBoFOSPath.DELETE("/telemetry", func(ctx *gin.Context) {
 		ibofos.CalliBoFOS(ctx, caller.CallStopTelemetry, posMngr)
 	})
-	iBoFOSPath.POST("/telemetry/property", func(ctx *gin.Context) {
+	iBoFOSPath.POST("/telemetry/properties/path", func(ctx *gin.Context) {
 		ibofos.CalliBoFOS(ctx, caller.CallSetTelemetryProperty, posMngr)
+	})
+	iBoFOSPath.GET("/telemetry/properties/path", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallGetTelemetryProperty, posMngr)
+	})
+	iBoFOSPath.GET("/telemetry/properties", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallReadTelemetryProperty, posMngr)
+	})
+	iBoFOSPath.POST("/telemetry/properties", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallWriteTelemetryProperty, posMngr)
 	})
 
 	// Logger Commands

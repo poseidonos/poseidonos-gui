@@ -10,16 +10,17 @@ import (
 )
 
 var (
-	errLocked         = errors.New("Locked out buddy")
-	ErrSending        = errors.New("Sending error")
-	ErrReceiving      = errors.New("Receiving error")
-	ErrJson           = errors.New("Json error")
-	ErrRes            = errors.New("Response error")
-	ErrConn           = errors.New("Could not connect to the CLI server. Is PoseidonOS running?")
-	ErrJsonType       = errors.New("Json Type Validation Error")
-	unmarshalErrMsg   = "Could not Unmarshal json response in "
-	marshalErrMsg     = "Failed to marshal the param structure in "
-	commandFailureMsg = "Received error from grpc server in "
+	errLocked             = errors.New("Locked out buddy")
+	ErrSending            = errors.New("Sending error")
+	ErrReceiving          = errors.New("Receiving error")
+	ErrJson               = errors.New("Json error")
+	ErrRes                = errors.New("Response error")
+	ErrConn               = errors.New("Could not connect to the CLI server. Is PoseidonOS running?")
+	ErrJsonType           = errors.New("Json Type Validation Error")
+	unmarshalErrMsg       = "Could not Unmarshal json response in "
+	marshalErrMsg         = "Failed to marshal the param structure in "
+	commandFailureMsg     = "Received error from grpc server in "
+	setPropertyFailureMsg = "Could not set path through SET PROPERTY api in "
 )
 
 func GetFuncName(level int) string {

@@ -25,6 +25,7 @@ type PosCliClient interface {
 	StartTelemetry(ctx context.Context, in *StartTelemetryRequest, opts ...grpc.CallOption) (*StartTelemetryResponse, error)
 	StopTelemetry(ctx context.Context, in *StopTelemetryRequest, opts ...grpc.CallOption) (*StopTelemetryResponse, error)
 	SetTelemetryProperty(ctx context.Context, in *SetTelemetryPropertyRequest, opts ...grpc.CallOption) (*SetTelemetryPropertyResponse, error)
+	GetTelemetryProperty(ctx context.Context, in *GetTelemetryPropertyRequest, opts ...grpc.CallOption) (*GetTelemetryPropertyResponse, error)
 	ResetEventWrr(ctx context.Context, in *ResetEventWrrRequest, opts ...grpc.CallOption) (*ResetEventWrrResponse, error)
 	ResetMbr(ctx context.Context, in *ResetMbrRequest, opts ...grpc.CallOption) (*ResetMbrResponse, error)
 	StopRebuilding(ctx context.Context, in *StopRebuildingRequest, opts ...grpc.CallOption) (*StopRebuildingResponse, error)
@@ -57,6 +58,8 @@ type PosCliClient interface {
 	SubsystemInfo(ctx context.Context, in *SubsystemInfoRequest, opts ...grpc.CallOption) (*SubsystemInfoResponse, error)
 	CreateTransport(ctx context.Context, in *CreateTransportRequest, opts ...grpc.CallOption) (*CreateTransportResponse, error)
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*CreateVolumeResponse, error)
+	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error)
+	UnmountVolume(ctx context.Context, in *UnmountVolumeRequest, opts ...grpc.CallOption) (*UnmountVolumeResponse, error)
 	SetVolumeProperty(ctx context.Context, in *SetVolumePropertyRequest, opts ...grpc.CallOption) (*SetVolumePropertyResponse, error)
 }
 
@@ -125,6 +128,15 @@ func (c *posCliClient) StopTelemetry(ctx context.Context, in *StopTelemetryReque
 func (c *posCliClient) SetTelemetryProperty(ctx context.Context, in *SetTelemetryPropertyRequest, opts ...grpc.CallOption) (*SetTelemetryPropertyResponse, error) {
 	out := new(SetTelemetryPropertyResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/SetTelemetryProperty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) GetTelemetryProperty(ctx context.Context, in *GetTelemetryPropertyRequest, opts ...grpc.CallOption) (*GetTelemetryPropertyResponse, error) {
+	out := new(GetTelemetryPropertyResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/GetTelemetryProperty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -410,6 +422,24 @@ func (c *posCliClient) CreateVolume(ctx context.Context, in *CreateVolumeRequest
 	return out, nil
 }
 
+func (c *posCliClient) DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error) {
+	out := new(DeleteVolumeResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/DeleteVolume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) UnmountVolume(ctx context.Context, in *UnmountVolumeRequest, opts ...grpc.CallOption) (*UnmountVolumeResponse, error) {
+	out := new(UnmountVolumeResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/UnmountVolume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *posCliClient) SetVolumeProperty(ctx context.Context, in *SetVolumePropertyRequest, opts ...grpc.CallOption) (*SetVolumePropertyResponse, error) {
 	out := new(SetVolumePropertyResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/SetVolumeProperty", in, out, opts...)
@@ -430,6 +460,7 @@ type PosCliServer interface {
 	StartTelemetry(context.Context, *StartTelemetryRequest) (*StartTelemetryResponse, error)
 	StopTelemetry(context.Context, *StopTelemetryRequest) (*StopTelemetryResponse, error)
 	SetTelemetryProperty(context.Context, *SetTelemetryPropertyRequest) (*SetTelemetryPropertyResponse, error)
+	GetTelemetryProperty(context.Context, *GetTelemetryPropertyRequest) (*GetTelemetryPropertyResponse, error)
 	ResetEventWrr(context.Context, *ResetEventWrrRequest) (*ResetEventWrrResponse, error)
 	ResetMbr(context.Context, *ResetMbrRequest) (*ResetMbrResponse, error)
 	StopRebuilding(context.Context, *StopRebuildingRequest) (*StopRebuildingResponse, error)
@@ -462,6 +493,8 @@ type PosCliServer interface {
 	SubsystemInfo(context.Context, *SubsystemInfoRequest) (*SubsystemInfoResponse, error)
 	CreateTransport(context.Context, *CreateTransportRequest) (*CreateTransportResponse, error)
 	CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error)
+	DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error)
+	UnmountVolume(context.Context, *UnmountVolumeRequest) (*UnmountVolumeResponse, error)
 	SetVolumeProperty(context.Context, *SetVolumePropertyRequest) (*SetVolumePropertyResponse, error)
 	mustEmbedUnimplementedPosCliServer()
 }
@@ -490,6 +523,9 @@ func (UnimplementedPosCliServer) StopTelemetry(context.Context, *StopTelemetryRe
 }
 func (UnimplementedPosCliServer) SetTelemetryProperty(context.Context, *SetTelemetryPropertyRequest) (*SetTelemetryPropertyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTelemetryProperty not implemented")
+}
+func (UnimplementedPosCliServer) GetTelemetryProperty(context.Context, *GetTelemetryPropertyRequest) (*GetTelemetryPropertyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTelemetryProperty not implemented")
 }
 func (UnimplementedPosCliServer) ResetEventWrr(context.Context, *ResetEventWrrRequest) (*ResetEventWrrResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetEventWrr not implemented")
@@ -583,6 +619,12 @@ func (UnimplementedPosCliServer) CreateTransport(context.Context, *CreateTranspo
 }
 func (UnimplementedPosCliServer) CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVolume not implemented")
+}
+func (UnimplementedPosCliServer) DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteVolume not implemented")
+}
+func (UnimplementedPosCliServer) UnmountVolume(context.Context, *UnmountVolumeRequest) (*UnmountVolumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnmountVolume not implemented")
 }
 func (UnimplementedPosCliServer) SetVolumeProperty(context.Context, *SetVolumePropertyRequest) (*SetVolumePropertyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetVolumeProperty not implemented")
@@ -722,6 +764,24 @@ func _PosCli_SetTelemetryProperty_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PosCliServer).SetTelemetryProperty(ctx, req.(*SetTelemetryPropertyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_GetTelemetryProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTelemetryPropertyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).GetTelemetryProperty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/GetTelemetryProperty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).GetTelemetryProperty(ctx, req.(*GetTelemetryPropertyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1284,6 +1344,42 @@ func _PosCli_CreateVolume_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PosCli_DeleteVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).DeleteVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/DeleteVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).DeleteVolume(ctx, req.(*DeleteVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_UnmountVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnmountVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).UnmountVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/UnmountVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).UnmountVolume(ctx, req.(*UnmountVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PosCli_SetVolumeProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetVolumePropertyRequest)
 	if err := dec(in); err != nil {
@@ -1336,6 +1432,10 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetTelemetryProperty",
 			Handler:    _PosCli_SetTelemetryProperty_Handler,
+		},
+		{
+			MethodName: "GetTelemetryProperty",
+			Handler:    _PosCli_GetTelemetryProperty_Handler,
 		},
 		{
 			MethodName: "ResetEventWrr",
@@ -1460,6 +1560,14 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateVolume",
 			Handler:    _PosCli_CreateVolume_Handler,
+		},
+		{
+			MethodName: "DeleteVolume",
+			Handler:    _PosCli_DeleteVolume_Handler,
+		},
+		{
+			MethodName: "UnmountVolume",
+			Handler:    _PosCli_UnmountVolume_Handler,
 		},
 		{
 			MethodName: "SetVolumeProperty",

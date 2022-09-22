@@ -127,6 +127,10 @@ type SubSystemParam struct {
 	ALLOWANYHOST       bool   `json:"allow_any_host,omitempty"`
 	ANAREPORTING       bool   `json:"ana_reporting,omitempty"`
 }
+type SetTelemetryPropertyRequest_Param struct {
+    PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
+}
+
 type CreateDeviceRequest_Param struct {
 	Name      string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	NumBlocks uint32 `protobuf:"varint,2,opt,name=numBlocks,proto3" json:"numBlocks,omitempty"`

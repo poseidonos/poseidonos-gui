@@ -356,6 +356,12 @@ func (p *POSGRPCManager) SetTelemetryProperty(param *pb.SetTelemetryPropertyRequ
 	return grpc.SendSetTelemetryPropertyRpc(p.connection, req)
 }
 
+func (p *POSGRPCManager) GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, error) {
+    command := "GETTELEMETRYPROPERTY"
+    req := &pb.GetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+    return grpc.SendGetTelemetryProperty(p.connection, req)
+}
+
 func (p *POSGRPCManager) RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error) {
 	command := "REBUILDARRAY"
 	req := &pb.RebuildArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}

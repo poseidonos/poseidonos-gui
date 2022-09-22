@@ -947,6 +947,11 @@ modules:
         message: json doc is not object
         problem: request get value & validate value after file open fail, read error & format error
         solution:
+      - code: 2925
+        level: Error
+        message: telemetry property file path does not exist
+        problem:
+        solution:
   - name: "Mapper"
     count: 200
     idStart: 3000
