@@ -67,10 +67,14 @@ func CallGetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMan
 
 func CallReadTelemetryProperty(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	res, _ := CallGetTelemetryProperty(xrId, param, posMngr)
+	status := false
 	if res.Result.Status.Code == 0 && res.Result.Status.EVENTNAME == "SUCCESS" {
 		data := res.Result.Data.(map[string]interface{})
+		if _, ok := data["status"]; ok {
+			status = data["status"].(bool)
+		}
 		if _, ok := data["publicationListPath"]; ok {
-			return ReadYAML(data["publicationListPath"].(string))
+			return ReadYAML(data["publicationListPath"].(string), status)
 		}
 	}
 	param = model.SetTelemetryPropertyRequest_Param{PublicationListPath: globals.Telemetry_config_path}
@@ -79,11 +83,11 @@ func CallReadTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMa
 	if setErr != nil {
 		log.Errorf(setPropertyFailureMsg, GetFuncName(1), setErr)
 	}
-	return ReadYAML(globals.Telemetry_config_path)
+	return ReadYAML(globals.Telemetry_config_path, status)
 
 }
 
-func ReadYAML(path string) (model.Response, error) {
+func ReadYAML(path string, status bool) (model.Response, error) {
 	res := model.Response{}
 	if _, err := os.Stat(path); err != nil {
 		res.Result.Status, _ = utils.GetStatusInfo(2925)
@@ -105,6 +109,7 @@ func ReadYAML(path string) (model.Response, error) {
 	if err != nil {
 		res.Result.Status, _ = utils.GetStatusInfo(2922)
 	} else {
+		(*resData)["telemetryStatus"] = map[string]interface{}{"status": status}
 		res.Result.Data = resData
 	}
 

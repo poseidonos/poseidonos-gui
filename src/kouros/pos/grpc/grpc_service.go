@@ -186,28 +186,27 @@ func SendSetTelemetryPropertyRpc(posConn POSGRPCConnection, req *pb.SetTelemetry
 }
 
 func SendGetTelemetryProperty(posConn POSGRPCConnection, req *pb.GetTelemetryPropertyRequest) (*pb.GetTelemetryPropertyResponse, error) {
-    conn, err := dialToCliServer(posConn)
-    if err != nil {
-        log.Print(err)
-        errToReturn := errors.New(dialErrorMsg)
-        return nil, errToReturn
-    }
-    defer conn.Close()
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
 
-    c := pb.NewPosCliClient(conn)
-    ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
-    defer cancel()
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
 
-    res, err := c.GetTelemetryProperty(ctx, req)
+	res, err := c.GetTelemetryProperty(ctx, req)
 
-    if err != nil {
-        log.Print("error: ", err.Error())
-        return nil, err
-    }
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
 
-    return res, err
+	return res, err
 }
-
 
 func SendResetEventWrrPolicyRpc(posConn POSGRPCConnection, req *pb.ResetEventWrrRequest) (*pb.ResetEventWrrResponse, error) {
 	conn, err := dialToCliServer(posConn)
@@ -905,6 +904,50 @@ func SendVolumeProperty(posConn POSGRPCConnection, req *pb.SetVolumePropertyRequ
 	defer cancel()
 
 	res, err := c.SetVolumeProperty(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendDeleteVolume(posConn POSGRPCConnection, req *pb.DeleteVolumeRequest) (*pb.DeleteVolumeResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.DeleteVolume(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendUnmountVolume(posConn POSGRPCConnection, req *pb.UnmountVolumeRequest) (*pb.UnmountVolumeResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.UnmountVolume(ctx, req)
 	if err != nil {
 		log.Print("error: ", err.Error())
 		return nil, err

@@ -357,9 +357,9 @@ func (p *POSGRPCManager) SetTelemetryProperty(param *pb.SetTelemetryPropertyRequ
 }
 
 func (p *POSGRPCManager) GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, error) {
-    command := "GETTELEMETRYPROPERTY"
-    req := &pb.GetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-    return grpc.SendGetTelemetryProperty(p.connection, req)
+	command := "GETTELEMETRYPROPERTY"
+	req := &pb.GetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
+	return grpc.SendGetTelemetryProperty(p.connection, req)
 }
 
 func (p *POSGRPCManager) RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error) {
@@ -372,4 +372,16 @@ func (p *POSGRPCManager) VolumeProperty(param *pb.SetVolumePropertyRequest_Param
 	command := "SETVOLUMEPROPERTY"
 	req := &pb.SetVolumePropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
 	return grpc.SendVolumeProperty(p.connection, req)
+}
+
+func (p *POSGRPCManager) DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.DeleteVolumeResponse, error) {
+	command := "DELETEVOLUME"
+	req := &pb.DeleteVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendDeleteVolume(p.connection, req)
+}
+
+func (p *POSGRPCManager) UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, error) {
+	command := "UNMOUNTVOLUME"
+	req := &pb.UnmountVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	return grpc.SendUnmountVolume(p.connection, req)
 }

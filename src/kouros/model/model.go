@@ -128,7 +128,7 @@ type SubSystemParam struct {
 	ANAREPORTING       bool   `json:"ana_reporting,omitempty"`
 }
 type SetTelemetryPropertyRequest_Param struct {
-    PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
+	PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
 }
 
 type CreateDeviceRequest_Param struct {

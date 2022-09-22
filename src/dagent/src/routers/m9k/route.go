@@ -277,7 +277,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.DELETE("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.DeleteVolume, param)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallDeleteVolume, param, posMngr)
 		})
 		iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
@@ -296,7 +296,7 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.UnmountVolume, param)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallUnmountVolume, param, posMngr)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName/qos", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")

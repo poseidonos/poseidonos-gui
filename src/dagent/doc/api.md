@@ -28,8 +28,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [D-Agent](#d-agent)
 
-  * [HEARTBEAT](#1-heartbeat)
-  * [VERSION](#2-version)
+  * [VERSION](#1-version)
 
 * [Developer](#developer)
 
@@ -80,9 +79,10 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [Telemetry](#telemetry)
 
-  * [SET TELEMETRY PROPERTY](#1-set-telemetry-property)
-  * [START TELEMETRY](#2-start-telemetry)
-  * [STOP TELEMETRY](#3-stop-telemetry)
+  * [GET TELEMETRY PROPERTIES PATH](#1-get-telemetry-properties-path)
+  * [SET TELEMETRY PROPERTIES PATH](#2-set-telemetry-properties-path)
+  * [START TELEMETRY](#3-start-telemetry)
+  * [STOP TELEMETRY](#4-stop-telemetry)
 
 * [Volume](#volume)
 
@@ -1752,7 +1752,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/replace
 {
     "param": {
         "device":"unvme-ns-4"
-        
     }
 }
 ```
@@ -1973,112 +1972,7 @@ The most biz-logic executes in D-Agent own module
 
 
 
-### 1. HEARTBEAT
-
-
-It will check POS status.
-D-Agent holds cached status of POS for 4sec.
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/heartbeat
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "D-Agent",
-            "code": 12010,
-            "level": "ERROR",
-            "description": "one of iBoF service is dead",
-            "posDescription": "one of iBoF service is dead"
-        }
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 1597908627,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        }
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 2. VERSION
+### 1. VERSION
 
 
 
@@ -6574,7 +6468,81 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 1. SET TELEMETRY PROPERTY
+### 1. GET TELEMETRY PROPERTIES PATH
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/telemetry/properties/path
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "22d7d70e-3a9c-11ed-9d8b-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "publicationListPath": "/usr/local/dagent/telemetry_config.yaml",
+            "status": true
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 2. SET TELEMETRY PROPERTIES PATH
 
 
 
@@ -6583,7 +6551,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 ```bash
 Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/telemetry/property
+URL: http://{{host}}/api/ibofos/v1/telemetry/properties/path
 ```
 
 
@@ -6603,7 +6571,7 @@ URL: http://{{host}}/api/ibofos/v1/telemetry/property
 ```js        
 {
     "param": {
-        "publicationListPath": "/home/loki/test.yaml"
+        "publicationListPath": "/usr/local/dagent/telemetry_config.yaml"
     }
 }
 ```
@@ -6656,7 +6624,7 @@ URL: http://{{host}}/api/ibofos/v1/telemetry/property
 
 
 
-### 2. START TELEMETRY
+### 3. START TELEMETRY
 
 
 
@@ -6726,7 +6694,7 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 
 
 
-### 3. STOP TELEMETRY
+### 4. STOP TELEMETRY
 
 
 
@@ -8510,4 +8478,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-20 02:10:38 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-23 00:55:29 by [docgen](https://github.com/thedevsaddam/docgen)

@@ -170,11 +170,15 @@ type POSManager interface {
 	// The function takes a protobuf format as parameter and returns response in protobuf format
 	SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error)
 
-    // Get the property of telemetry configuration
-    // The function returns response in protobuf format
-    GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, error)
+	// Get the property of telemetry configuration
+	// The function returns response in protobuf format
+	GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, error)
 
 	RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error)
 
 	VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error)
+
+	DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.DeleteVolumeResponse, error)
+
+	UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, error)
 }
