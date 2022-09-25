@@ -128,6 +128,9 @@ const styles = (theme) => {
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
       flexWrap: "wrap",
+      [theme.breakpoints.up("xl")]: {
+        height: 122,
+      },
       [theme.breakpoints.down("md")]: {
         height: "auto",
       },
@@ -142,11 +145,14 @@ const styles = (theme) => {
       position: "relative",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
+      [theme.breakpoints.up("xl")]: {
+        height: 122,
+      },
       [theme.breakpoints.down("md")]: {
-        height: 136,
+        height: 122,
       },
       [theme.breakpoints.down("xs")]: {
-        height: 160,
+        height: 148,
       },
     },
     storageGraph: {
