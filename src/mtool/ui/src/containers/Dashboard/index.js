@@ -35,26 +35,30 @@ import io from "socket.io-client";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import "react-dropdown/style.css";
+import "react-table/react-table.css";
+import "core-js/es/number";
+import "core-js/es/array";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton } from "@material-ui/core";
+import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import "react-table/react-table.css";
-import "core-js/es/number";
-import "core-js/es/array";
-import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom } from "@material-ui/core";
-import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
+import { Edit } from "@material-ui/icons";
+
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import * as actionTypes from "../../store/actions/actionTypes";
-import * as actionCreators from "../../store/actions/exportActionCreators";
 import Legend from "../../components/Legend";
 import LightTooltip from "../../components/LightTooltip";
 import Dialog from "../../components/Dialog";
+import TelemetryForm from "../../components/TelemetryForm";
+import * as actionTypes from "../../store/actions/actionTypes";
+import * as actionCreators from "../../store/actions/exportActionCreators";
+
 
 const styles = (theme) => {
   return {
@@ -76,7 +80,7 @@ const styles = (theme) => {
     pageHeader: customTheme.page.title,
     topGrid: {
       marginBottom: "-8px",
-      marginTop: theme.spacing(1),
+      marginTop: "2px",
     },
     metricsPaper: {
       display: "flex",
@@ -119,7 +123,7 @@ const styles = (theme) => {
       color: "rgba(125, 106, 181, 1)",
     },
     posInfoPaper: {
-      height: 122,
+      height: 128,
       display: "flex",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
@@ -134,12 +138,12 @@ const styles = (theme) => {
       justifyContent: "center",
     },
     storageDetailsPaper: {
-      height: 122,
+      height: 128,
       position: "relative",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
       [theme.breakpoints.down("md")]: {
-        height: 140,
+        height: 136,
       },
       [theme.breakpoints.down("xs")]: {
         height: 160,
@@ -157,7 +161,7 @@ const styles = (theme) => {
       width: "100%",
       margin: "auto",
       marginTop: "5px",
-      height: 38,
+      height: 32,
       overflow: "hidden",
       position: "relative"
     },
@@ -498,15 +502,15 @@ class Dashboard extends Component {
                       readValue={this.props.readLatency}
                     />
                   </Grid>
-                  <Grid sm={12} md={12} lg={4} xl={3} item>
+                  <Grid sm={12} md={12} lg={6} xl={3} item>
                     <Paper spacing={1} className={classes.posInfoPaper}>
                       <Grid item container xs={12} justifyContent="space-between">
                         <Typography className={classes.cardHeader}>
                           IP Info
                         </Typography>
                       </Grid>
-                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
-                        <Grid item xs={4}>
+                      <Grid item container sm={12} md={5} lg={12} className={classes.ipContainer}>
+                        <Grid item xs={4} md={5} lg={4}>
                           <Typography
                             align="center"
                             className={`${classes.ipText} ${classes.ipBorder}`}
@@ -516,7 +520,7 @@ class Dashboard extends Component {
                             PoseidonOS
                           </Typography>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} md={7} lg={8}>
                           <Typography
                             variant="h6"
                             color="secondary"
@@ -527,7 +531,7 @@ class Dashboard extends Component {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
+                      <Grid item container sm={12} md={7} lg={12} className={classes.ipContainer}>
                         <Grid item xs={4}>
                           <Typography
                             align="center"
@@ -535,22 +539,37 @@ class Dashboard extends Component {
                             color="primary"
                             variant="h6"
                           >
-                            Telemetry
+                            PrometheusDB
                           </Typography>
                         </Grid>
-                        <Grid item xs={8}>
-                          <Typography
-                            variant="h6"
-                            data-testid="telemetry-ip"
-                            className={classes.ipText}
-                          >
-                            {this.props.telemetryIP && this.props.telemetryPort ? `${this.props.telemetryIP} : ${this.props.telemetryPort}` : "-"}
-                          </Typography>
+                        <Grid item xs={8} container alignConten="center" wrap="nowrap">
+                          {this.props.telemetryIP && this.props.telemetryPort ?
+                            (
+                              <>
+                                <Typography
+                                  variant="h6"
+                                  data-testid="telemetry-ip"
+                                  className={classes.ipText}
+                                >
+                                  {this.props.telemetryIP}:{this.props.telemetryPort}
+                                  &nbsp;&nbsp;&nbsp;
+                                </Typography>
+                                <IconButton size="small" onClick={() => this.props.setShowConfig(true)}>
+                                  <Edit />
+                                </IconButton>
+                              </>
+                            ) :
+                            (
+                              <Button variant="outlined" color="secondary" onClick={() => this.props.setShowConfig(true)}>
+                                Add Telemetry API
+                              </Button>
+                            )
+                          }
                         </Grid>
                       </Grid>
                     </Paper>
                   </Grid>
-                  <Grid xs={12} md={12} lg={8} xl={3} item>
+                  <Grid xs={12} md={12} lg={6} xl={3} item>
                     <Paper
                       spacing={1}
                       className={`${classes.storageDetailsPaper}`}
@@ -559,13 +578,6 @@ class Dashboard extends Component {
                         <Typography className={classes.cardHeader}>
                           Storage Details
                         </Typography>
-                        {this.props.arraySize !== 0 &&
-                          (
-                            <Typography variant="body2" color="primary">
-                              As of {this.props.lastUpdateTime}
-                            </Typography>
-                          )
-                        }
                       </Grid>
                       <Grid
                         container
@@ -720,9 +732,10 @@ class Dashboard extends Component {
             title="Create Volume"
             description={this.props.errorMsg}
             type="alert"
-            open={this.props.showTelemetryAlert}
+            open={this.props.isConfigured && this.props.showTelemetryAlert}
             handleClose={() => this.props.closeTelemetryAlert()}
           />
+          <TelemetryForm />
         </div>
       </ThemeProvider>
     );
@@ -761,12 +774,13 @@ const mapStateToProps = (state) => {
     latencyArcsLength: state.dashboardReducer.latencyArcsLength,
     telemetryIP: state.authenticationReducer.telemetryIP,
     telemetryPort: state.authenticationReducer.telemetryPort,
+    isConfigured: state.authenticationReducer.isConfigured,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCheckTelemetry: () => dispatch({ type: actionTypes.SAGA_FETCH_CHECK_TELEMETRY }),
-    closeTelemetryAlert: () => dispatch({ type: actionTypes.CLOSE_TELEMETRY_ALERT}),
+    closeTelemetryAlert: () => dispatch({ type: actionTypes.CLOSE_TELEMETRY_ALERT }),
     enableFetchingAlerts: (flag) => dispatch(actionCreators.enableFetchingAlerts(flag)),
     getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
@@ -774,6 +788,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchPerformance: () => dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
     fetchIpAndMacInfo: () => dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
     selectArray: (array) => dispatch({ type: actionTypes.SELECT_ARRAY, array }),
+    setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload))
   };
 };
 export default withStyles(styles)(

@@ -32,6 +32,20 @@
 
 import * as actionTypes from './actionTypes';
 
+export const setIsSavingConfig = payload => {
+  return {
+    type: actionTypes.SET_IS_SAVING_CONFIG,
+    payload
+  }
+}
+
+export const setShowConfig = payload => {
+  return {
+    type: actionTypes.SET_SHOW_CONFIG,
+    payload
+  }
+}
+
 export const setIsConfigured = payload => {
   return {
     type: actionTypes.SET_IS_CONFIGURED,
