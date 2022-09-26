@@ -243,9 +243,9 @@ class Authentication extends Component {
     let errorDesc = "";
 
     if (!(IP_REGEX.test(this.state.telemetryIP)))
-      errorDesc = "Please Enter a valid IP for PrometheusDB API";
+      errorDesc = "Please Enter a valid IP for Telemetry API";
     else if (Number(this.state.telemetryPort) <= 0 || Number(this.state.telemetryPort) > 65535)
-      errorDesc = "Please Enter a valid Port for PrometheusDB API";
+      errorDesc = "Please Enter a valid Port for Telemetry API";
     else
       isError = false;
 
@@ -301,7 +301,7 @@ class Authentication extends Component {
                 >
                   <h1 className={classes.header}>Configurations</h1>
                   <form className={classes.form} onSubmit={this.handleConfigSubmit}>
-                    <h3 className={classes.header}>PrometheusDB API</h3>
+                    <h3 className={classes.header}>Telemetry API</h3>
                     <div className={classes.apiForm}>
                       <Input
                         required
@@ -472,7 +472,7 @@ class Authentication extends Component {
                   </form>
                   <div className={classes.configDetails}>
                     <div className={classes.apiDetails}>
-                      <Typography>PrometheusDB API</Typography>
+                      <Typography>Telemetry API</Typography>
                       {this.props.isConfigured ?
                         <Typography>{this.props.telemetryIP}<b>:</b>{this.props.telemetryPort}</Typography> :
                         <Typography>Not Configured !</Typography>

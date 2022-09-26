@@ -89,9 +89,9 @@ const TelemetryForm = (props) => {
         let errorDesc = "";
 
         if (!(IP_REGEX.test(telemetryIP)))
-            errorDesc = "Please Enter a valid IP for PrometheusDB API";
+            errorDesc = "Please Enter a valid IP for Telemetry API";
         else if (Number(telemetryPort) <= 0 || Number(telemetryPort) > 65535)
-            errorDesc = "Please Enter a valid Port for PrometheusDB API";
+            errorDesc = "Please Enter a valid Port for Telemetry API";
         else
             isError = false;
 
@@ -110,7 +110,7 @@ const TelemetryForm = (props) => {
     return (
         <ThemeProvider theme={PageTheme}>
             <Popup
-                title="Configure PrometheusDB API"
+                title="Configure Telemetry API"
                 open={showConfig}
                 close={() => setShowConfig(false)}
                 maxWidth="xs"

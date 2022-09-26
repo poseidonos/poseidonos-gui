@@ -515,8 +515,8 @@ class Dashboard extends Component {
                           IP Info
                         </Typography>
                       </Grid>
-                      <Grid item container sm={12} md={5} lg={12} className={classes.ipContainer}>
-                        <Grid item xs={4} md={5} lg={4}>
+                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
+                        <Grid item xs={4}>
                           <Typography
                             align="center"
                             className={`${classes.ipText} ${classes.ipBorder}`}
@@ -526,7 +526,7 @@ class Dashboard extends Component {
                             PoseidonOS
                           </Typography>
                         </Grid>
-                        <Grid item xs={8} md={7} lg={8}>
+                        <Grid item xs={8}>
                           <Typography
                             variant="h6"
                             color="secondary"
@@ -537,7 +537,7 @@ class Dashboard extends Component {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid item container sm={12} md={7} lg={12} className={classes.ipContainer}>
+                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
                         <Grid item xs={4}>
                           <Typography
                             align="center"
@@ -545,7 +545,7 @@ class Dashboard extends Component {
                             color="primary"
                             variant="h6"
                           >
-                            PrometheusDB
+                            Telemetry
                           </Typography>
                         </Grid>
                         <Grid item xs={8} container alignConten="center" wrap="nowrap">
@@ -612,7 +612,7 @@ class Dashboard extends Component {
                               </div>
                               <div style={storageFreeStyle} />
                             </div>
-                            <Grid container xs={12} wrap="wrap" justifyContent="flex-end">
+                            <Grid container wrap="wrap" justifyContent="flex-end">
                               <Legend
                                 bgColor="rgba(0, 186, 0, 0.6)"
                                 title={`Data Written: ${formatBytes(
