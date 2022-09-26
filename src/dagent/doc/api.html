@@ -913,9 +913,9 @@ http://{{host}}/api/ibofos/v1/devel/event-wrr/update</h4></a></div><div id=colla
 http://{{host}}/api/ibofos/v1/device</h4></a></div><div id=collapse-Devices-CREATEDEVICE class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
 &#34;param&#34;: {
 &#34;name&#34;: &#34;uram3&#34;,
-&#34;num_blocks&#34;: 8388608,
-&#34;block_size&#34;: 512,
-&#34;dev_type&#34;: &#34;uram&#34;,
+&#34;numBlocks&#34;: 8388608,
+&#34;blockSize&#34;: 512,
+&#34;devType&#34;: &#34;uram&#34;,
 &#34;numa&#34;: 0
 }
 }</span><div class=clearfix></div><select class=resp-selector>
@@ -4361,4 +4361,4 @@ if(IsJsonString(html)){var obj=JSON.parse(html);var formattedJson=JSON.stringify
 function IsJsonString(str){try{JSON.parse(str);}catch(e){return false;}
 return true;}
 String.prototype.replaceAll=function(replaceThis,withThis){var re=new RegExp(RegExp.quote(replaceThis),"g");return this.replace(re,withThis);};RegExp.quote=function(str){return str.replace(/([.?*+^$[\]\\(){}-])/g,"\\$1");};function syntaxHighlight(json){json=json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){var cls='number';if(/^"/.test(match)){if(/:$/.test(match)){cls='key';}else{cls='string';}}else if(/true|false/.test(match)){cls='boolean';}else if(/null/.test(match)){cls='null';}
-return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2022-09-23 00:55:29 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
+return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2022-09-27 00:11:18 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>

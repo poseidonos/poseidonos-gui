@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "39c0c101-09fd-4755-9779-e23ab5061b43",
+		"_postman_id": "a8abb1d9-ff2b-48bf-b74a-63315e8d0609",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -2045,7 +2045,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"uram3\",\r\n        \"num_blocks\": 8388608,\r\n        \"block_size\": 512,\r\n        \"dev_type\": \"uram\",\r\n        \"numa\": 0\r\n    }\r\n}"
+							"raw": "{\r\n    \"param\": {\r\n        \"name\": \"uram3\",\r\n        \"numBlocks\": 8388608,\r\n        \"blockSize\": 512,\r\n        \"devType\": \"uram\",\r\n        \"numa\": 0\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/api/ibofos/v1/device",

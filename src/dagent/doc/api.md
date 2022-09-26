@@ -2427,9 +2427,9 @@ URL: http://{{host}}/api/ibofos/v1/device
 {
     "param": {
         "name": "uram3",
-        "num_blocks": 8388608,
-        "block_size": 512,
-        "dev_type": "uram",
+        "numBlocks": 8388608,
+        "blockSize": 512,
+        "devType": "uram",
         "numa": 0
     }
 }
@@ -8478,4 +8478,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-23 00:55:29 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-27 00:11:18 by [docgen](https://github.com/thedevsaddam/docgen)
