@@ -1223,7 +1223,7 @@
 					]
 				},
 				{
-					"name": "SYSTEMPROPERTY",
+					"name": "GET SYSTEMPROPERTY",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1356,7 +1356,7 @@
 					]
 				},
 				{
-					"name": "SYSTEMPROPERTY",
+					"name": "SET SYSTEMPROPERTY",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1401,7 +1401,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"medium\"\r\n    }\r\n}"
+							"raw": "{\r\n    \"param\": {\r\n        \"level\": \"medium\"\r\n    }\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://{{host}}/api/ibofos/v1/system/property",
