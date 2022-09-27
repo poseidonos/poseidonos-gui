@@ -38,6 +38,8 @@ export const initialState = {
   telemetryPort: '',
   isConfigured: false,
   configurationFailed: false,
+  showConfig: false,
+  isSavingConfig: false,
   username: '',
   password: '',
   loginFailed: false,
@@ -46,6 +48,19 @@ export const initialState = {
 
 const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_IS_SAVING_CONFIG: {
+      return {
+        ...state,
+        isSavingConfig: action.payload
+      }
+    }
+    case actionTypes.SET_SHOW_CONFIG: {
+      return {
+        ...state,
+        showConfig: action.payload,
+        configurationFailed: false,
+      }
+    }
     case actionTypes.SET_IS_CONFIGURED: {
       if (action.payload.isConfigured) {
         return {

@@ -37,8 +37,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"io"
-	"pnconnector/src/log"
-	"pnconnector/src/routers/m9k/model"
+	"kouros/log"
+	"kouros/model"
 )
 
 func CheckBody(ctx *gin.Context) {

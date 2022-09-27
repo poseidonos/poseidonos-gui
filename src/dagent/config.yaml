@@ -5,6 +5,7 @@ server:
   ibof:
     ip: 127.0.0.1
     port: 18716
+    grpc_port: 50055
     target_address: 127.0.0.1
     transport_type: "tcp"
     buf_cache_size: 64
@@ -16,6 +17,7 @@ server:
     mn: "IBOF_VOLUME_EEEXTENSION"
     max_namespaces: 256
     allow_any_host: true
+    ana_reporting: true
     uram1: "uram0"
     uram2: "uram1"
     num_blocks: 8388608

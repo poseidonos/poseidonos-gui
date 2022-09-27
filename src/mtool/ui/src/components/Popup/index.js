@@ -38,7 +38,7 @@ const Popup = (props) => {
   return (
     <Dialog
       open={props.open}
-      maxWidth="sm"
+      maxWidth={props.maxWidth ? props.maxWidth : "sm"}
       fullWidth
     >
       <DialogTitle

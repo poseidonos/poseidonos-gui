@@ -34,9 +34,9 @@ package bmc
 import (
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
+	"kouros/setting"
 	"net/http"
 	"net/http/httputil"
-	"pnconnector/src/setting"
 )
 
 func RedirectRedfish(ctx *gin.Context) {

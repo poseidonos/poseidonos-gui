@@ -6,7 +6,7 @@ if [ ! -d ../doc ]; then
     mkdir ../doc
 fi
 
-cp ../../pnconnector/resources/events.yaml ../doc
+cp ../../kouros/resources/events.yaml ../doc
 
 ./docgen_html.sh
 ./docgen_md.sh

@@ -30,57 +30,36 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package utils
 
 import (
-	"pnconnector/src/routers/m9k/api/magent/mocks"
-	"pnconnector/src/routers/m9k/model"
-	"reflect"
-	"testing"
+	"kouros/log"
+	"kouros/setting"
 )
 
-func TestGetNetDriver(t *testing.T) {
-	actualDBName := DBName
-	var tests = []struct {
-		input    model.MAgentParam
-		dbName   string
-		expected interface{}
-		err      error
-	}{
-		{
-			input:  model.MAgentParam{},
-			dbName: "poseidon",
-			expected: NetDriverFields{
-				{
-					Interface: "interface",
-					Driver:    "driver",
-				},
-			},
-			err: nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonQueryErr",
-			expected: []string{},
-			err:      nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonDataNil",
-			expected: []string{},
-			err:      nil,
-		},
-	}
-
-	IDBClient = mocks.MockInfluxClient{}
-	for _, test := range tests {
-		DBName = test.dbName
-		result, err := GetNetDriver(test.input)
-		output := result.Result.Data
-		if !reflect.DeepEqual(output, test.expected) || err != test.err {
-			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
-		}
-	}
-	DBName = actualDBName
-
+func PrintCurrentServerStatus() {
+	log.Info("\n" +
+		"\n                  #############" +
+		"\n               ####################" +
+		"\n            ##########################" +
+		"\n         ################################" +
+		"\n      ######################################" +
+		"\n      #####          D-Agent           #####" +
+		"\n      ######################################" +
+		"\n      #####----------------------------#####" +
+		"\n      #####      Config.json Info      #####" +
+		"\n      #####  D-Agent Port : " + setting.Config.Server.Dagent.Port + "       #####" +
+		"\n      #####  iBoFOS Host : " + setting.Config.Server.IBoF.IP + "   #####" +
+		"\n      #####  iBoFOS Port : " + setting.Config.Server.IBoF.Port + "       #####" +
+		"\n      #####----------------------------#####" +
+		"\n      #####                            #####" +
+		"\n      ####    Socket Connect Status     ####" +
+		"\n    ##### D-Agent Addr : " + setting.Config.DAgentSocketAddr + " #####" +
+		"\n  ####### iBoFOS Addr : " + setting.Config.IBoFOSSocketAddr + "  #######" +
+		"\n###########                            ###########" +
+		"\n##################################################" +
+		"\n        ##################################         " +
+		"\n        ##################################         " +
+		"\n        ##################################         " +
+		"\n        ##################################         ")
 }

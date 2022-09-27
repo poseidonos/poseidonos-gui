@@ -18,7 +18,9 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE ARRAY 1st ARRAY](#9-create-array-1st-array)
   * [CREATE ARRAY 2nd ARRAY](#10-create-array-2nd-array)
   * [DELETE ARRAY](#11-delete-array)
-  * [REMOVE DEVICE](#12-remove-device)
+  * [REBUILD ARRAY](#12-rebuild-array)
+  * [REMOVE DEVICE](#13-remove-device)
+  * [REPLACE DEVICE](#14-replace-device)
 
 * [Common](#common)
 
@@ -26,8 +28,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 
 * [D-Agent](#d-agent)
 
-  * [HEARTBEAT](#1-heartbeat)
-  * [VERSION](#2-version)
+  * [VERSION](#1-version)
 
 * [Developer](#developer)
 
@@ -57,39 +58,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [GET LOG INFO](#2-get-log-info)
   * [GET LOG LEVEL](#3-get-log-level)
   * [SET LOG LEVEL](#4-set-log-level)
-
-* [Metric](#metric)
-
-  * [CPU](#1-cpu)
-  * [CPU with PERIOD](#2-cpu-with-period)
-  * [MEMORY](#3-memory)
-  * [MEMORY with PERIOD](#4-memory-with-period)
-  * [NETWORK](#5-network)
-  * [NETWORK with PERIOD](#6-network-with-period)
-  * [READ BW](#7-read-bw)
-  * [READ BW with PERIOD](#8-read-bw-with-period)
-  * [READ IOPS](#9-read-iops)
-  * [READ IOPS with PERIOD](#10-read-iops-with-period)
-  * [READ LATENCY](#11-read-latency)
-  * [READ LATENCY with PERIOD](#12-read-latency-with-period)
-  * [VOL READ BW](#13-vol-read-bw)
-  * [VOL READ BW with PERIOD](#14-vol-read-bw-with-period)
-  * [VOL READ IOPS](#15-vol-read-iops)
-  * [VOL READ IOPS with PERIOD](#16-vol-read-iops-with-period)
-  * [VOL READ LATENCY](#17-vol-read-latency)
-  * [VOL READ LATENCY with PERIOD](#18-vol-read-latency-with-period)
-  * [VOL WRITE BW](#19-vol-write-bw)
-  * [VOL WRITE BW with PERIOD](#20-vol-write-bw-with-period)
-  * [VOL WRITE IOPS](#21-vol-write-iops)
-  * [VOL WRITE IOPS with PERIOD](#22-vol-write-iops-with-period)
-  * [VOL WRITE LATENCY](#23-vol-write-latency)
-  * [VOL WRITE LATENCY with PERIOD](#24-vol-write-latency-with-period)
-  * [WRITE BW](#25-write-bw)
-  * [WRITE BW with PERIOD](#26-write-bw-with-period)
-  * [WRITE IOPS](#27-write-iops)
-  * [WRITE IOPS with PERIOD](#28-write-iops-with-period)
-  * [WRITE LATENCY](#29-write-latency)
-  * [WRITE LATENCY with PERIOD](#30-write-latency-with-period)
+  * [SET LOG PREFERENCE](#5-set-log-preference)
 
 * [Subsystem](#subsystem)
 
@@ -98,17 +67,22 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE TRANSPORT](#3-create-transport)
   * [DELETE SUBSYSTEM](#4-delete-subsystem)
   * [LIST SUBSYSTEM](#5-list-subsystem)
+  * [SUBSYSTEM INFO](#6-subsystem-info)
 
 * [System](#system)
 
   * [EXITIBOFOS](#1-exitibofos)
   * [RUNIBOFOS](#2-runibofos)
-  * [iBOFOSINFO](#3-ibofosinfo)
+  * [SYSTEMPROPERTY](#3-systemproperty)
+  * [SYSTEMPROPERTY](#4-systemproperty)
+  * [iBOFOSINFO](#5-ibofosinfo)
 
 * [Telemetry](#telemetry)
 
-  * [START TELEMETRY](#1-start-telemetry)
-  * [STOP TELEMETRY](#2-stop-telemetry)
+  * [GET TELEMETRY PROPERTIES PATH](#1-get-telemetry-properties-path)
+  * [SET TELEMETRY PROPERTIES PATH](#2-set-telemetry-properties-path)
+  * [START TELEMETRY](#3-start-telemetry)
+  * [STOP TELEMETRY](#4-stop-telemetry)
 
 * [Volume](#volume)
 
@@ -122,8 +96,9 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [QOS LIST VOLUME POLICIES](#8-qos-list-volume-policies)
   * [QOS RESET VOLUME POLICIES](#9-qos-reset-volume-policies)
   * [RENAME VOLUME](#10-rename-volume)
-  * [UNMOUNT VOLUME](#11-unmount-volume)
-  * [VOLUME INFO](#12-volume-info)
+  * [SET VOLUME PROPERTY](#11-set-volume-property)
+  * [UNMOUNT VOLUME](#12-unmount-volume)
+  * [VOLUME INFO](#13-volume-info)
 
 
 --------
@@ -260,19 +235,21 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "ee659f68-01a9-4e7b-928a-98c1cc08204f",
-    "lastSuccessTime": 1656017435,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "unvme-ns-9 has been added to POSArray successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -328,20 +305,22 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "01f9694d-27df-47de-9876-e5dd1e193368",
-    "lastSuccessTime": 1656017362,
+    "rid": "5758e612-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray information"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
-            "capacity": 3385669032346,
-            "create_datetime": "2022-06-24 02:17:35 +0530",
-            "data_raid": "RAID5",
+            "capacity": "3385669032346",
+            "createDatetime": "2022-09-18 23:26:05 +0530",
+            "dataRaid": "RAID5",
             "devicelist": [
                 {
                     "name": "uram0",
@@ -365,20 +344,18 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
                 }
             ],
             "gcMode": "none",
-            "index": 0,
-            "meta_raid": "RAID10",
+            "metaRaid": "RAID10",
             "name": "POSArray",
-            "rebuilding_progress": 0,
+            "rebuildingProgress": "0",
             "situation": "NORMAL",
             "state": "NORMAL",
-            "unique_id": 1933940387,
-            "update_datetime": "2022-06-24 02:18:00 +0530",
-            "used": 0,
-            "write_through_enabled": true
+            "uniqueId": 1458401891,
+            "updateDatetime": "2022-09-18 23:26:29 +0530",
+            "used": "5368709120"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -447,22 +424,23 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "5d23e81e-cb21-49e9-a73c-84ced5914397",
-    "lastSuccessTime": 1655976957,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray is mounted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
-
 ```
 
 
@@ -529,22 +507,23 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "5d23e81e-cb21-49e9-a73c-84ced5914397",
-    "lastSuccessTime": 1655976957,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray is mounted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
-
 ```
 
 
@@ -598,19 +577,21 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "4b6284c0-8f38-4705-9cac-892fcea3c5a8",
-    "lastSuccessTime": 1656005235,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray has been unmounted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -666,19 +647,21 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray1/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "36e6aae9-4d8b-45e7-81cf-318031dd7bf6",
-    "lastSuccessTime": 1656005277,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray1 has been unmounted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -734,45 +717,34 @@ URL: http://{{host}}/api/ibofos/v1/arrays
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d0d3a7d5-2b2c-4f72-be5b-82c4a5b2b3e8",
-    "lastSuccessTime": 1656004793,
+    "rid": "4f86cfb7-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of array and its devices "
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
             "arrayList": [
                 {
-                    "capacity": 3385669032346,
-                    "create_datetime": "2022-06-23 04:11:23 +0530",
-                    "data_raid": "RAID5",
-                    "index": 1,
+                    "capacity": "3385669032346",
+                    "createDatetime": "2022-09-18 23:26:05 +0530",
+                    "dataRaid": "RAID5",
                     "name": "POSArray",
                     "status": "Mounted",
-                    "update_datetime": "2022-06-23 11:41:59 +0530",
-                    "used": 15367929856,
-                    "write_through_enabled": false
-                },
-                {
-                    "capacity": 5078503548519,
-                    "create_datetime": "2022-06-23 04:05:11 +0530",
-                    "data_raid": "RAID0",
-                    "index": 0,
-                    "name": "POSArray1",
-                    "status": "Mounted",
-                    "update_datetime": "2022-06-23 11:42:55 +0530",
-                    "used": 0,
-                    "write_through_enabled": true
+                    "updateDatetime": "2022-09-18 23:26:29 +0530",
+                    "used": "5368709120"
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -816,8 +788,8 @@ URL: http://{{host}}/api/ibofos/v1/autoarray
         "name": "{{arrayName}}",
         "raidtype": "RAID5",
         "buffer": [{"deviceName": "uram0"}],
-        "num_data" : 3,
-        "num_spare" : 1
+        "numData" : 3,
+        "numSpare" : 1
     }
 }
 
@@ -918,19 +890,21 @@ URL: http://{{host}}/api/ibofos/v1/autoarray
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "5b603248-70b7-4933-9253-922cd5fdb938",
-    "lastSuccessTime": 1656017259,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray has been created successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -1129,19 +1103,21 @@ URL: http://{{host}}/api/ibofos/v1/array
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "cc3eed56-3478-4180-af0b-eac6b88f264f",
-    "lastSuccessTime": 1597819968,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray has been created successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -1265,19 +1241,21 @@ URL: http://{{host}}/api/ibofos/v1/array
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "cc3eed56-3478-4180-af0b-eac6b88f264f",
-    "lastSuccessTime": 1597829857,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray has been created successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -1408,19 +1386,21 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "40a9a0fd-58cb-4c19-be34-28443a58d0b9",
-    "lastSuccessTime": 1656005535,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "POSArray has been deleted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -1473,7 +1453,142 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-### 12. REMOVE DEVICE
+### 12. REBUILD ARRAY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 2321
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### I. Example Response: Fail - 2321
+```js
+{
+    "rid": "518fec1e-c61b-4478-ae0b-c15ab756cf83",
+    "lastSuccessTime": 1656017388,
+    "result": {
+        "status": {
+            "module": "MBR Manager",
+            "code": 2321,
+            "level": "ERROR",
+            "description": "mbr device already in array",
+            "posDescription": "failed to add unvme-ns-3 to POSArray"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc5"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "ee659f68-01a9-4e7b-928a-98c1cc08204f",
+    "lastSuccessTime": 1656017435,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "unvme-ns-9 has been added to POSArray successfully"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc5"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 13. REMOVE DEVICE
 
 
 
@@ -1581,15 +1696,164 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "de6d9ad6-198a-4abb-9070-49317bdd01cb",
-    "lastSuccessTime": 1656017473,
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 14. REPLACE DEVICE
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array/POSArray/replace
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "device":"unvme-ns-4"
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Fail - 2321
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### I. Example Response: Fail - 2321
+```js
+{
+    "rid": "518fec1e-c61b-4478-ae0b-c15ab756cf83",
+    "lastSuccessTime": 1656017388,
+    "result": {
+        "status": {
+            "module": "MBR Manager",
+            "code": 2321,
+            "level": "ERROR",
+            "description": "mbr device already in array",
+            "posDescription": "failed to add unvme-ns-3 to POSArray"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc5"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "spare": "{{deviceName4}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "ee659f68-01a9-4e7b-928a-98c1cc08204f",
+    "lastSuccessTime": 1656017435,
     "result": {
         "status": {
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
             "description": "Success",
-            "posDescription": "unvme-ns-3 is removed from POSArray successfully"
+            "posDescription": "unvme-ns-9 has been added to POSArray successfully"
         }
     },
     "info": {
@@ -1708,112 +1972,7 @@ The most biz-logic executes in D-Agent own module
 
 
 
-### 1. HEARTBEAT
-
-
-It will check POS status.
-D-Agent holds cached status of POS for 4sec.
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/dagent/v1/heartbeat
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "D-Agent",
-            "code": 12010,
-            "level": "ERROR",
-            "description": "one of iBoF service is dead",
-            "posDescription": "one of iBoF service is dead"
-        }
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 1597908627,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        }
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 2. VERSION
+### 1. VERSION
 
 
 
@@ -1972,19 +2131,21 @@ URL: http://{{host}}/api/ibofos/v1/devel/event-wrr/reset
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "129d72d0-aef4-4e11-92a8-733d40eff015",
-    "lastSuccessTime": 1656018489,
+    "rid": "cd796066-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "DONE"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2040,20 +2201,21 @@ URL: http://{{host}}/api/ibofos/v1/arrays/reset
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "8d1cabb5-8d5c-4633-8a62-09fe0d1cdfc7",
-    "lastSuccessTime": 1656018451,
+    "rid": "cd796066-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Reset mbr done"
-        },
-        "data": {}
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2109,19 +2271,21 @@ URL: http://{{host}}/api/ibofos/v1/devel/POSArray/rebuild
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "866036fb-65fc-46e9-ab31-7bafd4b7461b",
-    "lastSuccessTime": 1656018517,
+    "rid": "cd796066-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Rebuilding of 'POSArray' is stopped"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2203,19 +2367,21 @@ URL: http://{{host}}/api/ibofos/v1/devel/event-wrr/update
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d992e468-3375-402f-b1f9-199701f69006",
-    "lastSuccessTime": 1656018467,
+    "rid": "cd796066-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "DONE"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2261,9 +2427,9 @@ URL: http://{{host}}/api/ibofos/v1/device
 {
     "param": {
         "name": "uram3",
-        "num_blocks": 8388608,
-        "block_size": 512,
-        "dev_type": "uram",
+        "numBlocks": 8388608,
+        "blockSize": 512,
+        "devType": "uram",
         "numa": 0
     }
 }
@@ -2291,19 +2457,64 @@ URL: http://{{host}}/api/ibofos/v1/device
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "4095dbf5-2207-4b90-b678-3be9649ab728",
-    "lastSuccessTime": 1656005171,
+    "rid": "2f31d484-3778-11ed-a4ce-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Device has been created"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail
+```js
+{
+    "rid": "285dbeeb-3639-11ed-9382-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 1246,
+            "eventName": "CLI_CREATE_DEVICE_FAILURE",
+            "cause": "NONE",
+            "description": "Failed to create a device.",
+            "posDescription": "Failed to create a device.",
+            "solution": "Check out the PoseidonOS log."
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2359,283 +2570,283 @@ URL: http://{{host}}/api/ibofos/v1/devices
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "602b5562-f939-4797-a9f6-c157358019b9",
-    "lastSuccessTime": 1656017003,
+    "rid": "242cde52-3639-11ed-9382-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of existing devices"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
             "devicelist": [
                 {
-                    "addr": "0000:60:00.0",
+                    "address": "0000:60:00.0",
                     "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-0",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02505      ",
+                    "serialNumber": "S439NA0MB02505      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:61:00.0",
+                    "address": "0000:61:00.0",
                     "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-1",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02476      ",
+                    "serialNumber": "S439NA0MB02476      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:62:00.0",
+                    "address": "0000:62:00.0",
                     "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-2",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02503      ",
+                    "serialNumber": "S439NA0MB02503      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:63:00.0",
+                    "address": "0000:63:00.0",
                     "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-3",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02514      ",
+                    "serialNumber": "S439NA0MB02514      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:64:00.0",
-                    "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "address": "0000:64:00.0",
+                    "class": "SYSTEM",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-4",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02492      ",
+                    "serialNumber": "S439NA0MB02492      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:65:00.0",
-                    "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "address": "0000:65:00.0",
+                    "class": "SYSTEM",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-5",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02473      ",
+                    "serialNumber": "S439NA0MB02473      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:66:00.0",
-                    "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "address": "0000:66:00.0",
+                    "class": "SYSTEM",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-6",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02490      ",
+                    "serialNumber": "S439NA0MB02490      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:67:00.0",
-                    "class": "ARRAY",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "address": "0000:67:00.0",
+                    "class": "SYSTEM",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-7",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MA02562      ",
+                    "serialNumber": "S439NA0MA02562      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:68:00.0",
+                    "address": "0000:68:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-8",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02512      ",
+                    "serialNumber": "S439NA0MB02512      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:69:00.0",
+                    "address": "0000:69:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-9",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02477      ",
+                    "serialNumber": "S439NA0MB02477      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:6a:00.0",
+                    "address": "0000:6a:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-10",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02483      ",
+                    "serialNumber": "S439NA0MB02483      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:6b:00.0",
+                    "address": "0000:6b:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-11",
                     "numa": "0",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02482      ",
+                    "serialNumber": "S439NA0MB02482      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b1:00.0",
+                    "address": "0000:b1:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-12",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02465      ",
+                    "serialNumber": "S439NA0MB02465      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b2:00.0",
+                    "address": "0000:b2:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-13",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02494      ",
+                    "serialNumber": "S439NA0MB02494      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b3:00.0",
+                    "address": "0000:b3:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-14",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02484      ",
+                    "serialNumber": "S439NA0MB02484      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b4:00.0",
+                    "address": "0000:b4:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-15",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02468      ",
+                    "serialNumber": "S439NA0MB02468      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b5:00.0",
+                    "address": "0000:b5:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-16",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02466      ",
+                    "serialNumber": "S439NA0MB02466      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b6:00.0",
+                    "address": "0000:b6:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-17",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MA02555      ",
+                    "serialNumber": "S439NA0MA02555      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b7:00.0",
+                    "address": "0000:b7:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-18",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02491      ",
+                    "serialNumber": "S439NA0MB02491      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b8:00.0",
+                    "address": "0000:b8:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-19",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02464      ",
+                    "serialNumber": "S439NA0MB02464      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:b9:00.0",
+                    "address": "0000:b9:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-20",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02469      ",
+                    "serialNumber": "S439NA0MB02469      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:ba:00.0",
+                    "address": "0000:ba:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-21",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02513      ",
+                    "serialNumber": "S439NA0MB02513      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:bb:00.0",
+                    "address": "0000:bb:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-22",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02485      ",
+                    "serialNumber": "S439NA0MB02485      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "0000:bc:00.0",
+                    "address": "0000:bc:00.0",
                     "class": "SYSTEM",
-                    "mn": "SAMSUNG MZQLB1T9HAJR-00007              ",
+                    "modelNumber": "SAMSUNG MZQLB1T9HAJR-00007              ",
                     "name": "unvme-ns-23",
                     "numa": "1",
-                    "size": 1920383410176,
-                    "sn": "S439NA0MB02472      ",
+                    "serialNumber": "S439NA0MB02472      ",
+                    "size": "1920383410176",
                     "type": "SSD"
                 },
                 {
-                    "addr": "",
                     "class": "ARRAY",
-                    "mn": "uram0",
+                    "modelNumber": "uram0",
                     "name": "uram0",
                     "numa": "0",
-                    "size": 4294967296,
-                    "sn": "uram0",
+                    "serialNumber": "uram0",
+                    "size": "4294967296",
                     "type": "NVRAM"
                 },
                 {
-                    "addr": "",
-                    "class": "ARRAY",
-                    "mn": "uram1",
+                    "class": "SYSTEM",
+                    "modelNumber": "uram1",
                     "name": "uram1",
                     "numa": "0",
-                    "size": 4294967296,
-                    "sn": "uram1",
+                    "serialNumber": "uram1",
+                    "size": "4294967296",
                     "type": "NVRAM"
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2691,19 +2902,21 @@ URL: http://{{host}}/api/ibofos/v1/devices/all/scan
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "1216e563-72b6-4b37-8754-d71ea8949709",
-    "lastSuccessTime": 1656005959,
+    "rid": "2f31d484-3778-11ed-a4ce-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "device scanning complete"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -2759,45 +2972,49 @@ URL: http://{{host}}/api/ibofos/v1/devices/unvme-ns-0/smart
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "88b49d44-060f-40ad-a8b5-852dc0003f9b",
-    "lastSuccessTime": 1656016984,
+    "rid": "1edf45cc-3639-11ed-9382-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "DONE"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
-            "available_spare": "100%",
-            "available_spare_space": "OK",
-            "available_spare_threshold": "10%",
-            "controller_busy_time": "886m",
-            "critical_temperature_time": "0m",
-            "current_temperature": "41C",
-            "data_units_read": "37037838",
-            "data_units_written": "48416164",
-            "device_reliability": "OK",
-            "host_read_commands": "633772250",
-            "host_write_commands": "255651122",
-            "life_percentage_used": "0%",
-            "lifetime_error_log_entries": "139",
-            "power_cycles": "142",
-            "power_on_hours": "13434h",
-            "read_only": "No",
+            "availableSpare": "100%",
+            "availableSpareSpace": "OK",
+            "availableSpareThreshold": "10%",
+            "controllerBusyTime": "894",
+            "criticalTemperatureTime": "0m",
+            "currentTemperature": "45C",
+            "dataUnitsRead": "37403752",
+            "dataUnitsWritten": "48659276",
+            "deviceReliability": "OK",
+            "hostReadCommands": "648111034",
+            "hostWriteCommands": "277261928",
+            "lifePercentageUsed": "0%",
+            "lifetimeErrorLogEntries": "139",
+            "powerCycles": "143",
+            "powerOnHours": "15481",
+            "readOnly": "No",
             "temperature": "OK",
-            "temperature_sensor1": "41C",
-            "temperature_sensor2": "48C",
-            "temperature_sensor3": "55C",
-            "unrecoverable_media_errors": "0",
-            "unsafe_shutdowns": "122",
-            "volatile_memory_backup": "OK",
-            "warning_temperature_time": "0m"
+            "temperatureSensor": [
+                "45C",
+                "52C",
+                "60C"
+            ],
+            "unrecoverableMediaErrors": "0",
+            "unsafeShutdowns": "123",
+            "volatileMemoryBackup": "OK",
+            "warningTemperatureTime": "0m"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -4662,6 +4879,52 @@ URL: http://{{host}}/api/ibofos/v1/logger/filter
 
 
 
+##### II. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Success
+```js
+{
+    "rid": "f9b2d55f-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "level": "debug"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
 ### 2. GET LOG INFO
 
 
@@ -4706,28 +4969,28 @@ URL: http://{{host}}/api/ibofos/v1/logger/info
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "81d1c6ed-0249-4eb4-a03f-6dca10dbafd1",
-    "lastSuccessTime": 1656016204,
+    "rid": "e4aa4faf-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "ibofs logger info"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
-            "filter_enabled": 0,
-            "logfile_rotation_count": 20,
-            "logfile_size_in_mb": 50,
-            "major_log_path": "/var/log/pos/pos_major.log",
-            "min_allowable_log_level": "debug",
-            "minor_log_path": "/var/log/pos/pos.log",
-            "structured_logging": false
+            "logfileRotationCount": 20,
+            "logfileSizeInMb": "50",
+            "majorLogPath": "/var/log/pos/pos_major.log",
+            "minAllowableLogLevel": "info",
+            "minorLogPath": "/var/log/pos/pos.log"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -4783,22 +5046,24 @@ URL: http://{{host}}/api/ibofos/v1/logger/level
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "2fe16fb7-f27d-4e9a-b872-6b5fc4dc620e",
-    "lastSuccessTime": 1656018594,
+    "rid": "f9b2d55f-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "current log level"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
             "level": "debug"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -4878,19 +5143,21 @@ URL: http://{{host}}/api/ibofos/v1/logger/level
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "1e096ccd-b4cb-444e-82ee-4844f97114cb",
-    "lastSuccessTime": 1656018579,
+    "rid": "eaee709e-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "log level changed to debug"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -4902,20 +5169,16 @@ URL: http://{{host}}/api/ibofos/v1/logger/level
 
 
 
-## Metric
-
-
-
-### 1. CPU
+### 5. SET LOG PREFERENCE
 
 
 
 ***Endpoint:***
 
 ```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/cpu
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/logger/preference
 ```
 
 
@@ -4927,6 +5190,18 @@ URL: http://{{host}}/api/metric/v1/cpu
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "structuredLogging": "true"
+    }
+}
+```
 
 
 
@@ -4947,3957 +5222,36 @@ URL: http://{{host}}/api/metric/v1/cpu
 
 
 
-##### I. Example Response: Success
-```js
+***Body:***
+
+```js        
 {
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1687466099229187668,
-                    "cpuUsagePercent": 10.922787197283993
-                }
-            ],
-            [
-                {
-                    "startTime": 1656018679726049531,
-                    "endTime": 1656018679726049531
-                }
-            ]
-        ]
+    "param": {
+        "level": "info"
     }
 }
 ```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 2. CPU with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/cpu/15m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1656017760000000000,
-                    "cpuUsagePercent": 13.841175942528926
-                },
-                {
-                    "time": 1656017820000000000,
-                    "cpuUsagePercent": 13.996402559268665
-                },
-                {
-                    "time": 1656017880000000000,
-                    "cpuUsagePercent": 14.110407884289035
-                },
-                {
-                    "time": 1656017940000000000,
-                    "cpuUsagePercent": 13.975579096698404
-                },
-                {
-                    "time": 1656018000000000000,
-                    "cpuUsagePercent": 14.023956663880794
-                },
-                {
-                    "time": 1656018060000000000,
-                    "cpuUsagePercent": 13.427215283649103
-                },
-                {
-                    "time": 1656018120000000000,
-                    "cpuUsagePercent": 12.772797879551149
-                },
-                {
-                    "time": 1656018180000000000,
-                    "cpuUsagePercent": 12.753718764781272
-                },
-                {
-                    "time": 1656018240000000000,
-                    "cpuUsagePercent": 12.38281927702806
-                },
-                {
-                    "time": 1656018300000000000,
-                    "cpuUsagePercent": 12.084211341612463
-                },
-                {
-                    "time": 1656018360000000000,
-                    "cpuUsagePercent": 12.048966385434348
-                },
-                {
-                    "time": 1656018420000000000,
-                    "cpuUsagePercent": 12.886916570638887
-                },
-                {
-                    "time": 1656018480000000000,
-                    "cpuUsagePercent": 12.231366456081394
-                },
-                {
-                    "time": 1656018540000000000,
-                    "cpuUsagePercent": 11.694761742610918
-                },
-                {
-                    "time": 1656018600000000000,
-                    "cpuUsagePercent": 13.033791621356347
-                },
-                {
-                    "time": 1656018660000000000,
-                    "cpuUsagePercent": 11.626470362972542
-                }
-            ],
-            [
-                {
-                    "startTime": 1656017807013210740,
-                    "endTime": 1656018707013210740
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 3. MEMORY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/memory
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
 
 
 
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "",
+    "rid": "f287c659-377b-11ed-8c02-3cecef280244",
     "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1687466100088619482,
-                    "memoryUsagePercent": 27.034952106025116
-                }
-            ],
-            [
-                {
-                    "startTime": 1656018753755909605,
-                    "endTime": 1656018753755909605
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 4. MEMORY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/memory/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1656017820000000000,
-                    "memoryUsagePercent": 26.991639320306824
-                },
-                {
-                    "time": 1656017880000000000,
-                    "memoryUsagePercent": 26.99194098312256
-                },
-                {
-                    "time": 1656017940000000000,
-                    "memoryUsagePercent": 26.992178520653024
-                },
-                {
-                    "time": 1656018000000000000,
-                    "memoryUsagePercent": 26.992523830074628
-                },
-                {
-                    "time": 1656018060000000000,
-                    "memoryUsagePercent": 26.99248732954309
-                },
-                {
-                    "time": 1656018120000000000,
-                    "memoryUsagePercent": 26.993367268853472
-                },
-                {
-                    "time": 1656018180000000000,
-                    "memoryUsagePercent": 26.99385380793468
-                },
-                {
-                    "time": 1656018240000000000,
-                    "memoryUsagePercent": 26.994682702053424
-                },
-                {
-                    "time": 1656018300000000000,
-                    "memoryUsagePercent": 26.99440764131999
-                },
-                {
-                    "time": 1656018360000000000,
-                    "memoryUsagePercent": 26.994104248800745
-                },
-                {
-                    "time": 1656018420000000000,
-                    "memoryUsagePercent": 26.991830812372537
-                },
-                {
-                    "time": 1656018480000000000,
-                    "memoryUsagePercent": 26.9916131853707
-                },
-                {
-                    "time": 1656018540000000000,
-                    "memoryUsagePercent": 26.992740939427975
-                },
-                {
-                    "time": 1656018600000000000,
-                    "memoryUsagePercent": 26.992876727465614
-                },
-                {
-                    "time": 1656018660000000000,
-                    "memoryUsagePercent": 26.99214824452897
-                },
-                {
-                    "time": 1656018720000000000,
-                    "memoryUsagePercent": 26.99231791703663
-                }
-            ],
-            [
-                {
-                    "startTime": 1656017878966921736,
-                    "endTime": 1656018778966921736
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 5. NETWORK
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/network
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1656018815572780603,
-                    "bytesRecv": 3268386390,
-                    "bytesSent": 108173682,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 10932724,
-                    "packetsSent": 637376
-                }
-            ],
-            [
-                {
-                    "startTime": 1656018815572780603,
-                    "endTime": 1656018815572780603
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 6. NETWORK with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/network/5m
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "time": 1656017940000000000,
-                    "bytesRecv": 1700793874.590909,
-                    "bytesSent": 55324897,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691072.590909091,
-                    "packetsSent": 325643
-                },
-                {
-                    "time": 1656018000000000000,
-                    "bytesRecv": 1700829221.9416666,
-                    "bytesSent": 55325109.06666667,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691178.566666666,
-                    "packetsSent": 325644.43333333335
-                },
-                {
-                    "time": 1656018060000000000,
-                    "bytesRecv": 1700866755.35,
-                    "bytesSent": 55326684.06666667,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691320.983333333,
-                    "packetsSent": 325653.9
-                },
-                {
-                    "time": 1656018120000000000,
-                    "bytesRecv": 1700895914.825,
-                    "bytesSent": 55328478.583333336,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691431.55,
-                    "packetsSent": 325664.44166666665
-                },
-                {
-                    "time": 1656018180000000000,
-                    "bytesRecv": 1700925554.2916667,
-                    "bytesSent": 55330360.7,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691540.958333333,
-                    "packetsSent": 325675.01666666666
-                },
-                {
-                    "time": 1656018240000000000,
-                    "bytesRecv": 1700975939.9237287,
-                    "bytesSent": 55330797,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691701.381355932,
-                    "packetsSent": 325677
-                },
-                {
-                    "time": 1656018300000000000,
-                    "bytesRecv": 1701035229.15,
-                    "bytesSent": 55330797,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5691874.741666666,
-                    "packetsSent": 325677
-                },
-                {
-                    "time": 1656018360000000000,
-                    "bytesRecv": 1701093047.1,
-                    "bytesSent": 55330797,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692043.8,
-                    "packetsSent": 325677
-                },
-                {
-                    "time": 1656018420000000000,
-                    "bytesRecv": 1701138097.05,
-                    "bytesSent": 55330797,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692175.525,
-                    "packetsSent": 325677
-                },
-                {
-                    "time": 1656018480000000000,
-                    "bytesRecv": 1701175377.6833334,
-                    "bytesSent": 55330945.35,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692285.3,
-                    "packetsSent": 325678.025
-                },
-                {
-                    "time": 1656018540000000000,
-                    "bytesRecv": 1701213484.0833333,
-                    "bytesSent": 55332559.78333333,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692422.591666667,
-                    "packetsSent": 325687.375
-                },
-                {
-                    "time": 1656018600000000000,
-                    "bytesRecv": 1701246104.2583334,
-                    "bytesSent": 55334590.25,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692548.025,
-                    "packetsSent": 325698.425
-                },
-                {
-                    "time": 1656018660000000000,
-                    "bytesRecv": 1701276311.175,
-                    "bytesSent": 55336818.083333336,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692659.4,
-                    "packetsSent": 325710.05833333335
-                },
-                {
-                    "time": 1656018720000000000,
-                    "bytesRecv": 1701319464.2,
-                    "bytesSent": 55337346,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692795.85,
-                    "packetsSent": 325712.5
-                },
-                {
-                    "time": 1656018780000000000,
-                    "bytesRecv": 1701375865.7,
-                    "bytesSent": 55337346,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5692960.766666667,
-                    "packetsSent": 325712.5
-                },
-                {
-                    "time": 1656018840000000000,
-                    "bytesRecv": 1701411034.7,
-                    "bytesSent": 55337346,
-                    "dropIn": 0,
-                    "dropOut": 0,
-                    "packetsRecv": 5693063.6,
-                    "packetsSent": 325712.5
-                }
-            ],
-            [
-                {
-                    "startTime": 1656017945075624573,
-                    "endTime": 1656018845075624573
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 7. READ BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "bw": 80521028,
-                    "time": 1656019213000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019216998605689,
-                    "startTime": 1656019216998605689
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 8. READ BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 | Comma separated integers corresponding to the ids of array |
-| time | 5m | Time period for which the Bandwidth should be queried |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "bw": 790547.5,
-                    "time": 1656019140000000000
-                },
-                {
-                    "bw": 60586384,
-                    "time": 1656019200000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019242019678647,
-                    "startTime": 1656018342019678647
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 9. READ IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "iops": 592,
-                    "time": 1656019638000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019642103097225,
-                    "startTime": 1656019642103097225
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 10. READ IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "iops": 29.5,
-                    "time": 1656019140000000000
-                },
-                {
-                    "iops": 465.75,
-                    "time": 1656019200000000000
-                },
-                {
-                    "iops": 568.1,
-                    "time": 1656019260000000000
-                },
-                {
-                    "iops": 546.5714285714286,
-                    "time": 1656019320000000000
-                },
-                {
-                    "iops": 421.6363636363636,
-                    "time": 1656019380000000000
-                },
-                {
-                    "iops": 556.7222222222222,
-                    "time": 1656019440000000000
-                },
-                {
-                    "iops": 533.7,
-                    "time": 1656019500000000000
-                },
-                {
-                    "iops": 293.3333333333333,
-                    "time": 1656019560000000000
-                },
-                {
-                    "iops": 517.25,
-                    "time": 1656019620000000000
-                },
-                {
-                    "iops": 555.6666666666666,
-                    "time": 1656019680000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019689510611595,
-                    "startTime": 1656018789510611595
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 11. READ LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readlatency/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1656006077178028882
-                }
-            ],
-            [
-                {
-                    "endTime": 1656006077178028882,
-                    "startTime": 1656006077178028882
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 12. READ LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readlatency/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1597736236000000000
-                },
-                {
-                    "latency": 6376,
-                    "time": 1597736237000000000
-                },
-                {
-                    "latency": 23973.25,
-                    "time": 1597736238000000000
-                },
-                {
-                    "latency": 96155,
-                    "time": 1597736239000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736240000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736241000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736242000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736243000000000
-                },
-                {
-                    "latency": 19665,
-                    "time": 1597736244000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1597736236000000000,
-                    "startTime": 1597736244000000000
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 13. VOL READ BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "bw": 77528839,
-                                "time": 1656019289000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019293047888274,
-                                "startTime": 1656019293047888274
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 14. VOL READ BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readbw/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "arrayid": "0",
-                    "data": [
-                        [
-                            {
-                                "bw": 0,
-                                "time": 1656018420000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018480000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018540000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018600000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018660000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018720000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018780000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018840000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018900000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018960000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656019020000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656019080000000000
-                            },
-                            {
-                                "bw": 790676,
-                                "time": 1656019140000000000
-                            },
-                            {
-                                "bw": 61011781.25,
-                                "time": 1656019200000000000
-                            },
-                            {
-                                "bw": 74520789.45,
-                                "time": 1656019260000000000
-                            },
-                            {
-                                "bw": 71445236.5,
-                                "time": 1656019320000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019333571340927,
-                                "startTime": 1656018433571340927
-                            }
-                        ]
-                    ],
-                    "volumeid": "1"
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 15. VOL READ IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "iops": 517,
-                                "time": 1656019741000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019744820479109,
-                                "startTime": 1656019744820479109
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 16. VOL READ IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readiops/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "arrayid": "0",
-                    "data": [
-                        [
-                            {
-                                "iops": 0,
-                                "time": 1656018840000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656018900000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656018960000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656019020000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656019080000000000
-                            },
-                            {
-                                "iops": 30,
-                                "time": 1656019140000000000
-                            },
-                            {
-                                "iops": 465.75,
-                                "time": 1656019200000000000
-                            },
-                            {
-                                "iops": 568.1,
-                                "time": 1656019260000000000
-                            },
-                            {
-                                "iops": 546.5714285714286,
-                                "time": 1656019320000000000
-                            },
-                            {
-                                "iops": 421.6363636363636,
-                                "time": 1656019380000000000
-                            },
-                            {
-                                "iops": 556.7222222222222,
-                                "time": 1656019440000000000
-                            },
-                            {
-                                "iops": 533.7,
-                                "time": 1656019500000000000
-                            },
-                            {
-                                "iops": 293.3333333333333,
-                                "time": 1656019560000000000
-                            },
-                            {
-                                "iops": 517.25,
-                                "time": 1656019620000000000
-                            },
-                            {
-                                "iops": 530.25,
-                                "time": 1656019680000000000
-                            },
-                            {
-                                "iops": 516.3076923076923,
-                                "time": 1656019740000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019778252328540,
-                                "startTime": 1656018878252328540
-                            }
-                        ]
-                    ],
-                    "volumeid": "1"
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 17. VOL READ LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readlatency/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "latency": 0,
-                                "time": 1597737402983947953
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1597737402983947953,
-                                "startTime": 1597737402983947953
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 18. VOL READ LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/readlatency/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1597736236000000000
-                },
-                {
-                    "latency": 6376,
-                    "time": 1597736237000000000
-                },
-                {
-                    "latency": 23973.25,
-                    "time": 1597736238000000000
-                },
-                {
-                    "latency": 96155,
-                    "time": 1597736239000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736240000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736241000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736242000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736243000000000
-                },
-                {
-                    "latency": 19665,
-                    "time": 1597736244000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1597736236000000000,
-                    "startTime": 1597736244000000000
-                }
-            ]
-        ] 
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 19. VOL WRITE BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "bw": 73206290,
-                                "time": 1656019500000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019502282401572,
-                                "startTime": 1656019502282401572
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 20. VOL WRITE BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "arrayid": "0",
-                    "data": [
-                        [
-                            {
-                                "bw": 0,
-                                "time": 1656018600000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018660000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018720000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018780000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018840000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018900000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656018960000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656019020000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656019080000000000
-                            },
-                            {
-                                "bw": 0,
-                                "time": 1656019140000000000
-                            },
-                            {
-                                "bw": 73171758.125,
-                                "time": 1656019200000000000
-                            },
-                            {
-                                "bw": 74797078.2,
-                                "time": 1656019260000000000
-                            },
-                            {
-                                "bw": 70977386.5,
-                                "time": 1656019320000000000
-                            },
-                            {
-                                "bw": 95178253.8,
-                                "time": 1656019380000000000
-                            },
-                            {
-                                "bw": 77808191.5263158,
-                                "time": 1656019440000000000
-                            },
-                            {
-                                "bw": 74387173.70588236,
-                                "time": 1656019500000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019551781706692,
-                                "startTime": 1656018651781706692
-                            }
-                        ]
-                    ],
-                    "volumeid": "1"
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 21. VOL WRITE IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "iops": 550,
-                                "time": 1656019856000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019859600672376,
-                                "startTime": 1656019859600672376
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 22. VOL WRITE IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "arrayid": "0",
-                    "data": [
-                        [
-                            {
-                                "iops": 0,
-                                "time": 1656018960000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656019020000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656019080000000000
-                            },
-                            {
-                                "iops": 0,
-                                "time": 1656019140000000000
-                            },
-                            {
-                                "iops": 557.875,
-                                "time": 1656019200000000000
-                            },
-                            {
-                                "iops": 570.2,
-                                "time": 1656019260000000000
-                            },
-                            {
-                                "iops": 541.1428571428571,
-                                "time": 1656019320000000000
-                            },
-                            {
-                                "iops": 725.7,
-                                "time": 1656019380000000000
-                            },
-                            {
-                                "iops": 593.1052631578947,
-                                "time": 1656019440000000000
-                            },
-                            {
-                                "iops": 577.6,
-                                "time": 1656019500000000000
-                            },
-                            {
-                                "iops": 841.15,
-                                "time": 1656019560000000000
-                            },
-                            {
-                                "iops": 615.85,
-                                "time": 1656019620000000000
-                            },
-                            {
-                                "iops": 522.65,
-                                "time": 1656019680000000000
-                            },
-                            {
-                                "iops": 514.25,
-                                "time": 1656019740000000000
-                            },
-                            {
-                                "iops": 518.75,
-                                "time": 1656019800000000000
-                            },
-                            {
-                                "iops": 1233.7142857142858,
-                                "time": 1656019860000000000
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1656019883115441363,
-                                "startTime": 1656018983115441363
-                            }
-                        ]
-                    ],
-                    "volumeid": "1"
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 23. VOL WRITE LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writelatency/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "data": [
-                        [
-                            {
-                                "latency": 0,
-                                "time": 1597737402983947953
-                            }
-                        ],
-                        [
-                            {
-                                "endTime": 1597737402983947953,
-                                "startTime": 1597737402983947953
-                            }
-                        ]
-                    ]
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 24. VOL WRITE LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writelatency/arrays/volumes
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| volumeids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1597736236000000000
-                },
-                {
-                    "latency": 6376,
-                    "time": 1597736237000000000
-                },
-                {
-                    "latency": 23973.25,
-                    "time": 1597736238000000000
-                },
-                {
-                    "latency": 96155,
-                    "time": 1597736239000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736240000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736241000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736242000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736243000000000
-                },
-                {
-                    "latency": 19665,
-                    "time": 1597736244000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1597736236000000000,
-                    "startTime": 1597736244000000000
-                }
-            ]
-        ] 
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Fail - invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 25. WRITE BW
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "bw": 71083000,
-                    "time": 1656019376000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019380381039915,
-                    "startTime": 1656019380381039915
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 26. WRITE BW with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writebw/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "bw": 73171758.125,
-                    "time": 1656019200000000000
-                },
-                {
-                    "bw": 74797078.2,
-                    "time": 1656019260000000000
-                },
-                {
-                    "bw": 70977386.5,
-                    "time": 1656019320000000000
-                },
-                {
-                    "bw": 76742547.9,
-                    "time": 1656019380000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019412273911399,
-                    "startTime": 1656018512273911399
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 27. WRITE IOPS
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "iops": 542,
-                    "time": 1656019813000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019815837038954,
-                    "startTime": 1656019815837038954
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 28. WRITE IOPS with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writeiops/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "MAgent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "iops": 557.875,
-                    "time": 1656019200000000000
-                },
-                {
-                    "iops": 570.2,
-                    "time": 1656019260000000000
-                },
-                {
-                    "iops": 541.1428571428571,
-                    "time": 1656019320000000000
-                },
-                {
-                    "iops": 725.7,
-                    "time": 1656019380000000000
-                },
-                {
-                    "iops": 593.1052631578947,
-                    "time": 1656019440000000000
-                },
-                {
-                    "iops": 577.6,
-                    "time": 1656019500000000000
-                },
-                {
-                    "iops": 841.15,
-                    "time": 1656019560000000000
-                },
-                {
-                    "iops": 615.85,
-                    "time": 1656019620000000000
-                },
-                {
-                    "iops": 522.65,
-                    "time": 1656019680000000000
-                },
-                {
-                    "iops": 514.25,
-                    "time": 1656019740000000000
-                },
-                {
-                    "iops": 526.6363636363636,
-                    "time": 1656019800000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1656019835320469052,
-                    "startTime": 1656018935320469052
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 29. WRITE LATENCY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writelatency/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time |  |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1656006167445344583
-                }
-            ],
-            [
-                {
-                    "endTime": 1656006167445344583,
-                    "startTime": 1656006167445344583
-                }
-            ]
-        ]
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 30. WRITE LATENCY with PERIOD
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: 
-URL: http://{{host}}/api/metric/v1/writelatency/arrays
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Query params:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| arrayids | 0 |  |
-| time | 5m |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Fail - 0 invalid time interval, empty response
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Fail - 0 invalid time interval, empty response
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "M-Agent",
-            "code": 21010,
-            "level": "ERROR",
-            "description": "Time parameter error",
-            "posDescription": "Time parameter error",
-            "problem": "Invalid time period specified",
-            "solution": "use time from 1m,5m,15m,1h,6h,12h,24h,7d,30d"
-        },
-        "data": []
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Success"
-        },
-        "data": [
-            [
-                {
-                    "latency": 0,
-                    "time": 1597736236000000000
-                },
-                {
-                    "latency": 6376,
-                    "time": 1597736237000000000
-                },
-                {
-                    "latency": 23973.25,
-                    "time": 1597736238000000000
-                },
-                {
-                    "latency": 96155,
-                    "time": 1597736239000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736240000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736241000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736242000000000
-                },
-                {
-                    "latency": 0,
-                    "time": 1597736243000000000
-                },
-                {
-                    "latency": 19665,
-                    "time": 1597736244000000000
-                }
-            ],
-            [
-                {
-                    "endTime": 1597736236000000000,
-                    "startTime": 1597736244000000000
-                }
-            ]
-        ]
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -8942,10 +5296,10 @@ URL: http://{{host}}/api/ibofos/v1/listener
 ```js        
 {
     "param": {
-        "name": "nqn.2019-04.pos:subsystem1",
-        "transport_type": "tcp",
-        "target_address": "107.108.83.97",
-        "transport_service_id": "1158"
+        "subnqn": "nqn.2019-04.pos:subsystem1",
+        "transportType": "TCP",
+        "targetAddress": "107.108.83.97",
+        "transportServiceId": "1158"
     }
 }
 ```
@@ -8987,19 +5341,21 @@ URL: http://{{host}}/api/ibofos/v1/listener
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d21d51b0-7dd9-414f-83bb-cf7bf6a37bfc",
-    "lastSuccessTime": 1650431247,
+    "rid": "8b2723ba-3650-11ed-85c9-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Address ( 107.108.221.146 ) added to Subsystem ( nqn.2019-04.pos:subsystem1 )"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9040,11 +5396,12 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ```js        
 {
     "param": {
-        "name":"nqn.2019-04.pos:subsystem1",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
+        "nqn":"nqn.2019-04.pos:subsystem11",
+        "serialNumber": "POS0000000003",
+        "modelNumber": "IBOF_VOLUME_EEEXTENSION",
+        "maxNamespaces": 256,
+        "allowAnyHost": true,
+        "anaReporting":false
     }
 }
 ```
@@ -9087,19 +5444,21 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "43cec6b0-9cf5-47a8-a2c3-de20cd508418",
-    "lastSuccessTime": 1650431107,
+    "rid": "7783fb21-3650-11ed-85c9-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Subsystem ( nqn.2019-04.pos:subsystem3 ) has been created."
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9140,9 +5499,9 @@ URL: http://{{host}}/api/ibofos/v1/transport
 ```js        
 {
     "param": {
-        "transport_type": "tcp",
-        "buf_cache_size": 64,
-        "num_shared_buf": 4096
+        "transportType": "tcp",
+        "bufCacheSize": 64,
+        "numSharedBuf": 4096
     }
 }
 ```
@@ -9235,7 +5594,7 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ```js        
 {
     "param": {
-        "name": "nqn.2019-04.pos:subsystem1"
+        "subnqn": "nqn.2019-04.pos:subsystem10"
     }
 }
 ```
@@ -9274,19 +5633,21 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "d0ce17ae-1016-4c42-9c56-1f5f1fe59768",
-    "lastSuccessTime": 1650431354,
+    "rid": "cd796066-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Subsystem ( nqn.2019-04.pos:subsystem1) has been deleted."
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9342,107 +5703,231 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "64360fbe-bec0-418a-bc45-712706fc5c72",
-    "lastSuccessTime": 1650431291,
+    "rid": "90dac1b8-3650-11ed-85c9-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of existing subsystems"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         },
         "data": {
             "subsystemlist": [
                 {
-                    "allow_any_host": 1,
-                    "hosts": [],
-                    "listen_addresses": [],
+                    "allowAnyHost": 1,
                     "nqn": "nqn.2014-08.org.nvmexpress.discovery",
                     "subtype": "Discovery"
                 },
                 {
-                    "allow_any_host": 1,
-                    "hosts": [],
-                    "listen_addresses": [
+                    "allowAnyHost": 1,
+                    "listenAddresses": [
                         {
-                            "address_family": "IPv4",
-                            "target_address": "107.108.221.146",
-                            "transport_service_id": "1158",
-                            "transport_type": "TCP"
+                            "addressFamily": "IPv4",
+                            "targetAddress": "107.108.83.97",
+                            "transportServiceId": "1158",
+                            "transportType": "TCP"
+                        },
+                        {
+                            "addressFamily": "IPv4",
+                            "targetAddress": "127.0.0.1",
+                            "transportServiceId": "1158",
+                            "transportType": "TCP"
                         }
                     ],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [
                         {
-                            "bdev_name": "bdev_0_POSArray",
+                            "bdevName": "bdev_0_POSArray",
                             "nsid": 1,
-                            "uuid": "23c13962-1f47-4f8d-85ce-272850b15c26"
+                            "uuid": "0881ab4e-f601-4af7-bdeb-c325d30eb1f0"
+                        },
+                        {
+                            "bdevName": "bdev_1_POSArray",
+                            "nsid": 2,
+                            "uuid": "20c7e973-c3fb-464b-9c7f-ffc040c68425"
                         }
                     ],
                     "nqn": "nqn.2019-04.pos:subsystem1",
-                    "serial_number": "POS0000000003",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 },
                 {
-                    "allow_any_host": 1,
-                    "hosts": [],
-                    "listen_addresses": [
+                    "allowAnyHost": 1,
+                    "listenAddresses": [
                         {
-                            "address_family": "IPv4",
-                            "target_address": "107.108.221.146",
-                            "transport_service_id": "1158",
-                            "transport_type": "TCP"
+                            "addressFamily": "IPv4",
+                            "targetAddress": "107.108.83.97",
+                            "transportServiceId": "1158",
+                            "transportType": "TCP"
+                        },
+                        {
+                            "addressFamily": "IPv4",
+                            "targetAddress": "127.0.0.1",
+                            "transportServiceId": "1158",
+                            "transportType": "TCP"
                         }
                     ],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
-                    "namespaces": [],
-                    "nqn": "nqn.2019-04.pos:subsystem2",
-                    "serial_number": "POS0000000003",
-                    "subtype": "NVMe"
-                },
-                {
-                    "allow_any_host": 1,
-                    "hosts": [],
-                    "listen_addresses": [
-                        {
-                            "address_family": "IPv4",
-                            "target_address": "107.108.221.146",
-                            "transport_service_id": "1158",
-                            "transport_type": "TCP"
-                        }
-                    ],
-                    "max_namespaces": 256,
-                    "model_number": "POS_VOLUME_EXTENTION",
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [
                         {
-                            "bdev_name": "bdev_1_POSArray",
+                            "bdevName": "bdev_2_POSArray",
                             "nsid": 1,
-                            "uuid": "96fd735d-c39e-4664-bb45-075eed5dfd88"
+                            "uuid": "b3e73ca6-b24f-4ff2-aa80-ad48ac4d84d2"
                         }
                     ],
-                    "nqn": "nqn.2019-04.pos:subsystem9",
-                    "serial_number": "POS00000000000009",
+                    "nqn": "nqn.2019-04.pos:subsystem2",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 },
                 {
-                    "allow_any_host": 1,
-                    "hosts": [],
-                    "listen_addresses": [],
-                    "max_namespaces": 256,
-                    "model_number": "IBOF_VOLUME_EEEXTENSION",
-                    "namespaces": [],
-                    "nqn": "nqn.2019-04.pos:subsystem3",
-                    "serial_number": "POS0000000003",
+                    "allowAnyHost": 1,
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
+                    "nqn": "nqn.2019-04.pos:subsystem11",
+                    "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 6. SUBSYSTEM INFO
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/subsysteminfo
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem1"
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name":"nqn.2019-04.pos:subsystem3",
+        "sn": "POS0000000003",
+        "mn": "IBOF_VOLUME_EEEXTENSION",
+        "max_namespaces": 256,
+        "allow_any_host": true
+    }
+}
+```
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "7d995a3a-3650-11ed-85c9-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "subsystemlist": [
+                {
+                    "allowAnyHost": 1,
+                    "listenAddresses": [
+                        {
+                            "addressFamily": "IPv4",
+                            "targetAddress": "127.0.0.1",
+                            "transportServiceId": "1158",
+                            "transportType": "TCP"
+                        }
+                    ],
+                    "maxNamespaces": 256,
+                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
+                    "namespaces": [
+                        {
+                            "bdevName": "bdev_0_POSArray",
+                            "nsid": 1,
+                            "uuid": "0881ab4e-f601-4af7-bdeb-c325d30eb1f0"
+                        },
+                        {
+                            "bdevName": "bdev_1_POSArray",
+                            "nsid": 2,
+                            "uuid": "20c7e973-c3fb-464b-9c7f-ffc040c68425"
+                        }
+                    ],
+                    "nqn": "nqn.2019-04.pos:subsystem1",
+                    "serialNumber": "POS0000000003",
+                    "subtype": "NVMe"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9502,22 +5987,21 @@ URL: http://{{host}}/api/ibofos/v1/system
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "c9487931-cfdd-4f5b-a595-d09b6ce0fe89",
-    "lastSuccessTime": 1597820084,
+    "rid": "b3aac4e2-3637-11ed-9382-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
+            "module": "",
+            "code": 3,
+            "eventName": "POS_STOP_FAILURE_BEING_TERMINATED",
+            "cause": "PoseidonOS is already in termination process.",
+            "description": "Failed to stop PoseidonOS.",
+            "posDescription": "Failed to stop PoseidonOS.",
+            "solution": "Please wait a moment."
         }
     },
     "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "situation": "DEFAULT",
-        "state": "OFFLINE",
-        "used": 0
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9574,50 +6058,65 @@ URL: http://{{host}}/api/ibofos/v1/system
 ```js
 {
     "rid": "",
-    "lastSuccessTime": 1656016889,
+    "lastSuccessTime": 1663522874,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
+            "eventName": "",
+            "cause": "",
+            "description": "",
             "posDescription": "",
             "errorInfo": {
                 "errorCode": 0,
                 "errorResponses": [
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "Transport ( tcp ) has been created.",
+                        "description": "NONE",
+                        "eventName": "SUCCESS",
                         "id": "transport"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "Subsystem ( nqn.2019-04.pos:subsystem1 ) has been created.",
+                        "description": "NONE",
+                        "eventName": "SUCCESS",
                         "id": "subSystem1"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "Subsystem ( nqn.2019-04.pos:subsystem2 ) has been created.",
+                        "description": "NONE",
+                        "eventName": "SUCCESS",
                         "id": "subSystem2"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "Address ( 107.108.83.97 ) added to Subsystem ( nqn.2019-04.pos:subsystem1 )",
+                        "description": "NONE",
+                        "eventName": "SUCCESS",
                         "id": "addListener1"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "Address ( 107.108.83.97 ) added to Subsystem ( nqn.2019-04.pos:subsystem2 )",
+                        "description": "NONE",
+                        "eventName": "SUCCESS",
                         "id": "addListener2"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "uram0: Device has been created",
+                        "description": "uram0: NONE",
+                        "eventName": "SUCCESS",
                         "id": "uram1"
                     },
                     {
+                        "cause": "NONE",
                         "code": 0,
-                        "description": "uram1: Device has been created",
+                        "description": "uram1: NONE",
+                        "eventName": "SUCCESS",
                         "id": "uram2"
                     }
                 ]
@@ -9634,7 +6133,207 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 3. iBOFOSINFO
+##### II. Example Request: Fail
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 1663522874,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "",
+            "cause": "",
+            "description": "",
+            "posDescription": "",
+            "errorInfo": {
+                "errorCode": 0,
+                "errorResponses": [
+                   
+                ]
+            }
+        }
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+### 3. SYSTEMPROPERTY
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/system/property
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "cfe7705e-3779-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "rebuildPolicy": "low"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 4. SYSTEMPROPERTY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/system/property
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "level": "medium"
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "d8172a44-3779-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 5. iBOFOSINFO
 
 
 
@@ -9678,6 +6377,66 @@ URL: http://{{host}}/api/ibofos/v1/system
 ##### I. Example Response: Success
 ```js
 {
+    "rid": "96b954b1-3779-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "baseboardManufacturer": "Supermicro",
+            "baseboardProductName": "X11DPU",
+            "baseboardSerialNumber": "OM202S018522",
+            "baseboardVersion": "1.10",
+            "biosReleaseDate": "02/21/2020",
+            "biosVendor": "American Megatrends Inc.",
+            "biosVersion": "3.3",
+            "processorFrequency": "2400 MHz2400 MHz",
+            "processorManufacturer": "Intel(R) CorporationIntel(R) Corporation",
+            "processorVersion": "Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHzIntel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz",
+            "systemManufacturer": "Supermicro",
+            "systemProductName": "SYS-2029U-TN24R4T",
+            "systemSerialNumber": "A264025X0A04015",
+            "systemUuid": "00000000-0000-0000-0000-AC1F6BC86358",
+            "version": "v0.11.0-rc6"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### II. Example Response: Fail
+```js
+{
     "rid": "619782d1-bad3-4dc3-8202-ab4b43144610",
     "lastSuccessTime": 1656005726,
     "result": {
@@ -9685,8 +6444,8 @@ URL: http://{{host}}/api/ibofos/v1/system
             "module": "COMMON",
             "code": 0,
             "level": "INFO",
-            "description": "Success",
-            "posDescription": "DONE"
+            "description": "Ibof connection error",
+            "posDescription": ""
         },
         "data": {
             "version": "v0.11.0-rc5"
@@ -9699,7 +6458,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 ```
 
 
-***Status Code:*** 200
+***Status Code:*** 400
 
 <br>
 
@@ -9709,7 +6468,163 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 1. START TELEMETRY
+### 1. GET TELEMETRY PROPERTIES PATH
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/telemetry/properties/path
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "22d7d70e-3a9c-11ed-9d8b-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "publicationListPath": "/usr/local/dagent/telemetry_config.yaml",
+            "status": true
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 2. SET TELEMETRY PROPERTIES PATH
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/telemetry/properties/path
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "publicationListPath": "/usr/local/dagent/telemetry_config.yaml"
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "17dee8f4-377c-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 3. START TELEMETRY
 
 
 
@@ -9753,20 +6668,21 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "99c366f5-bc5d-4f38-820f-7c1b5e3517ef",
-    "lastSuccessTime": 1656018644,
+    "rid": "17dee8f4-377c-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Telemetry has started "
-        },
-        "data": {}
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9778,7 +6694,7 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 
 
 
-### 2. STOP TELEMETRY
+### 4. STOP TELEMETRY
 
 
 
@@ -9822,20 +6738,21 @@ URL: http://{{host}}/api/ibofos/v1/telemetry
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "686dbf95-fb84-4def-b929-addc54be72a9",
-    "lastSuccessTime": 1656018659,
+    "rid": "1d7957e3-377c-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Telemetry has stopped "
-        },
-        "data": {}
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -9928,19 +6845,22 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "b05407df-a571-494c-be0b-48529ef2ff81",
-    "lastSuccessTime": 1656017545,
+    "rid": "71ffef4e-377b-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "vol01 has been created successfully."
-        }
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {}
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -10045,7 +6965,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
         "size": 5242880,
         "maxbw": 0,
         "maxiops": 0,
-        "totalcount": 5,
+        "totalcount": 2,
         "stoponerror": false,
         "namesuffix": 0,
         "mountall": true,
@@ -10053,6 +6973,63 @@ URL: http://{{host}}/api/ibofos/v1/volumes
     }
 }
 ```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}",
+        "name": "vol01",
+        "size": 4194304,
+        "maxbw": 0,
+        "maxiops": 0
+    }
+}
+```
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "D-Agent",
+            "code": 10202,
+            "level": "INFO",
+            "description": "Request Accepted and passed to POS",
+            "posDescription": ""
+        }
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
 
 
 
@@ -10248,15 +7225,15 @@ URL: http://{{host}}/api/ibofos/v1/volumelist/POSArray
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "10cfdcad-02dc-4a5d-b722-2007e5337f10",
-    "lastSuccessTime": 1656017601,
+    "rid": "ee3a0da3-b289-45b6-8bda-85fdb8985add",
+    "lastSuccessTime": 1663523892,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of volumes in POSArray"
+            "description": "list of volumes in POSArray",
+            "posDescription": "list of volumes in POSArray",
+            "solution": "NONE"
         },
         "data": {
             "volumes": [
@@ -10269,13 +7246,24 @@ URL: http://{{host}}/api/ibofos/v1/volumelist/POSArray
                     "name": "pvc-2c7aaefd-e2d5-4851-b3f1-2d93a93ea8f0",
                     "status": "Unmounted",
                     "total": 5368709120,
-                    "uuid": "9fcdb071-77d3-42be-81aa-caed48018913"
+                    "uuid": "55175127-2284-48b5-b67a-14d6273677d4"
+                },
+                {
+                    "index": 1,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "vol01",
+                    "status": "Unmounted",
+                    "total": 5242880,
+                    "uuid": "ce6242a6-1231-4fbf-b96a-bb3d05e9c21a"
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -10316,7 +7304,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}",
+        "array": "{{arrayName}}", 
         "name": "vol01",
         "subnqn": "nqn.2019-04.pos:subsystem1"
     }
@@ -10357,19 +7345,19 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "f3fe4c70-19c5-42ab-9818-eae1857b73d6",
-    "lastSuccessTime": 1656017935,
+    "rid": "fb9b84d2-cb3d-4df4-becd-a9c1e935dd6f",
+    "lastSuccessTime": 1663394831,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "vol0 is mounted successfully"
+            "description": "vol01 has been mounted successfully.",
+            "posDescription": "vol01 has been mounted successfully.",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -11009,19 +7997,19 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "364b3fa2-3922-4f01-ade5-1de0f02ff8fe",
-    "lastSuccessTime": 1656017774,
+    "rid": "3b256c5a-345b-470b-83e0-d2b6cb67edbc",
+    "lastSuccessTime": 1663523956,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "vol01 is renamed to newvol01"
+            "description": "vol01 is renamed successfully to newvol01",
+            "posDescription": "vol01 is renamed successfully to newvol01",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -11089,7 +8077,158 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 
 
 
-### 11. UNMOUNT VOLUME
+### 11. SET VOLUME PROPERTY
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/volume/property
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "vol01",
+        "array": "POSArray",
+        "newVolumeName": "vol02"
+        //"updateprimaryvol": true, // these two paramters will be used in 2 node HA POS 
+        //"isprimaryvol": true
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}"
+    }
+}
+```
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "fb9b84d2-cb3d-4df4-becd-a9c1e935dd6f",
+    "lastSuccessTime": 1663394831,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "vol01 has been mounted successfully.",
+            "posDescription": "vol01 has been mounted successfully.",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 2010
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Fail - 2010
+```js
+{
+    "rid": "da25a190-837e-4140-8059-4695254c820a",
+    "lastSuccessTime": 1656018011,
+    "result": {
+        "status": {
+            "module": "VolumeManager",
+            "code": 2010,
+            "level": "WARN",
+            "description": "The requested volume does not exist",
+            "posDescription": "failed to mount vol0s(code:2010)",
+            "problem": "The volume with the requested volume name or volume ID does not exist",
+            "solution": "Enter the correct volume name or volume ID after checking the volume list"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc5"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+### 12. UNMOUNT VOLUME
 
 
 
@@ -11236,7 +8375,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-### 12. VOLUME INFO
+### 13. VOLUME INFO
 
 
 
@@ -11280,15 +8419,15 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "1c268f9f-4ae3-46ae-b51f-2d8d1be62499",
-    "lastSuccessTime": 1656017659,
+    "rid": "f2c24ffa-b722-4467-a7a1-b7b0bdd0de15",
+    "lastSuccessTime": 1663523937,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "information of volume: vol01 of array: POSArray"
+            "description": "information of volume: vol01 of array: POSArray",
+            "posDescription": "information of volume: vol01 of array: POSArray",
+            "solution": "NONE"
         },
         "data": {
             "array_name": "POSArray",
@@ -11300,11 +8439,11 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
             "status": "Unmounted",
             "subnqn": "",
             "total": 5242880,
-            "uuid": "b0fb4c4b-812b-44be-bfda-1285be40ca52"
+            "uuid": "ce6242a6-1231-4fbf-b96a-bb3d05e9c21a"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -11339,4 +8478,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-06-24 03:26:30 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-27 00:11:18 by [docgen](https://github.com/thedevsaddam/docgen)

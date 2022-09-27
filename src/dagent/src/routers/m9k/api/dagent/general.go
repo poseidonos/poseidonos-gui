@@ -32,10 +32,13 @@
 package dagent
 
 import (
+	"dagent/src/routers/m9k/api/caller"
 	"errors"
-	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
+	"kouros"
+	"kouros/model"
+	pos "kouros/pos"
+	"kouros/setting"
+	"kouros/utils"
 	"syscall"
 	"time"
 )
@@ -54,10 +57,10 @@ func HeartBeat(xrId string, param interface{}) (model.Response, error) {
 
 	if successTime <= 0 {
 		err = errors.New("one of iBoF service is dead")
-		res.Result.Status, _ = util.GetStatusInfo(12010)
+		res.Result.Status, _ = utils.GetStatusInfo(12010)
 	} else {
 		LastSuccessTime = successTime
-		res.Result.Status, _ = util.GetStatusInfo(0)
+		res.Result.Status, _ = utils.GetStatusInfo(0)
 	}
 
 	res.LastSuccessTime = LastSuccessTime
@@ -67,7 +70,9 @@ func HeartBeat(xrId string, param interface{}) (model.Response, error) {
 func updateSuccessTime(xrId string) int64 {
 	if LastSuccessTime+MAXAGE < time.Now().UTC().Unix() {
 		param := model.DeviceParam{}
-		_, res, _ := iBoFOS.IBoFOSInfo(xrId, param)
+		posMngr, _ := kouros.NewPOSManager(pos.GRPC)
+		posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+		res, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
 		return res.LastSuccessTime
 	} else {
 		return LastSuccessTime

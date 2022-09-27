@@ -42,7 +42,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { InfoOutlined } from "@material-ui/icons";
+import { AccessTime } from "@material-ui/icons";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -78,9 +78,9 @@ const styles = theme => ({
   },
   logoContainer: {
     display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row'
+    flexDirection: 'row',
+    [theme.breakpoints.down('450')]: {
+      flexDirection: 'column'
     }
   },
   sectionDesktop: {
@@ -166,7 +166,7 @@ const styles = theme => ({
     },
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -176,7 +176,7 @@ const styles = theme => ({
     opacity: 1,
     color: "rgba(0, 0, 0, 1)",
     maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
+    fontSize: theme.typography.pxToRem(16),
     border: "1px solid #dadde9",
     "& b": {
       fontWeight: theme.typography.fontWeightMedium,
@@ -513,23 +513,14 @@ class Header extends Component {
                 tooltip: classes.tooltip,
               }}
             >
-              <InfoOutlined className={classes.infoOutlined} />
+              <AccessTime className={classes.infoOutlined} />
             </Tooltip>
             <div className={classes.sectionDesktop}>
-
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
                 <LinearProgressBarComponent
                   percent={localStorage.getItem('Rebuilding_Value')}
                 />
               ) : null}
-
-
-              {/* <Typography className={classes.separator}>|</Typography>
-              <Typography>
-                <a href={PDF} target="_blank" rel="noopener noreferrer">
-                  Help
-                </a>
-              </Typography> */}
               <Typography className={classes.separator}>|</Typography>
               <span
                 className={`${classes.userLink} ${window.location.href.indexOf('user') > 0 /* istanbul ignore next */ ? 'active' : ''
@@ -552,14 +543,6 @@ class Header extends Component {
                 userLogout={this.userLogout}
               />
               <Typography className={classes.separator}>|</Typography>
-              {/* <Typography>
-                <select defaultValue="english">
-                  <option value="english">English</option>
-                </select>
-              </Typography>
-              <Typography className={classes.separator}>|</Typography>
-              <Typography>Support</Typography>
-              <Typography className={classes.separator}>|</Typography> */}
             </div>
             <div className={classes.sectionMobile}>
               <IconButton

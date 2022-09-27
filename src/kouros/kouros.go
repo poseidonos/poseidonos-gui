@@ -4,7 +4,7 @@ package kouros
 
 import (
 	"errors"
-	"kouros/ha"
+	//"kouros/ha"
 	"kouros/pos"
 )
 
@@ -19,6 +19,7 @@ func NewPOSManager(managerType pos.POSInterface) (pos.POSManager, error) {
 	}
 }
 
+/*
 // NewPOSManager creates a new manager object based on the type provided
 // Currently only type "postgres" is supported
 func NewHAManager(managerType ha.HAInterface) (ha.HAManager, error) {
@@ -28,4 +29,4 @@ func NewHAManager(managerType ha.HAInterface) (ha.HAManager, error) {
 	default:
 		return nil, errors.New("Invalid HA Manager type")
 	}
-}
+}*/

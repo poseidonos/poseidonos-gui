@@ -30,47 +30,71 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package log
 
 import (
-	"fmt"
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
+	"github.com/sirupsen/logrus"
+	"os"
 )
 
-type NetAddsField struct {
-	Interface string `json:"interface"`
-	Address   string `json:"address"`
+func init() {
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(logrus.WarnLevel)
+	logrus.SetFormatter(&logrus.TextFormatter{ForceColors: true})
 }
 
-type NetAddsFields []NetAddsField
+//set Warn as a default log level.
+//log level grows like below.
 
-// Getting network address  and retuning JSON resonse
-func GetNetAddress(param interface{}) (model.Response, error) {
-	var res model.Response
-	fieldsList := make(NetAddsFields, 0)
-	result, err := ExecuteQuery(fmt.Sprintf(netAddQ, DBName))
+func SetDebugMode() {
+	logrus.SetLevel(logrus.ErrorLevel)
+}
 
-	if err != nil {
-		res.Result.Status, _ = util.GetStatusInfo(errQueryCode)
-		res.Result.Data = make([]string, 0)
-		return res, nil
-	}
+func SetVerboseMode() {
+	logrus.SetLevel(logrus.InfoLevel)
+}
 
-	if len(result) == 0 || len(result[0].Series) == 0 {
-		res.Result.Status, _ = util.GetStatusInfo(errDataCode)
-		res.Result.Data = make([]string, 0)
-		return res, nil
-	}
+func Debug(args ...interface{}) {
+	logrus.Debug(args...)
+}
 
-	for _, values := range result[0].Series[0].Values {
-		if values[1] != nil {
-			fieldsList = append(fieldsList, NetAddsField{values[1].(string), values[2].(string)})
-		}
-	}
+func Debugf(format string, args ...interface{}) {
+	logrus.Debugf(format, args...)
+}
 
-	res.Result.Status, _ = util.GetStatusInfo(0)
-	res.Result.Data = fieldsList
+func Info(args ...interface{}) {
+	logrus.Info(args...)
+}
 
-	return res, nil
+func Infof(format string, args ...interface{}) {
+	logrus.Infof(format, args...)
+}
+
+func Warn(args ...interface{}) {
+	logrus.Warn(args...)
+}
+
+func Warnf(format string, args ...interface{}) {
+	logrus.Warnf(format, args...)
+}
+
+func Error(args ...interface{}) {
+	logrus.Error(args...)
+}
+
+func Errorf(format string, args ...interface{}) {
+	logrus.Errorf(format, args...)
+}
+
+func Critical(args ...interface{}) {
+	logrus.Fatal(args...)
+}
+
+func Fatal(args ...interface{}) {
+	logrus.Fatal(args...)
+}
+
+func Fatalf(format string, args ...interface{}) {
+	logrus.Fatalf(format, args...)
 }

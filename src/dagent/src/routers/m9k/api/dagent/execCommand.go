@@ -30,57 +30,28 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package dagent
 
 import (
-	"pnconnector/src/routers/m9k/api/magent/mocks"
-	"pnconnector/src/routers/m9k/model"
-	"reflect"
-	"testing"
+	"dagent/src/routers/m9k/api/caller"
+	"kouros"
+	"kouros/model"
+	pos "kouros/pos"
+	"kouros/setting"
+	"kouros/utils"
 )
 
-func TestGetNetAddress(t *testing.T) {
-	actualDBName := DBName
-	var tests = []struct {
-		input    model.MAgentParam
-		dbName   string
-		expected interface{}
-		err      error
-	}{
-		{
-			input:  model.MAgentParam{},
-			dbName: "poseidon",
-			expected: NetAddsFields{
-				{
-					Interface: "interface",
-					Address:   "address",
-				},
-			},
-			err: nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonQueryErr",
-			expected: []string{},
-			err:      nil,
-		},
-		{
-			input:    model.MAgentParam{},
-			dbName:   "poseidonNoData",
-			expected: []string{},
-			err:      nil,
-		},
-	}
+func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
+	posMngr, _ := kouros.NewPOSManager(pos.GRPC)
+	posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
+	result, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
+	res := model.Response{}
+	if result.Result.Status.Description == "DONE" {
+		utils.ExecCmd("pkill -9 poseidonos", false)
+		res.Result.Status.Code = 0
 
-	IDBClient = mocks.MockInfluxClient{}
-	for _, test := range tests {
-		DBName = test.dbName
-		result, err := GetNetAddress(test.input)
-		output := result.Result.Data
-		if !reflect.DeepEqual(output, test.expected) || err != test.err {
-			t.Errorf("Test Failed: %v inputted, %v expected, received: %v, received err: %v", test.input, test.expected, output, err)
-		}
+	} else {
+		res.Result.Status.Code = 11021
 	}
-	DBName = actualDBName
-
+	return res, nil
 }

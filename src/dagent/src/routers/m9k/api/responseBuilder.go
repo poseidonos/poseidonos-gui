@@ -33,28 +33,27 @@
 package api
 
 import (
-	"pnconnector/src/log"
-	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
-	"pnconnector/src/routers/m9k/model"
-	//"pnconnector/src/setting"
+	"dagent/src/routers/m9k/api/caller"
 	"github.com/gin-gonic/gin"
+	"kouros/log"
+	"kouros/model"
+	"kouros/utils"
 	"net/http"
-	"pnconnector/src/util"
 )
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
 	switch err {
-	case iBoFOS.ErrSending:
+	case caller.ErrSending:
 		BadRequest(ctx, res, 11000)
-	case iBoFOS.ErrJson:
+	case caller.ErrJson:
 		BadRequest(ctx, res, 11010)
-	case iBoFOS.ErrConn:
+	case caller.ErrConn:
 		BadRequest(ctx, res, 11020)
-	case iBoFOS.ErrReceiving:
+	case caller.ErrReceiving:
 		BadRequest(ctx, res, 10050)
-	case iBoFOS.ErrJsonType:
+	case caller.ErrJsonType:
 		BadRequest(ctx, res, 10005)
-	case iBoFOS.ErrRes:
+	case caller.ErrRes:
 		BadRequest(ctx, res, res.Result.Status.Code)
 	default:
 		makeResponseWithErr(ctx, res, res.Result.Status.Code, err)
@@ -86,8 +85,10 @@ func Success(ctx *gin.Context, res model.Response, code int) {
 func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int, isBadRequest bool) {
 	posDescription := res.Result.Status.Description
 	errorInfo := res.Result.Status.ErrorInfo
-	res.Result.Status, _ = util.GetStatusInfo(code)
 	res.Result.Status.PosDescription = posDescription
+	if code == 11020 {
+		res.Result.Status, _ = utils.GetStatusInfo(code)
+	}
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)
 	} else {

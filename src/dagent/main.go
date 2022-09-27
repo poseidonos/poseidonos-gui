@@ -6,12 +6,12 @@ import (
 	"dagent/src/routers/m9k/api/dagent"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"kouros/log"
+	"kouros/setting"
+	"kouros/utils"
 	"net/http"
 	"os"
 	"os/signal"
-	"pnconnector/src/log"
-	"pnconnector/src/setting"
-	"pnconnector/src/util"
 	"time"
 )
 
@@ -20,7 +20,7 @@ const TimeOut = 30
 func init() {
 	log.SetDebugMode()
 	setting.LoadConfig()
-	util.LoadEvents()
+	utils.LoadEvents()
 	gin.SetMode(gin.ReleaseMode)
 	//gin.SetMode(gin.DebugMode)
 	gin.DefaultWriter = ioutil.Discard

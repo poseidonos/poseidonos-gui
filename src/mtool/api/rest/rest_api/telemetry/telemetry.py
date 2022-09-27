@@ -9,14 +9,16 @@ def toJson(data):
 
 grafa_url = "http://localhost:3500"
 ds_name = "poseidon"
-PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{job="pos"})'
+PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{{job=\"pos\"}})'
+TIME_OUT = 10
 
 def is_prometheusDB_running(prom_url):
     try:
         success_res = make_response("success",200)
         # Checking prometheusDB is running or not
         prom_res = requests.get(
-            '{prom_url}/api/v1/status/runtimeinfo'.format(prom_url=prom_url)
+            '{prom_url}/api/v1/status/runtimeinfo'.format(prom_url=prom_url),
+            timeout=TIME_OUT
         )
         prom_res = json.loads(prom_res.content)
 
@@ -35,7 +37,7 @@ def check_telemetry_endpoint(ip, port):
         if response.response[0].decode('UTF-8') != "success":
             return response
         # Checking temetry is up or not
-        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url))
+        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url), timeout=TIME_OUT)
         response = json.loads(response.content)
         if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
             for data in response["data"]["result"]:
@@ -68,14 +70,14 @@ def set_telemetry_configuration(ip, port):
             "access": "proxy",
             "basicAuth": False
         }
-        grafa_create_ds_res = requests.post(url, headers=headers, data=toJson(payload))
+        grafa_create_ds_res = requests.post(url, headers=headers, data=toJson(payload), timeout=TIME_OUT)
         grafa_create_ds_res = json.loads(grafa_create_ds_res.content)
 
         if "message" in grafa_create_ds_res and grafa_create_ds_res["message"] == "Datasource added":
             return success_res
 
         # Else Get the data source id named $ds_name
-        grafa_ds_res = requests.get(url)
+        grafa_ds_res = requests.get(url, timeout=TIME_OUT)
         grafa_ds_res = json.loads(grafa_ds_res.content)
 
         ds_id = -1
@@ -91,7 +93,8 @@ def set_telemetry_configuration(ip, port):
         grafa_update_ds_res = requests.put(
             '{url}/{ds_id}'.format(url=url, ds_id=ds_id), 
             headers=headers, 
-            data=toJson(payload)
+            data=toJson(payload),
+            timeout=TIME_OUT
         )
         grafa_update_ds_res = json.loads(grafa_update_ds_res.content)
         
@@ -113,11 +116,11 @@ def set_telemetry_configuration(ip, port):
 def get_agg_value(ip, port, metric):
     try:
         PATH = PROM_AGG_QUERY_PATH.format(ip,port,metric)
-        response = requests.get(PATH)
+        response = requests.get(PATH, timeout=TIME_OUT)
         response = json.loads(response.content)
         value = 0
-        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0 and "value" in response["data"]["result"] and len(response["data"]["result"]["value"]) == 2:
-            value += int(response["data"]["result"]["value"][1])
+        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0 and "value" in response["data"]["result"][0] and len(response["data"]["result"][0]["value"]) == 2:
+            value = int(response["data"]["result"][0]["value"][1])
         return value
     except requests.exceptions.HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')

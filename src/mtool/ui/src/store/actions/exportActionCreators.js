@@ -123,6 +123,8 @@ export {
 } from "./performanceActions";
 
 export {
+    setIsSavingConfig,
+    setShowConfig,
     setIsConfigured,
     setconfigurationFailed,
     changeCredentials,
