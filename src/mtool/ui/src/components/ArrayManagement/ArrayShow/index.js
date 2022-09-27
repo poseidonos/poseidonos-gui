@@ -396,11 +396,6 @@ class ArrayShow extends Component {
       }
     }
 
-    let isFreeDiskAvailable = false;
-    this.props.slots.forEach(slot => {
-      if (slot.isAvailable) isFreeDiskAvailable = true;
-    })
-
     const getClass = (disk) => {
       if (this.props.storagedisks.find(findDisk(disk.name))) {
         return classes.storagedisk;
@@ -419,6 +414,12 @@ class ArrayShow extends Component {
 
       return classes.freedisk;
     };
+
+    let isFreeDiskAvailable = false;
+    this.props.slots.forEach(slot => {
+      if (slot.arrayName === this.props.arrayName && getClass(slot) === classes.sparedisk)
+        isFreeDiskAvailable = true;
+    })
 
     const getTitle = (slot) => {
       if (this.state.diskTitle === ADD_TITLE)
@@ -581,7 +582,7 @@ class ArrayShow extends Component {
                           >
                             <Remove fontSize="small" />
                           </Button>
-                        ) : isFreeDiskAvailable ? (
+                        ) : slot.arrayName === this.props.arrayName && isFreeDiskAvailable ? (
                           <Button
                             onMouseEnter={() => this.changeTitle(REPLACE_TITLE)}
                             onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}

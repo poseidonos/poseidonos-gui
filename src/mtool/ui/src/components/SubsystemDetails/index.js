@@ -140,7 +140,7 @@ const SubsystemDetails = (props) => {
               }
             }]}
             columns={addressColumns}
-            data={props.data.listen_addresses}
+            data={props.data.listenAddresses}
             icons={icons}
             options={{
               maxBodyHeight: 350,

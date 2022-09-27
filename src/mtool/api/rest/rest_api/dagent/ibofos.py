@@ -405,10 +405,10 @@ def add_listener(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "name": name,
-            "transport_type": transport_type,
-            "target_address": target_address,
-            "transport_service_id": transport_service_id}}
+            "subnqn": name,
+            "transportType": transport_type,
+            "targetAddress": target_address,
+            "transportServiceId": transport_service_id}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
@@ -444,11 +444,11 @@ def create_subsystem(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "name": name,
-            "sn": serial_num,
-            "mn": model_num,
-            "max_namespaces": max_namespaces,
-            "allow_any_host": allow_any_host}}
+            "nqn": name,
+            "serialNumber": serial_num,
+            "modelNumber": model_num,
+            "maxNamespaces": max_namespaces,
+            "allowAnyHost": allow_any_host}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(

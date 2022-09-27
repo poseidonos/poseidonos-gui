@@ -1413,7 +1413,6 @@ function* replaceDevice(action) {
   try {
     const arrayName = yield select(arrayname)
     yield put(actionCreators.startStorageLoader("Replacing Device"));
-    console.log(arrayName, action.payload)
     const response = yield call(
       [axios, axios.post],
       `/api/v1/array/${arrayName}/replace`,

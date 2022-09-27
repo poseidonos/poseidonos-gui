@@ -1003,8 +1003,8 @@ def create_subsystem(current_user):
     name = body.get('name')
     serial_num = body.get('sn')
     model_num = body.get('mn')
-    max_namespaces = body.get('max_namespaces')
-    allow_any_host = body.get('allow_any_host')
+    max_namespaces = body.get('maxNamespaces')
+    allow_any_host = body.get('allowAnyHost')
     try:
         resp = dagent.create_subsystem(
             name,
@@ -1230,7 +1230,7 @@ def get_mod_array(array):
     _array["metadiskpath"] = []
     _array["totalsize"] = 0
     _array["usedspace"] = 0
-    _array["index"] = array["result"]["data"]["index"]
+    _array["index"] = array["result"]["data"]["uniqueId"]
     for device in array["result"]["data"]["devicelist"]:
         if device["type"] == "DATA":
             _array["storagedisks"].append({"deviceName": device["name"]})
@@ -1267,13 +1267,17 @@ def get_arrays(current_user):
                 # convert to format expected by UI
                 a_info = get_mod_array(a_info)
                 a_info['totalsize'] = int(res["result"]["data"]["capacity"])
-                a_info['usedspace'] = int(res["result"]["data"]["used"])
+                if "used" in res["result"]["data"]:
+                    a_info['usedspace'] = int(res["result"]["data"]["used"])
                 a_info['volumecount'] = len(vol_list)
                 a_info["arrayname"] = res["result"]["data"]["name"]
                 a_info["status"] = array["status"]
                 a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
-                a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
+                if "writeThroughEnabled" in res["result"]["data"]:
+                    a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
+                else:
+                    a_info["writeThroughEnabled"] = True
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)
         except Exception as e:
