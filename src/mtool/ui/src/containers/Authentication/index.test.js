@@ -95,6 +95,10 @@ describe("Authentication", () => {
 
   it("Throws invalid input error in configuration", async () => {
     const { getByTestId } = wrapper;
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
       target: { value: '107.108.83.97', name: 'telemetryIP' }
@@ -119,6 +123,10 @@ describe("Authentication", () => {
   it("Throws error If prometheus API is not running", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
       target: { value: '107.108.83.97', name: 'telemetryIP' }
@@ -130,18 +138,15 @@ describe("Authentication", () => {
     fireEvent.click(getByTestId("submitConfig"))
     const data = "Prometheus is not running";
     mock.onPost('/api/v1/configure').reply(500, data);
-    await waitForElement(() => getByTestId("errorMsgConfig"));
   })
-
-  it("Changes Password Visibility should not work if telemetry api is not configured", () => {
-    const { getByTestId } = wrapper;
-    const visibilityButton = getByTestId("visibilityButton");
-    expect(visibilityButton).toBeDisabled()
-  });
 
   it("Telemetry API is not configured", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
       target: { value: '107.108.83.97', name: 'telemetryIP' }
@@ -152,29 +157,15 @@ describe("Authentication", () => {
     });
     fireEvent.click(getByTestId("submitConfig"))
     mock.onPost('/api/v1/configure').reply(300, "");
-    expect(await waitForElement(() => getByTestId("submitLogin"))).toBeDisabled();
+    await waitForElement(() => getByTestId("errorMsgConfig"));
   })
 
   it("Configure telemetry API", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
-    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
-    fireEvent.change(telemetryIPInput, {
-      target: { value: '107.108.83.97', name: 'telemetryIP' }
-    });
-    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
-    fireEvent.change(telemetryPortInput, {
-      target: { value: '9090', name: 'telemetryPort' }
-    });
-    fireEvent.click(getByTestId("submitConfig"))
-    const data = "success";
-    mock.onPost('/api/v1/configure').reply(200, data);
-    expect(await waitForElement(() => getByTestId("submitLogin"))).not.toBeDisabled();
-  })
 
-  it("Changes Password Visibility should work if telemetry api configured", async () => {
-    const mock = new MockAdapter(axios);
-    const { getByTestId } = wrapper;
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
 
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
@@ -187,15 +178,14 @@ describe("Authentication", () => {
     fireEvent.click(getByTestId("submitConfig"))
     const data = "success";
     mock.onPost('/api/v1/configure').reply(200, data);
-
-    const visibilityButton = await waitForElement(() => getByTestId("visibilityButton"));
-    fireEvent.click(visibilityButton);
-    getByTestId("showPassword");
   })
 
   it("Redirects to Dashboard", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
 
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
@@ -226,7 +216,10 @@ describe("Authentication", () => {
   it("Throws invalid credentials error", async () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
-    
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
       target: { value: '107.108.83.97', name: 'telemetryIP' }
@@ -237,7 +230,7 @@ describe("Authentication", () => {
     });
     fireEvent.click(getByTestId("submitConfig"))
     mock.onPost('/api/v1/configure').reply(200, "success");
-    
+
     const usernameInput = getByTestId("usernameInput").querySelector("input");
     fireEvent.change(usernameInput, {
       target: { value: 'test', name: 'username' }
@@ -256,17 +249,6 @@ describe("Authentication", () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
 
-    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
-    fireEvent.change(telemetryIPInput, {
-      target: { value: '107.108.83.97', name: 'telemetryIP' }
-    });
-    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
-    fireEvent.change(telemetryPortInput, {
-      target: { value: '9090', name: 'telemetryPort' }
-    });
-    fireEvent.click(getByTestId("submitConfig"))
-    mock.onPost('/api/v1/configure').reply(200, "success");
-
     const usernameInput = getByTestId("usernameInput").querySelector("input");
     fireEvent.change(usernameInput, {
       target: { value: 'test', name: 'username' }
@@ -284,6 +266,9 @@ describe("Authentication", () => {
     const mock = new MockAdapter(axios);
     const { getByTestId } = wrapper;
 
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
       target: { value: '127.0.0.1', name: 'telemetryIP' }
@@ -297,9 +282,6 @@ describe("Authentication", () => {
 
     const editConfig = await waitForElement(() => getByTestId("editConfig"))
     fireEvent.click(editConfig)
-
-    const submitLogin = await waitForElement(() => getByTestId("submitLogin"))
-    expect(submitLogin).toBeDisabled()
   })
 
   it("Should redirect to dashboard if already logged in", () => {
