@@ -100,7 +100,7 @@ class Performance extends Component {
               <Grid container spacing={3} className={classes.titleContainer}>
                 <Grid xs={12} item>
                   <Typography className={classes.pageHeader} variant="h6">
-                    Storage Management
+                    Telemetry
                   </Typography>
                 </Grid>
               </Grid>
@@ -109,10 +109,10 @@ class Performance extends Component {
                   value={this.state.activeTab}
                   onChange={this.handleTabChange}
                 >
-                  <Tab label="configure" value="configure" className={(window.location.href.indexOf('configure') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
+                  <Tab label="configure" id="configure" value="configure" className={(window.location.href.indexOf('configure') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
                     Configure
                   </Tab>
-                  <Tab label="grafana" value="grafana" className={(window.location.href.indexOf('grafana') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
+                  <Tab label="grafana" value="grafana" id="grafana" className={(window.location.href.indexOf('grafana') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
                     Grafana
                   </Tab>
                 </Tabs>

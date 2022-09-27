@@ -873,19 +873,22 @@ def getDevices(current_user):
 @app.route('/api/v1/telemetry', methods=['POST'])
 @token_required
 def start_telemetry(current_user):
-    return dagent.start_telemetry()
+    response = dagent.start_telemetry()
+    return toJson(response.json())
 
 @app.route('/api/v1/telemetry', methods=['DELETE'])
 @token_required
 def stop_telemetry(current_user):
-    return dagent.stop_telemetry()
+    response = dagent.stop_telemetry()
+    return toJson(response.json())
 
 @app.route('/api/v1/telemetry/properties', methods=['POST'])
 # @token_required
 def set_telemetry_props():
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
-    return set_telemetry_properties(body)
+    response = set_telemetry_properties(body)
+    return toJson(response.json())
 
 @app.route('/api/v1/telemetry/properties', methods=['GET'])
 # @token_required

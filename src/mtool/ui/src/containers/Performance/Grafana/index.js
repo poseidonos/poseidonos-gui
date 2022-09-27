@@ -21,6 +21,7 @@ const Grafana = ({ classes, url }) => {
         <main className={classes.content}>
             <iframe
                 title="iframe"
+                id="grafana-iframe"
                 src={url}
                 className={classes.iframe}
             />

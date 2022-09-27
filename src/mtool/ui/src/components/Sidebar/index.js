@@ -330,7 +330,6 @@ const Sidebar = (props) => {
 
 const mapStateToProps = state => {
   return {
-   bmc_isLoggedIn:state.BMCAuthenticationReducer.bmc_isLoggedIn,
    posVersion: state.headerReducer.posVersion
   };
 };

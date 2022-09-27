@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, FormControlLabel, Grid, Paper, Typography, withStyles } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, Grid, Paper, ThemeProvider, Typography, withStyles } from '@material-ui/core';
 import { PlayCircleFilled, StopRounded } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import TelemetryPropertyAccordion from '../../../components/TelemetryPropertyAccordion';
 import * as actionTypes from "../../../store/actions/actionTypes";
-import { customTheme } from '../../../theme';
+import { customTheme, TableTheme } from '../../../theme';
 import AlertDialog from '../../../components/Dialog';
 import MToolLoader from '../../../components/MToolLoader';
 
@@ -61,7 +61,7 @@ const TelemetryConfiguration = ({
     const [alertConfirm, setAlertConfirm] = useState(() => () => {});
 
     const isAllSelected = telemetryProperties.reduce((prev, cur) => {
-        return prev && cur.fields.reduce((prev, cur) => prev && cur.isSet, true);
+        return prev && cur.fields.reduce((prevField, curField) => prevField && curField.isSet, true);
     }, true);
 
     const selectAll = () => {
@@ -128,14 +128,16 @@ const TelemetryConfiguration = ({
                     </Button>
                     </Grid>
                     <Typography>Telemetry is: {telemetryStatus ? (
-                        <Typography variant='span' className={classes.colorGreen}>On</Typography>
+                        <Typography variant="span" className={classes.colorGreen}>On</Typography>
                     ) : (
-                        <Typography variant='span' className={classes.colorOrange}>Off</Typography>
+                        <Typography variant="span" className={classes.colorOrange}>Off</Typography>
                     )}
                     </Typography>
                 </Grid>
             </Paper>
+            {telemetryStatus && telemetryProperties && telemetryProperties.length ? (
             <Paper className={classes.paper}>
+                <ThemeProvider theme={TableTheme}>
                 <Grid container justifyContent="space-between">
                     <Typography className={classes.cardHeader}>Telemetry Fields</Typography>
                     <Grid item>
@@ -163,6 +165,7 @@ const TelemetryConfiguration = ({
                     ))}
                 </Grid>
                 </Grid>
+                </ThemeProvider>
                 <Grid
                   container
                   justifyContent="center"
@@ -173,12 +176,13 @@ const TelemetryConfiguration = ({
                     color="primary"
                     className={classes.saveBtn}
                     data-testid="createarray-btn"
-                    onClick={saveConfig}
+                    onClick={() => saveConfig(telemetryProperties)}
                 >
                     Save
                 </Button>
                 </Grid>
             </Paper>
+            ) : null}
             <AlertDialog
                 title={alert.title}
                 description={alert.errorMsg}
@@ -213,7 +217,7 @@ const mapDispatchToProps = (dispatch) => ({
     openAlert: (payload) => dispatch({type: actionTypes.TELEMETRY_OPEN_ALERT, payload}),
     startTelemetry: () => dispatch({type: actionTypes.SAGA_START_TELEMETRY}),
     stopTelemetry: () => dispatch({type: actionTypes.SAGA_STOP_TELEMETRY}),
-    saveConfig: () => dispatch({type: actionTypes.SAGA_SAVE_TELEMETRY_CONFIG})
+    saveConfig: (payload) => dispatch({type: actionTypes.SAGA_SAVE_TELEMETRY_CONFIG, payload})
 });
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TelemetryConfiguration));

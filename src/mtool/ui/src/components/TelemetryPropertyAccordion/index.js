@@ -38,7 +38,7 @@ const styles = (theme) => ({
 
 const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }) => {
 
-    const isAllSelected = data && data.fields ?  data.fields.reduce((prev, cur) => prev && cur.isSet, true) : false;
+    const isAllSelected = data && data.fields ? data.fields.reduce((prev, cur) => prev && cur.isSet, true) : false;
 
     const selectAllProperties = (e) => {
         e.stopPropagation();
@@ -54,7 +54,7 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
             <Accordion>
                 <AccordionSummary
                     className={classes.accordionSummary}
-                    expandIcon={<ExpandMore htmlColor='#fff' />}
+                    expandIcon={<ExpandMore htmlColor="#fff" />}
                     id={data.category}
                 >
                     <Checkbox className={classes.accordionCheckbox} checked={isAllSelected} onClick={selectAllProperties} />
@@ -69,7 +69,7 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
                                     classes={{
                                         label: classes.formLabelText
                                     }}
-                                    control={<Checkbox checked={f.isSet} onClick={setProperty}/>}
+                                    control={<Checkbox checked={f.isSet} onClick={setProperty} />}
                                     label={f.label}
                                     name={f.field}
                                     value={f.field}

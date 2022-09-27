@@ -59,3 +59,10 @@ export const stopTelemetryLoader = (payload) => {
         payload,
     }
 }
+
+export const openTelemetryAlert = (payload) => {
+    return {
+        type: actionTypes.TELEMETRY_OPEN_ALERT,
+        payload
+    }
+}

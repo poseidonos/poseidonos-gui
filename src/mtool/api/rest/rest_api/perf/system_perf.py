@@ -33,7 +33,6 @@
  '''
 
 from rest.rest_api.telemetry import telemetry
-from rest.rest_api.dagent import metrics
 from rest.rest_api.dagent import ibofos
 import json
 

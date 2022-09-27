@@ -176,4 +176,5 @@ export {
 export {
     setTelemetryStatus,
     setTelemetryProperties,
+    openTelemetryAlert,
 } from "./telemetryActions";
