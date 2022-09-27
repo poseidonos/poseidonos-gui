@@ -30,37 +30,57 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package ibofos_
 
 import (
+	"bytes"
+	"dagent/src/routers/m9k/api_"
+	"dagent/src/routers/m9k/header"
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"pnconnector/src/log"
 	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
 )
 
-// LogsField defines the structure in which log data is returned
-type LogsField struct {
-	Time  json.Number
-	Value string
+func CalliBoFOS_(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
+	req := model.Request{}
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	_, res, err := f(header.XrId(ctx), req.Param)
+	api_.HttpResponse(ctx, res, err)
 }
 
-// LogsFields is an array of LogsField
-type LogsFields []LogsField
+func CalliBoFOSwithParam_(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), param interface{}) {
+	req := model.Request{}
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
 
-// GetRebuildLogs gets the logs from influxdb and returns a JSON response
-func GetRebuildLogs(param interface{}) (model.Response, error) {
-	var res model.Response
-	content, err := ioutil.ReadFile("/var/log/pos/rebuild_log")
-	if err != nil {
-		res.Result.Status, _ = util.GetStatusInfo(0)
-		res.Result.Data = ""
-		return res, nil
+	if req.Param != nil {
+		param = merge(param, req.Param)
 	}
 
-	res.Result.Status, _ = util.GetStatusInfo(0)
-	res.Result.Data = fmt.Sprintf("%s", content)
+	_, res, err := f(header.XrId(ctx), param)
+	api_.HttpResponse(ctx, res, err)
+}
 
-	return res, nil
+func merge(src interface{}, tar interface{}) interface{} {
+	var m map[string]interface{}
+
+	ja, _ := json.Marshal(src)
+	json.Unmarshal(ja, &m)
+
+	jb, _ := json.Marshal(tar)
+	json.Unmarshal(jb, &m)
+
+	jm, _ := json.Marshal(m)
+
+	var param interface{}
+
+	d := json.NewDecoder(bytes.NewBuffer(jm))
+	d.UseNumber()
+
+	if err := d.Decode(&param); err != nil {
+		log.Fatal(err)
+	}
+
+	return param
 }

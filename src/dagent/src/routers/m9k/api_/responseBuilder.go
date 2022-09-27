@@ -30,15 +30,14 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package api
+package api_
 
 import (
 	"dagent/src/routers/m9k/api/caller"
 	"github.com/gin-gonic/gin"
-	"kouros/log"
-	"kouros/model"
-	"kouros/utils"
 	"net/http"
+	"pnconnector/src/log"
+	"pnconnector/src/routers/m9k/model"
 )
 
 func HttpResponse(ctx *gin.Context, res model.Response, err error) {
@@ -86,9 +85,6 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	posDescription := res.Result.Status.Description
 	errorInfo := res.Result.Status.ErrorInfo
 	res.Result.Status.PosDescription = posDescription
-	if code == 11020 {
-		res.Result.Status, _ = utils.GetStatusInfo(code)
-	}
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)
 	} else {

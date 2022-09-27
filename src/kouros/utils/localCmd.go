@@ -30,37 +30,23 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package magent
+package utils
 
 import (
-	"github.com/influxdata/influxdb/client/v2"
+	"fmt"
+	"kouros/log"
+	"os/exec"
 )
 
-func ExecuteQuery(query string) ([]client.Result, error) {
-	var result []client.Result
-	dbClient, err := IDBClient.ConnectDB()
-	defer dbClient.Close()
+func ExecCmd(cmd string, background bool) error {
+	execCmd := exec.Command("sudo", "bash", "-c", cmd)
+	output, err := execCmd.CombinedOutput()
 
 	if err != nil {
-		err = errConnInfluxDB
-		return result, err
+		return fmt.Errorf("exec Run: %v %s", err, output)
 	}
 
-	queryObject := client.Query{
-		Command:   query,
-		Database:  DBName,
-		Precision: "ns",
-	}
+	log.Info(string(output))
 
-	if response, err := dbClient.Query(queryObject); err == nil {
-		if response.Error() != nil {
-			err = errQuery
-		}
-		result = response.Results
-
-	} else {
-		err = errQuery
-		return result, err
-	}
-	return result, err
+	return nil
 }

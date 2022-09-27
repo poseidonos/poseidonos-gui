@@ -44,6 +44,7 @@ import (
 	"pnconnector/src/log"
 	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	"pnconnector/src/routers/m9k/model"
+	//"kouros/model"
 	"pnconnector/src/util"
 	"strconv"
 	"time"
@@ -127,8 +128,8 @@ func callbackMethod(Buffer []model.Response, Auth string, PassCount int, totalCo
 func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam) {
 	volId := volParam.NameSuffix
 	volName := volParam.Name
-//	var volList []model.Volume{}
-        var volList []interface{}
+	//	var volList []model.Volume{}
+	var volList []interface{}
 	for volItr := 0; volItr < int(volParam.TotalCount); volItr, volId = volItr+1, volId+1 {
 		posErr := false
 		volParam.Name = volName + strconv.Itoa(int(volId))
@@ -182,7 +183,7 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 			}
 			volume := make(map[string]string)
 			volume["volumeName"] = volParam.Name
-			volList = append(volList,volume)
+			volList = append(volList, volume)
 			break
 
 		}
@@ -196,14 +197,14 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 	qosParam := make(map[string]interface{})
 	qosParam["array"] = volParam.Array
 	qosParam["vol"] = volList
-	if volParam.Minbw ==0 && volParam.Miniops ==0 {
+	if volParam.Minbw == 0 && volParam.Miniops == 0 {
 		qosParam["minbw"] = 0
-	} else if( volParam.Minbw > 0 ){
+	} else if volParam.Minbw > 0 {
 		qosParam["minbw"] = volParam.Minbw
 	} else {
 		qosParam["miniops"] = volParam.Miniops
 	}
-	_, qosResp,_ := iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
+	_, qosResp, _ := iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
 	CreateVolCh <- qosResp
 	close(CreateVolCh)
 

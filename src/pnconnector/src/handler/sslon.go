@@ -1,3 +1,4 @@
+//go:build sslon
 // +build sslon
 
 /*
