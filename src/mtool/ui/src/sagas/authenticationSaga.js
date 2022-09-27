@@ -57,6 +57,7 @@ export function* getConfig() {
 
 export function* saveConfig(action) {
   try {
+    yield put(actionCreators.setIsSavingConfig(true))
     const response = yield call(
       [axios, axios.post],
       '/api/v1/configure',
@@ -70,12 +71,14 @@ export function* saveConfig(action) {
           telemetryIP: action.payload.telemetryIP,
           telemetryPort: action.payload.telemetryPort
         }));
+      yield put(actionCreators.setShowConfig(false))
     } else {
       yield put(actionCreators.setconfigurationFailed())
     }
-
+    yield put(actionCreators.setIsSavingConfig(false))
   } catch (error) {
     yield put(actionCreators.setconfigurationFailed())
+    yield put(actionCreators.setIsSavingConfig(false))
   }
 }
 
