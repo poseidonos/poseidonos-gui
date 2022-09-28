@@ -82,23 +82,29 @@ def get_telemetry_properties():
     props = json.loads(f.read())
     status = False
     dagent_telemetry_properties = ibofos.get_telemetry_properties()
-    if "result" in dagent_telemetry_properties and \
-        "data" in dagent_telemetry_properties["result"]:
-        if "metrics_to_publish" in dagent_telemetry_properties["result"]["data"]:
-            metrics = dagent_telemetry_properties["result"]["data"]["metrics_to_publish"]
-            for prop in props:
-                for field in prop["fields"]:
-                    if field["field"] in metrics:
-                        field["isSet"] = True
-                    else:
-                        field["isSet"] = False
-        if "telemetryStatus" in dagent_telemetry_properties["result"]["data"] and \
-            "status" in dagent_telemetry_properties["result"]["data"]["telemetryStatus"]:
-            status = dagent_telemetry_properties["result"]["data"]["telemetryStatus"]["status"]
-    return {
-        "status": status,
-        "properties": props
-    }
+    try:
+        if "result" in dagent_telemetry_properties and \
+            "data" in dagent_telemetry_properties["result"]:
+            if "metrics_to_publish" in dagent_telemetry_properties["result"]["data"]:
+                metrics = dagent_telemetry_properties["result"]["data"]["metrics_to_publish"]
+                for prop in props:
+                    for field in prop["fields"]:
+                        if field["field"] in metrics:
+                            field["isSet"] = True
+                        else:
+                            field["isSet"] = False
+            if "telemetryStatus" in dagent_telemetry_properties["result"]["data"] and \
+                "status" in dagent_telemetry_properties["result"]["data"]["telemetryStatus"]:
+                status = dagent_telemetry_properties["result"]["data"]["telemetryStatus"]["status"]
+        return {
+            "status": status,
+            "properties": props
+        }
+    except:
+        return {
+            "status": False,
+            "properties": []
+        }
 
 if __name__ == '__main__':
     # print('sys perf')

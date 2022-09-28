@@ -312,7 +312,6 @@ def test_update_email(
 
 @requests_mock.Mocker(kw="mock")
 def test_get_version(global_data, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().get(
         '/api/v1.0/version',
         headers={
@@ -325,7 +324,6 @@ def test_get_version(global_data, **kwargs):
 
 @requests_mock.Mocker(kw="mock")
 def test_log_collect_get(global_data, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     response = app.test_client().post(
         '/api/v1.0/logger',
         headers={
@@ -338,9 +336,7 @@ def test_log_collect_get(global_data, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.log_to_influx", autospec=True)
-def test_log_collect_post(mock_log_to_influx, global_data, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+def test_log_collect_post(global_data, **kwargs):
     response = app.test_client().post(
         '/api/v1.0/logger',data=json.dumps({"logs": [{"tags": {"entity": "UI", "level": "info", "user": "admin"}}]}), headers={
             'x-access-token': global_data['token'],
@@ -351,9 +347,7 @@ def test_log_collect_post(mock_log_to_influx, global_data, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.log_to_influx", autospec=True)
-def test_without_token(mock_log_to_influx, global_data, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+def test_without_token(global_data, **kwargs):
     response = app.test_client().get(
         '/api/v1.0/get_ibofos_time_interval', headers={
             'x-access-token': '',
@@ -364,9 +358,7 @@ def test_without_token(mock_log_to_influx, global_data, **kwargs):
     assert response.status_code == 401
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.log_to_influx", autospec=True)
-def test_wrong_token(mock_log_to_influx, global_data, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+def test_wrong_token(global_data, **kwargs):
     response = app.test_client().get('/api/v1.0/get_ibofos_time_interval', headers={'x-access-token': 'wrong_token',
             'Accept': 'application/json',
         },
