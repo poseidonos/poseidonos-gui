@@ -35,6 +35,7 @@ package ibofos
 import (
 	"bytes"
 	"dagent/src/routers/m9k/api"
+	"dagent/src/routers/m9k/globals"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
@@ -42,12 +43,15 @@ import (
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+	"time"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
 	res, err := f(header.XrId(ctx), req.Param, posMngr)
+	globals.APILock.Unlock()
 	api.HttpResponse(ctx, res, err)
 }
 
@@ -57,8 +61,9 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSMa
 	if req.Param != nil {
 		param = merge(param, req.Param)
 	}
-
+	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
 	res, err := f(header.XrId(ctx), param, posMngr)
+	globals.APILock.Unlock()
 	api.HttpResponse(ctx, res, err)
 }
 
