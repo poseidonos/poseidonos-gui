@@ -971,6 +971,7 @@ def replace_arr_device(array_name):
         res = "unable to replace array device"
         return make_response(res, 500)
     except Exception as e:
+        print("Exception in Replace array device: " + e)
         return make_response('Could not replace array device', 500)
 
 
