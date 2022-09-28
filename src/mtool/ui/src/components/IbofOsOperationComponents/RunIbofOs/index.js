@@ -30,8 +30,16 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
+import React, {useState} from 'react';
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import { green, red } from '@material-ui/core/colors';
@@ -39,13 +47,13 @@ import './RunIbofOs.css';
 import LinearProgressBarComponent from '../LinearProgressBarComponent';
 
 const RunIbofOs = props => {
-  // const [propertySelect, setPropertySelect] = useState("");
-  // const selectProperty = (event) => {
-  //     setPropertySelect(event.target.value);
-  // }
-  // const setProperty = () => {
-  //     props.setProperty(propertySelect);
-  // }
+  const [propertySelect, setPropertySelect] = useState("");
+  const selectProperty = (event) => {
+      setPropertySelect(event.target.value);
+  }
+  const setProperty = () => {
+      props.setProperty(propertySelect);
+  }
   // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div>
@@ -159,7 +167,7 @@ const RunIbofOs = props => {
             </div>
           </div> */}
         </div>
-	{/* <Grid container xs={12} className="IBOFOSSetPropertyContainer" alignItems="baseline">
+	<Grid container xs={12} className="IBOFOSSetPropertyContainer" alignItems="baseline">
 	<FormControl>
 	<InputLabel htmlFor="vol_unit">Rebuild Perf Impact</InputLabel>
 	<Select
@@ -202,7 +210,7 @@ const RunIbofOs = props => {
 	{props.OS_Running_Status !== 'Not Running' ? (
       <Typography className="IBOFOSImpactText"> Current Impact: <span className="IBOFOSUppercase">{props.property}</span></Typography>
       ) : null}
-	</Grid> */}
+	</Grid>
         <Grid className="IBOFOSStatusLabel">
           <span>Response</span>
           <Grid className="IBOFOSResponse">
