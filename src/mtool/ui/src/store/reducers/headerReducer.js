@@ -39,7 +39,8 @@ export const initialState = {
     OS_Running_Status: "...",
     operationsMessage: [],
     posVersion: "...",
-    posProperty: "..."
+    posProperty: "...",
+    isStatusCheckDone: true
 }
 
 
@@ -61,6 +62,11 @@ const headerReducer = (state = initialState, action) => {
             return {
                 ...state,
                 operationsMessage: action.message
+            }
+        case actionTypes.SET_IS_STATUS_CHECK_DONE:
+            return {
+                ...state,
+                isStatusCheckDone: action.payload
             }
 	case actionTypes.SET_POS_INFO:
 	    return {

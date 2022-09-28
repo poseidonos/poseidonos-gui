@@ -231,7 +231,9 @@ class Header extends Component {
     clearInterval(this.interval);
     const val = this.props.timeintervalue;
     this.interval = setInterval(() => {
-      this.IsIbofOSRunning();
+      if(this.props.statusCheckDone) {
+        this.IsIbofOSRunning();
+      }
     }, (val || 4) * 1000);
   }
 
@@ -239,7 +241,9 @@ class Header extends Component {
     const val = this.props.timeintervalue;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
-      this.IsIbofOSRunning();
+      if(this.props.statusCheckDone) {
+        this.IsIbofOSRunning();
+      }
     }, (val || 4) * 1000);
   }
 
@@ -599,6 +603,7 @@ const mapStateToProps = state => {
     status: state.headerReducer.status,
     OS_Running_Status: state.headerReducer.OS_Running_Status,
     timeintervalue: state.configurationsettingReducer.timeinterval,
+    statusCheckDone: state.headerReducer.isStatusCheckDone
   };
 }
 const mapDispatchToProps = dispatch => {
