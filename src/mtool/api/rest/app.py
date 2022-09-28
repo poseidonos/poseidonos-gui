@@ -954,7 +954,6 @@ def replace_arr_device(array_name):
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
-        print("body", body, array_name)
         device = body['device']
         return_msg = {}
         res = dagent.replace_array_device(array_name, device)
@@ -963,7 +962,6 @@ def replace_arr_device(array_name):
             if res["result"]["status"]["code"] == 0:
                 return toJson(res)
         else:
-            print("spare error", res.json())
             res = res.json()
             if ("result" in res and "status" in res["result"]):
                 return_msg["result"] = res["result"]["status"]
@@ -973,7 +971,6 @@ def replace_arr_device(array_name):
         res = "unable to replace array device"
         return make_response(res, 500)
     except Exception as e:
-        print("In exception replace_arr_device(): ", e)
         return make_response('Could not replace array device', 500)
 
 
@@ -1298,7 +1295,7 @@ def get_arrays(current_user):
                 if "writeThroughEnabled" in res["result"]["data"]:
                     a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
                 else:
-                    a_info["writeThroughEnabled"] = True
+                    a_info["writeThroughEnabled"] = False
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)
         except Exception as e:
