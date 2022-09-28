@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from "react";
-import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
+import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
@@ -50,12 +50,13 @@ import MToolLoader from "../../components/MToolLoader";
 import RebuildProgress from "../../components/RebuildProgress";
 import AlertDialog from "../../components/Dialog";
 import "./Volume.css";
-import MToolTheme, { customTheme } from "../../theme";
+import MToolTheme, { customTheme, PageTheme } from "../../theme";
 import SelectSubsystem from "../../components/SelectSubsystem";
 import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
 import getSubsystemForArray from "../../utils/subsystem";
+import { Autorenew, Refresh } from "@material-ui/icons";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -151,9 +152,23 @@ const styles = (theme) => ({
   selectedTab: customTheme.tab.selected,
   pageHeader: customTheme.page.title,
   cardHeader: customTheme.card.header,
+  tooltip: {
+    backgroundColor: "#f5f5f9",
+    opacity: 1,
+    color: "rgba(0, 0, 0, 1)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+    "& b": {
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+  },
   card: {
     marginTop: theme.spacing(1),
   },
+  rebuildButton: {
+    cursor: "pointer"
+  }
 });
 
 // namespace to connect to the websocket for multi-volume creation
@@ -191,6 +206,7 @@ class Volume extends Component {
     this.isSubsystemReserved = this.isSubsystemReserved.bind(this);
     this.openRebuildPopover = this.openRebuildPopover.bind(this);
     this.closeRebuildPopover = this.closeRebuildPopover.bind(this);
+    this.rebuildArray = this.rebuildArray.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if (array) {
@@ -359,6 +375,10 @@ class Volume extends Component {
 
   alertConfirm() {
     this.props.Close_Alert();
+  }
+
+  rebuildArray() {
+    this.props.Rebuild_Array(this.props.selectedArray);
   }
 
   render() {
@@ -532,6 +552,22 @@ class Volume extends Component {
                                           />
                                         ) : null
                                         }
+                                        {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
+                                          this.props.arrayMap[this.props.selectedArray].situation !== "REBUILDING" ? (
+                                          <ThemeProvider theme={PageTheme}>
+                                            <Tooltip
+                                              title="Rebuild Array"
+                                            >
+                                              <Autorenew
+                                                color="primary"
+                                                data-testid="rebuild-icon"
+                                                id="rebuild-icon"
+                                                className={classes.rebuildButton}
+                                                onClick={this.rebuildArray}
+                                              />
+                                            </Tooltip>
+                                          </ThemeProvider>
+                                        ) : null}
                                       </Grid>
                                     </Typography>
                                   </Grid>
@@ -813,7 +849,8 @@ const mapDispatchToProps = (dispatch) => {
     Show_Storage_Alert: (payload) => dispatch({ type: actionTypes.STORAGE_SHOW_ALERT, payload }),
     Auto_Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_AUTO_CREATE_ARRAY, payload }),
     Reset_Volume_QoS: (payload) => dispatch({ type: actionTypes.SAGA_RESET_VOLUME_QOS, payload }),
-    Get_Array_Info: (payload) => dispatch({ type: actionTypes.SAGA_GET_ARRAY_INFO, payload })
+    Get_Array_Info: (payload) => dispatch({ type: actionTypes.SAGA_GET_ARRAY_INFO, payload }),
+    Rebuild_Array: (payload) => dispatch({ type: actionTypes.SAGA_REBUILD_ARRAY, payload })
   };
 };
 

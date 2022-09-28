@@ -215,6 +215,8 @@ export const SAGA_MOUNT_POS = "SAGA_MOUNT_POS"
 
 export const SET_ARRAY = "SET_ARRAY"
 
+export const SAGA_REBUILD_ARRAY = "SAGA_REBUILD_ARRAY"
+
 // Create Volume Actions
 export const RESET_INPUTS = "RESET_INPUTS"
 

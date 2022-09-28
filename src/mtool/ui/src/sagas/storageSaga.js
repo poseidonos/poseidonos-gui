@@ -1203,6 +1203,48 @@ function* autoCreateArray(action) {
   }
 }
 
+function* rebuildArray(action) {
+  try {
+    yield put(actionCreators.startStorageLoader("Starting Array rebuild"));
+    const response = yield call(
+      [axios, axios.post],
+      `/api/v1.0/array/${action.payload}/rebuild`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data.result.status.code !== 0) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while Starting Rebuild Operation",
+            errorCode: `Description:${response.data.result.description}`,
+            alertTitle: "Array Rebuild",
+          })
+        );
+      }
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: "Error while Staring Rebuild Operation",
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: "Array Rebuild",
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
+  }
+}
+
 function* addSpareDisk(action) {
   try {
     const arrayName = yield select(arrayname)
@@ -1812,4 +1854,5 @@ export default function* storageWatcher() {
   );
   yield takeEvery(actionTypes.SAGA_UNMOUNT_POS, unmountPOS);
   yield takeEvery(actionTypes.SAGA_MOUNT_POS, mountPOS);
+  yield takeEvery(actionTypes.SAGA_REBUILD_ARRAY, rebuildArray);
 }
