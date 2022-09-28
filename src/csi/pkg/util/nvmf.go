@@ -37,17 +37,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/google/uuid"
 	"github.com/poseidonos/pos-csi/pkg/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"io/ioutil"
 	"k8s.io/klog"
-	"net/http"
-	"strings"
-	"sync"
-	"time"
 )
 
 const MAX_RETRY_COUNT = 5
@@ -108,7 +109,10 @@ func unmountVolume(name string, params map[string]string, mtx2 *sync.Mutex) erro
 		return status.Error(codes.Unavailable, err.Error())
 	}
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	klog.Infof("Unmount Volume API response: %v", string(body))
 	return nil
 }
@@ -116,12 +120,18 @@ func unmountVolume(name string, params map[string]string, mtx2 *sync.Mutex) erro
 func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
 	requestBody := []byte(fmt.Sprintf(`{
 		"param": {
-			"name": "%s"
+			"subnqn": "%s"
 		}
 	}`, params["nqn"]))
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", params["provisionerIP"], params["provisionerPort"])
 	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Delete Subsystem", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}
@@ -149,7 +159,13 @@ func mountVolume(csiReq *csi.CreateVolumeRequest, conf map[string]string, mtx2 *
         }`, conf["array"], conf["nqn"]))
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s/mount", conf["provisionerIp"], conf["provisionerPort"], name)
 	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Mount volume", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}
@@ -199,21 +215,52 @@ func GetUUIDFromSubsystem(id string, conf map[string]string, mtx2 *sync.Mutex) (
 }
 
 func GetUUID(name string, conf map[string]string, mtx2 *sync.Mutex) (string, error) {
-	id, err := GetVolumeIdFromName(name, conf, mtx2)
+	id, err := GetVolumeUUIDFromName(name, conf, mtx2)
 	if err != nil {
 		return "", err
 	}
-	uuid, err := GetUUIDFromSubsystem(id, conf, mtx2)
+	return id, nil
+}
+
+func GetVolumeUUIDFromName(volumeName string, conf map[string]string, mtx2 *sync.Mutex) (string, error) {
+	klog.Info("Calling Volume ID From Name")
+
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/array/%s/volume/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"], volumeName)
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List Volumes", 0, mtx2)
 	if err != nil {
-		return "", err
+		return "", status.Error(codes.Unavailable, err.Error())
 	}
-	return uuid, nil
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", status.Error(codes.Unavailable, err.Error())
+	}
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	klog.Info("Got Volume info:")
+	if err = dec.Decode(&response); err != nil {
+		return "", status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		klog.Info("Returning volume UUID")
+		uuid := response.Result.Data.(map[string]interface{})["uuid"].(string)
+		return uuid, nil
+
+	}
+
+	return "", status.Error(codes.Unavailable, response.Result.Status.Description)
 }
 
 func GetVolumeIdFromName(volumeName string, conf map[string]string, mtx2 *sync.Mutex) (string, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", conf["provisionerIp"], conf["provisionerPort"], conf["array"])
 	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List Volumes", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}
@@ -235,12 +282,18 @@ func GetVolumeIdFromName(volumeName string, conf map[string]string, mtx2 *sync.M
 }
 
 func ListSubsystem(conf map[string]string, count int, mtx2 *sync.Mutex) (model.Response, error) {
+	response := model.Response{}
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
 	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, nil, "GET", "List SubSystem", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return response, status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return response, status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
-	response := model.Response{}
 	if err = dec.Decode(&response); err != nil {
 		return response, status.Error(codes.Unavailable, err.Error())
 	}
@@ -276,15 +329,23 @@ func createSubsystem(conf map[string]string, mtx2 *sync.Mutex) error {
 		}
 	}
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", conf["provisionerIp"], conf["provisionerPort"])
-	requestBody := []byte(fmt.Sprintf(`{"param": {
-        "name": "%s",
-        "sn": "%s",
-        "mn": "%s",
-        "max_namespaces": %s,
-        "allow_any_host": %s
-    }}`, conf["nqn"], conf["serialNumber"], conf["modelNumber"], conf["maxNamespaces"], conf["allowAnyHost"]))
-	resp, _ := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create SubSystem", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	requestBody := []byte(fmt.Sprintf(`{
+	"param": {
+            "nqn": "%s",
+            "serialNumber": "%s",
+            "modelNumber": "%s",
+            "maxNamespaces": %s,
+            "allowAnyHost": %s
+    }
+}`, conf["nqn"], conf["serialNumber"], conf["modelNumber"], conf["maxNamespaces"], conf["allowAnyHost"]))
+	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create SubSystem", 0, mtx2)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response = model.Response{}
@@ -304,14 +365,20 @@ func subsystemAddListener(conf map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/listener", conf["provisionerIp"], conf["provisionerPort"])
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
-                "name": "%s",
-                "transport_type": "%s",
-                "target_address": "%s",
-                "transport_service_id": "%s"
+                "subnqn": "%s",
+                "transportType": "%s",
+                "targetAddress": "%s",
+                "transportServiceId": "%s"
              }
         }`, conf["nqn"], conf["targetType"], conf["targetAddr"], conf["targetPort"]))
 	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Add Listener", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}
@@ -331,14 +398,20 @@ func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/transport", conf["provisionerIp"], conf["provisionerPort"])
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
-                "transport_type": "%s",
-                "buf_cache_size": %s,
-                "num_shared_buf": %s
+                "transportType": "%s",
+                "bufCacheSize": %s,
+                "numSharedBuf": %s
              }
         }`, conf["targetType"], conf["bufCacheSize"], conf["numSharedBuf"]))
 
 	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create Transport", 0, mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}
@@ -357,6 +430,9 @@ func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
 
 func CallDAgent(url string, requestBody []byte, reqType string, reqName string, mtx2 *sync.Mutex) (*http.Response, error) {
 	req, err := http.NewRequest(reqType, url, bytes.NewBuffer(requestBody))
+	if err != nil {
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
 	id := uuid.New()
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-request-Id", id.String())
@@ -375,7 +451,13 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string, 
 func CallDAgentWithStatus(ip, port, url string, requestBody []byte, reqType string, reqName string, count int, mtx2 *sync.Mutex) (*http.Response, error) {
 	statusURL := fmt.Sprintf("http://%s:%s/api/ibofos/v1/system", ip, port)
 	resp, err := CallDAgent(statusURL, nil, "GET", "Status", mtx2)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
 	dec := json.NewDecoder(bytes.NewBuffer(body))
 	dec.UseNumber()
 	response := model.Response{}

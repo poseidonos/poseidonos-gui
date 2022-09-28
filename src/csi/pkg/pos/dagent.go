@@ -84,7 +84,8 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "name": "%s",
                 "size": %v,
                 "maxbw": 0,
-                "maxiops": 0
+                "maxiops": 0,
+                "iswalvol": false
              }
         }`, config["array"], name, alignedSize))
 	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0, mtx2)

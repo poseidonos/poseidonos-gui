@@ -41,7 +41,7 @@ all: poscsi lint test
 .PHONY: poscsi
 poscsi:
 	@echo === building poscsi binary
-	@CGO_ENABLED=0 GOARCH=$(GOARCH) GOOS=linux go build -o $(OUT_DIR)/poscsi ./cmd/
+	@CGO_ENABLED=0 GOARCH=$(GOARCH) GOOS=linux go build -buildvcs=false -o $(OUT_DIR)/poscsi ./cmd/
 
 # static code check, text lint
 lint: golangci yamllint shellcheck
