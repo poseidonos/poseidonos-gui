@@ -35,6 +35,7 @@
 from rest.rest_api.telemetry import telemetry
 from rest.rest_api.dagent import ibofos
 import json
+import io
 
 def get_agg_volumes_perf(ip, port):
     READ_IOPS_VOLUME = 'read_iops_volume'
@@ -78,7 +79,7 @@ def set_telemetry_properties(properties):
     return ibofos.set_telemetry_properties(params)
 
 def get_telemetry_properties():
-    f = open('util/telemetry/fields.json')
+    f = io.open('util/telemetry/fields.json', 'r', encoding='utf-8')
     props = json.loads(f.read())
     status = False
     dagent_telemetry_properties = ibofos.get_telemetry_properties()
@@ -100,7 +101,7 @@ def get_telemetry_properties():
             "status": status,
             "properties": props
         }
-    except:
+    except Exception:
         return {
             "status": False,
             "properties": []
