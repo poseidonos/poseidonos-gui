@@ -50,6 +50,7 @@ import {hardwareHealthWatcher} from './hardwareHealthSaga'
 import {hardwarePowerManagementWatcher} from './hardwarePowerManagementSaga'
 import {BMCAuthenticationWatcher} from './BMCAuthenticationSaga'
 import subsystemWatcher from './subsystemSaga';
+import { telemetryWatcher } from './telemetrySaga';
 
 export default function* rootSaga() {
     yield all([
@@ -72,5 +73,6 @@ export default function* rootSaga() {
         hardwareHealthWatcher(),
         hardwarePowerManagementWatcher(),
         BMCAuthenticationWatcher(),
+        telemetryWatcher(),
     ]);
 }

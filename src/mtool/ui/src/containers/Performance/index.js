@@ -32,34 +32,52 @@
 
 import React, { Component } from 'react';
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
-import { customTheme, PageTheme } from '../../theme';
+import { AppBar, Box, Tab, Tabs, Grid, Typography } from '@material-ui/core';
+import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
+import MToolTheme, { customTheme } from '../../theme';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
+import Grafana from './Grafana';
+import TelemetryConfiguration from './Configuration';
 
-const styles = () => ({
+const styles = (theme) => ({
   content: {
     flexGrow: 1,
-    backgroundColor: "#111217"
+    padding: theme.spacing(3),
+    paddingTop: "10px",
+    paddingLeft: "35px",
+    paddingRight: "24px",
+    width: "calc(100% - 256px)",
+    boxSizing: "border-box",
   },
+  titleContainer: {
+    marginTop: theme.spacing(1),
+  },
+  pageHeader: customTheme.page.title,
   toolbar: customTheme.toolbar,
-  iframe: {
-    border: 0,
-    width: "100%",
-    height: "calc(100vh - 60px)"
-  }
+  selectedTab: customTheme.tab.selected,
 });
-
 
 class Performance extends Component {
   constructor(props) {
     super(props);
 
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.interval = null;
     this.state = {
-      mobileOpen: false,
+      mobileOpen: false
     };
+  }
+
+  handleTabChange(event, value) {
+    if (value === "grafana") {
+      this.setState({ activeTab: "grafana" });
+      this.props.history.push("/performance/grafana");
+    } else {
+      this.setState({ activeTab: "configure"});
+      this.props.history.push("/performance/configure");
+    }
   }
 
   handleDrawerToggle() {
@@ -72,16 +90,43 @@ class Performance extends Component {
     const { classes } = this.props;
     const url = `http://${window.location.hostname}:3500/datasources`
     return (
-      <ThemeProvider theme={PageTheme}>
+      <ThemeProvider theme={MToolTheme}>
         <Box display="flex">
           <Header toggleDrawer={this.handleDrawerToggle} />
           <Sidebar mobileOpen={this.state.mobileOpen} toggleDrawer={this.handleDrawerToggle} />
           <main className={classes.content}>
-            <div className={classes.toolbar} /><iframe
-              title="iframe"
-              src={url}
-              className={classes.iframe}
-            />
+            <div className={classes.toolbar} />
+            <Grid container spacing={3}>
+              <Grid container spacing={3} className={classes.titleContainer}>
+                <Grid xs={12} item>
+                  <Typography className={classes.pageHeader} variant="h6">
+                    Telemetry
+                  </Typography>
+                </Grid>
+              </Grid>
+              <AppBar style={{ zIndex: 50 }} position="relative" color="default">
+                <Tabs
+                  value={this.state.activeTab}
+                  onChange={this.handleTabChange}
+                >
+                  <Tab label="configure" id="configure" value="configure" className={(window.location.href.indexOf('configure') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
+                    Configure
+                  </Tab>
+                  <Tab label="grafana" value="grafana" id="grafana" className={(window.location.href.indexOf('grafana') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
+                    Grafana
+                  </Tab>
+                </Tabs>
+              </AppBar>
+              <Switch>
+                <Redirect exact from="/performance" to="/performance/configure" />
+                <Route path="/performance/configure">
+                  <TelemetryConfiguration />
+                </Route>
+                <Route path="/performance/grafana">
+                  <Grafana url={url} />
+                </Route>
+              </Switch>
+            </Grid>
           </main>
         </Box>
       </ThemeProvider>
@@ -89,4 +134,4 @@ class Performance extends Component {
   }
 }
 
-export default withStyles(styles)(Performance);
+export default withStyles(styles)(withRouter(Performance));

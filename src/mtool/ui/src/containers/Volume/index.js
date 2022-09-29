@@ -148,11 +148,7 @@ const styles = (theme) => ({
   legendContainer: {
     justifyContent: "flex-end"
   },
-  selectedTab: {
-    color: 'rgb(33, 34, 37)',
-    borderBottom: `2px solid ${'rgb(33, 34, 37)'}`,
-    fontWeight: 600
-  },
+  selectedTab: customTheme.tab.selected,
   pageHeader: customTheme.page.title,
   cardHeader: customTheme.card.header,
   card: {

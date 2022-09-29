@@ -172,3 +172,9 @@ export {
     BMCSetIsLoggedIn,
     BMCSetLoginFailed,
 } from "./BMCAuthenticationActions";
+
+export {
+    setTelemetryStatus,
+    setTelemetryProperties,
+    openTelemetryAlert,
+} from "./telemetryActions";

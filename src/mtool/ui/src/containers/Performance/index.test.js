@@ -35,6 +35,7 @@ import {
   render,
   fireEvent,
   cleanup,
+  waitForElement,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
@@ -48,12 +49,9 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
-import performanceReducer from "../../store/reducers/performanceReducer";
-import storageReducer from "../../store/reducers/storageReducer";
-import subsystemReducer from "../../store/reducers/subsystemReducer";
-import hardwareSensorReducer from "../../store/reducers/hardwareSensorReducer";
+import telemetryReducer from "../../store/reducers/telemetryReducer";
+import waitLoaderReducer from "../../store/reducers/waitLoaderReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer"
 import Performance from "./index";
 import i18n from "../../i18n";
 
@@ -68,14 +66,10 @@ describe("Performance", () => {
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
-      // headerLanguageReducer,
       headerReducer,
-      performanceReducer,
-      storageReducer,
       configurationsettingReducer,
-      hardwareSensorReducer,
-      subsystemReducer,
-      BMCAuthenticationReducer
+      telemetryReducer,
+      waitLoaderReducer
     });
     const composeEnhancers =
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -95,7 +89,7 @@ describe("Performance", () => {
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
             {" "}
-            <Performance level='volume'/>
+            <Performance />
           </Provider>
         </I18nextProvider>
       </Router>
@@ -105,18 +99,74 @@ describe("Performance", () => {
   afterEach(cleanup);
 
 
-  it("should render button on resize", async () => {
-    // Change the viewport to 500px.
-    global.innerWidth = 500;
+  it("should render the telemetry configuration page", () => {
+    renderComponent();
+    const { getByText } = wrapper;
+    expect(getByText("Start")).toBeDefined();
+  });
 
-    // Trigger the window resize event.
-    global.dispatchEvent(new Event("resize"));
-    await act(async () => {
-      renderComponent();
-    });
-    const { getByTestId } = wrapper;
-    expect(getByTestId("sidebar-toggle")).toBeDefined();
-    fireEvent.click(getByTestId("sidebar-toggle"));
-    expect(getByTestId("help-link")).toHaveTextContent("Help");
+  it("should start Telemetry on clicking the Start Telemetry button", () => {
+    mock.onPost("/api/v1/telemetry")
+      .reply(200);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByText } = wrapper;
+    fireEvent.click(getByText("Start"));
+    fireEvent.click(getByText("Yes"));
+    expect(getSpy).toHaveBeenCalledWith("/api/v1/telemetry",
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null,
+        },
+      });
+  });
+
+  it("should Stop Telemetry on clicking the Stop Telemetry button", async () => {
+    mock.onGet("/api/v1/telemetry/properties")
+      .reply(200, {
+        status: true,
+        properties: [{
+          category: 'Common',
+          fields: [{
+            label: 'Process Uptime Second',
+            field: 'uptime_sec',
+            isSet: false
+          }]
+        }, {
+          category: 'Device',
+          fields: [{
+            label: 'Bandwidth',
+            field: 'bandwidth_device',
+            isSet: false
+          }, {
+            label: 'Capacity',
+            field: 'capacity_device',
+            isSet: false
+          }]
+        }]
+      })
+      .onDelete("/api/v1/telemetry")
+      .reply(200);
+    const getSpy = jest.spyOn(axios, "delete");
+    renderComponent();
+    const { getByText } = wrapper;
+    fireEvent.click(await waitForElement(() => getByText("Stop")));
+    fireEvent.click(getByText("Yes"));
+    expect(getSpy).toHaveBeenCalledWith("/api/v1/telemetry",
+      {
+        headers: {
+          "x-access-token": null,
+        },
+      });
+  });
+
+  it("should render the Grafana page", async () => {
+    renderComponent();
+    const { getByText, getByTitle } = wrapper;
+    fireEvent.click(getByText("grafana"));
+    expect(await waitForElement(() => getByTitle("iframe"))).toBeDefined();
   });
 });
