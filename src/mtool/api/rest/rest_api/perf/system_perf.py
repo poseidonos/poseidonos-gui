@@ -32,10 +32,10 @@
  */
  '''
 
-#from util.db.influx import get_connection
-#from util.com.time_groups import time_groups_default
 from rest.rest_api.telemetry import telemetry
-#from util.macros.influxdb_config import mtool_db
+from rest.rest_api.dagent import ibofos
+import json
+import io
 
 def get_agg_volumes_perf(ip, port):
     READ_IOPS_VOLUME = 'read_iops_volume'
@@ -64,6 +64,48 @@ def get_agg_volumes_perf(ip, port):
     res_dict['latency_write'] = write_latency
     
     return res_dict
+
+def set_telemetry_properties(properties):
+    props = {}
+    for prop in properties:
+        for field in prop["fields"]:
+            if field["isSet"]:
+                props[field["field"]] = None
+    params = {
+        "param": {
+            "metrics_to_publish": props
+        }
+    }
+    return ibofos.set_telemetry_properties(params)
+
+def get_telemetry_properties():
+    f = io.open('util/telemetry/fields.json', 'r', encoding='utf-8')
+    props = json.loads(f.read())
+    status = False
+    dagent_telemetry_properties = ibofos.get_telemetry_properties()
+    try:
+        if "result" in dagent_telemetry_properties and \
+            "data" in dagent_telemetry_properties["result"]:
+            if "metrics_to_publish" in dagent_telemetry_properties["result"]["data"]:
+                metrics = dagent_telemetry_properties["result"]["data"]["metrics_to_publish"]
+                for prop in props:
+                    for field in prop["fields"]:
+                        if field["field"] in metrics:
+                            field["isSet"] = True
+                        else:
+                            field["isSet"] = False
+            if "telemetryStatus" in dagent_telemetry_properties["result"]["data"] and \
+                "status" in dagent_telemetry_properties["result"]["data"]["telemetryStatus"]:
+                status = dagent_telemetry_properties["result"]["data"]["telemetryStatus"]["status"]
+        return {
+            "status": status,
+            "properties": props
+        }
+    except Exception:
+        return {
+            "status": False,
+            "properties": []
+        }
 
 if __name__ == '__main__':
     # print('sys perf')

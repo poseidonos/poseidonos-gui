@@ -211,7 +211,7 @@ const Sidebar = (props) => {
                 alt="l"
               />
             </span>
-            <Typography className={classes.sidebarText}>Grafana for Telemetry</Typography>
+            <Typography className={classes.sidebarText}>Telemetry</Typography>
           </ListItem>
         </NavLink>
         {/* <Divider className={classes.listDivider} />
@@ -330,7 +330,6 @@ const Sidebar = (props) => {
 
 const mapStateToProps = state => {
   return {
-   bmc_isLoggedIn:state.BMCAuthenticationReducer.bmc_isLoggedIn,
    posVersion: state.headerReducer.posVersion
   };
 };
