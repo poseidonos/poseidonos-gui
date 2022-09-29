@@ -72,9 +72,9 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
 * [System](#system)
 
   * [EXITIBOFOS](#1-exitibofos)
-  * [RUNIBOFOS](#2-runibofos)
-  * [SYSTEMPROPERTY](#3-systemproperty)
-  * [SYSTEMPROPERTY](#4-systemproperty)
+  * [GET SYSTEMPROPERTY](#2-get-systemproperty)
+  * [RUNIBOFOS](#3-runibofos)
+  * [SET SYSTEMPROPERTY](#4-set-systemproperty)
   * [iBOFOSINFO](#5-ibofosinfo)
 
 * [Telemetry](#telemetry)
@@ -6013,7 +6013,80 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 2. RUNIBOFOS
+### 2. GET SYSTEMPROPERTY
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/system/property
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "cfe7705e-3779-11ed-8c02-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        },
+        "data": {
+            "rebuildPolicy": "low"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 3. RUNIBOFOS
 
 
 
@@ -6178,80 +6251,7 @@ URL: http://{{host}}/api/ibofos/v1/system
 
 
 
-### 3. SYSTEMPROPERTY
-
-
-
-***Endpoint:***
-
-```bash
-Method: GET
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/system/property
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "cfe7705e-3779-11ed-8c02-3cecef280244",
-    "lastSuccessTime": 0,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "eventName": "SUCCESS",
-            "cause": "NONE",
-            "description": "NONE",
-            "posDescription": "NONE",
-            "solution": "NONE"
-        },
-        "data": {
-            "rebuildPolicy": "low"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc6"
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-### 4. SYSTEMPROPERTY
+### 4. SET SYSTEMPROPERTY
 
 
 
@@ -6283,6 +6283,7 @@ URL: http://{{host}}/api/ibofos/v1/system/property
         "level": "medium"
     }
 }
+
 ```
 
 
@@ -8478,4 +8479,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-27 00:11:18 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-27 22:28:36 by [docgen](https://github.com/thedevsaddam/docgen)

@@ -687,6 +687,33 @@ def create_array(
     return make_failure_response(
         'Could not get ibofos to create array...', 500)
 
+def rebuild_array(arrayname, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info(
+        '%s',
+        'Sending command to D-Agent to rebuild array using rebuild array api ...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array'+'/'+arrayname+'/'+'rebuild',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=None)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to rebuild array...', 500)
+
 
 def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)

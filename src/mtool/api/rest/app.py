@@ -1133,8 +1133,15 @@ def auto_create_array(current_user):
         print("Exception in creating array: " + e)
         return abort(404)
 
+# rebuild Array
+@app.route('/api/v1.0/array/<array_name>/rebuild', methods=['POST'])
+@token_required
+def rebuild_array(current_user, array_name):
+    res = dagent.rebuild_array(array_name)
+    res = res.json()
+    return toJson(res)
+    
 # Create Array
-
 
 @app.route('/api/v1.0/create_arrays/', methods=['POST'])
 @token_required
