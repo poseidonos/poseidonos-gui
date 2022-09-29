@@ -47,14 +47,12 @@ from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, check
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_agg_volumes_perf
+from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_telemetry_properties, set_telemetry_properties
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
 from util.db.database_handler import DBConnection, DBType
-from util.log.influx_handler import InfluxHandler
-from util.log.ui_logger import log_to_influx
 from time import strftime
 import logging
 from logging.handlers import RotatingFileHandler
@@ -96,7 +94,6 @@ handler = RotatingFileHandler(
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
-logger.addHandler(InfluxHandler())
 
 
 connection_obj = DBConnection()
@@ -222,7 +219,7 @@ def log_collect():
     if len(body_unicode) > 0:
         body = json.loads(body_unicode)
         try:
-            log_to_influx(body)
+            logger.info(body)
         except Exception as e:
             print(e)
         return "Log written sucessfully"
@@ -873,6 +870,30 @@ def getDevices(current_user):
             print("Exception in array_info() in /api/v1.0/get_devices/ ", e)
     return toJson(devices)
 
+@app.route('/api/v1/telemetry', methods=['POST'])
+@token_required
+def start_telemetry(current_user):
+    response = dagent.start_telemetry()
+    return toJson(response.json())
+
+@app.route('/api/v1/telemetry', methods=['DELETE'])
+@token_required
+def stop_telemetry(current_user):
+    response = dagent.stop_telemetry()
+    return toJson(response.json())
+
+@app.route('/api/v1/telemetry/properties', methods=['POST'])
+# @token_required
+def set_telemetry_props():
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    response = set_telemetry_properties(body)
+    return toJson(response.json())
+
+@app.route('/api/v1/telemetry/properties', methods=['GET'])
+# @token_required
+def get_telemetry_props():
+    return toJson(get_telemetry_properties())
 
 # Add Spare Disk
 @app.route('/api/v1.0/add_spare_device/', methods=['POST'])
@@ -1568,7 +1589,6 @@ def delete_users(current_user):
 @app.route('/api/v1.0/login/', methods=['POST'])
 def login():
     body_unicode = request.data.decode('utf-8')
-    print("cameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee in login")
     print(request.authorization)
 
     body = json.loads(body_unicode)

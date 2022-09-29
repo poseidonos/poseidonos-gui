@@ -923,6 +923,79 @@ def list_arrays(auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get ibofos to get list array...', 500)
 
+def start_telemetry(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to start telemetry...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'telemetry',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not start telemetry...', 500)
+
+def stop_telemetry(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to stop telemetry...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'telemetry',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not stop telemetry...', 500)
+
+def get_telemetry_properties(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to start telemetry...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'telemetry/properties',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response.json()
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get telemetry properties...', 500)
+
+
+def set_telemetry_properties(params, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to start telemetry...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'telemetry/properties',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=json.dumps(params))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not set telemetry properties...', 500)
 
 def create_volume(
         name,

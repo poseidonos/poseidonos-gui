@@ -46,7 +46,7 @@ import {
   FormControlLabel,
   Checkbox
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PageTheme } from "../../theme";
 import Popup from "../Popup";
 
@@ -132,7 +132,7 @@ const AutoCreate = (props) => {
     maxSpare: 32
   });
 
-  const setDiskConstraints = () => {
+  const setDiskConstraints = useCallback(() => {
     const raidType = getRaidType(props.config.raidTypes, array.raidtype);
     setConstraints({
       minStorage: raidType.minStorageDisks,
@@ -140,7 +140,7 @@ const AutoCreate = (props) => {
       maxStorage: raidType.maxStorageDisks,
       maxSpare: raidType.maxSpareDisks
     });
-  }
+  }, [array.raidtype, props.config.raidTypes]);
 
   useEffect(() => {
     setArray({
@@ -152,12 +152,12 @@ const AutoCreate = (props) => {
       writeThroughMode: false,
     });
     setDiskConstraints();
-  }, []);
+  }, [props.metadisks, setDiskConstraints]);
 
 
   useEffect(() => {
     setDiskConstraints();
-  }, [array, props]);
+  }, [array, props, setDiskConstraints]);
 
   const closeDialog = () => setDialogOpen(false);
   const openDialog = () => setDialogOpen(true);

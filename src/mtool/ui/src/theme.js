@@ -60,6 +60,13 @@ export const customTheme = {
         flexDirection: 'row'
       }
   },
+  tab: {
+    selected: {
+      color: 'rgb(33, 34, 37)',
+      borderBottom: `2px solid ${'rgb(33, 34, 37)'}`,
+      fontWeight: 600
+    }
+  },
   typography: {
       fontFamily: 'Arial',
       fontSize: 14
