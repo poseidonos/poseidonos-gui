@@ -68,3 +68,10 @@ export const setPOSProperty = (payload) => {
     payload
     }
 };
+
+export const setIsStatusCheckDone = (payload) => {
+    return {
+        type: actionTypes.SET_IS_STATUS_CHECK_DONE,
+        payload
+    }
+}

@@ -38,6 +38,7 @@ import * as actionCreators from "../store/actions/exportActionCreators";
 
 function* CallIsiBOFOSRunning(action) {
     try {
+        yield put(actionCreators.setIsStatusCheckDone(false));
         const response = yield call([axios, axios.get], '/api/v1.0/get_Is_Ibof_OS_Running/',{ 
             headers: {
                 Accept: 'application/json',
@@ -82,6 +83,8 @@ function* CallIsiBOFOSRunning(action) {
             action.payload.resetIsLoggedIn();
             action.payload.push("/");
         }
+    } finally {
+        yield put(actionCreators.setIsStatusCheckDone(true));
     }
 
 }
