@@ -128,7 +128,10 @@ def list_volume(arr_name):
         #print('*************volumes in rest_api****', vols.json())
         if vols.status_code == 200:
             vols = vols.json()
-            return vols['result']['data']['volumes']
+            if "data" in vols["result"] and "volumes" in vols["result"]["data"]:
+                return vols["result"]["data"]["volumes"]
+            else:
+                return []
         elif "data" in vols.json()["result"]:
             # print(vols.content)
             if "volumes" in vols["result"]["data"]:

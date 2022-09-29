@@ -405,10 +405,10 @@ def add_listener(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "name": name,
-            "transport_type": transport_type,
-            "target_address": target_address,
-            "transport_service_id": transport_service_id}}
+            "subnqn": name,
+            "transportType": transport_type,
+            "targetAddress": target_address,
+            "transportServiceId": transport_service_id}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
@@ -444,11 +444,11 @@ def create_subsystem(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "name": name,
-            "sn": serial_num,
-            "mn": model_num,
-            "max_namespaces": max_namespaces,
-            "allow_any_host": allow_any_host}}
+            "nqn": name,
+            "serialNumber": serial_num,
+            "modelNumber": model_num,
+            "maxNamespaces": max_namespaces,
+            "allowAnyHost": allow_any_host}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
@@ -1479,6 +1479,37 @@ def remove_spare_disk(name, arrayname=array_names[0], auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not get POS to remove spare disk...', 500)
 
+
+def replace_array_device(array_name, device, auth=BASIC_AUTH_TOKEN):
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "device": device
+        }
+    }
+    request_body = json.dumps(request_body)
+    try:
+        response = send_command_to_dagent(
+            "POST",
+            url=DAGENT_URL +
+            '/' +
+            BASE_PATH +
+            '/' +
+            VERSION +
+            '/' +
+            'array/' +
+            array_name +
+            '/replace',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not replace array device.', 500)
 
 """
 def report_test(auth=BASIC_AUTH_TOKEN):

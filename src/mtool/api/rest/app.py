@@ -948,6 +948,33 @@ def removeSpareDisk(current_user):
     return make_response(res, 500)
 
 
+# Replace Array Device
+@app.route('/api/v1/array/<array_name>/replace', methods=['POST'])
+def replace_arr_device(array_name):
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        device = body['device']
+        return_msg = {}
+        res = dagent.replace_array_device(array_name, device)
+        if res.status_code == 200:
+            res = res.json()
+            if res["result"]["status"]["code"] == 0:
+                return toJson(res)
+        else:
+            res = res.json()
+            if ("result" in res and "status" in res["result"]):
+                return_msg["result"] = res["result"]["status"]
+                return_msg["return"] = -1
+                return toJson(return_msg)
+
+        res = "unable to replace array device"
+        return make_response(res, 500)
+    except Exception as e:
+        print("Exception in Replace array device: " + e)
+        return make_response('Could not replace array device', 500)
+
+
 # Get Device Details
 @app.route('/api/v1.0/device/smart/<name>', methods=['GET'])
 @token_required
@@ -995,8 +1022,8 @@ def create_subsystem(current_user):
     name = body.get('name')
     serial_num = body.get('sn')
     model_num = body.get('mn')
-    max_namespaces = body.get('max_namespaces')
-    allow_any_host = body.get('allow_any_host')
+    max_namespaces = body.get('maxNamespaces')
+    allow_any_host = body.get('allowAnyHost')
     try:
         resp = dagent.create_subsystem(
             name,
@@ -1050,9 +1077,8 @@ def list_subsystem(current_user):
         resp = dagent.list_subsystem()
         resp = resp.json()
         for subsystem in resp["result"]["data"]["subsystemlist"]:
-            if subsystem["subtype"] == "NVMe":
-                namespaces = subsystem["namespaces"] if "namespaces" in subsystem else [
-                ]
+            if subsystem["subtype"] == "NVMe" and "namespaces" in subsystem:
+                namespaces = subsystem["namespaces"]
                 if len(namespaces) > 0:
                     arrayname = "_".join(
                         namespaces[0]["bdevName"].split("_")[2:])
@@ -1196,6 +1222,13 @@ def get_array_config(current_user):
                 "maxSpareDisks": 29,
             },
             {
+                "raidType": "RAID6",
+                "minStorageDisks": 4,
+                "maxStorageDisks": 32,
+                "minSpareDisks": 0,
+                "maxSpareDisks": 28,
+            },
+            {
                 "raidType": "RAID10",
                 "minStorageDisks": 2,
                 "maxStorageDisks": 32,
@@ -1223,7 +1256,7 @@ def get_mod_array(array):
     _array["metadiskpath"] = []
     _array["totalsize"] = 0
     _array["usedspace"] = 0
-    _array["index"] = array["result"]["data"]["index"]
+    _array["index"] = array["result"]["data"]["uniqueId"]
     for device in array["result"]["data"]["devicelist"]:
         if device["type"] == "DATA":
             _array["storagedisks"].append({"deviceName": device["name"]})
@@ -1260,13 +1293,17 @@ def get_arrays(current_user):
                 # convert to format expected by UI
                 a_info = get_mod_array(a_info)
                 a_info['totalsize'] = int(res["result"]["data"]["capacity"])
-                a_info['usedspace'] = int(res["result"]["data"]["used"])
+                if "used" in res["result"]["data"]:
+                    a_info['usedspace'] = int(res["result"]["data"]["used"])
                 a_info['volumecount'] = len(vol_list)
                 a_info["arrayname"] = res["result"]["data"]["name"]
                 a_info["status"] = array["status"]
                 a_info["situation"] = res["result"]["data"]["situation"]
                 a_info["state"] = res["result"]["data"]["state"]
-                a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
+                if "writeThroughEnabled" in res["result"]["data"]:
+                    a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
+                else:
+                    a_info["writeThroughEnabled"] = False
                 a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
                 arrays_info.append(a_info)
         except Exception as e:

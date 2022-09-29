@@ -110,13 +110,13 @@ describe("SubsystemOperations", () => {
                 "subsystemlist": [{
                     "allowAnyHost": 1,
                     "hosts": [],
-                    "listen_addresses": [],
-                    "subnqn": "nqn.2014-08.org.nvmexpress.discovery",
+                    "listenAddresses": [],
+                    "nqn": "nqn.2014-08.org.nvmexpress.discovery",
                     "subtype": "Discovery"
                 }, {
                     "allowAnyHost": 1,
                     "hosts": [],
-                    "listen_addresses": [{
+                    "listenAddresses": [{
                         "addressFamily": "IPv4",
                         "targetAddress": "127.0.0.1",
                         "transportServiceId": "1158",
@@ -129,14 +129,14 @@ describe("SubsystemOperations", () => {
                         "nsid": 1,
                         "uuid": "bcccc634-71d9-46f2-8035-89621135b670"
                     }],
-                    "subnqn": "nqn.2019-04.pos:subsystem1",
+                    "nqn": "nqn.2019-04.pos:subsystem1",
                     "serialNumber": "POS0000000003",
                     "subtype": "NVMe",
                     "array": "POSArray"
                 }, {
                     "allowAnyHost": 1,
                     "hosts": [],
-                    "listen_addresses": [{
+                    "listenAddresses": [{
                         "addressFamily": "IPv4",
                         "targetAddress": "127.0.0.1",
                         "transportServiceId": "1158",
@@ -145,27 +145,27 @@ describe("SubsystemOperations", () => {
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [],
-                    "subnqn": "nqn.2019-04.pos:subsystem2",
+                    "nqn": "nqn.2019-04.pos:subsystem2",
                     "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }, {
                     "allowAnyHost": 1,
                     "hosts": [],
-                    "listen_addresses": [],
+                    "listenAddresses": [],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
                     "namespaces": [],
-                    "subnqn": "nqn.2019-04.pos:subsystem10",
+                    "nqn": "nqn.2019-04.pos:subsystem10",
                     "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }, {
                     "allowAnyHost": 1,
                     "hosts": [],
-                    "listen_addresses": [],
+                    "listenAddresses": [],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEABXTENSION",
                     "namespaces": [],
-                    "subnqn": "nqn.2019-04.pos:subsystem_1",
+                    "nqn": "nqn.2019-04.pos:subsystem_1",
                     "serialNumber": "POS0000100003",
                     "subtype": "NVMe"
                 }]

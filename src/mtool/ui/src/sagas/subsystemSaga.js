@@ -82,7 +82,13 @@ export function* fetchSubsystems() {
         })
       );
     } else if (isResponseCodeSuccess(response)) {
-      yield put(actionCreators.getSubsystems(result.result.data.subsystemlist));
+      const subsystems = result.result.data.subsystemlist.map(subsystem => (
+        {
+          ...subsystem,
+          subnqn: subsystem.nqn
+        }
+      ))
+      yield put(actionCreators.getSubsystems(subsystems));
     } else {
       yield put(actionCreators.showSubsystemAlert({
         ...alertDetails,
@@ -183,9 +189,7 @@ export function* createSubsystem(action) {
   try {
     yield put(actionCreators.startLoader("Creating Subsystems"));
     const response = yield call([axios, axios.post], "/api/v1/subsystem/", {
-      ...action.payload,
-      allow_any_host: action.payload.allowAnyHost,
-      max_namespaces: Number(action.payload.maxNamespaces)
+      ...action.payload
     }, {
       headers: {
         "x-access-token": localStorage.getItem("token"),

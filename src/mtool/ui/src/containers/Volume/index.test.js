@@ -331,7 +331,7 @@ describe("<Storage Management />", () => {
             {
               "allowAnyHost": 1,
               "hosts": [], "listen_addresses": [],
-              "subnqn": "nqn.2014-08.org.nvmexpress.discovery",
+              "nqn": "nqn.2014-08.org.nvmexpress.discovery",
               "subtype": "Discovery"
             },
             {
@@ -350,7 +350,7 @@ describe("<Storage Management />", () => {
                   { "bdevName": "bdev_0_POSArray", "nsid": 1, "uuid": "0f902600-ae47-4f9c-a278-c69b3fc45350" },
                   { "bdevName": "bdev_1_POSArray", "nsid": 2, "uuid": "3567d445-1a5e-4f69-bd24-74345e862726" },
                   { "bdevName": "bdev_2_POSArray", "nsid": 3, "uuid": "5169639e-ea02-4709-87df-9620c3e064dc" }],
-              "subnqn": "nqn.2019-04.pos:subsystem1", "serialNumber": "POS0000000003", "subtype": "NVMe", "array": "POSArray"
+              "nqn": "nqn.2019-04.pos:subsystem1", "serialNumber": "POS0000000003", "subtype": "NVMe", "array": "POSArray"
             },
             {
               "allowAnyHost": 1,
@@ -362,7 +362,7 @@ describe("<Storage Management />", () => {
                 }],
               "maxNamespaces": 256, "modelNumber": "IBOF_VOLUME_EEEXTENSION",
               "namespaces": [],
-              "subnqn": "nqn.2019-04.pos:subsystem2", "serialNumber": "POS0000000003", "subtype": "NVMe"
+              "nqn": "nqn.2019-04.pos:subsystem2", "serialNumber": "POS0000000003", "subtype": "NVMe"
             }]
       }
     }, "info": { "version": "v0.11.0-rc4" }
@@ -1925,10 +1925,10 @@ describe("<Storage Management />", () => {
         result: {
           data: {
             subsystemlist: [{
-              subnqn: "subsystem1",
+              nqn: "subsystem1",
               subtype: "NVMe"
             }, {
-              subnqn: "subsystem2",
+              nqn: "subsystem2",
               subtype: "NVMe"
             }],
           },
@@ -2054,10 +2054,10 @@ describe("<Storage Management />", () => {
         result: {
           data: {
             subsystemlist: [{
-              subnqn: "subsystem1",
+              nqn: "subsystem1",
               subtype: "NVMe"
             }, {
-              subnqn: "subsystem2",
+              nqn: "subsystem2",
               subtype: "NVMe"
             }],
           }

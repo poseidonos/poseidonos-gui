@@ -339,7 +339,8 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchCheckTelemetry();
+    if (this.props.isConfigured)
+      this.props.fetchCheckTelemetry();
     this.props.getConfig();
     this.props.fetchVolumes();
     this.props.fetchArrays();
@@ -347,8 +348,14 @@ class Dashboard extends Component {
     this.props.fetchIpAndMacInfo();
     this.props.enableFetchingAlerts(true);
     this.interval = setInterval(() => {
-      this.props.fetchPerformance();
+      if (this.props.isConfigured)
+        this.props.fetchPerformance();
     }, 2000);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.isConfigured && this.props.telemetryIP !== prevProps.telemetryIP)
+      this.props.fetchCheckTelemetry();
   }
 
   componentWillUnmount() {
@@ -738,7 +745,7 @@ class Dashboard extends Component {
             title="Create Volume"
             description={this.props.errorMsg}
             type="alert"
-            open={this.props.isConfigured && this.props.showTelemetryAlert}
+            open={this.props.showTelemetryAlert}
             handleClose={() => this.props.closeTelemetryAlert()}
           />
           <TelemetryForm />
