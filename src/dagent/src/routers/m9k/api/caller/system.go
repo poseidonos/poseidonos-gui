@@ -1,6 +1,7 @@
 package caller
 
 import (
+	"dagent/src/routers/m9k/globals"
 	"encoding/json"
 	"fmt"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -172,11 +173,21 @@ func CallStopPoseidonOS(xrId string, param interface{}, posMngr pos.POSManager) 
 }
 
 func CallGetSystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.GetSystemInfo()
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrConn
+	temptime := time.Now().UTC().Unix()
+	if globals.InitialTime+globals.TimeLimit < temptime {
+		result, err1 := posMngr.GetSystemInfo()
+		if err1 != nil {
+			log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+			return model.Response{}, ErrConn
+		}
+		resByte, err2 := protojson.Marshal(result)
+		globals.InitialTime = temptime
+		resp, err := HandleResponse(resByte, err2)
+		globals.InitialRes = resp
+		globals.InitialErr = err
+		return resp, err
+	} else {
+		return globals.InitialRes, globals.InitialErr
+
 	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
 }
