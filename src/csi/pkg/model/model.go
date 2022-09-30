@@ -29,26 +29,29 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package model
+
 type Response struct {
-        Rid             string      `json:"rid"`
-        LastSuccessTime int64       `json:"lastSuccessTime"`
-        Result          Result      `json:"result"`
-        Info            interface{} `json:"info,omitempty"`
+	Rid             string      `json:"rid"`
+	LastSuccessTime int64       `json:"lastSuccessTime"`
+	Result          Result      `json:"result"`
+	Info            interface{} `json:"info,omitempty"`
 }
 
 type Result struct {
-        Status Status      `json:"status"`
-        Data   interface{} `json:"data,omitempty"`
+	Status Status      `json:"status"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 type Status struct {
-        Module      string `json:"module"`
-        Code        int    `json:"code"`
-        Level       string `json:"level,omitempty"`
-        Description string `json:"description"`
-        Problem     string `json:"problem,omitempty"`
-        Solution    string `json:"solution,omitempty"`
+	Module         string `json:"module"`
+	Code           int    `json:"code"`
+	Level          string `json:"level,omitempty"`
+	EventName      string `json:"eventName"`
+	Description    string `json:"description"`
+	Cause          string `json:"cause"`
+	POSDescription string `json:"posDescription,omitempty"`
+	Problem        string `json:"problem,omitempty"`
+	Solution       string `json:"solution,omitempty"`
 }
-
