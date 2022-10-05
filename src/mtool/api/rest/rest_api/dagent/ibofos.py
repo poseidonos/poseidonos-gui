@@ -1037,7 +1037,7 @@ def create_volume(
         minbw=0,
         miniops=0,
         subnqn="",
-        iswalvol=False,
+        transport_type="", transport_service_id="", target_address="", iswalvol=False,
         auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
@@ -1054,7 +1054,8 @@ def create_volume(
             "namesuffix": suffix,
             "mountall": mount_all,
             "iswalvol":iswalvol,
-            "subnqn": subnqn}}
+            "subnqn": subnqn,
+            "transport_type":transport_type,"transport_service_id":transport_service_id,"target_address":target_address}}
 
     request_body = json.dumps(request_body)
     try:

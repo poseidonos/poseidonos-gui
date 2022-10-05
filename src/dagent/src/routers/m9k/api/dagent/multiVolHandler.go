@@ -44,7 +44,6 @@ import (
 	"pnconnector/src/log"
 	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	"pnconnector/src/routers/m9k/model"
-	//"kouros/model"
 	"pnconnector/src/util"
 	"strconv"
 	"time"
@@ -169,7 +168,11 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 					paramMap["transport_type"] = volParam.TRANSPORTTYPE
 					paramMap["target_address"] = volParam.TARGETADDRESS
 					paramMap["transport_service_id"] = volParam.TRANSPORTSERVICEID
-					_, res, err = iBoFOS.MountVolumeWithSubSystem(header.XrId(ctx), paramMap)
+					if volParam.TRANSPORTTYPE == "" || volParam.TARGETADDRESS == "" || volParam.TRANSPORTSERVICEID == "" {
+						_, res, err = iBoFOS.MountVolume(header.XrId(ctx), *volParam)
+					} else {
+						_, res, err = iBoFOS.MountVolumeWithSubSystem(header.XrId(ctx), paramMap)
+					}
 					if err != nil || res.Result.Status.Code != 0 {
 						if mountItr == MAX_RETRY_COUNT {
 							posErr = true
