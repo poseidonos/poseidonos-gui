@@ -18,8 +18,10 @@ As described above , POS Management Stack consists of a client (Poseidonos-GUI),
 * Roles, Authentication and Authorization (Only Admin role is supported; default login credentials = admin/admin)
 * Storage Management (Array and Volume management - creation, updation and deletion)
 * Poseidon Administration (Start, Stop and Status)
+* Subsystem Management(Subsystem - creation and deletion)
+* Telemetry Dashboard (Start and Stop Telemetry, view Grafana dashboard)
 * User Management (Create, update and remove user - only Admin role is supported)
-* REST API provider ([README](src/dagent/README.md))
+* [REST API](src/dagent/doc/api.md) provider ([README](src/dagent/README.md))
 
 # Documentation
 
@@ -31,18 +33,17 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 ---
 ### Prerequisites 
 1. python3
-2. go v1.14+
+2. go v1.18+
 3. nodejs 14.x
-4. InfluxDB (1.8.x)
+4. Grafana 9.0.4+
 5. IP Address of Mellanox Port should be set (Please refer to the file src/dagent/README.md ([README](src/dagent/README.md)))
 6. POS service is assumed to be available at "/usr/local/bin". If POS binary is not available in the "usr/local/bin" directory, then user will see an error when staring the pos (e.g. Poseidonos binary not found in /usr/local/bin/). In such a case, please build the poseidonos and run 'make install' from poseidonos root directory to correctly install the POS service
-7. docker, docker-compose (If you want install M9K as a Docker container image)
 
 ### Other Considerations 
 1. Internet access is required for downloading the required packages
 2. SSL certificates have to installed on the server or VM where Poseidonos-GUI will be installed
 3. Python3 comes with Ubuntu 18.04, If not, please download and install it from https://www.python.org/downloads/
-4. For Go v1.14+ follow the steps given at https://golang.org/doc/install to install the latest version of Go
+4. For Go v1.18+ follow the steps given at https://golang.org/doc/install to install the latest version of Go
 5. For Node v1.14:
    - Download Nodejs tar.xz file from https://nodejs.org/en/download/
    - Extract the tar file using the command: sudo tar -xvf node-v14.x.x-linux-x64.tar.xz (Use the version instead of x)
@@ -59,7 +60,8 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 
 ### Supported PoseidonOS Version
 
-1. POS v0.11.0-rc6 (Branch: release/v0.11.0 Commit: https://github.com/poseidonos/poseidonos/commit/47e69352f119ea03145051e5763df7ae3daddd95)
+1. POS release/v0.12.0 (Branch: release/v0.12.0 https://github.com/poseidonos/poseidonos/tree/release/v0.12.0)
+
 
 ### Build and Run 
 1. Clone the project from GitHub - https://github.com/poseidonos/poseidonos-gui
@@ -84,27 +86,6 @@ http://localhost
 `
 http://localhost
 `
-```
- 
-### Run as Docker Container
-1. Clone the project from GitHub - https://github.com/poseidonos/poseidonos-gui
-2. Navigate to poseidonos-gui directory
-3. Create a new personal access token (PAT).
-   - Select the ```read:packages``` scope to download container images and read their metadata.
-4. Log in to Docker container registry
-5. Run scripts as described below to pull Docker container image and run the application container
-(<b><i>You need to run these scripts as root or with a user with elevated permissions</i></b>)
-6. Access the application in the browser (e.g. http://<local_ip_addr>)
-
-```
-1. git clone https://github.com/poseidonos/poseidonos-gui.git
-2. cd poseidonos-gui
-3. export CR_PAT=YOUR_TOKEN
-4. echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
-5. ./script/pull_docker.sh
-6. ./script/run_docker.sh
-7. Access the application from the browser
-```
 
 
 # Screens
@@ -139,62 +120,55 @@ http://localhost
 # Scripts 
 | S.No | Script Name             | Location           | Description                                                                                      | Notes                                                        |
 |------|-------------------------|--------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| 1    | install_all.sh          | script/            | Installs dependencies for GUI, DAgent and MAgent (e.g. nginx, influx)                         |                                                              |
+| 1    | install_all.sh          | script/            | Installs dependencies for GUI, DAgent (e.g. nginx)                         |                                                              |
 | 2    | build_all.sh            | script/            | Builds various components into respective binaries (e.g. DAgent binary, GUI Binary)           |                                                              |
 | 3    | run_all.sh              | script/            | Runs the binaries as services or applications (e.g. DAgent service, GUI web application)      |                                                              |
 | 4    | run_os.sh               | src/dagent/script/ | Runs the POS binary                                                                           |                                                              |
 | 5    | build_dagent.sh         | src/dagent/script/ | Builds Dagent code into binary                                                                | 1. Used internally by build_all.sh script (#2)               |
 | 6    | run_dagent.sh           | src/dagent/script/ | Runs Dagent as a service                                                                      | 1. Used internally by run_all.sh script (#3)                 |
-| 7    | build_magent.sh         | src/magent/script/ | Builds Magent code into binary                                                                | 1. Used internally by build_all.sh script (#2)               |
-| 8    | run_magent.sh           | src/magent/script/ | Runs Magent as a service                                                                      | 1. Used internally by run_all.sh script (#3)                 |
-| 9    | build_mtool.sh          | src/mtool/script/  | Builds Mtool code into binary                                                                 | 1. Used internally by build_all.sh script (#2)               |
-| 10   | run_mtool.sh            | src/mtool/script/  | Runs MTool as a web application                                                               | 1. Used internally by run_all.sh script (#3)                 |
-| 11   | dagent.service          | src/dagent/script/ | Registers Dagent as a service                                                                 | 1. Required and used internally by run_all.sh script (#3)    |
-| 12   | magent.service          | src/magent/script/ | Registers Magent as a service                                                                 | 1. Required and used internally by run_all.sh script (#3)    |
-| 13   | start-iBofMtool.service | src/mtool/script/  | Registers MTool backend API as a service                                                      | 1. Required and used internally by run_all.sh script (#3)    |
-| 14   | uninstall.sh            | script/            | Uninstalls binaries and kills services  for GUI, DAgent and MAgent (e.g. nginx, influx)       |                                                              |
+
+| 7    | build_mtool.sh          | src/mtool/script/  | Builds Mtool code into binary                                                                 | 1. Used internally by build_all.sh script (#2)               |
+| 8   | run_mtool.sh            | src/mtool/script/   | Runs MTool as a web application                                                               | 1. Used internally by run_all.sh script (#3)                 |
+| 9   | dagent.service          | src/dagent/script/  | Registers Dagent as a service                                                                 | 1. Required and used internally by run_all.sh script (#3)    |
+| 10   | start-iBofMtool.service | src/mtool/script/  | Registers MTool backend API as a service                                                      | 1. Required and used internally by run_all.sh script (#3)    |
+| 11   | uninstall.sh            | script/            | Uninstalls binaries and kills services  for GUI, DAgent (e.g. nginx)                                                         |                                                            
 
 # Log Files
 | S.No | Log Name   | Log Location             | Description                                     | Notes                             |
 |------|------------|--------------------------|-------------------------------------------------|-----------------------------------|
 | 1    | DAgent Log | /var/log/m9k/dagent1.log | API logs; errors or exceptions                  |  Currently set to log errors only |
-| 2    | Influx Log | /var/log/syslog          | API logs; errors or exceptions                  |                                   |
-| 3    | MAgent Log | /var/log/m9k/magent1.log | Metric collection logs; errors or exceptions    |                                   |
-| 4    | GUI Log    | src/mtool/api/public/log | Rest API interaction logs; errors or exceptions |  This is created when GUI runs    |
-| 5    | System Log | /var/log/syslog          | Various system level logs                       |                                   |
+| 2    | GUI Log    | src/mtool/api/public/log | Rest API interaction logs; errors or exceptions |  This is created when GUI runs    |
+| 3    | System Log | /var/log/syslog          | Various system level logs                       |                                   |
 
 # FAQ
 1.  How to check whether POS is running (or check POS status)?
-    1.  _Using GUI - The Right hand top corner shows the POS status (e.g. RUNNING)_
+    1.  Using GUI - The Right hand top corner shows the POS status (e.g. RUNNING)
         
 2.  How to restart POS?
-    1.  _Use GUI and use the POS Operations page - (Admin -> Poseidon Operations -> STOP or START)_
+    1.  Use GUI and use the POS Operations page - (Admin -> Poseidon Operations -> STOP or START)
         
 3.  How to check which agents are running?
-    1.  _ps_ _-aux |_ _grep_ _dagent_ _or_ _systemctl_ _status_ _dagent_ _or service_ _dagent_ _status_
-    2.  _ps_ _-aux |_ _grep_ _magent_ _or_ _systemctl_ _status_ _magent_ _or service_ _magent_ _status_
-    3.  _ps_ _-aux |_ _grep_ _app or_ _systemctl_ _status start-_ _iBofMtool_ _or service start-_ _iBofMtool_ _status   
+    1.  ps -aux | grep dagent or systemctl status dagent or service dagent status
+    2.  ps -aux | grep app or systemctl status start-iBofMtool or service start-iBofMtool status   
         
-4.  How to check influxdb is running ?
-    1.  _ps_ _-aux |_ _grep_ _influxdb_ _or_ _systemctl_ _status_ _influxd_ _or service_ _influxd_ _status  
+4.  How to check prometheus db is running ?
+    1.  ps -aux | grep prometheus or systemctl status prometheus or service prometheus status  
         
 5.  How to restart Poseidonos-GUI? (We recommend restarting entire stack rather than individual components as shown below)
     1.  ./script/run_all.sh  
         
 6.  How to check for any M9K errors or logs?
-    1.  _/m9k/mtool/public/log (MTool logs - REST API interactions logs)_
-    2.  _/var/log/m9k/ (_ _Dagent_ _and_ _Magent_ _)_
-    3.  _/var/log/m9k/dagent1.log (POS API interactions are here - failed create/mount an array will be here)_
-    4.  _/var/log/m9k/logmagent1.log (AIR data and CPU, Memory metrics data logs)_
-    5.  _/var/log/syslog (_ _influxDB_ _logs-_ _grep_ _for text "influx")_
+    1.  /m9k/mtool/public/log (MTool logs - REST API interactions logs)
+    2.  /var/log/m9k/dagent1.log (POS API interactions are here - failed create/mount an array will be here)
+
     
 7.  GUI shows “POS is busy”. What should be done?
-    1.  _In most of the cases, you can wait for 3-4 seconds and retry_
-    2.  _In few cases, you may have to restart POS (by STOP and STOP operations from the GUI)_
+    1.  In most of the cases, you can wait for 3-4 seconds and retry
+    2.  In few cases, you may have to restart POS (by STOP and STOP operations from the GUI)
         
         
 8.  How to know what services are running as a part of GUI?
-    1.  _Influx,_ _nginx_ _,_ _dagent_ _,_ _magent_ _,_ _Mtool_ _backend_  
+    1.  nginx, dagent, Mtool backend
         
         
 9.  How to restart all components M9K ?
