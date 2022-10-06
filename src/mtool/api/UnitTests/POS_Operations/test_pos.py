@@ -36,6 +36,8 @@ import os
 
 from rest.app import app
 import requests_mock
+import requests
+import json
 import jwt
 import datetime
 from unittest import mock
@@ -119,8 +121,6 @@ def test_start_ibofos(mock_get_current_user,mock_get_ibof_os_status,mock_is_ibof
         '/api/v1.0/start_ibofos',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
-    print("response ",response.data)
 
     assert response.status_code == 200
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/system', json=None, status_code=500)
@@ -141,6 +141,31 @@ def test_start_ibofos_dagent_ibofos(mock_get_current_user,**kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",return_value="test", autospec=True)
+def test_get_pos_info(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/system',
+                       json={"result": {"status": {"description": "", "code":0}}}, status_code=200)
+
+    response = app.test_client().get(
+        '/api/v1.0/pos/info',
+        headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",return_value="test", autospec=True)
+def test_get_pos_info_err(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/system', exc=requests.exceptions.ConnectTimeout)
+
+    response = app.test_client().get(
+        '/api/v1.0/pos/info',
+        headers={'x-access-token': json_token})
+
+    assert response.status_code == 500
+
+@requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.get_ibof_os_status",return_value=False, autospec=True)
 @mock.patch("rest.app.connection_factory.get_current_user",return_value="test", autospec=True)
 @mock.patch("rest.app.is_ibofos_running",return_value=True, autospec=True)
@@ -153,8 +178,6 @@ def test_start_ibofos_already_running_failure(mock_get_current_user, mock_get_ib
         '/api/v1.0/start_ibofos',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
-    print("response ",response)
     assert response.status_code == 200
 
 
@@ -246,8 +269,6 @@ def test_stop_ibofos(mock_get_current_user,mock_Is_Ibof_Os_Running_Flag, mock_is
         '/api/v1.0/stop_ibofos',
         headers={'x-access-token': json_token})
 
-    #data = json.loads(response.get_data(as_text=True))
-    print("response ",response.data)
     assert response.status_code == 200
 
 

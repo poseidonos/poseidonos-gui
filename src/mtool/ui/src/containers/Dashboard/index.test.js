@@ -541,15 +541,25 @@ describe("Dashboard", () => {
   });
 
 
-  // it("should display health metrics as received from API", async () => {
-  //   jest.useFakeTimers();
-  //   const mock = new MockAdapter(axios);
-  //   mock.onGet(/\/api\/v1\.0\/health_status/)
-  //     .reply(200,
-  //       {"isHealthy":false,"statuses":[{"arcsArr":[0.4,0.4,0.2],"id":'cpu_status','percentage':0.55, 'value':'55', 'unit':'%', 'label':"CPU UTILIZATION"}]}
-  //     )
-  //   renderComponent();
-  //   jest.advanceTimersByTime(2000);
-  //   const { getByTestId } = wrapper;
-  // });
+  it("should display the telemetry form", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          isConfigured: false
+        }
+      )
+      .onAny()
+      .reply(200);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(await waitForElement(() => getByTestId("btn-add-telemetry")));
+    const telemetryIP = await waitForElement(() => getByTestId("telemetryIPInputPopup"));
+    const telemetryPort = await waitForElement(() => getByTestId("telemetryPortInputPopup"));
+    fireEvent.change(telemetryIP, {target: {value: "127.0.0.1"}});
+    fireEvent.change(telemetryPort, {target: {value: "9090"}});
+    fireEvent.click(getByTestId("btn-save-telemetry-config"));
+    const editBtn = await waitForElement(() => getByTestId("btn-edit-telemetry"));
+    expect(editBtn).toBeDefined();
+  });
 });

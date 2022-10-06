@@ -567,13 +567,24 @@ class Dashboard extends Component {
                                   {this.props.telemetryIP}:{this.props.telemetryPort}
                                   &nbsp;&nbsp;&nbsp;
                                 </Typography>
-                                <IconButton size="small" onClick={() => this.props.setShowConfig(true)}>
+                                <IconButton
+                                  size="small"
+                                  id="btn-edit-telemetry"
+                                  data-testid="btn-edit-telemetry"
+                                  onClick={() => this.props.setShowConfig(true)}
+                                >
                                   <Edit />
                                 </IconButton>
                               </>
                             ) :
                             (
-                              <Button variant="outlined" color="secondary" onClick={() => this.props.setShowConfig(true)}>
+                              <Button
+                                variant="outlined"
+                                id="btn-add-telemetry"
+                                data-testid="btn-add-telemetry"
+                                color="secondary"
+                                onClick={() => this.props.setShowConfig(true)}
+                              >
                                 Add Telemetry API
                               </Button>
                             )

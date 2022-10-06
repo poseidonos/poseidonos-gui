@@ -2049,6 +2049,25 @@ def test_list_devices_failure(global_data, **kwargs):
     assert response.status_code == 500
 
 
+@requests_mock.Mocker(kw="mock")
+def test_get_volume_collection(**kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumelist/POSArray', json={ "result": {"status": { "description": "SUCCESS"}, "data": {
+                    "volumes": [
+                        {
+                            "index":0,
+                            "uuid": 0,
+                            "status":"status",
+                            "maxbw":123,
+                            "maxiops":111,
+                            "name": "vol1",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678}]}}}, status_code=200)
+
+    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers={'x-access-token': json_token})
+
+    assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
 def test_get_volume_collection(**kwargs):
@@ -2091,20 +2110,42 @@ def test_get_volume_failure(**kwargs):
 @requests_mock.Mocker(kw="mock")
 def test_get_volume(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumes', json={ "result": {"status": { "description": "SUCCESS"}, "data": {
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumelist/POSArray', json={ "result": {"status": { "description": "SUCCESS"}, "data": {
                     "volumes": [
                         {
                             "id":0,
+                            "index": 0,
                             "status":"status",
                             "maxbw":123,
                             "maxiops":111,
                             "name": "vol1",
                             "size": 1234567,
                             "total": 12345678,
-                            "remain": 12345678}]}}}, status_code=200)
+                            "remain": 12345678
+                        }
+                    ]
+                }
+            }
+        }, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/volume/vol1', json={ "result": {"status": { "description": "SUCCESS"}, "data": {
+                            "id":0,
+                            "index": 0,
+                            "status":"status",
+                            "maxbw":123,
+                            "minbw": 0,
+                            "miniops": 0,
+                            "maxiops":111,
+                            "name": "vol1",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678,
+                            "subnqn": "nqn.123",
+                            "uuid": "123"
+                }
+            }
+        }, status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes/0',headers={'x-access-token': json_token})
-
+    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2736,4 +2777,62 @@ def test_qos_policies(mock_get_current_user, **kwargs):
 }''', headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_rebuild_array_device(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/rebuild',
+                       json={
+                        "result": {
+                            "status": {
+                                "code": 0
+                            }
+                        }
+                       },
+                       status_code=200)
+    response = app.test_client().post(
+        '/api/v1.0/array/POSArray/rebuild',
+        headers={'x-access-token': json_token}
+    )
 
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_replace_array_device(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/replace',
+                       json={
+                        "result": {
+                            "status": {
+                                "code": 0
+                            }
+                        }
+                       },
+                       status_code=200)
+    response = app.test_client().post(
+        '/api/v1/array/POSArray/replace',
+        data=json.dumps({
+            "device": "unvme-ns-0"
+        }),
+        headers={'x-access-token': json_token}
+    )
+
+    assert response.status_code == 200
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_replace_array_device_error(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/replace',
+                       status_code=500)
+    response = app.test_client().post(
+        '/api/v1/array/POSArray/replace',
+        data=json.dumps({
+            "device": "unvme-ns-0"
+        }),
+        headers={'x-access-token': json_token}
+    )
+
+    assert response.status_code == 500

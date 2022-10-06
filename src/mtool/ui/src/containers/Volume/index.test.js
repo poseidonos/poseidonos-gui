@@ -120,60 +120,67 @@ describe("<Storage Management />", () => {
 
   const devices = [
     {
-      name: "intel-unvmens-0",
+      name: "unvmens-0",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500037",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-1",
+      name: "unvmens-1",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500027",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-2",
+      name: "unvmens-2",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500044",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-3",
+      name: "unvmens-3",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500031",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-4",
+      name: "unvmens-4",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500041",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-5",
+      name: "unvmens-5",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500042",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
     {
-      name: "intel-unvmens-6",
+      name: "unvmens-6",
       size: 390703446,
       mn: "SAMSUNG MZWLL1T6HAJQ-00005",
       sn: "S4C9NF0M500043",
       isAvailable: true,
-      numa: "0"
+      numa: "0",
+      arrayName: "POSArray"
     },
   ];
 
@@ -206,6 +213,13 @@ describe("<Storage Management />", () => {
         "maxStorageDisks": 32,
         "minSpareDisks": 0,
         "maxSpareDisks": 29
+      },
+      {
+        "raidType": "RAID6",
+        "minStorageDisks": 4,
+        "maxStorageDisks": 32,
+        "minSpareDisks": 0,
+        "maxSpareDisks": 28,
       },
       {
         "raidType": "RAID10",
@@ -290,21 +304,21 @@ describe("<Storage Management />", () => {
     ],
     sparedisks: [
       {
-        deviceName: "intel-unvmens-3",
+        deviceName: "unvmens-3",
       },
     ],
     storagedisks: [
       {
-        deviceName: "intel-unvmens-0",
+        deviceName: "unvmens-0",
       },
       {
-        deviceName: "intel-unvmens-1",
+        deviceName: "unvmens-1",
       },
       {
-        deviceName: "intel-unvmens-2",
+        deviceName: "unvmens-2",
       },
       {
-        deviceName: "intel-unvmens-4",
+        deviceName: "unvmens-4",
       },
     ],
     status: "Mounted",
@@ -424,8 +438,8 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices: [
-          { name: "intel-unvmens-0", size: 100 },
-          { name: "intel-unvmens-1", size: 100 },
+          { name: "unvmens-0", size: 100 },
+          { name: "unvmens-1", size: 100 },
         ],
         metadevices,
       })
@@ -496,6 +510,104 @@ describe("<Storage Management />", () => {
     expect(writeThroughModeCheckbox.checked).toEqual(true);
     fireEvent.click(getByTestId("createarray-btn"));
     fireEvent.click(getByText("Yes"));
+    const success = await waitForElement(() => getByTestId("alertDescription"));
+    expect(success).toBeDefined();
+    fireEvent.click(getByText("OK"));
+  });
+
+  it("should create an array with RAID6", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onPost("/api/v1.0/create_arrays/")
+      .reply(200, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+    const getSpy = jest.spyOn(axios, "post");
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByTestId, getByText, getAllByText, asFragment } = wrapper;
+    fireEvent.click(getByText("create"));
+    fireEvent.mouseDown(getByTestId("raid-select"));
+    fireEvent.click(await waitForElement(() => getByText("RAID6")));
+    const wb = await waitForElement(() => getByTestId("writebuffer-input"));
+    fireEvent.change(wb, {
+      target: { value: "uram0" },
+    });
+    fireEvent.click(getByTestId("disktype"));
+    fireEvent.click(getAllByText("STORAGE DISK")[0]);
+    const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
+    fireEvent.click(dev1);
+    const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
+    fireEvent.click(dev2);
+    const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
+    fireEvent.click(dev3);
+    const dev6 = await waitForElement(() => getByTestId("diskselect-5"));
+    fireEvent.click(dev6);
+    fireEvent.change(getByTestId("disktype-input"), {
+      target: { value: "SPARE DISK" },
+    });
+    const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
+    fireEvent.click(dev4);
+    const dev5 = await waitForElement(() => getByTestId("diskselect-4"));
+    fireEvent.click(dev5);
+    const arrayname = getByTestId('array-name');
+    fireEvent.change(arrayname, { target: { value: 'POSArray2' } });
+    const writeThroughModeCheckbox = await waitForElement(() => getByTestId("mount-writethrough-checkbox"));
+    fireEvent.click(writeThroughModeCheckbox);
+    expect(writeThroughModeCheckbox.checked).toEqual(true);
+    fireEvent.click(getByTestId("createarray-btn"));
+    fireEvent.click(getByText("Yes"));
+    expect(getSpy).toHaveBeenCalledWith(
+      "/api/v1.0/create_arrays/", {
+        "arrayname": "POSArray2",
+        "metaDisk": "uram0",
+        "raidtype": "RAID6",
+        "size": 1562813784,
+        "spareDisks":  [
+          {
+            "deviceName": "unvmens-3",
+            "numa": "0",
+          },
+          {
+            "deviceName": "unvmens-4",
+            "numa": "0",
+          },
+        ],
+        "storageDisks":  [
+          {
+            "deviceName": "unvmens-0",
+            "numa": "0",
+          },
+          {
+            "deviceName": "unvmens-1",
+            "numa": "0",
+          },
+          {
+            "deviceName": "unvmens-2",
+            "numa": "0",
+          },
+          {
+            "deviceName": "unvmens-5",
+            "numa": "0",
+          },
+        ],
+        "writeBufferDisk":  [],
+        "writeThroughModeEnabled": true
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null,
+        },
+      }
+    );
     const success = await waitForElement(() => getByTestId("alertDescription"));
     expect(success).toBeDefined();
     fireEvent.click(getByText("OK"));
@@ -641,7 +753,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         "devices": [{
-          name: "intel-unvmens-6",
+          name: "unvmens-6",
           size: 390703446,
           mn: "SAMSUNG MZWLL1T6HAJQ-00005",
           sn: "S4C9NF0M500043",
@@ -746,13 +858,13 @@ describe("<Storage Management />", () => {
   //       arrayname: "POSArray",
   //       raidtype: "RAID5",
   //       storageDisks: [
-  //         { deviceName: "intel-unvmens-0", numa: "0" },
-  //         { deviceName: "intel-unvmens-2", numa: "0" },
-  //         { deviceName: "intel-unvmens-3", numa: "0" },
+  //         { deviceName: "unvmens-0", numa: "0" },
+  //         { deviceName: "unvmens-2", numa: "0" },
+  //         { deviceName: "unvmens-3", numa: "0" },
   //       ],
   //       spareDisks: [
   //         {
-  //           deviceName: "intel-unvmens-1",
+  //           deviceName: "unvmens-1",
   //           numa: "0"
   //         },
   //       ],
@@ -803,8 +915,51 @@ describe("<Storage Management />", () => {
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/add_spare_device/",
       {
-        name: "intel-unvmens-5",
+        name: "unvmens-5",
         array: "POSArray",
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null,
+        },
+      }
+    );
+  });
+
+  it("should replace an array disk", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onPost(/api\/v1.0\/delete_array\/*/)
+      .reply(200, {})
+      .onAny()
+      .reply(200, []);
+    jest.setTimeout(60000);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, asFragment, getByText } = wrapper;
+    await waitForElement(() => getByText("Unmount Array"))
+    expect(asFragment()).toMatchSnapshot();
+    const attachButton = await waitForElement(() =>
+      getByTestId("replacedisk-0")
+    );
+    fireEvent.click(attachButton);
+    fireEvent.click(await waitForElement(() => getByTestId("alertbox-yes")));
+    expect(getSpy).toHaveBeenCalledWith(
+      "/api/v1/array/POSArray/replace",
+      {
+        device: "unvmens-0"
       },
       {
         headers: {
@@ -844,7 +999,7 @@ describe("<Storage Management />", () => {
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/remove_spare_device/",
       {
-        name: "intel-unvmens-3",
+        name: "unvmens-3",
         array: "POSArray",
       },
       {
@@ -862,7 +1017,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         "devices": [{
-          name: "intel-unvmens-6",
+          name: "unvmens-6",
           size: 390703446,
           mn: "SAMSUNG MZWLL1T6HAJQ-00005",
           sn: "S4C9NF0M500043",
@@ -895,7 +1050,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         "devices": [{
-          name: "intel-unvmens-6",
+          name: "unvmens-6",
           size: 390703446,
           mn: "SAMSUNG MZWLL1T6HAJQ-00005",
           sn: "S4C9NF0M500043",
@@ -965,21 +1120,21 @@ describe("<Storage Management />", () => {
         ],
         sparedisks: [
           {
-            deviceName: "intel-unvmens-3",
+            deviceName: "unvmens-3",
           },
         ],
         storagedisks: [
           {
-            deviceName: "intel-unvmens-0",
+            deviceName: "unvmens-0",
           },
           {
-            deviceName: "intel-unvmens-1",
+            deviceName: "unvmens-1",
           },
           {
-            deviceName: "intel-unvmens-2",
+            deviceName: "unvmens-2",
           },
           {
-            deviceName: "intel-unvmens-4",
+            deviceName: "unvmens-4",
           },
         ],
         status: "Mounted",
@@ -1443,7 +1598,7 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1.0\/get_devices\/*/)
       .reply(200, {
         devices: [{
-          name: "intel-unvmens-0",
+          name: "unvmens-0",
           size: 390703446,
           mn: "SAMSUNG MZWLL1T6HAJQ-00005",
           sn: "S4C9NF0M500043",
@@ -1468,7 +1623,7 @@ describe("<Storage Management />", () => {
         ],
         storagedisks: [
           {
-            deviceName: "intel-unvmens-0",
+            deviceName: "unvmens-0",
           }
         ],
         status: "Mounted",
@@ -3203,8 +3358,21 @@ describe("<Storage Management />", () => {
       .reply(200, 256)
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
+      .onGet(/api\/v1.0\/device\/smart\/unvmens-0*/)
+      .reply(200, {
+        result: {
+          status: {
+            code: 0
+          },
+          data: {
+            temperature: "100",
+            temperatureSensor: ["10", "20", "30"]
+          }
+        }
+      })
       .onAny()
       .reply(200, []);
+    jest.setTimeout(30000);
     renderComponent();
     const { getByTestId, asFragment, getByText } = wrapper;
     global.document.createRange = (html) => ({
@@ -3231,7 +3399,8 @@ describe("<Storage Management />", () => {
       );
       const moreDetails = await waitForElement(() => getByText("More Details"));
       fireEvent.click(moreDetails);
-      fireEvent.click(getByTestId("diskdetails-close"));
+      const temperature = await waitForElement(() => getByText("100"));
+      expect(temperature).toBeDefined();
     });
   });
 

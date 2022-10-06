@@ -97,7 +97,6 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 return response
             time.sleep(1)
     except BaseException:
-        #print("in except block", url)
         return response
 
 
@@ -201,7 +200,7 @@ def get_pos_info(auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-        return response
+        return response.json()
     except Exception as err:
         print(f'Error in getting POS Info: {err}')
     return make_failure_response('Could not get POS info...', 500)
