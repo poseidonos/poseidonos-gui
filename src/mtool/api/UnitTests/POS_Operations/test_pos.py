@@ -37,7 +37,6 @@ import os
 from rest.app import app
 import requests_mock
 import requests
-import json
 import jwt
 import datetime
 from unittest import mock

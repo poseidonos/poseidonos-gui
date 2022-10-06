@@ -278,7 +278,6 @@ def test_get_current_perf(mock_get_current_user, **kwargs):
         '/api/v1/perf/all'
     )
 
-    data = response.get_data(as_text=True)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -411,5 +410,4 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
         headers={'x-access-token': json_token},
     )
 
-    data = response.get_data(as_text=True)
     assert response.status_code == 200
