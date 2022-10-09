@@ -77,7 +77,17 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 4. ./script/build_all.sh
 5. ./script/run_all.sh
 6. Access the application from the browser
+
+`
+http://localhost
+`
 7. Access the REST API using a client (e.g. POSTMAN) at
+
+`
+http://localhost
+`
+```
+
 
 # Screens
 ## Dashboard 
