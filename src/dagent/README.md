@@ -1,8 +1,8 @@
 # D-Agent - POS Management Stack Middleware
-*  This app provides RESTFul APIs to Poseidonos System
+*  This app provides [RESTFul APIs](src/dagent/doc/api.md) to Poseidonos System
 
 ## Pre-Requisites
-1. go v1.14+
+1. go v1.18+
 2. IP Address of Mellanox Port should be set in the file script/run_os.sh (eg: IP=10.100.11.7)
 
 #### POS

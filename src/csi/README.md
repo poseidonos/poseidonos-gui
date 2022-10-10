@@ -46,7 +46,7 @@ This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-i
 4. minikube v1.24.0
 5. docker v19.03.13
 6. kubectl v1.21.2
-7. go v1.14
+7. go v1.18+
 8. Below two docker images should be available in the system, Use docker pull to get these images if the Kubernetes cluster cannot access internet.
    1) docker pull k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
    2) docker pull k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0

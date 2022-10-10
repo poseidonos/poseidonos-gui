@@ -62,7 +62,7 @@ def create_volume(
         maxiops,
         minbw,
         miniops,
-        subsystem["subnqn"],
+        subsystem["subnqn"],subsystem["transport_type"],subsystem["transport_service_id"],subsystem["target_address"],
         iswalvol)
     if create_vol_response.status_code == 200:
         if count == 1 and mount_vol:

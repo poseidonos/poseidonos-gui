@@ -10,6 +10,7 @@ The following features are currently supported.
 
 1. Login and Logout
    - Default Credentials - admin/admin
+   - Configure Telemetry endpoint
 
 
 2. User Management
@@ -19,7 +20,7 @@ The following features are currently supported.
 
 3. Dashboard
    - PoseidonOS status that auto refreshes every four seconds
-   - Health metrics shows CPU, Memory and latency data
+   - Shows Bandwidth, IOPs and Latency data
    - Storage array and volume status
 
 
@@ -27,10 +28,23 @@ The following features are currently supported.
    - Array creation, deletion, mount and unmount after Poseidon OS is started
    - Volume creation, deletion, mount and unmount 
    - Array and Volume details are persistent even after Poseidon OS is stopped and started.
+   - Write Buffer Path (URAM) disk creation
 
 
 5. PoseidonOS Operations
-   - START and STOP of PoseidonOS 
+   - START and STOP of PoseidonOS
+
+
+6. Subsystem Management
+   - Subsystem creation and deletion
+   - Add Listener
+
+
+7. Telemetry Dashboard
+   - START and STOP of Telemetry
+   - Configure Telemetry fields
+   - View graphs on Grafana dashboard
+
 
 # System Requirements: 
 - Ubuntu 18.04 with python3 
