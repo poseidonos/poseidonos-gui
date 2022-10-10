@@ -352,7 +352,7 @@ function* createVolume(action) {
             errorMsg: "Error while creating Volume",
             errorCode: `${response.data.result && response.data.result.status
               ? `${response.data.result.status.description}
-			    ${response.data.result.status.posDescription}`
+			    ${response.data.result.status.solution}`
               : ""
               }`,
           })

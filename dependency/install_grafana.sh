@@ -3,21 +3,25 @@
 RESET_GRAFANA=$1
 
 #Remove previous GrafanaDB
-if [ -n "${RESET_GRAFANA}" ] && [ $RESET_GRAFANA == true ]; then
-    rm /var/lib/grafana/grafana.db;
-else
-    while true; do
-        read -p "Do you wish to reset GrafanaDB before installing grafana?" yn
-        case $yn in
-            [Yy]* ) rm /var/lib/grafana/grafana.db; break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
+if [ -e /var/lib/grafana/grafana.db ]; then
+    if [ -n "${RESET_GRAFANA}" ] && [ $RESET_GRAFANA == true ]; then
+        rm /var/lib/grafana/grafana.db;
+    else
+        while true; do
+            read -p "Do you wish to reset GrafanaDB before installing grafana?" yn
+            case $yn in
+                [Yy]* ) rm /var/lib/grafana/grafana.db; break;;
+                [Nn]* ) break;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+    fi
 fi
 echo -----------------------Installing Grafana--------------------------------
 #Remove previos Default Init
-rm /etc/grafana/grafana.ini
+if [ -e /etc/grafana/grafana.ini ]; then
+    rm /etc/grafana/grafana.ini
+fi
 #Add dependencies
 sudo apt-get install -y adduser libfontconfig1
 #Download binary
