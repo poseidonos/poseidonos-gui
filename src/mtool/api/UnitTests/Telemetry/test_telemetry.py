@@ -36,6 +36,10 @@ import requests_mock
 from unittest import mock
 from rest.app import app
 from flask import json
+import jwt
+import datetime
+import os
+import re
 
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ip = "122.122.122.122"
@@ -44,7 +48,11 @@ port = "5555"
 prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
 grafa_url = "http://localhost:3500"
 ds_name = "poseidon"
+dagent_ip = os.environ.get('DAGENT_HOST', 'localhost')
+DAGENT_URL = 'http://' + dagent_ip + ':3000'
 ds_id = 1
+json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
+) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
 
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
             return_value=[ip,port], autospec=True)
@@ -251,3 +259,155 @@ def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
     )
 
     assert response.status_code == 500
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=["localhost", "9090"], autospec=True)
+def test_get_current_perf(mock_get_current_user, **kwargs):
+    kwargs["mock"].get(re.compile('http\:\/\/localhost:9090\/api\/v1\/query*'),
+                    json={
+                        "data": {
+                            "result": [{
+                                "value": [0, 1]
+                            }]
+                        }
+                    },
+                    status_code=200)
+    response = app.test_client().get(
+        '/api/v1/perf/all'
+    )
+
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_start_telemetry(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry',
+                       json={"status": "success"},
+                       status_code=200)
+    response = app.test_client().post(
+        '/api/v1/telemetry',
+        headers={'x-access-token': json_token}
+    )
+
+    data = response.get_data(as_text=True)
+    assert response.status_code == 200
+    assert data == '{"status": "success"}'
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_stop_telemetry(mock_get_current_user, **kwargs):
+    kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/telemetry',
+                       json={"status": "success"},
+                       status_code=200)
+    response = app.test_client().delete(
+        '/api/v1/telemetry',
+        headers={'x-access-token': json_token}
+    )
+
+    data = response.get_data(as_text=True)
+    assert response.status_code == 200
+    assert data == '{"status": "success"}'
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_set_telemetry_properties(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry/properties',
+                       json={"status": "success"},
+                       status_code=200)
+    response = app.test_client().post(
+        '/api/v1/telemetry/properties',
+        headers={'x-access-token': json_token},
+        data = json.dumps([{
+            "category": "Common",
+            "fields": [{
+                "label": "Process Uptime Second",
+                "field": "uptime_sec",
+                "isSet": False
+            }]
+        }, {
+            "category": "Device",
+            "fields": [{
+                "label": "Bandwidth",
+                "field": "bandwidth_device",
+                "isSet": True
+            }, {
+                "label": "Capacity",
+                "field": "capacity_device",
+                "isSet": True
+            }]
+        }]),
+    )
+
+    data = response.get_data(as_text=True)
+    assert response.status_code == 200
+    assert data == '{"status": "success"}'
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_telemetry_properties(mock_get_current_user, **kwargs):
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/telemetry/properties',
+                    json={
+                        "result": {
+                            "status": {
+                                "code": 0
+                            },
+                            "data": {
+                                "metrics_to_publish": {
+                                    "uptime_sec": None,
+                                    "bandwidth_device": None
+                                },
+                                "telemetryStatus": {
+                                    "status": True
+                                }
+                            }
+                        }},
+                       status_code=200)
+    response = app.test_client().get(
+        '/api/v1/telemetry/properties',
+        headers={'x-access-token': json_token},
+    )
+
+    data = json.loads(response.data)
+    assert response.status_code == 200
+    for props in  data["properties"]:
+        for field in props["fields"]:
+            if field["field"] == "uptime_sec" or field["field"] == "bandwidth_device":
+                assert field["isSet"] == True
+            else:
+                assert field["isSet"] == False
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=["localhost", "9090"], autospec=True)
+def test_check_telemetry(mock_get_current_user, **kwargs):
+    kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
+                    json={
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "pos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    },
+                    status_code=200)
+    kwargs["mock"].get('http://localhost:9090/api/v1/status/runtimeinfo',
+            json={"status": "success"},
+            status_code=200
+    )
+    response = app.test_client().get(
+        '/api/v1/checktelemetry',
+        headers={'x-access-token': json_token},
+    )
+
+    assert response.status_code == 200

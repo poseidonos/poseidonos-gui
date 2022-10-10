@@ -233,7 +233,7 @@ def get_ibof_os_status():
 @app.route('/api/v1.0/pos/info', methods=['GET'])
 @token_required
 def get_pos_info(current_user):
-    return toJson(dagent.get_pos_info().json())
+    return toJson(dagent.get_pos_info())
 
 
 @app.route('/api/v1.0/start_ibofos', methods=['GET'])
@@ -883,16 +883,16 @@ def stop_telemetry(current_user):
     return toJson(response.json())
 
 @app.route('/api/v1/telemetry/properties', methods=['POST'])
-# @token_required
-def set_telemetry_props():
+@token_required
+def set_telemetry_props(current_user):
     body_unicode = request.data.decode('utf-8')
     body = json.loads(body_unicode)
     response = set_telemetry_properties(body)
     return toJson(response.json())
 
 @app.route('/api/v1/telemetry/properties', methods=['GET'])
-# @token_required
-def get_telemetry_props():
+@token_required
+def get_telemetry_props(current_user):
     return toJson(get_telemetry_properties())
 
 # Add Spare Disk
@@ -2072,7 +2072,8 @@ def set_telemetry_config():
         return make_response('Could not configure Telemetry URL'+str(e), 500)
 
 @app.route('/api/v1/checktelemetry', methods=['GET'])
-def check_telemetry():
+@token_required
+def check_telemetry(current_user):
     try:
         received_telemetry = connection_factory.get_telemetery_url()
         if received_telemetry is None or len(received_telemetry) == 0:

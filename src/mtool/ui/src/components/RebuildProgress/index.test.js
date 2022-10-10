@@ -1,4 +1,3 @@
-'''
 /*
  *   BSD LICENSE
  *   Copyright (c) 2021 Samsung Electronics Corporation
@@ -30,29 +29,23 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- '''
 
-time_groups = {
-    '1m': '1000ms',
-    '5m': '428ms',
-    '15m': '1285ms',
-    '1h': '5142ms',
-    '6h': '30857ms',
-    '12h': '61714ms',
-    '24h': '123428ms',
-    '7d': '863999ms',
-    '30d': '3702857ms'
-}
+import React from "react";
+import {
+  render,
+  cleanup
+} from "@testing-library/react";
+import '@testing-library/jest-dom/extend-expect';
+import RebuildProgress from "./index";
 
-time_groups_default = {
-    '1m': '1s',
-    '5m': '1s',
-    '15m': '1m',
-    '1h': '1m',
-    '6h': '1m',
-    '12h': '5m',
-    '24h': '10m',
-    '7d': '1h',
-    '30d': '6h'
+describe("Rebuild Progress", () => {
 
-}
+    afterEach(cleanup);
+
+    it("should render the rebuild progress with 0 value", () => {
+        const { getByText } = render(
+            <RebuildProgress />
+        );
+        expect(getByText("0%")).toBeDefined();
+    })
+});

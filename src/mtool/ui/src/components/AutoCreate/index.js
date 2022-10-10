@@ -151,8 +151,7 @@ const AutoCreate = (props) => {
       spareDisks: 0,
       writeThroughMode: false,
     });
-    setDiskConstraints();
-  }, [props.metadisks, setDiskConstraints]);
+  }, [props.metadisks]);
 
 
   useEffect(() => {

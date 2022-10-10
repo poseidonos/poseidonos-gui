@@ -59,7 +59,6 @@ import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
 import logManagementReducer from "./store/reducers/logManagementReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
-import performanceReducer from "./store/reducers/performanceReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
 import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
 import userManagementReducer from "./store/reducers/userManagementReducer";
@@ -110,7 +109,6 @@ const rootReducers = combineReducers({
     alertManagementReducer,
     storageReducer,
     createVolumeReducer,
-    performanceReducer,
     authenticationReducer,
     userManagementReducer,
     logManagementReducer,

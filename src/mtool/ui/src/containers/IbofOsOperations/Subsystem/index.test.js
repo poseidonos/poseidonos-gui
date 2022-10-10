@@ -39,7 +39,6 @@ import {
     wait
 } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { act } from "react-dom/test-utils";
 import { I18nextProvider } from "react-i18next";
 import axios from "axios";
 import "@testing-library/jest-dom/extend-expect";
@@ -149,7 +148,7 @@ describe("SubsystemOperations", () => {
                     "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
                 }, {
-                    "allowAnyHost": 1,
+                    "allowAnyHost": 0,
                     "hosts": [],
                     "listenAddresses": [],
                     "maxNamespaces": 256,
@@ -193,9 +192,14 @@ describe("SubsystemOperations", () => {
             subsystemResponse
         );
         renderComponent();
-        const { getByText } = wrapper;
+        const { getAllByTitle, getByText, asFragment } = wrapper;
         const nqnName = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem2"));
         expect(nqnName).toBeDefined();
+        const nqnName2 = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem10"));
+        expect(nqnName2).toBeDefined();
+        const expandBtns = getAllByTitle("Show Subsystem Details");
+        fireEvent.click(expandBtns[3]);
+        expect(getByText("Allow Any Hosts: No")).toBeDefined();
     });
 
     it("should create the subsystem",

@@ -182,7 +182,8 @@ const TelemetryForm = (props) => {
                             onClick={handleSaveConfig}
                             variant="contained"
                             color="primary"
-                            data-testid="auto-createarray-btn"
+                            id="btn-save-telemetry-tconfig"
+                            data-testid="btn-save-telemetry-config"
                             className={classes.button}
                             disabled={props.isSavingConfig}
                         >
@@ -191,8 +192,9 @@ const TelemetryForm = (props) => {
                         <Button
                             onClick={() => setShowConfig(false)}
                             variant="outlined"
+                            id="btn-cancel-telemetry-config"
                             color="secondary"
-                            data-testid="auto-createarray-btn"
+                            data-testid="btn-cancel-telemetry-config"
                             className={classes.button}
                         >
                             {t('Cancel')}

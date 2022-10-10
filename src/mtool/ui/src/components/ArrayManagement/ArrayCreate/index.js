@@ -530,7 +530,7 @@ class ArrayCreate extends Component {
                 }}
               >
                 {this.props.config.raidTypes && this.props.config.raidTypes.map((raid) => (
-                  <MenuItem value={raid.value} key={raid.value}>
+                  <MenuItem data-testid={raid.value} value={raid.value} key={raid.value}>
                     <Typography color="secondary">{raid.label}</Typography>
                   </MenuItem>
                 ))}

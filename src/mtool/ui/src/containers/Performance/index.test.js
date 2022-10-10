@@ -3,7 +3,7 @@
  *   Copyright (c) 2021 Samsung Electronics Corporation
  *   All rights reserved.
  *
- *   Redistribution and use in source and binary forms, with or without
+ *   Redistribution and use in source and binary forms,with or without
  *   modification, are permitted provided that the following conditions
  *   are met:
  *
@@ -105,6 +105,20 @@ describe("Performance", () => {
     expect(getByText("Start")).toBeDefined();
   });
 
+  it("should render button on resize", () => {
+    // Change the viewport to 500px.
+    global.innerWidth = 500;
+
+    // Trigger the window resize event.
+    global.dispatchEvent(new Event("resize"));
+
+    renderComponent();
+    const { getByTestId } = wrapper;
+    expect(getByTestId("sidebar-toggle")).toBeDefined();
+    fireEvent.click(getByTestId("sidebar-toggle"));
+    expect(getByTestId("help-link")).toHaveTextContent("Help");
+  });
+
   it("should start Telemetry on clicking the Start Telemetry button", () => {
     mock.onPost("/api/v1/telemetry")
       .reply(200);
@@ -168,5 +182,114 @@ describe("Performance", () => {
     const { getByText, getByTitle } = wrapper;
     fireEvent.click(getByText("grafana"));
     expect(await waitForElement(() => getByTitle("iframe"))).toBeDefined();
+  });
+
+  it("should switch back to configuration page", async () => {
+    renderComponent();
+    const { getByText, getByTitle } = wrapper;
+    fireEvent.click(getByText("grafana"));
+    expect(await waitForElement(() => getByTitle("iframe"))).toBeDefined();
+    fireEvent.click(getByText("configure"));
+    expect(getByText("Start")).toBeDefined();
+  });
+
+  it("should Set the selected telemetry properties", async () => {
+    mock.onGet("/api/v1/telemetry/properties")
+      .reply(200, {
+        status: true,
+        properties: [{
+          category: 'Common',
+          fields: [{
+            label: 'Process Uptime Second',
+            field: 'uptime_sec',
+            isSet: false
+          }]
+        }, {
+          category: 'Device',
+          fields: [{
+            label: 'Bandwidth',
+            field: 'bandwidth_device',
+            isSet: false
+          }, {
+            label: 'Capacity',
+            field: 'capacity_device',
+            isSet: false
+          }]
+        }]
+      })
+      .onDelete("/api/v1/telemetry")
+      .reply(200)
+      .onAny()
+      .reply(200);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(await waitForElement(() => getByTestId("checkbox-Device")));
+    fireEvent.click(await waitForElement(() =>getByText("Device")));
+    fireEvent.click(await waitForElement(() => getByTestId("checkbox-capacity_device")));
+    fireEvent.click(getByText("Save"));
+    expect(getSpy).toHaveBeenCalledWith("/api/v1/telemetry/properties", [{
+      "category": "Common",
+      "fields": [{
+        "field": "uptime_sec",
+        "isSet": false,
+        "label": "Process Uptime Second" }] },
+        { "category": "Device",
+        "fields": [{ "field": "bandwidth_device",
+        "isSet": true,
+        "label": "Bandwidth" },
+        { "field": "capacity_device",
+        "isSet": false,
+        "label": "Capacity" }] }],
+        { "headers": { "x-access-token": null } });
+  });
+
+  it("should Set all the telemetry properties", async () => {
+    mock.onGet("/api/v1/telemetry/properties")
+      .reply(200, {
+        status: true,
+        properties: [{
+          category: 'Common',
+          fields: [{
+            label: 'Process Uptime Second',
+            field: 'uptime_sec',
+            isSet: false
+          }]
+        }, {
+          category: 'Device',
+          fields: [{
+            label: 'Bandwidth',
+            field: 'bandwidth_device',
+            isSet: false
+          }, {
+            label: 'Capacity',
+            field: 'capacity_device',
+            isSet: false
+          }]
+        }]
+      })
+      .onDelete("/api/v1/telemetry")
+      .reply(200)
+      .onAny()
+      .reply(200);
+    const getSpy = jest.spyOn(axios, "post");
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    fireEvent.click(await waitForElement(() => getByTestId("checkbox-select-all")));
+    fireEvent.click(getByText("Save"));
+    expect(getSpy).toHaveBeenCalledWith("/api/v1/telemetry/properties", [{
+      "category": "Common",
+      "fields": [{
+        "field": "uptime_sec",
+        "isSet": true,
+        "label": "Process Uptime Second" }] },
+        { "category": "Device",
+        "fields": [{ "field": "bandwidth_device",
+        "isSet": true,
+        "label": "Bandwidth" },
+        { "field": "capacity_device",
+        "isSet": true,
+        "label": "Capacity" }] }],
+        { "headers": { "x-access-token": null } });
   });
 });
