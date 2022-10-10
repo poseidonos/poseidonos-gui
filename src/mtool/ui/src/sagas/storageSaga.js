@@ -1225,7 +1225,15 @@ function* rebuildArray(action) {
           actionCreators.showStorageAlert({
             alertType: "alert",
             errorMsg: "Error while Starting Rebuild Operation",
-            errorCode: `Description:${response.data.result.description}`,
+            errorCode: `${response.data.result.status.description}\n${response.data.result.status.cause}\n${response.data.result.status.solution}`,
+            alertTitle: "Array Rebuild",
+          })
+        );
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "info",
+            errorMsg: "Rebuild Started Successfully",
             alertTitle: "Array Rebuild",
           })
         );
