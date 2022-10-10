@@ -3706,6 +3706,41 @@ describe("<Storage Management />", () => {
     expect(await waitForElement(() => getByText("Array created successfully"))).toBeDefined();
   });
 
+  it("should rebuild the array", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [{
+        ...array,
+        situation: "DEGRADED",
+        state: "DEGRADED"
+      }])
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
+      .reply(200, { result: { status: { code: 0 } } })
+      .onAny()
+      .reply(200, []);
+    renderComponent();
+    const getSpy = jest.spyOn(axios, "post");
+    const { getByTestId } = wrapper;
+    const rebuildBtn = await waitForElement(() =>
+      getByTestId("rebuild-icon")
+    );
+    fireEvent.click(rebuildBtn);
+    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/array/POSArray/rebuild', {}, {
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": null
+      }
+    });
+  });
+
   it("should throw error while autocreate an array", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)

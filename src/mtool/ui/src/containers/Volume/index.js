@@ -39,6 +39,7 @@ import io from "socket.io-client";
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
 import InfoIcon from "@material-ui/icons/Info";
+import { Autorenew } from "@material-ui/icons";
 import AutoCreate from "../../components/AutoCreate";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
@@ -56,7 +57,6 @@ import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
 import getSubsystemForArray from "../../utils/subsystem";
-import { Autorenew, Refresh } from "@material-ui/icons";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -553,7 +553,7 @@ class Volume extends Component {
                                         ) : null
                                         }
                                         {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
-                                          this.props.arrayMap[this.props.selectedArray].situation !== "REBUILDING" ? (
+                                          this.props.arrayMap[this.props.selectedArray].situation === "DEGRADED" ? (
                                           <ThemeProvider theme={PageTheme}>
                                             <Tooltip
                                               title="Rebuild Array"

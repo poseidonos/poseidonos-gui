@@ -132,7 +132,8 @@ const storageReducer = (state = initialState, action) => {
                 totalVolSize += action.payload[i].usedspace;
                 arrayMap[action.payload[i].arrayname] = {
                     ...state.arrayMap[action.payload[i].arrayname],
-                    ...action.payload[i]
+                    ...action.payload[i],
+                    rebuildProgress: action.payload[i].rebuildingprogress
                 }
             }
             let arrayname = state.arrayname && arrayMap[state.arrayname] ? state.arrayname : '';
@@ -355,7 +356,7 @@ const storageReducer = (state = initialState, action) => {
                     ...state.arrayMap,
                     [action.payload.name]: {
                         ...state.arrayMap[action.payload.name],
-                        rebuildProgress: action.payload.rebuilding_progress,
+                        rebuildProgress: action.payload.rebuildingProgress,
                         situation: action.payload.situation
                     }
                 }
