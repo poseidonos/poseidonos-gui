@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "c9e8fad1-b7d4-4b74-b8e8-197358737909",
+		"_postman_id": "816c9ae0-0bdd-4c91-9c8a-f8e511567e61",
 		"name": "Mtool_Sanity_Multi_Array_No_QOS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -45,20 +45,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"login",
-						""
-					]
-				},
+				"url": "http://{{host}}:{{port}}/api/v1.0/login/",
 				"description": "login to MTool"
 			},
 			"response": []
@@ -107,19 +94,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"stop_ibofos"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/stop_ibofos"
 			},
 			"response": []
 		},
@@ -157,19 +132,7 @@
 						"type": "text"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/start_ibofos",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"start_ibofos"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/start_ibofos"
 			},
 			"response": []
 		},
@@ -188,7 +151,7 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.test(\"Verify Json values\", function () {\r",
 							"    try {\r",
-							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"Success\");\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"NONE\");\r",
 							"    }\r",
 							"    catch (err) {\r",
 							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
@@ -217,20 +180,107 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"get_Is_Ibof_OS_Running",
-						""
-					]
+				"url": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/"
+			},
+			"response": []
+		},
+		{
+			"name": "Get POS Property",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POS is Running...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"NONE\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1.0/get_Is_Ibof_OS_Running/"
+			},
+			"response": []
+		},
+		{
+			"name": "Set POS Property",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"POS is Running...\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Verify Json values\", function () {\r",
+							"    try {\r",
+							"       pm.expect(jsonData.RESULT.result.status.description).is.to.equal(\"NONE\");\r",
+							"    }\r",
+							"    catch (err) {\r",
+							"        pm.test(\"FAIL: \", () => { throw new Error(\"Could not start POS\") });\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"property\": \"medium\"\r\n}"
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/pos/property"
 			},
 			"response": []
 		},
@@ -268,20 +318,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/device/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"device",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/device/"
 			},
 			"response": []
 		},
@@ -353,20 +390,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/get_devices/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"get_devices",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/get_devices/"
 			},
 			"response": []
 		},
@@ -401,20 +425,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -449,20 +460,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -517,20 +515,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"url": {
-					"raw": "http://{{host}}/api/ibofos/v1/arrays/reset",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"ibofos",
-						"v1",
-						"arrays",
-						"reset"
-					]
-				}
+				"url": "http://{{host}}/api/ibofos/v1/arrays/reset"
 			},
 			"response": [
 				{
@@ -555,21 +540,7 @@
 								"value": "{{basic_auth}}"
 							}
 						],
-						"url": {
-							"raw": "http://{{host}}/mtool/api/ibofos/v1/array/device",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"mtool",
-								"api",
-								"ibofos",
-								"v1",
-								"array",
-								"device"
-							]
-						}
+						"url": "http://{{host}}/mtool/api/ibofos/v1/array/device"
 					},
 					"status": "OK",
 					"code": 200,
@@ -655,20 +626,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/{{arrayName1}}",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"delete_array",
-						"{{arrayName1}}"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/delete_array/{{arrayName1}}"
 			},
 			"response": []
 		},
@@ -726,20 +684,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_array/{{arrayName2}}",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"delete_array",
-						"{{arrayName2}}"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/delete_array/{{arrayName2}}"
 			},
 			"response": []
 		},
@@ -760,7 +705,7 @@
 							"console.log(jsonData.result);\r",
 							"//let description = jsonData.result.status;\r",
 							"pm.test(\"DAgent response is... \" + status, function () {\r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"NONE\");\r",
 							"});\r",
 							"/*\r",
 							"let statusDesc = jsonData.result.status.description;\r",
@@ -814,20 +759,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/create_arrays/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"create_arrays",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/create_arrays/"
 			},
 			"response": []
 		},
@@ -848,7 +780,7 @@
 							"console.log(jsonData.result);\r",
 							"//let description = jsonData.result.status;\r",
 							"pm.test(\"DAgent response is... \" + status, function () {\r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\");\r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"NONE\");\r",
 							"});\r",
 							"/*\r",
 							"let statusDesc = jsonData.result.status.description;\r",
@@ -902,20 +834,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/autoarray/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"autoarray",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/autoarray/"
 			},
 			"response": []
 		},
@@ -953,20 +872,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/transport/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"transport",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/transport/"
 			},
 			"response": []
 		},
@@ -1004,20 +910,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"subsystem",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/subsystem/"
 			},
 			"response": []
 		},
@@ -1055,20 +948,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"subsystem",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/subsystem/"
 			},
 			"response": []
 		},
@@ -1106,20 +986,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/listener/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"listener",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/listener/"
 			},
 			"response": []
 		},
@@ -1157,20 +1024,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/listener/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"listener",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/listener/"
 			},
 			"response": []
 		},
@@ -1211,20 +1065,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"subsystem",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/subsystem/"
 			},
 			"response": []
 		},
@@ -1272,20 +1113,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/get_arrays/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"get_arrays",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/get_arrays/"
 			},
 			"response": []
 		},
@@ -1309,7 +1137,7 @@
 							"}\r",
 							"\r",
 							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"       pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
 							"});"
 						],
@@ -1335,20 +1163,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/remove_spare_device/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"remove_spare_device",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/remove_spare_device/"
 			},
 			"response": []
 		},
@@ -1372,7 +1187,7 @@
 							"}\r",
 							"\r",
 							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"       pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
 							"});"
 						],
@@ -1398,20 +1213,57 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"add_spare_device",
-						""
-					]
+				"url": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/"
+			},
+			"response": []
+		},
+		{
+			"name": "replace array device in 1st array",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code \", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    response = jsonData.result.status.description\r",
+							"}\r",
+							"catch (err) {\r",
+							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"       pm.expect(response).is.to.equal(\"NONE\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"device\": \"{{storageDisk1}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/array/{{arrayName1}}/replace"
 			},
 			"response": []
 		},
@@ -1435,7 +1287,7 @@
 							"}\r",
 							"\r",
 							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"       pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
 							"});"
 						],
@@ -1461,20 +1313,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"add_spare_device",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/add_spare_device/"
 			},
 			"response": []
 		},
@@ -1514,20 +1353,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"save-volume",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/save-volume/"
 			},
 			"response": []
 		},
@@ -1565,20 +1391,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"save-volume",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/save-volume/"
 			},
 			"response": []
 		},
@@ -1630,139 +1443,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/{{arrayName1}}/get_volumes/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"{{arrayName1}}",
-						"get_volumes",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "cpu_graph",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Data received \", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/usage_user/1m",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"usage_user",
-						"1m"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "array_bw_read",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Data received\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"/*\r",
-							"var jsonData = pm.response.json();\r",
-							"data = jsonData.res\r",
-							"bw_sum = 0\r",
-							"for (i = 0; i < data.length; i++) {\r",
-							"    bw_sum = bw_sum + data[i].bw\r",
-							"}\r",
-							"console.log(\"bw_sum  \", bw_sum)\r",
-							"pm.test(\"Verify Json values\", function () {\r",
-							"    pm.expect(bw_sum).to.be.above(0);\r",
-							"});\r",
-							"\r",
-							"Fio will not be running in CI/CD setup\r",
-							"\r",
-							"*/"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/readbw/arrays?arrayids=0&time=5m",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"readbw",
-						"arrays"
-					],
-					"query": [
-						{
-							"key": "arrayids",
-							"value": "0"
-						},
-						{
-							"key": "time",
-							"value": "5m"
-						}
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/{{arrayName1}}/get_volumes/"
 			},
 			"response": []
 		},
@@ -1800,20 +1481,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_users/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"delete_users",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/delete_users/"
 			},
 			"response": []
 		},
@@ -1856,20 +1524,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/add_new_user/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"add_new_user",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/add_new_user/"
 			},
 			"response": []
 		},
@@ -1907,20 +1562,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/update_user/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"update_user",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/update_user/"
 			},
 			"response": []
 		},
@@ -1966,20 +1608,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"login",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/login/"
 			},
 			"response": []
 		},
@@ -2024,72 +1653,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/get_users/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"get_users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Array Based Perf",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Array Based Perf...\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/latency/arrays?arrayids=0&time=5m",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"latency",
-						"arrays"
-					],
-					"query": [
-						{
-							"key": "arrayids",
-							"value": "0"
-						},
-						{
-							"key": "time",
-							"value": "5m"
-						}
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/get_users/"
 			},
 			"response": []
 		},
@@ -2113,7 +1677,7 @@
 							"}\r",
 							"\r",
 							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"       pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
 							"});"
 						],
@@ -2139,21 +1703,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/device/smart/{{storageDisk1}}",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"device",
-						"smart",
-						"{{storageDisk1}}"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/device/smart/{{storageDisk1}}"
 			},
 			"response": []
 		},
@@ -2194,20 +1744,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"save-volume",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/save-volume/"
 			},
 			"response": []
 		},
@@ -2245,20 +1782,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/save-volume/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"save-volume",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/save-volume/"
 			},
 			"response": []
 		},
@@ -2310,21 +1834,7 @@
 						"value": "{{token}}"
 					}
 				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/{{arrayName2}}/get_volumes/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"{{arrayName2}}",
-						"get_volumes",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/{{arrayName2}}/get_volumes/"
 			},
 			"response": []
 		},
@@ -2337,19 +1847,6 @@
 						"exec": [
 							"pm.test(\"Response code \", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
-							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
-							"    \r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -2374,20 +1871,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr1}}0",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volumes",
-						"{{volNameArr1}}0"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr1}}0"
 			},
 			"response": []
 		},
@@ -2402,18 +1886,18 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
+							"// var jsonData = pm.response.json();\r",
+							"// try {\r",
+							"//     response = jsonData.result.status.description\r",
+							"// }\r",
+							"// catch (err) {\r",
+							"//     pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"// }\r",
 							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"// pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"//        pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
-							"});"
+							"// });"
 						],
 						"type": "text/javascript"
 					}
@@ -2437,20 +1921,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr2}}0",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volumes",
-						"{{volNameArr2}}0"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr2}}0"
 			},
 			"response": []
 		},
@@ -2465,18 +1936,18 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
+							"// var jsonData = pm.response.json();\r",
+							"// try {\r",
+							"//     response = jsonData.result.status.description\r",
+							"// }\r",
+							"// catch (err) {\r",
+							"//     pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"// }\r",
 							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"// pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"//        pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
-							"});"
+							"// });"
 						],
 						"type": "text/javascript"
 					}
@@ -2500,20 +1971,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr1}}0_renamed",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volumes",
-						"{{volNameArr1}}0_renamed"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr1}}0_renamed"
 			},
 			"response": []
 		},
@@ -2528,18 +1986,18 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
+							"// var jsonData = pm.response.json();\r",
+							"// try {\r",
+							"//     response = jsonData.result.status.description\r",
+							"// }\r",
+							"// catch (err) {\r",
+							"//     pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"// }\r",
 							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"// pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"//        pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
-							"});"
+							"// });"
 						],
 						"type": "text/javascript"
 					}
@@ -2563,20 +2021,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr2}}0_renamed",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volumes",
-						"{{volNameArr2}}0_renamed"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volumes/{{volNameArr2}}0_renamed"
 			},
 			"response": []
 		},
@@ -2596,7 +2041,7 @@
 							"var jsonData = pm.response.json(); \r",
 							"console.log(jsonData.result.status.description)\r",
 							"pm.test(\"Verify Json values\", function () { \r",
-							"    pm.expect(jsonData.result.status.description).is.to.equal(\"Success\"); \r",
+							"    pm.expect(jsonData.result.status.description).is.to.equal(\"NONE\"); \r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -2621,20 +2066,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volume",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volume/mount"
 			},
 			"response": []
 		},
@@ -2649,18 +2081,18 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"var jsonData = pm.response.json();\r",
-							"try {\r",
-							"    response = jsonData.result.status.description\r",
-							"}\r",
-							"catch (err) {\r",
-							"    pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
-							"}\r",
+							"// var jsonData = pm.response.json();\r",
+							"// try {\r",
+							"//     response = jsonData.result.status.description\r",
+							"// }\r",
+							"// catch (err) {\r",
+							"//     pm.test(\"FAIL: \", () => { throw new Error(\"Exception in parsing response\") });\r",
+							"// }\r",
 							"\r",
-							"pm.test(\"DAgent reponse is...\"+response, function () {\r",
-							"       pm.expect(response).is.to.equal(\"Success\");\r",
+							"// pm.test(\"DAgent reponse is...\"+response, function () {\r",
+							"//        pm.expect(response).is.to.equal(\"NONE\");\r",
 							"    \r",
-							"});"
+							"// });"
 						],
 						"type": "text/javascript"
 					}
@@ -2684,20 +2116,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/volume/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"volume",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/volume/mount"
 			},
 			"response": []
 		},
@@ -2734,20 +2153,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes/{{arrayName1}}",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"delete_volumes",
-						"{{arrayName1}}"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/delete_volumes/{{arrayName1}}"
 			},
 			"response": []
 		},
@@ -2784,20 +2190,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/delete_volumes/{{arrayName2}}",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"delete_volumes",
-						"{{arrayName2}}"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1.0/delete_volumes/{{arrayName2}}"
 			},
 			"response": []
 		},
@@ -2843,20 +2236,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/get_all_volumes/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"get_all_volumes",
-						""
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/get_all_volumes/"
 			},
 			"response": []
 		},
@@ -2891,20 +2271,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -2939,20 +2306,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -2987,20 +2341,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -3035,20 +2376,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/array/mount",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"array",
-						"mount"
-					]
-				}
+				"url": "http://{{host}}:{{port}}/api/v1/array/mount"
 			},
 			"response": []
 		},
@@ -3086,20 +2414,257 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1/subsystem/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1",
-						"subsystem",
-						""
-					]
+				"url": "http://{{host}}:{{port}}/api/v1/subsystem/"
+			},
+			"response": []
+		},
+		{
+			"name": "Configure Telemetry IP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"telemetryIP\": \"{{telemetryIP}}\",\r\n    \"telemetryPort\": \"{{telemetryPort}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/configure"
+			},
+			"response": []
+		},
+		{
+			"name": "Is Telemetry Configured",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1/configure"
+			},
+			"response": []
+		},
+		{
+			"name": "Check Telemetry Running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"array\": \"{{arrayName2}}\",\r\n    \"writeThrough\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/checktelemetry"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Performance data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1/perf/all"
+			},
+			"response": []
+		},
+		{
+			"name": "Start telemetry",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1/telemetry"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Telemetry Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"array\": \"{{arrayName2}}\",\r\n    \"writeThrough\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/telemetry/properties"
+			},
+			"response": []
+		},
+		{
+			"name": "Set Telemetry Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"category\": \"Common\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Process Uptime Second\",\r\n        \"field\": \"uptime_sec\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Device\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Bandwidth\",\r\n        \"field\": \"bandwidth_device\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Capacity\",\r\n        \"field\": \"capacity_device\",\r\n        \"isSet\": false\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Disk SMART Info\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Soft Media Error Lower\",\r\n        \"field\": \"soft_media_error_lower\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Soft Media Error Upper\",\r\n        \"field\": \"soft_media_error_upper\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Power Cycle Error Lower\",\r\n        \"field\": \"power_cycle_error_lower\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Power Cycle Error Upper\",\r\n        \"field\": \"power_cycle_error_upper\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Power On Hour Lower\",\r\n        \"field\": \"power_on_hour_lower\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Power On Hour Upper\",\r\n        \"field\": \"power_on_hour_upper\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Unsafe Shutdowns Lower\",\r\n        \"field\": \"unsafe_shutdowns_lower\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Unsafe Shutdowns Upper\",\r\n        \"field\": \"unsafe_shutdowns_upper\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Temperature\",\r\n        \"field\": \"temperature\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Available Spare\",\r\n        \"field\": \"available_spare\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Available Spare Threshold\",\r\n        \"field\": \"available_spare_threshold\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Percentage Used\",\r\n        \"field\": \"percentage used\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Controller Busy Time Lower\",\r\n        \"field\": \"controller_busy_time_lower\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Controller Busy Time Upper\",\r\n        \"field\": \"controller_busy_time_upper\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Warning Temperature Time\",\r\n        \"field\": \"warning_temperature_time\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Critical Temperature Time\",\r\n        \"field\": \"critical_temperature_time\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Host\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Host Read IOPS\",\r\n        \"field\": \"read_iops_host\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Host Read Bytes per Second\",\r\n        \"field\": \"read_bytes_per_sec_host\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Host Write IOPS\",\r\n        \"field\": \"write_iops_host\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Host Write Bytes per Second\",\r\n        \"field\": \"write_bytes_per_sec_host\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Port\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Port Read IOPS\",\r\n        \"field\": \"read_iops_port\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Port Read Bytes per Second\",\r\n        \"field\": \"read_bytes_per_sec_port\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Port Write IOPS\",\r\n        \"field\": \"write_iops_port\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Port Write Bytes per Second\",\r\n        \"field\": \"write_bytes_per_sec_port\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Array\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Array Capacity\",\r\n        \"field\": \"capacity_array\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Used Array\",\r\n        \"field\": \"used_array\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Array State\",\r\n        \"field\": \"state_array\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Array Status\",\r\n        \"field\": \"array_status\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Array Total Capacity\",\r\n        \"field\": \"array_capacity_total\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Array Capacity Used\",\r\n        \"field\": \"array_capacity_used\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"category\": \"Volume\",\r\n    \"fields\": [\r\n      {\r\n        \"label\": \"Volume Capacity\",\r\n        \"field\": \"capacity_volume\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Volume Used\",\r\n        \"field\": \"used_volume\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Volume State\",\r\n        \"field\": \"state_volume\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Read Latency\",\r\n        \"field\": \"read_latency\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Write Latency\",\r\n        \"field\": \"write_latency\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Average Latency\",\r\n        \"field\": \"average_latency\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Reads Per Second\",\r\n        \"field\": \"number_of_reads_per_sec\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Writes Per Second\",\r\n        \"field\": \"number_of_writes_per_sec\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"IO Requests Per Second\",\r\n        \"field\": \"number_of_io_reqs_per_sec\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Read Bytes Per Second\",\r\n        \"field\": \"number_of_read_bytes_per_sec\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Write Bytes Per Second\",\r\n        \"field\": \"number_of_write_bytes_per_sec\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Average IO Size\",\r\n        \"field\": \"average_io_size\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Read IOPS\",\r\n        \"field\": \"iops_read\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"Write IOPS\",\r\n        \"field\": \"iops_write\",\r\n        \"isSet\": true\r\n      },\r\n      {\r\n        \"label\": \"IOPS\",\r\n        \"field\": \"iops\",\r\n        \"isSet\": true\r\n      }\r\n    ]\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://{{host}}:{{port}}/api/v1/telemetry/properties"
+			},
+			"response": []
+		},
+		{
+			"name": "Stop Telemetry",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1/telemetry"
 			},
 			"response": []
 		},
@@ -3139,20 +2704,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/api/v1.0/login/",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"v1.0",
-						"login",
-						""
-					]
-				},
+				"url": "http://{{host}}:{{port}}/api/v1.0/login/",
 				"description": "login to MTool"
 			},
 			"response": []
