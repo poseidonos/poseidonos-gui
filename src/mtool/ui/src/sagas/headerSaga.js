@@ -39,7 +39,7 @@ import * as actionCreators from "../store/actions/exportActionCreators";
 function* CallIsiBOFOSRunning(action) {
     try {
         yield put(actionCreators.setIsStatusCheckDone(false));
-        const response = yield call([axios, axios.get], '/api/v1.0/get_Is_Ibof_OS_Running/',{ 
+        const response = yield call([axios, axios.get], '/api/v1.0/get_Is_Ibof_OS_Running/', {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -47,24 +47,24 @@ function* CallIsiBOFOSRunning(action) {
             },
         });
         /* istanbul ignore if */
-        if(response && response.status === 401) {
+        if (response && response.status === 401) {
             action.payload.push('/');
-            localStorage.setItem('isLoggedIn',false);
-            localStorage.setItem('BMC_LoggedIn',false);
+            localStorage.setItem('isLoggedIn', false);
+            localStorage.setItem('BMC_LoggedIn', false);
         }
         /* istanbul ignore if */
         if (response && response.status === 500) {
             yield put(actionCreators.asyncIsiBOFOSRunning(false, "Not Running"));
         }
         const result = response.data;
-         /* istanbul ignore else */
+        /* istanbul ignore else */
         if (result)
             yield put(actionCreators.updateTimestamp(result.lastRunningTime));
         if (result && result.RESULT && result.RESULT.result && result.RESULT.result.status && result.RESULT.result.status.code === 0) {
             yield put(actionCreators.asyncIsiBOFOSRunning(true, "Running", result.state));
         }
         else if (result && result.code === "2804" && result.value !== "100") {
-            if(result.timestamp !== "")
+            if (result.timestamp !== "")
                 yield put(actionCreators.updateTimestamp(result.timestamp));
             let percentage = ""
             if (result && result.value !== "") {
@@ -78,7 +78,7 @@ function* CallIsiBOFOSRunning(action) {
     }
     catch (e) {
         yield put(actionCreators.asyncIsiBOFOSRunning(false, "Not Running"));
-        if(e.message.indexOf("401") >= 0) {
+        if (e.message.indexOf("401") >= 0) {
             localStorage.setItem("user", null);
             action.payload.resetIsLoggedIn();
             action.payload.push("/");
@@ -91,23 +91,32 @@ function* CallIsiBOFOSRunning(action) {
 
 function* getPOSProperty() {
     try {
-    const response = yield call([axios, axios.get], '/api/v1/pos/property', {
-        headers: {
+        const response = yield call([axios, axios.get], '/api/v1/pos/property', {
+            headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-access-token': localStorage.getItem('token'),
             },
-    });
-    if(response.status === 200) {
-        yield put(actionCreators.setPOSProperty(response.data.result.data));
-    }
-    } catch(e) {
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setPOSProperty(response.data.result.data));
+        }
+    } catch (e) {
         // console.log(e)
     }
 }
 
+const getDescription = (id) => {
+    let description = id;
+    if (id === "addListener1" || id === "addListener2")
+        description += ": added";
+    else
+        description += ": created";
+    return description;
+}
+
 function* startIBOFOs() {
-    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Starting Poseidon OS"}]));
+    yield put(actionCreators.setOperationsMessage([{ id: "ui", code: 200, description: "Starting Poseidon OS" }]));
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/start_ibofos', {
             headers: {
@@ -117,24 +126,32 @@ function* startIBOFOs() {
             },
         });
         if (response.status === 200) {
-	    const responseStatus = response.data.result.status;
-	    const errorResponses = responseStatus.errorInfo ?
-			responseStatus.errorInfo.errorResponses : [];
+            const responseStatus = response.data.result.status;
+            const errorResponses = responseStatus.errorInfo ?
+                responseStatus.errorInfo.errorResponses.map(er => {
+                    if (er.eventName === "SUCCESS")
+                        er.description = getDescription(er.id);
+                    else 
+                        er.description = `${er.id}: ${er.description}`;
+                    return er;
+                }) : [];
             yield put(actionCreators.setOperationsMessage([
-		    {
-		        code: response.data.result.status.code,
-		        id: "POS",
-			description: `${responseStatus.description || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
-		    },
-		    ...errorResponses
-	    ]));
+                {
+                    code: responseStatus.code,
+                    id: "POS",
+                    description: responseStatus.code === 0 ?
+                        "POS started successfully" :
+                        `${responseStatus.description || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
+                },
+                ...errorResponses
+            ]));
         }
     } catch (e) {
         yield put(actionCreators.setOperationsMessage([{
-		code: 500,
-		id: "Server",
-		description: `Error in Starting Poseidon OS: ${e}`
-	}]));
+            code: 500,
+            id: "Server",
+            description: `Error in Starting Poseidon OS: ${e}`
+        }]));
     } finally {
         yield getPOSProperty();
     }
@@ -142,7 +159,7 @@ function* startIBOFOs() {
 
 
 function* stopIBOFOs() {
-    yield put(actionCreators.setOperationsMessage([{id: "ui", code: 200, description: "Stopping Poseidon OS"}]));
+    yield put(actionCreators.setOperationsMessage([{ id: "ui", code: 200, description: "Stopping Poseidon OS" }]));
     try {
         const response = yield call([axios, axios.get], '/api/v1.0/stop_ibofos', {
             headers: {
@@ -152,23 +169,25 @@ function* stopIBOFOs() {
             },
         });
         if (response.status === 200) {
-	    const responseStatus = response.data;
+            const responseStatus = response.data;
             const errorResponses = responseStatus.errorInfo ?
-                        responseStatus.errorInfo.errorResponses : [];
+                responseStatus.errorInfo.errorResponses : [];
             yield put(actionCreators.setOperationsMessage([
-                    {
-                        code: responseStatus.code,
-                        id: "POS",
-                        description: `${responseStatus.response || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
-                    },
-                    ...errorResponses
+                {
+                    code: responseStatus.code,
+                    id: "POS",
+                    description: responseStatus.code === 0 ?
+                        "POS Stopped successfully" :
+                        `${responseStatus.response || ""}. ${responseStatus.problem || ""} ${responseStatus.solution || ""}`
+                },
+                ...errorResponses
             ]));
         }
     } catch (e) {
-	yield put(actionCreators.setOperationsMessage([{
-                code: 500,
-                id: "Server",
-                description: `Error in Stopping Poseidon OS: ${e}`
+        yield put(actionCreators.setOperationsMessage([{
+            code: 500,
+            id: "Server",
+            description: `Error in Stopping Poseidon OS: ${e}`
         }]));
     }
 }
@@ -194,32 +213,32 @@ function* resetIBOFOs() {
 
 function* getPOSInfo() {
     try {
-	const response = yield call([axios, axios.get], '/api/v1.0/pos/info', {
-	    headers: {
+        const response = yield call([axios, axios.get], '/api/v1.0/pos/info', {
+            headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-access-token': localStorage.getItem('token'),
             },
-	});
-	if(response.status === 200) {
-	    yield put(actionCreators.setPOSInfo(response.data && response.data.result ?
-            response.data.result.data : {}));
-	}
-    } catch(e) {
+        });
+        if (response.status === 200) {
+            yield put(actionCreators.setPOSInfo(response.data && response.data.result ?
+                response.data.result.data : {}));
+        }
+    } catch (e) {
         // console.log(e)
     }
 }
 
 function* setPOSProperty(action) {
     yield put(actionCreators.setOperationsMessage([{
-      id: "ui",
-      code: 200,
-      description: "Setting Poseidon OS Property"
+        id: "ui",
+        code: 200,
+        description: "Setting Poseidon OS Property"
     }]));
     try {
         const response = yield call([axios, axios.post], '/api/v1/pos/property', {
             property: action.payload
-        },{
+        }, {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -228,17 +247,17 @@ function* setPOSProperty(action) {
         });
         if (response.status === 200) {
             yield put(actionCreators.setOperationsMessage([{
-               id: "POS",
-               code: response.data.result.status.code,
-               description: response.data.result.status.code === 0 ?
-                "Property Set Successfully" : response.data.result.status.description
+                id: "POS",
+                code: response.data.result.status.code,
+                description: response.data.result.status.code === 0 ?
+                    "Property Set Successfully" : response.data.result.status.description
             }]));
         }
     } catch (e) {
         yield put(actionCreators.setOperationsMessage([{
-                code: 500,
-                id: "Server",
-                description: `Error in Setting PoseidonOS Property: ${e}`
+            code: 500,
+            id: "Server",
+            description: `Error in Setting PoseidonOS Property: ${e}`
         }]));
 
     } finally {
