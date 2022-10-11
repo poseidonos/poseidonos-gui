@@ -4508,7 +4508,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/devices",
@@ -4576,7 +4576,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\",\n        \"spare\": \"{{deviceName4}}\"\n    }\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/devices",

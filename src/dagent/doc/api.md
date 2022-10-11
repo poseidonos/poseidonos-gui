@@ -1493,19 +1493,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
 ##### I. Example Response: Fail - 2824
 ```js
 {
@@ -1546,19 +1533,6 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
 
 
 
@@ -8331,4 +8305,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-12 02:21:32 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-12 02:26:49 by [docgen](https://github.com/thedevsaddam/docgen)
