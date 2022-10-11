@@ -96,9 +96,8 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [QOS LIST VOLUME POLICIES](#8-qos-list-volume-policies)
   * [QOS RESET VOLUME POLICIES](#9-qos-reset-volume-policies)
   * [RENAME VOLUME](#10-rename-volume)
-  * [SET VOLUME PROPERTY](#11-set-volume-property)
-  * [UNMOUNT VOLUME](#12-unmount-volume)
-  * [VOLUME INFO](#13-volume-info)
+  * [UNMOUNT VOLUME](#11-unmount-volume)
+  * [VOLUME INFO](#12-volume-info)
 
 
 --------
@@ -8078,158 +8077,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 
 
 
-### 11. SET VOLUME PROPERTY
-
-
-
-***Endpoint:***
-
-```bash
-Method: POST
-Type: RAW
-URL: http://{{host}}/api/ibofos/v1/volume/property
-```
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "vol01",
-        "array": "POSArray",
-        "newVolumeName": "vol02"
-        //"updateprimaryvol": true, // these two paramters will be used in 2 node HA POS 
-        //"isprimaryvol": true
-    }
-}
-```
-
-
-
-***More example Requests/Responses:***
-
-
-##### I. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
-##### I. Example Response: Success
-```js
-{
-    "rid": "fb9b84d2-cb3d-4df4-becd-a9c1e935dd6f",
-    "lastSuccessTime": 1663394831,
-    "result": {
-        "status": {
-            "module": "",
-            "code": 0,
-            "description": "vol01 has been mounted successfully.",
-            "posDescription": "vol01 has been mounted successfully.",
-            "solution": "NONE"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc6"
-    }
-}
-```
-
-
-***Status Code:*** 200
-
-<br>
-
-
-
-##### II. Example Request: Fail - 2010
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
-##### II. Example Response: Fail - 2010
-```js
-{
-    "rid": "da25a190-837e-4140-8059-4695254c820a",
-    "lastSuccessTime": 1656018011,
-    "result": {
-        "status": {
-            "module": "VolumeManager",
-            "code": 2010,
-            "level": "WARN",
-            "description": "The requested volume does not exist",
-            "posDescription": "failed to mount vol0s(code:2010)",
-            "problem": "The volume with the requested volume name or volume ID does not exist",
-            "solution": "Enter the correct volume name or volume ID after checking the volume list"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc5"
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-### 12. UNMOUNT VOLUME
+### 11. UNMOUNT VOLUME
 
 
 
@@ -8376,7 +8224,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-### 13. VOLUME INFO
+### 12. VOLUME INFO
 
 
 
@@ -8479,4 +8327,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-09-27 22:28:36 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-11 21:39:12 by [docgen](https://github.com/thedevsaddam/docgen)
