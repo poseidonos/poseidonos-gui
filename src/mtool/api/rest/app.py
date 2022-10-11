@@ -302,28 +302,25 @@ def stop_ibofos(current_user):
     :param current_user:
     :return: status
     """
-    print("current_user:", current_user)
     is_ibofos_running()
     if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
-        return jsonify({"response": "POS has already stopped...", "code": -1})
+        return jsonify({"response": "POS has already stopped.", "code": -1})
     res = dagent.stop_ibofos()
     try:
         if res.status_code == 200:
             res = res.json()
             if res["result"]["status"]["code"] == 0:
-                description = res["result"]["status"]["description"]
-                return jsonify({"response": description, "code": 0})
+                return jsonify({"response": "POS stopped successfully", "code": 0})
         else:
             res = res.json()
             if ("result" in res and "status" in res["result"]):
                 description = res["result"]["status"]["description"]
-                description += ", Error Code:"
-                description += str(res["result"]["status"]["code"])
-                return jsonify({"response": description,
-                                "code": res["result"]["status"]["code"]})
-            return jsonify({"response": "unable to stop ibofos", "code": -1})
+                description += " "
+                description += str(res["result"]["status"]["cause"])
+                return jsonify({"response": description, "code": res["result"]["status"]["code"]})
     except BaseException:
-        return jsonify({"response": "unable to stop ibofos", "code": -1})
+        pass
+    return jsonify({"response": "unable to stop POS", "code": -1})
 
 
 """
