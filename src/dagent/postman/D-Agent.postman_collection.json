@@ -4485,7 +4485,7 @@
 					},
 					"response": [
 						{
-							"name": "Fail - 2321",
+							"name": "Fail - 2824",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -4550,7 +4550,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"518fec1e-c61b-4478-ae0b-c15ab756cf83\",\n    \"lastSuccessTime\": 1656017388,\n    \"result\": {\n        \"status\": {\n            \"module\": \"MBR Manager\",\n            \"code\": 2321,\n            \"level\": \"ERROR\",\n            \"description\": \"mbr device already in array\",\n            \"posDescription\": \"failed to add unvme-ns-3 to POSArray\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"180630b7-49a3-11ed-ba93-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2824,\n            \"eventName\": \"REBUILD_ARRAY_IS_NORMAL\",\n            \"cause\": \"There is no device to rebuild in array.\",\n            \"description\": \"Failed to rebuild an array.\",\n            \"posDescription\": \"Failed to rebuild an array.\",\n            \"solution\": \"Please check the state of array.\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc0\"\n    }\n}"
 						},
 						{
 							"name": "Success",
@@ -4618,7 +4618,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"ee659f68-01a9-4e7b-928a-98c1cc08204f\",\n    \"lastSuccessTime\": 1656017435,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"unvme-ns-9 has been added to POSArray successfully\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
 						}
 					]
 				}
