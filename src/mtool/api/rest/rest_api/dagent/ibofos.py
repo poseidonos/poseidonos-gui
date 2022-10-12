@@ -502,7 +502,7 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "name": name}}
+            "subnqn": name}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
