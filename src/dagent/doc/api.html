@@ -599,46 +599,40 @@ http://{{host}}/api/ibofos/v1/array/POSArray</h4></a></div><div id=collapse-Arra
 &nbsp;
 http://{{host}}/api/ibofos/v1/array/POSArray/rebuild</h4></a></div><div id=collapse-Array-REBUILDARRAY class="panel-collapse collapse"><div class=panel-body><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><select class=resp-selector>
 <option value>Select Example Request/Response
-<option value=req_res_Array_REBUILDARRAY_0_Fail2321>Fail - 2321
-<option value=req_res_Array_REBUILDARRAY_1_Success>Success</select><br><section id=req_res_Array_REBUILDARRAY_0_Fail2321 style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/ibofos/v1/devices</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
-&#34;param&#34;: {
-&#34;array&#34;: &#34;{{arrayName}}&#34;,
-&#34;spare&#34;: &#34;{{deviceName4}}&#34;
-}
-}</span><div class=clearfix></div><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;518fec1e-c61b-4478-ae0b-c15ab756cf83&#34;,
-&#34;lastSuccessTime&#34;: 1656017388,
+<option value=req_res_Array_REBUILDARRAY_0_Fail2824>Fail - 2824
+<option value=req_res_Array_REBUILDARRAY_1_Success>Success</select><br><section id=req_res_Array_REBUILDARRAY_0_Fail2824 style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/ibofos/v1/devices</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;180630b7-49a3-11ed-ba93-3cecef280244&#34;,
+&#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
 &#34;status&#34;: {
-&#34;module&#34;: &#34;MBR Manager&#34;,
-&#34;code&#34;: 2321,
-&#34;level&#34;: &#34;ERROR&#34;,
-&#34;description&#34;: &#34;mbr device already in array&#34;,
-&#34;posDescription&#34;: &#34;failed to add unvme-ns-3 to POSArray&#34;
+&#34;module&#34;: &#34;&#34;,
+&#34;code&#34;: 2824,
+&#34;eventName&#34;: &#34;REBUILD_ARRAY_IS_NORMAL&#34;,
+&#34;cause&#34;: &#34;There is no device to rebuild in array.&#34;,
+&#34;description&#34;: &#34;Failed to rebuild an array.&#34;,
+&#34;posDescription&#34;: &#34;Failed to rebuild an array.&#34;,
+&#34;solution&#34;: &#34;Please check the state of array.&#34;
 }
 },
 &#34;info&#34;: {
-&#34;version&#34;: &#34;v0.11.0-rc5&#34;
+&#34;version&#34;: &#34;v0.12.0-rc0&#34;
 }
-}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Array_REBUILDARRAY_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/ibofos/v1/devices</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
-&#34;param&#34;: {
-&#34;array&#34;: &#34;{{arrayName}}&#34;,
-&#34;spare&#34;: &#34;{{deviceName4}}&#34;
-}
-}</span><div class=clearfix></div><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;ee659f68-01a9-4e7b-928a-98c1cc08204f&#34;,
-&#34;lastSuccessTime&#34;: 1656017435,
+}</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>400</strong></section><section id=req_res_Array_REBUILDARRAY_1_Success style=display:none><h4>Example Request</h4><h5>URL: http://{{host}}/api/ibofos/v1/devices</h5><h5 class="label label-warning">Headers</h5><table class="table table-hover"><thead><tr><th>Key<th>Value<th>Description<tbody><tr><td>X-Request-Id<td>{{$guid}}<td><tr><td>ts<td>{{$timestamp}}<td><tr><td>Content-Type<td>application/json<td><tr><td>Authorization<td>{{basic_auth}}<td></table><h5 class="label label-primary">Body</h5><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
 &#34;status&#34;: {
-&#34;module&#34;: &#34;COMMON&#34;,
+&#34;module&#34;: &#34;&#34;,
 &#34;code&#34;: 0,
-&#34;level&#34;: &#34;INFO&#34;,
-&#34;description&#34;: &#34;Success&#34;,
-&#34;posDescription&#34;: &#34;unvme-ns-9 has been added to POSArray successfully&#34;
+&#34;eventName&#34;: &#34;SUCCESS&#34;,
+&#34;cause&#34;: &#34;NONE&#34;,
+&#34;description&#34;: &#34;NONE&#34;,
+&#34;posDescription&#34;: &#34;NONE&#34;,
+&#34;solution&#34;: &#34;NONE&#34;
 }
 },
 &#34;info&#34;: {
-&#34;version&#34;: &#34;v0.11.0-rc5&#34;
+&#34;version&#34;: &#34;v0.11.0-rc6&#34;
 }
 }</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-danger" id=jump-Array-REMOVEDEVICE><div class=panel-heading><small class="pull-right text-muted">raw</small>
 <a class=text-danger data-toggle=collapse data-parent=#accordion-Array href=#collapse-Array-REMOVEDEVICE><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>REMOVE DEVICE</strong> &nbsp;|&nbsp;
@@ -4306,4 +4300,4 @@ if(IsJsonString(html)){var obj=JSON.parse(html);var formattedJson=JSON.stringify
 function IsJsonString(str){try{JSON.parse(str);}catch(e){return false;}
 return true;}
 String.prototype.replaceAll=function(replaceThis,withThis){var re=new RegExp(RegExp.quote(replaceThis),"g");return this.replace(re,withThis);};RegExp.quote=function(str){return str.replace(/([.?*+^$[\]\\(){}-])/g,"\\$1");};function syntaxHighlight(json){json=json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){var cls='number';if(/^"/.test(match)){if(/:$/.test(match)){cls='key';}else{cls='string';}}else if(/true|false/.test(match)){cls='boolean';}else if(/null/.test(match)){cls='null';}
-return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2022-10-11 21:39:12 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
+return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2022-10-12 02:26:49 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>

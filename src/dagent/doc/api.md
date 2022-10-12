@@ -1479,7 +1479,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 2321
+##### I. Example Request: Fail - 2824
 
 
 ***Headers:***
@@ -1493,35 +1493,24 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
-##### I. Example Response: Fail - 2321
+##### I. Example Response: Fail - 2824
 ```js
 {
-    "rid": "518fec1e-c61b-4478-ae0b-c15ab756cf83",
-    "lastSuccessTime": 1656017388,
+    "rid": "180630b7-49a3-11ed-ba93-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "MBR Manager",
-            "code": 2321,
-            "level": "ERROR",
-            "description": "mbr device already in array",
-            "posDescription": "failed to add unvme-ns-3 to POSArray"
+            "module": "",
+            "code": 2824,
+            "eventName": "REBUILD_ARRAY_IS_NORMAL",
+            "cause": "There is no device to rebuild in array.",
+            "description": "Failed to rebuild an array.",
+            "posDescription": "Failed to rebuild an array.",
+            "solution": "Please check the state of array."
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.12.0-rc0"
     }
 }
 ```
@@ -1547,35 +1536,24 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 
 
 
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}",
-        "spare": "{{deviceName4}}"
-    }
-}
-```
-
-
-
 ##### II. Example Response: Success
 ```js
 {
-    "rid": "ee659f68-01a9-4e7b-928a-98c1cc08204f",
-    "lastSuccessTime": 1656017435,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "unvme-ns-9 has been added to POSArray successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.11.0-rc6"
     }
 }
 ```
@@ -8327,4 +8305,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-11 21:39:12 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-12 02:26:49 by [docgen](https://github.com/thedevsaddam/docgen)
