@@ -164,14 +164,89 @@ describe("IbofOsOperations", () => {
                     "rebuildPolicy": "lowest"
                 }
             }
-        }).onAny().reply(200, {});
+        })
+        .onGet("/api/v1.0/start_ibofos")
+        .reply(200, {
+            result: {
+                status: {
+                    code: 0,
+                    errorInfo: {
+                        errorResponses: [{
+                            eventName: "SUCCESS",
+                            id: "subsystem1",
+                        }, {
+                            eventName: "SUCCESS",
+                            id: "addListener2",
+                        }, {
+                            eventName: "SUCCESS",
+                            id: "addListener1",
+                        }, {
+                            eventName: "FAIL",
+                            id: "subsystem2",
+                            description: "Failed to create subsystem"
+                        }]
+                    }
+                }
+            }
+        })
+        .onAny().reply(200, {});
+
+        renderComponent();
+        const { getByTestId, getByText, asFragment } = wrapper;
+        fireEvent.click(getByTestId("startButton"));
+        fireEvent.click(getByText("Yes"));
+        expect(await waitForElement(() => getByText(/POS started/i))).toBeDefined();
+        expect(asFragment()).toMatchSnapshot();
+    });
+
+    it("should fail to start POS", async () => {
+        const mock = new MockAdapter(axios);
+         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": {"module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS"}}}, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        ).onGet("api/v1/pos/property")
+        .reply(200, {
+            "result": {
+                "data": {
+                    "rebuildPolicy": "lowest"
+                }
+            }
+        })
+        .onGet("/api/v1.0/start_ibofos")
+        .reply(200, {
+            result: {
+                status: {
+                    code: 400,
+                    description: "Failed to start",
+                    problem: "binary not found",
+                    solution: "Build POS and perform make install",
+                    errorInfo: {
+                        errorResponses: [{
+                            eventName: "SUCCESS",
+                            id: "subsystem1",
+                        }, {
+                            eventName: "SUCCESS",
+                            id: "addListener2",
+                        }, {
+                            eventName: "SUCCESS",
+                            id: "addListener1",
+                        }, {
+                            eventName: "FAIL",
+                            id: "subsystem2",
+                            description: "Failed to create subsystem"
+                        }]
+                    }
+                }
+            }
+        })
+        .onAny().reply(200, {});
 
         renderComponent();
         const { getByTestId, getByText } = wrapper;
         fireEvent.click(getByTestId("startButton"));
         fireEvent.click(getByText("Yes"));
-        expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
+        expect(await waitForElement(() => getByText(/Failed to start/))).toBeDefined();
     });
+
     it("stops POS", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
