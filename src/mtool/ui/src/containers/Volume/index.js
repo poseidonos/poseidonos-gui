@@ -571,10 +571,11 @@ class Volume extends Component {
                                       </Grid>
                                     </Typography>
                                   </Grid>
-                                  {this.props.arrayMap[this.props.selectedArray].rebuildProgress ? (
+                                  {this.props.arrayMap[this.props.selectedArray].rebuildProgress &&
+                                    this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
                                     <Popover
                                       id="rebuild-popover"
-                                      open={openPopover}
+                                      open={this.state.rebuildPopoverElement}
                                       anchorOrigin={{
                                         vertical: "bottom",
                                         horizontal: "left"
