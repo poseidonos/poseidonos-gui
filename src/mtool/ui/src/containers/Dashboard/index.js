@@ -753,7 +753,7 @@ class Dashboard extends Component {
             </Grid>
           </main>
           <Dialog
-            title="Create Volume"
+            title="Telemetry IP"
             description={this.props.errorMsg}
             type="alert"
             open={this.props.showTelemetryAlert}
