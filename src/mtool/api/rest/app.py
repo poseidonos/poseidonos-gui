@@ -2063,8 +2063,7 @@ def set_telemetry_config():
         return make_response('Could not configure Telemetry URL'+str(e), 500)
 
 @app.route('/api/v1/checktelemetry', methods=['GET'])
-@token_required
-def check_telemetry(current_user):
+def check_telemetry():
     try:
         received_telemetry = connection_factory.get_telemetery_url()
         if received_telemetry is None or len(received_telemetry) == 0:
