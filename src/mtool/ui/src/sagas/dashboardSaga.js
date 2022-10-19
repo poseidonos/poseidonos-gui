@@ -95,7 +95,17 @@ export function* fetchAlertsInfo() {
 
 export function* fetchCheckTelemetry() {
   try {
-    const response = yield call([axios, axios.get], '/api/v1/checktelemetry');
+    const response = yield call(
+      [axios, axios.get],
+      '/api/v1/checktelemetry',
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     if (response.status === 200 && response.data) {
       if (response.data.isTelemetryEndpointUp === true)
         yield put(actionCreators.setShowTelemetryNotRunning(false, ""));
