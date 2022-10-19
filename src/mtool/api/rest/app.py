@@ -247,9 +247,6 @@ def start_ibofos(current_user):
     #body_unicode = request.data.decode('utf-8')
     #body = json.loads(body_unicode)
     #script_path = body['path']
-    is_ibofos_running()
-    if(get_ibof_os_status()):
-        return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
     res = res.json()
     return jsonify(res)
@@ -302,9 +299,6 @@ def stop_ibofos(current_user):
     :param current_user:
     :return: status
     """
-    is_ibofos_running()
-    if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
-        return jsonify({"response": "POS has already stopped.", "code": -1})
     res = dagent.stop_ibofos()
     try:
         if res.status_code == 200:
