@@ -55,6 +55,23 @@ export function* getConfig() {
   }
 }
 
+export function* resetConfig() {
+  try {
+    yield put(actionCreators.setIsResettingConfig(true))
+    const response = yield call([axios, axios.delete], '/api/v1/configure');
+    if (response.status === 200) {
+      yield put(actionCreators.setIsConfigured({ isConfigured: false }));
+      yield put(actionCreators.setShowConfig(false));
+    } else {
+      yield put(actionCreators.setIsResetConfigFailed(true));
+    }
+    yield put(actionCreators.setIsResettingConfig(false));
+  } catch (error) {
+    yield put(actionCreators.setIsResettingConfig(false));
+    yield put(actionCreators.setIsResetConfigFailed(true));
+  }
+}
+
 export function* saveConfig(action) {
   try {
     yield put(actionCreators.setIsSavingConfig(true))
@@ -107,6 +124,7 @@ export function* login(action) {
 
 export function* authenticationWatcher() {
   yield takeEvery(actionTypes.SAGA_CHECK_CONFIGURATION, getConfig);
+  yield takeEvery(actionTypes.SAGA_RESET_CONFIGURATION, resetConfig);
   yield takeEvery(actionTypes.SAGA_CONFIGURE, saveConfig);
   yield takeEvery(actionTypes.SAGA_LOGIN, login);
 }

@@ -32,6 +32,20 @@
 
 import * as actionTypes from './actionTypes';
 
+export const setIsResettingConfig = payload => {
+  return {
+    type: actionTypes.SET_IS_RESETTING_CONFIG,
+    payload
+  }
+}
+
+export const setIsResetConfigFailed = payload => {
+  return {
+    type: actionTypes.SET_IS_RESET_CONFIGURATION_FAILED,
+    payload
+  }
+}
+
 export const setIsSavingConfig = payload => {
   return {
     type: actionTypes.SET_IS_SAVING_CONFIG,

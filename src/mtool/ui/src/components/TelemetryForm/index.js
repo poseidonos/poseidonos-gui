@@ -59,11 +59,28 @@ const styles = (theme) => ({
         }
     },
     button: {
-        margin: theme.spacing(2, "auto"),
-        width: 120,
+        margin: theme.spacing(2, 0),
+        width: 80,
         [theme.breakpoints.down("xs")]: {
             margin: theme.spacing(1, 0),
             width: "100%",
+        }
+    },
+    textEnd: {
+        padding: 0,
+        width: "fit-content",
+        minWidth: "fit-content",
+        textAlign: "end",
+        display: "block",
+        [theme.breakpoints.down("xs")]: {
+            margin: theme.spacing(1, 0),
+            width: "100%",
+            textAlign: "center",
+            padding: "inherit"
+        },
+        "&:hover": {
+            backgroundColor: "inherit",
+            textDecoration: "underline"
         }
     },
     colorRed: {
@@ -177,28 +194,51 @@ const TelemetryForm = (props) => {
                             </Typography>
                         )
                     }
-                    <Grid item xs={12} container justifyContent="center" alignItems="center">
-                        <Button
-                            onClick={handleSaveConfig}
-                            variant="contained"
-                            color="primary"
-                            id="btn-save-telemetry-tconfig"
-                            data-testid="btn-save-telemetry-config"
-                            className={classes.button}
-                            disabled={props.isSavingConfig}
-                        >
-                            {t('Save')}
-                        </Button>
-                        <Button
-                            onClick={() => setShowConfig(false)}
-                            variant="outlined"
-                            id="btn-cancel-telemetry-config"
-                            color="secondary"
-                            data-testid="btn-cancel-telemetry-config"
-                            className={classes.button}
-                        >
-                            {t('Cancel')}
-                        </Button>
+                    <Grid item xs={12} container justifyContent="space-between">
+                        <Grid item sm={5} xs={12} container justifyContent="space-between">
+                            <Button
+                                onClick={handleSaveConfig}
+                                variant="contained"
+                                color="primary"
+                                id="btn-save-telemetry-tconfig"
+                                data-testid="btn-save-telemetry-config"
+                                className={classes.button}
+                                disabled={props.isSavingConfig}
+                            >
+                                {t('Save')}
+                            </Button>
+                            <Button
+                                onClick={() => setShowConfig(false)}
+                                variant="outlined"
+                                id="btn-cancel-telemetry-config"
+                                color="secondary"
+                                data-testid="btn-cancel-telemetry-config"
+                                className={classes.button}
+                            >
+                                {t('Cancel')}
+                            </Button>
+                        </Grid>
+                        <Grid item sm={4} xs={12} container justifyContent="space-between" alignItems="center">
+                            <Typography
+                                variant="caption"
+                                component="span"
+                                data-testid="errorMsgConfigPopup"
+                                className={classes.colorRed}
+                            >
+                                {props.resettingConfigFailed && "Resetting Failed!"}
+                            </Typography>
+                            <Button
+                                onClick={() => props.resetConfig()}
+                                variant="text"
+                                id="btn-cancel-telemetry-config"
+                                color="secondary"
+                                data-testid="btn-cancel-telemetry-config"
+                                className={`${classes.button} ${classes.textEnd}`}
+                                disabled={!props.isConfigured || props.isResettingConfig}
+                            >
+                                Reset
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Popup>
@@ -214,6 +254,8 @@ const mapStateToProps = state => {
         configurationFailed: state.authenticationReducer.configurationFailed,
         showConfig: state.authenticationReducer.showConfig,
         isSavingConfig: state.authenticationReducer.isSavingConfig,
+        isResettingConfig: state.authenticationReducer.isResettingConfig,
+        resettingConfigFailed: state.authenticationReducer.resettingConfigFailed,
     };
 };
 
@@ -221,7 +263,8 @@ const mapDispatchToProps = dispatch => {
     return {
         saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
         changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
-        setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload))
+        setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload)),
+        resetConfig: () => dispatch({ type: actionTypes.SAGA_RESET_CONFIGURATION })
     };
 };
 
