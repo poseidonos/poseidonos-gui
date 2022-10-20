@@ -230,9 +230,9 @@ const TelemetryForm = (props) => {
                             <Button
                                 onClick={() => props.resetConfig()}
                                 variant="text"
-                                id="btn-cancel-telemetry-config"
+                                id="btn-reset-telemetry-config"
                                 color="secondary"
-                                data-testid="btn-cancel-telemetry-config"
+                                data-testid="btn-reset-telemetry-config"
                                 className={`${classes.button} ${classes.textEnd}`}
                                 disabled={!props.isConfigured || props.isResettingConfig}
                             >

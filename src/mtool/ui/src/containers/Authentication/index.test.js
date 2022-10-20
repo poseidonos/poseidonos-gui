@@ -169,7 +169,7 @@ describe("Authentication", () => {
 
     const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
     fireEvent.change(telemetryIPInput, {
-      target: { value: '107.108.83.97', name: 'telemetryIP' }
+      target: { value: '127.0.0.1', name: 'telemetryIP' }
     });
     const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
     fireEvent.change(telemetryPortInput, {
@@ -178,6 +178,28 @@ describe("Authentication", () => {
     fireEvent.click(getByTestId("submitConfig"))
     const data = "success";
     mock.onPost('/api/v1/configure').reply(200, data);
+  })
+
+  it("Reset telemetry API", async () => {
+    const mock = new MockAdapter(axios);
+    const { getByTestId } = wrapper;
+
+    const editComfigButton = await waitForElement(() => getByTestId("editConfig"))
+    fireEvent.click(editComfigButton)
+
+    const telemetryIPInput = getByTestId("telemetryIPInput").querySelector("input");
+    fireEvent.change(telemetryIPInput, {
+      target: { value: '127.0.0.1', name: 'telemetryIP' }
+    });
+    const telemetryPortInput = getByTestId("telemetryPortInput").querySelector("input");
+    fireEvent.change(telemetryPortInput, {
+      target: { value: '9090', name: 'telemetryPort' }
+    });
+    fireEvent.click(getByTestId("submitConfig"))
+    const data = "success";
+    mock.onPost('/api/v1/configure').reply(200, data);
+    fireEvent.click(getByTestId("resetConfig"));
+    mock.onDelete('/api/v1/configure').reply(200, data);    
   })
 
   it("Redirects to Dashboard", async () => {

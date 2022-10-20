@@ -370,7 +370,7 @@ class Authentication extends Component {
                       <Button
                         variant="outlined"
                         className={classes.editOutlinedButton}
-                        data-testid="editConfig"
+                        data-testid="resetConfig"
                         onClick={
                           () => this.props.resetConfig()
                         }
@@ -382,7 +382,7 @@ class Authentication extends Component {
                       <Typography
                         variant="caption"
                         component="span"
-                        data-testid="errorMsgConfigPopup"
+                        data-testid="resetErrorMsgConfigPopup"
                         className={classes.colorRed}
                       >
                         &nbsp;&nbsp;{this.props.resettingConfigFailed && "Resetting Failed!"}
