@@ -184,14 +184,14 @@ const RunIbofOs = props => {
               }}
               className="IBOFOSPropertySelect"
             >
-              <MenuItem value="highest" data-testid="highest">
-                Highest
+              <MenuItem value="high" data-testid="high">
+                High
               </MenuItem>
               <MenuItem value="medium" data-testid="medium">
                 Medium
               </MenuItem>
-              <MenuItem value="lowest" data-testid="lowest">
-                Lowest
+              <MenuItem value="low" data-testid="lowest">
+                Low
               </MenuItem>
             </Select>
           </FormControl>
