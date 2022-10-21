@@ -709,7 +709,7 @@ def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     request_body = {
         "param": {
             "array": arrayname,
-            "enable_write_through": write_through
+            "enableWriteThrough": write_through
         }
     }
     request_body = json.dumps(request_body)
