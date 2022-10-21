@@ -206,7 +206,7 @@ describe("Dashboard", () => {
       .reply(200, [array]);
     renderComponent();
     const { getByText, asFragment } = wrapper;
-    const hostElement = await waitForElement(() => getByText("Available for Volume Creation: 6.36 TB"));
+    const hostElement = await waitForElement(() => getByText("Available for Volume Creation: 5.8 TB"));
     expect(hostElement).toBeDefined();
     expect(asFragment()).toMatchSnapshot();
   });
@@ -313,10 +313,10 @@ describe("Dashboard", () => {
         ]
       });
     renderComponent();
-    const { getAllByText, asFragment } = wrapper;
-    const sizeDisplayedVol1 = await waitForElement(() => getAllByText("1.07 GB"));
+    const { getAllByText } = wrapper;
+    const sizeDisplayedVol1 = await waitForElement(() => getAllByText("1 GB"));
     expect(sizeDisplayedVol1.length).toBe(1);
-    const sizeDisplayedVol2 = await waitForElement(() => getAllByText("10.74 GB"));
+    const sizeDisplayedVol2 = await waitForElement(() => getAllByText("10 GB"));
     expect(sizeDisplayedVol2.length).toBe(2);
   });
 

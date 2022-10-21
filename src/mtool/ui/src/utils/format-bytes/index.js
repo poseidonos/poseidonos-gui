@@ -30,10 +30,10 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const formatBytes = (bytes, decimals = 2) => {
+const formatBytes = (bytes, decimals = 1) => {
   if (bytes <= 0 || Number.isNaN(bytes)) return '0 B';
 
-  const k = 1000;
+  const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
