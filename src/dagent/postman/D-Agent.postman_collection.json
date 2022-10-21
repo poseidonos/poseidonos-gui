@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fa325ecd-9745-406f-9c16-b74b7c5e9ce1",
+		"_postman_id": "934664e3-7263-49b0-966c-50281fb331e6",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -1416,7 +1416,8 @@
 								"system",
 								"property"
 							]
-						}
+						},
+						"description": "This API is used to set the system rebuild performance impact. User can set low, medium or high level for the performance impact"
 					},
 					"response": [
 						{
