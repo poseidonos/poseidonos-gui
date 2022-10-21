@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "816c9ae0-0bdd-4c91-9c8a-f8e511567e61",
+		"_postman_id": "5d9a376e-bcf5-4044-ab38-327d5a0a9cc9",
 		"name": "Mtool_Sanity_Multi_Array_No_QOS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -2665,6 +2665,32 @@
 					}
 				],
 				"url": "http://{{host}}:{{port}}/api/v1/telemetry"
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Telemetry IP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": "http://{{host}}:{{port}}/api/v1/configure"
 			},
 			"response": []
 		},

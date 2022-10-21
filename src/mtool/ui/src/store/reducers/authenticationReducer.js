@@ -40,6 +40,8 @@ export const initialState = {
   configurationFailed: false,
   showConfig: false,
   isSavingConfig: false,
+  isResettingConfig: false,
+  resettingConfigFailed: false,
   username: '',
   password: '',
   loginFailed: false,
@@ -48,6 +50,18 @@ export const initialState = {
 
 const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_IS_RESETTING_CONFIG: {
+      return {
+        ...state,
+        isResettingConfig: action.payload
+      }
+    }
+    case actionTypes.SET_IS_RESET_CONFIGURATION_FAILED: {
+      return {
+        ...state,
+        resettingConfigFailed: action.payload
+      }
+    }
     case actionTypes.SET_IS_SAVING_CONFIG: {
       return {
         ...state,
@@ -59,6 +73,7 @@ const authenticationReducer = (state = initialState, action) => {
         ...state,
         showConfig: action.payload,
         configurationFailed: false,
+        resettingConfigFailed: false,
       }
     }
     case actionTypes.SET_IS_CONFIGURED: {
@@ -73,7 +88,9 @@ const authenticationReducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        isConfigured: action.payload.isConfigured
+        isConfigured: action.payload.isConfigured,
+        telemetryIP: '',
+        telemetryPort: ''
       }
     }
 

@@ -2062,6 +2062,14 @@ def set_telemetry_config():
     except Exception as e:
         return make_response('Could not configure Telemetry URL'+str(e), 500)
 
+@app.route('/api/v1/configure', methods=['DELETE'])
+def reset_telemetry_config():
+    try:
+        connection_factory.delete_telemetery_url()
+        return make_response("success",200)
+    except Exception as e:
+        return make_response('Could not reset Telemetry URL'+str(e), 500)
+
 @app.route('/api/v1/checktelemetry', methods=['GET'])
 @token_required
 def check_telemetry(current_user):
