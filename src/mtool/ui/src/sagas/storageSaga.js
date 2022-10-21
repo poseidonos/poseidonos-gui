@@ -37,6 +37,9 @@ import * as actionCreators from "../store/actions/exportActionCreators";
 import { arrayname } from "../store/reducers/storageReducer";
 import { fetchSubsystems } from "./subsystemSaga";
 
+const MINIOPS = "miniops"
+const MINBW = "minbw"
+
 function* fetchVolumeDetails(action) {
   try {
     const response = yield call([axios, axios.get], action.payload.url, {
@@ -608,7 +611,7 @@ function* updateVolume(action) {
       volumes: [{ "volumeName": action.payload.name }],
       array: arrayName,
     };
-    if (action.payload.minbw !== action.payload.oldMinbw) {
+    if (action.payload.minType === MINBW && action.payload.minbw !== action.payload.oldMinbw) {
       data = {
         maxiops: action.payload.maxiops,
         minbw: action.payload.minbw,
@@ -617,7 +620,7 @@ function* updateVolume(action) {
         array: arrayName,
       }
     }
-    else if (action.payload.miniops !== action.payload.oldMiniops) {
+    else if (action.payload.minType === MINIOPS && action.payload.miniops !== action.payload.oldMiniops) {
       data = {
         miniops: action.payload.miniops,
         maxiops: action.payload.maxiops,
