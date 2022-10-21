@@ -2,18 +2,26 @@
     "category": "Common",
     "fields": [{
         "label": "Process Uptime Second",
-        "field": "uptime_sec",
+        "field": "common_process_uptime_second",
         "isSet": false
     }]
 }, {
     "category": "Device",
     "fields": [{
-        "label": "Bandwidth",
-        "field": "bandwidth_device",
+        "label": "Read Bytes Per Second",
+        "field": "read_bps_device",
         "isSet": false
     }, {
-        "label": "Capacity",
-        "field": "capacity_device",
+        "label": "Write Bytes Per Second",
+        "field": "write_bps_device",
+        "isSet": false
+    }, {
+        "label": "Read IOPS",
+        "field": "read_iops_device",
+        "isSet": false
+    }, {
+        "label": "Write IOPS",
+        "field": "write_iops_device",
         "isSet": false
     }]
 }, {
@@ -27,12 +35,12 @@
         "field": "soft_media_error_upper",
         "isSet": false
     }, {
-        "label": "Power Cycle Error Lower",
-        "field": "power_cycle_error_lower",
+        "label": "Power Cycle Lower",
+        "field": "power_cycle_lower",
         "isSet": false
     }, {
-        "label": "Power Cycle Error Upper",
-        "field": "power_cycle_error_upper",
+        "label": "Power Cycle Upper",
+        "field": "power_cycle_upper",
         "isSet": false
     }, {
         "label": "Power On Hour Lower",
@@ -64,7 +72,7 @@
         "isSet": false
     }, {
         "label": "Percentage Used",
-        "field": "percentage used",
+        "field": "percentage_used",
         "isSet": false
     }, {
         "label": "Controller Busy Time Lower",
@@ -84,131 +92,76 @@
         "isSet": false
     }]
 }, {
-    "category": "Host",
+    "category": "Network",
     "fields": [{
-        "label": "Host Read IOPS",
-        "field": "read_iops_host",
+        "label": "Read IOPS",
+        "field": "read_iops_network",
         "isSet": false
     }, {
-        "label": "Host Read Bytes per Second",
-        "field": "read_bytes_per_sec_host",
+        "label": "Read Bytes per Second",
+        "field": "read_bps_network",
         "isSet": false
     }, {
-        "label": "Host Write IOPS",
-        "field": "write_iops_host",
+        "label": "Write IOPS",
+        "field": "write_iops_network",
         "isSet": false
     }, {
-        "label": "Host Write Bytes per Second",
-        "field": "write_bytes_per_sec_host",
-        "isSet": false
-    }]
-}, {
-    "category": "Port",
-    "fields": [{
-        "label": "Port Read IOPS",
-        "field": "read_iops_port",
-        "isSet": false
-    }, {
-        "label": "Port Read Bytes per Second",
-        "field": "read_bytes_per_sec_port",
-        "isSet": false
-    }, {
-        "label": "Port Write IOPS",
-        "field": "write_iops_port",
-        "isSet": false
-    }, {
-        "label": "Port Write Bytes per Second",
-        "field": "write_bytes_per_sec_port",
+        "label": "Write Bytes per Second",
+        "field": "write_bps_network",
         "isSet": false
     }]
 }, {
     "category": "Array",
     "fields": [{
         "label": "Array Capacity",
-        "field": "capacity_array",
+        "field": "array_capacity_total",
         "isSet": false
     }, {
-        "label": "Used Array",
-        "field": "used_array",
-        "isSet": false
-    }, {
-        "label": "Array State",
-        "field": "state_array",
+        "label": "Array Usage Block Count",
+        "field": "array_usage_blk_cnt",
         "isSet": false
     }, {
         "label": "Array Status",
         "field": "array_status",
-        "isSet": false
-    }, {
-        "label": "Array Total Capacity",
-        "field": "array_capacity_total",
-        "isSet": false
-    }, {
-        "label": "Array Capacity Used",
-        "field": "array_capacity_used",
         "isSet": false
     }]
 }, {
     "category": "Volume",
     "fields": [{
         "label": "Volume Capacity",
-        "field": "capacity_volume",
+        "field": "volume_capacity_total",
         "isSet": false
     }, {
-        "label": "Volume Used",
-        "field": "used_volume",
+        "label": "Volume Usage Block Count",
+        "field": "volume_usage_blk_cnt",
         "isSet": false
     }, {
         "label": "Volume State",
-        "field": "state_volume",
+        "field": "volume_state",
         "isSet": false
     }, {
-        "label": "Read Latency",
-        "field": "read_latency",
+        "label": "Read Average Latency",
+        "field": "read_avg_lat_volume",
         "isSet": false
     }, {
-        "label": "Write Latency",
-        "field": "write_latency",
-        "isSet": false
-    }, {
-        "label": "Average Latency",
-        "field": "average_latency",
-        "isSet": false
-    }, {
-        "label": "Reads Per Second",
-        "field": "number_of_reads_per_sec",
-        "isSet": false
-    }, {
-        "label": "Writes Per Second",
-        "field": "number_of_writes_per_sec"    ,
-        "isSet": false
-    }, {
-        "label": "IO Requests Per Second",
-        "field": "number_of_io_reqs_per_sec",
-        "isSet": false
-    }, {
-        "label": "Read Bytes Per Second",
-        "field": "number_of_read_bytes_per_sec",
-        "isSet": false
-    }, {
-        "label": "Write Bytes Per Second",
-        "field": "number_of_write_bytes_per_sec",
-        "isSet": false
-    }, {
-        "label": "Average IO Size",
-        "field": "average_io_size",
+        "label": "Write Average Latency",
+        "field": "write_avg_lat_volume",
         "isSet": false
     }, {
         "label": "Read IOPS",
-        "field": "iops_read",
+        "field": "read_iops_volume",
         "isSet": false
     }, {
         "label": "Write IOPS",
-        "field": "iops_write",
+        "field": "write_iops_volume",
         "isSet": false
     }, {
-        "label": "IOPS",
-        "field": "iops",
+        "label": "Write Bytes Per Second",
+        "field": "write_bps_volume",
+        "isSet": false
+    }, {
+        "label": "Read Bytes Per Second",
+        "field": "read_bps_volume",
         "isSet": false
     }]
 }]
