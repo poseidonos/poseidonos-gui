@@ -886,7 +886,7 @@ function AdvanceCreateVolume(props) {
         {props.volume_count > 1 &&
           <Typography className={classes.previewElement}>Start Suffix Value : {props.volume_suffix}</Typography>
         }
-        {props.volume_size === 0 ? (
+        {parseInt(props.volume_size, 10) === 0 ? (
           <Typography className={classes.previewElement}>Volume Size : Remaining space in the Array</Typography>
         ) : (
           <Typography className={classes.previewElement}>Volume Size : {props.volume_size} {props.volume_units}</Typography>
