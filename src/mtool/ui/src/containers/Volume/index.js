@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from "react";
-import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip } from "@material-ui/core";
+import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip, Button } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
@@ -39,7 +39,6 @@ import io from "socket.io-client";
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
 import InfoIcon from "@material-ui/icons/Info";
-import { Autorenew } from "@material-ui/icons";
 import AutoCreate from "../../components/AutoCreate";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
@@ -51,7 +50,7 @@ import MToolLoader from "../../components/MToolLoader";
 import RebuildProgress from "../../components/RebuildProgress";
 import AlertDialog from "../../components/Dialog";
 import "./Volume.css";
-import MToolTheme, { customTheme, PageTheme } from "../../theme";
+import MToolTheme, { customTheme } from "../../theme";
 import SelectSubsystem from "../../components/SelectSubsystem";
 import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
@@ -167,7 +166,8 @@ const styles = (theme) => ({
     marginTop: theme.spacing(1),
   },
   rebuildButton: {
-    cursor: "pointer"
+    cursor: "pointer",
+    marginLeft: theme.spacing(1)
   }
 });
 
@@ -540,7 +540,7 @@ class Volume extends Component {
                                       >
                                         {this.props.arrayMap[this.props.selectedArray].status}
                                       </span>
-                                      <Grid container>, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
+                                      <Grid container alignItems="center">, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
                                         {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
                                           <InfoIcon
                                             aria-owns={openPopover ? 'rebuild-popover' : undefined}
@@ -554,20 +554,19 @@ class Volume extends Component {
                                         }
                                         {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
                                           this.props.arrayMap[this.props.selectedArray].situation === "DEGRADED" ? (
-                                          <ThemeProvider theme={PageTheme}>
                                             <Tooltip
                                               title="Rebuild Array"
                                             >
-                                              <Autorenew
+                                              <Button
                                                 color="primary"
+                                                variant="contained"
                                                 data-testid="rebuild-icon"
                                                 id="rebuild-icon"
                                                 className={classes.rebuildButton}
                                                 onClick={this.rebuildArray}
-                                              />
+                                              >Rebuild</Button>
                                             </Tooltip>
-                                          </ThemeProvider>
-                                        ) : null}
+                                         ) : null}
                                       </Grid>
                                     </Typography>
                                   </Grid>
