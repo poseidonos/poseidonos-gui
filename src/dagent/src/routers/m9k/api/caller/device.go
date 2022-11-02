@@ -21,19 +21,23 @@ func CallListDevices(xrId string, param interface{}, posMngr pos.POSManager) (mo
 
 func CallCreateDevice(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	var paramStruct pb.CreateDeviceRequest_Param
+	var resp model.Response
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
-		return model.Response{}, ErrJson
+		resp.Result.Status.CAUSE = err.Error()
+		return resp, ErrJson
 	}
 	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
-		return model.Response{}, ErrJson
+		resp.Result.Status.CAUSE = err.Error()
+		return resp, ErrJson
 	}
 	result, err1 := posMngr.CreateDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrConn
+		resp.Result.Status.CAUSE = err.Error()
+		return resp, ErrJson
 	}
 	resByte, err2 := protojson.Marshal(result)
 	return HandleResponse(resByte, err2)

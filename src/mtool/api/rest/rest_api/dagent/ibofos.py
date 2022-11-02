@@ -145,9 +145,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
             "POST",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout))
+            timeout=(300,300))
         # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         # array_exists(array_names[0])
