@@ -46,12 +46,13 @@ func ForceKillIbof(xrId string, param interface{}) (model.Response, error) {
 	posMngr.Init(model.RequesterName, setting.Config.Server.IBoF.IP+":"+setting.Config.Server.IBoF.GrpcPort)
 	result, _ := caller.CallGetSystemInfo(xrId, param, posMngr)
 	res := model.Response{}
-	if result.Result.Status.Description == "DONE" {
+	if result.Result.Status.Code == 0 {
 		utils.ExecCmd("pkill -9 poseidonos", false)
 		res.Result.Status.Code = 0
-
+		res.Result.Status.Description = "SUCCESS"
 	} else {
 		res.Result.Status.Code = 11021
+		res.Result.Status.Description = "PoseidonOS is not running"
 	}
 	return res, nil
 }

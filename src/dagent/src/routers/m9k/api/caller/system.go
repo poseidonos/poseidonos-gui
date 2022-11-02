@@ -178,7 +178,9 @@ func CallGetSystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (
 		result, err1 := posMngr.GetSystemInfo()
 		if err1 != nil {
 			log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-			return model.Response{}, ErrConn
+			errResponse := model.Response{}
+			errResponse.Result.Status.Code = 11021
+			return errResponse, ErrConn
 		}
 		resByte, err2 := protojson.Marshal(result)
 		globals.InitialTime = temptime
