@@ -392,7 +392,7 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
                         "data": {
                             "result": [{
                                 "metric": {
-                                    "job": "pos"
+                                    "job": "poseidonos"
                                 },
                                 "value": [
                                     "0", "1"
