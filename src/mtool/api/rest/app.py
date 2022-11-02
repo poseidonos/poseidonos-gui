@@ -1723,7 +1723,9 @@ def saveVolume():
     if (vol_size == 0):
         size = int(max_available_size)
     else:
-        if unit == "GB":
+        if unit == "MB":
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR
+        elif unit == "GB":
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         elif unit == 'TB':
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
