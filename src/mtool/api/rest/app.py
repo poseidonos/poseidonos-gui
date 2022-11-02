@@ -74,7 +74,7 @@ from itertools import chain
 eventlet.monkey_patch()
 
 BLOCK_SIZE = 1024 * 1024
-BYTE_FACTOR = 1000
+BYTE_FACTOR = 1024
 
 
 # Connect to MongoDB first. PyMODM supports all URI options supported by
