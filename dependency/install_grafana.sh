@@ -38,5 +38,6 @@ sed -i "s/;org_role = Viewer/org_role = Admin/g" /etc/grafana/grafana.ini
 #Allow Embeding
 sed -i "s/;allow_embedding = false/allow_embedding = true/g" /etc/grafana/grafana.ini
 #Restart server
+sudo systemctl enable grafana-server
 sudo systemctl restart grafana-server
 echo ---------------------Grafana installation done!----------------------------
