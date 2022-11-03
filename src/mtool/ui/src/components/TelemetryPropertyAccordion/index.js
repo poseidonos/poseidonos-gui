@@ -40,7 +40,8 @@ import {
     Grid,
     FormControlLabel,
     Typography,
-    withStyles
+    withStyles,
+    Tooltip
 } from '@material-ui/core';
 
 const styles = (theme) => ({
@@ -49,7 +50,7 @@ const styles = (theme) => ({
         color: '#fff'
     },
     formControlWrap: {
-        overflow: 'hidden'
+        marginTop: theme.spacing(1)
     },
     formLabel: {
         width: '100%'
@@ -101,25 +102,29 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
                     <Grid container>
                         {data.fields.map((f) => (
                             <Grid item xs={12} sm={6} xl={4} className={classes.formControlWrap}>
-                                <FormControlLabel
-                                    className={classes.formLabel}
-                                    classes={{
-                                        label: classes.formLabelText
-                                    }}
-                                    control={(
-<Checkbox
-                                        inputProps={{
-                                            "data-testid": `checkbox-${f.field}`,
-                                            "id": `checkbox-${f.field}`
+                                <Tooltip
+                                    title={f.field}
+                                >
+                                    <FormControlLabel
+                                        className={classes.formLabel}
+                                        classes={{
+                                            label: data.category !== "Common" ? classes.formLabelText : {}
                                         }}
-                                        checked={f.isSet}
-                                        onClick={setProperty}
-/>
-)}
-                                    label={f.label}
-                                    name={f.field}
-                                    value={f.field}
-                                />
+                                        control={(
+                                            <Checkbox
+                                                inputProps={{
+                                                    "data-testid": `checkbox-${f.field}`,
+                                                    "id": `checkbox-${f.field}`
+                                                }}
+                                                checked={f.isSet}
+                                                onClick={setProperty}
+                                            />
+                                        )}
+                                        label={`${f.label} (${f.field})`}
+                                        name={f.field}
+                                        value={f.field}
+                                    />
+                                </Tooltip>
                             </Grid>
                         ))}
                     </Grid>

@@ -9,7 +9,7 @@ sudo dpkg --configure -a
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo apt-get install -y python3-pip
-
+sudo apt-get install -y jq
 
 
 sudo $SCRIPT_PATH/setup_nginx.sh

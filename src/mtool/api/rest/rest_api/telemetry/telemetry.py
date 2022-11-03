@@ -9,7 +9,7 @@ def toJson(data):
 
 grafa_url = "http://localhost:3500"
 ds_name = "poseidon"
-PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{{job=\"pos\"}})'
+PROM_AGG_QUERY_PATH = 'http://{}:{}/api/v1/query?query=sum({}{{job=\"poseidonos\"}})'
 TIME_OUT = 10
 
 def is_prometheusDB_running(prom_url):
@@ -41,7 +41,7 @@ def check_telemetry_endpoint(ip, port):
         response = json.loads(response.content)
         if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
             for data in response["data"]["result"]:
-                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "pos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
+                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "poseidonos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
                     return jsonify({'isTelemetryEndpointUp': True})
         return jsonify({'isTelemetryEndpointUp': False})
 

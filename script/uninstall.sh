@@ -3,7 +3,16 @@
 sudo systemctl stop nginx
 
 sudo apt-get purge nginx
-sudo apt-get remove grafana
+sudo systemctl stop grafana-server
+sudo apt-get purge grafana
+while true; do
+            read -p "Do you wish to delete the GrafanaDB? [Y/n] " yn
+            case $yn in
+                [Yy]* ) rm /var/lib/grafana/grafana.db; break;;
+                [Nn]* ) break;;
+                * ) echo "Please answer Y for yes or n for no.";;
+            esac
+        done
 sudo systemctl stop start-iBofMtool
 sudo systemctl disable start-iBofMtool
 sudo rm /etc/systemd/system/start-iBofMtool.service

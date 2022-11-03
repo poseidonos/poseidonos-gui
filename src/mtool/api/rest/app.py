@@ -74,7 +74,7 @@ from itertools import chain
 eventlet.monkey_patch()
 
 BLOCK_SIZE = 1024 * 1024
-BYTE_FACTOR = 1000
+BYTE_FACTOR = 1024
 
 
 # Connect to MongoDB first. PyMODM supports all URI options supported by
@@ -247,9 +247,6 @@ def start_ibofos(current_user):
     #body_unicode = request.data.decode('utf-8')
     #body = json.loads(body_unicode)
     #script_path = body['path']
-    is_ibofos_running()
-    if(get_ibof_os_status()):
-        return jsonify({"response": "POS is Already Running...", "code": -1})
     res = dagent.start_ibofos()
     res = res.json()
     return jsonify(res)
@@ -302,9 +299,6 @@ def stop_ibofos(current_user):
     :param current_user:
     :return: status
     """
-    is_ibofos_running()
-    if(IBOF_OS_Running.Is_Ibof_Os_Running_Flag == False):
-        return jsonify({"response": "POS has already stopped.", "code": -1})
     res = dagent.stop_ibofos()
     try:
         if res.status_code == 200:
@@ -1729,7 +1723,9 @@ def saveVolume():
     if (vol_size == 0):
         size = int(max_available_size)
     else:
-        if unit == "GB":
+        if unit == "MB":
+            size = vol_size * BYTE_FACTOR * BYTE_FACTOR
+        elif unit == "GB":
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
         elif unit == 'TB':
             size = vol_size * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR * BYTE_FACTOR
@@ -2067,6 +2063,14 @@ def set_telemetry_config():
         return response
     except Exception as e:
         return make_response('Could not configure Telemetry URL'+str(e), 500)
+
+@app.route('/api/v1/configure', methods=['DELETE'])
+def reset_telemetry_config():
+    try:
+        connection_factory.delete_telemetery_url()
+        return make_response("success",200)
+    except Exception as e:
+        return make_response('Could not reset Telemetry URL'+str(e), 500)
 
 @app.route('/api/v1/checktelemetry', methods=['GET'])
 @token_required

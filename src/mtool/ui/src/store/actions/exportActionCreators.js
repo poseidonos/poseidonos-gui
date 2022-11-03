@@ -124,6 +124,8 @@ export {
 } from "./performanceActions";
 
 export {
+    setIsResettingConfig,
+    setIsResetConfigFailed,
     setIsSavingConfig,
     setShowConfig,
     setIsConfigured,

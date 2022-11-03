@@ -392,7 +392,7 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
                         "data": {
                             "result": [{
                                 "metric": {
-                                    "job": "pos"
+                                    "job": "poseidonos"
                                 },
                                 "value": [
                                     "0", "1"
@@ -411,3 +411,9 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
     )
 
     assert response.status_code == 200
+
+@mock.patch("rest.app.connection_factory.delete_telemetery_url",
+            return_value=[], autospec=True)
+def test_delete_telemetry_config(mock_delete_telemetry_url):
+    response = app.test_client().delete('/api/v1/configure')
+    assert response.status_code == 200 

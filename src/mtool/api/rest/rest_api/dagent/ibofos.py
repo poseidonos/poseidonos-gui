@@ -50,8 +50,8 @@ BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 VERSION = 'v1'
 
-connect_timeout = 60
-read_timeout = 60
+connect_timeout = 30
+read_timeout = 30
 
 
 def get_headers(
@@ -104,20 +104,10 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     logger = logging.getLogger(__name__)
     logger.info('%s', 'Get system state...')
     try:
-        response = send_command_to_dagent("GET",
-                                          url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
-                                          headers={"X-Request-Id": str(uuid.uuid4()),
-                                                   "Accept": "application/json",
-                                                   "Authorization": auth,
-                                                   "ts": str(int(time.time()))},
-                                          timeout=(connect_timeout,
-                                                   read_timeout))
-        #print("response:",response.status_code, response.json())
-        # if "error" in response.json():
-        #    logger.error('%s %s', 'ERROR', response)
-        #    return {"result": response["error"], "return": -1}
-        # else:
-        #    logger.info('%s %s', 'INFO sysstate', json.dumps(response))
+        url = DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system'
+        headers={"X-Request-Id": str(uuid.uuid4()), "Accept": "application/json", "Authorization": auth, "ts": str(int(time.time()))}
+        timeout = (10,10)
+        response = requests.get(url=url, headers=headers, timeout=timeout)
         return response
     except Exception as err:
         print(f'Other error occurred in get_system_state : {err}', err)
@@ -155,9 +145,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
             "POST",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout))
+            timeout=(300,300))
         # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         # array_exists(array_names[0])
@@ -719,7 +707,7 @@ def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     request_body = {
         "param": {
             "array": arrayname,
-            "enable_write_through": write_through
+            "enableWriteThrough": write_through
         }
     }
     request_body = json.dumps(request_body)
