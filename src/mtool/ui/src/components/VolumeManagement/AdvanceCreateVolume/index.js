@@ -387,6 +387,9 @@ function AdvanceCreateVolume(props) {
             }}
             className={classes.unitSelect}
           >
+            <MenuItem value="MB" data-testid="mb">
+              MB
+            </MenuItem>
             <MenuItem value="GB" data-testid="gb">
               GB
             </MenuItem>
