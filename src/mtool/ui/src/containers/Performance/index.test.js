@@ -119,11 +119,15 @@ describe("Performance", () => {
     expect(getByTestId("help-link")).toHaveTextContent("Help");
   });
 
-  it("should start Telemetry on clicking the Start Telemetry button", () => {
-    mock.onPost("/api/v1/telemetry")
+  it("should start Telemetry on clicking the Start Telemetry button", async () => {
+    jest.setTimeout(30000)
+    mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+      { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+    ).onPost("/api/v1/telemetry")
       .reply(200);
     const getSpy = jest.spyOn(axios, "post");
     renderComponent();
+    await new Promise((r) => setTimeout(r, 5000));
     const { getByText } = wrapper;
     fireEvent.click(getByText("Start"));
     fireEvent.click(getByText("Yes"));
@@ -225,7 +229,7 @@ describe("Performance", () => {
     renderComponent();
     const { getByTestId, getByText } = wrapper;
     fireEvent.click(await waitForElement(() => getByTestId("checkbox-Device")));
-    fireEvent.click(await waitForElement(() =>getByText("Device")));
+    fireEvent.click(await waitForElement(() => getByText("Device")));
     fireEvent.click(await waitForElement(() => getByTestId("checkbox-capacity_device")));
     fireEvent.click(getByText("Save"));
     expect(getSpy).toHaveBeenCalledWith("/api/v1/telemetry/properties", [{
@@ -233,15 +237,23 @@ describe("Performance", () => {
       "fields": [{
         "field": "uptime_sec",
         "isSet": false,
-        "label": "Process Uptime Second" }] },
-        { "category": "Device",
-        "fields": [{ "field": "bandwidth_device",
+        "label": "Process Uptime Second"
+      }]
+    },
+    {
+      "category": "Device",
+      "fields": [{
+        "field": "bandwidth_device",
         "isSet": true,
-        "label": "Bandwidth" },
-        { "field": "capacity_device",
+        "label": "Bandwidth"
+      },
+      {
+        "field": "capacity_device",
         "isSet": false,
-        "label": "Capacity" }] }],
-        { "headers": { "x-access-token": null } });
+        "label": "Capacity"
+      }]
+    }],
+      { "headers": { "x-access-token": null } });
   });
 
   it("should Set all the telemetry properties", async () => {
@@ -282,14 +294,22 @@ describe("Performance", () => {
       "fields": [{
         "field": "uptime_sec",
         "isSet": true,
-        "label": "Process Uptime Second" }] },
-        { "category": "Device",
-        "fields": [{ "field": "bandwidth_device",
+        "label": "Process Uptime Second"
+      }]
+    },
+    {
+      "category": "Device",
+      "fields": [{
+        "field": "bandwidth_device",
         "isSet": true,
-        "label": "Bandwidth" },
-        { "field": "capacity_device",
+        "label": "Bandwidth"
+      },
+      {
+        "field": "capacity_device",
         "isSet": true,
-        "label": "Capacity" }] }],
-        { "headers": { "x-access-token": null } });
+        "label": "Capacity"
+      }]
+    }],
+      { "headers": { "x-access-token": null } });
   });
 });
