@@ -116,7 +116,9 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, caller.CallListDevices, posMngr)
 		})
 		iBoFOSPath.POST("/device", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, caller.CallCreateDevice, posMngr)
+			if validateUint32(ctx, "blockSize", 2423) && validateUint32(ctx, "numBlocks", 2424) && validateUint32(ctx, "numa", 2425) {
+				ibofos.CalliBoFOS(ctx, caller.CallCreateDevice, posMngr)
+			}
 
 		})
 		iBoFOSPath.GET("/devices/:deviceName/scan", func(ctx *gin.Context) {
@@ -394,4 +396,28 @@ func validateNumOfDevice(ctx *gin.Context) bool {
 		}
 	}
 	return true
+}
+
+// below validation function is temporary code, will keep this validation on POS side
+func validateUint32(ctx *gin.Context, key string, code int) bool {
+	req := model.Request{}
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	reqMap := req.Param.(map[string]interface{})
+	res := model.Response{}
+	_, found := reqMap[key]
+	if !found {
+		res.Result.Status, _ = utils.GetStatusInfo(2426)
+		res.Result.Status.PosDescription = res.Result.Status.Description
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+		return false
+	}
+
+	if reflect.TypeOf(reqMap[key]).Kind() == reflect.String || reqMap[key].(float64) < 0 || reqMap[key].(float64) > 4294967295 {
+		res.Result.Status, _ = utils.GetStatusInfo(code)
+		res.Result.Status.PosDescription = res.Result.Status.Description
+		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
+		return false
+	}
+	return true
+
 }
