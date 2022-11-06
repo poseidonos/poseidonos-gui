@@ -43,7 +43,7 @@ from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
 from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
-from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, check_telemetry_endpoint
+from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
@@ -2068,7 +2068,7 @@ def set_telemetry_config():
 def reset_telemetry_config():
     try:
         connection_factory.delete_telemetery_url()
-        return make_response("success",200)
+        return reset_telemetry_configuration()
     except Exception as e:
         return make_response('Could not reset Telemetry URL'+str(e), 500)
 
