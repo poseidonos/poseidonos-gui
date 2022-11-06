@@ -57,6 +57,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
 import getSubsystemForArray from "../../utils/subsystem";
 import LightTooltip from "../../components/LightTooltip";
+import { BYTE_FACTOR } from "../../utils/constants";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -662,7 +663,9 @@ class Volume extends Component {
                                       title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                        this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
+                                        this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
+                                          this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize :
+                                          0
                                       )}
                         `}
                                     />
