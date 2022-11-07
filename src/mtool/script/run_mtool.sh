@@ -5,9 +5,6 @@ ROOT_DIR=$(readlink -f $(dirname $0))
 #echo $ROOT_DIR
 #cd ..               #/mtool
 
-sudo service kapacitor stop
-sudo service influxdb stop
-#Set Influx ENV Variable
 
 . ~/.bashrc
 
@@ -15,8 +12,6 @@ sudo service influxdb stop
 currdir=$ROOT_DIR/..        #/mtool
 #echo $currdir
 
-sudo service influxdb start
-sudo service kapacitor start
 
 if [ ! -d $currdir"/api/public" ]
 then

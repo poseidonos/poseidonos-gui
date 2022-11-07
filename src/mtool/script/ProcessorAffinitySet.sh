@@ -42,24 +42,6 @@ echo $CoresSel
 #sudo taskset -p -c $CoresSel $procID
 #echo "telegraf started"
 
-sudo service influxdb start
-procID=`pidof influxd`
-#echo "influx pid $procID"
-sudo taskset -p -c $CoresSel $procID
-#echo "influxdb started"
-
-sudo service kapacitor start
-procID=`pidof kapacitord`
-#echo "kapacitor pid $procID"
-sudo taskset -p -c $CoresSel $procID
-#echo "kapacitor started"
-
-sudo service chronograf start
-procID=`pidof chronograf`
-#echo "chronograf pid $procID"
-sudo taskset -p -c $CoresSel $procID
-#echo "chronograf started"
-
 #sudo service mongod start
 #procID=`pidof mongod`
 #echo "mongod pid $procID"
