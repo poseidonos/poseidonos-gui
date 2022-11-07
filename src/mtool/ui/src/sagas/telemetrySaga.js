@@ -121,7 +121,6 @@ export function* stopTelemetry() {
             },
         });
         const result = response.data;
-        console.log("Stop Telemetry", result)
         if (!result?.result?.status?.code) {
             yield put(actionCreators.setTelemetryStatus(false));
         }
