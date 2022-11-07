@@ -16,18 +16,6 @@ services:
     container_name: dagent
     environment:
       - DAGENT_HOST=localhost
-  magent:
-    restart: always
-    image: golang_magent
-    volumes:
-      - /tmp/air_result.json:/tmp/air_result.json
-      - /etc/pos:/etc/pos
-    network_mode: "host"
-    ports:
-      - 8090:8090
-    container_name: magent
-    environment:
-      - INFLUX_HOST=0.0.0.0:8086
   flask:
     restart: always
     image: python_mtool
@@ -51,38 +39,3 @@ services:
       - 80:80
     depends_on: ['influxdb','kapacitor','flask']
     network_mode: "host"
-  influxdb:
-    image: influxdb_m9k
-    container_name: influxdb
-    network_mode: "host"
-    ports:
-      # The API for InfluxDB is served on port 8086
-      - 8086:8086
-    environment:
-      - INFLUX_HOST=localhost
-      - INFLUXDB_DB=poseidon
-      - KAPACITOR_URL=http://0.0.0.0:9092
-  kapacitor:
-    image: kapacitor:1.5.9-alpine
-    container_name: kapacitor
-    volumes:
-      - ./kapacitor:/var/lib/kapacitor:rw
-    depends_on: ['influxdb']
-    network_mode: "host"
-    ports:
-      - 9092:9092
-    environment:
-      - KAPACITOR_INFLUXDB_0_URLS_0=http://0.0.0.0:8086
-      - KAPACITOR_URL=http://0.0.0.0:9092
-      - KAPACITOR_HOSTNAME=localhost
-  chronograf:
-    image: chronograf:1.8.10-alpine
-    container_name: chronograf
-    depends_on: ['influxdb','kapacitor']
-    network_mode: "host"
-    ports:
-      - 8888:8888
-    environment:
-      - INFLUX_HOST=localhost
-      - INFLUXDB_URL=http://0.0.0.0:8086
-      - RESOURCES_PATH=/usr/share/chronograf/resources
