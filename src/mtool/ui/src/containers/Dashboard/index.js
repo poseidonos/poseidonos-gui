@@ -58,6 +58,7 @@ import Dialog from "../../components/Dialog";
 import TelemetryForm from "../../components/TelemetryForm";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from "../../store/actions/exportActionCreators";
+import { BYTE_FACTOR } from "../../utils/constants";
 
 
 const styles = (theme) => {
@@ -646,7 +647,7 @@ class Dashboard extends Component {
                               <Legend
                                 bgColor="#fff"
                                 title={`Available for Volume Creation: ${formatBytes(
-                                  this.props.arraySize - volSpace
+                                  this.props.arraySize - volSpace >= BYTE_FACTOR * BYTE_FACTOR ? this.props.arraySize - volSpace : 0
                                 )}`}
                               />
                             </Grid>

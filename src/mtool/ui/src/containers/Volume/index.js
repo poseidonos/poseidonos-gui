@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from "react";
-import { Box, Grid, Typography, Paper, Popover, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip, Button } from "@material-ui/core";
+import { Box, Grid, Typography, Paper, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip, Button, Zoom } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
@@ -56,6 +56,8 @@ import Legend from "../../components/Legend";
 import * as actionTypes from "../../store/actions/actionTypes";
 import formatBytes from "../../utils/format-bytes";
 import getSubsystemForArray from "../../utils/subsystem";
+import LightTooltip from "../../components/LightTooltip";
+import { BYTE_FACTOR } from "../../utils/constants";
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -204,8 +206,6 @@ class Volume extends Component {
     this.changeMountSubsystem = this.changeMountSubsystem.bind(this);
     this.closeMountPopup = this.closeMountPopup.bind(this);
     this.isSubsystemReserved = this.isSubsystemReserved.bind(this);
-    this.openRebuildPopover = this.openRebuildPopover.bind(this);
-    this.closeRebuildPopover = this.closeRebuildPopover.bind(this);
     this.rebuildArray = this.rebuildArray.bind(this);
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
@@ -306,18 +306,6 @@ class Volume extends Component {
     });
   }
 
-  openRebuildPopover(event) {
-    this.setState({
-      rebuildPopoverElement: event.currentTarget
-    });
-  }
-
-  closeRebuildPopover() {
-    this.setState({
-      rebuildPopoverElement: null
-    });
-  }
-
   changeMountSubsystem(event) {
     this.setState({
       mountSubsystem: event.target.value
@@ -413,7 +401,6 @@ class Volume extends Component {
       alignItems: "center",
       justifyContent: "center",
     };
-    const openPopover = this.state.rebuildPopoverElement;
     const { classes } = this.props;
 
     return (
@@ -542,59 +529,46 @@ class Volume extends Component {
                                       </span>
                                       <Grid container alignItems="center">, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
                                         {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
-                                          <InfoIcon
-                                            aria-owns={openPopover ? 'rebuild-popover' : undefined}
-                                            aria-haspopup="true"
-                                            color="primary"
-                                            data-testid="rebuild-popover-icon"
-                                            onClick={this.openRebuildPopover}
-                                            onBlur={this.closeRebuildPopover}
-                                          />
+                                          <LightTooltip
+                                            data-testid="Tooltip"
+                                            TransitionComponent={Zoom}
+                                            title={(
+                                              <RebuildProgress
+                                                arrayMap={this.props.arrayMap}
+                                                array={this.props.selectedArray}
+                                                progress={this.props.arrayMap[this.props.selectedArray].rebuildProgress}
+                                                rebuildTime={this.props.arrayMap[this.props.selectedArray].rebuildTime}
+                                              />
+                                            )}
+                                            interactive
+                                          >
+                                            <InfoIcon
+                                              color="primary"
+                                              data-testid="rebuild-popover-icon"
+                                            />
+                                          </LightTooltip>
                                         ) : null
                                         }
                                         {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
                                           this.props.arrayMap[this.props.selectedArray].situation === "DEGRADED" ? (
-                                            <Tooltip
-                                              title="Rebuild Array"
+                                          <Tooltip
+                                            title="Rebuild Array"
+                                          >
+                                            <Button
+                                              color="primary"
+                                              variant="contained"
+                                              data-testid="rebuild-icon"
+                                              id="rebuild-icon"
+                                              className={classes.rebuildButton}
+                                              onClick={this.rebuildArray}
                                             >
-                                              <Button
-                                                color="primary"
-                                                variant="contained"
-                                                data-testid="rebuild-icon"
-                                                id="rebuild-icon"
-                                                className={classes.rebuildButton}
-                                                onClick={this.rebuildArray}
-                                              >Rebuild</Button>
-                                            </Tooltip>
-                                         ) : null}
+                                              Rebuild
+                                            </Button>
+                                          </Tooltip>
+                                        ) : null}
                                       </Grid>
                                     </Typography>
                                   </Grid>
-                                  {this.props.arrayMap[this.props.selectedArray].rebuildProgress &&
-                                    this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
-                                    <Popover
-                                      id="rebuild-popover"
-                                      open={this.state.rebuildPopoverElement}
-                                      anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "left"
-                                      }}
-                                      transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "left"
-                                      }}
-                                      anchorEl={this.state.rebuildPopoverElement}
-                                      onClose={this.closeRebuildPopover}
-                                      disableRestoreFocus
-                                    >
-                                      <RebuildProgress
-                                        arrayMap={this.props.arrayMap}
-                                        array={this.props.selectedArray}
-                                        progress={this.props.arrayMap[this.props.selectedArray].rebuildProgress}
-                                        rebuildTime={this.props.arrayMap[this.props.selectedArray].rebuildTime}
-                                      />
-                                    </Popover>
-                                  ) : null}
                                 </Grid>
                                 <ArrayShow
                                   RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
@@ -689,7 +663,9 @@ class Volume extends Component {
                                       title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                        this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
+                                        this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
+                                          this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize :
+                                          0
                                       )}
                         `}
                                     />

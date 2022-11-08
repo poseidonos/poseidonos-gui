@@ -113,6 +113,22 @@ def set_telemetry_configuration(ip, port):
     except Exception as e:
         return make_response("Error Occured" + repr(e), 500)
 
+def reset_telemetry_configuration():
+    try:
+        success_res = make_response("success",200)
+        url = '{grafa_url}/api/datasources/name/{ds_name}'.format(grafa_url=grafa_url,ds_name=ds_name)
+        headers = {
+            "Accept": "*/*",
+            "Content-Type": "application/json",
+        }
+        grafa_delete_ds_res = requests.delete(url, headers=headers, timeout=TIME_OUT)
+        grafa_delete_ds_res = json.loads(grafa_delete_ds_res.content)
+        if "message" in grafa_delete_ds_res and grafa_delete_ds_res["message"] == "Data source deleted":
+            return success_res
+        return make_response("Unable to delete data source in Grafana", 500)
+    except Exception as e:
+        return make_response("Error Occured" + repr(e), 500)
+
 def get_agg_value(ip, port, metric):
     try:
         PATH = PROM_AGG_QUERY_PATH.format(ip,port,metric)
