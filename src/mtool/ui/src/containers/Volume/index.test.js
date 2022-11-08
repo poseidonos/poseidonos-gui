@@ -422,7 +422,7 @@ describe("<Storage Management />", () => {
         "rebuilding_progress": 30,
         "situation": "REBUILDING",
         "state": "REBUILDING",
-        "unique_id": 1495652515,
+        "uniqueId": 1495652515,
         "update_datetime": "2022-05-25 12:24:26 +0530",
         "used": 404004798464,
         "write_through_enabled": false
@@ -3374,7 +3374,7 @@ describe("<Storage Management />", () => {
       .reply(200, []);
     jest.setTimeout(30000);
     renderComponent();
-    const { getByTestId, asFragment, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     global.document.createRange = (html) => ({
       setStart: () => { },
       setEnd: () => { },
@@ -3916,6 +3916,57 @@ describe("<Storage Management />", () => {
     fireEvent.click(autoCreateBtn);
     fireEvent.click(await waitForElement(() => getByTestId("auto-createarray-btn")));
     expect(await waitForElement(() => getByText("Error in Array Creation"))).toBeDefined();
+  });
+
+  it("should show array id on hovering info icon", async () => {
+    mock
+      .onGet(/api\/v1.0\/get_devices\/*/)
+      .reply(200, {
+        devices,
+        metadevices,
+      })
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onGet(/api\/v1\/array\/POSArray\/info*/)
+      .reply(200, arrayInfo)
+      .onGet(/api\/v1.0\/get_volumes\/*/)
+      .reply(200, [])
+      .onDelete(/api\/v1.0\/ibofos\/mount\/*/)
+      .reply(400, {})
+      .onGet(/api\/v1\/get_array_config\/*/)
+      .reply(200, config)
+      .onAny()
+      .reply(200, []);
+
+    jest.setTimeout(30000);
+    renderComponent();
+
+    global.document.createRange = (html) => ({
+      setStart: () => { },
+      setEnd: () => { },
+      commonAncestorContainer: {
+        nodeName: "BODY",
+        ownerDocument: document,
+      },
+      createContextualFragment: (html) => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.children[0];
+      },
+    });
+    const { getByTestId, getByText } = wrapper;
+    const icon = await waitForElement(() => getByTestId("array-info-icon"));
+    await act(async () => {
+      fireEvent(
+        icon,
+        new MouseEvent("mouseover", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      await waitForElement(() => getByTestId("array-id-text"))
+      expect(getByText(/1495652515/)).toBeDefined();
+    });
   });
 
   it("should show rebuild progress", async () => {
