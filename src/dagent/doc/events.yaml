@@ -568,6 +568,26 @@ modules:
         message: release device
         problem:
         solution:
+      - code: 2423
+        level: ERROR
+        message: Invalid block size, Please provide in the uint32 range 
+        problem:
+        solution:
+      - code: 2424
+        level: ERROR
+        message: Invalid num of blocks, Please provide in the uint32 range 
+        problem:
+        solution:
+      - code: 2425
+        level: ERROR
+        message: Invalid numa, Please provide in the uint32 range
+        problem:
+        solution:
+      - code: 2426
+        level: ERROR
+        message: Invalid parameters, Please provide all required parameters
+        problem:
+        solution:
   - name: "Array"
     count: 300
     idStart: 2500
