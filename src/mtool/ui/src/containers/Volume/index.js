@@ -116,6 +116,17 @@ const styles = (theme) => ({
       width: "100%"
     }
   },
+  arrayInfoContainer: {
+    position: "relative"
+  },
+  arrayInfoIcon: {
+    position: "absolute",
+    right: theme.spacing(2),
+    top: theme.spacing(2),
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
   selectForm: {
     margin: theme.spacing(0.5, 2),
     width: "60%",
@@ -485,7 +496,24 @@ class Volume extends Component {
                         <Grid container spacing={1} className={classes.card}>
                           <Grid item xs={12}>
                             <Paper spacing={3} className={classes.spaced}>
-                              <Grid container justifyContent="space-between">
+                              <Grid container className={classes.arrayInfoContainer} justifyContent="space-between">
+                                <Tooltip
+                                  title={(
+                                    <Typography data-testid="array-id-text">
+                                      {`Array ID: ${this.props.arrayMap[this.props.selectedArray].uniqueId}`}
+                                    </Typography>
+                                  )}
+                                  classes={{
+                                    tooltip: classes.tooltip,
+                                  }}
+                                  interactive
+                                >
+                                  <InfoIcon
+                                    data-testid="array-info-icon"
+                                    color="primary"
+                                    className={classes.arrayInfoIcon}
+                                  />
+                                </Tooltip>
                                 <Grid container className={classes.arraySelectStatus}>
                                   <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
                                     <FormControl

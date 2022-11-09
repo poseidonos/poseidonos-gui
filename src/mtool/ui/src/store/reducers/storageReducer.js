@@ -357,7 +357,8 @@ const storageReducer = (state = initialState, action) => {
                     [action.payload.name]: {
                         ...state.arrayMap[action.payload.name],
                         rebuildProgress: action.payload.rebuildingProgress,
-                        situation: action.payload.situation
+                        situation: action.payload.situation,
+                        uniqueId: action.payload.uniqueId
                     }
                 }
             }
