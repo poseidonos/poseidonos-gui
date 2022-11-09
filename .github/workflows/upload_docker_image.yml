@@ -40,15 +40,11 @@ jobs:
     - name: Tag Docker Image
       run: |
         sudo docker tag golang_dagent ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/golang_dagent
-        sudo docker tag golang_magent ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/golang_magent
         sudo docker tag python_mtool ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/python_mtool
         sudo docker tag nginx_ui ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/nginx_ui
-        sudo docker tag influxdb_m9k ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/influxdb_m9k
 
     - name: Push Docker Image
       run: |
         sudo docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/golang_dagent
-        sudo docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/golang_magent 
         sudo docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/python_mtool
         sudo docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/nginx_ui
-        sudo docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/influxdb_m9k

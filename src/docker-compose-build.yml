@@ -4,19 +4,9 @@ services:
   dagent:
     image: golang_dagent
     build: .
-  magent:
-    image: golang_magent
-    build: ./magent
   flask:
     image: python_mtool
     build: ./mtool
   nginx:
     image: nginx_ui
     build: ./mtool/ui
-  influxdb:
-    image: influxdb_m9k
-    build: ./influxdb
-  kapacitor:
-    image: kapacitor:1.5.9-alpine
-  chronograf:
-    image: chronograf:1.8.10-alpine
