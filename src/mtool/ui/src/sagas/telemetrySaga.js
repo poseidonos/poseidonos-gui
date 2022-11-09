@@ -39,11 +39,11 @@ export function* fetchTelemetryProperties() {
     try {
         const response = yield call([axios, axios.get], '/api/v1/telemetry/properties', {
             headers: {
-              "x-access-token": localStorage.getItem("token"),
+                "x-access-token": localStorage.getItem("token"),
             },
-          });
+        });
         const result = response.data;
-        if(result) {
+        if (result) {
             yield put(actionCreators.setTelemetryProperties(result.properties));
             yield put(actionCreators.setTelemetryStatus(result.status));
         }
@@ -55,14 +55,23 @@ export function* fetchTelemetryProperties() {
 export function* setTelemetryProperties(action) {
     try {
         yield put(actionCreators.startLoader("Setting Telemetry Properties"));
-        yield call([axios, axios.post],
+        const response = yield call([axios, axios.post],
             '/api/v1/telemetry/properties',
             action.payload, {
-                headers: {
+            headers: {
                 "x-access-token": localStorage.getItem("token"),
-                },
-            }
+            },
+        }
         );
+        const result = response.data;
+        if (!result?.result?.status?.code) {
+            yield put(actionCreators.openTelemetryAlert({
+                title: "Set Telemetry Properties",
+                open: true,
+                errorMsg: "Telemetry Properties saved succesfully",
+                type: "info"
+            }))
+        }
     } catch (e) {
         yield put(actionCreators.openTelemetryAlert({
             title: "Set Telemetry Properties",
@@ -78,16 +87,16 @@ export function* setTelemetryProperties(action) {
 
 export function* startTelemetry() {
     try {
-	yield put(actionCreators.startLoader("Starting Telemetry"));
+        yield put(actionCreators.startLoader("Starting Telemetry"));
         const response = yield call([axios, axios.post], '/api/v1/telemetry', {}, {
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "x-access-token": localStorage.getItem("token"),
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "x-access-token": localStorage.getItem("token"),
             },
-          });
+        });
         const result = response.data;
-        if(result) {
+        if (!result?.result?.status?.code) {
             yield put(actionCreators.setTelemetryStatus(true));
         }
     } catch (e) {
@@ -108,11 +117,11 @@ export function* stopTelemetry() {
     try {
         const response = yield call([axios, axios.delete], '/api/v1/telemetry', {
             headers: {
-              "x-access-token": localStorage.getItem("token"),
+                "x-access-token": localStorage.getItem("token"),
             },
-          });
+        });
         const result = response.data;
-        if(result) {
+        if (!result?.result?.status?.code) {
             yield put(actionCreators.setTelemetryStatus(false));
         }
     } catch (e) {
@@ -123,8 +132,8 @@ export function* stopTelemetry() {
             type: "alert"
         }));
     } finally {
-	yield fetchTelemetryProperties();
-	yield put(actionCreators.stopLoader());
+        yield fetchTelemetryProperties();
+        yield put(actionCreators.stopLoader());
     }
 }
 
