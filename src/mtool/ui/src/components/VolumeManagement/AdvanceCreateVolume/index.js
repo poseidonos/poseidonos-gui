@@ -781,7 +781,7 @@ function AdvanceCreateVolume(props) {
 
     const isGreaterThanEqualTo = (param) => {
       if (typeof (param) === 'number') return false;
-      const max = "18446744073709551";
+      const max = "18446744073709552";
       if (param.length < max.length) return false;
       if (param.length > max.length) return true;
 
@@ -809,7 +809,7 @@ function AdvanceCreateVolume(props) {
     else if ((props.maxbw > 0 && props.maxbw < 10) || props.maxbw > 17592186044415)
       errorDesc = "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum";
     else if ((props.maxiops > 0 && props.maxiops < 10) || isGreaterThanEqualTo(props.maxiops))
-      errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709550. Please input 0, for no limit for qos or Maximum";
+      errorDesc = "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum";
     else if (props.minvalue.length === 0)
       errorDesc = "Please Enter Minimum IOPS/BW or set 0 for no Minimum IOPS/BW"
     else if (props.minvalue < 0)

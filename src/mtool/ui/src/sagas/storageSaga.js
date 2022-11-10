@@ -750,7 +750,7 @@ function* resetAndUpdateVolume(action) {
 
   const isGreaterThanEqualTo = (param) => {
     if (typeof (param) === 'number') return false;
-    const max = "18446744073709551";
+    const max = "18446744073709552";
     if (param.length < max.length) return false;
     if (param.length > max.length) return true;
 
@@ -769,7 +769,7 @@ function* resetAndUpdateVolume(action) {
     yield put(actionCreators.showStorageAlert({
       alertType: "alert",
       alertTitle: "Reset Volume",
-      errorMsg: "Max IOPS should be in the range 10 ~ 18446744073709550. Please input 0, for no limit for qos or Maximum",
+      errorMsg: "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum",
     }))
     return;
   }

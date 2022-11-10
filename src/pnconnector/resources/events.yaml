@@ -1435,6 +1435,11 @@ modules:
         message: Volume count exceeds limit
         problem: POS allows only 256 volumes to create. please check and try again
         solution: Try with a smaller value for count
+      - code: 11059
+        level: ERROR
+        message: Invalid qos parameters
+        problem: Only unsigned int range allowed
+        solution: Please try unsigned int range
       - code: 11060
         level: ERROR
         message: Volume suffix invalid

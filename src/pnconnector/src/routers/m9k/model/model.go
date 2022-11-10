@@ -197,6 +197,115 @@ type BuildInfo struct {
 	BuildTime string `json:"buildTime"`
 }
 
+type QOSRequest struct {
+	Command   string            `json:"command"`
+	Rid       string            `json:"rid"`
+	Param     VolumePolicyParam `json:"param,omitempty"`
+	Requester string            `json:"requester"`
+}
+
+type VolumeNameList struct {
+	VOLUMENAME string `json:"volumeName"`
+}
+
+type VolumePolicyParam struct {
+	VOLUMENAME   []VolumeNameList `json:"vol"`
+	MINIOPS      uint64              `json:"miniops"`
+	MAXIOPS      uint64              `json:"maxiops"`
+	MINBANDWIDTH uint64              `json:"minbw"`
+	MAXBANDWIDTH uint64              `json:"maxbw"`
+	ARRAYNAME    string           `json:"array"`
+}
+type Status2 struct {
+    CODE        int    `json:"code"`
+    EVENTNAME   string `json:"eventName"`
+    DESCRIPTION string `json:"description"`
+    CAUSE       string `json:"cause"`
+    SOLUTION    string `json:"solution"`
+}
+type Volume struct {
+    VOLUMENAME string `json:"name"`
+    INDEX      int    `json:"index"`
+    TOTAL      uint64 `json:"total"`
+    REMAIN     uint64 `json:"remain"`
+    STATUS     string `json:"status"`
+    MAXIOPS    int    `json:"maxiops"`
+    MAXBW      int    `json:"maxbw"`
+    MINIOPS    int    `json:"miniops"`
+    MINBW      int    `json:"minbw"`
+    SUBNQN     string `json:"subnqn,omitempty"`
+    UUID       string `json:"uuid,omitempty"`
+    ARRAYNAME  string `json:"array_name,omitempty"`
+}
+type ListVolumeResData struct {
+    ARRAYNAME  string   `json:"array"`
+    VOLUMELIST []Volume `json:"volumes"`
+}
+type ListVolumeResult struct {
+    STATUS Status2            `json:"status,omitempty"`
+    DATA   ListVolumeResData `json:"data,omitempty"`
+}
+type Info struct {
+    VERSION string `json:"version"`
+}
+type VolInfo struct {
+    VERSION string `json:"version"`
+}
+type ListVolumeResponse struct {
+    RID     string           `json:"rid"`
+    COMMAND string           `json:"command"`
+    RESULT  ListVolumeResult `json:"result,omitempty"`
+    INFO    VolInfo             `json:"info,omitempty"`
+}
+
+// Response for VOLUMEINFO command
+type VolumeInfoResponse struct {
+    RID     string           `json:"rid"`
+    COMMAND string           `json:"command"`
+    RESULT  VolumeInfoResult `json:"result,omitempty"`
+    INFO    Info             `json:"info,omitempty"`
+}
+type VolumeInfoResult struct {
+    STATUS Status2 `json:"status,omitempty"`
+    DATA   Volume `json:"data,omitempty"`
+}
+type ArrayNameQos struct {
+    ARRNAME string `json:"ArrayName"`
+}
+
+type Rebuild struct {
+    IMPACT string `json:"rebuild,omitempty"`
+}
+
+type VolumeQos struct {
+    VOLUMENAME       string `json:"name"`
+    VOLUMEID         int    `json:"id"`
+    MINIOPS          int    `json:"miniops"`
+    MAXIOPS          int    `json:"maxiops"`
+    MINBW            int    `json:"minbw"`
+    MAXBW            int    `json:"maxbw"`
+    MINBWGUARANTEE   string `json:"min_bw_guarantee"`
+    MINIOPSGUARANTEE string `json:"min_iops_guarantee"`
+}
+
+type ListQosResult struct {
+    QOSARRAYNAME  []ArrayNameQos `json:"arrayName"`
+    REBUILDPOLICY []Rebuild      `json:"rebuildPolicy,omitempty"`
+    VOLUMEQOSLIST []VolumeQos    `json:"volumePolicies"`
+}
+
+type QosResult struct {
+    STATUS Status2        `json:"status"`
+    DATA   ListQosResult `json:"data,omitempty"`
+}
+
+type ListQosResponse struct {
+    RID     string    `json:"rid"`
+    COMMAND string    `json:"command"`
+    RESULT  QosResult `json:"result"`
+    INFO    Info      `json:"info"`
+}
+
 //type SMART struct {
 //	AvailableSpare           string `json:"available_spare,omitempty"`
 //	AvailableSpareSpace      string `json:"available_spare_space,omitempty"`
