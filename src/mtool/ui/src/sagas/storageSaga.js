@@ -190,6 +190,7 @@ function* fetchDevices(action) {
     devices: [],
     metadevices: [],
   };
+  let fetchDeviceSuccess = false;
   const alertDetails = {
     errorMsg: "Unable to get devices!",
     alertType: "alert",
@@ -222,6 +223,7 @@ function* fetchDevices(action) {
         })
       );
     } else if (result && typeof result !== "string" && result.return !== -1) {
+      fetchDeviceSuccess = true;
       yield put(actionCreators.fetchDevices(result));
     } else {
       yield put(actionCreators.showStorageAlert({
@@ -241,7 +243,9 @@ function* fetchDevices(action) {
     }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
-    if (!action || !action.payload || !action.payload.noLoad) {
+    if(!fetchDeviceSuccess) {
+      yield put(actionCreators.stopStorageLoader());
+    } else if (!action || !action.payload || !action.payload.noLoad) {
       yield put(actionCreators.stopStorageLoader());
       yield fetchArray();
     } else {

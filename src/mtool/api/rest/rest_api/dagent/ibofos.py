@@ -93,7 +93,7 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 return response
             if response.status_code == 202 or response.status_code == 503:
                 retry_count = 5
-            if(retry_count >= 5):
+            if(retry_count >= 1): # Removing retry logic as D-Agent has locks implemented
                 return response
             time.sleep(1)
     except BaseException:
