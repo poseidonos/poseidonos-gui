@@ -129,7 +129,10 @@ def list_volume(arr_name):
         if vols.status_code == 200:
             vols = vols.json()
             if "data" in vols["result"] and "volumes" in vols["result"]["data"]:
-                return vols["result"]["data"]["volumes"]
+                if vols["result"]["data"]["volumes"] is not None:
+                    return vols["result"]["data"]["volumes"]
+                else:
+                    return []
             else:
                 return []
         elif "data" in vols.json()["result"]:

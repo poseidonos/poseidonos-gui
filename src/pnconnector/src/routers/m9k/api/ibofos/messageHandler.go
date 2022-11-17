@@ -65,7 +65,7 @@ func (rq Requester) Send(command string) (model.Request, model.Response, error) 
 		Rid:     rq.xrId,
 	}
 
-	err := checkJsonType(rq.param, rq.paramType)
+	err := CheckJsonType(rq.param, rq.paramType)
 	if err != nil {
 		return iBoFRequest, model.Response{}, err
 	} else {
@@ -76,7 +76,7 @@ func (rq Requester) Send(command string) (model.Request, model.Response, error) 
 	}
 }
 
-func checkJsonType(srcParam interface{}, paramType interface{}) error {
+func CheckJsonType(srcParam interface{}, paramType interface{}) error {
 	var err error
 	marshalled, _ := json.Marshal(srcParam)
 
@@ -96,6 +96,8 @@ func checkJsonType(srcParam interface{}, paramType interface{}) error {
 	case model.LoggerParam:
 		err = json.Unmarshal(marshalled, &param)
 	case model.WBTParam:
+		err = json.Unmarshal(marshalled, &param)
+	case model.VolumePolicyParam:
 		err = json.Unmarshal(marshalled, &param)
 	}
 
@@ -140,6 +142,19 @@ func sendIBoF(iBoFRequest model.Request) (model.Response, error) {
 			log.Fatal(err)
 		}*/
 		json.Unmarshal([]byte(temp), &response)
+		if iBoFRequest.Command == "LISTVOLUME" {
+			listVolRes := model.ListVolumeResponse{}
+			json.Unmarshal([]byte(temp), &listVolRes)
+			response.Result.Data = listVolRes.RESULT.DATA
+		} else if iBoFRequest.Command == "VOLUMEINFO" {
+			volInfoRes := model.VolumeInfoResponse{}
+			json.Unmarshal([]byte(temp), &volInfoRes)
+			response.Result.Data = volInfoRes.RESULT.DATA
+		} else if iBoFRequest.Command == "LISTQOSPOLICIES" {
+			listQoSRes := model.ListQosResponse{}
+			json.Unmarshal([]byte(temp), &listQoSRes)
+			response.Result.Data = listQoSRes.RESULT.DATA
+		}
 		response.LastSuccessTime = time.Now().UTC().Unix()
 		return response, nil
 	}

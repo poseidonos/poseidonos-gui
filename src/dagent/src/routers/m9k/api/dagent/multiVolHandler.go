@@ -294,8 +294,8 @@ func maxCountExceeded(count int, array string) (int, bool) {
 		return 12090, true
 	}*/
 	if volList.Result.Data != nil {
-		volumes := volList.Result.Data.(map[string]interface{})["volumes"]
-		volCount = len(volumes.([]interface{}))
+		volumes := volList.Result.Data.(model.ListVolumeResData).VOLUMELIST
+		volCount = len(volumes)
 	}
 	/*maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
 	if err != nil {
