@@ -1851,6 +1851,9 @@ def test_list_devices(global_data, **kwargs):
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',
+                       json={"result": {"status": {"description": "SUCCESS"}}},
+                       status_code=200)
     kwargs["mock"].get(ARRAY_LIST_URL,
                        json={
     "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
