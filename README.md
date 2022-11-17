@@ -38,6 +38,7 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 4. Grafana 9.0.4+
 5. IP Address of Mellanox Port should be set (Please refer to the file src/dagent/README.md ([README](src/dagent/README.md)))
 6. POS service is assumed to be available at "/usr/local/bin". If POS binary is not available in the "usr/local/bin" directory, then user will see an error when staring the pos (e.g. Poseidonos binary not found in /usr/local/bin/). In such a case, please build the poseidonos and run 'make install' from poseidonos root directory to correctly install the POS service
+7. While setting up Prometheus Database for PoseidonOS, PoseidonOS-GUI assumes the job name as "poseidonos", and the UI might not show any metrics in the dashboard if the database is configured differently
 
 ### Other Considerations 
 1. Internet access is required for downloading the required packages
