@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "934664e3-7263-49b0-966c-50281fb331e6",
+		"_postman_id": "04029b99-e462-4f72-989d-d34dbcd29509",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -2264,74 +2264,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail - 2502",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/array",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"array"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Wed, 19 Aug 2020 06:52:14 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "271"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "3cfc6d1e-6595-4aad-829a-bfca0d831069"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"60b4cc7e-15e5-486a-a989-9b41598feabd\",\n    \"lastSuccessTime\": 1656017170,\n    \"result\": {\n        \"status\": {\n            \"module\": \"Array\",\n            \"code\": 2502,\n            \"level\": \"ERROR\",\n            \"description\": \"Array already exists\",\n            \"posDescription\": \"failed to create array POSArray\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "POST",
@@ -2398,6 +2330,74 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+						},
+						{
+							"name": "Fail - 2502",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:52:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "271"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "3cfc6d1e-6595-4aad-829a-bfca0d831069"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2502,\n            \"eventName\": \"CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS\",\n            \"cause\": \"Array with the same name already exists.\",\n            \"description\": \"Failed to create array.\",\n            \"posDescription\": \"Failed to create array.\",\n            \"solution\": \"Please use another name.\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -4757,10 +4757,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"71ffef4e-377b-11ed-8c02-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {}\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"9907a1a1-67f2-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {}\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						},
 						{
-							"name": "Fail - 2022",
+							"name": "Fail - 1810",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -5238,7 +5238,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"f2c24ffa-b722-4467-a7a1-b7b0bdd0de15\",\n    \"lastSuccessTime\": 1663523937,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"information of volume: vol01 of array: POSArray\",\n            \"posDescription\": \"information of volume: vol01 of array: POSArray\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {\n            \"array_name\": \"POSArray\",\n            \"maxbw\": 0,\n            \"maxiops\": 0,\n            \"minbw\": 0,\n            \"miniops\": 0,\n            \"name\": \"vol01\",\n            \"status\": \"Unmounted\",\n            \"subnqn\": \"\",\n            \"total\": 5242880,\n            \"uuid\": \"ce6242a6-1231-4fbf-b96a-bb3d05e9c21a\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"2e6c6a11-2398-4140-8bc3-63d414e1dc01\",\n    \"lastSuccessTime\": 1668852800,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"information of volume: vol01 of array: POSArray\",\n            \"posDescription\": \"information of volume: vol01 of array: POSArray\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {\n            \"array_name\": \"POSArray\",\n            \"maxbw\": 0,\n            \"maxiops\": 0,\n            \"minbw\": 0,\n            \"miniops\": 0,\n            \"name\": \"vol01\",\n            \"status\": \"Unmounted\",\n            \"subnqn\": \"\",\n            \"total\": 5242880,\n            \"uuid\": \"b5a5d712-797c-4917-8e63-f02de850d139\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -5956,7 +5956,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\", \n        \"name\": \"vol01\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
@@ -6000,10 +6000,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"fb9b84d2-cb3d-4df4-becd-a9c1e935dd6f\",\n    \"lastSuccessTime\": 1663394831,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"vol01 has been mounted successfully.\",\n            \"posDescription\": \"vol01 has been mounted successfully.\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"046c359e-d958-4ed2-b060-7a1805d39c54\",\n    \"lastSuccessTime\": 1668852494,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"description\": \"vol01 has been mounted successfully.\",\n            \"posDescription\": \"vol01 has been mounted successfully.\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						},
 						{
-							"name": "Fail - 2010",
+							"name": "Fail - 1843",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -6026,7 +6026,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\", \n        \"name\": \"vol01\",\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\n    }\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
@@ -6070,7 +6070,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"da25a190-837e-4140-8059-4695254c820a\",\n    \"lastSuccessTime\": 1656018011,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"posDescription\": \"failed to mount vol0s(code:2010)\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"f5543c1b-806b-4a3f-bfe9-e65e5f7c8941\",\n    \"lastSuccessTime\": 1668852854,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 1843,\n            \"description\": \"failed to mount vol01\",\n            \"posDescription\": \"failed to mount vol01\",\n            \"solution\": \"Check the status of the volume in the volume list.\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -6358,76 +6358,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail - 2010",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"volumes",
-										"{{volumeName1}}",
-										"mount"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 20 Aug 2020 08:07:07 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "394"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "157e6963-e935-4c2e-8649-fa5cd1d8b846"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"a2494030-7a38-487e-8054-ddd87a7f8564\",\n    \"lastSuccessTime\": 1656018241,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"posDescription\": \"failed to unmount vol01(code:2010)\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "DELETE",
@@ -6495,7 +6425,77 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"162781a9-db4a-4861-822b-0a8960bb049c\",\n    \"lastSuccessTime\": 1656018127,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"vol01is unmounted successfully\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"2ca1b19e-67f2-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
+						},
+						{
+							"name": "Fail - 1807",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}/mount",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}",
+										"mount"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 20 Aug 2020 08:07:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "394"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "157e6963-e935-4c2e-8649-fa5cd1d8b846"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"5324b2a5-67f2-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 1807,\n            \"eventName\": \"VOL_NOT_FOUND\",\n            \"cause\": \"The volume of the requested name or ID could not be found\",\n            \"description\": \"Failed to find a volume.\",\n            \"posDescription\": \"Failed to find a volume.\",\n            \"solution\": \"Please check volume name or ID and try again\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -6564,75 +6564,6 @@
 					},
 					"response": [
 						{
-							"name": "Fail - 2010",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Request-Id",
-										"value": "{{$guid}}"
-									},
-									{
-										"key": "ts",
-										"value": "{{$timestamp}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{basic_auth}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
-								},
-								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ibofos",
-										"v1",
-										"volumes",
-										"{{volumeName1}}"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 20 Aug 2020 08:07:28 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "481"
-								},
-								{
-									"key": "X-Request-Id",
-									"value": "9139d5fa-f93f-4ecb-a9f4-5fe9cc553a9d"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"rid\": \"8859a9aa-a30d-4a13-817d-85e369d12921\",\n    \"lastSuccessTime\": 1656018228,\n    \"result\": {\n        \"status\": {\n            \"module\": \"VolumeManager\",\n            \"code\": 2010,\n            \"level\": \"WARN\",\n            \"description\": \"The requested volume does not exist\",\n            \"posDescription\": \"failed to delete vol01(code:2010)\",\n            \"problem\": \"The volume with the requested volume name or volume ID does not exist\",\n            \"solution\": \"Enter the correct volume name or volume ID after checking the volume list\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "DELETE",
@@ -6699,7 +6630,76 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"86bb9c41-08fd-432a-8d90-ae88e32b0137\",\n    \"lastSuccessTime\": 1656018206,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"vol01is deleted successfully\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"1b657da2-67f3-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
+						},
+						{
+							"name": "Fail - 1807",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"array\": \"{{arrayName}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/volumes/{{volumeName1}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"volumes",
+										"{{volumeName1}}"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 20 Aug 2020 08:07:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "481"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "9139d5fa-f93f-4ecb-a9f4-5fe9cc553a9d"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"81ba7e14-67f2-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 1807,\n            \"eventName\": \"VOL_NOT_FOUND\",\n            \"cause\": \"The volume of the requested name or ID could not be found\",\n            \"description\": \"Failed to find a volume.\",\n            \"posDescription\": \"Failed to find a volume.\",\n            \"solution\": \"Please check volume name or ID and try again\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				}
@@ -6932,7 +6932,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem3\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n    }\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"nqn\":\"nqn.2019-04.pos:subsystem11\",\r\n        \"serialNumber\": \"POS0000000003\",\r\n        \"modelNumber\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"maxNamespaces\": 256,\r\n        \"allowAnyHost\": true,\r\n        \"anaReporting\":false\r\n    }\r\n}"
 								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
@@ -6978,7 +6978,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"7783fb21-3650-11ed-85c9-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"953fb07a-67f3-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -7069,10 +7069,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"name\":\"nqn.2019-04.pos:subsystem3\",\r\n        \"sn\": \"POS0000000003\",\r\n        \"mn\": \"IBOF_VOLUME_EEEXTENSION\",\r\n        \"max_namespaces\": 256,\r\n        \"allow_any_host\": true\r\n    }\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
+									"raw": "http://{{host}}/api/ibofos/v1/subsysteminfo",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7081,7 +7081,7 @@
 										"api",
 										"ibofos",
 										"v1",
-										"subsystem"
+										"subsysteminfo"
 									]
 								}
 							},
@@ -7095,7 +7095,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 20 Apr 2022 05:05:07 GMT"
+									"value": "Sat, 19 Nov 2022 10:20:23 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -7103,7 +7103,7 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "274"
+									"value": "431"
 								},
 								{
 									"key": "Connection",
@@ -7111,11 +7111,11 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "43cec6b0-9cf5-47a8-a2c3-de20cd508418"
+									"value": "115102cd-1e74-47cf-8ad0-97bc839d8708"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"7d995a3a-3650-11ed-85c9-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {\n            \"subsystemlist\": [\n                {\n                    \"allowAnyHost\": 1,\n                    \"listenAddresses\": [\n                        {\n                            \"addressFamily\": \"IPv4\",\n                            \"targetAddress\": \"127.0.0.1\",\n                            \"transportServiceId\": \"1158\",\n                            \"transportType\": \"TCP\"\n                        }\n                    ],\n                    \"maxNamespaces\": 256,\n                    \"modelNumber\": \"IBOF_VOLUME_EEEXTENSION\",\n                    \"namespaces\": [\n                        {\n                            \"bdevName\": \"bdev_0_POSArray\",\n                            \"nsid\": 1,\n                            \"uuid\": \"0881ab4e-f601-4af7-bdeb-c325d30eb1f0\"\n                        },\n                        {\n                            \"bdevName\": \"bdev_1_POSArray\",\n                            \"nsid\": 2,\n                            \"uuid\": \"20c7e973-c3fb-464b-9c7f-ffc040c68425\"\n                        }\n                    ],\n                    \"nqn\": \"nqn.2019-04.pos:subsystem1\",\n                    \"serialNumber\": \"POS0000000003\",\n                    \"subtype\": \"NVMe\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"c7115735-67f3-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        },\n        \"data\": {\n            \"subsystemlist\": [\n                {\n                    \"allowAnyHost\": 1,\n                    \"maxNamespaces\": 256,\n                    \"modelNumber\": \"IBOF_VOLUME_EEEXTENSION\",\n                    \"nqn\": \"nqn.2019-04.pos:subsystem1\",\n                    \"serialNumber\": \"POS0000000003\",\n                    \"subtype\": \"NVMe\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
@@ -8455,10 +8455,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"param\": {\r\n        \"level\": \"info\"\r\n    }\r\n}"
+									"raw": "{\r\n    \"param\": {\r\n        \"structuredLogging\": \"true\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/logger/level",
+									"raw": "http://{{host}}/api/ibofos/v1/logger/preference",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -8468,7 +8468,7 @@
 										"ibofos",
 										"v1",
 										"logger",
-										"level"
+										"preference"
 									]
 								}
 							},
@@ -8482,7 +8482,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Apr 2022 11:07:25 GMT"
+									"value": "Sat, 19 Nov 2022 10:22:50 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -8490,7 +8490,7 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "237"
+									"value": "242"
 								},
 								{
 									"key": "Connection",
@@ -8498,11 +8498,11 @@
 								},
 								{
 									"key": "X-Request-Id",
-									"value": "0e3172f5-be18-4c36-b13b-02741784ce5a"
+									"value": "69cce5a3-1913-49c0-940f-0eb0e886cbc2"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"f287c659-377b-11ed-8c02-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+							"body": "{\n    \"rid\": \"1eb016cb-67f4-11ed-9c8f-0cc47a3a4522\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
 						}
 					]
 				},
