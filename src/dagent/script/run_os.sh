@@ -4,9 +4,6 @@ ROOT_DIR=/usr/local
 logfile=pos.log
 binary_name=poseidonos
 
-pkill -9 poseidonos
-pkill -9 ibofos # temporary line 
-sleep 2
 rm -rf /dev/shm/ibof_nvmf_trace*
 
 execute_ibofos()

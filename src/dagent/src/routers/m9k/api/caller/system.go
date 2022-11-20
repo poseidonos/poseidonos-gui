@@ -114,6 +114,13 @@ func RuniBoFOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Re
 		Command: "RUNIBOFOS",
 		Rid:     xrId,
 	}
+    result, err1 := posMngr.GetSystemInfo()
+        if err1 == nil {
+            log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+            errResponse := model.Response{}
+            errResponse.Result.Status, _ = utils.GetStatusInfo(11022)
+            return iBoFRequest, errResponse, nil
+        }
 
 	iBoFRequest.Param = param
 	res := model.Response{}
