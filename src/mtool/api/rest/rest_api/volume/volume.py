@@ -87,6 +87,8 @@ def create_volume(
                 request_body = {"param": {"array": arr_name,
                                           "miniops": miniops,
                                           "vol": [{"volumeName": vol_name}]}}
+            request_body["param"]["maxiops"] = maxiops
+            request_body["param"]["maxbw"] = maxbw
             response = dagent.qos_create_volume_policies(request_body)
             response = response.json()
             if "result" in response and "status" in response["result"] and "code" in response[

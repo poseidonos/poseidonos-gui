@@ -199,6 +199,8 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 	}
 	qosParam := make(map[string]interface{})
 	qosParam["array"] = volParam.Array
+	qosParam["maxiops"] = volParam.Maxiops
+	qosParam["maxbw"] = volParam.Maxbw
 	qosParam["vol"] = volList
 	if volParam.Minbw == 0 && volParam.Miniops == 0 {
 		qosParam["minbw"] = 0
