@@ -197,8 +197,8 @@ class CreateVolume extends Component {
         alertType = fail ? "alert" : "partialError";
 
       if (errorCode && errorResponses && errorResponses.map) {
-        errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${fail}`;
-        errorCodeDescription = (fail ? "Errors:\n" : "Limitations:\n") + errorCodeDescription;
+        errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${fail} with below `;
+        errorMsg += fail ? "Errors" : "Warnings";
         errorResponses.map(err => {
           errorCodeDescription += `${err.description}\n\n`;
           return err;

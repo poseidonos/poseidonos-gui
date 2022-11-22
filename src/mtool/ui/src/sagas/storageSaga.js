@@ -355,7 +355,7 @@ function* createVolume(action) {
           actionCreators.showStorageAlert({
             alertType: "partialError",
             alertTitle: "Create Volume",
-            errorMsg: "Volume is created with below limitations",
+            errorMsg: "Volume is created with below warnings",
             errorCode: `${response.data.result?.status?.posDescription}`,
           })
         );
