@@ -93,7 +93,10 @@ def create_volume(
                     "result"]["status"] and response["result"]["status"]["code"] != 0:
                 create_vol_response = create_vol_response.json()
                 if "result" in create_vol_response and "status" in create_vol_response["result"] and "posDescription" in create_vol_response["result"]["status"]:
-                    create_vol_response["result"]["status"]["posDescription"] += " "+response["result"]["status"]["posDescription"] 
+                    if create_vol_response["result"]["status"]["posDescription"] == "NONE":
+                        create_vol_response["result"]["status"]["posDescription"] = response["result"]["status"]["posDescription"] 
+                    else:    
+                        create_vol_response["result"]["status"]["posDescription"] += " "+response["result"]["status"]["posDescription"] 
                     create_vol_response["result"]["status"]["code"] = response["result"]["status"]["code"]
                 return create_vol_response
             

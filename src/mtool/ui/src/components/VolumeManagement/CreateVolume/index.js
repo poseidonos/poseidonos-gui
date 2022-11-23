@@ -180,44 +180,44 @@ class CreateVolume extends Component {
     // callback function for create multi-volume response
     this.props.createVolSocket.on("create_multi_volume", (msg) => {
       /* eslint-disable camelcase */
-      if (this.props.createVolumeButton === true) {
+      if (!this.props.createVolumeButton)
+        return;
 
-        let alertType = "info";
-        const { total_count, pass, description, errorCode, errorResponses } = msg;
-        if (pass === 0) {
-          alertType = "alert";
-        } else if (pass > 0 && total_count - pass > 0)
-          alertType = "partialError";
-        let errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${total_count -
-          pass}`;
+      const { total_count, pass, description, errorCode, errorResponses } = msg;
+      const fail = total_count - pass;
+      let alertType = "info";
+      let errorMsg = `Total Volumes: ${total_count}, Passed: ${pass}, Failed: ${fail}`;
+      let errorCodeDescription = description === '' ? '' : `${description} \n\n`;
 
-        let errorCodeDescription = description === '' ? '' : `${description} \n\n`;
-        if (errorCode) {
-          alertType = "alert";
-          errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${total_count -
-            pass} with below errors`;
-          if (errorResponses && errorResponses.map) {
-            errorResponses.map(err => {
-              errorCodeDescription += `${err.description}\n\n`;
-              return err;
-            });
-          }
-        }
+      if (pass === 0)
+        alertType = "alert";
+      if (pass > 0 && fail > 0)
+        alertType = "partialError";
+      if (errorCode)
+        alertType = fail ? "alert" : "partialError";
 
-        this.props.toggleCreateVolumeButton(false);
-        this.props.showStorageAlert({
-          alertType,
-          alertTitle: "Create Volume",
-          errorMsg,
-          errorCode: errorCodeDescription,
+      if (errorCode && errorResponses && errorResponses.map) {
+        errorMsg = `Total Volumes: ${total_count}, Volumes Created: ${pass}, Failed: ${fail} with below `;
+        errorMsg += fail ? "Errors" : "Warnings";
+        errorResponses.map(err => {
+          errorCodeDescription += `${err.description}\n\n`;
+          return err;
         });
-
-        this.props.Reset_Inputs();
-
-        this.props.fetchVolumes();
-        this.props.fetchArray();
-        this.props.fetchSubsystems();
       }
+
+      this.props.toggleCreateVolumeButton(false);
+      this.props.showStorageAlert({
+        alertType,
+        alertTitle: "Create Volume",
+        errorMsg,
+        errorCode: errorCodeDescription,
+      });
+
+      this.props.Reset_Inputs();
+
+      this.props.fetchVolumes();
+      this.props.fetchArray();
+      this.props.fetchSubsystems();
       /* eslint-enable camelcase */
     });
   }
