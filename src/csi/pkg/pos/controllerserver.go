@@ -42,21 +42,30 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
 	"net"
+	"strings"
 	"sync"
 )
 
 const (
-	CREATING string = "creating"
-	CREATED         = "created"
+	CREATING        string = "creating"
+	CREATED                = "created"
+	MAXIMUM_VOLUMES        = 4
 )
 
 var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
 
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
-	volumes map[string]*volume // volume id to volume struct
-	mtx     sync.Mutex         // protect volume lock's map
-	mtx2    sync.Mutex         // for synchronizing requests to POS
+	volumes  map[string]*volume  // volume id to volume struct
+	backends map[string]*backend //backend targetAddres to backend struct
+	mtx      sync.Mutex          // protect volume lock's map
+	mtx2     sync.Mutex          // for synchronizing requests to POS
+}
+
+type backend struct {
+	targetAddr    string
+	provisionerIp string
+	volNum        int
 }
 
 type volume struct {
@@ -115,14 +124,23 @@ func (s *controllerServer) CreateVolume(
 		posVolume.status = ""
 		return nil, errMsg
 	}
+
+	backend, errMsg := selectBackends(s, params["targetAddress"], params["provisionerIP"])
+	if errMsg != nil {
+		posVolume.status = ""
+		return nil, errMsg
+	}
+
+	backend.volNum = backend.volNum + 1
+
 	// volumeInfo to be updated from Storage Class
 	volumeInfo := map[string]string{
 		"targetType":      params["transportType"],
-		"targetAddr":      params["targetAddress"],
+		"targetAddr":      backend.targetAddr,
 		"targetPort":      params["transportServiceId"],
 		"nqn":             fmt.Sprintf("nqn.2019-04.pos:%s", req.Name),
 		"array":           params["arrayName"],
-		"provisionerIp":   params["provisionerIP"],
+		"provisionerIp":   backend.provisionerIp,
 		"provisionerPort": params["provisionerPort"],
 		"serialNumber":    "POS0000000003",
 		"modelNumber":     "IBOF_VOLUME_EEEXTENSION",
@@ -137,6 +155,7 @@ func (s *controllerServer) CreateVolume(
 		// Should call delete volume
 		posVolume.status = ""
 		delete(s.volumes, req.Name)
+		backend.volNum = backend.volNum - 1
 		klog.Infof("Error in Volume Creation %v ", err.Error())
 		return nil, err
 	}
@@ -170,6 +189,35 @@ func (s *controllerServer) CreateVolume(
 	return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
 }
 
+func selectBackends(s *controllerServer, param_targetAddress string, param_provisionerIP string) (*backend, error) {
+
+	if len(s.backends) == 0 {
+		targetAddrs := strings.Split(param_targetAddress, ",")
+		provisionerIps := strings.Split(param_provisionerIP, ",")
+		klog.Infof("param_targetAddress: %v", targetAddrs)
+		klog.Infof("param_provisionerIP : %v", provisionerIps)
+		for idx, targetAddr := range targetAddrs {
+			klog.Infof("targetAddress: %s", targetAddr)
+			s.backends[targetAddr] = &backend{
+				targetAddr:    targetAddr,
+				provisionerIp: provisionerIps[idx],
+				volNum:        0,
+			}
+			klog.Infof("s.backends[targetAddress] : %v", s.backends[targetAddr])
+		}
+
+	}
+
+	for targetaddr, backend := range s.backends {
+		klog.Infof("backend.volNum : %d", backend.volNum)
+		if backend.volNum < MAXIMUM_VOLUMES {
+			return s.backends[targetaddr], nil
+		}
+	}
+
+	return nil, status.Error(codes.ResourceExhausted, "no space for volume creation")
+}
+
 func validateParams(params map[string]string) error {
 	if len(params) == 0 {
 		return status.Error(codes.Unavailable, "parameters are not available in storageclass")
@@ -179,12 +227,19 @@ func validateParams(params map[string]string) error {
 			return status.Error(codes.Unavailable, key+" is not available in storageclass")
 		}
 	}
-	if net.ParseIP(params["targetAddress"]) == nil {
-		return status.Error(codes.Unavailable, "Invalid Target IP address in storageclass")
+
+	for _, targetAddress := range strings.Split(params["targetAddress"], ",") {
+		if net.ParseIP(targetAddress) == nil {
+			return status.Error(codes.Unavailable, "Invalid Target IP address in storageclass")
+		}
 	}
-	if net.ParseIP(params["provisionerIP"]) == nil {
-		return status.Error(codes.Unavailable, "Invalid provisioner IP address in storageclass")
+
+	for _, provisionerIP := range strings.Split(params["provisionerIP"], ",") {
+		if net.ParseIP(provisionerIP) == nil {
+			return status.Error(codes.Unavailable, "Invalid provisioner IP address in storageclass")
+		}
 	}
+
 	return nil
 }
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
@@ -214,23 +269,24 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	volume.mtx.Lock()
 	defer volume.mtx.Unlock()
 
-	// no harm if volume already unpublished
-	err := util.UnpublishVolume(volume.name, params, &s.mtx2)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
 	// no harm if volume already deleted
 
 	volumeInfo := map[string]string{
 		"targetType":      params["transportType"],
-		"targetAddr":      params["targetAddress"],
+		"targetAddr":      params["targetAddr"],
 		"targetPort":      params["transportServiceId"],
-		"nqn":             params["nqnName"],
+		"nqn":             params["nqn"],
 		"array":           params["arrayName"],
-		"provisionerIp":   params["provisionerIP"],
+		"provisionerIp":   params["provisionerIp"],
 		"provisionerPort": params["provisionerPort"],
 	}
+
+	// no harm if volume already unpublished
+	err := util.UnpublishVolume(volume.name, volumeInfo, &s.mtx2)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
 	err = deleteVolume(volume, volumeInfo, &s.mtx2)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
@@ -243,6 +299,8 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	s.mtx.Lock()
 	delete(s.volumes, volume.name)
 	delete(s.volumes, volumeID)
+	s.backends[params["targetAddr"]].volNum = s.backends[params["targetAddr"]].volNum - 1
+
 	s.mtx.Unlock()
 
 	return &csi.DeleteVolumeResponse{}, nil
@@ -301,6 +359,7 @@ func deleteVolume(volume *volume, conf map[string]string, mtx2 *sync.Mutex) erro
 func newControllerServer(d *csicommon.CSIDriver) (*controllerServer, error) {
 	server := controllerServer{
 		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
+		backends:                make(map[string]*backend),
 		volumes:                 make(map[string]*volume),
 	}
 

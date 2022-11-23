@@ -123,7 +123,7 @@ func deleteSubsystem(params map[string]string, mtx2 *sync.Mutex) error {
 			"subnqn": "%s"
 		}
 	}`, params["nqn"]))
-	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", params["provisionerIP"], params["provisionerPort"])
+	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/subsystem", params["provisionerIp"], params["provisionerPort"])
 	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Delete Subsystem", 0, mtx2)
 	if err != nil {
 		return status.Error(codes.Unavailable, err.Error())
