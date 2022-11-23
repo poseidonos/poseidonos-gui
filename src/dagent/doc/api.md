@@ -976,7 +976,7 @@ URL: http://{{host}}/api/ibofos/v1/array
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 2502
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -1024,82 +1024,7 @@ URL: http://{{host}}/api/ibofos/v1/array
 
 
 
-##### I. Example Response: Fail - 2502
-```js
-{
-    "rid": "60b4cc7e-15e5-486a-a989-9b41598feabd",
-    "lastSuccessTime": 1656017170,
-    "result": {
-        "status": {
-            "module": "Array",
-            "code": 2502,
-            "level": "ERROR",
-            "description": "Array already exists",
-            "posDescription": "failed to create array POSArray"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc5"
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "name": "{{arrayName}}",
-        "raidtype": "RAID5",
-        "buffer": [
-            {
-                "deviceName": "uram0"
-            }
-        ],
-        "data": [
-            {
-                "deviceName": "{{deviceName1}}"
-            },
-            {
-                "deviceName": "{{deviceName2}}"
-            },
-            {
-                "deviceName": "{{deviceName3}}"
-            }
-        ],
-        "spare": [
-            {
-                "deviceName": "{{deviceName4}}"
-            }
-        ]
-    }
-}
-```
-
-
-
-##### II. Example Response: Success
+##### I. Example Response: Success
 ```js
 {
     "rid": "",
@@ -1123,6 +1048,83 @@ URL: http://{{host}}/api/ibofos/v1/array
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 2502
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "{{arrayName}}",
+        "raidtype": "RAID5",
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "{{deviceName1}}"
+            },
+            {
+                "deviceName": "{{deviceName2}}"
+            },
+            {
+                "deviceName": "{{deviceName3}}"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "{{deviceName4}}"
+            }
+        ]
+    }
+}
+```
+
+
+
+##### II. Example Response: Fail - 2502
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2502,
+            "eventName": "CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS",
+            "cause": "Array with the same name already exists.",
+            "description": "Failed to create array.",
+            "posDescription": "Failed to create array.",
+            "solution": "Please use another name."
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc3"
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -5204,7 +5206,7 @@ URL: http://{{host}}/api/ibofos/v1/logger/preference
 ```js        
 {
     "param": {
-        "level": "info"
+        "structuredLogging": "true"
     }
 }
 ```
@@ -5214,7 +5216,7 @@ URL: http://{{host}}/api/ibofos/v1/logger/preference
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "f287c659-377b-11ed-8c02-3cecef280244",
+    "rid": "1eb016cb-67f4-11ed-9c8f-0cc47a3a4522",
     "lastSuccessTime": 0,
     "result": {
         "status": {
@@ -5228,7 +5230,7 @@ URL: http://{{host}}/api/ibofos/v1/logger/preference
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -5407,11 +5409,12 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ```js        
 {
     "param": {
-        "name":"nqn.2019-04.pos:subsystem3",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
+        "nqn":"nqn.2019-04.pos:subsystem11",
+        "serialNumber": "POS0000000003",
+        "modelNumber": "IBOF_VOLUME_EEEXTENSION",
+        "maxNamespaces": 256,
+        "allowAnyHost": true,
+        "anaReporting":false
     }
 }
 ```
@@ -5421,7 +5424,7 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "7783fb21-3650-11ed-85c9-3cecef280244",
+    "rid": "953fb07a-67f3-11ed-9c8f-0cc47a3a4522",
     "lastSuccessTime": 0,
     "result": {
         "status": {
@@ -5435,7 +5438,7 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -5844,11 +5847,7 @@ URL: http://{{host}}/api/ibofos/v1/subsysteminfo
 ```js        
 {
     "param": {
-        "name":"nqn.2019-04.pos:subsystem3",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
+        "subnqn": "nqn.2019-04.pos:subsystem1"
     }
 }
 ```
@@ -5858,7 +5857,7 @@ URL: http://{{host}}/api/ibofos/v1/subsysteminfo
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "7d995a3a-3650-11ed-85c9-3cecef280244",
+    "rid": "c7115735-67f3-11ed-9c8f-0cc47a3a4522",
     "lastSuccessTime": 0,
     "result": {
         "status": {
@@ -5874,28 +5873,8 @@ URL: http://{{host}}/api/ibofos/v1/subsysteminfo
             "subsystemlist": [
                 {
                     "allowAnyHost": 1,
-                    "listenAddresses": [
-                        {
-                            "addressFamily": "IPv4",
-                            "targetAddress": "127.0.0.1",
-                            "transportServiceId": "1158",
-                            "transportType": "TCP"
-                        }
-                    ],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
-                    "namespaces": [
-                        {
-                            "bdevName": "bdev_0_POSArray",
-                            "nsid": 1,
-                            "uuid": "0881ab4e-f601-4af7-bdeb-c325d30eb1f0"
-                        },
-                        {
-                            "bdevName": "bdev_1_POSArray",
-                            "nsid": 2,
-                            "uuid": "20c7e973-c3fb-464b-9c7f-ffc040c68425"
-                        }
-                    ],
                     "nqn": "nqn.2019-04.pos:subsystem1",
                     "serialNumber": "POS0000000003",
                     "subtype": "NVMe"
@@ -5904,7 +5883,7 @@ URL: http://{{host}}/api/ibofos/v1/subsysteminfo
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -6825,7 +6804,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "71ffef4e-377b-11ed-8c02-3cecef280244",
+    "rid": "9907a1a1-67f2-11ed-9c8f-0cc47a3a4522",
     "lastSuccessTime": 0,
     "result": {
         "status": {
@@ -6840,7 +6819,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
         "data": {}
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -6852,7 +6831,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 
 
 
-##### II. Example Request: Fail - 2022
+##### II. Example Request: Fail - 1810
 
 
 ***Headers:***
@@ -6882,7 +6861,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes
 
 
 
-##### II. Example Response: Fail - 2022
+##### II. Example Response: Fail - 1810
 ```js
 {
     "rid": "e8a4a62f-727c-4c58-ad3c-141d42f6c2a0",
@@ -7053,7 +7032,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 2010
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -7079,83 +7058,85 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01
 
 
 
-##### I. Example Response: Fail - 2010
+##### I. Example Response: Success
 ```js
 {
-    "rid": "8859a9aa-a30d-4a13-817d-85e369d12921",
-    "lastSuccessTime": 1656018228,
+    "rid": "1b657da2-67f3-11ed-9c8f-0cc47a3a4522",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "VolumeManager",
-            "code": 2010,
-            "level": "WARN",
-            "description": "The requested volume does not exist",
-            "posDescription": "failed to delete vol01(code:2010)",
-            "problem": "The volume with the requested volume name or volume ID does not exist",
-            "solution": "Enter the correct volume name or volume ID after checking the volume list"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc5"
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "86bb9c41-08fd-432a-8d90-ae88e32b0137",
-    "lastSuccessTime": 1656018206,
-    "result": {
-        "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "vol01is deleted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 1807
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Fail - 1807
+```js
+{
+    "rid": "81ba7e14-67f2-11ed-9c8f-0cc47a3a4522",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 1807,
+            "eventName": "VOL_NOT_FOUND",
+            "cause": "The volume of the requested name or ID could not be found",
+            "description": "Failed to find a volume.",
+            "posDescription": "Failed to find a volume.",
+            "solution": "Please check volume name or ID and try again"
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc3"
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -7315,7 +7296,9 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}"
+        "array": "{{arrayName}}", 
+        "name": "vol01",
+        "subnqn": "nqn.2019-04.pos:subsystem1"
     }
 }
 ```
@@ -7325,8 +7308,8 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "fb9b84d2-cb3d-4df4-becd-a9c1e935dd6f",
-    "lastSuccessTime": 1663394831,
+    "rid": "046c359e-d958-4ed2-b060-7a1805d39c54",
+    "lastSuccessTime": 1668852494,
     "result": {
         "status": {
             "module": "",
@@ -7337,7 +7320,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -7349,7 +7332,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-##### II. Example Request: Fail - 2010
+##### II. Example Request: Fail - 1843
 
 
 ***Headers:***
@@ -7368,31 +7351,31 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ```js        
 {
     "param": {
-        "array": "{{arrayName}}"
+        "array": "{{arrayName}}", 
+        "name": "vol01",
+        "subnqn": "nqn.2019-04.pos:subsystem1"
     }
 }
 ```
 
 
 
-##### II. Example Response: Fail - 2010
+##### II. Example Response: Fail - 1843
 ```js
 {
-    "rid": "da25a190-837e-4140-8059-4695254c820a",
-    "lastSuccessTime": 1656018011,
+    "rid": "f5543c1b-806b-4a3f-bfe9-e65e5f7c8941",
+    "lastSuccessTime": 1668852854,
     "result": {
         "status": {
-            "module": "VolumeManager",
-            "code": 2010,
-            "level": "WARN",
-            "description": "The requested volume does not exist",
-            "posDescription": "failed to mount vol0s(code:2010)",
-            "problem": "The volume with the requested volume name or volume ID does not exist",
-            "solution": "Enter the correct volume name or volume ID after checking the volume list"
+            "module": "",
+            "code": 1843,
+            "description": "failed to mount vol01",
+            "posDescription": "failed to mount vol01",
+            "solution": "Check the status of the volume in the volume list."
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -8096,7 +8079,7 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 ***More example Requests/Responses:***
 
 
-##### I. Example Request: Fail - 2010
+##### I. Example Request: Success
 
 
 ***Headers:***
@@ -8122,83 +8105,85 @@ URL: http://{{host}}/api/ibofos/v1/volumes/vol01/mount
 
 
 
-##### I. Example Response: Fail - 2010
+##### I. Example Response: Success
 ```js
 {
-    "rid": "a2494030-7a38-487e-8054-ddd87a7f8564",
-    "lastSuccessTime": 1656018241,
+    "rid": "2ca1b19e-67f2-11ed-9c8f-0cc47a3a4522",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "VolumeManager",
-            "code": 2010,
-            "level": "WARN",
-            "description": "The requested volume does not exist",
-            "posDescription": "failed to unmount vol01(code:2010)",
-            "problem": "The volume with the requested volume name or volume ID does not exist",
-            "solution": "Enter the correct volume name or volume ID after checking the volume list"
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc5"
-    }
-}
-```
-
-
-***Status Code:*** 400
-
-<br>
-
-
-
-##### II. Example Request: Success
-
-
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| X-Request-Id | {{$guid}} |  |
-| ts | {{$timestamp}} |  |
-| Content-Type | application/json |  |
-| Authorization | {{basic_auth}} |  |
-
-
-
-***Body:***
-
-```js        
-{
-    "param": {
-        "array": "{{arrayName}}"
-    }
-}
-```
-
-
-
-##### II. Example Response: Success
-```js
-{
-    "rid": "162781a9-db4a-4861-822b-0a8960bb049c",
-    "lastSuccessTime": 1656018127,
-    "result": {
-        "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "vol01is unmounted successfully"
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
 
 
 ***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 1807
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "array": "{{arrayName}}"
+    }
+}
+```
+
+
+
+##### II. Example Response: Fail - 1807
+```js
+{
+    "rid": "5324b2a5-67f2-11ed-9c8f-0cc47a3a4522",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 1807,
+            "eventName": "VOL_NOT_FOUND",
+            "cause": "The volume of the requested name or ID could not be found",
+            "description": "Failed to find a volume.",
+            "posDescription": "Failed to find a volume.",
+            "solution": "Please check volume name or ID and try again"
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc3"
+    }
+}
+```
+
+
+***Status Code:*** 400
 
 <br>
 
@@ -8248,8 +8233,8 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "f2c24ffa-b722-4467-a7a1-b7b0bdd0de15",
-    "lastSuccessTime": 1663523937,
+    "rid": "2e6c6a11-2398-4140-8bc3-63d414e1dc01",
+    "lastSuccessTime": 1668852800,
     "result": {
         "status": {
             "module": "",
@@ -8268,11 +8253,11 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
             "status": "Unmounted",
             "subnqn": "",
             "total": 5242880,
-            "uuid": "ce6242a6-1231-4fbf-b96a-bb3d05e9c21a"
+            "uuid": "b5a5d712-797c-4917-8e63-f02de850d139"
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc3"
     }
 }
 ```
@@ -8307,4 +8292,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-10-18 23:52:09 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-11-19 07:08:08 by [docgen](https://github.com/thedevsaddam/docgen)
