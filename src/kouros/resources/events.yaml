@@ -1446,6 +1446,11 @@ modules:
         message: 
         problem: connection problem between POS and Management Stack, No POS instance to kill
         solution: start POS
+      - code: 11022
+        level: ERROR
+        message:
+        problem: PoseidonOS is already running. 
+        solution: Try Stop the PoseidonOS, Start again
       - code: 11030
         level: ERROR
         message: Another request already in progress
