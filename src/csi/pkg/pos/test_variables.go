@@ -33,11 +33,11 @@
 package pos
 
 var volumeInfo = map[string]string{
-	"transportType":      "tcp",
-	"targetAddress":      "107.108.221.146",
+	"transportType":      "rdma",
+	"targetAddress":      "172.30.6.8,172.30.6.10,172.30.6.12",
 	"transportServiceId": "1158",
 	"arrayName":          "POSArray",
-	"provisionerIP":      "107.108.221.146",
+	"provisionerIP":      "172.20.6.8,172.20.6.10,172.20.6.12",
 	"provisionerPort":    "3000",
 	"serialNumber":       "POS0000000003",
 	"modelNumber":        "IBOF_VOLUME_EEEXTENSION",
