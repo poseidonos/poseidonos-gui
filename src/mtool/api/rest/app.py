@@ -2578,7 +2578,10 @@ def createMultiVolumeCallback():
     respList = body['MultiVolArray']
     for entry in respList:
         if entry["result"]["status"]["code"] != 0:
-            description += entry["result"]["status"]["description"]
+            if entry["result"]["status"]["description"] == "":
+                description += entry["result"]["status"]["posDescription"]
+            else:
+                description += entry["result"]["status"]["description"]
             if len(description) > 0:
                 description += "\n"
         if "errorInfo" in entry["result"]["status"]:

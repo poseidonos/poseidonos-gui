@@ -312,7 +312,7 @@ func Route(router *gin.Engine) {
 	}
 	//QOS
 	iBoFOSPath.POST("/qos", func(ctx *gin.Context) {
-		ibofos_.CalliBoFOS_(ctx, amoduleIBoFOS.QOSCreateVolumePolicies)
+		ibofos_.CalliBoFOSQOS(ctx, amoduleIBoFOS.QOSCreateVolumePolicies)
 	})
 	iBoFOSPath.POST("/qos/reset", func(ctx *gin.Context) {
 		ibofos_.CalliBoFOS_(ctx, amoduleIBoFOS.QOSResetVolumePolicies)

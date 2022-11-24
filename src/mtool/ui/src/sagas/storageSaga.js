@@ -190,6 +190,7 @@ function* fetchDevices(action) {
     devices: [],
     metadevices: [],
   };
+  let fetchDeviceSuccess = false;
   const alertDetails = {
     errorMsg: "Unable to get devices!",
     alertType: "alert",
@@ -222,6 +223,7 @@ function* fetchDevices(action) {
         })
       );
     } else if (result && typeof result !== "string" && result.return !== -1) {
+      fetchDeviceSuccess = true;
       yield put(actionCreators.fetchDevices(result));
     } else {
       yield put(actionCreators.showStorageAlert({
@@ -241,7 +243,9 @@ function* fetchDevices(action) {
     }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
-    if (!action || !action.payload || !action.payload.noLoad) {
+    if (!fetchDeviceSuccess) {
+      yield put(actionCreators.stopStorageLoader());
+    } else if (!action || !action.payload || !action.payload.noLoad) {
       yield put(actionCreators.stopStorageLoader());
       yield fetchArray();
     } else {
@@ -272,6 +276,7 @@ function* createVolume(action) {
         },
       }
     );
+    
     /* istanbul ignore else */
     if (action.payload.count > 1) {
       if (response.status === 200) {
@@ -310,15 +315,13 @@ function* createVolume(action) {
     // for single volume creation
     else if (response.status === 200) {
       if (
-        response.data.result &&
-        response.data.result.status &&
-        (response.data.result.status.code === 2000 ||
-          response.data.result.status.code === 0)
+        response.data.result?.status?.code === 2000
+        || response.data.result?.status?.code === 0
       ) {
         const { errorInfo } = response.data.result.status;
         let isError = false;
         let errorCodeDescription = '';
-        if (errorInfo && errorInfo.errorResponses.length > 0) {
+        if (errorInfo?.errorResponses.length > 0) {
           errorInfo.errorResponses.map(err => {
             errorCodeDescription += `${err.description}\n\n`;
             if (err.code !== 0)
@@ -347,17 +350,25 @@ function* createVolume(action) {
         }
         yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
         yield put(actionCreators.resetInputs());
+      } else if (response.data.result?.status?.code === 9011) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "partialError",
+            alertTitle: "Create Volume",
+            errorMsg: "Volume is created with below warnings",
+            errorCode: `${response.data.result?.status?.posDescription}`,
+          })
+        );
+        yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
+        yield put(actionCreators.resetInputs());
       } else {
         yield put(
           actionCreators.showStorageAlert({
             alertType: "alert",
             alertTitle: "Create Volume",
             errorMsg: "Error while creating Volume",
-            errorCode: `${response.data.result && response.data.result.status
-              ? `${response.data.result.status.description}
-			    ${response.data.result.status.solution}`
-              : ""
-              }`,
+            errorCode: `${response.data.result?.status?.description}
+                      ${response.data.result?.status?.solution}`,
           })
         );
       }
@@ -750,7 +761,7 @@ function* resetAndUpdateVolume(action) {
 
   const isGreaterThanEqualTo = (param) => {
     if (typeof (param) === 'number') return false;
-    const max = "18446744073709551";
+    const max = "18446744073709552";
     if (param.length < max.length) return false;
     if (param.length > max.length) return true;
 
@@ -769,7 +780,7 @@ function* resetAndUpdateVolume(action) {
     yield put(actionCreators.showStorageAlert({
       alertType: "alert",
       alertTitle: "Reset Volume",
-      errorMsg: "Max IOPS should be in the range 10 ~ 18446744073709550. Please input 0, for no limit for qos or Maximum",
+      errorMsg: "Max IOPS should be in the range 10 ~ 18446744073709551. Please input 0, for no limit for qos or Maximum",
     }))
     return;
   }

@@ -127,7 +127,8 @@ class Volume():
                     self.volume["Capacity"]["Data"]["AllocatedBytes"] = float(vol["total"])
                     self.volume["Oem"]["MaxBandwidth"] = vol["maxbw"]
                     self.volume["Oem"]["MaxIOPS"] = vol["maxiops"]
-                    self.volume["Oem"]["NQN"] = vol["subnqn"]
+                    if "subnqn" in vol:
+                        self.volume["Oem"]["NQN"] = vol["subnqn"]
                     self.volume["Oem"]["UUID"] = vol["uuid"]
                     self.volume["Oem"]["MinBandwidth"] = vol["minbw"]
                     self.volume["Oem"]["MinIOPS"] = vol["miniops"]

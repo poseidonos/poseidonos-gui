@@ -87,13 +87,18 @@ def create_volume(
                 request_body = {"param": {"array": arr_name,
                                           "miniops": miniops,
                                           "vol": [{"volumeName": vol_name}]}}
+            request_body["param"]["maxiops"] = maxiops
+            request_body["param"]["maxbw"] = maxbw
             response = dagent.qos_create_volume_policies(request_body)
             response = response.json()
             if "result" in response and "status" in response["result"] and "code" in response[
                     "result"]["status"] and response["result"]["status"]["code"] != 0:
                 create_vol_response = create_vol_response.json()
                 if "result" in create_vol_response and "status" in create_vol_response["result"] and "posDescription" in create_vol_response["result"]["status"]:
-                    create_vol_response["result"]["status"]["posDescription"] += " "+response["result"]["status"]["posDescription"] 
+                    if create_vol_response["result"]["status"]["posDescription"] == "NONE":
+                        create_vol_response["result"]["status"]["posDescription"] = response["result"]["status"]["posDescription"] 
+                    else:    
+                        create_vol_response["result"]["status"]["posDescription"] += " "+response["result"]["status"]["posDescription"] 
                     create_vol_response["result"]["status"]["code"] = response["result"]["status"]["code"]
                 return create_vol_response
             
@@ -129,7 +134,10 @@ def list_volume(arr_name):
         if vols.status_code == 200:
             vols = vols.json()
             if "data" in vols["result"] and "volumes" in vols["result"]["data"]:
-                return vols["result"]["data"]["volumes"]
+                if vols["result"]["data"]["volumes"] is not None:
+                    return vols["result"]["data"]["volumes"]
+                else:
+                    return []
             else:
                 return []
         elif "data" in vols.json()["result"]:
