@@ -47,7 +47,7 @@ from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_telemetry_properties, set_telemetry_properties
+from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_telemetry_properties, set_telemetry_properties, get_all_hardware_health
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, send_from_directory, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -608,17 +608,6 @@ def get_storage_details(current_user):
     print(val)
     return jsonify(val)
 
-
-@app.route('/api/v1/perf/all', methods=['GET'])
-def get_current_iops():
-    try:
-        received_telemetry = connection_factory.get_telemetery_url()
-        ip = received_telemetry[0]
-        port= received_telemetry[1]
-        res = get_agg_volumes_perf(ip, port)
-        return jsonify(res)
-    except Exception as e:
-        return make_response('Could not get performance metrics'+str(e), 500)
 
 """
 def trigger_email(serverip, serverport, emailid):
@@ -2085,6 +2074,30 @@ def check_telemetry(current_user):
         return res
     except Exception as e:
         return make_response('Prometheus DB is not running'+str(e), 500)
+
+@app.route('/api/v1/perf/all', methods=['GET'])
+def get_current_iops():
+    try:
+        received_telemetry = connection_factory.get_telemetery_url()
+        ip = received_telemetry[0]
+        port= received_telemetry[1]
+        res = get_agg_volumes_perf(ip, port)
+        return jsonify(res)
+    except Exception as e:
+        return make_response('Could not get performance metrics'+str(e), 500)
+
+@app.route('/api/v1/get_hardware_health', methods=['GET'])
+@token_required
+def get_hardware_health(current_user):
+    try:
+        received_telemetry = connection_factory.get_telemetery_url()
+        ip = received_telemetry[0]
+        port= received_telemetry[1]
+        res = get_all_hardware_health(ip, port)
+        return jsonify(res)
+    except Exception as e:
+        return make_response('Could not get hardware health metrics'+str(e), 500)
+
 
 '''
 <pre>{&apos;alertName&apos;: &apos;sdfsdf&apos;, &apos;alertType&apos;: &apos;&apos;, &apos;alertCondition&apos;: &apos;Greater Than&apos;, &apos;alertRange&apos;: &apos;7&apos;, &apos;description&apos;: &apos;sdfgsee eee&apos;}

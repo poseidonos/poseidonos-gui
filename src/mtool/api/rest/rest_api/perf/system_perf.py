@@ -65,6 +65,102 @@ def get_agg_volumes_perf(ip, port):
     
     return res_dict
 
+
+def get_all_hardware_health(ip, port):
+    TEMPERATURE = 'temperature'
+    WARNINGTEMPERATURETIME = 'warning_temperature_time'
+    CRITICALTEMPERATURETIME = 'critical_temperature_time'
+    AVAILABLESPARE = 'available_spare'
+    AVAILABLESPARETHRESOLD = 'available_spare_threshold'
+    IPMIFANSPEEDSTATE = 'ipmi_fan_speed_state'
+    IPMIFANSPEEDRPM = 'ipmi_fan_speed_rpm'
+    IPMIPOWERSTATE = 'ipmi_power_state'
+    IPMIPOWERWATTS = 'ipmi_power_watts'
+    IPMISENSORSTATE = 'ipmi_sensor_state'
+    IPMISENSORVALUE = 'ipmi_sensor_value'
+    IPMIVOLTAGESTATE = 'ipmi_voltage_state'
+    IPMIVOLTAGEVOLTS = 'ipmi_voltage_volts'
+    IPMITEMPERATURESTATE = 'ipmi_temperature_state'
+    IPMITEMPERATURECELCIUS = 'ipmi_temperature_celsius'
+    IPMICHASSISPOWERSTATE = 'ipmi_chassis_power_state'
+    metrics = [ TEMPERATURE, WARNINGTEMPERATURETIME, CRITICALTEMPERATURETIME,
+        AVAILABLESPARE, AVAILABLESPARETHRESOLD, IPMIFANSPEEDSTATE, IPMIFANSPEEDRPM,
+        IPMIPOWERSTATE, IPMIPOWERWATTS, IPMISENSORSTATE, IPMISENSORVALUE,
+        IPMIVOLTAGESTATE, IPMIVOLTAGEVOLTS, IPMITEMPERATURESTATE,
+        IPMITEMPERATURECELCIUS, IPMICHASSISPOWERSTATE ]
+    res = telemetry.get_all_hardware_metrics_values(ip, port, metrics)
+    res_dict = {}
+    if res['status'] != 'success':
+        return res
+    devices = {}
+    for field in res['data']['result']:
+        if field['metric']['publisher_name'] == 'Disk_Monitoring':
+            device_name = field['metric']['nvme_ctrl_id']
+            if device_name not in devices:
+                devices[device_name] = {}
+            if field['metric']['__name__'] == AVAILABLESPARE:
+                devices[device_name][AVAILABLESPARE] = field['value'][1]
+            if field['metric']['__name__'] == AVAILABLESPARETHRESOLD:
+                devices[device_name][AVAILABLESPARETHRESOLD] = field['value'][1]
+            if field['metric']['__name__'] == TEMPERATURE:
+                devices[device_name][TEMPERATURE] = field['value'][1]
+            if field['metric']['__name__'] == CRITICALTEMPERATURETIME:
+                devices[device_name][CRITICALTEMPERATURETIME] = field['value'][1]
+            if field['metric']['__name__'] == WARNINGTEMPERATURETIME:
+                devices[device_name][WARNINGTEMPERATURETIME] = field['value'][1]
+    NOMINAL = "nominal"
+    WARNING = "warning"
+    CRITICAL = "critical"
+    total_nominal = 0
+    total_warning = 0
+    total_critical = 0
+    res_devices = [{}]
+    for key in devices:
+        value = devices[key]
+        tstate = NOMINAL
+        if value[WARNINGTEMPERATURETIME] != '0':
+            tstate = WARNING
+        if value[CRITICALTEMPERATURETIME] != '0':
+            tstate = CRITICAL
+        sstate = NOMINAL
+        if value[AVAILABLESPARE] < value[AVAILABLESPARETHRESOLD]:
+            sstate = WARNING
+        if value[AVAILABLESPARE] == '0':
+            sstate = CRITICAL
+        res_device = {}
+        res_device['name'] = key
+        res_device['temperature'] = {
+            'state': tstate,
+            'value': value[TEMPERATURE]
+        }
+        res_device['available_spare'] = {
+            'state': sstate,
+            'value': value[AVAILABLESPARE]
+        }
+        res_devices.append(res_device)
+        total_nominal += 1 if tstate == NOMINAL else 0
+        total_warning += 1 if tstate == WARNING else 0
+        total_critical += 1 if tstate == CRITICAL else 0
+        total_nominal += 1 if sstate == NOMINAL else 0
+        total_warning += 1 if sstate == WARNING else 0
+        total_critical += 1 if sstate == CRITICAL else 0
+    res_dict['devices'] = res_devices
+    res_dict['bmc'] = [
+        { 'name': "Ipmi Fan Speed", 'value': '5' +' rpm', 'state': WARNING},
+        { 'name': "Ipmi Power", 'value': '20' +' watts', 'state': NOMINAL},
+        { 'name': "Ipmi Sensor Value", 'value': '9' , 'state': WARNING},
+        { 'name': "Ipmi Voltage", 'value': '200' + ' volts', 'state': NOMINAL},
+        { 'name': "Ipmi Temperature Celcius", 'value': '58' +" digree", 'state': CRITICAL},
+    ]
+    total_warning += 2
+    total_nominal += 2
+    total_critical += 1
+    res_dict['ipmi_chassis_power_state'] = 1
+    res_dict['total_nominal'] = total_nominal
+    res_dict['total_warning'] = total_warning
+    res_dict['total_critical'] = total_critical
+    return res_dict
+
 def set_telemetry_properties(properties):
     props = {}
     for prop in properties:
