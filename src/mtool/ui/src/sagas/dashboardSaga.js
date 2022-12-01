@@ -152,6 +152,40 @@ function* fetchPerformanceInfo() {
   }
 }
 
+function* fetchHardwareHealth() {
+  try {
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1/get_hardware_health`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+
+    const result = response.data;
+
+    /* istanbul ignore else */
+    if (response.status === 200 && result && result.devices?.length > 0) {
+      yield put(
+        actionCreators.fetchHardwareHealth(
+          result.devices,
+          result.bmc,
+          result.total_nominal,
+          result.total_warning,
+          result.total_critical,
+          result.ipmi_chassis_power_state
+        )
+      );
+    }
+  } catch (error) {
+    // console.log(error);
+  }
+}
+
 function* fetchIpAndMacInfo() {
   try {
     const response = yield call(
@@ -182,10 +216,8 @@ export function* dashboardWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_CHECK_TELEMETRY, fetchCheckTelemetry);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
   // yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
-  yield takeEvery(
-    actionTypes.SAGA_FETCH_PERFORMANCE_INFO,
-    fetchPerformanceInfo
-  );
+  yield takeEvery(actionTypes.SAGA_FETCH_PERFORMANCE_INFO, fetchPerformanceInfo);
+  yield takeEvery(actionTypes.SAGA_FETCH_HARDWARE_HEALTH, fetchHardwareHealth);
   yield takeEvery(actionTypes.SAGA_FETCH_IPANDMAC_INFO, fetchIpAndMacInfo);
   // console.log("This is async operation");
 }

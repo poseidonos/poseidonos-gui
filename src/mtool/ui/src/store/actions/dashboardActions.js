@@ -79,7 +79,24 @@ export const fetchPerformance = (
   };
 };
 
-
+export const fetchHardwareHealth = (
+  devices,
+  bmc,
+  totalNominals,
+  totalWarnings,
+  totalCriticals,
+  powerState
+) => {
+  return {
+    type: actionTypes.FETCH_HARDWARE_HEALTH,
+    devices,
+    bmc,
+    totalNominals,
+    totalWarnings,
+    totalCriticals,
+    powerState
+  };
+};
 
 export const fetchStorage = (arraySize) => {
   return {

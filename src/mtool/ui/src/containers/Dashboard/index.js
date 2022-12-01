@@ -38,7 +38,7 @@ import "react-dropdown/style.css";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton } from "@material-ui/core";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton, Tabs, Tab } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -79,9 +79,15 @@ const styles = (theme) => {
       marginTop: theme.spacing(1),
     },
     pageHeader: customTheme.page.title,
-    topGrid: {
-      marginBottom: "-8px",
-      marginTop: "2px",
+    mainGridContainer: {
+      [theme.breakpoints.up("xl")]: {
+        flexDirection: "column"
+      }
+    },
+    performanceGridItem: {
+      [theme.breakpoints.up("xl")]: {
+        flexBasis: "fit-content"
+      }
     },
     metricsPaper: {
       display: "flex",
@@ -124,13 +130,13 @@ const styles = (theme) => {
       color: "rgba(125, 106, 181, 1)",
     },
     posInfoPaper: {
-      height: 128,
+      height: 120,
       display: "flex",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
       flexWrap: "wrap",
       [theme.breakpoints.up("xl")]: {
-        height: 122,
+        height: "auto",
       },
       [theme.breakpoints.down("md")]: {
         height: "auto",
@@ -142,12 +148,12 @@ const styles = (theme) => {
       justifyContent: "center",
     },
     storageDetailsPaper: {
-      height: 128,
+      height: 96,
       position: "relative",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
       [theme.breakpoints.up("xl")]: {
-        height: 122,
+        height: 180,
       },
       [theme.breakpoints.down("md")]: {
         height: 122,
@@ -166,32 +172,51 @@ const styles = (theme) => {
     storageDetailContainer: {
       border: "1px solid lightgray",
       width: "100%",
-      margin: "auto",
-      marginTop: "5px",
-      height: 32,
+      margin: "auto 8px",
+      height: 12,
       overflow: "hidden",
-      position: "relative"
+      position: "relative",
+      [theme.breakpoints.up("xl")]: {
+        height: 24
+      },
+    },
+    tab: {
+      fontWeight: "bold"
     },
     dashboardSizeLabelContainer: {
-      width: "100%"
+      width: "100%",
+      display: "flex",
+      alignItems: "flex-end"
     },
     dashboardMinLabel: {
       float: "left",
       display: "block",
-      width: "50%",
-      textAlign: "left"
+      textAlign: "left",
+      whiteSpace: "nowrap"
     },
     dashboardMaxLabel: {
       float: "right",
       display: "block",
-      width: "50%",
       textAlign: "right",
+      whiteSpace: "nowrap"
     },
-    volumeContainer: {
+    hardwareHealthPaper: {
       marginTop: theme.spacing(1),
+      height: 388,
+      display: "flex",
+      padding: theme.spacing(1, 2),
+      paddingBottom: 0,
+      flexWrap: "wrap",
     },
-    volumeHeader: {
-      minHeight: 64,
+    tableHeader: {
+      height: '46px',
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: theme.spacing(0, 2),
+    },
+    tableSmallHeader: {
+      height: '37px',
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -230,10 +255,21 @@ const styles = (theme) => {
       borderRight: "2px solid lightgray",
       marginRight: theme.spacing(1)
     },
+    metricText: {
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      textAlign: "left",
+      paddingLeft: theme.spacing(2),
+    },
     arraySelect: {
       textAlign: "center",
       minWidth: 100
     },
+    borderSolid: {
+      borderTop: "1px solid #0004",
+      borderBottom: "1px solid #0004"
+    }
   };
 };
 
@@ -261,7 +297,7 @@ const getUsedSpace = (total, remain) => {
 
 const MetricsCard = ({ classes, header, writeValue, readValue }) => {
   return (
-    <Paper spacing={1} className={classes.metricsPaper}>
+    <Paper className={classes.metricsPaper}>
       <Grid item container xs={12} justifyContent="space-between">
         <Typography className={classes.cardHeader}>
           {header}
@@ -321,11 +357,47 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
   )
 }
 
+const BMCMetric = ({ classes, name, value, state }) => {
+  return (
+    <>
+      <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
+        <Typography
+          className={classes.metricText}
+          color="secondary"
+        >
+          {name}
+        </Typography>
+      </Grid>
+      <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
+        <Typography
+          color="secondary"
+          data-testid="dashboard-ip"
+          className={classes.ipText}
+          style={state === "critical" ?
+            { color: "rgba(255, 62, 0, 0.6)" } :
+            state === "warning" ?
+              { color: "rgba(255, 186, 0)" } :
+              { color: "rgba(0, 186, 0)" }}
+        >
+          {value}
+        </Typography>
+      </Grid>
+    </>
+  )
+}
+
+const ARRAYTAB = "arrayTab";
+const VOLUMETAB = "volumeTab";
+const CRITICAL = "critical"
+const WARNING = "warning"
+const NOMINAL = "nominal"
+
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedTab: ARRAYTAB,
       mobileOpen: false,
       healthStatusSocket: io(healthStatusSocketEndPoint, {
         transports: ["websocket"],
@@ -346,11 +418,13 @@ class Dashboard extends Component {
     this.props.fetchVolumes();
     this.props.fetchArrays();
     this.props.fetchPerformance();
+    this.props.fetchHardwareHealth();
     this.props.fetchIpAndMacInfo();
     this.props.enableFetchingAlerts(true);
     this.interval = setInterval(() => {
       if (this.props.isConfigured)
         this.props.fetchPerformance();
+      this.props.fetchHardwareHealth();
     }, 2000);
   }
 
@@ -394,7 +468,7 @@ class Dashboard extends Component {
     const volUsedStyle = {
       width: `${(volUsedSpace * 100) / volSpace}%`,
       height: "100%",
-      backgroundColor: "rgba(0, 186, 0,0.6)",
+      backgroundColor: "rgb(120,133,149)",
       float: "left",
     };
     const storageFreeStyle = {
@@ -409,12 +483,10 @@ class Dashboard extends Component {
       position: "relative",
       backgroundColor: "#fff",
     };
-
     const localCellStyle = {
       paddingTop: 8,
       paddingBottom: 8,
-    }
-
+    };
     const arrayTableColumns = [
       {
         title: "Name",
@@ -471,9 +543,442 @@ class Dashboard extends Component {
         cellStyle: localCellStyle
       }
     ];
+    const deviceTableColumns = [
+      {
+        title: "Name",
+        cellStyle: localCellStyle,
+        render: (rowData) => (
+          <LightTooltip interactive title={rowData.name} TransitionComponent={Zoom}>
+            <Typography className={classes.volName}>{rowData.name}</Typography>
+          </LightTooltip>
+        ),
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Temperature",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.temperature.state === "critical" ?
+          { color: "rgba(255, 62, 0, 0.6)" } :
+          rowData.temperature.state === "warning" ?
+            { color: "rgba(255, 186, 0, 0.8)" } :
+            { color: "rgba(0, 186, 0)" }}>{Number(rowData.temperature.value) > 273 ? Number(rowData.temperature.value) - 273 : rowData.temperature.value}</Typography>,
+        customSort: (a, b) => {
+          a = a.temperature
+          b = b.temperature
+          if (a.state === CRITICAL)
+            return -1;
+          if (b.state === CRITICAL)
+            return 1;
+          if (a.state === WARNING)
+            return -1;
+          if (b.state === WARNING)
+            return 1;
+        }
+      },
+      {
+        title: "AvailbaleSpare",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.available_spare.state === "critical" ?
+          { color: "rgba(255, 62, 0, 0.6)" } :
+          rowData.available_spare.state === "warning" ?
+            { color: "rgba(255, 186, 0, 0.8)" } :
+            { color: "rgba(0, 186, 0)" }}>{rowData.available_spare.value}</Typography>,
+        customSort: (a, b) => {
+          a = a.available_spare
+          b = b.available_spare
+          if (a.state === CRITICAL)
+            return -1;
+          if (b.state === CRITICAL)
+            return 1;
+          if (a.state === WARNING)
+            return -1;
+          if (b.state === WARNING)
+            return 1;
+        }
+      }
+    ];
+    const performance = (
+      <>
+        <Grid xs={12} md={4} item>
+          <MetricsCard
+            classes={classes}
+            header="Bandwidth"
+            writeValue={this.props.writeBW}
+            readValue={this.props.readBW}
+          />
+        </Grid>
+        <Grid xs={12} md={4} item>
+          <MetricsCard
+            classes={classes}
+            header="IOPS"
+            writeValue={this.props.writeIOPS}
+            readValue={this.props.readIOPS}
+          />
+        </Grid>
+        <Grid xs={12} md={4} item>
+          <MetricsCard
+            classes={classes}
+            header="Latency"
+            writeValue={this.props.writeLatency}
+            readValue={this.props.readLatency}
+          />
+        </Grid>
+      </>
+    );
+    const posInfo = (
+      <Paper className={classes.posInfoPaper}>
+        <Grid item container xs={12} justifyContent="space-between">
+          <Typography className={classes.cardHeader}>
+            IP Info
+          </Typography>
+        </Grid>
+        <Grid item container sm={12} md={6} lg={12} xl={6} className={classes.ipContainer}>
+          <Grid item xs={4}>
+            <Typography
+              align="center"
+              className={`${classes.ipText} ${classes.ipBorder}`}
+              color="primary"
+              variant="h6"
+            >
+              PoseidonOS
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography
+              variant="h6"
+              color="secondary"
+              data-testid="dashboard-ip"
+              className={classes.ipText}
+            >
+              {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item container sm={12} md={6} lg={12} xl={6} className={classes.ipContainer}>
+          <Grid item xs={4}>
+            <Typography
+              align="center"
+              className={`${classes.ipText} ${classes.ipBorder}`}
+              color="primary"
+              variant="h6"
+            >
+              Telemetry
+            </Typography>
+          </Grid>
+          <Grid item xs={8} container alignConten="center" wrap="nowrap">
+            {this.props.telemetryIP && this.props.telemetryPort ?
+              (
+                <>
+                  <Typography
+                    variant="h6"
+                    data-testid="telemetry-ip"
+                    className={classes.ipText}
+                  >
+                    {this.props.telemetryIP}:{this.props.telemetryPort}
+                    &nbsp;&nbsp;&nbsp;
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    id="btn-edit-telemetry"
+                    data-testid="btn-edit-telemetry"
+                    onClick={() => this.props.setShowConfig(true)}
+                  >
+                    <Edit />
+                  </IconButton>
+                </>
+              ) :
+              (
+                <Button
+                  variant="outlined"
+                  id="btn-add-telemetry"
+                  data-testid="btn-add-telemetry"
+                  color="secondary"
+                  onClick={() => this.props.setShowConfig(true)}
+                >
+                  Add Telemetry API
+                </Button>
+              )
+            }
+          </Grid>
+        </Grid>
+      </Paper>
+    );
+    const arrayTable = (
+      <MaterialTable
+        components={{
+          Toolbar: () => (
+            <Grid className={classes.tableHeader}>
+              <Typography variant="h6" color="secondary">
+                Array Summary
+              </Typography>
+            </Grid>
+          )
+        }}
+        columns={arrayTableColumns}
+        data={this.props.arrays}
+        options={{
+          headerStyle: {
+            backgroundColor: "#788595",
+            color: "#FFF",
+            paddingTop: 8,
+            paddingBottom: 8
+          },
+          minBodyHeight: 280,
+          maxBodyHeight: 280,
+          search: false,
+          sorting: true
+        }}
+        style={{
+          height: "100%",
+          boxShadow: "none",
+        }}
+        isLoading={this.props.arrayLoading}
+        icons={icons}
+      />
+    );
+    const volumeTable = (
+      <MaterialTable
+        columns={volumeTableColumns}
+        data={this.props.arrayVolumes}
+        options={{
+          headerStyle: {
+            backgroundColor: "#788595",
+            color: "#FFF",
+            paddingTop: 8,
+            paddingBottom: 8
+          },
+          minBodyHeight: 280,
+          maxBodyHeight: 280,
+          search: false,
+          sorting: true
+        }}
+        components={{
+          Toolbar: () => (
+            <Grid className={classes.tableHeader}>
+              <Typography variant="h6" color="secondary">
+                Volume Summary
+              </Typography>
+              <FormControl className={classes.volumeUnit}>
+                <InputLabel htmlFor="select-array">Array</InputLabel>
+                <Select
+                  value={this.props.selectedArray}
+                  onChange={this.selectArray}
+                  inputProps={{
+                    id: "select-array",
+                    "data-testid": "dashboard-array-select"
+                  }}
+                  data-testid="array-select"
+                  className={classes.arraySelect}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  {this.props.arrays.map((array) => (
+                    <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          )
+        }}
+        style={{
+          height: "100%",
+          boxShadow: "none",
+        }}
+        icons={icons}
+      />
+    );
+    const storage = (
+      <Paper >
+        <Grid className={classes.storageDetailsPaper}>
+          <Grid item container xs={12} justifyContent="space-between" >
+            <Typography className={classes.cardHeader}>
+              Storage Details
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            justifyContent="center"
+            alignContent="center"
+            className={classes.storageGraph}
+          >
+            {this.props.arraySize === 0 ? (
+              <Typography
+                data-testid="dashboard-no-array"
+                color="secondary"
+              >
+                Arrays are not available
+              </Typography>
+            ) : (
+              <>
+                <div className={classes.dashboardSizeLabelContainer}>
+                  <span className={classes.dashboardMinLabel}>0TB</span>
 
+                  <div className={classes.storageDetailContainer}>
+                    <div style={volFilledStyle}>
+                      <div style={volUsedStyle} />
+                    </div>
+                    <div style={storageFreeStyle} />
+                  </div>
+
+                  <span className={classes.dashboardMaxLabel}>
+                    {formatBytes(this.props.arraySize)}
+                  </span>
+                </div>
+                <Grid container wrap="wrap" justifyContent="flex-end">
+                  <Legend
+                    bgColor="rgb(120,133,149)"
+                    title={`Data Written: ${formatBytes(
+                      volUsedSpace
+                    )}`}
+                  />
+                  <Legend
+                    bgColor="#e0e0e0"
+                    title={`Volume Space Allocated: ${formatBytes(
+                      volSpace
+                    )}`}
+                  />
+                  <Legend
+                    bgColor="#fff"
+                    title={`Available for Volume Creation: ${formatBytes(
+                      this.props.arraySize - volSpace >= BYTE_FACTOR * BYTE_FACTOR ? this.props.arraySize - volSpace : 0
+                    )}`}
+                  />
+                </Grid>
+              </>
+            )}
+          </Grid>
+        </Grid>
+        <Grid className={classes.borderSolid}>
+          <Tabs
+            value={this.state.selectedTab}
+            onChange={(e, newVal) => this.setState({ selectedTab: newVal })}
+            textColor="secondary"
+            indicatorColor="secondary"
+            aria-label="secondary tabs example"
+            centered
+          >
+            <Tab className={classes.tab} value={ARRAYTAB} label={this.props.arrays.length + " Arrays"} />
+            <Tab className={classes.tab} value={VOLUMETAB} label={this.props.arrayVolumes.length + " Volumes"} />
+          </Tabs>
+        </Grid>
+        <Grid>
+          {this.state.selectedTab === ARRAYTAB ? arrayTable : volumeTable}
+        </Grid>
+      </Paper>
+    );
+    const hardwareHealth = (
+      <Paper className={classes.hardwareHealthPaper}>
+        <Grid item container xs={12} justifyContent="space-between">
+          <Typography className={classes.cardHeader}>
+            Hardware Health
+          </Typography>
+        </Grid>
+        <Grid item container xs={12} justifyContent="center" alignItems="flex-start" >
+          <Legend
+            bgColor="rgba(0, 186, 0, 0.6)"
+            title={
+              (<>
+                <Typography variant="h6" style={{ display: "inline" }}>
+                  {this.props.totalNominals}
+                </Typography>
+                <span style={{ paddingRight: 8 }}> Nominals</span>
+              </>)
+            }
+          />
+          <Legend
+            bgColor="rgba(255, 186, 0, 0.6)"
+            title={
+              (<>
+                <Typography variant="h6" style={{ display: "inline" }}>
+                  {this.props.totalWarnings}
+                </Typography>
+                <span style={{ paddingRight: 8 }}> Warnings</span>
+              </>)
+            }
+          />
+          <Legend
+            bgColor="rgba(255, 62, 0, 0.6)"
+            title={
+              (<>
+                <Typography variant="h6" style={{ display: "inline" }}>
+                  {this.props.totalCriticals}
+                </Typography>
+                <span style={{ paddingRight: 8 }}> Criticals</span>
+              </>)
+            }
+          />
+        </Grid>
+        <Grid item container xs={12} md={4} direction="column" style={{ border: "1px solid rgb(0 0 0 / 12%)", marginBottom: "4px" }}>
+          <Grid
+            item
+            className={classes.tableSmallHeader}
+            container
+            justifyContent="center"
+            style={{
+              backgroundColor: "#788595",
+              color: "#FFF",
+              paddingTop: 8,
+              paddingBottom: 8,
+              paddingRight: 0, borderBottom: "1px solid rgb(0 0 0 / 12%)"
+            }}>
+            <Typography>
+              IPMI
+            </Typography>
+          </Grid>
+          <Grid item container spacing={2} style={{ paddingTop: "8px" }}>
+            {
+              this.props.bmc.sort((a, b) => {
+                if (a.state === CRITICAL)
+                  return -1;
+                if (b.state === CRITICAL)
+                  return 1;
+                if (a.state === WARNING)
+                  return -1;
+                if (b.state === WARNING)
+                  return 1;
+              }).map((metric) =>
+                <BMCMetric
+                  classes={classes}
+                  name={metric.name}
+                  value={metric.value}
+                  state={metric.state}
+                />
+              )
+            }
+          </Grid>
+        </Grid>
+        <Grid item container sm={12} md={8}>
+          <MaterialTable
+            columns={deviceTableColumns}
+            data={this.props.devices}
+            options={{
+              headerStyle: {
+                backgroundColor: "#788595",
+                color: "#FFF",
+                paddingTop: 8,
+                paddingBottom: 8,
+                paddingRight: 0,
+              },
+              minBodyHeight: 274,
+              maxBodyHeight: 274,
+              search: false,
+              sorting: true
+            }}
+            components={{
+              Toolbar: () => <></>
+            }}
+            style={{
+              width: "100%",
+              height: "280",
+              boxShadow: "none",
+              border: "1px solid rgb(0 0 0 / 12%)"
+            }}
+            icons={icons}
+          />
+        </Grid>
+      </Paper>
+    );
     return (
-      <ThemeProvider theme={PageTheme}>
+      <ThemeProvider theme={PageTheme} >
         <div className={classes.dashboardContainer}>
           <Header toggleDrawer={this.handleDrawerToggle} />
           <Sidebar
@@ -490,265 +995,18 @@ class Dashboard extends Component {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid container spacing={1} className={classes.topGrid}>
-                <Grid container spacing={1}>
-                  <Grid xs={12} md={4} xl={2} item>
-                    <MetricsCard
-                      classes={classes}
-                      header="Bandwidth"
-                      writeValue={this.props.writeBW}
-                      readValue={this.props.readBW}
-                    />
-                  </Grid>
-                  <Grid xs={12} md={4} xl={2} item>
-                    <MetricsCard
-                      classes={classes}
-                      header="IOPS"
-                      writeValue={this.props.writeIOPS}
-                      readValue={this.props.readIOPS}
-                    />
-                  </Grid>
-                  <Grid xs={12} md={4} xl={2} item>
-                    <MetricsCard
-                      classes={classes}
-                      header="Latency"
-                      writeValue={this.props.writeLatency}
-                      readValue={this.props.readLatency}
-                    />
-                  </Grid>
-                  <Grid sm={12} md={12} lg={6} xl={3} item>
-                    <Paper spacing={1} className={classes.posInfoPaper}>
-                      <Grid item container xs={12} justifyContent="space-between">
-                        <Typography className={classes.cardHeader}>
-                          IP Info
-                        </Typography>
-                      </Grid>
-                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
-                        <Grid item xs={4}>
-                          <Typography
-                            align="center"
-                            className={`${classes.ipText} ${classes.ipBorder}`}
-                            color="primary"
-                            variant="h6"
-                          >
-                            PoseidonOS
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography
-                            variant="h6"
-                            color="secondary"
-                            data-testid="dashboard-ip"
-                            className={classes.ipText}
-                          >
-                            {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid item container sm={12} md={6} lg={12} className={classes.ipContainer}>
-                        <Grid item xs={4}>
-                          <Typography
-                            align="center"
-                            className={`${classes.ipText} ${classes.ipBorder}`}
-                            color="primary"
-                            variant="h6"
-                          >
-                            Telemetry
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8} container alignConten="center" wrap="nowrap">
-                          {this.props.telemetryIP && this.props.telemetryPort ?
-                            (
-                              <>
-                                <Typography
-                                  variant="h6"
-                                  data-testid="telemetry-ip"
-                                  className={classes.ipText}
-                                >
-                                  {this.props.telemetryIP}:{this.props.telemetryPort}
-                                  &nbsp;&nbsp;&nbsp;
-                                </Typography>
-                                <IconButton
-                                  size="small"
-                                  id="btn-edit-telemetry"
-                                  data-testid="btn-edit-telemetry"
-                                  onClick={() => this.props.setShowConfig(true)}
-                                >
-                                  <Edit />
-                                </IconButton>
-                              </>
-                            ) :
-                            (
-                              <Button
-                                variant="outlined"
-                                id="btn-add-telemetry"
-                                data-testid="btn-add-telemetry"
-                                color="secondary"
-                                onClick={() => this.props.setShowConfig(true)}
-                              >
-                                Add Telemetry API
-                              </Button>
-                            )
-                          }
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
-                  <Grid xs={12} md={12} lg={6} xl={3} item>
-                    <Paper
-                      spacing={1}
-                      className={`${classes.storageDetailsPaper}`}
-                    >
-                      <Grid item container xs={12} justifyContent="space-between">
-                        <Typography className={classes.cardHeader}>
-                          Storage Details
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignContent="center"
-                        className={classes.storageGraph}
-                      >
-                        {this.props.arraySize === 0 ? (
-                          <Typography
-                            data-testid="dashboard-no-array"
-                            color="secondary"
-                          >
-                            Arrays are not available
-                          </Typography>
-                        ) : (
-                          <>
-                            <div className={classes.dashboardSizeLabelContainer}>
-                              <span className={classes.dashboardMinLabel}>0TB</span>
-                              <span className={classes.dashboardMaxLabel}>
-                                {formatBytes(this.props.arraySize)}
-                              </span>
-                            </div>
-                            <div className={classes.storageDetailContainer}>
-                              <div style={volFilledStyle}>
-                                <div style={volUsedStyle} />
-                              </div>
-                              <div style={storageFreeStyle} />
-                            </div>
-                            <Grid container wrap="wrap" justifyContent="flex-end">
-                              <Legend
-                                bgColor="rgba(0, 186, 0, 0.6)"
-                                title={`Data Written: ${formatBytes(
-                                  volUsedSpace
-                                )}`}
-                              />
-                              <Legend
-                                bgColor="#e0e0e0"
-                                title={`Volume Space Allocated: ${formatBytes(
-                                  volSpace
-                                )}`}
-                              />
-                              <Legend
-                                bgColor="#fff"
-                                title={`Available for Volume Creation: ${formatBytes(
-                                  this.props.arraySize - volSpace >= BYTE_FACTOR * BYTE_FACTOR ? this.props.arraySize - volSpace : 0
-                                )}`}
-                              />
-                            </Grid>
-                          </>
-                        )}
-                      </Grid>
-                    </Paper>
+              <Grid container spacing={1} className={classes.mainGridContainer}>
+                <Grid xs={12} xl={8} item className={classes.performanceGridItem}>
+                  <Grid container spacing={1}>
+                    {performance}
                   </Grid>
                 </Grid>
-                <Grid container spacing={1}>
-                  <Grid
-                    xs={12}
-                    md={6}
-                    item
-                    className={classes.volumeContainer}
-                  >
-                    <Paper spacing={3}>
-                      <MaterialTable
-                        components={{
-                          Toolbar: () => (
-                            <Grid className={classes.volumeHeader}>
-                              <Typography className={classes.cardHeader}>
-                                Array Summary
-                              </Typography>
-                            </Grid>
-                          )
-                        }}
-                        columns={arrayTableColumns}
-                        data={this.props.arrays}
-                        options={{
-                          headerStyle: {
-                            backgroundColor: "#788595",
-                            color: "#FFF",
-                            paddingTop: 8,
-                            paddingBottom: 8
-                          },
-                          minBodyHeight: 280,
-                          maxBodyHeight: 280,
-                          search: false,
-                          sorting: true
-                        }}
-                        style={{ height: "100%" }}
-                        isLoading={this.props.arrayLoading}
-                        icons={icons}
-                      />
-                    </Paper>
-                  </Grid>
-                  <Grid
-                    xs={12}
-                    md={6}
-                    item
-                    className={classes.volumeContainer}
-                  >
-                    <Paper spacing={3}>
-                      <MaterialTable
-                        columns={volumeTableColumns}
-                        data={this.props.arrayVolumes}
-                        options={{
-                          headerStyle: {
-                            backgroundColor: "#788595",
-                            color: "#FFF",
-                            paddingTop: 8,
-                            paddingBottom: 8
-                          },
-                          minBodyHeight: 280,
-                          maxBodyHeight: 280,
-                          search: false,
-                          sorting: true
-                        }}
-                        components={{
-                          Toolbar: () => (
-                            <Grid className={classes.volumeHeader}>
-                              <Typography className={classes.cardHeader}>
-                                Volume Summary
-                              </Typography>
-                              <FormControl className={classes.volumeUnit}>
-                                <InputLabel htmlFor="select-array">Array</InputLabel>
-                                <Select
-                                  value={this.props.selectedArray}
-                                  onChange={this.selectArray}
-                                  inputProps={{
-                                    id: "select-array",
-                                    "data-testid": "dashboard-array-select"
-                                  }}
-                                  data-testid="array-select"
-                                  className={classes.arraySelect}
-                                >
-                                  <MenuItem value="all">All</MenuItem>
-                                  {this.props.arrays.map((array) => (
-                                    <MenuItem key={array.arrayname} value={array.arrayname}>{array.arrayname}</MenuItem>
-                                  ))}
-                                </Select>
-                              </FormControl>
-                            </Grid>
-                          )
-                        }}
-                        style={{ height: "100%" }}
-                        icons={icons}
-                      />
-                    </Paper>
-                  </Grid>
+                <Grid xs={12} lg={6} xl={8} item>
+                  {posInfo}
+                  {hardwareHealth}
+                </Grid>
+                <Grid xs={12} lg={6} xl={4} item>
+                  {storage}
                 </Grid>
               </Grid>
             </Grid>
@@ -783,6 +1041,12 @@ const mapStateToProps = (state) => {
     writeBW: state.dashboardReducer.writeBW,
     readLatency: state.dashboardReducer.readLatency,
     writeLatency: state.dashboardReducer.writeLatency,
+    devices: state.dashboardReducer.devices,
+    bmc: state.dashboardReducer.bmc,
+    totalNominals: state.dashboardReducer.totalNominals,
+    totalWarnings: state.dashboardReducer.totalWarnings,
+    totalCriticals: state.dashboardReducer.totalCriticals,
+    poerState: state.dashboardReducer.poerState,
     fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
     arrayVolCount: state.dashboardReducer.arrayVols,
@@ -811,6 +1075,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchVolumes: () => dispatch({ type: actionTypes.SAGA_FETCH_VOLUME_INFO }),
     fetchArrays: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     fetchPerformance: () => dispatch({ type: actionTypes.SAGA_FETCH_PERFORMANCE_INFO }),
+    fetchHardwareHealth: () => dispatch({ type: actionTypes.SAGA_FETCH_HARDWARE_HEALTH }),
     fetchIpAndMacInfo: () => dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
     selectArray: (array) => dispatch({ type: actionTypes.SELECT_ARRAY, array }),
     setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload))

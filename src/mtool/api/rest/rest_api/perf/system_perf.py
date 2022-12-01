@@ -114,7 +114,7 @@ def get_all_hardware_health(ip, port):
     total_nominal = 0
     total_warning = 0
     total_critical = 0
-    res_devices = [{}]
+    res_devices = []
     for key in devices:
         value = devices[key]
         tstate = NOMINAL
@@ -146,11 +146,11 @@ def get_all_hardware_health(ip, port):
         total_critical += 1 if sstate == CRITICAL else 0
     res_dict['devices'] = res_devices
     res_dict['bmc'] = [
-        { 'name': "Ipmi Fan Speed", 'value': '5' +' rpm', 'state': WARNING},
-        { 'name': "Ipmi Power", 'value': '20' +' watts', 'state': NOMINAL},
-        { 'name': "Ipmi Sensor Value", 'value': '9' , 'state': WARNING},
-        { 'name': "Ipmi Voltage", 'value': '200' + ' volts', 'state': NOMINAL},
-        { 'name': "Ipmi Temperature Celcius", 'value': '58' +" digree", 'state': CRITICAL},
+        { 'name': "Fan Speed", 'value': '5' +' rpm', 'state': WARNING},
+        { 'name': "Power", 'value': '20' +' watts', 'state': NOMINAL},
+        { 'name': "Sensor Value", 'value': '9' , 'state': WARNING},
+        { 'name': "Voltage", 'value': '200' + ' volts', 'state': NOMINAL},
+        { 'name': "Temperature", 'value': '58' +" digree", 'state': CRITICAL},
     ]
     total_warning += 2
     total_nominal += 2

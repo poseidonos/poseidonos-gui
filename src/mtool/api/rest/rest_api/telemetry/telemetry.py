@@ -145,9 +145,6 @@ def get_agg_value(ip, port, metric):
 
 def get_all_hardware_metrics_values(ip, port, metrics):
     try:
-        # prom_url = "http://{ip}:{port}/api/v1/series?".format(ip=ip, port=port)
-        # for metric in metrics:
-        #     prom_url += "match[]=" + metric + "{job=\"poseidonos\"}&"
         prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
         for metric in metrics:
             prom_url += metric + "|"

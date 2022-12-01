@@ -46,6 +46,12 @@ const initialState = {
     writeBW: 0,
     readLatency: 0,
     writeLatency: 0,
+    devices: [],
+    bmc: [],
+    totalNominals: 0,
+    totalWarnings: 0,
+    totalCriticals: 0,
+    powerState: 0,
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
@@ -140,6 +146,16 @@ const dashboardReducer = (state = initialState, action) => {
                 writeBW: action.writeBW,
                 readLatency: action.readLatency,
                 writeLatency: action.writeLatency
+            };
+        case actionTypes.FETCH_HARDWARE_HEALTH:
+            return {
+                ...state,
+                devices: action.devices,
+                bmc: action.bmc,
+                totalNominals: action.totalNominals,
+                totalWarnings: action.totalWarnings,
+                totalCriticals: action.totalCriticals,
+                powerState: action.powerState,
             };
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {

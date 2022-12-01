@@ -45,6 +45,7 @@ export {
     fetchVolumes, 
     fetchAlerts,
     fetchPerformance,
+    fetchHardwareHealth,
     fetchStorage,
     fetchIpAndMac,
 } from "./dashboardActions";
