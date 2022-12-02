@@ -148,10 +148,13 @@ const styles = (theme) => {
       justifyContent: "center",
     },
     storageDetailsPaper: {
-      height: 96,
-      position: "relative",
+      height: "fit-content",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
+    },
+    storageSummary:{
+      position: "relative",
+      height: 73,
       [theme.breakpoints.up("xl")]: {
         height: 180,
       },
@@ -165,9 +168,8 @@ const styles = (theme) => {
     storageGraph: {
       position: "absolute",
       height: "100%",
-      top: 16,
+      top: 0,
       left: 0,
-      padding: theme.spacing(1, 2)
     },
     storageDetailContainer: {
       border: "1px solid lightgray",
@@ -180,8 +182,11 @@ const styles = (theme) => {
         height: 24
       },
     },
+    tabs:{
+      backgroundColor: "#E0E0E0"
+    },
     tab: {
-      fontWeight: "bold"
+      fontSize: 14,
     },
     dashboardSizeLabelContainer: {
       width: "100%",
@@ -202,7 +207,7 @@ const styles = (theme) => {
     },
     hardwareHealthPaper: {
       marginTop: theme.spacing(1),
-      height: 388,
+      height: 390,
       display: "flex",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
@@ -267,8 +272,7 @@ const styles = (theme) => {
       minWidth: 100
     },
     borderSolid: {
-      borderTop: "1px solid #0004",
-      borderBottom: "1px solid #0004"
+      border: "1px solid #0001",
     }
   };
 };
@@ -635,19 +639,18 @@ class Dashboard extends Component {
         <Grid item container sm={12} md={6} lg={12} xl={6} className={classes.ipContainer}>
           <Grid item xs={4}>
             <Typography
-              align="center"
-              className={`${classes.ipText} ${classes.ipBorder}`}
               color="primary"
               variant="h6"
+              className={`${classes.ipText} ${classes.ipBorder}`}
             >
               PoseidonOS
             </Typography>
           </Grid>
           <Grid item xs={8}>
             <Typography
-              variant="h6"
               color="secondary"
               data-testid="dashboard-ip"
+              variant="h6"
               className={classes.ipText}
             >
               {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
@@ -657,22 +660,21 @@ class Dashboard extends Component {
         <Grid item container sm={12} md={6} lg={12} xl={6} className={classes.ipContainer}>
           <Grid item xs={4}>
             <Typography
-              align="center"
-              className={`${classes.ipText} ${classes.ipBorder}`}
               color="primary"
               variant="h6"
+              className={`${classes.ipText} ${classes.ipBorder}`}
             >
               Telemetry
             </Typography>
           </Grid>
-          <Grid item xs={8} container alignConten="center" wrap="nowrap">
+          <Grid item xs={8} container>
             {this.props.telemetryIP && this.props.telemetryPort ?
               (
                 <>
                   <Typography
-                    variant="h6"
-                    data-testid="telemetry-ip"
                     className={classes.ipText}
+                    data-testid="telemetry-ip"
+                    variant="h6"
                   >
                     {this.props.telemetryIP}:{this.props.telemetryPort}
                     &nbsp;&nbsp;&nbsp;
@@ -689,10 +691,10 @@ class Dashboard extends Component {
               ) :
               (
                 <Button
+                  color="secondary"
                   variant="outlined"
                   id="btn-add-telemetry"
                   data-testid="btn-add-telemetry"
-                  color="secondary"
                   onClick={() => this.props.setShowConfig(true)}
                 >
                   Add Telemetry API
@@ -787,13 +789,13 @@ class Dashboard extends Component {
       />
     );
     const storage = (
-      <Paper >
-        <Grid className={classes.storageDetailsPaper}>
-          <Grid item container xs={12} justifyContent="space-between" >
-            <Typography className={classes.cardHeader}>
-              Storage Details
-            </Typography>
-          </Grid>
+      <Paper className={classes.storageDetailsPaper}>
+        <Grid item container xs={12} justifyContent="flex-start" >
+          <Typography className={classes.cardHeader}>
+            Storage Details
+          </Typography>
+        </Grid>
+        <Grid className={classes.storageSummary}>
           <Grid
             container
             justifyContent="center"
@@ -826,28 +828,31 @@ class Dashboard extends Component {
                 <Grid container wrap="wrap" justifyContent="flex-end">
                   <Legend
                     bgColor="rgb(120,133,149)"
-                    title={`Data Written: ${formatBytes(
-                      volUsedSpace
-                    )}`}
+                    title="Data Written"
+                    value={formatBytes(volUsedSpace).replace(' ', '')}
                   />
                   <Legend
                     bgColor="#e0e0e0"
-                    title={`Volume Space Allocated: ${formatBytes(
-                      volSpace
-                    )}`}
+                    title="Volume Space Allocated"
+                    value={formatBytes(volSpace).replace(' ', '')}
                   />
                   <Legend
                     bgColor="#fff"
-                    title={`Available for Volume Creation: ${formatBytes(
-                      this.props.arraySize - volSpace >= BYTE_FACTOR * BYTE_FACTOR ? this.props.arraySize - volSpace : 0
-                    )}`}
+                    title="Available for Volume Creation"
+                    value={
+                      formatBytes(
+                        this.props.arraySize - volSpace >= BYTE_FACTOR * BYTE_FACTOR ?
+                          this.props.arraySize - volSpace :
+                          0
+                      ).replace(' ', '')
+                    }
                   />
                 </Grid>
               </>
             )}
           </Grid>
         </Grid>
-        <Grid className={classes.borderSolid}>
+        <Grid className={classes.tabs} >
           <Tabs
             value={this.state.selectedTab}
             onChange={(e, newVal) => this.setState({ selectedTab: newVal })}
@@ -860,14 +865,14 @@ class Dashboard extends Component {
             <Tab className={classes.tab} value={VOLUMETAB} label={this.props.arrayVolumes.length + " Volumes"} />
           </Tabs>
         </Grid>
-        <Grid>
+        <Grid className={classes.borderSolid}>
           {this.state.selectedTab === ARRAYTAB ? arrayTable : volumeTable}
         </Grid>
       </Paper>
     );
     const hardwareHealth = (
       <Paper className={classes.hardwareHealthPaper}>
-        <Grid item container xs={12} justifyContent="space-between">
+        <Grid item container xs={12} justifyContent="flex-start">
           <Typography className={classes.cardHeader}>
             Hardware Health
           </Typography>
@@ -875,36 +880,18 @@ class Dashboard extends Component {
         <Grid item container xs={12} justifyContent="center" alignItems="flex-start" >
           <Legend
             bgColor="rgba(0, 186, 0, 0.6)"
-            title={
-              (<>
-                <Typography variant="h6" style={{ display: "inline" }}>
-                  {this.props.totalNominals}
-                </Typography>
-                <span style={{ paddingRight: 8 }}> Nominals</span>
-              </>)
-            }
+            title="Nominals"
+            value={this.props.totalNominals}
           />
           <Legend
             bgColor="rgba(255, 186, 0, 0.6)"
-            title={
-              (<>
-                <Typography variant="h6" style={{ display: "inline" }}>
-                  {this.props.totalWarnings}
-                </Typography>
-                <span style={{ paddingRight: 8 }}> Warnings</span>
-              </>)
-            }
+            title="Warnings"
+            value={this.props.totalWarnings}
           />
           <Legend
             bgColor="rgba(255, 62, 0, 0.6)"
-            title={
-              (<>
-                <Typography variant="h6" style={{ display: "inline" }}>
-                  {this.props.totalCriticals}
-                </Typography>
-                <span style={{ paddingRight: 8 }}> Criticals</span>
-              </>)
-            }
+            title="Criticals"
+            value={this.props.totalCriticals}
           />
         </Grid>
         <Grid item container xs={12} md={4} direction="column" style={{ border: "1px solid rgb(0 0 0 / 12%)", marginBottom: "4px" }}>
