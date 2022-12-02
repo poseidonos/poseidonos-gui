@@ -152,17 +152,14 @@ const styles = (theme) => {
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
     },
-    storageSummary:{
+    storageSummary: {
       position: "relative",
-      height: 73,
+      height: 81,
       [theme.breakpoints.up("xl")]: {
-        height: 180,
+        height: 166,
       },
       [theme.breakpoints.down("md")]: {
         height: 122,
-      },
-      [theme.breakpoints.down("xs")]: {
-        height: 148,
       },
     },
     storageGraph: {
@@ -175,14 +172,14 @@ const styles = (theme) => {
       border: "1px solid lightgray",
       width: "100%",
       margin: "auto 8px",
-      height: 12,
+      height: 14,
       overflow: "hidden",
       position: "relative",
       [theme.breakpoints.up("xl")]: {
         height: 24
       },
     },
-    tabs:{
+    tabs: {
       backgroundColor: "#E0E0E0"
     },
     tab: {
@@ -194,38 +191,39 @@ const styles = (theme) => {
       alignItems: "flex-end"
     },
     dashboardMinLabel: {
+      fontSize: 14,
       float: "left",
       display: "block",
       textAlign: "left",
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
     },
     dashboardMaxLabel: {
+      fontSize: 14,
       float: "right",
       display: "block",
       textAlign: "right",
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
     },
     hardwareHealthPaper: {
       marginTop: theme.spacing(1),
-      height: 390,
+      height: 398,
       display: "flex",
       padding: theme.spacing(1, 2),
       paddingBottom: 0,
       flexWrap: "wrap",
     },
-    tableHeader: {
+    tableTitle: {
       height: '46px',
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       padding: theme.spacing(0, 2),
     },
-    tableSmallHeader: {
-      height: '37px',
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: theme.spacing(0, 2),
+    tableHeader: {
+      backgroundColor: "#788595",
+      color: "#FFF",
+      paddingTop: 8,
+      paddingBottom: 8
     },
     volName: {
       display: "inline-block",
@@ -266,6 +264,10 @@ const styles = (theme) => {
       overflow: "hidden",
       textAlign: "left",
       paddingLeft: theme.spacing(2),
+      marginTop: theme.spacing(2.5),
+      [theme.breakpoints.down("xs")]: {
+        marginTop: theme.spacing(1.5),
+      },
     },
     arraySelect: {
       textAlign: "center",
@@ -291,6 +293,17 @@ const icons = {
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
 
+const stateCompare = (a, b) => {
+  if (a.state === CRITICAL)
+    return -1;
+  if (b.state === CRITICAL)
+    return 1;
+  if (a.state === WARNING)
+    return -1;
+  if (b.state === WARNING)
+    return 1;
+}
+
 const getUsedSpace = (total, remain) => {
   if (Number.isNaN(remain)) {
     return formatBytes(0);
@@ -298,6 +311,14 @@ const getUsedSpace = (total, remain) => {
 
   return formatBytes(total - remain);
 }
+
+const getColorStyle = (state) => (
+  state === "critical" ?
+    { color: "rgba(255, 62, 0, 0.6)" } :
+    state === "warning" ?
+      { color: "rgba(255, 186, 0)" } :
+      { color: "rgba(0, 186, 0)" }
+)
 
 const MetricsCard = ({ classes, header, writeValue, readValue }) => {
   return (
@@ -364,7 +385,7 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
 const BMCMetric = ({ classes, name, value, state }) => {
   return (
     <>
-      <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
+      <Grid item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
         <Typography
           className={classes.metricText}
           color="secondary"
@@ -372,16 +393,12 @@ const BMCMetric = ({ classes, name, value, state }) => {
           {name}
         </Typography>
       </Grid>
-      <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
+      <Grid item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
         <Typography
           color="secondary"
           data-testid="dashboard-ip"
-          className={classes.ipText}
-          style={state === "critical" ?
-            { color: "rgba(255, 62, 0, 0.6)" } :
-            state === "warning" ?
-              { color: "rgba(255, 186, 0)" } :
-              { color: "rgba(0, 186, 0)" }}
+          className={classes.metricText}
+          style={getColorStyle(state)}
         >
           {value}
         </Typography>
@@ -392,9 +409,8 @@ const BMCMetric = ({ classes, name, value, state }) => {
 
 const ARRAYTAB = "arrayTab";
 const VOLUMETAB = "volumeTab";
-const CRITICAL = "critical"
-const WARNING = "warning"
-const NOMINAL = "nominal"
+const CRITICAL = "critical";
+const WARNING = "warning";
 
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
@@ -506,7 +522,7 @@ class Dashboard extends Component {
         cellStyle: localCellStyle
       },
       {
-        title: "Total Space",
+        title: "TotalSpace",
         cellStyle: localCellStyle,
         render: (rowData) => formatBytes(rowData.totalsize),
         customSort: (a, b) => (a.totalsize - b.totalsize)
@@ -561,44 +577,25 @@ class Dashboard extends Component {
       {
         title: "Temperature",
         cellStyle: localCellStyle,
-        render: (rowData) => <Typography style={rowData.temperature.state === "critical" ?
-          { color: "rgba(255, 62, 0, 0.6)" } :
-          rowData.temperature.state === "warning" ?
-            { color: "rgba(255, 186, 0, 0.8)" } :
-            { color: "rgba(0, 186, 0)" }}>{Number(rowData.temperature.value) > 273 ? Number(rowData.temperature.value) - 273 : rowData.temperature.value}</Typography>,
-        customSort: (a, b) => {
-          a = a.temperature
-          b = b.temperature
-          if (a.state === CRITICAL)
-            return -1;
-          if (b.state === CRITICAL)
-            return 1;
-          if (a.state === WARNING)
-            return -1;
-          if (b.state === WARNING)
-            return 1;
-        }
+        render: (rowData) => (
+          <Typography style={getColorStyle(rowData.temperature.state)}>
+            {
+              Number(rowData.temperature.value) > 273 ? Number(rowData.temperature.value) - 273 :
+                rowData.temperature.value
+            }
+          </Typography>
+        ),
+        customSort: (a, b) => stateCompare(a.temperature, b.temperature)
       },
       {
         title: "AvailbaleSpare",
         cellStyle: localCellStyle,
-        render: (rowData) => <Typography style={rowData.available_spare.state === "critical" ?
-          { color: "rgba(255, 62, 0, 0.6)" } :
-          rowData.available_spare.state === "warning" ?
-            { color: "rgba(255, 186, 0, 0.8)" } :
-            { color: "rgba(0, 186, 0)" }}>{rowData.available_spare.value}</Typography>,
-        customSort: (a, b) => {
-          a = a.available_spare
-          b = b.available_spare
-          if (a.state === CRITICAL)
-            return -1;
-          if (b.state === CRITICAL)
-            return 1;
-          if (a.state === WARNING)
-            return -1;
-          if (b.state === WARNING)
-            return 1;
-        }
+        render: (rowData) => (
+          <Typography style={getColorStyle(rowData.available_spare.state)}>
+            {rowData.available_spare.value}
+          </Typography>
+        ),
+        customSort: (a, b) => stateCompare(a.available_spare, b.available_spare)
       }
     ];
     const performance = (
@@ -705,11 +702,12 @@ class Dashboard extends Component {
         </Grid>
       </Paper>
     );
+    console.log(this.props)
     const arrayTable = (
       <MaterialTable
         components={{
           Toolbar: () => (
-            <Grid className={classes.tableHeader}>
+            <Grid className={classes.tableTitle}>
               <Typography variant="h6" color="secondary">
                 Array Summary
               </Typography>
@@ -756,7 +754,7 @@ class Dashboard extends Component {
         }}
         components={{
           Toolbar: () => (
-            <Grid className={classes.tableHeader}>
+            <Grid className={classes.tableTitle}>
               <Typography variant="h6" color="secondary">
                 Volume Summary
               </Typography>
@@ -877,7 +875,7 @@ class Dashboard extends Component {
             Hardware Health
           </Typography>
         </Grid>
-        <Grid item container xs={12} justifyContent="center" alignItems="flex-start" >
+        <Grid item container xs={12} justifyContent="center" alignItems="flex-start">
           <Legend
             bgColor="rgba(0, 186, 0, 0.6)"
             title="Nominals"
@@ -894,35 +892,20 @@ class Dashboard extends Component {
             value={this.props.totalCriticals}
           />
         </Grid>
-        <Grid item container xs={12} md={4} direction="column" style={{ border: "1px solid rgb(0 0 0 / 12%)", marginBottom: "4px" }}>
+        <Grid item container xs={12} md={4} direction="column" className={classes.borderSolid}>
           <Grid
             item
-            className={classes.tableSmallHeader}
+            className={classes.tableHeader}
             container
             justifyContent="center"
-            style={{
-              backgroundColor: "#788595",
-              color: "#FFF",
-              paddingTop: 8,
-              paddingBottom: 8,
-              paddingRight: 0, borderBottom: "1px solid rgb(0 0 0 / 12%)"
-            }}>
+          >
             <Typography>
               IPMI
             </Typography>
           </Grid>
-          <Grid item container spacing={2} style={{ paddingTop: "8px" }}>
+          <Grid item container>
             {
-              this.props.bmc.sort((a, b) => {
-                if (a.state === CRITICAL)
-                  return -1;
-                if (b.state === CRITICAL)
-                  return 1;
-                if (a.state === WARNING)
-                  return -1;
-                if (b.state === WARNING)
-                  return 1;
-              }).map((metric) =>
+              this.props.bmc.sort((a, b) => stateCompare(a, b)).map((metric) =>
                 <BMCMetric
                   classes={classes}
                   name={metric.name}
@@ -945,8 +928,8 @@ class Dashboard extends Component {
                 paddingBottom: 8,
                 paddingRight: 0,
               },
-              minBodyHeight: 274,
-              maxBodyHeight: 274,
+              minBodyHeight: 280,
+              maxBodyHeight: 280,
               search: false,
               sorting: true
             }}
