@@ -33,12 +33,13 @@
 import React, { Component } from "react";
 import io from "socket.io-client";
 import { connect } from "react-redux";
-import MaterialTable from "material-table";
+import MaterialTable, { MTableBodyRow } from "material-table";
+import { PieChart } from 'react-minimal-pie-chart';
 import "react-dropdown/style.css";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton, Tabs, Tab } from "@material-ui/core";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton, Tabs, Tab, Box, Tooltip } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -46,7 +47,7 @@ import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import { Edit } from "@material-ui/icons";
+import { ArrowBack, Edit } from "@material-ui/icons";
 
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
@@ -149,17 +150,16 @@ const styles = (theme) => {
     },
     storageDetailsPaper: {
       height: "fit-content",
-      padding: theme.spacing(1, 2),
-      paddingBottom: 0,
+      padding: theme.spacing(1, 2)
     },
     storageSummary: {
       position: "relative",
-      height: 81,
+      height: 79,
       [theme.breakpoints.up("xl")]: {
-        height: 166,
+        height: 165,
       },
       [theme.breakpoints.down("md")]: {
-        height: 122,
+        height: 121,
       },
     },
     storageGraph: {
@@ -206,11 +206,14 @@ const styles = (theme) => {
     },
     hardwareHealthPaper: {
       marginTop: theme.spacing(1),
-      height: 398,
+      height: 406,
       display: "flex",
       padding: theme.spacing(1, 2),
-      paddingBottom: 0,
       flexWrap: "wrap",
+      alignItems: "flex-end"
+    },
+    tableHeight: {
+      height: 344,
     },
     tableTitle: {
       height: '46px',
@@ -219,11 +222,23 @@ const styles = (theme) => {
       justifyContent: "space-between",
       padding: theme.spacing(0, 2),
     },
+    tooltip: {
+      backgroundColor: "white",
+      opacity: 1,
+      color: "rgba(0, 0, 0, 1)",
+      maxHeight: 300,
+      fontSize: theme.typography.pxToRem(12),
+      border: "1px solid #dadde9",
+      "& b": {
+        fontWeight: theme.typography.fontWeightMedium,
+      },
+    },
     tableHeader: {
       backgroundColor: "#788595",
       color: "#FFF",
-      paddingTop: 8,
-      paddingBottom: 8
+      padding: 5,
+      paddingLeft: theme.spacing(2),
+      width: "-webkit-fill-available",
     },
     volName: {
       display: "inline-block",
@@ -293,16 +308,25 @@ const icons = {
 // namespace to connect to the websocket for multi-volume creation
 const healthStatusSocketEndPoint = ":5000/health_status";
 
-const stateCompare = (a, b) => {
-  if (a.state === CRITICAL)
-    return -1;
-  if (b.state === CRITICAL)
-    return 1;
-  if (a.state === WARNING)
-    return -1;
-  if (b.state === WARNING)
-    return 1;
-}
+const ARRAYTAB = "arrayTab";
+const VOLUMETAB = "volumeTab";
+const CRITICAL = "critical";
+const WARNING = "warning";
+const NOMINAL = "nominal";
+const TOTAL = "Summary"
+
+const stateOrder = { [CRITICAL]: 1, [WARNING]: 2, [NOMINAL]: 3 };
+const statesOrder = {
+  [CRITICAL + CRITICAL]: 1,
+  [CRITICAL + WARNING]: 2,
+  [WARNING + CRITICAL]: 3,
+  [CRITICAL + NOMINAL]: 4,
+  [NOMINAL + CRITICAL]: 5,
+  [WARNING + WARNING]: 6,
+  [WARNING + NOMINAL]: 7,
+  [NOMINAL + WARNING]: 8,
+  [NOMINAL + NOMINAL]: 9
+};
 
 const getUsedSpace = (total, remain) => {
   if (Number.isNaN(remain)) {
@@ -313,9 +337,9 @@ const getUsedSpace = (total, remain) => {
 }
 
 const getColorStyle = (state) => (
-  state === "critical" ?
-    { color: "rgba(255, 62, 0, 0.6)" } :
-    state === "warning" ?
+  state === CRITICAL ?
+    { color: "rgba(255, 62, 0)" } :
+    state === WARNING ?
       { color: "rgba(255, 186, 0)" } :
       { color: "rgba(0, 186, 0)" }
 )
@@ -385,7 +409,7 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
 const BMCMetric = ({ classes, name, value, state }) => {
   return (
     <>
-      <Grid item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
+      <Grid key={name} item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
         <Typography
           className={classes.metricText}
           color="secondary"
@@ -393,7 +417,7 @@ const BMCMetric = ({ classes, name, value, state }) => {
           {name}
         </Typography>
       </Grid>
-      <Grid item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
+      <Grid key={value} item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
         <Typography
           color="secondary"
           data-testid="dashboard-ip"
@@ -407,16 +431,21 @@ const BMCMetric = ({ classes, name, value, state }) => {
   )
 }
 
-const ARRAYTAB = "arrayTab";
-const VOLUMETAB = "volumeTab";
-const CRITICAL = "critical";
-const WARNING = "warning";
 
 // eslint-disable-next-line react/no-multi-comp
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      healthData: [],
+      pieChart: {
+        title: TOTAL,
+        totalCriticals: this.props.totalCriticals,
+        totalWarnings: this.props.totalWarnings,
+        totalNominals: this.props.totalNominals
+      },
+      selectedTable: "device",
+      selectedRow: null,
       selectedTab: ARRAYTAB,
       mobileOpen: false,
       healthStatusSocket: io(healthStatusSocketEndPoint, {
@@ -429,6 +458,7 @@ class Dashboard extends Component {
     this.interval = null;
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.selectArray = this.selectArray.bind(this);
+    this.getPercentage = this.getPercentage.bind(this);
   }
 
   componentDidMount() {
@@ -442,15 +472,28 @@ class Dashboard extends Component {
     this.props.fetchIpAndMacInfo();
     this.props.enableFetchingAlerts(true);
     this.interval = setInterval(() => {
-      if (this.props.isConfigured)
+      if (this.props.isConfigured) {
         this.props.fetchPerformance();
-      this.props.fetchHardwareHealth();
+        this.props.fetchHardwareHealth();
+      }
     }, 2000);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.isConfigured && this.props.telemetryIP !== prevProps.telemetryIP)
       this.props.fetchCheckTelemetry();
+    if (this.props.totalCriticals !== prevProps.totalCriticals ||
+      this.props.totalWarnings !== prevProps.totalWarnings ||
+      this.props.totalNominals !== prevProps.totalNominals)
+      this.setState({
+        ...this.state,
+        pieChart: {
+          ...this.state.pieChart,
+          totalCriticals: this.props.totalCriticals,
+          totalWarnings: this.props.totalWarnings,
+          totalNominals: this.props.totalNominals
+        }
+      })
   }
 
   componentWillUnmount() {
@@ -469,7 +512,25 @@ class Dashboard extends Component {
     this.props.selectArray(value);
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   if (
+  //     JSON.stringify(this.props.devices) === JSON.stringify(nextProps.devices) &&
+  //     JSON.stringify(this.props.bmc) === JSON.stringify(nextProps.bmc) &&
+  //     this.props.totalCriticals === nextProps.totalCriticals &&
+  //     this.props.totalWarnings === nextProps.totalWarnings &&
+  //     this.props.totalNominals === nextProps.totalNominals
+  //   )
+  //     return true;
+  //   return false;
+  // }
+
+  getPercentage(value) {
+    const total = this.state.pieChart.totalCriticals + this.state.pieChart.totalNominals + this.state.pieChart.totalWarnings;
+    return Math.round(value * 1000 / total) / 10;
+  }
+
   render() {
+    console.log("In Dashboard render")
     let volUsedSpace = 0;
     let volSpace = 0;
     const { classes } = this.props;
@@ -563,40 +624,80 @@ class Dashboard extends Component {
         cellStyle: localCellStyle
       }
     ];
-    const deviceTableColumns = [
+    const bmcTableColumns = [
       {
-        title: "Name",
-        cellStyle: localCellStyle,
-        render: (rowData) => (
-          <LightTooltip interactive title={rowData.name} TransitionComponent={Zoom}>
-            <Typography className={classes.volName}>{rowData.name}</Typography>
-          </LightTooltip>
-        ),
+        title: "BMCMetrics",
+        cellStyle: {
+          ...localCellStyle,
+          width: 130,
+        },
+        field: "type",
         customSort: (a, b) => (a.name.localeCompare(b.name))
       },
       {
-        title: "Temperature",
+        title: "Criticals",
         cellStyle: localCellStyle,
-        render: (rowData) => (
-          <Typography style={getColorStyle(rowData.temperature.state)}>
-            {
-              Number(rowData.temperature.value) > 273 ? Number(rowData.temperature.value) - 273 :
-                rowData.temperature.value
-            }
-          </Typography>
-        ),
-        customSort: (a, b) => stateCompare(a.temperature, b.temperature)
+        render: (rowData) => <Typography style={rowData.critical_count ? getColorStyle(CRITICAL) : {}}>{rowData.critical_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
       },
       {
-        title: "AvailbaleSpare",
+        title: "Warnings",
         cellStyle: localCellStyle,
-        render: (rowData) => (
-          <Typography style={getColorStyle(rowData.available_spare.state)}>
-            {rowData.available_spare.value}
-          </Typography>
-        ),
-        customSort: (a, b) => stateCompare(a.available_spare, b.available_spare)
+        render: (rowData) => <Typography style={rowData.warning_count ? getColorStyle(WARNING) : {}}>{rowData.warning_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Nominals",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.nominal_count ? getColorStyle(NOMINAL) : {}}>{rowData.nominal_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
       }
+    ];
+    const deviceTableColumns = [
+      {
+        title: "DeviceMetrics",
+        cellStyle: {
+          ...localCellStyle,
+          width: 130,
+        },
+        field: "type",
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Criticals",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.critical_count ? getColorStyle(CRITICAL) : {}}>{rowData.critical_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Warnings",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.warning_count ? getColorStyle(WARNING) : {}}>{rowData.warning_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Nominals",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={rowData.nominal_count ? getColorStyle(NOMINAL) : {}}>{rowData.nominal_count}</Typography>,
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      }
+    ];
+    const healthTableColumns = [
+      {
+        title: "Name",
+        cellStyle: {
+          ...localCellStyle,
+          width: 130,
+        },
+        field: "name",
+        customSort: (a, b) => (a.name.localeCompare(b.name))
+      },
+      {
+        title: "Value",
+        cellStyle: localCellStyle,
+        render: (rowData) => <Typography style={getColorStyle(rowData.state)}>{rowData.value}</Typography>,
+        customSort: (a, b) => stateOrder[a.state] - stateOrder[b.state]
+      },
     ];
     const performance = (
       <>
@@ -702,7 +803,6 @@ class Dashboard extends Component {
         </Grid>
       </Paper>
     );
-    console.log(this.props)
     const arrayTable = (
       <MaterialTable
         components={{
@@ -723,8 +823,8 @@ class Dashboard extends Component {
             paddingTop: 8,
             paddingBottom: 8
           },
-          minBodyHeight: 280,
-          maxBodyHeight: 280,
+          minBodyHeight: 290,
+          maxBodyHeight: 290,
           search: false,
           sorting: true
         }}
@@ -747,8 +847,8 @@ class Dashboard extends Component {
             paddingTop: 8,
             paddingBottom: 8
           },
-          minBodyHeight: 280,
-          maxBodyHeight: 280,
+          minBodyHeight: 290,
+          maxBodyHeight: 290,
           search: false,
           sorting: true
         }}
@@ -784,6 +884,190 @@ class Dashboard extends Component {
           boxShadow: "none",
         }}
         icons={icons}
+      />
+    );
+    const ipmiTable = (
+      <MaterialTable
+        columns={bmcTableColumns}
+        data={this.props.bmc}
+        onRowClick={((e, selectedRow) =>
+          this.setState({
+            selectedTable: "ipmi",
+            selectedRow: selectedRow.tableData.id
+          })
+        )}
+        options={{
+          headerStyle: {
+            backgroundColor: "#788595",
+            color: "#FFF",
+            paddingTop: 8,
+            paddingBottom: 8,
+            paddingRight: 0,
+          },
+          search: false,
+          sorting: true,
+          paging: false,
+          rowStyle: rowData => {
+            (
+              this.state.selectedRow === rowData.tableData.id &&
+              this.state.selectedTable === "ipmi" && (
+                this.state.pieChart.totalCriticals !== rowData.critical_count ||
+                this.state.pieChart.totalWarnings !== rowData.warning_count ||
+                this.state.pieChart.totalNominals !== rowData.nominal_count)) &&
+              this.setState({
+                pieChart: {
+                  title: rowData.type,
+                  totalCriticals: rowData.critical_count,
+                  totalWarnings: rowData.warning_count,
+                  totalNominals: rowData.nominal_count
+                }
+              })
+            return {
+              backgroundColor: (this.state.selectedTable === "ipmi" && this.state.selectedRow === rowData.tableData.id) && '#EEE'
+            }
+          }
+        }}
+        components={{
+          Toolbar: () => <></>,
+          Row: (props) => {
+            return <Tooltip
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+              title={(
+                <MaterialTable
+                  columns={healthTableColumns}
+                  components={{
+                    Toolbar: () => <></>
+                  }}
+                  data={props.data.metrics}
+                  icons={icons}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: "#788595",
+                      color: "#FFF",
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                      paddingRight: 0,
+                    },
+                    search: false,
+                    sorting: true,
+                    paging: false,
+                  }}
+                  style={{
+                    width: "100%",
+                    maxHeight: 300,
+                    boxShadow: "none",
+                    border: "1px solid rgb(0 0 0 / 12%)",
+                    overflow: "scroll"
+                  }}
+                />
+              )}
+              interactive
+              placement="right"
+            >
+              <MTableBodyRow {...props} />
+            </Tooltip >
+          }
+        }}
+        style={{
+          width: "100%",
+          boxShadow: "none",
+          border: "1px solid rgb(0 0 0 / 12%)"
+        }}
+        icons={icons}
+      />
+    );
+    const deviceTable = (
+      <MaterialTable
+        columns={deviceTableColumns}
+        components={{
+          Toolbar: () => <></>,
+          Row: (props) => {
+            return <Tooltip
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+              title={(
+                <MaterialTable
+                  columns={healthTableColumns}
+                  components={{
+                    Toolbar: () => <></>
+                  }}
+                  data={props.data.metrics}
+                  icons={icons}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: "#788595",
+                      color: "#FFF",
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                      paddingRight: 0,
+                    },
+                    search: false,
+                    sorting: true,
+                    paging: false,
+                  }}
+                  style={{
+                    width: "100%",
+                    maxHeight: 300,
+                    boxShadow: "none",
+                    border: "1px solid rgb(0 0 0 / 12%)",
+                    overflow: "scroll"
+                  }}
+                />
+              )}
+              interactive
+              placement="right"
+            >
+              <MTableBodyRow {...props} />
+            </Tooltip >
+          }
+        }}
+        data={this.props.devices}
+        icons={icons}
+        onRowClick={((e, selectedRow) =>
+          this.setState({
+            selectedTable: "device",
+            selectedRow: selectedRow.tableData.id
+          })
+        )}
+        options={{
+          headerStyle: {
+            backgroundColor: "#788595",
+            color: "#FFF",
+            paddingTop: 8,
+            paddingBottom: 8,
+            paddingRight: 0,
+          },
+          search: false,
+          sorting: true,
+          paging: false,
+          rowStyle: rowData => {
+            (
+              this.state.selectedRow === rowData.tableData.id &&
+              this.state.selectedTable === "device" && (
+                this.state.pieChart.totalCriticals !== rowData.critical_count ||
+                this.state.pieChart.totalWarnings !== rowData.warning_count ||
+                this.state.pieChart.totalNominals !== rowData.nominal_count)) &&
+              this.setState({
+                pieChart: {
+                  title: rowData.type,
+                  totalCriticals: rowData.critical_count,
+                  totalWarnings: rowData.warning_count,
+                  totalNominals: rowData.nominal_count
+                }
+              })
+            return {
+              backgroundColor: (this.state.selectedTable === "device" && this.state.selectedRow === rowData.tableData.id) && '#EEE'
+            }
+          }
+        }}
+        style={{
+          width: "100%",
+          boxShadow: "none",
+          border: "1px solid rgb(0 0 0 / 12%)",
+        }}
       />
     );
     const storage = (
@@ -875,7 +1159,10 @@ class Dashboard extends Component {
             Hardware Health
           </Typography>
         </Grid>
-        <Grid item container xs={12} justifyContent="center" alignItems="flex-start">
+        <Grid item container xs={12}
+          justifyContent="center"
+        // alignItems="baseL"
+        >
           <Legend
             bgColor="rgba(0, 186, 0, 0.6)"
             title="Nominals"
@@ -892,58 +1179,132 @@ class Dashboard extends Component {
             value={this.props.totalCriticals}
           />
         </Grid>
-        <Grid item container xs={12} md={4} direction="column" className={classes.borderSolid}>
-          <Grid
-            item
+        <Grid item container xs={12} md={4}
+          direction="column"
+          justifyContent="space-between"
+          alignItems="center"
+          className={`${classes.tableHeight} ${classes.borderSolid}`}
+        >
+          <Typography
+            color="secondary"
+            variant="h6"
             className={classes.tableHeader}
-            container
-            justifyContent="center"
           >
-            <Typography>
-              IPMI
-            </Typography>
-          </Grid>
-          <Grid item container>
-            {
-              this.props.bmc.sort((a, b) => stateCompare(a, b)).map((metric) =>
-                <BMCMetric
-                  classes={classes}
-                  name={metric.name}
-                  value={metric.value}
-                  state={metric.state}
-                />
-              )
+            {this.state.pieChart.title}
+          </Typography>
+
+          <Box
+            sx={{ mt: 4, mb: "auto", width: "100%" }}
+            display="flex"
+            flexDirection="column"
+          >
+            <PieChart
+              animate
+              animationDuration={500}
+              data={[
+                { title: CRITICAL, value: this.state.pieChart.totalCriticals, color: "rgba(255,0,0,0.8)" },
+                { title: WARNING, value: this.state.pieChart.totalWarnings, color: "orange" },
+                { title: NOMINAL, value: this.state.pieChart.totalNominals, color: "rgba(102,214,102,0.8)" },
+              ]}
+              labelPosition={60}
+              label={(data) => {
+                const value = this.getPercentage(data.dataEntry.value);
+                return value < 5 ? "" : value + "%";
+              }}
+              labelStyle={{
+                fontSize: "10px",
+                fontColor: "FFFFFA",
+                fontWeight: "400",
+                pointerEvents: "none"
+              }}
+              lengthAngle={360}
+              lineWidth={75}
+              radius={45}
+              segmentsShift={2}
+              style={{
+                width: "80%",
+                height: "80%",
+                maxHeight: 160,
+                padding: 2,
+                alignSelf: "center",
+                marginBottom: "auto"
+              }}
+            />
+            {this.getPercentage(this.state.pieChart.totalNominals) < 5 &&
+              this.getPercentage(this.state.pieChart.totalNominals) !== 0 &&
+              <Legend
+                bgColor="rgba(0, 186, 0, 0.6)"
+                title="Nominals"
+                value={this.getPercentage(this.state.pieChart.totalNominals) + "%"}
+              />
             }
-          </Grid>
+            {this.getPercentage(this.state.pieChart.totalWarnings) < 5 &&
+              this.getPercentage(this.state.pieChart.totalWarnings) !== 0 &&
+              <Legend
+                bgColor="rgba(255, 186, 0, 0.6)"
+                title="Warnings"
+                value={this.getPercentage(this.state.pieChart.totalWarnings) + "%"}
+              />
+            }
+            {this.getPercentage(this.state.pieChart.totalCriticals) < 5 &&
+              this.getPercentage(this.state.pieChart.totalCriticals) !== 0 &&
+              <Legend
+                bgColor="rgba(255, 62, 0, 0.6)"
+                title="Criticals"
+                value={this.getPercentage(this.state.pieChart.totalCriticals) + "%"}
+              />
+            }
+            {this.state.pieChart.title !== TOTAL &&
+              <Button
+                variant="outlined"
+                color="secondry"
+                size="small"
+                onClick={() => {
+                  this.setState({
+                    selectedRow: null,
+                    pieChart: {
+                      title: TOTAL,
+                      totalCriticals: this.props.totalCriticals,
+                      totalWarnings: this.props.totalWarnings,
+                      totalNominals: this.props.totalNominals
+                    }
+                  })
+                }}
+                style={{
+                  margin: "auto"
+                }}
+              >
+                View Details
+              </Button>
+            }
+          </Box>
+          {this.state.pieChart.title !== TOTAL &&
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => {
+                this.setState({
+                  selectedRow: null,
+                  pieChart: {
+                    title: TOTAL,
+                    totalCriticals: this.props.totalCriticals,
+                    totalWarnings: this.props.totalWarnings,
+                    totalNominals: this.props.totalNominals
+                  }
+                })
+              }}
+              style={{
+                marginBottom: 8
+              }}
+            >
+              <ArrowBack /> Summary
+            </Button>
+          }
         </Grid>
-        <Grid item container sm={12} md={8}>
-          <MaterialTable
-            columns={deviceTableColumns}
-            data={this.props.devices}
-            options={{
-              headerStyle: {
-                backgroundColor: "#788595",
-                color: "#FFF",
-                paddingTop: 8,
-                paddingBottom: 8,
-                paddingRight: 0,
-              },
-              minBodyHeight: 280,
-              maxBodyHeight: 280,
-              search: false,
-              sorting: true
-            }}
-            components={{
-              Toolbar: () => <></>
-            }}
-            style={{
-              width: "100%",
-              height: "280",
-              boxShadow: "none",
-              border: "1px solid rgb(0 0 0 / 12%)"
-            }}
-            icons={icons}
-          />
+        <Grid item sm={12} md={8} className={classes.tableHeight}>
+          {ipmiTable}
+          {deviceTable}
         </Grid>
       </Paper>
     );

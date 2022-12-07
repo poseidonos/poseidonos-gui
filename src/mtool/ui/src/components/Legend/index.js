@@ -59,10 +59,10 @@ const useStyles = makeStyles(theme => ({
 const Legend = (props) => {
   const classes = useStyles();
   return (
-    <div className={classes.legendItem} style={props.value? {alignItems:"baseline"}:{}}>
+    <div className={classes.legendItem} style={props.value || props.value === 0 ? { alignItems: "baseline" } : {}}>
       <span className={classes.legend} style={{ backgroundColor: props.bgColor }} />
       {
-        props.value &&
+        (props.value || props.value === 0) &&
         <Typography className={classes.legendValue} color="secondary" variant="h6">
           {props.value}
         </Typography>
