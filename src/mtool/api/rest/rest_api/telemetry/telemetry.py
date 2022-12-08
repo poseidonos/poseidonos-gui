@@ -157,7 +157,7 @@ def get_device_metrics_values(ip, port, metrics):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def get_bmc_metrics_values(ip, port, metrics):
+def get_ipmi_metrics_values(ip, port, metrics):
     try:
         prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
         for metric in metrics:

@@ -109,23 +109,32 @@ const HardwareHealth = (props) => {
         criticals: props.totalCriticals,
         warnings: props.totalWarnings,
         nominals: props.totalNominals,
-        metrics: []
+        metrics: [],
+        unit: "",
     });
 
     useEffect(() => {
-        setPieChart({
-            title: TOTAL,
-            criticals: props.totalCriticals,
-            warnings: props.totalWarnings,
-            nominals: props.totalNominals,
-            metrics: []
-        })
-    }, [props.totalCriticals, props.totalWarnings, props.totalNominals])
+        if (selectedRow === null)
+            setPieChart({
+                title: TOTAL,
+                criticals: props.totalCriticals,
+                warnings: props.totalWarnings,
+                nominals: props.totalNominals,
+                metrics: [],
+                unit: "",
+            })
+    }, [props.totalCriticals, props.totalWarnings, props.totalNominals, selectedRow])
 
     const getPercentage = (value) => {
         const total = pieChart.criticals + pieChart.nominals + pieChart.warnings;
         return Math.round(value * 1000 / total) / 10;
     }
+    let ipmiErrorMessage = "";
+    if (!props.isIMPIChassisPowerOn)
+        ipmiErrorMessage = "IPMI Power is OFF"
+    if (props.errorInIMPI)
+        ipmiErrorMessage = "Please Check IPMI Exporter"
+
     /* eslint-disable react/no-multi-comp */
     const icons = {
         // FirstPage: () => <FirstPage id="Dashboard-icon-vol-firstpage" />,
@@ -136,9 +145,9 @@ const HardwareHealth = (props) => {
         // DetailPanel: ChevronRight,
         SortArrow: ArrowUpward,
     };
-    const bmcTableColumns = [
+    const ipmiTableColumns = [
         {
-            title: "BMCMetrics",
+            title: "IPMI",
             cellStyle: {
                 ...localCellStyle,
                 width: 130,
@@ -149,25 +158,25 @@ const HardwareHealth = (props) => {
         {
             title: "Criticals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.critical_count ? getColorStyle[CRITICAL] : {}}>{rowData.critical_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.warning_count ? getColorStyle[WARNING] : {}}>{rowData.warning_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.nominal_count ? getColorStyle[NOMINAL] : {}}>{rowData.nominal_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         }
     ];
     const deviceTableColumns = [
         {
-            title: "DeviceMetrics",
+            title: "Device",
             cellStyle: {
                 ...localCellStyle,
                 width: 130,
@@ -178,19 +187,19 @@ const HardwareHealth = (props) => {
         {
             title: "Criticals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.critical_count ? getColorStyle[CRITICAL] : {}}>{rowData.critical_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.warning_count ? getColorStyle[WARNING] : {}}>{rowData.warning_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.nominal_count ? getColorStyle[NOMINAL] : {}}>{rowData.nominal_count}</Typography>,
+            render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
             customSort: (a, b) => (a.name.localeCompare(b.name))
         }
     ];
@@ -205,7 +214,7 @@ const HardwareHealth = (props) => {
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
-            title: "Value",
+            title: `Value (${pieChart.unit})`,
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={getColorStyle[rowData.state]}>{rowData.value}</Typography>,
             customSort: (a, b) => stateOrder[a.state] - stateOrder[b.state]
@@ -213,19 +222,30 @@ const HardwareHealth = (props) => {
     ];
     const ipmiTable = (
         <MaterialTable
-            columns={bmcTableColumns}
-            data={props.bmc}
+            columns={ipmiTableColumns}
+            data={props.ipmi}
+            localization={{
+                body: {
+                    emptyDataSourceMessage: ipmiErrorMessage !== "" &&
+                        (
+                            <Typography >
+                                {ipmiErrorMessage}
+                            </Typography>
+                        )
+                }
+            }}
             onRowClick={((e, localSelectedRow) => {
                 setSelectedTable(IPMI);
                 setSelectedRow(localSelectedRow.tableData.id);
-                const bmc = props.bmc[localSelectedRow.tableData.id];
+                const ipmi = props.ipmi[localSelectedRow.tableData.id];
                 setPieChart({
                     ...pieChart,
-                    title: bmc.type,
-                    criticals: bmc.critical_count,
-                    warnings: bmc.warning_count,
-                    nominals: bmc.nominal_count,
-                    metrics: bmc.metrics
+                    title: ipmi.type,
+                    criticals: ipmi.criticals,
+                    warnings: ipmi.warnings,
+                    nominals: ipmi.nominals,
+                    metrics: ipmi.metrics,
+                    unit: ipmi.unit
                 })
             }
             )}
@@ -266,10 +286,11 @@ const HardwareHealth = (props) => {
                 setPieChart({
                     ...pieChart,
                     title: device.type,
-                    criticals: device.critical_count,
-                    warnings: device.warning_count,
-                    nominals: device.nominal_count,
-                    metrics: device.metrics
+                    criticals: device.criticals,
+                    warnings: device.warnings,
+                    nominals: device.nominals,
+                    metrics: device.metrics,
+                    unit: device.unit
                 })
             }
             )}
@@ -419,6 +440,15 @@ const HardwareHealth = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item container xs={12} justifyContent="center">
+                    {/* <Typography
+                        color="secondary"
+                        variant="h6"
+                        style={{
+                            marginTop: 4
+                        }}
+                    >
+                        Total
+                    </Typography> */}
                     <Legend
                         bgColor="rgba(0, 186, 0, 0.6)"
                         title="Nominals"
@@ -494,11 +524,13 @@ const HardwareHealth = (props) => {
 const mapStateToProps = state => {
     return {
         devices: state.dashboardReducer.devices,
-        bmc: state.dashboardReducer.bmc,
+        ipmi: state.dashboardReducer.ipmi,
+        errorInDevices: state.dashboardReducer.errorInDevices,
+        errorInIMPI: state.dashboardReducer.errorInIMPI,
         totalNominals: state.dashboardReducer.totalNominals,
         totalWarnings: state.dashboardReducer.totalWarnings,
         totalCriticals: state.dashboardReducer.totalCriticals,
-        powerState: state.dashboardReducer.powerState,
+        isIMPIChassisPowerOn: state.dashboardReducer.isIMPIChassisPowerOn,
     };
 };
 

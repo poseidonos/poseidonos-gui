@@ -48,6 +48,8 @@ WARNINGTEMPERATURETIME = 'warning_temperature_time'
 CRITICALTEMPERATURETIME = 'critical_temperature_time'
 AVAILABLESPARE = 'available_spare'
 AVAILABLESPARETHRESOLD = 'available_spare_threshold'
+DEVICE_METRICS = [ TEMPERATURE, WARNINGTEMPERATURETIME,
+        CRITICALTEMPERATURETIME, AVAILABLESPARE, AVAILABLESPARETHRESOLD ]
 IPMIFANSPEEDSTATE = 'ipmi_fan_speed_state'
 IPMIFANSPEEDRPM = 'ipmi_fan_speed_rpm'
 IPMIPOWERSTATE = 'ipmi_power_state'
@@ -59,18 +61,47 @@ IPMIVOLTAGEVOLTS = 'ipmi_voltage_volts'
 IPMITEMPERATURESTATE = 'ipmi_temperature_state'
 IPMITEMPERATURECELCIUS = 'ipmi_temperature_celsius'
 IPMICHASSISPOWERSTATE = 'ipmi_chassis_power_state'
+IPMI_METRICS = [ IPMIFANSPEEDSTATE, IPMIFANSPEEDRPM,
+        IPMIPOWERSTATE, IPMIPOWERWATTS, IPMISENSORSTATE,
+        IPMISENSORVALUE, IPMIVOLTAGESTATE, IPMIVOLTAGEVOLTS,
+        IPMITEMPERATURESTATE, IPMITEMPERATURECELCIUS, IPMICHASSISPOWERSTATE ]
+TEMPERATURE_NAME = "Temperatures"
+AVAILABLESPARE_NAME= "Spares"
+DEVICE_UNITS={
+    TEMPERATURE_NAME: "kelvin",
+    AVAILABLESPARE_NAME: "available %"
+}
+FAN_SPEED = "Fans"
+POWER = "Powers"
+SENSOR_VALUE = "Sensors"
+VOLTAGE = "Voltages"
+IPMI_UNITS = {
+    FAN_SPEED : "rpm",
+    POWER: "watts",
+    SENSOR_VALUE: "",
+    VOLTAGE: "Volts",
+    TEMPERATURE_NAME: "celsius"
+}
 NOMINAL = "nominal"
 WARNING = "warning"
 CRITICAL = "critical"
-NOMINAL_COUNT = "nominal_count"
-WARNING_COUNT = "warning_count"
-CRITICAL_COUNT = "critical_count"
-FAN_SPEED = "Fan Speed"
-POWER = "Power"
-SENSOR_VALUE = "Sensor Value"
-VOLTAGE = "Voltage"
-TEMPERATURE_NAME = "Temperature"
-AVAILABLESPARE_NAME= "Available Spare"
+NOMINAL_COUNT = "nominals"
+WARNING_COUNT = "warnings"
+CRITICAL_COUNT = "criticals"
+DEVICES = "devices"
+IPMI = "ipmi"
+ERRORINDEVICES = "errorInDevices"
+ERRORINIPMI = "errorInIMPI"
+ISIPMICHASSISPOWERON = "isIMPIChassisPowerOn"
+TOTALNOMINALS = "totalNominals"
+TOTALWARNINGS = "totalWarnings"
+TOTALCRITICALS = "totalCriticals"
+TYPE = "type"
+UNIT = "unit"
+METRICS = "metrics"
+NAME = "name"
+STATE = "state"
+VALUE = "value"
 
 def get_agg_volumes_perf(ip, port):
     read_bw = telemetry.get_agg_value(ip,port,READ_BPS_VOLUME)
@@ -95,25 +126,29 @@ def get_agg_volumes_perf(ip, port):
 
 
 def get_all_hardware_health(ip, port):
-    device_metrics = [ TEMPERATURE, WARNINGTEMPERATURETIME, 
-        CRITICALTEMPERATURETIME, AVAILABLESPARE, AVAILABLESPARETHRESOLD]
-    bmc_metrics = [ IPMIFANSPEEDSTATE, IPMIFANSPEEDRPM,
-        IPMIPOWERSTATE, IPMIPOWERWATTS, IPMISENSORSTATE, 
-        IPMISENSORVALUE, IPMIVOLTAGESTATE, IPMIVOLTAGEVOLTS, 
-        IPMITEMPERATURESTATE, IPMITEMPERATURECELCIUS, IPMICHASSISPOWERSTATE ]
-    device_res = telemetry.get_device_metrics_values(ip, port, device_metrics)
+    res_dict = {
+        DEVICES : [],
+        ERRORINDEVICES : False,
+        IPMI : [],
+        ERRORINIPMI: False,
+        ISIPMICHASSISPOWERON: False,
+        TOTALNOMINALS: 0,
+        TOTALWARNINGS: 0,
+        TOTALCRITICALS: 0,
+    }
+    device_res = telemetry.get_device_metrics_values(ip, port, DEVICE_METRICS)
     if device_res['status'] != 'success':
-        return device_res
+        res_dict[ERRORINDEVICES] = True
     
-    total_nominal = 0
-    total_warning = 0
-    total_critical = 0
+    total_nominals = 0
+    total_warnings = 0
+    total_criticals = 0
 
     def update_state_count(state):
-        nonlocal total_nominal, total_warning, total_critical
-        total_nominal += 1 if state == NOMINAL else 0
-        total_warning += 1 if state == WARNING else 0
-        total_critical += 1 if state == CRITICAL else 0
+        nonlocal total_nominals, total_warnings, total_criticals
+        total_nominals += 1 if state == NOMINAL else 0
+        total_warnings += 1 if state == WARNING else 0
+        total_criticals += 1 if state == CRITICAL else 0
     
     def update_field_state_count(state, field):
         field[NOMINAL_COUNT] += 1 if state == NOMINAL else 0
@@ -121,35 +156,38 @@ def get_all_hardware_health(ip, port):
         field[CRITICAL_COUNT] += 1 if state == CRITICAL else 0
 
     devices= {}
-    for field in device_res['data']['result']:
-        if field['metric']['publisher_name'] != 'Disk_Monitoring':
-            continue
-        device_name = field['metric']['nvme_ctrl_id']
-        metric_name = field['metric']['__name__']
-        if device_name not in devices:
-            devices[device_name] = {}
-        if metric_name == AVAILABLESPARE:
-            devices[device_name][AVAILABLESPARE] = field['value'][1]
-        if metric_name == AVAILABLESPARETHRESOLD:
-            devices[device_name][AVAILABLESPARETHRESOLD] = field['value'][1]
-        if metric_name == TEMPERATURE:
-            devices[device_name][TEMPERATURE] = field['value'][1]
-        if metric_name == CRITICALTEMPERATURETIME:
-            devices[device_name][CRITICALTEMPERATURETIME] = field['value'][1]
-        if metric_name == WARNINGTEMPERATURETIME:
-            devices[device_name][WARNINGTEMPERATURETIME] = field['value'][1]
-    
+    if res_dict[ERRORINDEVICES] == False:
+        for field in device_res['data']['result']:
+            if field['metric']['publisher_name'] != 'Disk_Monitoring':
+                continue
+            device_name = field['metric']['nvme_ctrl_id']
+            metric_name = field['metric']['__name__']
+            if device_name not in devices:
+                devices[device_name] = {}
+            if metric_name == AVAILABLESPARE:
+                devices[device_name][AVAILABLESPARE] = field[VALUE][1]
+            if metric_name == AVAILABLESPARETHRESOLD:
+                devices[device_name][AVAILABLESPARETHRESOLD] = field[VALUE][1]
+            if metric_name == TEMPERATURE:
+                devices[device_name][TEMPERATURE] = field[VALUE][1]
+            if metric_name == CRITICALTEMPERATURETIME:
+                devices[device_name][CRITICALTEMPERATURETIME] = field[VALUE][1]
+            if metric_name == WARNINGTEMPERATURETIME:
+                devices[device_name][WARNINGTEMPERATURETIME] = field[VALUE][1]
+
     res_devices = []
     temperature_dict = {
-        'type': TEMPERATURE_NAME,
-        'metrics': [],
+        TYPE: TEMPERATURE_NAME,
+        UNIT: DEVICE_UNITS[TEMPERATURE_NAME],
+        METRICS: [],
         NOMINAL_COUNT: 0,
         WARNING_COUNT: 0,
         CRITICAL_COUNT: 0,
     }
     availablespare_dict = {
-        'type': AVAILABLESPARE_NAME,
-        'metrics': [],
+        TYPE: AVAILABLESPARE_NAME,
+        UNIT: DEVICE_UNITS[AVAILABLESPARE_NAME],
+        METRICS: [],
         NOMINAL_COUNT: 0,
         WARNING_COUNT: 0,
         CRITICAL_COUNT: 0,
@@ -167,108 +205,110 @@ def get_all_hardware_health(ip, port):
         if value[AVAILABLESPARE] == '0':
             sstate = CRITICAL
         temperature ={
-            'name': key,
-            'state': tstate,
-            'value': value[TEMPERATURE]
+            NAME: key,
+            STATE: tstate,
+            VALUE: value[TEMPERATURE]
         }
         availablespare = {
-            'name': key,
-            'state': sstate,
-            'value': value[AVAILABLESPARE]
+            NAME: key,
+            STATE: sstate,
+            VALUE: value[AVAILABLESPARE]
         }
-        temperature_dict['metrics'].append(temperature)
-        availablespare_dict['metrics'].append(availablespare)
+        temperature_dict[METRICS].append(temperature)
+        availablespare_dict[METRICS].append(availablespare)
         update_state_count(tstate)
         update_state_count(sstate)
         update_field_state_count(tstate, temperature_dict) 
         update_field_state_count(sstate, availablespare_dict) 
     res_devices.append(temperature_dict)
     res_devices.append(availablespare_dict)
+    res_dict[DEVICES] = res_devices
 
-    bmc_res = telemetry.get_bmc_metrics_values(ip, port, bmc_metrics)
-    if bmc_res['status'] != 'success':
-        return bmc_res
-     
-    bmcs = {
+    ipmi_res = telemetry.get_ipmi_metrics_values(ip, port, IPMI_METRICS)
+    if ipmi_res['status'] != 'success':
+        res_dict[ERRORINIPMI] = True
+
+    ipmi = {
         FAN_SPEED: {},
         POWER: {},
         SENSOR_VALUE: {},
         VOLTAGE: {},
         TEMPERATURE_NAME: {},
     }
-    def fill_bmc_fields(field, metric_type,value_type):
-        if 'name' not in field['metric']:
+    def fill_ipmi_fields(field, metric_type,value_type):
+        if NAME not in field['metric']:
             return
-        name = field['metric']['name']
-        value= field['value'][1]
-        if name not in bmcs[metric_type]:
-            bmcs[metric_type][name] = {}
-        if(value_type == 'state'):
-            bmcs[metric_type][name]['state'] = value
-        if(value_type == 'value'):
-            bmcs[metric_type][name]['value'] = value
+        name = field['metric'][NAME]
+        value= field[VALUE][1]
+        if name not in ipmi[metric_type]:
+            ipmi[metric_type][name] = {}
+        if(value_type == STATE):
+            ipmi[metric_type][name][STATE] = value
+        if(value_type == VALUE):
+            ipmi[metric_type][name][VALUE] = value
 
-    for field in bmc_res['data']['result']:
-        metric_name = field['metric']['__name__']
-        if metric_name == IPMIFANSPEEDSTATE:
-            fill_bmc_fields(field, FAN_SPEED, 'state')
-        if metric_name == IPMIFANSPEEDRPM:
-            fill_bmc_fields(field, FAN_SPEED, 'value')
-        if metric_name == IPMISENSORSTATE:
-            fill_bmc_fields(field, SENSOR_VALUE, 'state')
-        if metric_name == IPMISENSORVALUE:
-            fill_bmc_fields(field, SENSOR_VALUE, 'value')
-        if metric_name == IPMITEMPERATURESTATE:
-            fill_bmc_fields(field, TEMPERATURE_NAME, 'state')
-        if metric_name == IPMITEMPERATURECELCIUS:
-            fill_bmc_fields(field, TEMPERATURE_NAME, 'value')
-        if metric_name == IPMIPOWERSTATE:
-            fill_bmc_fields(field, POWER, 'state')
-        if metric_name == IPMIPOWERWATTS:
-            fill_bmc_fields(field, POWER, 'value')
-        if metric_name == IPMIVOLTAGESTATE:
-            fill_bmc_fields(field, VOLTAGE, 'state')
-        if metric_name == IPMIVOLTAGEVOLTS:
-            fill_bmc_fields(field, VOLTAGE, 'value')
+    if res_dict[ERRORINIPMI] == False:
+        for field in ipmi_res['data']['result']:
+            metric_name = field['metric']['__name__']
+            if metric_name == IPMICHASSISPOWERSTATE and field[VALUE][1] == '1':
+                res_dict[ISIPMICHASSISPOWERON] = True
+            if metric_name == IPMIFANSPEEDSTATE:
+                fill_ipmi_fields(field, FAN_SPEED, STATE)
+            if metric_name == IPMIFANSPEEDRPM:
+                fill_ipmi_fields(field, FAN_SPEED, VALUE)
+            if metric_name == IPMISENSORSTATE:
+                fill_ipmi_fields(field, SENSOR_VALUE, STATE)
+            if metric_name == IPMISENSORVALUE:
+                fill_ipmi_fields(field, SENSOR_VALUE, VALUE)
+            if metric_name == IPMITEMPERATURESTATE:
+                fill_ipmi_fields(field, TEMPERATURE_NAME, STATE)
+            if metric_name == IPMITEMPERATURECELCIUS:
+                fill_ipmi_fields(field, TEMPERATURE_NAME, VALUE)
+            if metric_name == IPMIPOWERSTATE:
+                fill_ipmi_fields(field, POWER, STATE)
+            if metric_name == IPMIPOWERWATTS:
+                fill_ipmi_fields(field, POWER, VALUE)
+            if metric_name == IPMIVOLTAGESTATE:
+                fill_ipmi_fields(field, VOLTAGE, STATE)
+            if metric_name == IPMIVOLTAGEVOLTS:
+                fill_ipmi_fields(field, VOLTAGE, VALUE)
 
-    res_bmcs = []
+    res_ipmi = []
     states_dict = {
         '0': NOMINAL,
         '1': WARNING,
         '2': CRITICAL
     }
-    def add_bmc_field(metric_type):
+    def add_ipmi_field(metric_type):
         metric_details = {
-            'type': metric_type,
-            'metrics': [],
+            TYPE: metric_type,
+            UNIT: IPMI_UNITS[metric_type],
+            METRICS: [],
             NOMINAL_COUNT: 0,
             WARNING_COUNT: 0,
-            CRITICAL_COUNT: 0,
+            CRITICAL_COUNT: 0
             }
-        for key in bmcs[metric_type]:
-            value = bmcs[metric_type][key]
-            metric_details['metrics'].append({
-                'name': key,
-                'state': states_dict[value['state']],
-                'value': value['value']
+        for key in ipmi[metric_type]:
+            value = ipmi[metric_type][key]
+            metric_details[METRICS].append({
+                NAME: key,
+                STATE: states_dict[value[STATE]],
+                VALUE: value[VALUE]
             })
-            update_state_count(states_dict[value['state']])
-            update_field_state_count(states_dict[value['state']], metric_details)
-        res_bmcs.append(metric_details)
+            update_state_count(states_dict[value[STATE]])
+            update_field_state_count(states_dict[value[STATE]], metric_details)
+        res_ipmi.append(metric_details)
 
-    add_bmc_field(FAN_SPEED)
-    add_bmc_field(POWER)
-    add_bmc_field(SENSOR_VALUE)
-    add_bmc_field(VOLTAGE)
-    add_bmc_field(TEMPERATURE_NAME)
+    add_ipmi_field(FAN_SPEED)
+    add_ipmi_field(POWER)
+    add_ipmi_field(SENSOR_VALUE)
+    add_ipmi_field(VOLTAGE)
+    add_ipmi_field(TEMPERATURE_NAME)
+    res_dict[IPMI] = res_ipmi
 
-    res_dict = {}
-    res_dict['devices'] = res_devices
-    res_dict['bmc'] = res_bmcs
-    res_dict['ipmi_chassis_power_state'] = 1
-    res_dict['total_nominal'] = total_nominal
-    res_dict['total_warning'] = total_warning
-    res_dict['total_critical'] = total_critical
+    res_dict[TOTALNOMINALS] = total_nominals
+    res_dict[TOTALWARNINGS] = total_warnings
+    res_dict[TOTALCRITICALS] = total_criticals
     return res_dict
 
 def set_telemetry_properties(properties):

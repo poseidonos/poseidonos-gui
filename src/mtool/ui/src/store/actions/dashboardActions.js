@@ -79,22 +79,26 @@ export const fetchPerformance = (
   };
 };
 
-export const fetchHardwareHealth = (
+export const fetchHardwareHealth = ({
   devices,
-  bmc,
+  ipmi,
+  errorInDevices,
+  errorInIMPI,
   totalNominals,
   totalWarnings,
   totalCriticals,
-  powerState
-) => {
+  isIMPIChassisPowerOn
+}) => {
   return {
     type: actionTypes.FETCH_HARDWARE_HEALTH,
     devices,
-    bmc,
+    ipmi,
+    errorInDevices,
+    errorInIMPI,
     totalNominals,
     totalWarnings,
     totalCriticals,
-    powerState
+    isIMPIChassisPowerOn
   };
 };
 

@@ -171,14 +171,7 @@ function* fetchHardwareHealth() {
     /* istanbul ignore else */
     if (response.status === 200 && result && result.devices?.length > 0) {
       yield put(
-        actionCreators.fetchHardwareHealth(
-          result.devices,
-          result.bmc,
-          result.total_nominal,
-          result.total_warning,
-          result.total_critical,
-          result.ipmi_chassis_power_state
-        )
+        actionCreators.fetchHardwareHealth(result)
       );
     }
   } catch (error) {

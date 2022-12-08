@@ -48,11 +48,13 @@ const initialState = {
     readLatency: 0,
     writeLatency: 0,
     devices: [],
-    bmc: [],
+    ipmi: [],
+    errorInDevices: false,
+    errorInIMPI: true,
     totalNominals: 0,
     totalWarnings: 0,
     totalCriticals: 0,
-    powerState: 0,
+    isIMPIChassisPowerOn: 0,
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
@@ -152,11 +154,13 @@ const dashboardReducer = (state = initialState, action) => {
             const newState = {
                 ...state,
                 devices: action.devices,
-                bmc: action.bmc,
+                ipmi: action.ipmi,
+                errorInDevices: action.errorInDevices,
+                errorInIMPI: action.errorInIMPI,
                 totalNominals: action.totalNominals,
                 totalWarnings: action.totalWarnings,
                 totalCriticals: action.totalCriticals,
-                powerState: action.powerState,
+                isIMPIChassisPowerOn: action.isIMPIChassisPowerOn,
             }
             if (state.devices.length !== action.devices.length)
                 return newState
@@ -164,17 +168,20 @@ const dashboardReducer = (state = initialState, action) => {
                 if (!isEqual(state.devices[i], { ...action.devices[i], tableData: state.devices[i].tableData }))
                     return newState
             }
-            if (state.bmc.length !== action.bmc.length) {
+            if (state.ipmi.length !== action.ipmi.length) {
                 return newState
             }
-            for (let i = 0; i < state.bmc.length; i += 1) {
-                if (!isEqual(state.bmc[i], { ...action.bmc[i], tableData: state.bmc[i].tableData }))
+            for (let i = 0; i < state.ipmi.length; i += 1) {
+                if (!isEqual(state.ipmi[i], { ...action.ipmi[i], tableData: state.ipmi[i].tableData }))
                     return newState
             }
             if (
+                action.errorInDevices !== state.errorInDevices ||
+                action.errorInIMPI !== state.errorInIMPI ||
                 action.totalCriticals !== state.totalCriticals ||
                 action.totalWarnings !== state.totalWarnings ||
-                action.totalNominals !== state.totalNominals
+                action.totalNominals !== state.totalNominals ||
+                action.isIMPIChassisPowerOn !== state.isIMPIChassisPowerOn
             )
                 return newState;
             return state;
