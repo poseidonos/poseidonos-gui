@@ -30,6 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { isEqual } from 'lodash';
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
@@ -147,8 +148,8 @@ const dashboardReducer = (state = initialState, action) => {
                 readLatency: action.readLatency,
                 writeLatency: action.writeLatency
             };
-        case actionTypes.FETCH_HARDWARE_HEALTH:
-            return {
+        case actionTypes.FETCH_HARDWARE_HEALTH: {
+            const newState = {
                 ...state,
                 devices: action.devices,
                 bmc: action.bmc,
@@ -156,7 +157,28 @@ const dashboardReducer = (state = initialState, action) => {
                 totalWarnings: action.totalWarnings,
                 totalCriticals: action.totalCriticals,
                 powerState: action.powerState,
-            };
+            }
+            if (state.devices.length !== action.devices.length)
+                return newState
+            for (let i = 0; i < state.devices.length; i += 1) {
+                if (!isEqual(state.devices[i], { ...action.devices[i], tableData: state.devices[i].tableData }))
+                    return newState
+            }
+            if (state.bmc.length !== action.bmc.length) {
+                return newState
+            }
+            for (let i = 0; i < state.bmc.length; i += 1) {
+                if (!isEqual(state.bmc[i], { ...action.bmc[i], tableData: state.bmc[i].tableData }))
+                    return newState
+            }
+            if (
+                action.totalCriticals !== state.totalCriticals ||
+                action.totalWarnings !== state.totalWarnings ||
+                action.totalNominals !== state.totalNominals
+            )
+                return newState;
+            return state;
+        }
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {
                 ...state,

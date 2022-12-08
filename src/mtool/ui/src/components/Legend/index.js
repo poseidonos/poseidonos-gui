@@ -63,9 +63,11 @@ const Legend = (props) => {
       <span className={classes.legend} style={{ backgroundColor: props.bgColor }} />
       {
         (props.value || props.value === 0) &&
-        <Typography className={classes.legendValue} color="secondary" variant="h6">
-          {props.value}
-        </Typography>
+        (
+          <Typography className={classes.legendValue} color="secondary" variant="h6">
+            {props.value}
+          </Typography>
+        )
       }
       <Typography className={classes.legendText} color="secondary">{props.title}</Typography>
     </div>
