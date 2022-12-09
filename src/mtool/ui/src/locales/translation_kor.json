@@ -6,5 +6,6 @@
     "IP Address": "IP 주소",
     "Port": "포트",
     "Save": "저장",
-    "Configuration failed! Telemetry API is not reachable" : "구성이 실패했습니다! 원격 측정 API에 도달할 수 없습니다."
+    "Configuration failed! Telemetry API is not reachable" : "구성이 실패했습니다! 원격 측정 API에 도달할 수 없습니다.",
+    "Cancel": "취소"
 }

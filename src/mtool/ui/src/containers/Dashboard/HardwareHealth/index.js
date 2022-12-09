@@ -66,19 +66,15 @@ const styles = (theme) => ({
         paddingLeft: theme.spacing(2),
         width: "-webkit-fill-available",
     },
-    tooltip: {
-        backgroundColor: "white",
-        opacity: 1,
-        color: "rgba(0, 0, 0, 1)",
-        maxHeight: 300,
-        fontSize: theme.typography.pxToRem(12),
-        border: "1px solid #dadde9",
-        "& b": {
-            fontWeight: theme.typography.fontWeightMedium,
-        },
-    },
     borderSolid: {
         border: "1px solid #0001",
+    },
+    marginAuto: {
+        margin: "auto"
+    },
+    summaryButton: {
+        marginBottom: 8,
+        alignItems: "flex-start",
     }
 });
 
@@ -89,10 +85,15 @@ const CRITICAL = "critical";
 const WARNING = "warning";
 const NOMINAL = "nominal";
 const stateOrder = { [CRITICAL]: 1, [WARNING]: 2, [NOMINAL]: 3 };
+const getColor = {
+    [CRITICAL]: "#FF0505",
+    [WARNING]: "#FFBF02",
+    [NOMINAL]: "#3DD102"
+};
 const getColorStyle = {
-    [CRITICAL]: { color: "rgba(255, 62, 0)" },
-    [WARNING]: { color: "rgba(255, 186, 0)" },
-    [NOMINAL]: { color: "rgba(0, 186, 0)" }
+    [CRITICAL]: { color: getColor[CRITICAL] },
+    [WARNING]: { color: getColor[WARNING] },
+    [NOMINAL]: { color: getColor[NOMINAL] }
 }
 
 const HardwareHealth = (props) => {
@@ -129,11 +130,13 @@ const HardwareHealth = (props) => {
         const total = pieChart.criticals + pieChart.nominals + pieChart.warnings;
         return Math.round(value * 1000 / total) / 10;
     }
-    let ipmiErrorMessage = "";
+    let ipmiErrorMessage = "No records to display";
     if (!props.isIMPIChassisPowerOn)
         ipmiErrorMessage = "IPMI Power is OFF"
     if (props.errorInIMPI)
         ipmiErrorMessage = "Please Check IPMI Exporter"
+
+    const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
 
     /* eslint-disable react/no-multi-comp */
     const icons = {
@@ -214,7 +217,7 @@ const HardwareHealth = (props) => {
             customSort: (a, b) => (a.name.localeCompare(b.name))
         },
         {
-            title: `Value (${pieChart.unit})`,
+            title: pieChart.unit !== "" ? `Value (${pieChart.unit})` : "Value",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={getColorStyle[rowData.state]}>{rowData.value}</Typography>,
             customSort: (a, b) => stateOrder[a.state] - stateOrder[b.state]
@@ -226,12 +229,7 @@ const HardwareHealth = (props) => {
             data={props.ipmi}
             localization={{
                 body: {
-                    emptyDataSourceMessage: ipmiErrorMessage !== "" &&
-                        (
-                            <Typography >
-                                {ipmiErrorMessage}
-                            </Typography>
-                        )
+                    emptyDataSourceMessage: ipmiErrorMessage
                 }
             }}
             onRowClick={((e, localSelectedRow) => {
@@ -279,6 +277,11 @@ const HardwareHealth = (props) => {
         <MaterialTable
             columns={deviceTableColumns}
             data={props.devices}
+            localization={{
+                body: {
+                    emptyDataSourceMessage: deviceErrorMessage
+                }
+            }}
             onRowClick={((e, localSelectedRow) => {
                 setSelectedTable(DEVICE);
                 setSelectedRow(localSelectedRow.tableData.id);
@@ -349,88 +352,109 @@ const HardwareHealth = (props) => {
             }}
         />
     );
-    const pieChartBox = (
-        <Box
-            sx={{ mt: 4, mb: "auto", width: "100%" }}
-            display="flex"
-            flexDirection="column"
-        >
-            <PieChart
-                animate
-                animationDuration={500}
-                data={[
-                    { title: CRITICAL, value: pieChart.criticals, color: "rgba(255,0,0,0.8)" },
-                    { title: WARNING, value: pieChart.warnings, color: "orange" },
-                    { title: NOMINAL, value: pieChart.nominals, color: "rgba(102,214,102,0.8)" },
-                ]}
-                labelPosition={60}
-                label={(data) => {
-                    const value = getPercentage(data.dataEntry.value);
-                    return value < 5 ? "" : `${value}%`;
+    const pieChartBox = (pieChart.criticals + pieChart.warnings + pieChart.nominals) !== 0 ?
+        (
+            <Box
+                sx={{ mt: 4, mb: "auto", width: "100%" }}
+                display="flex"
+                flexDirection="column"
+            >
+                <PieChart
+                    animate
+                    animationDuration={500}
+                    data={[
+                        { title: CRITICAL, value: pieChart.criticals, color: getColor[CRITICAL] },
+                        { title: WARNING, value: pieChart.warnings, color: getColor[WARNING] },
+                        { title: NOMINAL, value: pieChart.nominals, color: getColor[NOMINAL] },
+                    ]}
+                    labelPosition={60}
+                    label={(data) => {
+                        const value = getPercentage(data.dataEntry.value);
+                        return value < 5 ? "" : `${value}%`;
+                    }}
+                    labelStyle={{
+                        fontSize: "10px",
+                        fontColor: "FFFFFA",
+                        fontWeight: "400",
+                        pointerEvents: "none"
+                    }}
+                    lengthAngle={360}
+                    lineWidth={75}
+                    radius={45}
+                    segmentsShift={2}
+                    style={{
+                        width: "80%",
+                        height: "80%",
+                        maxHeight: 160,
+                        padding: 2,
+                        alignSelf: "center",
+                        marginBottom: "auto"
+                    }}
+                />
+                {getPercentage(pieChart.nominals) < 5 && getPercentage(pieChart.nominals) !== 0 &&
+                    (
+                        <Legend
+                            bgColor={getColor[NOMINAL]}
+                            title="Nominals"
+                            value={`${getPercentage(pieChart.nominals)}%`}
+                        />
+                    )
+                }
+                {getPercentage(pieChart.warnings) < 5 && getPercentage(pieChart.warnings) !== 0 &&
+                    (
+                        <Legend
+                            bgColor={getColor[WARNING]}
+                            title="Warnings"
+                            value={`${getPercentage(pieChart.warnings)}%`}
+                        />
+                    )
+                }
+                {getPercentage(pieChart.criticals) < 5 && getPercentage(pieChart.criticals) !== 0 &&
+                    (
+                        <Legend
+                            bgColor={getColor[CRITICAL]}
+                            title="Criticals"
+                            value={`${getPercentage(pieChart.criticals)}%`}
+                        />
+                    )
+                }
+                {pieChart.title !== TOTAL &&
+                    (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            className={classes.marginAuto}
+                            onClick={() => setShowHealthTable(!showHealthTable)}
+                        >
+                            View Details
+                        </Button>
+                    )
+                }
+            </Box>
+        ) :
+        <Typography className={classes.marginAuto}>No Data to plot PieChart</Typography>;
+    const summaryButton = pieChart.title !== TOTAL &&
+        (
+            <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                onClick={() => {
+                    setSelectedRow(null);
+                    setPieChart({
+                        ...pieChart,
+                        title: TOTAL,
+                        criticals: props.totalCriticals,
+                        warnings: props.totalWarnings,
+                        nominals: props.totalNominals
+                    });
                 }}
-                labelStyle={{
-                    fontSize: "10px",
-                    fontColor: "FFFFFA",
-                    fontWeight: "400",
-                    pointerEvents: "none"
-                }}
-                lengthAngle={360}
-                lineWidth={75}
-                radius={45}
-                segmentsShift={2}
-                style={{
-                    width: "80%",
-                    height: "80%",
-                    maxHeight: 160,
-                    padding: 2,
-                    alignSelf: "center",
-                    marginBottom: "auto"
-                }}
-            />
-            {getPercentage(pieChart.nominals) < 5 && getPercentage(pieChart.nominals) !== 0 &&
-                (
-                    <Legend
-                        bgColor="rgba(0, 186, 0, 0.6)"
-                        title="Nominals"
-                        value={`${getPercentage(pieChart.nominals)}%`}
-                    />
-                )
-            }
-            {getPercentage(pieChart.warnings) < 5 && getPercentage(pieChart.warnings) !== 0 &&
-                (
-                    <Legend
-                        bgColor="rgba(255, 186, 0, 0.6)"
-                        title="Warnings"
-                        value={`${getPercentage(pieChart.warnings)}%`}
-                    />
-                )
-            }
-            {getPercentage(pieChart.criticals) < 5 && getPercentage(pieChart.criticals) !== 0 &&
-                (
-                    <Legend
-                        bgColor="rgba(255, 62, 0, 0.6)"
-                        title="Criticals"
-                        value={`${getPercentage(pieChart.criticals)}%`}
-                    />
-                )
-            }
-            {pieChart.title !== TOTAL &&
-                (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        style={{
-                            margin: "auto"
-                        }}
-                        onClick={() => setShowHealthTable(!showHealthTable)}
-                    >
-                        View Details
-                    </Button>
-                )
-            }
-        </Box>
-    );
+                className={classes.summaryButton}
+            >
+                <ArrowBack /> Summary
+            </Button>
+        )
     return (
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.hardwareHealthPaper}>
@@ -479,30 +503,7 @@ const HardwareHealth = (props) => {
                         {pieChart.title}
                     </Typography>
                     {pieChartBox}
-                    {pieChart.title !== TOTAL &&
-                        (
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                size="small"
-                                onClick={() => {
-                                    setSelectedRow(null);
-                                    setPieChart({
-                                        ...pieChart,
-                                        title: TOTAL,
-                                        criticals: props.totalCriticals,
-                                        warnings: props.totalWarnings,
-                                        nominals: props.totalNominals
-                                    });
-                                }}
-                                style={{
-                                    marginBottom: 8
-                                }}
-                            >
-                                <ArrowBack /> Summary
-                            </Button>
-                        )
-                    }
+                    {summaryButton}
                 </Grid>
                 <Grid item sm={12} md={8} className={classes.tableHeight}>
                     {ipmiTable}

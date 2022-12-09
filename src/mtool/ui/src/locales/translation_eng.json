@@ -6,5 +6,6 @@
     "IP Address": "IP Address",
     "Port": "Port",
     "Save": "Save",
-    "Configuration failed! Telemetry API is not reachable" : "Configuration failed! Telemetry API is not reachable"
- }
+    "Configuration failed! Telemetry API is not reachable" : "Configuration failed! Telemetry API is not reachable",
+    "Cancel": "Cancel"
+}

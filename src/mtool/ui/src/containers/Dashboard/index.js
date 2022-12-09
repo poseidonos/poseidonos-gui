@@ -244,17 +244,6 @@ const styles = (theme) => {
       borderRight: "2px solid lightgray",
       marginRight: theme.spacing(1)
     },
-    metricText: {
-      whiteSpace: "nowrap",
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-      textAlign: "left",
-      paddingLeft: theme.spacing(2),
-      marginTop: theme.spacing(2.5),
-      [theme.breakpoints.down("xs")]: {
-        marginTop: theme.spacing(1.5),
-      },
-    },
     arraySelect: {
       textAlign: "center",
       minWidth: 100
@@ -351,31 +340,6 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
     </Paper>
   )
 }
-
-// const BMCMetric = ({ classes, name, value, state }) => {
-//   return (
-//     <>
-//       <Grid key={name} item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
-//         <Typography
-//           className={classes.metricText}
-//           color="secondary"
-//         >
-//           {name}
-//         </Typography>
-//       </Grid>
-//       <Grid key={value} item xs={6} sm={3} md={6} container alignItems="center" justifyContent="flex-start">
-//         <Typography
-//           color="secondary"
-//           data-testid="dashboard-ip"
-//           className={classes.metricText}
-//           style={getColorStyle(state)}
-//         >
-//           {value}
-//         </Typography>
-//       </Grid>
-//     </>
-//   )
-// }
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -790,8 +754,18 @@ class Dashboard extends Component {
             aria-label="secondary tabs example"
             centered
           >
-            <Tab className={classes.tab} value={ARRAYTAB} label={`${this.props.arrays.length} Arrays`} />
-            <Tab className={classes.tab} value={VOLUMETAB} label={`${this.props.arrayVolumes.length} Volumes`} />
+            <Tab
+              className={classes.tab}
+              value={ARRAYTAB}
+              label={`${this.props.arrays.length} Arrays`}
+              data-testid="array-tab"
+            />
+            <Tab
+              className={classes.tab}
+              value={VOLUMETAB}
+              label={`${this.props.arrayVolumes.length} Volumes`}
+              data-testid="volume-tab"
+            />
           </Tabs>
         </Grid>
         <Grid className={classes.borderSolid}>
