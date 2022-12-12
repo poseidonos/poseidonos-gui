@@ -14,7 +14,7 @@ import (
 
 const dialErrorMsg = "Could not connect to the CLI server. Is PoseidonOS running?"
 const dialTimeout = 5
-const reqTimeout = 180
+const reqTimeout = 360
 
 // TODO  We temporarily set long timeout values for mount/unmount array commands.
 const unmountArrayCmdTimeout = 1800
