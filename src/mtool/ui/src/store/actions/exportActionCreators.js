@@ -91,7 +91,9 @@ export {
     addVolumeDetails,
     clearVolumes,
     startFetchingVolumes,
-    stopFetchingVolumes
+    stopFetchingVolumes,
+    setDeviceFetching,
+    setArrayInfoFetching
 } from "./storageActions";
 
 export {

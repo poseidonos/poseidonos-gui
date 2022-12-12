@@ -261,8 +261,12 @@ class ArrayShow extends Component {
     this.props.getArrayInfo(this.props.arrayName);
     this.props.getDevices({ noLoad: true });
     this.interval = setInterval(() => {
-      this.props.getArrayInfo(this.props.arrayName);
-      this.props.getDevices({ noLoad: true });
+      if(!this.props.isArrayInfoFetching) {
+          this.props.getArrayInfo(this.props.arrayName);
+      }
+      if(!this.props.isDevicesFetching) {
+          this.props.getDevices({ noLoad: true });
+      }
     }, 5000);
   }
 

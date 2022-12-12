@@ -49,9 +49,7 @@ import (
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
-	res, err := f(header.XrId(ctx), req.Param, posMngr)
-	globals.APILock.Unlock()
+	res, err := CallPOS(ctx, f, req.Param, posMngr)
 	api.HttpResponse(ctx, res, err)
 }
 
@@ -61,10 +59,15 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSMa
 	if req.Param != nil {
 		param = merge(param, req.Param)
 	}
-	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
-	res, err := f(header.XrId(ctx), param, posMngr)
-	globals.APILock.Unlock()
+	res, err := CallPOS(ctx, f, param, posMngr)
 	api.HttpResponse(ctx, res, err)
+}
+
+func CallPOS(ctx *gin.Context, fun func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+	res, err := fun(header.XrId(ctx), param, posMngr)
+	globals.APILock.Unlock()
+	return res, err
 }
 
 func merge(src interface{}, tar interface{}) interface{} {

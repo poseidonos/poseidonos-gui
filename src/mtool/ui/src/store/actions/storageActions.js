@@ -146,3 +146,17 @@ export const fetchArrayDetails = (payload) => {
         payload
     }
 }
+
+export const setDeviceFetching = (payload) => {
+    return {
+        type: actionTypes.SET_DEVICE_FETCHING,
+        payload
+    }
+}
+
+export const setArrayInfoFetching = (payload) => {
+    return {
+        type: actionTypes.SET_ARRAY_INFO_FETCHING,
+        payload
+    }
+}
