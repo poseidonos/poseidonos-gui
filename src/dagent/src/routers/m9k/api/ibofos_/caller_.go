@@ -50,9 +50,9 @@ import (
 func CalliBoFOS_(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error)) {
 	req := model.Request{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+	globals.APILockSkt.TryLockWithTimeout(time.Second * globals.LockTimeout)
 	_, res, err := f(header.XrId(ctx), req.Param)
-	globals.APILock.Unlock()
+	globals.APILockSkt.Unlock()
 	api_.HttpResponse(ctx, res, err)
 }
 
@@ -63,9 +63,9 @@ func CalliBoFOSwithParam_(ctx *gin.Context, f func(string, interface{}) (model.R
 	if req.Param != nil {
 		param = merge(param, req.Param)
 	}
-	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+	globals.APILockSkt.TryLockWithTimeout(time.Second * globals.LockTimeout)
 	_, res, err := f(header.XrId(ctx), param)
-	globals.APILock.Unlock()
+	globals.APILockSkt.Unlock()
 	api_.HttpResponse(ctx, res, err)
 }
 
@@ -78,9 +78,9 @@ func CalliBoFOSQOS(ctx *gin.Context, f func(string, interface{}) (model.Request,
 		res.Result.Status.PosDescription = res.Result.Status.Description
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 	} else {
-		globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+		globals.APILockSkt.TryLockWithTimeout(time.Second * globals.LockTimeout)
 		_, res, err := f(header.XrId(ctx), req.Param)
-		globals.APILock.Unlock()
+		globals.APILockSkt.Unlock()
 		api_.HttpResponse(ctx, res, err)
 	}
 }

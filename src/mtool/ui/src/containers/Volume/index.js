@@ -611,6 +611,8 @@ class Volume extends Component {
                                   writeThrough={this.props.arrayMap[this.props.selectedArray].writeThroughEnabled}
                                   diskDetails={this.props.diskDetails}
                                   getDiskDetails={this.props.Get_Disk_Details}
+                                  isDevicesFetching={this.props.isDevicesFetching}
+                                  isArrayInfoFetching={this.props.isArrayInfoFetching}
                                   // detachDisk={this.props.Detach_Disk}
                                   // attachDisk={this.props.Attach_Disk}
                                   addSpareDisk={this.props.Add_Spare_Disk}
@@ -778,6 +780,8 @@ const mapStateToProps = (state) => {
     metadisks: state.storageReducer.metadisks,
     volumes: state.storageReducer.volumes,
     fetchingVolumes: state.storageReducer.fetchingVolumes,
+    isDevicesFetching: state.storageReducer.isDevicesFetching,
+    isArrayInfoFetching: state.storageReducer.isArrayInfoFetching,
     arrays: state.storageReducer.arrays,
     arrayMap: state.storageReducer.arrayMap,
     config: state.storageReducer.config,

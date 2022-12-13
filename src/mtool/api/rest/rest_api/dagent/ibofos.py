@@ -51,7 +51,7 @@ BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 VERSION = 'v1'
 
 connect_timeout = 30
-read_timeout = 30
+read_timeout = 2160
 
 
 def get_headers(
@@ -240,7 +240,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
         # print("---------------RESPONSE---------------",response.json())
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
@@ -261,7 +261,7 @@ def get_devices(auth=BASIC_AUTH_TOKEN):
         #print(response.status_code, response.json())
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not get ibofos to scan devices...', 500)
 
@@ -670,7 +670,7 @@ def create_array(
         #print(response.status_code, response.json())
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not get ibofos to create array...', 500)
 
@@ -697,7 +697,7 @@ def rebuild_array(arrayname, auth=BASIC_AUTH_TOKEN):
             data=None)
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not get ibofos to rebuild array...', 500)
 
@@ -732,7 +732,7 @@ def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
         #print(response.status_code , response.json())
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not mount array.', 500)
 
@@ -766,7 +766,7 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
         #print(response.status_code, response.json())
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
+        print(f'Other error occurred: {err}',err)
     return make_failure_response(
         'Could not unmount array', 500)
 
