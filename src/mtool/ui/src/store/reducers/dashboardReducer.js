@@ -49,7 +49,7 @@ const initialState = {
     writeLatency: 0,
     devices: [],
     ipmi: [],
-    errorInDevices: false,
+    errorInDevices: true,
     errorInIMPI: true,
     totalNominals: 0,
     totalWarnings: 0,

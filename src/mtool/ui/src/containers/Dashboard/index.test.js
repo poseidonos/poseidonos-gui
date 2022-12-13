@@ -33,7 +33,7 @@
 import Dashboard from "./index";
 import { createMount } from '@material-ui/core/test-utils';
 import React from "react";
-import { render, screen, fireEvent, cleanup, waitForElement, getNodeText } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, waitForElement, getNodeText, getByTestId } from "@testing-library/react";
 import { Provider } from "react-redux";
 import "@testing-library/jest-dom/extend-expect";
 import { I18nextProvider } from "react-i18next";
@@ -274,7 +274,7 @@ describe("Dashboard", () => {
         }
       ],
       "nominals": 24,
-      "type": "Temperature",
+      "type": "Temperatures",
       "unit": "kelvin",
       "warnings": 0
     },
@@ -403,8 +403,8 @@ describe("Dashboard", () => {
         }
       ],
       "nominals": 24,
-      "type": "Available Spare",
-      "unit": "%",
+      "type": "Spares",
+      "unit": "available %",
       "warnings": 0
     }
   ];
@@ -416,26 +416,26 @@ describe("Dashboard", () => {
         {
           "name": "FAN7",
           "state": "nominal",
-          "value": "4000"
+          "value": "3500"
         },
         {
           "name": "FAN8",
           "state": "nominal",
-          "value": "4000"
+          "value": "3500"
         },
         {
           "name": "FAN1",
           "state": "nominal",
-          "value": "4800"
+          "value": "4100"
         },
         {
           "name": "FAN2",
           "state": "nominal",
-          "value": "4800"
+          "value": "4100"
         }
       ],
       "nominals": 4,
-      "type": "Fan Speed",
+      "type": "Fans",
       "unit": "rpm",
       "warnings": 0
     },
@@ -443,7 +443,7 @@ describe("Dashboard", () => {
       "criticals": 0,
       "metrics": [],
       "nominals": 0,
-      "type": "Power",
+      "type": "Powers",
       "unit": "watts",
       "warnings": 0
     },
@@ -472,7 +472,7 @@ describe("Dashboard", () => {
         }
       ],
       "nominals": 2,
-      "type": "Sensor Value",
+      "type": "Sensors",
       "unit": "",
       "warnings": 0
     },
@@ -522,7 +522,7 @@ describe("Dashboard", () => {
         {
           "name": "VDimmP2DEF",
           "state": "nominal",
-          "value": "1.21"
+          "value": "1.2"
         },
         {
           "name": "12VSB",
@@ -551,7 +551,7 @@ describe("Dashboard", () => {
         }
       ],
       "nominals": 14,
-      "type": "Voltage",
+      "type": "Voltages",
       "unit": "Volts",
       "warnings": 0
     },
@@ -561,121 +561,121 @@ describe("Dashboard", () => {
         {
           "name": "PCH Temp",
           "state": "nominal",
-          "value": "56"
+          "value": "53"
         },
         {
           "name": "P1-DIMMA1 Temp",
           "state": "nominal",
-          "value": "46"
+          "value": "43"
         },
         {
           "name": "P1-DIMMB1 Temp",
           "state": "nominal",
-          "value": "50"
+          "value": "47"
         },
         {
           "name": "P1-DIMME1 Temp",
           "state": "nominal",
-          "value": "45"
+          "value": "42"
         },
         {
           "name": "System Temp",
           "state": "nominal",
-          "value": "36"
+          "value": "32"
         },
         {
           "name": "P1-DIMMF1 Temp",
           "state": "nominal",
-          "value": "46"
+          "value": "44"
         },
         {
           "name": "P2-DIMMA1 Temp",
           "state": "nominal",
-          "value": "43"
+          "value": "40"
         },
         {
           "name": "P2-DIMMB1 Temp",
           "state": "nominal",
-          "value": "43"
+          "value": "41"
         },
         {
           "name": "P2-DIMMD1 Temp",
           "state": "nominal",
-          "value": "46"
+          "value": "43"
         },
         {
           "name": "Peripheral Temp",
           "state": "nominal",
-          "value": "47"
+          "value": "45"
         },
         {
           "name": "P2-DIMME1 Temp",
           "state": "nominal",
-          "value": "47"
+          "value": "43"
         },
         {
           "name": "MB_NIC_Temp1",
           "state": "nominal",
-          "value": "64"
+          "value": "63"
         },
         {
           "name": "CPU1 Temp",
           "state": "nominal",
-          "value": "52"
+          "value": "50"
         },
         {
           "name": "MB_NIC_Temp2",
           "state": "nominal",
-          "value": "64"
+          "value": "62"
         },
         {
           "name": "VRMCpu1 Temp",
           "state": "nominal",
-          "value": "40"
+          "value": "37"
         },
         {
           "name": "AOC_NIC_Temp   ",
           "state": "nominal",
-          "value": "65"
+          "value": "63"
         },
         {
           "name": "NVMe_SSD Temp  ",
           "state": "nominal",
-          "value": "41"
+          "value": "37"
         },
         {
           "name": "VRMCpu2 Temp",
           "state": "nominal",
-          "value": "41"
+          "value": "37"
         },
         {
           "name": "VRMP1ABC Temp",
           "state": "nominal",
-          "value": "41"
+          "value": "37"
         },
         {
           "name": "VRMP1DEF Temp",
           "state": "nominal",
-          "value": "42"
+          "value": "39"
         },
         {
           "name": "CPU2 Temp",
           "state": "nominal",
-          "value": "48"
+          "value": "46"
         },
         {
           "name": "VRMP2ABC Temp",
           "state": "nominal",
-          "value": "44"
+          "value": "41"
         },
         {
           "name": "VRMP2DEF Temp",
           "state": "nominal",
-          "value": "46"
+          "value": "42"
         }
       ],
       "nominals": 23,
-      "type": "Temperature",
+      "type": "Temperatures",
       "unit": "celsius",
       "warnings": 0
     }
@@ -967,12 +967,12 @@ describe("Dashboard", () => {
     const { getByText, asFragment } = wrapper;
     const hostHeaderElement = await waitForElement(() => getByText("Hardware Health"));
     expect(hostHeaderElement).toBeDefined();
-    const hostTextElement = await waitForElement(() => getByText("No records to display"));
+    const hostTextElement = await waitForElement(() => getByText("No Data to plot PieChart"));
     expect(hostTextElement).toBeDefined();
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should display sensor piechart", async () => {
+  it("should display piechart and view ipmi sensor details", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
@@ -999,7 +999,7 @@ describe("Dashboard", () => {
       .reply(200, [array]);
     jest.setTimeout(30000);
     renderComponent();
-    const { getByText, asFragment } = wrapper;
+    const { getByText, asFragment, getAllByText } = wrapper;
     const nominalsValueElement = await waitForElement(() => getByText("91"));
     expect(nominalsValueElement).toBeDefined();
     const ipmiTempNominals = await waitForElement(() => getByText("23"));
@@ -1008,11 +1008,275 @@ describe("Dashboard", () => {
     expect(ipmiVoltageNominals).toBeDefined();
     const criticalPersentage = await waitForElement(() => getByText("2.2%"));
     expect(criticalPersentage).toBeDefined();
-    // const sensorsRow = await waitForElement(() => getByText("Sensors"));
-    // fireEvent.click(sensorsRow);
-    // const sensorCriticalPersentage = await waitForElement(() => getByText("50%"));
-    // expect(sensorCriticalPersentage).toBeDefined();
+    const sensorsRow = await waitForElement(() => getByText("Sensors"));
+    fireEvent.click(sensorsRow);
+    const sensorCriticalPersentage = await waitForElement(() => getAllByText("50%"));
+    expect(sensorCriticalPersentage).toBeDefined();
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should display device spare details, sort the table, close popup and return to summary", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices: devices,
+          ipmi: ipmi,
+          errorInDevices: false,
+          errorInIMPI: false,
+          isIMPIChassisPowerOn: true,
+          totalCriticals: 2,
+          totalNominals: 91,
+          totalWarnings: 0
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByText, asFragment, getByTestId } = wrapper;
+    const sparesRow = await waitForElement(() => getByText("Spares"));
+    fireEvent.click(sparesRow);
+    const viewDetailsButton = await waitForElement(() => getByText("View Details"));
+    fireEvent.click(viewDetailsButton);
+    const availableSpareHeader = await waitForElement(() => getByText("Value (available %)"));
+    const tableHeaders = availableSpareHeader.closest('tr').children
+    for (let i = 0; i < tableHeaders.length; i++) {
+      fireEvent.click(tableHeaders[i].firstChild.lastChild);
+    }
+    const closePopup = await waitForElement(() => getByTestId("diskdetails-close"));
+    fireEvent.click(closePopup);
+    const summaryButton = await waitForElement(() => getByTestId("hw-summary-button"));
+    fireEvent.click(summaryButton);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should not display device table data if pos-exporter is not running", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices: [],
+          ipmi: ipmi,
+          errorInDevices: true,
+          errorInIMPI: false,
+          isIMPIChassisPowerOn: true,
+          totalCriticals: 4,
+          totalNominals: 91,
+          totalWarnings: 6
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+    renderComponent();
+    const { getByText } = wrapper;
+    const hostTextElement = await waitForElement(() => getByText("Please Check POS Exporter"));
+    expect(hostTextElement).toBeDefined();
+  });
+
+  it("should show warnings and criticals in legend in piechart", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices: devices,
+          ipmi: ipmi,
+          errorInDevices: false,
+          errorInIMPI: false,
+          isIMPIChassisPowerOn: true,
+          totalCriticals: 89,
+          totalNominals: 2,
+          totalWarnings: 2
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { asFragment, getAllByText } = wrapper;
+    const criticalAndWarningPersentage = await waitForElement(() => getAllByText("2.2%"));
+    expect(criticalAndWarningPersentage).toHaveLength(2);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should sort tables", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices: devices,
+          ipmi: ipmi,
+          errorInDevices: false,
+          errorInIMPI: false,
+          isIMPIChassisPowerOn: true,
+          totalCriticals: 2,
+          totalNominals: 91,
+          totalWarnings: 0
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { findByText } = screen;
+    const thIPMI = await findByText("IPMI")
+    const impiHeaders = thIPMI.closest('tr').children
+    for (let i = 0; i < impiHeaders.length; i++) {
+      fireEvent.click(impiHeaders[i].firstChild.lastChild);
+    }
+    const thDevice = await findByText("Device")
+    const deviceHeaders = thDevice.closest('tr').children
+    for (let i = 0; i < deviceHeaders.length; i++) {
+      fireEvent.click(deviceHeaders[i].firstChild.lastChild);
+    }
+  });
+
+  it("should show 8 Voltage warnings in ipmi table and 0 Spare nominals in device table", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        {
+          ip: '127.0.0.1',
+          isConfigured: true,
+          port: '5555'
+        }
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices: devices.map(d => {
+            if (d.type !== "Spares") return d;
+            return {
+              ...d,
+              nominals: 0,
+              warnings: 9,
+              criticals: 15
+            }
+          }),
+          ipmi: ipmi.map(i => {
+            if (i.type !== "Voltages") return i;
+            return {
+              ...i,
+              nominals: 1,
+              warnings: 13,
+            }
+          }),
+          errorInDevices: false,
+          errorInIMPI: false,
+          isIMPIChassisPowerOn: true,
+          totalCriticals: 89,
+          totalNominals: 2,
+          totalWarnings: 2
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+    jest.setTimeout(30000);
+    renderComponent();
+    const { getByText } = wrapper;
+    const ipmiVoltagesWarning = await waitForElement(() => getByText("13"));
+    expect(ipmiVoltagesWarning).toBeDefined();
+    const deviceSparesWarning = await waitForElement(() => getByText("9"));
+    expect(deviceSparesWarning).toBeDefined();
+  });
+
+  it("should mock with different responses for hardware info", async () => {
+    const configureResponse = {
+      ip: '127.0.0.1',
+      isConfigured: true,
+      port: '5555'
+    }
+    const mock = new MockAdapter(axios);
+    const initMockAndRender = (response) => {
+      mock.reset();
+      mock.onGet(`/api/v1/configure`)
+      .reply(200, configureResponse)
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200, response)
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array]);
+      renderComponent();
+    }
+
+    jest.setTimeout(30000);
+    let hwResponse = {
+      devices: devices,
+      ipmi: ipmi,
+      errorInDevices: false,
+      errorInIMPI: false,
+      isIMPIChassisPowerOn: true,
+      totalCriticals: 89,
+      totalNominals: 2,
+      totalWarnings: 2
+    }
+    initMockAndRender(hwResponse);
+
+    const { getByText } = wrapper;
+
+    const changedDevicesSparesMetrics = devices.map(d => {
+      if (d.type !== "Spares") return d;
+      return {
+        ...d,
+        metrics: [],
+      }
+    })
+    hwResponse = {
+      ...hwResponse,
+      devices: changedDevicesSparesMetrics,
+    }
+    initMockAndRender(hwResponse);
+
+    // const changedIpmiVoltagesMetrics = ipmi.map(i => {
+    //   if (i.type !== "Voltages") return i;
+    //   return {
+    //     ...i,
+    //     metrics: []
+    //   }
+    // })
+    // hwResponse = {
+    //   ...hwResponse,
+    //   ipmi: changedIpmiVoltagesMetrics
+    // }
+    // initMockAndRender(hwResponse);
+
+    // const changedIpmilength = [{ ...changedIpmiVoltagesMetrics[0] }]
+    // hwResponse = {
+    //   ...hwResponse,
+    //   ipmi: changedIpmilength,
+    // }
+    // initMockAndRender(hwResponse);
   });
 
   it('should render button on resize', () => {

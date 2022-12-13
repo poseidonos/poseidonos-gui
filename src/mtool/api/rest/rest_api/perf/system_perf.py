@@ -34,74 +34,10 @@
 
 from rest.rest_api.telemetry import telemetry
 from rest.rest_api.dagent import ibofos
+from util.macros.performance import *
 import json
 import io
 
-READ_IOPS_VOLUME = 'read_iops_volume'
-WRITE_IOPS_VOLUME = 'write_iops_volume'
-READ_BPS_VOLUME = 'read_bps_volume'
-WRITE_BPS_VOLUME = 'write_bps_volume'
-READ_AVG_LAT_VOLUME = 'read_avg_lat_volume'
-WRITE_AVG_LAT_VOLUME = 'write_avg_lat_volume'
-TEMPERATURE = 'temperature'
-WARNINGTEMPERATURETIME = 'warning_temperature_time'
-CRITICALTEMPERATURETIME = 'critical_temperature_time'
-AVAILABLESPARE = 'available_spare'
-AVAILABLESPARETHRESOLD = 'available_spare_threshold'
-DEVICE_METRICS = [ TEMPERATURE, WARNINGTEMPERATURETIME,
-        CRITICALTEMPERATURETIME, AVAILABLESPARE, AVAILABLESPARETHRESOLD ]
-IPMIFANSPEEDSTATE = 'ipmi_fan_speed_state'
-IPMIFANSPEEDRPM = 'ipmi_fan_speed_rpm'
-IPMIPOWERSTATE = 'ipmi_power_state'
-IPMIPOWERWATTS = 'ipmi_power_watts'
-IPMISENSORSTATE = 'ipmi_sensor_state'
-IPMISENSORVALUE = 'ipmi_sensor_value'
-IPMIVOLTAGESTATE = 'ipmi_voltage_state'
-IPMIVOLTAGEVOLTS = 'ipmi_voltage_volts'
-IPMITEMPERATURESTATE = 'ipmi_temperature_state'
-IPMITEMPERATURECELCIUS = 'ipmi_temperature_celsius'
-IPMICHASSISPOWERSTATE = 'ipmi_chassis_power_state'
-IPMI_METRICS = [ IPMIFANSPEEDSTATE, IPMIFANSPEEDRPM,
-        IPMIPOWERSTATE, IPMIPOWERWATTS, IPMISENSORSTATE,
-        IPMISENSORVALUE, IPMIVOLTAGESTATE, IPMIVOLTAGEVOLTS,
-        IPMITEMPERATURESTATE, IPMITEMPERATURECELCIUS, IPMICHASSISPOWERSTATE ]
-TEMPERATURE_NAME = "Temperatures"
-AVAILABLESPARE_NAME= "Spares"
-DEVICE_UNITS={
-    TEMPERATURE_NAME: "kelvin",
-    AVAILABLESPARE_NAME: "available %"
-}
-FAN_SPEED = "Fans"
-POWER = "Powers"
-SENSOR_VALUE = "Sensors"
-VOLTAGE = "Voltages"
-IPMI_UNITS = {
-    FAN_SPEED : "rpm",
-    POWER: "watts",
-    SENSOR_VALUE: "",
-    VOLTAGE: "Volts",
-    TEMPERATURE_NAME: "celsius"
-}
-NOMINAL = "nominal"
-WARNING = "warning"
-CRITICAL = "critical"
-NOMINAL_COUNT = "nominals"
-WARNING_COUNT = "warnings"
-CRITICAL_COUNT = "criticals"
-DEVICES = "devices"
-IPMI = "ipmi"
-ERRORINDEVICES = "errorInDevices"
-ERRORINIPMI = "errorInIMPI"
-ISIPMICHASSISPOWERON = "isIMPIChassisPowerOn"
-TOTALNOMINALS = "totalNominals"
-TOTALWARNINGS = "totalWarnings"
-TOTALCRITICALS = "totalCriticals"
-TYPE = "type"
-UNIT = "unit"
-METRICS = "metrics"
-NAME = "name"
-STATE = "state"
-VALUE = "value"
 
 def get_agg_volumes_perf(ip, port):
     read_bw = telemetry.get_agg_value(ip,port,READ_BPS_VOLUME)
@@ -137,7 +73,7 @@ def get_all_hardware_health(ip, port):
         TOTALCRITICALS: 0,
     }
     device_res = telemetry.get_device_metrics_values(ip, port, DEVICE_METRICS)
-    if device_res['status'] != 'success':
+    if 'status' not in device_res or device_res['status'] != 'success':
         res_dict[ERRORINDEVICES] = True
     
     total_nominals = 0
@@ -225,7 +161,7 @@ def get_all_hardware_health(ip, port):
     res_dict[DEVICES] = res_devices
 
     ipmi_res = telemetry.get_ipmi_metrics_values(ip, port, IPMI_METRICS)
-    if ipmi_res['status'] != 'success':
+    if 'status' not in ipmi_res or ipmi_res['status'] != 'success':
         res_dict[ERRORINIPMI] = True
 
     ipmi = {
@@ -292,11 +228,12 @@ def get_all_hardware_health(ip, port):
             value = ipmi[metric_type][key]
             metric_details[METRICS].append({
                 NAME: key,
-                STATE: states_dict[value[STATE]],
-                VALUE: value[VALUE]
+                STATE: states_dict[value[STATE]] if STATE in value else "",
+                VALUE: value[VALUE] if VALUE in value else ""
             })
-            update_state_count(states_dict[value[STATE]])
-            update_field_state_count(states_dict[value[STATE]], metric_details)
+            if STATE in value:
+                update_state_count(states_dict[value[STATE]])
+                update_field_state_count(states_dict[value[STATE]], metric_details)
         res_ipmi.append(metric_details)
 
     add_ipmi_field(FAN_SPEED)

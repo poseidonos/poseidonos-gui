@@ -33,13 +33,14 @@
  '''
 
 import requests_mock
-from unittest import mock
-from rest.app import app
-from flask import json
 import jwt
 import datetime
 import os
 import re
+from flask import json
+from unittest import mock
+from rest.app import app
+from util.macros.performance import TOTALCRITICALS, TOTALWARNINGS, TOTALNOMINALS, ISIPMICHASSISPOWERON, ERRORINDEVICES, ERRORINIPMI
 
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ip = "122.122.122.122"
@@ -53,6 +54,323 @@ DAGENT_URL = 'http://' + dagent_ip + ':3000'
 ds_id = 1
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
+
+devices = [
+        {
+            "metric": {
+                "__name__": "unknown_name",
+                "nvme_ctrl_id": "unknown_id",
+                "publisher_name": "unknown_publisher",
+            },
+            "value": [
+                1670921370.578,
+                "10"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "available_spare",
+                "nvme_ctrl_id": "unvme-ns-0",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "8"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "available_spare",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "100"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "available_spare_threshold",
+                "nvme_ctrl_id": "unvme-ns-0",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "10"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "available_spare_threshold",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "10"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "critical_temperature_time",
+                "nvme_ctrl_id": "unvme-ns-0",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "1"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "critical_temperature_time",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "0"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "temperature",
+                "nvme_ctrl_id": "unvme-ns-0",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "308"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "temperature",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "308"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "warning_temperature_time",
+                "nvme_ctrl_id": "unvme-ns-0",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "0"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "warning_temperature_time",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "1"
+            ]
+        },
+        {
+            "metric": {
+                "__name__": "critical_temperature_time",
+                "nvme_ctrl_id": "unvme-ns-1",
+                "publisher_name": "Disk_Monitoring",
+            },
+            "value": [
+                1670921370.578,
+                "0"
+            ]
+        },
+]
+
+ipmi = [
+    {
+        "metric": {
+            "__name__": "unknown_name",
+        },
+        "value": [
+            1670922558.274,
+            "1"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_chassis_power_state",
+        },
+        "value": [
+            1670922558.274,
+            "1"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_fan_speed_rpm",
+            "name": "FAN7"
+        },
+        "value": [
+            1670922558.274,
+            "3900"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_fan_speed_rpm",
+            "name": "FAN4"
+        },
+        "value": [
+            1670922558.274,
+            "3900"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_fan_speed_state",
+            "name": "FAN7"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_fan_speed_state",
+            "name": "FAN4"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_sensor_state",
+            "name": "PS1 Status"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_sensor_state",
+            "name": "PS2 Status"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_sensor_value",
+            "name": "PS1 Status"
+        },
+        "value": [
+            1670922558.274,
+            "NaN"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_sensor_value",
+            "name": "PS2 Status"
+        },
+        "value": [
+            1670922558.274,
+            "NaN"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_temperature_celsius",
+            "name": "PCH Temp"
+        },
+        "value": [
+            1670922558.274,
+            "55"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_temperature_celsius",
+            "name": "P1-DIMMB1 Temp"
+        },
+        "value": [
+            1670922558.274,
+            "55"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_temperature_state",
+            "name": "PCH Temp"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_temperature_state",
+            "name": "P1-DIMMB1 Temp"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_voltage_state",
+            "name": "5VCC"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_voltage_state",
+            "name": "3.3VCC"
+        },
+        "value": [
+            1670922558.274,
+            "0"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_voltage_volts",
+            "name": "5VCC"
+        },
+        "value": [
+            1670922558.274,
+            "5.03"
+        ]
+    },
+    {
+        "metric": {
+            "__name__": "ipmi_voltage_volts",
+            "name": "3.3VCC"
+        },
+        "value": [
+            1670922558.274,
+            "3.35"
+        ]
+    }
+]
+
 
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
             return_value=[ip,port], autospec=True)
@@ -279,6 +597,102 @@ def test_get_current_perf(mock_get_current_user, **kwargs):
     )
 
     assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=["localhost", "9090"], autospec=True)
+def test_get_hardware_health(mock_get_current_user, **kwargs):
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": devices,
+                        },
+                        "status": "success"
+                    },
+                    status_code=200)
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": ipmi,
+                        },
+                        "status": "success"
+                    },
+                    status_code=200)
+    response = app.test_client().get(
+        '/api/v1/get_hardware_health',
+        headers={'x-access-token': json_token},
+    )
+    assert response.status_code == 200
+    response = json.loads(response.data)
+    assert response[TOTALNOMINALS] == 10
+    assert response[TOTALWARNINGS] == 1
+    assert response[TOTALCRITICALS] == 1
+    assert response[ERRORINDEVICES] == False
+    assert response[ERRORINIPMI] == False
+    assert response[ISIPMICHASSISPOWERON] == True
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=["localhost", "9090"], autospec=True)
+def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, **kwargs):
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": [],
+                        },
+                    },
+                    status_code=200)
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": ipmi,
+                        },
+                        "status": "success"
+                    },
+                    status_code=200)
+    response = app.test_client().get(
+        '/api/v1/get_hardware_health',
+        headers={'x-access-token': json_token},
+    )
+    assert response.status_code == 200
+    response = json.loads(response.data)
+    assert response[TOTALNOMINALS] == 8
+    assert response[ERRORINDEVICES] == True
+    assert response[ERRORINIPMI] == False
+    assert response[ISIPMICHASSISPOWERON] == True
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_telemetery_url",
+            return_value=["localhost", "9090"], autospec=True)
+def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user, **kwargs):
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": devices,
+                        },
+                        "status": "success"
+                    },
+                    status_code=200)
+    kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
+                    json={
+                        "data": {
+                            "result": [],
+                        }
+                    },
+                    status_code=200)
+    response = app.test_client().get(
+        '/api/v1/get_hardware_health',
+        headers={'x-access-token': json_token},
+    )
+
+    assert response.status_code == 200
+    response = json.loads(response.data)
+    assert response[TOTALNOMINALS] == 2
+    assert response[TOTALCRITICALS] == 1
+    assert response[TOTALWARNINGS] == 1
+    assert response[ERRORINDEVICES] == False
+    assert response[ERRORINIPMI] == True
+    assert response[ISIPMICHASSISPOWERON] == False
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",

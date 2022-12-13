@@ -156,25 +156,25 @@ const HardwareHealth = (props) => {
                 width: 130,
             },
             field: "type",
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.type.localeCompare(b.type))
         },
         {
             title: "Criticals",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.criticals - b.criticals)
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.warnings - b.warnings)
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.nominals - b.nominals)
         }
     ];
     const deviceTableColumns = [
@@ -185,25 +185,25 @@ const HardwareHealth = (props) => {
                 width: 130,
             },
             field: "type",
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.type.localeCompare(b.type))
         },
         {
             title: "Criticals",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.criticals - b.criticals)
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.warnings - b.warnings)
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
             render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.nominals - b.nominals)
         }
     ];
     const healthTableColumns = [
@@ -214,7 +214,7 @@ const HardwareHealth = (props) => {
                 width: 130,
             },
             field: "name",
-            customSort: (a, b) => (a.name.localeCompare(b.name))
+            customSort: (a, b) => (a.type.localeCompare(b.type))
         },
         {
             title: pieChart.unit !== "" ? `Value (${pieChart.unit})` : "Value",
@@ -451,6 +451,7 @@ const HardwareHealth = (props) => {
                     });
                 }}
                 className={classes.summaryButton}
+                data-testid="hw-summary-button"
             >
                 <ArrowBack /> Summary
             </Button>
