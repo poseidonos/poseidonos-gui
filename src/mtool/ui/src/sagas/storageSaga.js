@@ -142,6 +142,7 @@ function* fetchArray(action) {
 
 function* fetchArrayInfo(action) {
   try {
+    yield put(actionCreators.setArrayInfoFetching(true));
     const response = yield call(
       [axios, axios.get],
       `/api/v1/array/${action.payload}/info?ts=${Date.now()}`,
@@ -160,7 +161,10 @@ function* fetchArrayInfo(action) {
     }
   } catch (e) {
     // console.log(e);
+  } finally {
+    yield put(actionCreators.setArrayInfoFetching(false));
   }
+    
 }
 
 
@@ -197,6 +201,7 @@ function* fetchDevices(action) {
     alertTitle: "Fetch Devices",
   };
   try {
+    yield put(actionCreators.setDeviceFetching(true));
     if (!action || !action.payload || !action.payload.noLoad) {
       yield put(actionCreators.startStorageLoader("Fetching Devices"));
     }
@@ -243,6 +248,7 @@ function* fetchDevices(action) {
     }));
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
+    yield put(actionCreators.setDeviceFetching(false));
     if (!fetchDeviceSuccess) {
       yield put(actionCreators.stopStorageLoader());
     } else if (!action || !action.payload || !action.payload.noLoad) {

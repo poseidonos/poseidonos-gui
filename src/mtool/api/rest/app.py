@@ -830,6 +830,8 @@ def get_array_info(current_user, array_name):
 def getDevices(current_user):
     devices = list_devices()
     if(not isinstance(devices, dict)):
+        if devices.status_code != 200:
+            return toJson(devices.json())
         devices = devices.json()
     arrays = dagent.list_arrays()
     arrays = arrays.json()

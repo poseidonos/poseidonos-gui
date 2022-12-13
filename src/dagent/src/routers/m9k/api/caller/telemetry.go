@@ -61,7 +61,10 @@ func CallGetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMan
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
 	}
-	resByte, err2 := protojson.Marshal(result)
+	resByte, err2 := protojson.MarshalOptions{
+        EmitUnpopulated: true,
+    }.Marshal(result)
+
 	return HandleResponse(resByte, err2)
 }
 

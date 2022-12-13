@@ -13,8 +13,13 @@ import (
 )
 
 const dialErrorMsg = "Could not connect to the CLI server. Is PoseidonOS running?"
-const dialTimeout = 10
-const reqTimeout = 90
+const dialTimeout = 5
+const reqTimeout = 360
+
+// TODO  We temporarily set long timeout values for mount/unmount array commands.
+const unmountArrayCmdTimeout = 1800
+const mountArrayCmdTimeout = 600
+
 
 type POSGRPCConnection struct {
 	Address string
@@ -438,7 +443,7 @@ func SendMountArray(posConn POSGRPCConnection, req *pb.MountArrayRequest) (*pb.M
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(mountArrayCmdTimeout))
 	defer cancel()
 
 	res, err := c.MountArray(ctx, req)
@@ -460,7 +465,7 @@ func SendUnmountArray(posConn POSGRPCConnection, req *pb.UnmountArrayRequest) (*
 	defer conn.Close()
 
 	c := pb.NewPosCliClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(unmountArrayCmdTimeout))
 	defer cancel()
 
 	res, err := c.UnmountArray(ctx, req)
