@@ -29,16 +29,18 @@ func (p *POSGRPCManager) Init(client string, address interface{}) error {
 	return nil
 }
 
-func (p *POSGRPCManager) GetSystemProperty() (response *pb.GetSystemPropertyResponse, err error) {
+func (p *POSGRPCManager) GetSystemProperty() (response *pb.GetSystemPropertyResponse, request *pb.GetSystemPropertyRequest, err error) {
 	command := "GETSYSTEMPROPERTY"
 	req := &pb.GetSystemPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendGetSystemProperty(p.connection, req)
+	res, err := grpc.SendGetSystemProperty(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *pb.SetSystemPropertyResponse, err error) {
+func (p *POSGRPCManager) SetSystemProperty(param *pb.SetSystemPropertyRequest_Param) (response *pb.SetSystemPropertyResponse, request *pb.SetSystemPropertyRequest, err error) {
 	command := "REBUILDPERFIMPACT"
 	req := &pb.SetSystemPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendSetSystemProperty(p.connection, req)
+	res, err := grpc.SendSetSystemProperty(p.connection, req)
+	return res, req, err
 }
 
 func (p *POSGRPCManager) StartPoseidonOS() ([]byte, error) {
@@ -58,34 +60,39 @@ func (p *POSGRPCManager) StartPoseidonOS() ([]byte, error) {
 	return res, nil
 }
 
-func (p *POSGRPCManager) StopPoseidonOS() (response *pb.StopSystemResponse, err error) {
+func (p *POSGRPCManager) StopPoseidonOS() (response *pb.StopSystemResponse, request *pb.StopSystemRequest, err error) {
 	command := "STOPSYSTEM"
 	req := &pb.StopSystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendStopSystem(p.connection, req)
+	res, err := grpc.SendStopSystem(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) GetSystemInfo() (response *pb.SystemInfoResponse, err error) {
+func (p *POSGRPCManager) GetSystemInfo() (response *pb.SystemInfoResponse, request *pb.SystemInfoRequest, err error) {
 	command := "SYSTEMINFO"
 	req := &pb.SystemInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendSystemInfo(p.connection, req)
+	res, err := grpc.SendSystemInfo(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) CreateDevice(param *pb.CreateDeviceRequest_Param) (*pb.CreateDeviceResponse, error) {
+func (p *POSGRPCManager) CreateDevice(param *pb.CreateDeviceRequest_Param) (*pb.CreateDeviceResponse, *pb.CreateDeviceRequest, error) {
 	command := "CREATEDEVICE"
 	req := &pb.CreateDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendCreateDevice(p.connection, req)
+	res, err := grpc.SendCreateDevice(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) ScanDevice() (*pb.ScanDeviceResponse, error) {
+func (p *POSGRPCManager) ScanDevice() (*pb.ScanDeviceResponse, *pb.ScanDeviceRequest, error) {
 	command := "SCANDEVICE"
 	req := &pb.ScanDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendScanDevice(p.connection, req)
+	res, err := grpc.SendScanDevice(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) GetDeviceSmartLog(param *pb.GetSmartLogRequest_Param) (*pb.GetSmartLogResponse, error) {
+func (p *POSGRPCManager) GetDeviceSmartLog(param *pb.GetSmartLogRequest_Param) (*pb.GetSmartLogResponse, *pb.GetSmartLogRequest, error) {
 	command := "SMARTLOG"
 	req := &pb.GetSmartLogRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendGetSmartLog(p.connection, req)
+	res, err := grpc.SendGetSmartLog(p.connection, req)
+	return res, req, err
 }
 
 // ListDevices method lists the devices in PoseidonOS
@@ -112,10 +119,11 @@ func (p *POSGRPCManager) GetDeviceSmartLog(param *pb.GetSmartLogRequest_Param) (
 //        8. serialNumber: Serial number of the device (string)
 // info: info object contains the following fields
 //    1. version: PoseidonOS version (string)
-func (p *POSGRPCManager) ListDevices() (*pb.ListDeviceResponse, error) {
+func (p *POSGRPCManager) ListDevices() (*pb.ListDeviceResponse, *pb.ListDeviceRequest, error) {
 	command := "LISTDEVICE"
 	req := &pb.ListDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendListDevice(p.connection, req)
+	res, err := grpc.SendListDevice(p.connection, req)
+	return res, req, err
 }
 
 // Create Array method creates an array in PoseidonOS
@@ -141,247 +149,281 @@ func (p *POSGRPCManager) ListDevices() (*pb.ListDeviceResponse, error) {
 //     - solution: Solution of the problem occured, if any (string)
 // info: info object contains the following fields
 //    1. version: PoseidonOS version (string)
-func (p *POSGRPCManager) CreateArray(param *pb.CreateArrayRequest_Param) (*pb.CreateArrayResponse, error) {
+func (p *POSGRPCManager) CreateArray(param *pb.CreateArrayRequest_Param) (*pb.CreateArrayResponse, *pb.CreateArrayRequest, error) {
 	command := "CREATEARRAY"
 	req := &pb.CreateArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendCreateArray(p.connection, req)
+	res, err := grpc.SendCreateArray(p.connection, req)
+	return res, req, err
 }
 
 // Add device command add spare device in PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, error) {
+func (p *POSGRPCManager) AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, *pb.AddSpareRequest, error) {
 	command := "ADDDEVICE"
 	req := &pb.AddSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendAddSpare(p.connection, req)
+	res, err := grpc.SendAddSpare(p.connection, req)
+	return res, req, err
 }
 
 // Remove device command removes spare device from PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) RemoveDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, error) {
+func (p *POSGRPCManager) RemoveDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, *pb.RemoveSpareRequest, error) {
 	command := "REMOVEDEVICE"
 	req := &pb.RemoveSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendRemoveSpare(p.connection, req)
+	res, err := grpc.SendRemoveSpare(p.connection, req)
+	return res, req, err
 }
 
 // Automatically create an array for PoseidonOS with the number of devices the user specifies.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) AutoCreateArray(param *pb.AutocreateArrayRequest_Param) (*pb.AutocreateArrayResponse, error) {
+func (p *POSGRPCManager) AutoCreateArray(param *pb.AutocreateArrayRequest_Param) (*pb.AutocreateArrayResponse, *pb.AutocreateArrayRequest, error) {
 	command := "AUTOCREATEARRAY"
 	req := &pb.AutocreateArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendAutocreateArray(p.connection, req)
+	res, err := grpc.SendAutocreateArray(p.connection, req)
+	return res, req, err
 }
 
 // Delete an array from PoseidonOS. After executing this command, the data and volumes in the array will be deleted too.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) DeleteArray(param *pb.DeleteArrayRequest_Param) (*pb.DeleteArrayResponse, error) {
+func (p *POSGRPCManager) DeleteArray(param *pb.DeleteArrayRequest_Param) (*pb.DeleteArrayResponse, *pb.DeleteArrayRequest, error) {
 	command := "DELETEARRAY"
 	req := &pb.DeleteArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendDeleteArray(p.connection, req)
+	res, err := grpc.SendDeleteArray(p.connection, req)
+	return res, req, err
 }
 
 // ArrayInfo command will display detailed information of an array.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ArrayInfo(param *pb.ArrayInfoRequest_Param) (*pb.ArrayInfoResponse, error) {
+func (p *POSGRPCManager) ArrayInfo(param *pb.ArrayInfoRequest_Param) (*pb.ArrayInfoResponse, *pb.ArrayInfoRequest, error) {
 	command := "ARRAYINFO"
 	req := &pb.ArrayInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendArrayInfo(p.connection, req)
+	res, err := grpc.SendArrayInfo(p.connection, req)
+	return res, req, err
 }
 
 // ListArray command will display detailed information of all existing arrays.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ListArray() (*pb.ListArrayResponse, error) {
+func (p *POSGRPCManager) ListArray() (*pb.ListArrayResponse, *pb.ListArrayRequest, error) {
 	command := "LISTARRAY"
 	req := &pb.ListArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendListArray(p.connection, req)
+	res, err := grpc.SendListArray(p.connection, req)
+	return res, req, err
 }
 
 // MountArray command will mount the array, You can create a volume from an array only when the array is mounted.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) MountArray(param *pb.MountArrayRequest_Param) (*pb.MountArrayResponse, error) {
+func (p *POSGRPCManager) MountArray(param *pb.MountArrayRequest_Param) (*pb.MountArrayResponse, *pb.MountArrayRequest, error) {
 	command := "MOUNTARRAY"
 	req := &pb.MountArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendMountArray(p.connection, req)
+	res, err := grpc.SendMountArray(p.connection, req)
+	return res, req, err
 }
 
 // UnmountArray command will unmount the array, all the volumes in the array will be unmounted
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) UnmountArray(param *pb.UnmountArrayRequest_Param) (*pb.UnmountArrayResponse, error) {
+func (p *POSGRPCManager) UnmountArray(param *pb.UnmountArrayRequest_Param) (*pb.UnmountArrayResponse, *pb.UnmountArrayRequest, error) {
 	command := "UNMOUNTARRAY"
 	req := &pb.UnmountArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendUnmountArray(p.connection, req)
+	res, err := grpc.SendUnmountArray(p.connection, req)
+	return res, req, err
 }
 
 // Replace a data device with an available spare device in array. Use this command when you expect a possible problem of a data device. If there is no available spare device, this command will fail.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ReplaceArrayDevice(param *pb.ReplaceArrayDeviceRequest_Param) (*pb.ReplaceArrayDeviceResponse, error) {
+func (p *POSGRPCManager) ReplaceArrayDevice(param *pb.ReplaceArrayDeviceRequest_Param) (*pb.ReplaceArrayDeviceResponse, *pb.ReplaceArrayDeviceRequest, error) {
 	command := "REPLACEARRAYDEVICE"
 	req := &pb.ReplaceArrayDeviceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendReplaceArrayDevice(p.connection, req)
+	res, err := grpc.SendReplaceArrayDevice(p.connection, req)
+	return res, req, err
 }
 
 // Reset the weights for backend events such as Flush, Rebuild, and GC to the default values.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ResetEventWRRPolicy() (*pb.ResetEventWrrResponse, error) {
+func (p *POSGRPCManager) ResetEventWRRPolicy() (*pb.ResetEventWrrResponse, *pb.ResetEventWrrRequest, error) {
 	command := "RESETEVENTWRRPOLICY"
 	req := &pb.ResetEventWrrRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendResetEventWrrPolicyRpc(p.connection, req)
+	res, err := grpc.SendResetEventWrrPolicyRpc(p.connection, req)
+	return res, req, err
 }
 
 // Reset MBR information of PoseidonOS. Use this command when you need to remove the all the arrays and reset the states of the devices.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ResetMBR() (*pb.ResetMbrResponse, error) {
+func (p *POSGRPCManager) ResetMBR() (*pb.ResetMbrResponse, *pb.ResetMbrRequest, error) {
 	command := "RESETMBR"
 	req := &pb.ResetMbrRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendResetMbrRpc(p.connection, req)
+	res, err := grpc.SendResetMbrRpc(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) StopRebuilding(param *pb.StopRebuildingRequest_Param) (*pb.StopRebuildingResponse, error) {
+func (p *POSGRPCManager) StopRebuilding(param *pb.StopRebuildingRequest_Param) (*pb.StopRebuildingResponse, *pb.StopRebuildingRequest, error) {
 	command := "STOPREBUILDING"
 	req := &pb.StopRebuildingRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendStopRebuildingRpc(p.connection, req)
+	res, err := grpc.SendStopRebuildingRpc(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) UpdateEventWRRPolicy(param *pb.UpdateEventWrrRequest_Param) (*pb.UpdateEventWrrResponse, error) {
+func (p *POSGRPCManager) UpdateEventWRRPolicy(param *pb.UpdateEventWrrRequest_Param) (*pb.UpdateEventWrrResponse, *pb.UpdateEventWrrRequest, error) {
 	command := "UPDATEEVENTWRRPOLICY"
 	req := &pb.UpdateEventWrrRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendUpdatEventWrr(p.connection, req)
+	res, err := grpc.SendUpdatEventWrr(p.connection, req)
+	return res, req, err
 }
 
 // Apply a filtering policy to logger.
 //Filtering file: when executing this command, PoseidonOS reads a filtering policy stored in a file. You can set the file path of the filter in the PoseidonOS configuration (the default path is /etc/conf/filter). If the file does not exist, you can create one.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) ApplyLogFilter() (*pb.ApplyLogFilterResponse, error) {
+func (p *POSGRPCManager) ApplyLogFilter() (*pb.ApplyLogFilterResponse, *pb.ApplyLogFilterRequest, error) {
 	command := "APPLYLOGFILTER"
 	req := &pb.ApplyLogFilterRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendApplyLogFilter(p.connection, req)
+	res, err := grpc.SendApplyLogFilter(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) GetLogLevel() (*pb.GetLogLevelResponse, error) {
+func (p *POSGRPCManager) GetLogLevel() (*pb.GetLogLevelResponse, *pb.GetLogLevelRequest, error) {
 	command := "GETLOGLEVEL"
 	req := &pb.GetLogLevelRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendGetLogLevel(p.connection, req)
+	res, err := grpc.SendGetLogLevel(p.connection, req)
+	return res, req, err
 }
 
 // Display the current preference of logger
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) LoggerInfo() (*pb.LoggerInfoResponse, error) {
+func (p *POSGRPCManager) LoggerInfo() (*pb.LoggerInfoResponse, *pb.LoggerInfoRequest, error) {
 	command := "LOGGERINFO"
 	req := &pb.LoggerInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendLoggerInfo(p.connection, req)
+	res, err := grpc.SendLoggerInfo(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) SetLogLevel(param *pb.SetLogLevelRequest_Param) (*pb.SetLogLevelResponse, error) {
+func (p *POSGRPCManager) SetLogLevel(param *pb.SetLogLevelRequest_Param) (*pb.SetLogLevelResponse, *pb.SetLogLevelRequest, error) {
 	command := "SETLOGLEVEL"
 	req := &pb.SetLogLevelRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendSetLogLevel(p.connection, req)
+	res, err := grpc.SendSetLogLevel(p.connection, req)
+	return res, req, err
 }
 
 // Set the preferences (e.g., format) of logger.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) SetLogPreference(param *pb.SetLogPreferenceRequest_Param) (*pb.SetLogPreferenceResponse, error) {
+func (p *POSGRPCManager) SetLogPreference(param *pb.SetLogPreferenceRequest_Param) (*pb.SetLogPreferenceResponse, *pb.SetLogPreferenceRequest, error) {
 	command := "SETLOGPREFERENCE"
 	req := &pb.SetLogPreferenceRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendSetLogPreference(p.connection, req)
+	res, err := grpc.SendSetLogPreference(p.connection, req)
+	return res, req, err
 }
 
 // Add a listener to an NVMe-oF subsystem
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) AddListener(param *pb.AddListenerRequest_Param) (*pb.AddListenerResponse, error) {
+func (p *POSGRPCManager) AddListener(param *pb.AddListenerRequest_Param) (*pb.AddListenerResponse, *pb.AddListenerRequest, error) {
 	command := "ADDLISTENER"
 	req := &pb.AddListenerRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendAddListener(p.connection, req)
+	res, err := grpc.SendAddListener(p.connection, req)
+	return res, req, err
 }
 
 // Create an NVMe-oF subsystem to PoseidonOS.
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) CreateSubsystem(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, error) {
+func (p *POSGRPCManager) CreateSubsystem(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, *pb.CreateSubsystemRequest, error) {
 	command := "CREATESUBSYSTEM"
 	req := &pb.CreateSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendCreateSubsystem(p.connection, req)
+	res, err := grpc.SendCreateSubsystem(p.connection, req)
+	return res, req, err
 }
 
 // Create NVMf transport to PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) CreateTransport(param *pb.CreateTransportRequest_Param) (*pb.CreateTransportResponse, error) {
+func (p *POSGRPCManager) CreateTransport(param *pb.CreateTransportRequest_Param) (*pb.CreateTransportResponse, *pb.CreateTransportRequest, error) {
 	command := "CREATETRANSPORT"
 	req := &pb.CreateTransportRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendCreateTransport(p.connection, req)
+	res, err := grpc.SendCreateTransport(p.connection, req)
+	return res, req, err
 }
 
 // Delete a subsystem from PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) DeleteSubsystem(param *pb.DeleteSubsystemRequest_Param) (*pb.DeleteSubsystemResponse, error) {
+func (p *POSGRPCManager) DeleteSubsystem(param *pb.DeleteSubsystemRequest_Param) (*pb.DeleteSubsystemResponse, *pb.DeleteSubsystemRequest, error) {
 	command := "DELETESUBSYSTEM"
 	req := &pb.DeleteSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendDeleteSubsystem(p.connection, req)
+	res, err := grpc.SendDeleteSubsystem(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) SubsystemInfo(param *pb.SubsystemInfoRequest_Param) (*pb.SubsystemInfoResponse, error) {
+func (p *POSGRPCManager) SubsystemInfo(param *pb.SubsystemInfoRequest_Param) (*pb.SubsystemInfoResponse, *pb.SubsystemInfoRequest, error) {
 	command := "SUBSYSTEMINFO"
 	req := &pb.SubsystemInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendSubsystemInfo(p.connection, req)
+	res, err := grpc.SendSubsystemInfo(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) ListSubsystem() (*pb.ListSubsystemResponse, error) {
+func (p *POSGRPCManager) ListSubsystem() (*pb.ListSubsystemResponse, *pb.ListSubsystemRequest, error) {
 	command := "LISTSUBSYSTEM"
 	req := &pb.ListSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendListSubsystem(p.connection, req)
+	res, err := grpc.SendListSubsystem(p.connection, req)
+	return res, req, err
 }
 
 // Start the collection of telemetry data in PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) StartTelemetry() (*pb.StartTelemetryResponse, error) {
+func (p *POSGRPCManager) StartTelemetry() (*pb.StartTelemetryResponse, *pb.StartTelemetryRequest, error) {
 	command := "STARTTELEMETRY"
 	req := &pb.StartTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendStartTelemetryRpc(p.connection, req)
+	res, err := grpc.SendStartTelemetryRpc(p.connection, req)
+	return res, req, err
 }
 
 // Stop the collection of telemetry data in PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) StopTelemetry() (*pb.StopTelemetryResponse, error) {
+func (p *POSGRPCManager) StopTelemetry() (*pb.StopTelemetryResponse, *pb.StopTelemetryRequest, error) {
 	command := "STOPTELEMETRY"
 	req := &pb.StopTelemetryRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendStopTelemetryRpc(p.connection, req)
+	res, err := grpc.SendStopTelemetryRpc(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, error) {
+func (p *POSGRPCManager) CreateVolume(param *pb.CreateVolumeRequest_Param) (*pb.CreateVolumeResponse, *pb.CreateVolumeRequest, error) {
 	command := "CREATEVOLUME"
 	req := &pb.CreateVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendCreateVolume(p.connection, req)
+	res, err := grpc.SendCreateVolume(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, error) {
+func (p *POSGRPCManager) SetTelemetryProperty(param *pb.SetTelemetryPropertyRequest_Param) (*pb.SetTelemetryPropertyResponse, *pb.SetTelemetryPropertyRequest, error) {
 	command := "SETTELEMETRYPROPERTY"
 	req := &pb.SetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendSetTelemetryPropertyRpc(p.connection, req)
+	res, err := grpc.SendSetTelemetryPropertyRpc(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, error) {
+func (p *POSGRPCManager) GetTelemetryProperty() (*pb.GetTelemetryPropertyResponse, *pb.GetTelemetryPropertyRequest, error) {
 	command := "GETTELEMETRYPROPERTY"
 	req := &pb.GetTelemetryPropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor}
-	return grpc.SendGetTelemetryProperty(p.connection, req)
+	res, err := grpc.SendGetTelemetryProperty(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, error) {
+func (p *POSGRPCManager) RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, *pb.RebuildArrayRequest, error) {
 	command := "REBUILDARRAY"
 	req := &pb.RebuildArrayRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendRebuildArray(p.connection, req)
+	res, err := grpc.SendRebuildArray(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, error) {
+func (p *POSGRPCManager) VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, *pb.SetVolumePropertyRequest, error) {
 	command := "SETVOLUMEPROPERTY"
 	req := &pb.SetVolumePropertyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendVolumeProperty(p.connection, req)
+	res, err := grpc.SendVolumeProperty(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.DeleteVolumeResponse, error) {
+func (p *POSGRPCManager) DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.DeleteVolumeResponse, *pb.DeleteVolumeRequest, error) {
 	command := "DELETEVOLUME"
 	req := &pb.DeleteVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendDeleteVolume(p.connection, req)
+	res, err := grpc.SendDeleteVolume(p.connection, req)
+	return res, req, err
 }
 
-func (p *POSGRPCManager) UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, error) {
+func (p *POSGRPCManager) UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, *pb.UnmountVolumeRequest, error) {
 	command := "UNMOUNTVOLUME"
 	req := &pb.UnmountVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
-	return grpc.SendUnmountVolume(p.connection, req)
+	res, err := grpc.SendUnmountVolume(p.connection, req)
+	return res, req, err
 }

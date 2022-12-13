@@ -4,7 +4,6 @@ import (
 	"dagent/src/routers/m9k/globals"
 	"encoding/json"
 	"fmt"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
@@ -14,10 +13,12 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallGetSystemProperty(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.GetSystemProperty()
+	result, _, err1 := posMngr.GetSystemProperty()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -37,7 +38,7 @@ func CallSetSystemProperty(xrId string, param interface{}, posMngr pos.POSManage
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.SetSystemProperty(&paramStruct)
+	result, _, err1 := posMngr.SetSystemProperty(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -114,7 +115,7 @@ func RuniBoFOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Re
 		Command: "RUNIBOFOS",
 		Rid:     xrId,
 	}
-	_, err1 := posMngr.GetSystemInfo()
+	_, _, err1 := posMngr.GetSystemInfo()
 	if err1 == nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		errResponse := model.Response{}
@@ -170,7 +171,7 @@ func CallStartPoseidonOS(xrId string, param interface{}, posMngr pos.POSManager)
 }
 
 func CallStopPoseidonOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.StopPoseidonOS()
+	result, _, err1 := posMngr.StopPoseidonOS()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

@@ -2,15 +2,16 @@ package caller
 
 import (
 	"encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallListDevices(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.ListDevices()
+	result, _, err1 := posMngr.ListDevices()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -33,7 +34,7 @@ func CallCreateDevice(xrId string, param interface{}, posMngr pos.POSManager) (m
 		resp.Result.Status.CAUSE = err.Error()
 		return resp, ErrJson
 	}
-	result, err1 := posMngr.CreateDevice(&paramStruct)
+	result, _, err1 := posMngr.CreateDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		resp.Result.Status.CAUSE = err.Error()
@@ -44,7 +45,7 @@ func CallCreateDevice(xrId string, param interface{}, posMngr pos.POSManager) (m
 }
 
 func CallScanDevice(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.ScanDevice()
+	result, _, err1 := posMngr.ScanDevice()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -64,7 +65,7 @@ func CallGetDeviceSmartLog(xrId string, param interface{}, posMngr pos.POSManage
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.GetDeviceSmartLog(&paramStruct)
+	result, _, err1 := posMngr.GetDeviceSmartLog(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

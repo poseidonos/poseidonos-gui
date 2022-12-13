@@ -2,15 +2,16 @@ package caller
 
 import (
 	"encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallApplyLogFilter(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.ApplyLogFilter()
+	result, _, err1 := posMngr.ApplyLogFilter()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -20,7 +21,7 @@ func CallApplyLogFilter(xrId string, param interface{}, posMngr pos.POSManager) 
 }
 
 func CallGetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.GetLogLevel()
+	result, _, err1 := posMngr.GetLogLevel()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -30,7 +31,7 @@ func CallGetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (mo
 }
 
 func CallLoggerInfo(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.LoggerInfo()
+	result, _, err1 := posMngr.LoggerInfo()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -50,7 +51,7 @@ func CallSetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (mo
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.SetLogLevel(&paramStruct)
+	result, _, err1 := posMngr.SetLogLevel(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -71,7 +72,7 @@ func CallSetLogPreference(xrId string, param interface{}, posMngr pos.POSManager
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.SetLogPreference(&paramStruct)
+	result, _, err1 := posMngr.SetLogPreference(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

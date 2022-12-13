@@ -2,11 +2,12 @@ package caller
 
 import (
 	"encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallAddListener(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
@@ -20,7 +21,7 @@ func CallAddListener(xrId string, param interface{}, posMngr pos.POSManager) (mo
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.AddListener(&paramStruct)
+	result, _, err1 := posMngr.AddListener(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -41,7 +42,7 @@ func CallCreateSubsystem(xrId string, param interface{}, posMngr pos.POSManager)
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.CreateSubsystem(&paramStruct)
+	result, _, err1 := posMngr.CreateSubsystem(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -62,7 +63,7 @@ func CallCreateTransport(xrId string, param interface{}, posMngr pos.POSManager)
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.CreateTransport(&paramStruct)
+	result, _, err1 := posMngr.CreateTransport(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -83,7 +84,7 @@ func CallDeleteSubsystem(xrId string, param interface{}, posMngr pos.POSManager)
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.DeleteSubsystem(&paramStruct)
+	result, _, err1 := posMngr.DeleteSubsystem(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -104,7 +105,7 @@ func CallSubsystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.SubsystemInfo(&paramStruct)
+	result, _, err1 := posMngr.SubsystemInfo(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -114,7 +115,7 @@ func CallSubsystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (
 }
 
 func CallListSubsystem(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.ListSubsystem()
+	result, _, err1 := posMngr.ListSubsystem()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

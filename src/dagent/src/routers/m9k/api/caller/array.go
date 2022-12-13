@@ -2,11 +2,12 @@ package caller
 
 import (
 	"encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallCreateArray(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
@@ -20,7 +21,7 @@ func CallCreateArray(xrId string, param interface{}, posMngr pos.POSManager) (mo
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.CreateArray(&paramStruct)
+	result, _, err1 := posMngr.CreateArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -41,7 +42,7 @@ func CallAddDevice(xrId string, param interface{}, posMngr pos.POSManager) (mode
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.AddDevice(&paramStruct)
+	result, _, err1 := posMngr.AddDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -62,7 +63,7 @@ func CallRemoveDevice(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.RemoveDevice(&paramStruct)
+	result, _, err1 := posMngr.RemoveDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -83,7 +84,7 @@ func CallAutoCreateArray(xrId string, param interface{}, posMngr pos.POSManager)
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.AutoCreateArray(&paramStruct)
+	result, _, err1 := posMngr.AutoCreateArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -104,7 +105,7 @@ func CallDeleteArray(xrId string, param interface{}, posMngr pos.POSManager) (mo
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.DeleteArray(&paramStruct)
+	result, _, err1 := posMngr.DeleteArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -125,7 +126,7 @@ func CallArrayInfo(xrId string, param interface{}, posMngr pos.POSManager) (mode
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.ArrayInfo(&paramStruct)
+	result, _, err1 := posMngr.ArrayInfo(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -136,7 +137,7 @@ func CallArrayInfo(xrId string, param interface{}, posMngr pos.POSManager) (mode
 }
 
 func CallListArray(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.ListArray()
+	result, _, err1 := posMngr.ListArray()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -156,7 +157,7 @@ func CallMountArray(xrId string, param interface{}, posMngr pos.POSManager) (mod
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.MountArray(&paramStruct)
+	result, _, err1 := posMngr.MountArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -177,7 +178,7 @@ func CallUnmountArray(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.UnmountArray(&paramStruct)
+	result, _, err1 := posMngr.UnmountArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -198,7 +199,7 @@ func CallReplaceArrayDevice(xrId string, param interface{}, posMngr pos.POSManag
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.ReplaceArrayDevice(&paramStruct)
+	result, _, err1 := posMngr.ReplaceArrayDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -219,7 +220,7 @@ func CallRebuildArray(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.RebuildArray(&paramStruct)
+	result, _, err1 := posMngr.RebuildArray(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

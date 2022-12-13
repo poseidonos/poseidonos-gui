@@ -2,11 +2,12 @@ package caller
 
 import (
 	"encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallCreateVolume(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
@@ -20,7 +21,7 @@ func CallCreateVolume(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.CreateVolume(&paramStruct)
+	result, _, err1 := posMngr.CreateVolume(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -41,7 +42,7 @@ func CallVolumeProperty(xrId string, param interface{}, posMngr pos.POSManager) 
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.VolumeProperty(&paramStruct)
+	result, _, err1 := posMngr.VolumeProperty(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -62,7 +63,7 @@ func CallDeleteVolume(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.DeleteVolume(&paramStruct)
+	result, _, err1 := posMngr.DeleteVolume(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -82,7 +83,7 @@ func CallUnmountVolume(xrId string, param interface{}, posMngr pos.POSManager) (
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.UnmountVolume(&paramStruct)
+	result, _, err1 := posMngr.UnmountVolume(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
