@@ -34,31 +34,42 @@ import { createTheme } from "@material-ui/core/styles";
 
 export const customTheme = {
   palette: {
-      primary: {
-        light: '#71859d',
-       
-        main: '#788595',
-        dark: 'rgb(94, 104, 116)'
-      },
-      secondary: {
-        light: '#151d3b',
-        main: '#151d3b',
-        dark: '#000',
-        contrastText: '#fff'
-      },
-      palette: {
-        type: 'dark',
-      }
+    primary: {
+      light: '#71859d',
+
+      main: '#788595',
+      dark: 'rgb(94, 104, 116)'
+    },
+    secondary: {
+      light: '#151d3b',
+      main: '#151d3b',
+      dark: '#000',
+      contrastText: '#fff'
+    },
+    error: {
+      main: '#FF3603',
+    },
+    warning: {
+      light: '#FFC603',
+      main: '#FF9603',
+    },
+    success: {
+      light: "#55F603",
+      main: '#55C603',
+    },
+    palette: {
+      type: 'dark',
+    },
   },
   table: {
-      // headColor: '#71859d',
-      headColor: '#788595',
-      header: {
-        backgroundColor: "#788595",
-        color: "white",
-        fontSize: 14,
-        flexDirection: 'row'
-      }
+    // headColor: '#71859d',
+    headColor: '#788595',
+    header: {
+      backgroundColor: "#788595",
+      color: "white",
+      fontSize: 14,
+      flexDirection: 'row'
+    }
   },
   tab: {
     selected: {
@@ -68,29 +79,29 @@ export const customTheme = {
     }
   },
   typography: {
-      fontFamily: 'Arial',
-      fontSize: 14
+    fontFamily: 'Arial',
+    fontSize: 14
   },
   page: {
-      title: {
-          textAlign: 'left',
-          fontSize: 16,
-          fontWeight: 'bold',
-          // color: 'rgb(53, 85, 142)',
-          color:'#424850'
-      }
+    title: {
+      textAlign: 'left',
+      fontSize: 16,
+      fontWeight: 'bold',
+      // color: 'rgb(53, 85, 142)',
+      color: '#424850'
+    }
   },
   card: {
-      header: {
-          textAlign: 'left',
-          marginLeft: '24px',
-          paddingTop: '8px',
-          marginBottom: '5px',
-          fontSize: 16,
-          fontWeight: 'bold',
-         // color: 'rgb(53, 85, 142)',
-         color:'#424850'
-      }
+    header: {
+      textAlign: 'left',
+      marginLeft: '24px',
+      paddingTop: '8px',
+      marginBottom: '5px',
+      fontSize: 16,
+      fontWeight: 'bold',
+      // color: 'rgb(53, 85, 142)',
+      color: '#424850'
+    }
   },
   toolbar: {
     height: '55px'
@@ -112,7 +123,6 @@ export const TableTheme = createTheme({
   },
 });
 
-const MToolTheme = createTheme(customTheme);
 export const PageTheme = createTheme({
   ...customTheme,
   palette: {
@@ -127,4 +137,5 @@ export const PageTheme = createTheme({
   }
 })
 
+const MToolTheme = createTheme(customTheme);
 export default MToolTheme;

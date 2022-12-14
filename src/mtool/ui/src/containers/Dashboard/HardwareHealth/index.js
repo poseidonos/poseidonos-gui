@@ -85,15 +85,10 @@ const CRITICAL = "critical";
 const WARNING = "warning";
 const NOMINAL = "nominal";
 const stateOrder = { [CRITICAL]: 1, [WARNING]: 2, [NOMINAL]: 3 };
-const getColor = {
-    [CRITICAL]: "#FF0505",
-    [WARNING]: "#FFBF02",
-    [NOMINAL]: "#3DD102"
-};
 const getColorStyle = {
-    [CRITICAL]: { color: getColor[CRITICAL] },
-    [WARNING]: { color: getColor[WARNING] },
-    [NOMINAL]: { color: getColor[NOMINAL] }
+    [CRITICAL]: { color: customTheme.palette.error.main },
+    [WARNING]: { color: customTheme.palette.warning.main },
+    [NOMINAL]: { color: customTheme.palette.success.main }
 }
 
 const HardwareHealth = (props) => {
@@ -363,9 +358,9 @@ const HardwareHealth = (props) => {
                     animate
                     animationDuration={500}
                     data={[
-                        { title: CRITICAL, value: pieChart.criticals, color: getColor[CRITICAL] },
-                        { title: WARNING, value: pieChart.warnings, color: getColor[WARNING] },
-                        { title: NOMINAL, value: pieChart.nominals, color: getColor[NOMINAL] },
+                        { title: CRITICAL, value: pieChart.criticals, color: customTheme.palette.error.main },
+                        { title: WARNING, value: pieChart.warnings, color: customTheme.palette.warning.main },
+                        { title: NOMINAL, value: pieChart.nominals, color: customTheme.palette.success.main },
                     ]}
                     labelPosition={60}
                     label={(data) => {
@@ -394,7 +389,7 @@ const HardwareHealth = (props) => {
                 {getPercentage(pieChart.nominals) < 5 && getPercentage(pieChart.nominals) !== 0 &&
                     (
                         <Legend
-                            bgColor={getColor[NOMINAL]}
+                            bgColor={customTheme.palette.success.main}
                             title="Nominals"
                             value={`${getPercentage(pieChart.nominals)}%`}
                         />
@@ -403,7 +398,7 @@ const HardwareHealth = (props) => {
                 {getPercentage(pieChart.warnings) < 5 && getPercentage(pieChart.warnings) !== 0 &&
                     (
                         <Legend
-                            bgColor={getColor[WARNING]}
+                            bgColor={customTheme.palette.warning.main}
                             title="Warnings"
                             value={`${getPercentage(pieChart.warnings)}%`}
                         />
@@ -412,7 +407,7 @@ const HardwareHealth = (props) => {
                 {getPercentage(pieChart.criticals) < 5 && getPercentage(pieChart.criticals) !== 0 &&
                     (
                         <Legend
-                            bgColor={getColor[CRITICAL]}
+                            bgColor={customTheme.palette.error.main}
                             title="Criticals"
                             value={`${getPercentage(pieChart.criticals)}%`}
                         />
@@ -475,17 +470,17 @@ const HardwareHealth = (props) => {
                         Total
                     </Typography> */}
                     <Legend
-                        bgColor="rgba(0, 186, 0, 0.6)"
+                        bgColor={customTheme.palette.success.main}
                         title="Nominals"
                         value={props.totalNominals}
                     />
                     <Legend
-                        bgColor="rgba(255, 186, 0, 0.6)"
+                        bgColor={customTheme.palette.warning.main}
                         title="Warnings"
                         value={props.totalWarnings}
                     />
                     <Legend
-                        bgColor="rgba(255, 62, 0, 0.6)"
+                        bgColor={customTheme.palette.error.main}
                         title="Criticals"
                         value={props.totalCriticals}
                     />
