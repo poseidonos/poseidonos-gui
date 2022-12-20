@@ -51,8 +51,8 @@ BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 VERSION = 'v1'
 
 connect_timeout = 30
-read_timeout = 2160
-
+read_timeout = 2400
+system_info_connect_timeout = 10
 
 def get_headers(
         auth=BASIC_AUTH_TOKEN,
@@ -106,7 +106,7 @@ def get_system_state(auth=BASIC_AUTH_TOKEN):
     try:
         url = DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system'
         headers={"X-Request-Id": str(uuid.uuid4()), "Accept": "application/json", "Authorization": auth, "ts": str(int(time.time()))}
-        timeout = (10,10)
+        timeout = (system_info_connect_timeout,read_timeout)
         response = requests.get(url=url, headers=headers, timeout=timeout)
         return response
     except Exception as err:

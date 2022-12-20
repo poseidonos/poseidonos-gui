@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-const TimeOut = 2160
+const TimeOut = 2400
 
 func init() {
 	log.SetDebugMode()
