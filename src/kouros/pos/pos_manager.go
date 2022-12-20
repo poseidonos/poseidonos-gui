@@ -72,11 +72,11 @@ type POSManager interface {
 
 	// Add device command add spare device in PoseidonOS Array
 	// The function takes a protobuf format as parameter and returns response in protobuf format
-	AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, *pb.AddSpareRequest, error)
+	AddSpareDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, *pb.AddSpareRequest, error)
 
 	// Remove device command removes spare device from PoseidonOS Array
 	// The function takes a protobuf format as parameter and returns response in protobuf format
-	RemoveDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, *pb.RemoveSpareRequest, error)
+	RemoveSpareDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, *pb.RemoveSpareRequest, error)
 
 	// Automatically create an array for PoseidonOS with the number of devices the user specifies.
 	// The function takes a protobuf format as parameter and returns response in protobuf format
@@ -117,6 +117,8 @@ type POSManager interface {
 	StopRebuilding(param *pb.StopRebuildingRequest_Param) (*pb.StopRebuildingResponse, *pb.StopRebuildingRequest, error)
 
 	UpdateEventWRRPolicy(param *pb.UpdateEventWrrRequest_Param) (*pb.UpdateEventWrrResponse, *pb.UpdateEventWrrRequest, error)
+
+	DumpMemorySnapshot(param *pb.DumpMemorySnapshotRequest_Param) (*pb.DumpMemorySnapshotResponse, *pb.DumpMemorySnapshotRequest, error)
 
 	// Apply a filtering policy to logger.
 	// The function takes a protobuf format as parameter and returns response in protobuf format
@@ -176,9 +178,23 @@ type POSManager interface {
 
 	RebuildArray(param *pb.RebuildArrayRequest_Param) (*pb.RebuildArrayResponse, *pb.RebuildArrayRequest, error)
 
+	ListVolume(param *pb.ListVolumeRequest_Param) (*pb.ListVolumeResponse, *pb.ListVolumeRequest, error)
+
+	VolumeInfo(param *pb.VolumeInfoRequest_Param) (*pb.VolumeInfoResponse, *pb.VolumeInfoRequest, error)
+
+	VolumeRename(param *pb.VoluemRenameRequest_Param) (*pb.VoluemRenameResponse, *pb.VoluemRenameRequest, error)
+
 	VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, *pb.SetVolumePropertyRequest, error)
 
 	DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.DeleteVolumeResponse, *pb.DeleteVolumeRequest, error)
 
+	MountVolume(param *pb.MountVolumeRequest_Param) (*pb.MountVolumeResponse, *pb.MountVolumeRequest, error)
+
 	UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, *pb.UnmountVolumeRequest, error)
+
+	CreateQoSVolumePolicy(param *pb.QosCreateVolumePolicyRequest_Param) (*pb.QosCreateVolumePolicyResponse, *pb.QosCreateVolumePolicyRequest, error)
+
+	ResetQoSVolumePolicy(param *pb.QosResetVolumePolicyRequest_Param) (*pb.QosResetVolumePolicyResponse, *pb.QosResetVolumePolicyRequest, error)
+
+	ListQoSPolicy(param *pb.ListQOSPolicyRequest_Param) (*pb.ListQOSPolicyRequest, *pb.ListQOSPolicyResponse, error)
 }

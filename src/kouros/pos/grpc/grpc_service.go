@@ -301,6 +301,28 @@ func SendUpdatEventWrr(posConn POSGRPCConnection, req *pb.UpdateEventWrrRequest)
 	return res, err
 }
 
+func SendDumpMemorySnapshot(posConn POSGRPCConnection, req *pb.DumpMemorySnapshotRequest) (*pb.DumpMemorySnapshotResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.DumpMemorySnapshot(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
 func SendAddSpare(posConn POSGRPCConnection, req *pb.AddSpareRequest) (*pb.AddSpareResponse, error) {
 	conn, err := dialToCliServer(posConn)
 	if err != nil {
@@ -939,6 +961,28 @@ func SendDeleteVolume(posConn POSGRPCConnection, req *pb.DeleteVolumeRequest) (*
 	return res, err
 }
 
+func SendMountVolume(posConn POSGRPCConnection, req *pb.MountVolumeRequest) (*pb.MountVolumeResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.MountVolume(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
 func SendUnmountVolume(posConn POSGRPCConnection, req *pb.UnmountVolumeRequest) (*pb.UnmountVolumeResponse, error) {
 	conn, err := dialToCliServer(posConn)
 	if err != nil {
@@ -953,6 +997,138 @@ func SendUnmountVolume(posConn POSGRPCConnection, req *pb.UnmountVolumeRequest) 
 	defer cancel()
 
 	res, err := c.UnmountVolume(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendListVolume(posConn POSGRPCConnection, req *pb.ListVolumeRequest) (*pb.ListVolumeResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.ListVolume(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendVolumeInfo(posConn POSGRPCConnection, req *pb.VolumeInfoRequest) (*pb.VolumeInfoResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.VolumeInfo(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendVolumeRename(posConn POSGRPCConnection, req *pb.VolumeRenameRequest) (*pb.VolumeRenameResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.VolumeRename(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendCreateQoSVolumePolicy(posConn POSGRPCConnection, req *pb.QosCreateVolumePolicyRequest) (*pb.QosCreateVolumePolicyResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.QosCreateVolumePolicy(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendResetQoSVolumePolicy(posConn POSGRPCConnection, req *pb.QosResetVolumePolicyRequest) (*pb.QosResetVolumePolicyResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.QosResetVolumePolicy(ctx, req)
+	if err != nil {
+		log.Print("error: ", err.Error())
+		return nil, err
+	}
+
+	return res, err
+}
+
+func SendListQoSPolicy(posConn POSGRPCConnection, req *pb.ListQOSPolicyRequest) (*pb.ListQOSPolicyResponse, error) {
+	conn, err := dialToCliServer(posConn)
+	if err != nil {
+		log.Print(err)
+		errToReturn := errors.New(dialErrorMsg)
+		return nil, errToReturn
+	}
+	defer conn.Close()
+
+	c := pb.NewPosCliClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(reqTimeout))
+	defer cancel()
+
+	res, err := c.ListQOSPolicy(ctx, req)
 	if err != nil {
 		log.Print("error: ", err.Error())
 		return nil, err

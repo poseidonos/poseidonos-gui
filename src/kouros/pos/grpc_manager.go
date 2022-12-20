@@ -158,7 +158,7 @@ func (p *POSGRPCManager) CreateArray(param *pb.CreateArrayRequest_Param) (*pb.Cr
 
 // Add device command add spare device in PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, *pb.AddSpareRequest, error) {
+func (p *POSGRPCManager) AddSpareDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpareResponse, *pb.AddSpareRequest, error) {
 	command := "ADDDEVICE"
 	req := &pb.AddSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
 	res, err := grpc.SendAddSpare(p.connection, req)
@@ -167,7 +167,7 @@ func (p *POSGRPCManager) AddDevice(param *pb.AddSpareRequest_Param) (*pb.AddSpar
 
 // Remove device command removes spare device from PoseidonOS Array
 // The function takes a protobuf format as parameter and returns response in protobuf format
-func (p *POSGRPCManager) RemoveDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, *pb.RemoveSpareRequest, error) {
+func (p *POSGRPCManager) RemoveSpareDevice(param *pb.RemoveSpareRequest_Param) (*pb.RemoveSpareResponse, *pb.RemoveSpareRequest, error) {
 	command := "REMOVEDEVICE"
 	req := &pb.RemoveSpareRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
 	res, err := grpc.SendRemoveSpare(p.connection, req)
@@ -266,6 +266,13 @@ func (p *POSGRPCManager) UpdateEventWRRPolicy(param *pb.UpdateEventWrrRequest_Pa
 	command := "UPDATEEVENTWRRPOLICY"
 	req := &pb.UpdateEventWrrRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
 	res, err := grpc.SendUpdatEventWrr(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) DumpMemorySnapshot(param *pb.DumpMemorySnapshotRequest_Param) (*pb.DumpMemorySnapshotResponse, *pb.DumpMemorySnapshotRequest, error) {
+	command := "DUMPMEMORYSNAPSHOT"
+	req := &pb.DumpMemorySnapshotRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendDumpMemorySnapshot(p.connection, req)
 	return res, req, err
 }
 
@@ -421,9 +428,58 @@ func (p *POSGRPCManager) DeleteVolume(param *pb.DeleteVolumeRequest_Param) (*pb.
 	return res, req, err
 }
 
+func (p *POSGRPCManager) MountVolume(param *pb.MountVolumeRequest_Param) (*pb.MountVolumeResponse, *pb.MountVolumeRequest, error) {
+	command := "MOUNTVOLUME"
+	req := &pb.MountVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendMountVolume(p.connection, req)
+	return res, req, err
+}
+
 func (p *POSGRPCManager) UnmountVolume(param *pb.UnmountVolumeRequest_Param) (*pb.UnmountVolumeResponse, *pb.UnmountVolumeRequest, error) {
 	command := "UNMOUNTVOLUME"
 	req := &pb.UnmountVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
 	res, err := grpc.SendUnmountVolume(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) ListVolume(param *pb.ListVolumeRequest_Param) (*pb.ListVolumeResponse, *pb.ListVolumeRequest, error) {
+	command := "LISTVOLUME"
+	req := &pb.ListVolumeRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendListVolume(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) VolumeInfo(param *pb.VolumeInfoRequest_Param) (*pb.VolumeInfoResponse, *pb.VolumeInfoRequest, error) {
+	command := "VOLUMEINFO"
+	req := &pb.VolumeInfoRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendVolumeInfo(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) VolumeRename(param *pb.VolumeRenameRequest_Param) (*pb.VolumeRenameResponse, *pb.VolumeRenameRequest, error) {
+	command := "RENAMEVOLUME"
+	req := &pb.VolumeRenameRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendVolumeRename(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) CreateQoSVolumePolicy(param *pb.QosCreateVolumePolicyRequest_Param) (*pb.QosCreateVolumePolicyResponse, *pb.QosCreateVolumePolicyRequest, error) {
+	command := "CREATEQOSVOLUMEPOLICY"
+	req := &pb.QosCreateVolumePolicyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendCreateQoSVolumePolicy(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) ResetQoSVolumePolicy(param *pb.QosResetVolumePolicyRequest_Param) (*pb.QosResetVolumePolicyResponse, *pb.QosResetVolumePolicyRequest, error) {
+	command := "RESETQOSVOLUMEPOLICY"
+	req := &pb.QosResetVolumePolicyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendResetQoSVolumePolicy(p.connection, req)
+	return res, req, err
+}
+
+func (p *POSGRPCManager) ListQoSVolumePolicy(param *pb.ListQOSPolicyRequest_Param) (*pb.ListQOSPolicyResponse, *pb.ListQOSPolicyRequest, error) {
+	command := "LISTQOSPOLICIES"
+	req := &pb.ListQOSPolicyRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendListQoSPolicy(p.connection, req)
 	return res, req, err
 }
