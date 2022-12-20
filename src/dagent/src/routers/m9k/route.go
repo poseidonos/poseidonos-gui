@@ -47,11 +47,13 @@ import (
 	"path/filepath"
 	amoduleIBoFOS "pnconnector/src/routers/m9k/api/ibofos"
 	//"pnconnector/src/routers/m9k/model"
+	"dagent/src/routers/m9k/globals"
 	"kouros"
 	pos "kouros/pos"
 	"kouros/setting"
 	"reflect"
 	"strings"
+	"time"
 )
 
 func Route(router *gin.Engine) {
@@ -99,7 +101,13 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOS(ctx, caller.CallStopPoseidonOS, posMngr)
 		})
 		iBoFOSPath.GET("/system", func(ctx *gin.Context) {
-			ibofos.CalliBoFOS(ctx, caller.CallGetSystemInfo, posMngr)
+			globals.Temptime = time.Now().UTC().Unix()
+			if globals.InitialTime+globals.TimeLimit < globals.Temptime {
+				ibofos.CalliBoFOS(ctx, caller.CallGetSystemInfo, posMngr)
+			} else {
+				ctx.AbortWithStatusJSON(http.StatusOK, &globals.InitialRes)
+
+			}
 		})
 		iBoFOSPath.POST("/system/property", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, caller.CallSetSystemProperty, posMngr)
