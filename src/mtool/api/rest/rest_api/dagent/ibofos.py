@@ -53,7 +53,8 @@ VERSION = 'v1'
 connect_timeout = 30
 read_timeout = 2400
 system_info_connect_timeout = 10
-
+start_pos_connect_timeout = 300
+start_pos_read_timeout = 900
 def get_headers(
         auth=BASIC_AUTH_TOKEN,
         content_type="application/json"):
@@ -145,7 +146,7 @@ def start_ibofos(auth=BASIC_AUTH_TOKEN):
             "POST",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'system',
             headers=req_headers,
-            timeout=(300,300))
+            timeout=(start_pos_connect_timeout,start_pos_read_timeout))
         # print("---------------RESPONSE---------------")
         #print(response.status_code, response.json())
         # array_exists(array_names[0])
