@@ -38,7 +38,7 @@ import "react-dropdown/style.css";
 import "react-table/react-table.css";
 import "core-js/es/number";
 import "core-js/es/array";
-import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton, Tabs, Tab } from "@material-ui/core";
+import { Paper, Grid, Typography, Link, Select, FormControl, InputLabel, MenuItem, Zoom, Button, IconButton, Tabs, Tab, Box } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -48,6 +48,8 @@ import Remove from "@material-ui/icons/Remove";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import { Edit } from "@material-ui/icons";
 
+import VolumeIconSelected from '../../assets/images/Volume-Icon-SEL.png';
+import ArraysIconSelected from '../../assets/images/Arrays-SEL.png';
 import formatBytes from "../../utils/format-bytes";
 import { customTheme, PageTheme } from "../../theme";
 import Header from "../../components/Header";
@@ -184,6 +186,14 @@ const styles = (theme) => {
     },
     tab: {
       fontSize: 14,
+    },
+    tabIcon: {
+      height: 18,
+      marginRight: theme.spacing(1)
+    },
+    arrayTabIcon: {
+      height: 24,
+      marginRight: theme.spacing(.5)
     },
     dashboardSizeLabelContainer: {
       width: "100%",
@@ -757,13 +767,33 @@ class Dashboard extends Component {
             <Tab
               className={classes.tab}
               value={ARRAYTAB}
-              label={`${this.props.arrays.length} Arrays`}
+              label={(
+                <Box display="flex" alignItems="center">
+                  <img
+                    className={classes.arrayTabIcon}
+                    src={ArraysIconSelected}
+                    alt="l"
+                    style={this.state.selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
+                  />
+                  <Typography>{this.props.arrays.length} Arrays</Typography>
+                </Box>
+              )}
               data-testid="array-tab"
             />
             <Tab
               className={classes.tab}
               value={VOLUMETAB}
-              label={`${this.props.arrayVolumes.length} Volumes`}
+              label={(
+                <Box display="flex" alignItems="center">
+                  <img
+                    className={classes.tabIcon}
+                    src={VolumeIconSelected}
+                    alt="l"
+                    style={this.state.selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
+                  />
+                  <Typography>{this.props.arrayVolumes.length} Volumes</Typography>
+                </Box>
+              )}
               data-testid="volume-tab"
             />
           </Tabs>
