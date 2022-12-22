@@ -76,9 +76,10 @@ func CallReadTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMa
 		if _, ok := data["status"]; ok {
 			status = data["status"].(bool)
 		}
-		if _, ok := data["publicationListPath"]; ok {
+		if _, ok := data["publicationListPath"]; ok && len(data["publicationListPath"].(string)) > 0 {
 			return ReadYAML(data["publicationListPath"].(string), status)
-		}
+		} else {
+        }
 	}
 	param = model.SetTelemetryPropertyRequest_Param{PublicationListPath: globals.Telemetry_config_path}
 
