@@ -62,8 +62,8 @@ func CallGetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMan
 		return model.Response{}, ErrConn
 	}
 	resByte, err2 := protojson.MarshalOptions{
-        EmitUnpopulated: true,
-    }.Marshal(result)
+		EmitUnpopulated: true,
+	}.Marshal(result)
 
 	return HandleResponse(resByte, err2)
 }
@@ -78,8 +78,7 @@ func CallReadTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMa
 		}
 		if _, ok := data["publicationListPath"]; ok && len(data["publicationListPath"].(string)) > 0 {
 			return ReadYAML(data["publicationListPath"].(string), status)
-		} else {
-        }
+		}
 	}
 	param = model.SetTelemetryPropertyRequest_Param{PublicationListPath: globals.Telemetry_config_path}
 
