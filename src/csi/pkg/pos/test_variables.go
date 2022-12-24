@@ -34,10 +34,10 @@ package pos
 
 var volumeInfo = map[string]string{
 	"transportType":      "rdma",
-	"targetAddress":      "172.30.6.8,172.30.6.10,172.30.6.12",
+	"targetAddress":      "172.30.6.8,172.30.6.10",
 	"transportServiceId": "1158",
 	"arrayName":          "POSArray",
-	"provisionerIP":      "172.20.6.8,172.20.6.10,172.20.6.12",
+	"provisionerIP":      "172.20.6.8,172.20.6.10",
 	"provisionerPort":    "3000",
 	"serialNumber":       "POS0000000003",
 	"modelNumber":        "IBOF_VOLUME_EEEXTENSION",
@@ -45,6 +45,7 @@ var volumeInfo = map[string]string{
 	"allowAnyHost":       "true",
 	"bufCacheSize":       "64",
 	"numSharedBuf":       "4096",
+	"maxVolumes":         "4",
 }
 
 const infiniteVolumeSize = 204800 * 204800 * 204800

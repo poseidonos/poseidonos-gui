@@ -42,14 +42,14 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
 	"net"
+	"strconv"
 	"strings"
 	"sync"
 )
 
 const (
-	CREATING        string = "creating"
-	CREATED                = "created"
-	MAXIMUM_VOLUMES        = 4
+	CREATING string = "creating"
+	CREATED         = "created"
 )
 
 var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
@@ -125,7 +125,8 @@ func (s *controllerServer) CreateVolume(
 		return nil, errMsg
 	}
 
-	backend, errMsg := selectBackends(s, params["targetAddress"], params["provisionerIP"])
+	maxVolumes, _ := strconv.Atoi(params["maxVolumes"])
+	backend, errMsg := selectBackends(s, params["targetAddress"], params["provisionerIP"], maxVolumes)
 	if errMsg != nil {
 		posVolume.status = ""
 		return nil, errMsg
@@ -189,7 +190,7 @@ func (s *controllerServer) CreateVolume(
 	return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
 }
 
-func selectBackends(s *controllerServer, param_targetAddress string, param_provisionerIP string) (*backend, error) {
+func selectBackends(s *controllerServer, param_targetAddress string, param_provisionerIP string, max_volumes int) (*backend, error) {
 
 	if len(s.backends) == 0 {
 		targetAddrs := strings.Split(param_targetAddress, ",")
@@ -210,7 +211,7 @@ func selectBackends(s *controllerServer, param_targetAddress string, param_provi
 
 	for targetaddr, backend := range s.backends {
 		klog.Infof("backend.volNum : %d", backend.volNum)
-		if backend.volNum < MAXIMUM_VOLUMES {
+		if backend.volNum < max_volumes {
 			return s.backends[targetaddr], nil
 		}
 	}
@@ -238,6 +239,11 @@ func validateParams(params map[string]string) error {
 		if net.ParseIP(provisionerIP) == nil {
 			return status.Error(codes.Unavailable, "Invalid provisioner IP address in storageclass")
 		}
+	}
+
+	val, err := strconv.Atoi(params["maxVolumes"])
+	if err != nil || val <= 0 {
+		return status.Error(codes.Unavailable, "Invalid maxVolumes in storageclass: It should be a natural number as string")
 	}
 
 	return nil
