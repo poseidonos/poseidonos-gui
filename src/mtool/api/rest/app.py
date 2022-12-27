@@ -2079,6 +2079,8 @@ def check_telemetry(current_user):
 def get_current_iops():
     try:
         received_telemetry = connection_factory.get_telemetery_url()
+        if received_telemetry is None or len(received_telemetry) == 0:
+            return make_response('Telemetry URL is not configured', 500)
         ip = received_telemetry[0]
         port= received_telemetry[1]
         res = get_agg_volumes_perf(ip, port)
@@ -2091,6 +2093,8 @@ def get_current_iops():
 def get_hardware_health(current_user):
     try:
         received_telemetry = connection_factory.get_telemetery_url()
+        if received_telemetry is None or len(received_telemetry) == 0:
+            return make_response('Telemetry URL is not configured', 500)
         ip = received_telemetry[0]
         port= received_telemetry[1]
         res = get_all_hardware_health(ip, port)
