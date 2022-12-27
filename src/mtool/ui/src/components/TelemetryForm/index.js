@@ -83,9 +83,6 @@ const styles = (theme) => ({
             textDecoration: "underline"
         }
     },
-    colorRed: {
-        color: "red"
-    }
 });
 
 
@@ -176,7 +173,7 @@ const TelemetryForm = (props) => {
                                 variant="caption"
                                 component="span"
                                 data-testid="errorMsgConfigValidationPopup"
-                                className={classes.colorRed}
+                                color="error"
                             >
                                 {validationFailedMessage}
                             </Typography>
@@ -188,7 +185,7 @@ const TelemetryForm = (props) => {
                                 variant="caption"
                                 component="span"
                                 data-testid="errorMsgConfigPopup"
-                                className={classes.colorRed}
+                                color="error"
                             >
                                 {t('Configuration failed! Telemetry API is not reachable')}
                             </Typography>
@@ -223,7 +220,7 @@ const TelemetryForm = (props) => {
                                 variant="caption"
                                 component="span"
                                 data-testid="errorMsgConfigPopup"
-                                className={classes.colorRed}
+                                color="error"
                             >
                                 {props.resettingConfigFailed && "Resetting Failed!"}
                             </Typography>

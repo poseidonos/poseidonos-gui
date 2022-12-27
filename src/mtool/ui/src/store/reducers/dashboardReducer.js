@@ -30,6 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { isEqual } from 'lodash';
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
@@ -46,6 +47,14 @@ const initialState = {
     writeBW: 0,
     readLatency: 0,
     writeLatency: 0,
+    devices: [],
+    ipmi: [],
+    errorInDevices: true,
+    errorInIMPI: true,
+    totalNominals: 0,
+    totalWarnings: 0,
+    totalCriticals: 0,
+    isIMPIChassisPowerOn: 0,
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
@@ -141,6 +150,42 @@ const dashboardReducer = (state = initialState, action) => {
                 readLatency: action.readLatency,
                 writeLatency: action.writeLatency
             };
+        case actionTypes.FETCH_HARDWARE_HEALTH: {
+            const newState = {
+                ...state,
+                devices: action.devices,
+                ipmi: action.ipmi,
+                errorInDevices: action.errorInDevices,
+                errorInIMPI: action.errorInIMPI,
+                totalNominals: action.totalNominals,
+                totalWarnings: action.totalWarnings,
+                totalCriticals: action.totalCriticals,
+                isIMPIChassisPowerOn: action.isIMPIChassisPowerOn,
+            }
+            if (state.devices.length !== action.devices.length)
+                return newState
+            for (let i = 0; i < state.devices.length; i += 1) {
+                if (!isEqual(state.devices[i], { ...action.devices[i], tableData: state.devices[i].tableData }))
+                    return newState
+            }
+            if (state.ipmi.length !== action.ipmi.length) {
+                return newState
+            }
+            for (let i = 0; i < state.ipmi.length; i += 1) {
+                if (!isEqual(state.ipmi[i], { ...action.ipmi[i], tableData: state.ipmi[i].tableData }))
+                    return newState
+            }
+            if (
+                action.errorInDevices !== state.errorInDevices ||
+                action.errorInIMPI !== state.errorInIMPI ||
+                action.totalCriticals !== state.totalCriticals ||
+                action.totalWarnings !== state.totalWarnings ||
+                action.totalNominals !== state.totalNominals ||
+                action.isIMPIChassisPowerOn !== state.isIMPIChassisPowerOn
+            )
+                return newState;
+            return state;
+        }
         case actionTypes.FETCH_IPANDMAC_INFO:
             return {
                 ...state,

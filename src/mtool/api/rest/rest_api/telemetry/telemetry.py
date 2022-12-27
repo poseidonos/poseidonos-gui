@@ -142,3 +142,31 @@ def get_agg_value(ip, port, metric):
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(f'Other error occurred: {err}')
+
+def get_device_metrics_values(ip, port, metrics):
+    try:
+        prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
+        for metric in metrics:
+            prom_url += metric + "|"
+        prom_url += "\",job=\"poseidonos\"},\"name_label\",\"$1\",\"__name__\",\"1s\")"
+        response = requests.get(prom_url, timeout=TIME_OUT)
+        response = json.loads(response.content)
+        return response
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+
+def get_ipmi_metrics_values(ip, port, metrics):
+    try:
+        prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
+        for metric in metrics:
+            prom_url += metric + "|"
+        prom_url += "\",instance=\"localhost:9290\"},\"name_label\",\"$1\",\"__name__\",\"1s\")"
+        response = requests.get(prom_url, timeout=TIME_OUT)
+        response = json.loads(response.content)
+        return response
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')

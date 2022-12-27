@@ -35,29 +35,40 @@ import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-    legendItem: {
-        display: 'flex',
-        alignItems: 'center',
-        marginTop: theme.spacing(0.5)
-    },
-    legend: {
-        border: '1px solid #ccc',
-        float: 'left',
-        width: 12,
-        height: 12,
-        marginLeft: theme.spacing(1.5),
-        marginRight: theme.spacing(0.5)
-      },
-      legendText: {
-        // marginRight: theme.spacing(3),
-        fontSize: 12
-      }
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: theme.spacing(0.5)
+  },
+  legend: {
+    border: '1px solid #aaa',
+    float: 'left',
+    width: 12,
+    height: 12,
+    marginLeft: theme.spacing(1.5),
+    marginRight: theme.spacing(0.5)
+  },
+  legendText: {
+    // marginRight: theme.spacing(3),
+    fontSize: 12,
+  },
+  legendValue: {
+    paddingRight: theme.spacing(0.5),
+  }
 }));
 const Legend = (props) => {
   const classes = useStyles();
   return (
-    <div className={classes.legendItem}>
-      <span className={classes.legend} style={{backgroundColor: props.bgColor}} />
+    <div className={classes.legendItem} style={props.value || props.value === 0 ? { alignItems: "baseline" } : {}}>
+      <span className={classes.legend} style={{ backgroundColor: props.bgColor }} />
+      {
+        (props.value || props.value === 0) &&
+        (
+          <Typography className={classes.legendValue} color="secondary" variant="h6">
+            {props.value}
+          </Typography>
+        )
+      }
       <Typography className={classes.legendText} color="secondary">{props.title}</Typography>
     </div>
   )

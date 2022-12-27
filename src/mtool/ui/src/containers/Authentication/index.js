@@ -185,10 +185,6 @@ const styles = theme => ({
     width: 'auto',
     backgroundSize: 'contain',
   },
-
-  colorRed: {
-    color: "red"
-  }
 });
 
 class Authentication extends Component {
@@ -346,7 +342,7 @@ class Authentication extends Component {
                         variant="caption"
                         component="span"
                         data-testid="errorMsgConfigValidation"
-                        className={classes.colorRed}
+                        color="error"
                       >
                         {this.state.validationFailedMessage}
                       </Typography>
@@ -357,7 +353,7 @@ class Authentication extends Component {
                           variant="caption"
                           component="span"
                           data-testid="errorMsgConfig"
-                          className={classes.colorRed}
+                          color="error"
                         >
                           {t('Configuration failed! Telemetry API is not reachable')}
                         </Typography>
@@ -383,7 +379,7 @@ class Authentication extends Component {
                         variant="caption"
                         component="span"
                         data-testid="resetErrorMsgConfigPopup"
-                        className={classes.colorRed}
+                        color="error"
                       >
                         &nbsp;&nbsp;{this.props.resettingConfigFailed && "Resetting Failed!"}
                       </Typography>
@@ -488,7 +484,7 @@ class Authentication extends Component {
                         variant="caption"
                         component="span"
                         data-testid="errorMsgLogin"
-                        className={classes.colorRed}
+                        color="error"
                       >
                         {t('Login failed! Invalid id or password')}
                       </Typography>

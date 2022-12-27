@@ -79,7 +79,28 @@ export const fetchPerformance = (
   };
 };
 
-
+export const fetchHardwareHealth = ({
+  devices,
+  ipmi,
+  errorInDevices,
+  errorInIMPI,
+  totalNominals,
+  totalWarnings,
+  totalCriticals,
+  isIMPIChassisPowerOn
+}) => {
+  return {
+    type: actionTypes.FETCH_HARDWARE_HEALTH,
+    devices,
+    ipmi,
+    errorInDevices,
+    errorInIMPI,
+    totalNominals,
+    totalWarnings,
+    totalCriticals,
+    isIMPIChassisPowerOn
+  };
+};
 
 export const fetchStorage = (arraySize) => {
   return {
