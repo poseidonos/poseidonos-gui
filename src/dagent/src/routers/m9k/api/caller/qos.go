@@ -2,6 +2,7 @@ package caller
 
 import (
 	"encoding/json"
+	"fmt"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
@@ -10,29 +11,10 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func CallResetEventWRRPolicy(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, _, err1 := posMngr.ResetEventWRRPolicy()
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrJson
-	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
-}
-
-func CallResetMBR(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, _, err1 := posMngr.ResetMBR()
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrJson
-	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
-}
-
-func CallStopRebuilding(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.StopRebuildingRequest_Param
+func CallQOSCreateVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.QosCreateVolumePolicyRequest_Param
 	pByte, err := json.Marshal(param)
+	fmt.Println(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
@@ -41,28 +23,8 @@ func CallStopRebuilding(xrId string, param interface{}, posMngr pos.POSManager) 
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.StopRebuilding(&paramStruct)
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrConn
-	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
-
-}
-
-func CallUpdateEventWRRPolicy(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.UpdateEventWrrRequest_Param
-	pByte, err := json.Marshal(param)
-	if err != nil {
-		log.Errorf(marshalErrMsg, GetFuncName(1), err)
-		return model.Response{}, ErrJson
-	}
-	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
-		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
-		return model.Response{}, ErrJson
-	}
-	result, _, err1 := posMngr.UpdateEventWRRPolicy(&paramStruct)
+	fmt.Println(paramStruct)
+	result, _, err1 := posMngr.CreateQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -71,8 +33,8 @@ func CallUpdateEventWRRPolicy(xrId string, param interface{}, posMngr pos.POSMan
 	return HandleResponse(resByte, err2)
 }
 
-func CallDumpMemorySnapshot(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.DumpMemorySnapshotRequest_Param
+func CallQOSResetVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.QosResetVolumePolicyRequest_Param
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
@@ -82,7 +44,27 @@ func CallDumpMemorySnapshot(xrId string, param interface{}, posMngr pos.POSManag
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.DumpMemorySnapshot(&paramStruct)
+	result, _, err1 := posMngr.ResetQoSVolumePolicy(&paramStruct)
+	if err1 != nil {
+		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+		return model.Response{}, ErrConn
+	}
+	resByte, err2 := protojson.Marshal(result)
+	return HandleResponse(resByte, err2)
+}
+
+func CallQOSListVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.ListQOSPolicyRequest_Param
+	pByte, err := json.Marshal(param)
+	if err != nil {
+		log.Errorf(marshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
+		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	result, _, err1 := posMngr.ListQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

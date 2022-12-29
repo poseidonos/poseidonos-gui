@@ -42,7 +42,7 @@ func CallAddDevice(xrId string, param interface{}, posMngr pos.POSManager) (mode
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.AddDevice(&paramStruct)
+	result, _, err1 := posMngr.AddSpareDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -63,7 +63,7 @@ func CallRemoveDevice(xrId string, param interface{}, posMngr pos.POSManager) (m
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.RemoveDevice(&paramStruct)
+	result, _, err1 := posMngr.RemoveSpareDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

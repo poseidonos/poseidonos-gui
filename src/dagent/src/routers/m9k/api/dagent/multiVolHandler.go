@@ -34,19 +34,21 @@ package dagent
 
 import (
 	"bytes"
+	"dagent/src/routers/m9k/api/caller"
 	"dagent/src/routers/m9k/header"
+	"dagent/src/util"
 	"encoding/json"
+	"io/ioutil"
+	"kouros/model"
+	pos "kouros/pos"
+	"net/http"
+	"pnconnector/src/log"
+	"strconv"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/google/uuid"
-	"io/ioutil"
-	"net/http"
-	"pnconnector/src/log"
-	iBoFOS "pnconnector/src/routers/m9k/api/ibofos"
-	"pnconnector/src/routers/m9k/model"
-	"pnconnector/src/util"
-	"strconv"
-	"time"
 )
 
 const (
@@ -124,7 +126,7 @@ func callbackMethod(Buffer []model.Response, Auth string, PassCount int, totalCo
   4. If MountAll parameter is true, Call the Mount Volume API
   5. If Mount Volume fails, try MAX_RETRY_COUNT times. If it still fails, move to next voluem and Start from Step 1
 */
-func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam) {
+func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam, posMngr pos.POSManager) {
 	volId := volParam.NameSuffix
 	volName := volParam.Name
 	//	var volList []model.Volume{}
@@ -138,7 +140,7 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 
 			// Call the API after a delay
 			time.Sleep(DELAY)
-			_, res, err := iBoFOS.CreateVolume(header.XrId(ctx), *volParam)
+			res, err := caller.CallCreateVolume(header.XrId(ctx), *volParam, posMngr)
 			// If Create Volume API fails, retry
 			if err != nil || res.Result.Status.Code != 0 {
 				if createItr == MAX_RETRY_COUNT {
@@ -169,9 +171,9 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 					paramMap["target_address"] = volParam.TARGETADDRESS
 					paramMap["transport_service_id"] = volParam.TRANSPORTSERVICEID
 					if volParam.TRANSPORTTYPE == "" || volParam.TARGETADDRESS == "" || volParam.TRANSPORTSERVICEID == "" {
-						_, res, err = iBoFOS.MountVolume(header.XrId(ctx), *volParam)
+						res, err = caller.CallMountVolume(header.XrId(ctx), *volParam, posMngr)
 					} else {
-						_, res, err = iBoFOS.MountVolumeWithSubSystem(header.XrId(ctx), paramMap)
+						res, err = caller.CallMountVolumeWithSubSystem(header.XrId(ctx), paramMap, posMngr)
 					}
 					if err != nil || res.Result.Status.Code != 0 {
 						if mountItr == MAX_RETRY_COUNT {
@@ -209,7 +211,7 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 	} else {
 		qosParam["miniops"] = volParam.Miniops
 	}
-	_, qosResp, _ := iBoFOS.QOSCreateVolumePolicies(header.XrId(ctx), qosParam)
+	qosResp, _ := caller.CallQOSCreateVolumePolicies(header.XrId(ctx), qosParam, posMngr)
 	CreateVolCh <- qosResp
 	close(CreateVolCh)
 
@@ -231,12 +233,12 @@ func createVolumeRead(CreateVolCh chan model.Response, Auth string, totalCount i
 	CreateVolPassCount = 0
 }
 
-func mountVolumeWrite(MountVolCh chan model.Response, ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam) {
+func mountVolumeWrite(MountVolCh chan model.Response, ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), volParam *model.VolumeParam, posMngr pos.POSManager) {
 	volId := volParam.NameSuffix
 	volName := volParam.Name
 	for volItr := 0; volItr < int(volParam.TotalCount); volItr, volId = volItr+1, volId+1 {
 		volParam.Name = volName + strconv.Itoa(int(volId))
-		_, res, err := f(header.XrId(ctx), *volParam)
+		res, err := f(header.XrId(ctx), *volParam, posMngr)
 		MountVolCh <- res
 		if err != nil || res.Result.Status.Code != 0 {
 			if volParam.StopOnError == true {
@@ -281,11 +283,11 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 	}
 }
 
-func maxCountExceeded(count int, array string) (int, bool) {
+func maxCountExceeded(count int, array string, posMngr pos.POSManager) (int, bool) {
 	param := model.VolumeParam{Array: array}
 	listXrid, _ := uuid.NewUUID()
 	//countXrid, _ := uuid.NewUUID()
-	_, volList, err := iBoFOS.ListVolume(listXrid.String(), param)
+	volList, err := caller.CallListVolume(listXrid.String(), param, posMngr)
 	//_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
 	if err != nil {
 		return POS_API_ERROR, true
@@ -296,7 +298,7 @@ func maxCountExceeded(count int, array string) (int, bool) {
 		return 12090, true
 	}*/
 	if volList.Result.Data != nil {
-		volumes := volList.Result.Data.(model.ListVolumeResData).VOLUMELIST
+		volumes := volList.Result.Data.(map[string]interface{})["volumes"].([]interface{})
 		volCount = len(volumes)
 	}
 	/*maxCount, err = strconv.Atoi(volMaxCount.Result.Data.(map[string]interface{})["max volume count per Array"].(string))
@@ -308,10 +310,10 @@ func maxCountExceeded(count int, array string) (int, bool) {
 	}
 	return COUNT_EXCEEDED_ERROR, true
 }
-func checkArrayExist(array string) (int, bool) {
+func checkArrayExist(array string, posMngr pos.POSManager) (int, bool) {
 	param := model.ArrayParam{Name: array}
 	listXrid, _ := uuid.NewUUID()
-	_, resp, err := iBoFOS.ArrayInfo(listXrid.String(), param)
+	resp, err := caller.CallArrayInfo(listXrid.String(), param, posMngr)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -323,7 +325,7 @@ func checkArrayExist(array string) (int, bool) {
 	}
 	return 0, false
 }
-func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (model.Request, model.Response, error), volParam *model.VolumeParam, command string) {
+func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), volParam *model.VolumeParam, command string, posMngr pos.POSManager) {
 	res := model.Response{}
 	res.Result.Status, _ = util.GetStatusInfo(10202)
 	if volParam.Name == "" {
@@ -332,13 +334,13 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (mo
 		return
 	}
 
-	if status, ok := checkArrayExist(volParam.Array); ok {
+	if status, ok := checkArrayExist(volParam.Array, posMngr); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
 	}
 
-	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array); ok {
+	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array, posMngr); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
@@ -355,14 +357,14 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}) (mo
 		if CreateVolumeMutex == false {
 			CreateVolCh := make(chan model.Response)
 			CreateVolumeMutex = true
-			go createVolumeWrite(CreateVolCh, ctx, volParam)
+			go createVolumeWrite(CreateVolCh, ctx, volParam, posMngr)
 			go createVolumeRead(CreateVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER), int(volParam.TotalCount))
 		}
 	case MOUNT_VOLUME: //Optional Functionality for MTool
 		if MountVolumeMutex == false {
 			MountVolCh := make(chan model.Response)
 			MountVolumeMutex = true
-			go mountVolumeWrite(MountVolCh, ctx, f, volParam)
+			go mountVolumeWrite(MountVolCh, ctx, f, volParam, posMngr)
 			go mountVolumeRead(MountVolCh, ctx.Request.Header.Get(AUTHORIZATION_HEADER), int(volParam.TotalCount))
 		}
 	}

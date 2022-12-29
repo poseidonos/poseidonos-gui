@@ -31,6 +31,27 @@ func CallAddListener(xrId string, param interface{}, posMngr pos.POSManager) (mo
 
 }
 
+func CallCreateSubsystemAuto(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.CreateSubsystemRequest_Param
+	pByte, err := json.Marshal(param)
+	if err != nil {
+		log.Errorf(marshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
+		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	result, _, err1 := posMngr.CreateSubsystemAuto(&paramStruct)
+	if err1 != nil {
+		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+		return model.Response{}, ErrConn
+	}
+	resByte, err2 := protojson.Marshal(result)
+	return HandleResponse(resByte, err2)
+
+}
+
 func CallCreateSubsystem(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	var paramStruct pb.CreateSubsystemRequest_Param
 	pByte, err := json.Marshal(param)

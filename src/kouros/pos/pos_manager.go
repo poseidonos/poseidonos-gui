@@ -144,6 +144,8 @@ type POSManager interface {
 	// The function takes a protobuf format as parameter and returns response in protobuf format
 	CreateSubsystem(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, *pb.CreateSubsystemRequest, error)
 
+	CreateSubsystemAuto(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, *pb.CreateSubsystemRequest, error)
+
 	// Create NVMf transport to PoseidonOS
 	// The function takes a protobuf format as parameter and returns response in protobuf format
 	CreateTransport(param *pb.CreateTransportRequest_Param) (*pb.CreateTransportResponse, *pb.CreateTransportRequest, error)
@@ -182,7 +184,7 @@ type POSManager interface {
 
 	VolumeInfo(param *pb.VolumeInfoRequest_Param) (*pb.VolumeInfoResponse, *pb.VolumeInfoRequest, error)
 
-	VolumeRename(param *pb.VoluemRenameRequest_Param) (*pb.VoluemRenameResponse, *pb.VoluemRenameRequest, error)
+	VolumeRename(param *pb.VolumeRenameRequest_Param) (*pb.VolumeRenameResponse, *pb.VolumeRenameRequest, error)
 
 	VolumeProperty(param *pb.SetVolumePropertyRequest_Param) (*pb.SetVolumePropertyResponse, *pb.SetVolumePropertyRequest, error)
 
@@ -196,5 +198,5 @@ type POSManager interface {
 
 	ResetQoSVolumePolicy(param *pb.QosResetVolumePolicyRequest_Param) (*pb.QosResetVolumePolicyResponse, *pb.QosResetVolumePolicyRequest, error)
 
-	ListQoSPolicy(param *pb.ListQOSPolicyRequest_Param) (*pb.ListQOSPolicyRequest, *pb.ListQOSPolicyResponse, error)
+	ListQoSVolumePolicy(param *pb.ListQOSPolicyRequest_Param) (*pb.ListQOSPolicyResponse, *pb.ListQOSPolicyRequest, error)
 }

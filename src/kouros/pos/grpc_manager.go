@@ -336,6 +336,13 @@ func (p *POSGRPCManager) CreateSubsystem(param *pb.CreateSubsystemRequest_Param)
 	return res, req, err
 }
 
+func (p *POSGRPCManager) CreateSubsystemAuto(param *pb.CreateSubsystemRequest_Param) (*pb.CreateSubsystemResponse, *pb.CreateSubsystemRequest, error) {
+	command := "CREATESUBSYSTEMAUTO"
+	req := &pb.CreateSubsystemRequest{Command: command, Rid: utils.GenerateUUID(), Requestor: p.requestor, Param: param}
+	res, err := grpc.SendCreateSubsystem(p.connection, req)
+	return res, req, err
+}
+
 // Create NVMf transport to PoseidonOS
 // The function takes a protobuf format as parameter and returns response in protobuf format
 func (p *POSGRPCManager) CreateTransport(param *pb.CreateTransportRequest_Param) (*pb.CreateTransportResponse, *pb.CreateTransportRequest, error) {

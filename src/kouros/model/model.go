@@ -115,17 +115,18 @@ type CreateDeviceReqParam struct {
 	NUMA       int    `json:"numa"`
 }
 type SubSystemParam struct {
-	TRANSPORTTYPE      string `json:"transport_type,omitempty"`
-	BUFCACHESIZE       int    `json:"buf_cache_size,omitempty"`
-	NUMSHAREDBUF       int    `json:"num_shared_buf,omitempty"`
-	TARGETADDRESS      string `json:"target_address"`
-	TRANSPORTSERVICEID string `json:"transport_service_id"`
-	SUBNQN             string `json:"name"`
-	SERIAL             string `json:"sn,omitempty"`
-	MODEL              string `json:"mn,omitempty"`
-	MAXNAMESPACES      int    `json:"max_namespaces,omitempty"`
-	ALLOWANYHOST       bool   `json:"allow_any_host,omitempty"`
-	ANAREPORTING       bool   `json:"ana_reporting,omitempty"`
+	TRANSPORTTYPE      string `json:"transportType,omitempty"`
+	BUFCACHESIZE       int    `json:"bufCacheSize,omitempty"`
+	NUMSHAREDBUF       int    `json:"numSharedSuf,omitempty"`
+	TARGETADDRESS      string `json:"targetAddress"`
+	TRANSPORTSERVICEID string `json:"transportServiceId"`
+	NQN                string `json:"nqn,omitempty"`
+	SUBNQN             string `json:"subnqn,omitempty"`
+	SERIAL             string `json:"serialNumber,omitempty"`
+	MODEL              string `json:"modelNumber,omitempty"`
+	MAXNAMESPACES      int    `json:"maxNamespaces,omitempty"`
+	ALLOWANYHOST       bool   `json:"allowAnyHost,omitempty"`
+	ANAREPORTING       bool   `json:"anaReporting,omitempty"`
 }
 type SetTelemetryPropertyRequest_Param struct {
 	PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
@@ -175,6 +176,7 @@ type DeviceParam struct {
 }
 type VolumeParam struct {
 	Name               string `json:"name,omitempty"`
+	Volume             string `json:"volume,omitempty"`
 	NewName            string `json:"newname,omitempty"`
 	Array              string `json:"array,omitempty"`
 	SubNQN             string `json:"subnqn,omitempty"`
