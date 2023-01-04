@@ -181,7 +181,7 @@ func CallStopPoseidonOS(xrId string, param interface{}, posMngr pos.POSManager) 
 }
 
 func CallGetSystemInfo(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.GetSystemInfo()
+	result, _, err1 := posMngr.GetSystemInfo()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		errResponse := model.Response{}
