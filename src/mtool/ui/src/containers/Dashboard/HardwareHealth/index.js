@@ -221,7 +221,7 @@ const HardwareHealth = (props) => {
     const ipmiTable = (
         <MaterialTable
             columns={ipmiTableColumns}
-            data={props.ipmi}
+            data={!props.errorInIMPI && props.isIMPIChassisPowerOn? props.ipmi:[]}
             localization={{
                 body: {
                     emptyDataSourceMessage: ipmiErrorMessage
@@ -271,7 +271,7 @@ const HardwareHealth = (props) => {
     const deviceTable = (
         <MaterialTable
             columns={deviceTableColumns}
-            data={props.devices}
+            data={!props.errorInDevices? props.devices: []}
             localization={{
                 body: {
                     emptyDataSourceMessage: deviceErrorMessage
