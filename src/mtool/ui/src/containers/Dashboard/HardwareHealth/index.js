@@ -221,7 +221,7 @@ const HardwareHealth = (props) => {
     const ipmiTable = (
         <MaterialTable
             columns={ipmiTableColumns}
-            data={!props.errorInIMPI && props.isIMPIChassisPowerOn? props.ipmi:[]}
+            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured? props.ipmi:[]}
             localization={{
                 body: {
                     emptyDataSourceMessage: ipmiErrorMessage
@@ -271,7 +271,7 @@ const HardwareHealth = (props) => {
     const deviceTable = (
         <MaterialTable
             columns={deviceTableColumns}
-            data={!props.errorInDevices? props.devices: []}
+            data={!props.errorInDevices && props.isConfigured? props.devices: []}
             localization={{
                 body: {
                     emptyDataSourceMessage: deviceErrorMessage
@@ -347,7 +347,7 @@ const HardwareHealth = (props) => {
             }}
         />
     );
-    const pieChartBox = (pieChart.criticals + pieChart.warnings + pieChart.nominals) !== 0 ?
+    const pieChartBox = props.isConfigured && (pieChart.criticals + pieChart.warnings + pieChart.nominals) !== 0 ?
         (
             <Box
                 sx={{ mt: 4, mb: "auto", width: "100%" }}
@@ -528,6 +528,7 @@ const mapStateToProps = state => {
         totalWarnings: state.dashboardReducer.totalWarnings,
         totalCriticals: state.dashboardReducer.totalCriticals,
         isIMPIChassisPowerOn: state.dashboardReducer.isIMPIChassisPowerOn,
+        isConfigured: state.authenticationReducer.isConfigured,
     };
 };
 
