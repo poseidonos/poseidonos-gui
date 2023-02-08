@@ -602,6 +602,28 @@ def test_get_current_perf(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health(mock_get_current_user, **kwargs):
+    kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
+                    json={
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "poseidonos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            },
+                            {
+                                "metric": {
+                                    "job": "ipmi"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    },
+                    status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
                     json={
                         "data": {
@@ -635,6 +657,28 @@ def test_get_hardware_health(mock_get_current_user, **kwargs):
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, **kwargs):
+    kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
+                    json={
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "poseidonos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            },
+                            {
+                                "metric": {
+                                    "job": "ipmi"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    },
+                    status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
                     json={
                         "data": {
@@ -665,6 +709,28 @@ def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, 
 @mock.patch("rest.app.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user, **kwargs):
+    kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
+                    json={
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "poseidonos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            },
+                            {
+                                "metric": {
+                                    "job": "ipmi"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    },
+                    status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
                     json={
                         "data": {
