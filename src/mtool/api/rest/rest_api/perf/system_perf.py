@@ -59,39 +59,31 @@ def get_agg_volumes_perf(ip, port):
     res_dict['latency_write'] = write_latency
     
     return res_dict
-
-
-def get_all_hardware_health(ip, port):
-    res_dict = {
-        constants.DEVICES : [],
-        constants.ERRORINDEVICES : False,
-        constants.IPMI : [],
-        constants.ERRORINIPMI: False,
-        constants.ISIPMICHASSISPOWERON: False,
-        constants.TOTALNOMINALS: 0,
-        constants.TOTALWARNINGS: 0,
-        constants.TOTALCRITICALS: 0,
-    }
-    device_res = telemetry.get_device_metrics_values(ip, port, constants.DEVICE_METRICS)
-    if 'status' not in device_res or device_res['status'] != 'success':
-        res_dict[constants.ERRORINDEVICES] = True
     
-    total_nominals = 0
-    total_warnings = 0
-    total_criticals = 0
+def update_field_state_count(state, field):
+    field[constants.NOMINAL_COUNT] += 1 if state == constants.NOMINAL else 0
+    field[constants.WARNING_COUNT] += 1 if state == constants.WARNING else 0
+    field[constants.CRITICAL_COUNT] += 1 if state == constants.CRITICAL else 0
 
-    def update_state_count(state):
-        nonlocal total_nominals, total_warnings, total_criticals
-        total_nominals += 1 if state == constants.NOMINAL else 0
-        total_warnings += 1 if state == constants.WARNING else 0
-        total_criticals += 1 if state == constants.CRITICAL else 0
-    
-    def update_field_state_count(state, field):
-        field[constants.NOMINAL_COUNT] += 1 if state == constants.NOMINAL else 0
-        field[constants.WARNING_COUNT] += 1 if state == constants.WARNING else 0
-        field[constants.CRITICAL_COUNT] += 1 if state == constants.CRITICAL else 0
-
+def structure_device_metrics_values(res_dict, device_res, update_state_count):
+    res_devices = []
     devices= {}
+    temperature_dict = {
+        constants.TYPE: constants.TEMPERATURE_NAME,
+        constants.UNIT: constants.DEVICE_UNITS[constants.TEMPERATURE_NAME],
+        constants.METRICS: [],
+        constants.NOMINAL_COUNT: 0,
+        constants.WARNING_COUNT: 0,
+        constants.CRITICAL_COUNT: 0,
+    }
+    availablespare_dict = {
+        constants.TYPE: constants.AVAILABLESPARE_NAME,
+        constants.UNIT: constants.DEVICE_UNITS[constants.AVAILABLESPARE_NAME],
+        constants.METRICS: [],
+        constants.NOMINAL_COUNT: 0,
+        constants.WARNING_COUNT: 0,
+        constants.CRITICAL_COUNT: 0,
+    }
     if res_dict[constants.ERRORINDEVICES] == False:
         for field in device_res['data']['result']:
             if field['metric']['publisher_name'] != 'Disk_Monitoring':
@@ -110,24 +102,6 @@ def get_all_hardware_health(ip, port):
                 devices[device_name][constants.CRITICALTEMPERATURETIME] = field[constants.VALUE][1]
             if metric_name == constants.WARNINGTEMPERATURETIME:
                 devices[device_name][constants.WARNINGTEMPERATURETIME] = field[constants.VALUE][1]
-
-    res_devices = []
-    temperature_dict = {
-        constants.TYPE: constants.TEMPERATURE_NAME,
-        constants.UNIT: constants.DEVICE_UNITS[constants.TEMPERATURE_NAME],
-        constants.METRICS: [],
-        constants.NOMINAL_COUNT: 0,
-        constants.WARNING_COUNT: 0,
-        constants.CRITICAL_COUNT: 0,
-    }
-    availablespare_dict = {
-        constants.TYPE: constants.AVAILABLESPARE_NAME,
-        constants.UNIT: constants.DEVICE_UNITS[constants.AVAILABLESPARE_NAME],
-        constants.METRICS: [],
-        constants.NOMINAL_COUNT: 0,
-        constants.WARNING_COUNT: 0,
-        constants.CRITICAL_COUNT: 0,
-    }
     for key in devices:
         value = devices[key]
         tstate = constants.NOMINAL
@@ -158,18 +132,21 @@ def get_all_hardware_health(ip, port):
         update_field_state_count(sstate, availablespare_dict) 
     res_devices.append(temperature_dict)
     res_devices.append(availablespare_dict)
-    res_dict[constants.DEVICES] = res_devices
+    return res_devices
 
-    ipmi_res = telemetry.get_ipmi_metrics_values(ip, port, constants.IPMI_METRICS)
-    if 'status' not in ipmi_res or ipmi_res['status'] != 'success':
-        res_dict[constants.ERRORINIPMI] = True
-
+def structure_ipmi_metrics_values(res_dict, ipmi_res, update_state_count):
+    res_ipmi = []
     ipmi = {
         constants.FAN_SPEED: {},
         constants.POWER: {},
         constants.SENSOR_VALUE: {},
         constants.VOLTAGE: {},
         constants.TEMPERATURE_NAME: {},
+    }
+    states_dict = {
+        '0': constants.NOMINAL,
+        '1': constants.WARNING,
+        '2': constants.CRITICAL
     }
     def fill_ipmi_fields(field, metric_type,value_type):
         if constants.NAME not in field['metric']:
@@ -209,12 +186,6 @@ def get_all_hardware_health(ip, port):
             if metric_name == constants.IPMIVOLTAGEVOLTS:
                 fill_ipmi_fields(field, constants.VOLTAGE, constants.VALUE)
 
-    res_ipmi = []
-    states_dict = {
-        '0': constants.NOMINAL,
-        '1': constants.WARNING,
-        '2': constants.CRITICAL
-    }
     def add_ipmi_field(metric_type):
         metric_details = {
             constants.TYPE: metric_type,
@@ -241,11 +212,36 @@ def get_all_hardware_health(ip, port):
     add_ipmi_field(constants.SENSOR_VALUE)
     add_ipmi_field(constants.VOLTAGE)
     add_ipmi_field(constants.TEMPERATURE_NAME)
-    res_dict[constants.IPMI] = res_ipmi
+    return res_ipmi
 
-    res_dict[constants.TOTALNOMINALS] = total_nominals
-    res_dict[constants.TOTALWARNINGS] = total_warnings
-    res_dict[constants.TOTALCRITICALS] = total_criticals
+def get_all_hardware_health(ip, port):
+    res_dict = {
+        constants.DEVICES : [],
+        constants.ERRORINDEVICES : False,
+        constants.IPMI : [],
+        constants.ERRORINIPMI: False,
+        constants.ISIPMICHASSISPOWERON: False,
+        constants.TOTALNOMINALS: 0,
+        constants.TOTALWARNINGS: 0,
+        constants.TOTALCRITICALS: 0,
+    }
+    def update_state_count(state):
+        res_dict[constants.TOTALNOMINALS] += 1 if state == constants.NOMINAL else 0
+        res_dict[constants.TOTALWARNINGS] += 1 if state == constants.WARNING else 0
+        res_dict[constants.TOTALCRITICALS] += 1 if state == constants.CRITICAL else 0
+
+    res_dict[constants.ERRORINDEVICES], res_dict[constants.ERRORINIPMI] = telemetry.is_endpoints_down(ip, port)
+
+    device_res = telemetry.get_device_metrics_values(ip, port, constants.DEVICE_METRICS) if res_dict[constants.ERRORINDEVICES] == False else None
+    if device_res == None or 'status' not in device_res or device_res['status'] != 'success':
+        res_dict[constants.ERRORINDEVICES] = True
+
+    ipmi_res = telemetry.get_ipmi_metrics_values(ip, port, constants.IPMI_METRICS) if res_dict[constants.ERRORINIPMI] == False else None
+    if ipmi_res == None or 'status' not in ipmi_res or ipmi_res['status'] != 'success':
+        res_dict[constants.ERRORINIPMI] = True
+
+    res_dict[constants.DEVICES] = structure_device_metrics_values(res_dict, device_res, update_state_count)
+    res_dict[constants.IPMI] = structure_ipmi_metrics_values(res_dict, ipmi_res, update_state_count)
     return res_dict
 
 def set_telemetry_properties(properties):

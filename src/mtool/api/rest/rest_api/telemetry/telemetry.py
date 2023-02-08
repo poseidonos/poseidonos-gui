@@ -142,11 +142,24 @@ def get_agg_value(ip, port, metric):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
+def is_endpoints_down(ip, port):
+    try:
+        is_telemetry_down, is_ipmi_down = True, True
+        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
+        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url), timeout=TIME_OUT)
+        response = json.loads(response.content)
+        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
+            for data in response["data"]["result"]:
+                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "poseidonos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
+                    is_telemetry_down = False
+                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "ipmi" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
+                    is_ipmi_down = False
+        return is_telemetry_down, is_ipmi_down
+    except Exception as e:
+        return True, True
+
 def get_device_metrics_values(ip, port, metrics):
     try:
-        response = check_telemetry_endpoint(ip, port)
-        if response.status_code != 200 or json.loads(response.response[0].decode('UTF-8'))["isTelemetryEndpointUp"] == False:
-            return {'status': 'Failed'}
         prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
         for metric in metrics:
             prom_url += metric + "|"
@@ -159,25 +172,8 @@ def get_device_metrics_values(ip, port, metrics):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def check_ipmi_endpoint(ip, port):
-    try:
-        success_res = make_response("success",200)
-        prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
-        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url), timeout=TIME_OUT)
-        response = json.loads(response.content)
-        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
-            for data in response["data"]["result"]:
-                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "ipmi" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
-                    return success_res
-        return make_response("ipmi is not running", 500)
-    except Exception as e:
-        return make_response("Error Occured" + repr(e), 500)
-
 def get_ipmi_metrics_values(ip, port, metrics):
     try:
-        response = check_ipmi_endpoint(ip, port)
-        if response.status_code != 200:
-            return {'status': 'Failed'}
         prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
         for metric in metrics:
             prom_url += metric + "|"
