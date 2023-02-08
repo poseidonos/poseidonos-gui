@@ -155,7 +155,7 @@ def is_endpoints_down(ip, port):
                 if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "ipmi" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
                     is_ipmi_down = False
         return is_telemetry_down, is_ipmi_down
-    except Exception as e:
+    except Exception:
         return True, True
 
 def get_device_metrics_values(ip, port, metrics):
