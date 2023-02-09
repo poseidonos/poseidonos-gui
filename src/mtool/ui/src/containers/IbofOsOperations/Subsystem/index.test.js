@@ -31,29 +31,28 @@
  */
 
 import React from "react";
+import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
+import { I18nextProvider } from "react-i18next";
+import { configureStore } from "@reduxjs/toolkit";
 import {
     render,
     fireEvent,
     cleanup,
-    waitForElement,
-    wait
+    waitForElement
 } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { I18nextProvider } from "react-i18next";
-import axios from "axios";
 import "@testing-library/jest-dom/extend-expect";
+import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
-import { Router, MemoryRouter } from "react-router-dom";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
+
 import rootSaga from "../../../sagas/indexSaga";
 import subsystemReducer from "../../../store/reducers/subsystemReducer";
 import waitLoaderReducer from "../../../store/reducers/waitLoaderReducer";
 import PrivateRoute from "../../../components/PrivateRoute";
 import Subsystem from "./index";
 import i18n from "../../../i18n";
-import { addListener } from "../../../sagas/subsystemSaga";
 
 jest.unmock("axios");
 
@@ -61,19 +60,16 @@ describe("SubsystemOperations", () => {
     let wrapper;
     let history;
     let store;
-    // let mock;
     beforeEach(() => {
-        const sagaMiddleware = createSagaMiddleware();
-        const rootReducers = combineReducers({
+        const rootReducers = {
             waitLoaderReducer,
             subsystemReducer
-        });
-        const composeEnhancers =
-            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-        store = createStore(
-            rootReducers,
-            composeEnhancers(applyMiddleware(sagaMiddleware))
-        );
+        };
+        const sagaMiddleware = createSagaMiddleware();
+        store = configureStore({
+            reducer: rootReducers,
+            middleware: [sagaMiddleware]
+        })
         sagaMiddleware.run(rootSaga);
         const route = "/operations/subsystem";
         history = createMemoryHistory({ initialEntries: [route] });

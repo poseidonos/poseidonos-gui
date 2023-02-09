@@ -33,7 +33,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
+import { combineReducers, createStore, applyMiddleware, compose } from "@reduxjs/toolkit"
 import createSagaMiddleware from 'redux-saga'
 import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'

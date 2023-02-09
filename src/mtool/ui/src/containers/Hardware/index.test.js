@@ -45,7 +45,7 @@ import "@testing-library/jest-dom/extend-expect";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";

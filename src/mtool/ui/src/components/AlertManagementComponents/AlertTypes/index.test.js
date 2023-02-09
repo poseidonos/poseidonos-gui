@@ -32,11 +32,10 @@
 
 import React from 'react';
 import { Provider } from 'react-redux'
-import { ReactDOM, findDOMNode } from 'react-dom'
-import { act } from 'react-dom/test-utils'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux'
-import { render, fireEvent, cleanup, getByText, getByRole, waitForElement } from '@testing-library/react';
+import { configureStore } from "@reduxjs/toolkit"
+import { render, cleanup } from '@testing-library/react';
+
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer"
 import i18n from "../../../i18n";
 import AlertTypes from './index';
@@ -45,35 +44,18 @@ let wrapper;
 let alertClusterList = [
     {
         alertSubCluster: null,
-        // [
-        //     {
-        //         _id: '1',
-        //         name: 'cpu-host',
-        //         alertTypes: [
-        //             {
-        //                 type: 'cpu-idle',
-        //             },
-        //             {
-        //                 type: 'cpu-idle2',
-        //             },
-        //             {
-        //                 type: 'cpu-affinity',
-        //             },
-        //         ],
-        //     },
-        // ],
         _id: '1',
         name: 'CPU',
-        alertFields: ["usage_idle","usage_system"],
+        alertFields: ["usage_idle", "usage_system"],
 
     },
 ];
 const myMock = jest.fn();
 beforeEach(() => {
-    const rootReducers = combineReducers({
+    const rootReducers = {
         alertManagementReducer,
-    });
-    const store = createStore(rootReducers)
+    };
+    const store = configureStore({ reducer: rootReducers })
 
     wrapper = render(
         <I18nextProvider i18n={i18n}>

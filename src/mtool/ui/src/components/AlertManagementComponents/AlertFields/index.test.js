@@ -32,26 +32,26 @@
 
 import React from 'react';
 import { Provider } from 'react-redux'
-import { ReactDOM, findDOMNode } from 'react-dom'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux'
+import { configureStore } from "@reduxjs/toolkit"
 import { render, fireEvent, cleanup } from '@testing-library/react';
+
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer"
 import i18n from "../../../i18n";
 import AlertFields from './index';
 
 let wrapper;
-let alertClusterList=[{alertFields:['usage_idle','usage_system','NA']}];
-const radioindex=0;
+let alertClusterList = [{ alertFields: ['usage_idle', 'usage_system', 'NA'] }];
+const radioindex = 0;
 const alertClusterName = "Random";
 const selectedAlertSubCluster = 'Random';
 const alertType = 'Random';
 
 beforeEach(() => {
-    const rootReducers = combineReducers({
+    const rootReducers = {
         alertManagementReducer,
-    });
-    const store = createStore(rootReducers)
+    };
+    const store = configureStore({ reducer: rootReducers })
 
     wrapper = render(
         <I18nextProvider i18n={i18n}>
@@ -69,14 +69,14 @@ test('renders alert fields component', () => {
     const input = getByLabelText(/usage_idle/i)
 
     fireEvent.change(input, { target: { value: "Samsung # \n" } });
-    
+
 });
 
 test('renders alert fields component will null for ternary operator', () => {
     const { getByLabelText, queryAllByText, getByTestId, getAllByText, asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();
     getByTestId("AlertFieldsTag");
-    
+
 });
 
 afterEach(cleanup,)
