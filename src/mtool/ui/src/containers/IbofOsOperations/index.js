@@ -30,12 +30,11 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { Component } from 'react';
-import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
-import { AppBar, Tabs, Tab, withStyles, Box } from '@material-ui/core';
+import React, { Component, lazy, Suspense } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
-import RunIbofOs from '../../components/IbofOsOperationComponents/RunIbofOs/index';
+import { MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
+import { AppBar, Tabs, Tab, withStyles, Box } from '@material-ui/core';
 import './IbofOsOperations.css';
 import AlertDialog from "../../components/Dialog";
 import Header from "../../components/Header";
@@ -43,10 +42,12 @@ import Sidebar from "../../components/Sidebar";
 import TabPanel from "../../components/TabPanel";
 import * as actionTypes from "../../store/actions/actionTypes";
 import * as actionCreators from '../../store/actions/exportActionCreators';
-
 import MToolTheme, { customTheme } from '../../theme';
-import Device from './Device';
-import Subsystem from './Subsystem';
+import MToolLoader from '../../components/MToolLoader';
+
+const RunIbofOs = lazy(() => import('../../components/IbofOsOperationComponents/RunIbofOs/index'));
+const Device = lazy(() => import('./Device'));
+const Subsystem = lazy(() => import('./Subsystem'));
 
 const styles = (theme) => ({
     content: {
@@ -54,8 +55,6 @@ const styles = (theme) => ({
         padding: theme.spacing(3),
         width: '100%',
         boxSizing: 'border-box',
-        // paddingLeft: '24px',
-        // paddingRight: '13px',
     },
     selectedTab: {
         color: 'rgb(33, 34, 37)',
@@ -84,10 +83,6 @@ class IbofOsOperations extends Component {
             tabValue: "operations"
         };
         this.triggerCommand = this.triggerCommand.bind(this);
-        // this.onHandleExitIbofOS = this.onHandleExitIbofOS.bind(this);
-        // this.OnHandleChange = this.OnHandleChange.bind(this);
-        // this.validate = this.validate.bind(this);
-        // this.onClickRunCommand = this.onClickRunCommand.bind(this);
         this.openAlert = this.openAlert.bind(this);
         this.handleAlertClose = this.handleAlertClose.bind(this);
         this.handleCallToRouter = this.handleCallToRouter.bind(this);
@@ -103,23 +98,6 @@ class IbofOsOperations extends Component {
         clearInterval(this.interval);
     }
 
-    // validate() {
-    //     if (this.state.filepath === "") {
-    //         this.setState({
-    //             alertOpen: true,
-    //             istypealert: true,
-    //             alerttype: "alert",
-    //             alerttitle: "Run Command on iBoF OS",
-    //             alertdescription: "Please enter a valid file path"
-    //         });
-    //     }
-    //     else {
-    //         this.setState({ ...this.state, error: "" });
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
     handleAlertClose() {
         this.setState({
             alertOpen: false
@@ -132,12 +110,7 @@ class IbofOsOperations extends Component {
 
     openAlert(operationType) {
         let message = "";
-        // if (operationType === "Run")
-        //     message = " Command";
-        // if (operationType === "Start" || operationType === "Stop" || operationType === "Exit")
-        // if (operationType === "Start" || operationType === "Stop")
         message = "Poseidon OS";
-        // istanbul ignore next: cannot reset as it is hidden
         const alertMessage = operationType === "Reset" ?
             "Reset will delete all the array and volumes in POS. " : "";
 
@@ -154,9 +127,6 @@ class IbofOsOperations extends Component {
     }
 
     triggerCommand() {
-        // if (this.state.add_delete_send === "Run") {
-        //     this.onClickRunCommand();
-        // }
         if (this.state.add_delete_send === "Start") {
             this.props.Start_POS();
         } else if (this.state.add_delete_send === "Stop") {
@@ -165,10 +135,6 @@ class IbofOsOperations extends Component {
             this.props.Reset_POS();
         }
         this.handleAlertClose();
-        // else if (this.state.add_delete_send === "Exit") {
-        //     this.onHandleExitIbofOS();
-        //     this.handleAlertClose("YES");
-        // }
     }
 
     render() {
@@ -176,48 +142,49 @@ class IbofOsOperations extends Component {
         return (
             <ThemeProvider theme={MToolTheme}>
                 <Box display="flex">
-                {/* <CssBaseline /> */}
-                <Header />
-                <Sidebar />
-                <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                    <AppBar position="static" color="default">
-                        <Tabs
-                            value={this.props.history.location.pathname}
-                            onChange={this.handleCallToRouter}
-                        >
-                            <Tab data-testid="operationsTab" label="Operations" key="operations" value="/operations/pos" />
-                            <Tab data-testid="devicesTab" label="Devices" key="devices" value="/operations/devices" />
-                            <Tab data-testid="subsystemTab" label="Subsystem" key="subsystem" value="/operations/subsystem" />
-                        </Tabs>
-                    </AppBar>
-                    <TabPanel value={this.props.history.location.pathname} index="/operations/pos">
-                        <RunIbofOs
-                            property={this.props.posProperty}
-                            status={this.props.bool_status}
-                            responsefromos={this.props.operationsMessage}
-                            openAlert={this.openAlert}
-                            OS_Running_Status={this.props.OS_Running}
-                            isButtonDisabled={this.state.isButtonDisabled}
-                            mountState={this.props.posMountStatus}
-                            setProperty={this.props.Set_POS_Property}
+                    <Header />
+                    <Sidebar />
+                    <main className={classes.content}>
+                        <div className={classes.toolbar} />
+                        <AppBar position="static" color="default">
+                            <Tabs
+                                value={this.props.history.location.pathname}
+                                onChange={this.handleCallToRouter}
+                            >
+                                <Tab data-testid="operationsTab" label="Operations" key="operations" value="/operations/pos" />
+                                <Tab data-testid="devicesTab" label="Devices" key="devices" value="/operations/devices" />
+                                <Tab data-testid="subsystemTab" label="Subsystem" key="subsystem" value="/operations/subsystem" />
+                            </Tabs>
+                        </AppBar>
+                        <Suspense fallback={<MToolLoader />}>
+                            <TabPanel value={this.props.history.location.pathname} index="/operations/pos">
+                                <RunIbofOs
+                                    property={this.props.posProperty}
+                                    status={this.props.bool_status}
+                                    responsefromos={this.props.operationsMessage}
+                                    openAlert={this.openAlert}
+                                    OS_Running_Status={this.props.OS_Running}
+                                    isButtonDisabled={this.state.isButtonDisabled}
+                                    mountState={this.props.posMountStatus}
+                                    setProperty={this.props.Set_POS_Property}
+                                />
+                            </TabPanel>
+                            <TabPanel value={this.props.history.location.pathname} index="/operations/devices">
+                                <Device />
+                            </TabPanel>
+                            <TabPanel value={this.props.history.location.pathname} index="/operations/subsystem">
+                                <Subsystem />
+                            </TabPanel>
+                        </Suspense>
+                        <AlertDialog
+                            title={this.state.alerttitle}
+                            description={this.state.alertdescription}
+                            open={this.state.alertOpen}
+                            type={this.state.alerttype}
+                            handleClose={this.handleAlertClose}
+                            onConfirm={this.triggerCommand}
                         />
-                    </TabPanel>
-                    <TabPanel value={this.props.history.location.pathname} index="/operations/devices">
-                        <Device />
-                    </TabPanel>
-                    <TabPanel value={this.props.history.location.pathname} index="/operations/subsystem">
-                        <Subsystem />
-                    </TabPanel>
-                    <AlertDialog
-                        title={this.state.alerttitle}
-                        description={this.state.alertdescription}
-                        open={this.state.alertOpen}
-                        type={this.state.alerttype}
-                        handleClose={this.handleAlertClose}
-                        onConfirm={this.triggerCommand}
-                    />
-                </main>
+                    </main>
                 </Box>
             </ThemeProvider>
         );
@@ -237,10 +204,10 @@ const mapDispatchToProps = dispatch => {
     return {
         Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
         resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),
-        Stop_POS: () => dispatch({type: actionTypes.SAGA_STOP_IBOFOS}),
-        Start_POS: () => dispatch({type: actionTypes.SAGA_START_IBOFOS}),
-        Reset_POS: () => dispatch({type: actionTypes.SAGA_RESET_IBOFOS}),
-        Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message}),
+        Stop_POS: () => dispatch({ type: actionTypes.SAGA_STOP_IBOFOS }),
+        Start_POS: () => dispatch({ type: actionTypes.SAGA_START_IBOFOS }),
+        Reset_POS: () => dispatch({ type: actionTypes.SAGA_RESET_IBOFOS }),
+        Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message }),
         Get_POS_Property: () => dispatch({ type: actionTypes.SAGA_GET_POS_PROPERTY }),
         Set_POS_Property: (payload) => dispatch({ type: actionTypes.SAGA_SET_POS_PROPERTY, payload })
     };

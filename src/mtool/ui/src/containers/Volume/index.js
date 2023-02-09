@@ -30,7 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import { Box, Grid, Typography, Paper, AppBar, Tabs, Tab, Select, FormControl, InputLabel, MenuItem, Tooltip, Button, Zoom } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -42,10 +42,6 @@ import InfoIcon from "@material-ui/icons/Info";
 import AutoCreate from "../../components/AutoCreate";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import ArrayCreate from "../../components/ArrayManagement/ArrayCreate";
-import ArrayShow from "../../components/ArrayManagement/ArrayShow";
-import CreateVolume from "../../components/VolumeManagement/CreateVolume";
-import VolumeList from "../../components/VolumeManagement/VolumeList";
 import MToolLoader from "../../components/MToolLoader";
 import RebuildProgress from "../../components/RebuildProgress";
 import AlertDialog from "../../components/Dialog";
@@ -58,6 +54,12 @@ import formatBytes from "../../utils/format-bytes";
 import getSubsystemForArray from "../../utils/subsystem";
 import LightTooltip from "../../components/LightTooltip";
 import { BYTE_FACTOR } from "../../utils/constants";
+
+
+const ArrayCreate = lazy(() => import("../../components/ArrayManagement/ArrayCreate"));
+const ArrayShow = lazy(() => import("../../components/ArrayManagement/ArrayShow"));
+const CreateVolume = lazy(() => import("../../components/VolumeManagement/CreateVolume"));
+const VolumeList = lazy(() => import("../../components/VolumeManagement/VolumeList"));
 
 const styles = (theme) => ({
   dashboardContainer: {
@@ -457,290 +459,292 @@ class Volume extends Component {
                 </Tabs>
               </AppBar>
 
-              <Switch>
-                <Redirect exact from="/storage/array/" to="/storage/array/create" />
-                <Route path="/storage/array/create">
-                  <Grid container spacing={1} className={classes.card}>
-                    <Grid item xs={12}>
-                      <Paper spacing={3} className={classes.spaced}>
-                        <Grid container justifyContent="space-between">
-                          <ArrayCreate
-                            createArray={this.createArray}
-                            config={this.props.config}
-                            selectedRaid={this.props.selectedRaid}
-                            selectRaid={this.props.Select_Raid}
-                            disks={this.props.ssds}
-                            data-testid="arraycreate"
-                            metadisks={this.props.metadisks}
-                            diskDetails={this.props.diskDetails}
-                            getDiskDetails={this.props.Get_Disk_Details}
-                          />
-                        </Grid>
-                      </Paper>
-                      <AutoCreate
-                        disks={this.props.ssds}
-                        metadisks={this.props.metadisks}
-                        autoCreateArray={this.props.Auto_Create_Array}
-                        config={this.props.config}
-                      />
-                      {(this.props.posMountStatus === "EXIST_NORMAL") ? (
-                        <Typography style={{ color: "#b11b1b" }} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
-                      ) : null}
-                    </Grid>
-                  </Grid>
-                </Route>
-                <Route path="/storage/array/manage*">
-                  <>
-                    {this.props.arrayMap[this.props.selectedArray] ? (
-                      <React.Fragment>
-                        <Grid container spacing={1} className={classes.card}>
-                          <Grid item xs={12}>
-                            <Paper spacing={3} className={classes.spaced}>
-                              <Grid container className={classes.arrayInfoContainer} justifyContent="space-between">
-                                <Tooltip
-                                  title={(
-                                    <Typography data-testid="array-id-text">
-                                      {`Array ID: ${this.props.arrayMap[this.props.selectedArray].uniqueId}`}
-                                    </Typography>
-                                  )}
-                                  classes={{
-                                    tooltip: classes.tooltip,
-                                  }}
-                                  interactive
-                                >
-                                  <InfoIcon
-                                    data-testid="array-info-icon"
-                                    color="primary"
-                                    className={classes.arrayInfoIcon}
-                                  />
-                                </Tooltip>
-                                <Grid container className={classes.arraySelectStatus}>
-                                  <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
-                                    <FormControl
-                                      className={classes.selectForm}
-                                      data-testid="arrayshow-form"
-                                    >
-                                      <InputLabel htmlFor="select-array">Select Array</InputLabel>
-                                      <Select
-                                        inputProps={{
-                                          id: "select-array",
-                                          "data-testid": "select-array-input",
-                                        }}
-                                        SelectDisplayProps={{
-                                          style: {
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis"
-                                          },
-                                          "data-testid": "select-array",
-                                        }}
-                                        onChange={this.changeArray}
-                                        value={this.props.selectedArray}
-                                        className={classes.arraySelect}
-                                      >
-                                        {this.props.arrays.map((array) => (
-                                          <MenuItem key={array.arrayname} value={array.arrayname}>
-                                            <Typography color="secondary">{array.arrayname}</Typography>
-                                          </MenuItem>
-                                        ))}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
-                                    <Typography className={classes.statusText}>Status:
-                                      <span
-                                        style={{
-                                          fontWeight: 600,
-                                          color: this.props.arrayMap[this.props.selectedArray].status === "Mounted" ? "green" : "orange"
-                                        }}
-                                      >
-                                        {this.props.arrayMap[this.props.selectedArray].status}
-                                      </span>
-                                      <Grid container alignItems="center">, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
-                                        {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
-                                          <LightTooltip
-                                            data-testid="Tooltip"
-                                            TransitionComponent={Zoom}
-                                            title={(
-                                              <RebuildProgress
-                                                arrayMap={this.props.arrayMap}
-                                                array={this.props.selectedArray}
-                                                progress={this.props.arrayMap[this.props.selectedArray].rebuildProgress}
-                                                rebuildTime={this.props.arrayMap[this.props.selectedArray].rebuildTime}
-                                              />
-                                            )}
-                                            interactive
-                                          >
-                                            <InfoIcon
-                                              color="primary"
-                                              data-testid="rebuild-popover-icon"
-                                            />
-                                          </LightTooltip>
-                                        ) : null
-                                        }
-                                        {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
-                                          this.props.arrayMap[this.props.selectedArray].situation === "DEGRADED" ? (
-                                          <Tooltip
-                                            title="Rebuild Array"
-                                          >
-                                            <Button
-                                              color="primary"
-                                              variant="contained"
-                                              data-testid="rebuild-icon"
-                                              id="rebuild-icon"
-                                              className={classes.rebuildButton}
-                                              onClick={this.rebuildArray}
-                                            >
-                                              Rebuild
-                                            </Button>
-                                          </Tooltip>
-                                        ) : null}
-                                      </Grid>
-                                    </Typography>
-                                  </Grid>
-                                </Grid>
-                                <ArrayShow
-                                  RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
-                                  slots={this.props.ssds}
-                                  arrayName={this.props.selectedArray}
-                                  corrupted={this.props.arrayMap[this.props.selectedArray].corrupted}
-                                  storagedisks={this.props.arrayMap[this.props.selectedArray].storagedisks}
-                                  sparedisks={this.props.arrayMap[this.props.selectedArray].sparedisks}
-                                  metadiskpath={this.props.arrayMap[this.props.selectedArray].metadiskpath}
-                                  writebufferdisks={this.props.arrayMap[this.props.selectedArray].writebufferdisks}
-                                  deleteArray={this.deleteArray}
-                                  writeThrough={this.props.arrayMap[this.props.selectedArray].writeThroughEnabled}
-                                  diskDetails={this.props.diskDetails}
-                                  getDiskDetails={this.props.Get_Disk_Details}
-                                  isDevicesFetching={this.props.isDevicesFetching}
-                                  isArrayInfoFetching={this.props.isArrayInfoFetching}
-                                  // detachDisk={this.props.Detach_Disk}
-                                  // attachDisk={this.props.Attach_Disk}
-                                  addSpareDisk={this.props.Add_Spare_Disk}
-                                  removeSpareDisk={this.props.Remove_Spare_Disk}
-                                  replaceDevice={this.props.Replace_Device}
-                                  mountStatus={this.props.arrayMap[this.props.selectedArray].status}
-                                  handleUnmountPOS={this.props.Unmount_POS}
-                                  handleMountPOS={this.props.Mount_POS}
-                                  getArrayInfo={this.props.Get_Array_Info}
-                                  getDevices={this.props.Get_Devices}
-                                />
-                              </Grid>
-                            </Paper>
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          container
-                          spacing={1}
-                          className={classes.card}
-                          style={{
-                            opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
-                            pointerEvents:
-                              this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
-                                ? "none"
-                                : "initial",
-                          }}
-                        >
-                          <Grid item xs={12} md={6} className={classes.spaced}>
-                            <CreateVolume
-                              data-testid="createvolume"
-                              createVolume={this.createVolume}
-                              subsystems={this.props.subsystems}
-                              array={this.props.selectedArray}
-                              maxVolumeCount={this.props.maxVolumeCount}
-                              volCount={this.props.volumes.length}
-                              maxAvailableSize={
-                                this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
-                              }
-                              createVolSocket={this.state.createVolSocket}
-                              fetchVolumes={this.fetchVolumes}
-                              fetchArray={this.props.Get_Array}
-                              fetchSubsystems={this.props.Get_Subsystems}
+              <Suspense fallback={<MToolLoader />}>
+                <Switch>
+                  <Redirect exact from="/storage/array/" to="/storage/array/create" />
+                  <Route path="/storage/array/create">
+                    <Grid container spacing={1} className={classes.card}>
+                      <Grid item xs={12}>
+                        <Paper spacing={3} className={classes.spaced}>
+                          <Grid container justifyContent="space-between">
+                            <ArrayCreate
+                              createArray={this.createArray}
+                              config={this.props.config}
+                              selectedRaid={this.props.selectedRaid}
+                              selectRaid={this.props.Select_Raid}
+                              disks={this.props.ssds}
+                              data-testid="arraycreate"
+                              metadisks={this.props.metadisks}
+                              diskDetails={this.props.diskDetails}
+                              getDiskDetails={this.props.Get_Disk_Details}
                             />
                           </Grid>
-
-                          <Grid item xs={12} md={6}>
-                            <Paper className={classes.volumeStatsPaper}>
-                              <Typography className={classes.cardHeader}>
-                                Volume Statistics
-                              </Typography>
-                              <div className={classes.statsWrapper}>
-                                <Grid item xs={12}>
-                                  <Typography color="secondary">
-                                    Number of volumes: {this.props.volumes.length}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={12} className={classes.statsContainer}>
-                                  <Box className={classes.volumeStats}>
-                                    <div style={volumeFilledStyle} />
-                                    <div style={volumeFreeStyle} />
-                                  </Box>
-                                  <Grid
-                                    item
-                                    container
-                                    xs={12}
-                                    wrap="wrap"
-                                    className={classes.legendContainer}
+                        </Paper>
+                        <AutoCreate
+                          disks={this.props.ssds}
+                          metadisks={this.props.metadisks}
+                          autoCreateArray={this.props.Auto_Create_Array}
+                          config={this.props.config}
+                        />
+                        {(this.props.posMountStatus === "EXIST_NORMAL") ? (
+                          <Typography style={{ color: "#b11b1b" }} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
+                        ) : null}
+                      </Grid>
+                    </Grid>
+                  </Route>
+                  <Route path="/storage/array/manage*">
+                    <>
+                      {this.props.arrayMap[this.props.selectedArray] ? (
+                        <React.Fragment>
+                          <Grid container spacing={1} className={classes.card}>
+                            <Grid item xs={12}>
+                              <Paper spacing={3} className={classes.spaced}>
+                                <Grid container className={classes.arrayInfoContainer} justifyContent="space-between">
+                                  <Tooltip
+                                    title={(
+                                      <Typography data-testid="array-id-text">
+                                        {`Array ID: ${this.props.arrayMap[this.props.selectedArray].uniqueId}`}
+                                      </Typography>
+                                    )}
+                                    classes={{
+                                      tooltip: classes.tooltip,
+                                    }}
+                                    interactive
                                   >
-                                    <Legend
-                                      bgColor="rgba(51, 158, 255,0.6)"
-                                      title={`
+                                    <InfoIcon
+                                      data-testid="array-info-icon"
+                                      color="primary"
+                                      className={classes.arrayInfoIcon}
+                                    />
+                                  </Tooltip>
+                                  <Grid container className={classes.arraySelectStatus}>
+                                    <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
+                                      <FormControl
+                                        className={classes.selectForm}
+                                        data-testid="arrayshow-form"
+                                      >
+                                        <InputLabel htmlFor="select-array">Select Array</InputLabel>
+                                        <Select
+                                          inputProps={{
+                                            id: "select-array",
+                                            "data-testid": "select-array-input",
+                                          }}
+                                          SelectDisplayProps={{
+                                            style: {
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis"
+                                            },
+                                            "data-testid": "select-array",
+                                          }}
+                                          onChange={this.changeArray}
+                                          value={this.props.selectedArray}
+                                          className={classes.arraySelect}
+                                        >
+                                          {this.props.arrays.map((array) => (
+                                            <MenuItem key={array.arrayname} value={array.arrayname}>
+                                              <Typography color="secondary">{array.arrayname}</Typography>
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} lg={4} className={classes.arraySelectGrid}>
+                                      <Typography className={classes.statusText}>Status:
+                                        <span
+                                          style={{
+                                            fontWeight: 600,
+                                            color: this.props.arrayMap[this.props.selectedArray].status === "Mounted" ? "green" : "orange"
+                                          }}
+                                        >
+                                          {this.props.arrayMap[this.props.selectedArray].status}
+                                        </span>
+                                        <Grid container alignItems="center">, <span data-testid="array-show-status">{this.props.arrayMap[this.props.selectedArray].situation}</span>
+                                          {this.props.arrayMap[this.props.selectedArray].situation === "REBUILDING" ? (
+                                            <LightTooltip
+                                              data-testid="Tooltip"
+                                              TransitionComponent={Zoom}
+                                              title={(
+                                                <RebuildProgress
+                                                  arrayMap={this.props.arrayMap}
+                                                  array={this.props.selectedArray}
+                                                  progress={this.props.arrayMap[this.props.selectedArray].rebuildProgress}
+                                                  rebuildTime={this.props.arrayMap[this.props.selectedArray].rebuildTime}
+                                                />
+                                              )}
+                                              interactive
+                                            >
+                                              <InfoIcon
+                                                color="primary"
+                                                data-testid="rebuild-popover-icon"
+                                              />
+                                            </LightTooltip>
+                                          ) : null
+                                          }
+                                          {this.props.arrayMap[this.props.selectedArray].status === "Mounted" &&
+                                            this.props.arrayMap[this.props.selectedArray].situation === "DEGRADED" ? (
+                                            <Tooltip
+                                              title="Rebuild Array"
+                                            >
+                                              <Button
+                                                color="primary"
+                                                variant="contained"
+                                                data-testid="rebuild-icon"
+                                                id="rebuild-icon"
+                                                className={classes.rebuildButton}
+                                                onClick={this.rebuildArray}
+                                              >
+                                                Rebuild
+                                              </Button>
+                                            </Tooltip>
+                                          ) : null}
+                                        </Grid>
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                  <ArrayShow
+                                    RAIDLevel={this.props.arrayMap[this.props.selectedArray].RAIDLevel}
+                                    slots={this.props.ssds}
+                                    arrayName={this.props.selectedArray}
+                                    corrupted={this.props.arrayMap[this.props.selectedArray].corrupted}
+                                    storagedisks={this.props.arrayMap[this.props.selectedArray].storagedisks}
+                                    sparedisks={this.props.arrayMap[this.props.selectedArray].sparedisks}
+                                    metadiskpath={this.props.arrayMap[this.props.selectedArray].metadiskpath}
+                                    writebufferdisks={this.props.arrayMap[this.props.selectedArray].writebufferdisks}
+                                    deleteArray={this.deleteArray}
+                                    writeThrough={this.props.arrayMap[this.props.selectedArray].writeThroughEnabled}
+                                    diskDetails={this.props.diskDetails}
+                                    getDiskDetails={this.props.Get_Disk_Details}
+                                    isDevicesFetching={this.props.isDevicesFetching}
+                                    isArrayInfoFetching={this.props.isArrayInfoFetching}
+                                    // detachDisk={this.props.Detach_Disk}
+                                    // attachDisk={this.props.Attach_Disk}
+                                    addSpareDisk={this.props.Add_Spare_Disk}
+                                    removeSpareDisk={this.props.Remove_Spare_Disk}
+                                    replaceDevice={this.props.Replace_Device}
+                                    mountStatus={this.props.arrayMap[this.props.selectedArray].status}
+                                    handleUnmountPOS={this.props.Unmount_POS}
+                                    handleMountPOS={this.props.Mount_POS}
+                                    getArrayInfo={this.props.Get_Array_Info}
+                                    getDevices={this.props.Get_Devices}
+                                  />
+                                </Grid>
+                              </Paper>
+                            </Grid>
+                          </Grid>
+                          <Grid
+                            container
+                            spacing={1}
+                            className={classes.card}
+                            style={{
+                              opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
+                              pointerEvents:
+                                this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
+                                  ? "none"
+                                  : "initial",
+                            }}
+                          >
+                            <Grid item xs={12} md={6} className={classes.spaced}>
+                              <CreateVolume
+                                data-testid="createvolume"
+                                createVolume={this.createVolume}
+                                subsystems={this.props.subsystems}
+                                array={this.props.selectedArray}
+                                maxVolumeCount={this.props.maxVolumeCount}
+                                volCount={this.props.volumes.length}
+                                maxAvailableSize={
+                                  this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize
+                                }
+                                createVolSocket={this.state.createVolSocket}
+                                fetchVolumes={this.fetchVolumes}
+                                fetchArray={this.props.Get_Array}
+                                fetchSubsystems={this.props.Get_Subsystems}
+                              />
+                            </Grid>
+
+                            <Grid item xs={12} md={6}>
+                              <Paper className={classes.volumeStatsPaper}>
+                                <Typography className={classes.cardHeader}>
+                                  Volume Statistics
+                                </Typography>
+                                <div className={classes.statsWrapper}>
+                                  <Grid item xs={12}>
+                                    <Typography color="secondary">
+                                      Number of volumes: {this.props.volumes.length}
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={12} className={classes.statsContainer}>
+                                    <Box className={classes.volumeStats}>
+                                      <div style={volumeFilledStyle} />
+                                      <div style={volumeFreeStyle} />
+                                    </Box>
+                                    <Grid
+                                      item
+                                      container
+                                      xs={12}
+                                      wrap="wrap"
+                                      className={classes.legendContainer}
+                                    >
+                                      <Legend
+                                        bgColor="rgba(51, 158, 255,0.6)"
+                                        title={`
                           Used Space :
                           ${formatBytes(totalVolSize)}
                         `}
-                                    />
-                                    <Legend
-                                      bgColor="rgba(0, 186, 0, 0.6)"
-                                      title={`
+                                      />
+                                      <Legend
+                                        bgColor="rgba(0, 186, 0, 0.6)"
+                                        title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                        this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
-                                          this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize :
-                                          0
-                                      )}
+                                          this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
+                                            this.props.arrayMap[this.props.selectedArray].totalsize - totalVolSize :
+                                            0
+                                        )}
                         `}
-                                    />
+                                      />
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                              </div>
-                            </Paper>
+                                </div>
+                              </Paper>
+                            </Grid>
                           </Grid>
-                        </Grid>
 
-                        <Grid
-                          container
-                          spacing={1}
-                          className={classes.card}
-                          style={{
-                            opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
-                            pointerEvents:
-                              this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
-                                ? "none"
-                                : "initial",
-                          }}
-                        >
-                          <Grid item xs={12}>
-                            <VolumeList
-                              ref={this.child}
-                              volumeFetch={this.fetchVolumes}
-                              volumes={this.props.volumes}
-                              fetchingVolumes={this.props.fetchingVolumes}
-                              deleteVolumes={this.deleteVolumes}
-                              resetQoS={this.props.Reset_Volume_QoS}
-                              editVolume={this.props.Edit_Volume}
-                              changeField={this.props.Change_Volume_Field}
-                              fetchVolumes={this.fetchVolumes}
-                              saveVolume={this.props.Reset_And_Update_Volume}
-                              changeMountStatus={this.changeMountStatus}
-                              changeMinType={this.props.Change_Min_Type}
-                              changeResetType={this.props.Change_Reset_Type}
-                            />
+                          <Grid
+                            container
+                            spacing={1}
+                            className={classes.card}
+                            style={{
+                              opacity: this.props.arrayMap[this.props.selectedArray].status !== "Mounted" ? 0.5 : 1,
+                              pointerEvents:
+                                this.props.arrayMap[this.props.selectedArray].status !== "Mounted"
+                                  ? "none"
+                                  : "initial",
+                            }}
+                          >
+                            <Grid item xs={12}>
+                              <VolumeList
+                                ref={this.child}
+                                volumeFetch={this.fetchVolumes}
+                                volumes={this.props.volumes}
+                                fetchingVolumes={this.props.fetchingVolumes}
+                                deleteVolumes={this.deleteVolumes}
+                                resetQoS={this.props.Reset_Volume_QoS}
+                                editVolume={this.props.Edit_Volume}
+                                changeField={this.props.Change_Volume_Field}
+                                fetchVolumes={this.fetchVolumes}
+                                saveVolume={this.props.Reset_And_Update_Volume}
+                                changeMountStatus={this.changeMountStatus}
+                                changeMinType={this.props.Change_Min_Type}
+                                changeResetType={this.props.Change_Reset_Type}
+                              />
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </React.Fragment>
-                    ) : null}
-                  </>
-                </Route>
-              </Switch>
+                        </React.Fragment>
+                      ) : null}
+                    </>
+                  </Route>
+                </Switch>
+              </Suspense>
               <AlertDialog
                 title={this.props.alertTitle}
                 description={this.props.errorMsg}

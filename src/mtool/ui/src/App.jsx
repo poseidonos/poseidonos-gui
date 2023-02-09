@@ -34,6 +34,7 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import './App.css';
+import MToolLoader from './components/MToolLoader';
 import ErrorBoundary from './containers/ErrorBoundary';
 
 const Performance = lazy(() => import('./containers/Performance'));
@@ -50,7 +51,7 @@ const App = () => {
   return (
     <React.Fragment>
       <ErrorBoundary>
-        <Suspense fallback={<div>Loading</div>}>
+        <Suspense fallback={<MToolLoader />}>
           <Switch>
             <PrivateRoute className="App-content" path="/performance*" exact component={() => <Performance />} />
             <PrivateRoute className="App-content" path="/dashboard" exact component={() => <Dashboard />} />

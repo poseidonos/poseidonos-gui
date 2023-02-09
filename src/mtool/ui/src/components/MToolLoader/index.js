@@ -51,7 +51,6 @@ const loaderStyle = {
 
 const loaderTextStyle = {
   width: '25%',
-  marginLeft: '280px',
   top: '100px',
   left: '40%',
   fontSize: 18,
@@ -63,15 +62,13 @@ const loaderTextStyle = {
 const MToolLoader = props => {
   return (
     <div style={loaderStyle}>
-      <div style={{ marginLeft: '280px' }}>
-        <Loader
-          type="Bars"
-          color="#788595"
-          marginTop="100px"
-          height="50"
-          width="50"
-        />
-      </div>
+      <Loader
+        type="Bars"
+        color="#788595"
+        marginTop="100px"
+        height="50"
+        width="50"
+      />
       <h2 style={loaderTextStyle}>{props.text}</h2>
     </div>
   );
