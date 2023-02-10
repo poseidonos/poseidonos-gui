@@ -8,6 +8,10 @@ body {
   font-size: 12px;
 }
 
+.root {
+  height: 100%;
+}
+
 ::-webkit-scrollbar {
   height: 14px;
   width: 14px;
@@ -21,56 +25,10 @@ body {
   background-color: #788595;
   border-radius: 20px;
   border: 3px solid transparent;
-  
+
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
-}
-
-code {
-  font-family: Arial, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.NewLine {
-  clear: both;
-}
-
-.root {
-  height: 100%;
-}
-
-.c3-axis-y-label {
-  font-size: 14px;
-}
-
-tspan {
-  font-size: 12px;
-}
-
-.c3 svg {
-  font-size: 12px;
-}
-
-.c3-axis-y text {
-  /* fill: greenyellow; */
-  font-size: 12px;
-}
-.c3-axis-x text {
-  font-size: 12px;
-  /* fill:white; */
-}
-
-.c3-event-rects {
-  cursor: default !important;
-}
-.c3-area {
-  stroke-width: 0;
-  opacity: 0.8;
-}
-
-.Dropdown-arrow {
-  top: 7px;
 }

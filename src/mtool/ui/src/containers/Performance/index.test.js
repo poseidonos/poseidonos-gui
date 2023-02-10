@@ -99,10 +99,10 @@ describe("Performance", () => {
   afterEach(cleanup);
 
 
-  it("should render the telemetry configuration page", () => {
+  it("should render the telemetry configuration page", async () => {
     renderComponent();
     const { getByText } = wrapper;
-    expect(getByText("Start")).toBeDefined();
+    expect(await waitForElement(() => getByText("Start"))).toBeDefined();
   });
 
   it("should render button on resize", () => {

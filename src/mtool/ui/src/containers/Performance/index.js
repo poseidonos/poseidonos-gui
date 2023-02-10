@@ -30,15 +30,17 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
+import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { AppBar, Box, Tab, Tabs, Grid, Typography } from '@material-ui/core';
-import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 import MToolTheme, { customTheme } from '../../theme';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import Grafana from './Grafana';
-import TelemetryConfiguration from './Configuration';
+import MToolLoader from '../../components/MToolLoader';
+
+const Grafana = lazy(() => import('./Grafana'));
+const TelemetryConfiguration = lazy(() => import('./Configuration'));
 
 const styles = (theme) => ({
   content: {
@@ -75,7 +77,7 @@ class Performance extends Component {
       this.setState({ activeTab: "grafana" });
       this.props.history.push("/performance/grafana");
     } else {
-      this.setState({ activeTab: "configure"});
+      this.setState({ activeTab: "configure" });
       this.props.history.push("/performance/configure");
     }
   }
@@ -117,15 +119,17 @@ class Performance extends Component {
                   </Tab>
                 </Tabs>
               </AppBar>
-              <Switch>
-                <Redirect exact from="/performance" to="/performance/configure" />
-                <Route path="/performance/configure">
-                  <TelemetryConfiguration />
-                </Route>
-                <Route path="/performance/grafana">
-                  <Grafana url={url} />
-                </Route>
-              </Switch>
+              <Suspense fallback={<MToolLoader />}>
+                <Switch>
+                  <Redirect exact from="/performance" to="/performance/configure" />
+                  <Route path="/performance/configure">
+                    <TelemetryConfiguration />
+                  </Route>
+                  <Route path="/performance/grafana">
+                    <Grafana url={url} />
+                  </Route>
+                </Switch>
+              </Suspense>
             </Grid>
           </main>
         </Box>

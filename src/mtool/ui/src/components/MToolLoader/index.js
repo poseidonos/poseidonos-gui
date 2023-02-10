@@ -37,11 +37,11 @@ import PropTypes from 'prop-types';
 const loaderStyle = {
   width: '100%',
   height: '100%',
-  background: 'white',
+  background: '#788595',
   position: 'fixed',
   top: 0,
   left: 0,
-  opacity: 0.9,
+  opacity: 0.8,
   zIndex: 10000,
   display: 'flex',
   alignItems: 'center',
@@ -51,7 +51,6 @@ const loaderStyle = {
 
 const loaderTextStyle = {
   width: '25%',
-  marginLeft: '280px',
   top: '100px',
   left: '40%',
   fontSize: 18,
@@ -63,15 +62,13 @@ const loaderTextStyle = {
 const MToolLoader = props => {
   return (
     <div style={loaderStyle}>
-      <div style={{ marginLeft: '280px' }}>
-        <Loader
-          type="Bars"
-          color="#788595"
-          marginTop="100px"
-          height="50"
-          width="50"
-        />
-      </div>
+      <Loader
+        type="Bars"
+        color="#171719"
+        marginTop="100px"
+        height="50"
+        width="50"
+      />
       <h2 style={loaderTextStyle}>{props.text}</h2>
     </div>
   );

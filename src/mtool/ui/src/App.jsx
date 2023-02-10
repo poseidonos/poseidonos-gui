@@ -30,106 +30,42 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { Route } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import Performance from './containers/Performance';
 import './App.css';
-import Authentication from './containers/Authentication';
-import Dashboard from './containers/Dashboard';
-import PrivateRoute from './components/PrivateRoute';
-import Volume from './containers/Volume';
-import ConfigurationSetting from './containers/ConfigurationSetting';
-import IbofOsOperations from './containers/IbofOsOperations';
-import LogManagement from './containers/Log-Management';
-import Hardware from './containers/Hardware';
+import MToolLoader from './components/MToolLoader';
 import ErrorBoundary from './containers/ErrorBoundary';
 
+const Performance = lazy(() => import('./containers/Performance'));
+const Authentication = lazy(() => import('./containers/Authentication'));
+const Dashboard = lazy(() => import('./containers/Dashboard'));
+const PrivateRoute = lazy(() => import('./components/PrivateRoute'));
+const Volume = lazy(() => import('./containers/Volume'));
+const ConfigurationSetting = lazy(() => import('./containers/ConfigurationSetting'));
+const IbofOsOperations = lazy(() => import('./containers/IbofOsOperations'));
+const LogManagement = lazy(() => import('./containers/Log-Management'));
+const Hardware = lazy(() => import('./containers/Hardware'));
+
 const App = () => {
-    return (
-      <React.Fragment>
-        <Route
-          className="App-content"
-          path="/"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <Authentication />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/performance*"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <Performance />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/dashboard"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <Dashboard />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/storage/array/*"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <Volume />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/operations/*"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <IbofOsOperations />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/ConfigurationSetting/*"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <ConfigurationSetting />
-            </ErrorBoundary>
-          )}
-        />
-        <PrivateRoute
-          className="App-content"
-          path="/LogManagement"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <LogManagement />
-            </ErrorBoundary>
-          )}
-        />
-        <Route
-          className="App-content"
-          path="/Hardware/*"
-          exact
-          component={() => (
-            <ErrorBoundary>
-              <Hardware />
-            </ErrorBoundary>
-          )}
-        />
-      </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <ErrorBoundary>
+        <Suspense fallback={<MToolLoader />}>
+          <Switch>
+            <PrivateRoute className="App-content" path="/performance*" exact component={() => <Performance />} />
+            <PrivateRoute className="App-content" path="/dashboard" exact component={() => <Dashboard />} />
+            <PrivateRoute className="App-content" path="/storage/array/*" exact component={() => <Volume />} />
+            <PrivateRoute className="App-content" path="/operations/*" exact component={() => <IbofOsOperations />} />
+            <PrivateRoute className="App-content" path="/ConfigurationSetting/*" exact component={() => <ConfigurationSetting />} />
+            <PrivateRoute className="App-content" path="/LogManagement" exact component={() => <LogManagement />} />
+            <Route className="App-content" path="/Hardware/*" exact component={() => <Hardware />} />
+            <Route className="App-content" path="/" component={() => <Authentication />} />
+          </Switch>
+        </Suspense>
+      </ErrorBoundary>
+    </React.Fragment>
+  );
 }
 
 export default App;
