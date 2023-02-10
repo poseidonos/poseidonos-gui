@@ -51,7 +51,6 @@ import { Router } from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../../../sagas/indexSaga";
-import headerReducer from "../../../store/reducers/headerReducer";
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer";
 import userManagementReducer from "../../../store/reducers/userManagementReducer";
 import i18n from "../../../i18n";
@@ -63,12 +62,9 @@ describe("ConfigurationSetting", () => {
   let wrapper;
   let history;
   let store;
-  // let mock;
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
-      // headerLanguageReducer,
-      //   headerReducer,
       alertManagementReducer,
       userManagementReducer
     });

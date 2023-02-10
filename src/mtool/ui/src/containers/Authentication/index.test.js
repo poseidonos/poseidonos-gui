@@ -49,9 +49,6 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from 'redux-saga';
 import '@testing-library/jest-dom/extend-expect';
 import rootSaga from "../../sagas/indexSaga"
-import headerLanguageReducer, {
-  initialState as langState
-} from "../../store/reducers/headerLanguageReducer";
 import authenticationReducer from "../../store/reducers/authenticationReducer";
 import Authentication from "./index";
 import i18n from "../../i18n";
@@ -65,7 +62,6 @@ describe("Authentication", () => {
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
-      headerLanguageReducer,
       authenticationReducer
     });
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

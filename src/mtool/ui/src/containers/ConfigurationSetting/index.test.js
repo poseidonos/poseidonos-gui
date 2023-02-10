@@ -60,11 +60,9 @@ describe("ConfigurationSetting", () => {
   let wrapper;
   let history;
   let store;
-  // let mock;
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = combineReducers({
-      // headerLanguageReducer,
       alertManagementReducer,
       headerReducer,
       configurationsettingReducer
