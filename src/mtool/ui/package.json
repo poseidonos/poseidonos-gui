@@ -59,8 +59,6 @@
     "collectCoverageFrom": [
       "src/**/*.{js, jsx}",
       "!src/components/ChangePassword/**/*.js",
-      "!src/components/AlertManagementComponents/AlertFields**/*.js",
-      "!src/components/AlertManagementComponents/AlertTypes**/*.js",
       "!src/serviceWorker.js"
     ]
   },
