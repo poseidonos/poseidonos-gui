@@ -58,7 +58,6 @@ import createVolumeReducer from './store/reducers/createVolumeReducer';
 import dashboardReducer from "./store/reducers/dashboardReducer";
 import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
-import logManagementReducer from "./store/reducers/logManagementReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
 import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
@@ -103,7 +102,6 @@ const rootReducers = {
   createVolumeReducer,
   authenticationReducer,
   userManagementReducer,
-  logManagementReducer,
   hardwareOverviewReducer,
   hardwareSensorReducer,
   hardwareHealthReducer,

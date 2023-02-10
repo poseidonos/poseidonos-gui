@@ -325,17 +325,6 @@ export const SAGA_SET_IBOFOS_TIME_INTERVAL = "SAGA_SET_IBOFOS_TIME_INTERVAL"
 
 export const SAGA_GET_IBOFOS_TIME_INTERVAL = "SAGA_GET_IBOFOS_TIME_INTERVAL"
 
-//  Log Management PAGE
-export const GET_IBOFOS_LOGS = "GET_IBOFOS_LOGS"
-
-export const SAGA_GET_IBOFOS_LOGS = "SAGA_GET_IBOFOS_LOGS"
-
-export const SAGA_GET_LIVE_LOGS_DB = "SAGA_GET_LIVE_LOGS_DB"
-
-export const SAGA_SET_LIVE_LOGS_DB = "SAGA_SET_LIVE_LOGS_DB"
-
-export const SET_LIVE_LOGS = "SET_LIVE_LOGS"
-
 // Alert Management
 export const ALERT_MANAGEMENT_SET_ALERTS = "ALERT_MANAGEMENT_SET_ALERTS" // No SAGA action for this. Only applicable for sync call
 

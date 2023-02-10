@@ -33,7 +33,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Drawer, List, ListItem, Divider, Paper, Typography, Hidden } from '@material-ui/core';
-import { makeStyles , MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import PoseidonLogo from '../../assets/images/Poseidon.png';
@@ -41,12 +41,8 @@ import DashboardIconDisabled from '../../assets/images/Dashboard-DIS.png';
 import DashboardIconSelected from '../../assets/images/Dashboard-SEL.png';
 import StorageIconDisabled from '../../assets/images/Storage-DIS.png';
 import StorageIconSelected from '../../assets/images/Storage-SEL.png';
-// import ConfigurationIconDisabled from '../../assets/images/Configuration-DIS.png';
-// import ConfigurationIconSelected from '../../assets/images/Configuration-SEL.png';
- import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
- import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
-// import HardwareIconDisabled from '../../assets/images/Hardware_DIS.png';
-// import HardwareIconSelected from '../../assets/images/Hardware_SEL.png';
+import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
+import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
 import MToolTheme from '../../theme';
 
 import './Sidebar.css';
@@ -54,8 +50,8 @@ import './Sidebar.css';
 const ulStyle = {
   textDecoration: 'none',
   color: 'rbga(255, 255, 255, 0.8)',
-  marginTop:'0px',
-  paddingTop:'0px'
+  marginTop: '0px',
+  paddingTop: '0px'
 };
 
 const drawerWidth = 200;
@@ -73,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
       background: 'rgb(57, 62, 69)',
       color: '#fff',
       opacity: 1
-  },
+    },
   },
   sidebarLink: {
     '&:hover': {
@@ -111,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#424850',
-    boxShadow:"none"
+    boxShadow: "none"
   },
   activeLink: {
     backgroundColor: 'rgb(33, 34, 37)',
@@ -157,9 +153,9 @@ const Sidebar = (props) => {
   const classes = useStyles();
   const drawer = (
     <ThemeProvider theme={MToolTheme}>
-    <div className={classes.toolbar} />
+      <div className={classes.toolbar} />
       <List className={classes.list} style={ulStyle}>
-      <Divider className={classes.listDivider} />
+        <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/dashboard">
           <ListItem className={classes.sidebarLink}>
             <span className={classes.iconLeft}>
@@ -185,7 +181,7 @@ const Sidebar = (props) => {
           <ListItem className={classes.sidebarLink}>
             <span className={classes.iconLeft}>
               <img
-                 className={classes.sidebarIcon}
+                className={classes.sidebarIcon}
                 src={
                   window.location.href.indexOf('storage') > 0
                     ? StorageIconSelected
@@ -197,7 +193,7 @@ const Sidebar = (props) => {
             <Typography className={classes.sidebarText}>Storage</Typography>
           </ListItem>
         </NavLink>
-	 <Divider className={classes.listDivider} />
+        <Divider className={classes.listDivider} />
         <NavLink style={ulStyle} to="/performance" className={classes.link} activeClassName={classes.activeLink}>
           <ListItem className={classes.sidebarLink}>
             <span className={classes.iconLeft}>
@@ -214,69 +210,7 @@ const Sidebar = (props) => {
             <Typography className={classes.sidebarText}>Telemetry</Typography>
           </ListItem>
         </NavLink>
-        {/* <Divider className={classes.listDivider} />
-        <NavLink className={classes.link} activeClassName={classes.activeLink} to="/Hardware/Overview">
-          <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('Hardware') > 0
-                    ? HardwareIconSelected
-                    : HardwareIconDisabled
-                }
-                alt="l"
-              />
-            </span>
-            <Typography className={classes.sidebarText}>Hardware</Typography>
-          </ListItem>
-        </NavLink>
-
-        <Divider className={classes.listDivider} /> 
-        <NavLink
-          style={ulStyle}
-          className={classes.link} activeClassName={classes.activeLink}
-          to="/ConfigurationSetting/general"
-        >
-          <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                 className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('ConfigurationSetting') > 0
-                    ? ConfigurationIconSelected
-                    : ConfigurationIconDisabled
-                }
-                alt="l"
-              />
-            </span>
-            <Typography className={classes.sidebarText}>Configuration</Typography>
-          </ListItem>
-        </NavLink>
-        <Divider className={classes.listDivider} /> */}
         <Divider className={classes.listDivider} />
-
-        {/* <NavLink
-          style={ulStyle}
-          className={classes.link} activeClassName={classes.activeLink}
-          to="/LogManagement"
-        >
-          <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                 className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('LogManagement') > 0
-                    ? LogManagementIconSelected
-                    : LogManagementIconDisabled
-                }
-                alt="l"
-              />
-            </span>
-            <Typography className={classes.sidebarText}>Trace</Typography>
-          </ListItem>
-        </NavLink>
-        <Divider className={classes.listDivider} /> */}
       </List>
       <div className={classes.logoContainer}>
         <Paper className={classes.logoPaper}>
@@ -286,42 +220,42 @@ const Sidebar = (props) => {
             alt="Poseidon Logo"
           />
         </Paper>
-	<span>PoseidonOS {props.posVersion}</span>
+        <span>PoseidonOS {props.posVersion}</span>
       </div>
     </ThemeProvider>
   );
   if (localStorage.getItem('isLoggedIn')) {
     return (
       <ThemeProvider theme={MToolTheme}>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          className={classes.drawer}
-          anchor="left"
-          variant="temporary"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          open={props.mobileOpen}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          onClose={props.toggleDrawer}
-        >
-          {drawer}
-        </Drawer>
-      </Hidden>
-      <Hidden smDown implementation="css">
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        open
-      >
-        {drawer}
-      </Drawer>
-      </Hidden>
+        <Hidden mdUp implementation="css">
+          <Drawer
+            className={classes.drawer}
+            anchor="left"
+            variant="temporary"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            open={props.mobileOpen}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            onClose={props.toggleDrawer}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
       </ThemeProvider>
     );
   }
@@ -330,7 +264,7 @@ const Sidebar = (props) => {
 
 const mapStateToProps = state => {
   return {
-   posVersion: state.headerReducer.posVersion
+    posVersion: state.headerReducer.posVersion
   };
 };
 
@@ -340,8 +274,8 @@ const mapDispatchToProps = () => {
   };
 };
 
-export default  
+export default
   connect(
     mapStateToProps,
     mapDispatchToProps
-    )(Sidebar);
+  )(Sidebar);

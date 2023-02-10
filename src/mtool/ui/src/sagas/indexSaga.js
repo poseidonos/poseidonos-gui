@@ -32,22 +32,21 @@
 
 import { all } from 'redux-saga/effects';
 import headerWatcher from "./headerSaga"
-import {dashboardWatcher} from "./dashboardSaga"
-import {configurationsettingWatcher} from "./configurationsettingSaga"
-import {logManagementWatcher} from "./logManagementSaga"
-import {alertManagementContainerWatcher} from "./alertManagementSaga"
-import {alertManagementAlertTableWatcher} from "./alertManagementAlertTableSaga"
-import {alertManagementAddNewAlertsWatcher} from "./alertManagementAddNewAlertsSaga"
-import {authenticationWatcher} from "./authenticationSaga"
-import {userManagementContainerWatcher} from "./userManagementSaga"
-import {userManagementUserTableWatcher} from "./userManagementUserTableSaga"
-import {userManagementAddNewUsersWatcher} from "./userManagementAddNewUsersSaga"
+import { dashboardWatcher } from "./dashboardSaga"
+import { configurationsettingWatcher } from "./configurationsettingSaga"
+import { alertManagementContainerWatcher } from "./alertManagementSaga"
+import { alertManagementAlertTableWatcher } from "./alertManagementAlertTableSaga"
+import { alertManagementAddNewAlertsWatcher } from "./alertManagementAddNewAlertsSaga"
+import { authenticationWatcher } from "./authenticationSaga"
+import { userManagementContainerWatcher } from "./userManagementSaga"
+import { userManagementUserTableWatcher } from "./userManagementUserTableSaga"
+import { userManagementAddNewUsersWatcher } from "./userManagementAddNewUsersSaga"
 import storageWatcher from "./storageSaga";
-import {hardwareOverviewWatcher} from './hardwareOverviewSaga'
-import {hardwareSensorWatcher} from './hardwareSensorSaga'
-import {hardwareHealthWatcher} from './hardwareHealthSaga'
-import {hardwarePowerManagementWatcher} from './hardwarePowerManagementSaga'
-import {BMCAuthenticationWatcher} from './BMCAuthenticationSaga'
+import { hardwareOverviewWatcher } from './hardwareOverviewSaga'
+import { hardwareSensorWatcher } from './hardwareSensorSaga'
+import { hardwareHealthWatcher } from './hardwareHealthSaga'
+import { hardwarePowerManagementWatcher } from './hardwarePowerManagementSaga'
+import { BMCAuthenticationWatcher } from './BMCAuthenticationSaga'
 import subsystemWatcher from './subsystemSaga';
 import { telemetryWatcher } from './telemetrySaga';
 
@@ -56,7 +55,6 @@ export default function* rootSaga() {
         headerWatcher(),
         dashboardWatcher(),
         configurationsettingWatcher(),
-        logManagementWatcher(),
         alertManagementContainerWatcher(),
         alertManagementAlertTableWatcher(),
         alertManagementAddNewAlertsWatcher(),
