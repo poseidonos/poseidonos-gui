@@ -57,7 +57,6 @@ import createVolumeReducer from './store/reducers/createVolumeReducer';
 import dashboardReducer from "./store/reducers/dashboardReducer";
 import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
-import logManagementReducer from "./store/reducers/logManagementReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
 import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
@@ -73,23 +72,23 @@ import rootSaga from "./sagas/indexSaga";
 
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
-    log.info(`Request: ${config.method} ${config.url}`);
-    return config;
-  }, (error) => {
-    log.error(`Request: ${error.request.config.method} ${error.request.config.url} ${error.request.status}`);
-    return Promise.reject(error);
-  });
+  log.info(`Request: ${config.method} ${config.url}`);
+  return config;
+}, (error) => {
+  log.error(`Request: ${error.request.config.method} ${error.request.config.url} ${error.request.status}`);
+  return Promise.reject(error);
+});
 
 // Add a response interceptor
 axios.interceptors.response.use((response) => {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    log.info(`Response: ${response.config.method} ${response.config.url} ${response.status}`);
-    return response;
-  }, (error) => {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    log.error(`Response: ${error.response.config.method} ${error.response.config.url} ${error.response.status}`);
-    return Promise.reject(error);
-  });
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  log.info(`Response: ${response.config.method} ${response.config.url} ${response.status}`);
+  return response;
+}, (error) => {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  log.error(`Response: ${error.response.config.method} ${error.response.config.url} ${error.response.status}`);
+  return Promise.reject(error);
+});
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -102,35 +101,34 @@ const sagaMiddleware = createSagaMiddleware();
 // }
 // End
 const rootReducers = combineReducers({
-    dashboardReducer,
-    headerReducer,
-    headerLanguageReducer,
-    configurationsettingReducer,
-    alertManagementReducer,
-    storageReducer,
-    createVolumeReducer,
-    authenticationReducer,
-    userManagementReducer,
-    logManagementReducer,
-    hardwareOverviewReducer,
-    hardwareSensorReducer,
-    hardwareHealthReducer,
-    hardwarePowerManagementReducer,
-    subsystemReducer,
-    waitLoaderReducer,
-    BMCAuthenticationReducer,
-    telemetryReducer,
+  dashboardReducer,
+  headerReducer,
+  headerLanguageReducer,
+  configurationsettingReducer,
+  alertManagementReducer,
+  storageReducer,
+  createVolumeReducer,
+  authenticationReducer,
+  userManagementReducer,
+  hardwareOverviewReducer,
+  hardwareSensorReducer,
+  hardwareHealthReducer,
+  hardwarePowerManagementReducer,
+  subsystemReducer,
+  waitLoaderReducer,
+  BMCAuthenticationReducer,
+  telemetryReducer,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducers,composeEnhancers(applyMiddleware(sagaMiddleware)))
 sagaMiddleware.run(rootSaga);
 ReactDOM.render(
-<I18nextProvider i18n={i18n}>
+  <I18nextProvider i18n={i18n}>
     <Provider store={store}>
-    <BrowserRouter><App /></BrowserRouter>
+      <BrowserRouter><App /></BrowserRouter>
     </Provider>
-</I18nextProvider>
-, document.getElementById('root'));
+  </I18nextProvider>
+  , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

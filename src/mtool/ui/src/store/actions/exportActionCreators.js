@@ -70,11 +70,6 @@ export {
     setIbofOSTimeInterval,
  } from "./configurationsettingActions";
 
- export { 
-    getIbofOsLogs,
-    setLiveLogs,
- } from "./logManagementActions";
-
 export {
     fetchDevices,
     fetchDeviceDetails,
