@@ -51,7 +51,6 @@ import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import alertManagementReducer from "../../store/reducers/alertManagementReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import ConfigurationSetting from "./index";
 import i18n from "../../i18n";
 
@@ -68,8 +67,7 @@ describe("ConfigurationSetting", () => {
       // headerLanguageReducer,
       alertManagementReducer,
       headerReducer,
-      configurationsettingReducer,
-      BMCAuthenticationReducer
+      configurationsettingReducer
     });
     const composeEnhancers =
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

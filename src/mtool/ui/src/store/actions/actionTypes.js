@@ -314,17 +314,6 @@ export const RESET_IS_LOGGED_IN = "RESET_IS_LOGGED_IN"
 
 export const SET_LOGIN_FAILED = "SET_LOGIN_FAILED"
 
-//  BMC Authentication
-export const BMC_CHANGE_CREDENTIALS = "BMC_CHANGE_CREDENTIALS"
-
-export const SAGA_BMC_LOGIN = "SAGA_BMC_LOGIN"
-
-export const BMC_SET_IS_LOGGED_IN = "BMC_SET_IS_LOGGED_IN"
-
-export const BMC_RESET_IS_LOGGED_IN = "BMC_RESET_IS_LOGGED_IN"
-
-export const BMC_SET_LOGIN_FAILED = "BMC_SET_LOGIN_FAILED"
-
 // User Management
 export const USER_MANAGEMENT_SET_USERS = "USER_MANAGEMENT_SET_USERS" // No SAGA action for this. Only applicable for sync call
 

@@ -60,9 +60,7 @@ import subsystemReducer from "../../store/reducers/subsystemReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import createVolumeReducer from "../../store/reducers/createVolumeReducer"
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import rootSaga from "../../sagas/indexSaga";
-import { async } from "q";
 
 describe("<Storage Management />", () => {
   let wrapper;
@@ -77,7 +75,6 @@ describe("<Storage Management />", () => {
       headerReducer,
       createVolumeReducer,
       configurationsettingReducer,
-      BMCAuthenticationReducer,
     });
     const composeEnhancers =
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

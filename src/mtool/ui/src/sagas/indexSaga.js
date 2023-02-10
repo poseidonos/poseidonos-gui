@@ -39,7 +39,6 @@ import { userManagementContainerWatcher } from "./userManagementSaga"
 import { userManagementUserTableWatcher } from "./userManagementUserTableSaga"
 import { userManagementAddNewUsersWatcher } from "./userManagementAddNewUsersSaga"
 import storageWatcher from "./storageSaga";
-import { BMCAuthenticationWatcher } from './BMCAuthenticationSaga'
 import subsystemWatcher from './subsystemSaga';
 import { telemetryWatcher } from './telemetrySaga';
 
@@ -54,7 +53,6 @@ export default function* rootSaga() {
         userManagementContainerWatcher(),
         userManagementUserTableWatcher(),
         userManagementAddNewUsersWatcher(),
-        BMCAuthenticationWatcher(),
         telemetryWatcher(),
     ]);
 }

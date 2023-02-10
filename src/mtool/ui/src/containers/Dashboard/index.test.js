@@ -51,7 +51,6 @@ import headerReducer from "../../store/reducers/headerReducer";
 import dashboardReducer from "../../store/reducers/dashboardReducer";
 import authenticationReducer from "../../store/reducers/authenticationReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import i18n from "../../i18n";
 
 jest.unmock('axios');
@@ -89,7 +88,6 @@ describe("Dashboard", () => {
       storageReducer,
       dashboardReducer,
       configurationsettingReducer,
-      BMCAuthenticationReducer,
       authenticationReducer
     });
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

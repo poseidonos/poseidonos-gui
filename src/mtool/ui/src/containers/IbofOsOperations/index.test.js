@@ -50,7 +50,6 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import PrivateRoute from "../../components/PrivateRoute";
 import IbofOsOperations from "./index";
@@ -67,8 +66,7 @@ describe("IbofOsOperations", () => {
         const sagaMiddleware = createSagaMiddleware();
         const rootReducers = combineReducers({
             headerReducer,
-            configurationsettingReducer,
-            BMCAuthenticationReducer
+            configurationsettingReducer
         });
         const composeEnhancers =
             window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
