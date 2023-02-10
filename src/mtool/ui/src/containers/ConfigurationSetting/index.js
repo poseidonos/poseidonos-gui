@@ -43,7 +43,6 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
-import AlertManagement from './Alert-Management';
 import UserManagement from './User-Management';
 
 const styles = theme => ({
@@ -411,9 +410,6 @@ class ConfigurationSetting extends Component {
                     />
                   </Grid>
                 </Grid>
-              </Route>
-              <Route path="/ConfigurationSetting/alert">
-                <AlertManagement />
               </Route>
               <Route path="/ConfigurationSetting/user">
                 <UserManagement />

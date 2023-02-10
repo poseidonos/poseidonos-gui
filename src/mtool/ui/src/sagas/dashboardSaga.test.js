@@ -79,43 +79,5 @@ describe('<Testing Redux Sagas />', () => {
         expect(dispatchedActions).toEqual(passActions);
         console.log(dispatchedActions);
     });
-
-    // it('should render fetch alerts info', async () => {
-    //     const dispatchedActions = [];
-    //     axios.get.mockImplementationOnce(() =>
-    //         Promise.resolve({
-    //             data:{alerts:['alerts1', 'alerts2']} 
-    //         })
-    //     );
-    //     const passActions = [{ type: 'FETCH_ALERTS_INFO', alerts: ['alerts1', 'alerts2'] }];
-    //     const fakeStore = {
-    //         dispatch: action => dispatchedActions.push(action)
-    //     }
-    //     await runSaga(fakeStore, fetchAlertsInfo).done;
-    //     console.log(dispatchedActions)
-    //     expect(axios.get).toHaveBeenCalledTimes(3);
-    //     expect(axios.get.mockResolvedValue(['alerts1', 'alerts2']));
-    //     expect(dispatchedActions).toEqual(passActions);
-    //     console.log(dispatchedActions);
-    // });
-
-    // it('if axios api return error in fetch alerts sagas', async () => {
-    //     const dispatchedActions = [];
-    //     axios.get.mockImplementationOnce(() =>
-    //         Promise.reject({
-    //             error: 'error'
-    //         })
-    //     );
-    //     const passActions = [];// no actions dispatched in case of error
-    //     const fakeStore = {
-    //         dispatch: action => dispatchedActions.push(action)
-    //     }
-    //     await runSaga(fakeStore, fetchAlertsInfo).done;
-    //     console.log(dispatchedActions);
-    //     expect(axios.get).toHaveBeenCalledTimes(4);
-    //     expect(axios.get.mockResolvedValue('error'));
-    //     expect(dispatchedActions).toEqual(passActions);
-    //     console.log(dispatchedActions);
-    // });
 });
 

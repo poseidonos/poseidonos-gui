@@ -67,32 +67,6 @@ export function* fetchVolumeInfo() {
   }
 }
 
-/*
-export function* fetchAlertsInfo() {
-  try {
-    const response = yield call(
-      [axios, axios.get],
-      "/api/v1.0/get_alert_info",
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    );
-
-    const result = response.data;
-    if (result) {
-      yield put(actionCreators.fetchAlerts(result.alerts));
-    }
-  } catch (error) {
-    // console.log(error);
-  }
-}
-*/
-
-
 export function* fetchCheckTelemetry() {
   try {
     const response = yield call(
@@ -208,9 +182,7 @@ function* fetchIpAndMacInfo() {
 export function* dashboardWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_CHECK_TELEMETRY, fetchCheckTelemetry);
   yield takeEvery(actionTypes.SAGA_FETCH_VOLUME_INFO, fetchVolumeInfo);
-  // yield takeEvery(actionTypes.SAGA_FETCH_ALERTS_INFO, fetchAlertsInfo);
   yield takeEvery(actionTypes.SAGA_FETCH_PERFORMANCE_INFO, fetchPerformanceInfo);
   yield takeEvery(actionTypes.SAGA_FETCH_HARDWARE_HEALTH, fetchHardwareHealth);
   yield takeEvery(actionTypes.SAGA_FETCH_IPANDMAC_INFO, fetchIpAndMacInfo);
-  // console.log("This is async operation");
 }
