@@ -43,10 +43,8 @@ export {
     setShowTelemetryNotRunning,
     enableFetchingAlerts,
     fetchVolumes, 
-    fetchAlerts,
     fetchPerformance,
     fetchHardwareHealth,
-    fetchStorage,
     fetchIpAndMac,
 } from "./dashboardActions";
 export {
@@ -60,7 +58,6 @@ export {
     changeSmtpServer,
     setSmtpServer,
     deleteConfiguredSmtpServer,
-    setIbofOSTimeInterval,
  } from "./configurationsettingActions";
 
 export {
@@ -69,7 +66,6 @@ export {
     fetchArray,
     fetchArrayDetails,
     fetchConfig,
-    fetchArraySize,
     setNoArray,
     showStorageAlert,
     fetchStorageVolumes,
