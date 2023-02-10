@@ -58,10 +58,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js, jsx}",
-      "!src/components/OverviewComponents/BmcLogTable/*.js",
       "!src/components/ChangePassword/**/*.js",
-      "!src/sagas/hardwareOverviewSaga.js",
-      "!src/sagas/hardwarePowerManagementSaga.js",
       "!src/components/AlertManagementComponents/AlertFields**/*.js",
       "!src/components/AlertManagementComponents/AlertTypes**/*.js",
       "!src/serviceWorker.js"
