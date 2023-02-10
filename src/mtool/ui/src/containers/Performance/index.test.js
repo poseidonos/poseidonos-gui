@@ -31,22 +31,22 @@
  */
 
 import React from "react";
+import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
+import { I18nextProvider } from "react-i18next";
+import { configureStore } from "@reduxjs/toolkit";
 import {
   render,
   fireEvent,
   cleanup,
   waitForElement,
 } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { act } from "react-dom/test-utils";
-import { I18nextProvider } from "react-i18next";
-import axios from "axios";
 import "@testing-library/jest-dom/extend-expect";
+import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
+
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import telemetryReducer from "../../store/reducers/telemetryReducer";
@@ -64,19 +64,17 @@ describe("Performance", () => {
   let mock;
 
   beforeEach(() => {
-    const sagaMiddleware = createSagaMiddleware();
-    const rootReducers = combineReducers({
+    const rootReducers = {
       headerReducer,
       configurationsettingReducer,
       telemetryReducer,
       waitLoaderReducer
-    });
-    const composeEnhancers =
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(
-      rootReducers,
-      composeEnhancers(applyMiddleware(sagaMiddleware))
-    );
+    };
+    const sagaMiddleware = createSagaMiddleware();
+    store = configureStore({
+      reducer: rootReducers,
+      middleware: [sagaMiddleware]
+    })
     sagaMiddleware.run(rootSaga);
     const route = "/performance";
     history = createMemoryHistory({ initialEntries: [route] });

@@ -31,27 +31,24 @@
  */
 
 import React from "react";
+import { Router } from 'react-router-dom';
+import { Provider } from "react-redux";
+import createSagaMiddleware from 'redux-saga';
+import { I18nextProvider } from "react-i18next";
+import { configureStore } from "@reduxjs/toolkit";
 import {
   render,
   fireEvent,
   cleanup,
   waitForElement,
 } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { I18nextProvider } from "react-i18next";
 import '@testing-library/jest-dom/extend-expect';
-
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from 'redux-saga';
-import '@testing-library/jest-dom/extend-expect';
+
 import rootSaga from "../../sagas/indexSaga"
-import headerLanguageReducer, {
-  initialState as langState
-} from "../../store/reducers/headerLanguageReducer";
+import headerLanguageReducer from "../../store/reducers/headerLanguageReducer";
 import authenticationReducer from "../../store/reducers/authenticationReducer";
 import Authentication from "./index";
 import i18n from "../../i18n";
@@ -64,12 +61,14 @@ describe("Authentication", () => {
   let store;
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
-    const rootReducers = combineReducers({
+    const rootReducers = {
       headerLanguageReducer,
       authenticationReducer
-    });
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(rootReducers, composeEnhancers(applyMiddleware(sagaMiddleware)))
+    };
+    store = configureStore({
+      reducer: rootReducers,
+      middleware: [sagaMiddleware]
+    })
     sagaMiddleware.run(rootSaga);
     const route = '/';
     history = createMemoryHistory({ initialEntries: [route] })
@@ -199,7 +198,7 @@ describe("Authentication", () => {
     const data = "success";
     mock.onPost('/api/v1/configure').reply(200, data);
     fireEvent.click(getByTestId("resetConfig"));
-    mock.onDelete('/api/v1/configure').reply(200, data);    
+    mock.onDelete('/api/v1/configure').reply(200, data);
   })
 
   it("Redirects to Dashboard", async () => {

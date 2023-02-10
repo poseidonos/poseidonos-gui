@@ -30,21 +30,19 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import Dashboard from "./index";
-import { createMount } from '@material-ui/core/test-utils';
 import React from "react";
-import { render, screen, fireEvent, cleanup, waitForElement, getNodeText, getByTestId } from "@testing-library/react";
+import { Router } from 'react-router-dom';
 import { Provider } from "react-redux";
-import "@testing-library/jest-dom/extend-expect";
+import createSagaMiddleware from 'redux-saga'
 import { I18nextProvider } from "react-i18next";
-//import axiosMock from 'axios';
-
+import { configureStore } from "@reduxjs/toolkit";
+import { render, screen, fireEvent, cleanup, waitForElement, getNodeText, getByTestId } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from 'redux-saga'
+
+import Dashboard from "./index";
 import rootSaga from "../../sagas/indexSaga"
 import storageReducer from "../../store/reducers/storageReducer";
 import headerReducer from "../../store/reducers/headerReducer";
@@ -83,17 +81,19 @@ describe("Dashboard", () => {
   let store;
 
   beforeEach(() => {
-    const sagaMiddleware = createSagaMiddleware();
-    const rootReducers = combineReducers({
+    const rootReducers = {
       headerReducer,
       storageReducer,
       dashboardReducer,
       configurationsettingReducer,
       BMCAuthenticationReducer,
       authenticationReducer
-    });
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(rootReducers, composeEnhancers(applyMiddleware(sagaMiddleware)))
+    };
+    const sagaMiddleware = createSagaMiddleware();
+    store = configureStore({
+      reducer: rootReducers,
+      middleware: [sagaMiddleware]
+    })
     sagaMiddleware.run(rootSaga);
     const route = '/dashboard';
     history = createMemoryHistory({ initialEntries: [route] })
@@ -1222,11 +1222,11 @@ describe("Dashboard", () => {
     const initMockAndRender = (response) => {
       mock.reset();
       mock.onGet(`/api/v1/configure`)
-      .reply(200, configureResponse)
-      .onGet(`/api/v1/get_hardware_health`)
-      .reply(200, response)
-      .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array]);
+        .reply(200, configureResponse)
+        .onGet(`/api/v1/get_hardware_health`)
+        .reply(200, response)
+        .onGet(/api\/v1\/get_arrays\/*/)
+        .reply(200, [array]);
       renderComponent();
     }
 

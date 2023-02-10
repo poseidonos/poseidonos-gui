@@ -32,13 +32,10 @@
 
 import React from 'react';
 import { Provider } from 'react-redux'
-import { ReactDOM, findDOMNode } from 'react-dom'
-import { act } from 'react-dom/test-utils'
-import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux'
-import { render, fireEvent, cleanup, getByText, getByTitle, getAllByTitle, waitForElement } from '@testing-library/react';
+import { configureStore } from "@reduxjs/toolkit"
+import { render, fireEvent, cleanup } from '@testing-library/react';
+
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer"
 import i18n from "../../../i18n";
 import AlertTable from './index';
@@ -48,10 +45,10 @@ let wrapper;
 let dropDownValues = null;
 let alerts = [{ "_id": { "$oid": "5d5e67b7f082d4c68c98f58b" }, "alertName": "NewAlert", "alertCluster": "cpu", "alertSubCluster": "device", "alertType": "cpu-total", "alertCondition": null, "alertField": "usage_system", "description": "last", "alertRange": "109", "active": true },]
 beforeEach(() => {
-    const rootReducers = combineReducers({
+    const rootReducers = {
         alertManagementReducer,
-    });
-    const store = createStore(rootReducers)
+    };
+    const store = configureStore({ reducer: rootReducers })
     const myMock = jest.fn();
     wrapper = render(
         <I18nextProvider i18n={i18n}>
@@ -62,7 +59,7 @@ beforeEach(() => {
     dropDownValues = null;
 });
 
-  
+
 test('renders alert table component with null for ternary operator', () => {
     const { getByLabelText, queryAllByText, getByTestId, getByText, getAllByText, asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();

@@ -32,26 +32,24 @@
 
 
 import React from "react";
+import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
+import { act } from "react-dom/test-utils";
+import { I18nextProvider } from "react-i18next";
+import { configureStore } from "@reduxjs/toolkit";
 import {
   render,
   fireEvent,
   cleanup,
   waitForElement,
-  getAllByPlaceholderText,
-  queryByText
 } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { act } from "react-dom/test-utils";
-import { I18nextProvider } from "react-i18next";
-import axios from "axios";
 import "@testing-library/jest-dom/extend-expect";
+import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
+
 import rootSaga from "../../../sagas/indexSaga";
-import headerReducer from "../../../store/reducers/headerReducer";
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer";
 import userManagementReducer from "../../../store/reducers/userManagementReducer";
 import i18n from "../../../i18n";
@@ -63,25 +61,19 @@ describe("ConfigurationSetting", () => {
   let wrapper;
   let history;
   let store;
-  // let mock;
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
-    const rootReducers = combineReducers({
-      // headerLanguageReducer,
-      //   headerReducer,
+    const rootReducers = {
       alertManagementReducer,
       userManagementReducer
-    });
-    const composeEnhancers =
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(
-      rootReducers,
-      composeEnhancers(applyMiddleware(sagaMiddleware))
-    );
+    };
+    store = configureStore({
+      reducer: rootReducers,
+      middleware: [sagaMiddleware]
+    })
     sagaMiddleware.run(rootSaga);
     const route = "/ConfigurationSetting/user";
     history = createMemoryHistory({ initialEntries: [route] });
-    // mock = new MockAdapter(axios);
   });
 
   const renderComponent = () => {
@@ -100,7 +92,7 @@ describe("ConfigurationSetting", () => {
 
   it('renders user management', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/').reply(200, null);
+    mock.onGet('/api/v1.0/get_users/').reply(200, null);
     renderComponent();
     const { getByText, asFragment } = wrapper;
     expect(getByText("User List")).toBeDefined();
@@ -108,7 +100,7 @@ describe("ConfigurationSetting", () => {
 
   it('fails to get user info', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/').reply(500, null);
+    mock.onGet('/api/v1.0/get_users/').reply(500, null);
     renderComponent();
     const { getByText, asFragment } = wrapper;
     expect(getByText("User List")).toBeDefined();
@@ -120,7 +112,7 @@ describe("ConfigurationSetting", () => {
       .onGet('/api/v1.0/get_users/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const password = getByTestId('add-user-password');
     const confirmPassword = getByTestId('add-user-confirm-password');
@@ -167,7 +159,7 @@ describe("ConfigurationSetting", () => {
       .onGet('/api/v1.0/get_users/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const password = getByTestId('add-user-password');
     const confirmPassword = getByTestId('add-user-confirm-password');
@@ -212,9 +204,9 @@ describe("ConfigurationSetting", () => {
     const mock = new MockAdapter(axios);
     mock.onPost('/api/v1.0/add_new_user/').reply(400, null)
       .onGet('/api/v1.0/get_users/').reply(200, null);
-    const getSpy = jest.spyOn(axios, 'post');
+    jest.spyOn(axios, 'post');
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const password = getByTestId('add-user-password');
     const confirmPassword = getByTestId('add-user-confirm-password');
@@ -244,7 +236,7 @@ describe("ConfigurationSetting", () => {
       .onGet('/api/v1.0/get_users/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const password = getByTestId('add-user-password');
     const confirmPassword = getByTestId('add-user-confirm-password');
@@ -288,7 +280,7 @@ describe("ConfigurationSetting", () => {
 
   it('should throw appropriate error while adding a new user with wrong input', async () => {
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const password = getByTestId('add-user-password');
     const confirmPassword = getByTestId('add-user-confirm-password');
@@ -319,12 +311,11 @@ describe("ConfigurationSetting", () => {
     fireEvent.change(email, { target: { value: 'abcd@.abc' } });
     fireEvent.click(confirmBtn);
     expect(getByText("Please Enter a Valid Email ID")).toBeDefined();
-    // expect(username.value).toBe('');
   });
 
   it('should cancel adding a user', () => {
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const cancelBtn = getByText('Cancel');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
@@ -332,11 +323,10 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(cancelBtn);
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('No'));
-    // expect(username.value).toBe('');
   });
   it('should cancel adding a user by clicking yes', () => {
     renderComponent();
-    const { asFragment, getByTestId, getByText } = wrapper;
+    const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
     const cancelBtn = getByText('Cancel');
     fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
@@ -344,7 +334,6 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(cancelBtn);
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
-    // expect(username.value).toBe('');
   });
 
   it('should throw error when username is not present', () => {
@@ -357,7 +346,7 @@ describe("ConfigurationSetting", () => {
 
   it('should add list all the users', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -380,8 +369,7 @@ describe("ConfigurationSetting", () => {
 
   it('should delete a user', async () => {
     const mock = new MockAdapter(axios);
-
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -415,13 +403,12 @@ describe("ConfigurationSetting", () => {
           "x-access-token": null
         }
       });
-      //expect(asFragment()).toMatchSnapshot();
     });
   })
 
   it('should display an error if unable to delete a user', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -460,7 +447,7 @@ describe("ConfigurationSetting", () => {
 
   it('should edit a user', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -475,7 +462,7 @@ describe("ConfigurationSetting", () => {
       .onPost('/api/v1.0/update_user/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
-    const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    const { getByText, getAllByTitle, getAllByPlaceholderText } = wrapper;
     await act(async () => {
       const nameElement = await waitForElement(() => getByText("abcd"));
       expect(nameElement).toBeDefined();
@@ -516,7 +503,7 @@ describe("ConfigurationSetting", () => {
 
   it('should display an error if unable to edit a user', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -549,17 +536,17 @@ describe("ConfigurationSetting", () => {
       fireEvent.click(saveBtn);
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/', {
-          _id: 'abcd',
-          email: 'test@abc.com',
-          password: 'Defg',
-          phone_number: "+17021234578",
-          role: 'admin',
-          active: true,
-          privileges: 'Create, Read, Edit, Delete',
-          selected: false,
-          edit: true,
-          tableData: { id: 0 },
-          oldid: 'abcd'
+        _id: 'abcd',
+        email: 'test@abc.com',
+        password: 'Defg',
+        phone_number: "+17021234578",
+        role: 'admin',
+        active: true,
+        privileges: 'Create, Read, Edit, Delete',
+        selected: false,
+        edit: true,
+        tableData: { id: 0 },
+        oldid: 'abcd'
       }, {
         "headers": {
           "Accept": "application/json",
@@ -657,7 +644,7 @@ describe("ConfigurationSetting", () => {
     };
     Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true });
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -670,7 +657,7 @@ describe("ConfigurationSetting", () => {
         }
       ])
     renderComponent();
-    const { getByText, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    const { getByText, getAllByTitle } = wrapper;
     await act(async () => {
       const nameElement = await waitForElement(() => getByText("abcd"));
       expect(nameElement).toBeDefined();
@@ -682,7 +669,7 @@ describe("ConfigurationSetting", () => {
 
   it('should disable a user', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",
@@ -695,23 +682,16 @@ describe("ConfigurationSetting", () => {
         }
       ])
     renderComponent();
-    const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    const { getByText } = wrapper;
     await act(async () => {
       const nameElement = await waitForElement(() => getByText("abcd"));
       expect(nameElement).toBeDefined();
-      /*        const disableBtn = await waitForElement(() => getAllByTitle("api-enable")[0]);
-              let spy = jest.spyOn(axios, "post").mockReturnValue(200);
-              fireEvent.click(disableBtn);
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              fireEvent.click(disableBtn);
-              expect(spy).toBeCalled();
-      */
     });
   })
 
   it('should not display role', async () => {
     const mock = new MockAdapter(axios);
-    let response = mock.onGet('/api/v1.0/get_users/')
+    mock.onGet('/api/v1.0/get_users/')
       .reply(200, [
         {
           "_id": "abcd",

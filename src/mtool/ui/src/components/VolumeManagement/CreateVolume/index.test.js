@@ -30,20 +30,19 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-jest.unmock("axios");
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-import { ReactDOM, findDOMNode } from 'react-dom'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux';
-import { render, fireEvent, cleanup, waitForElement, getByText } from '@testing-library/react';
+import { configureStore } from "@reduxjs/toolkit";
+import { render, fireEvent, cleanup, waitForElement } from '@testing-library/react';
+
 import storageReducer from "../../../store/reducers/storageReducer";
 import createVolumeReducer from "../../../store/reducers/createVolumeReducer";
 import i18n from "../../../i18n";
 import CreateVolume from './index';
+
+jest.unmock("axios");
 
 let wrapper;
 
@@ -54,10 +53,10 @@ function emit(event, ...args) {
 
 const socket = {
     on(event, func) {
-        if(EVENTS[event]) {
+        if (EVENTS[event]) {
             return EVENTS[event].push(func);
         }
-        EVENTS[event]=[func];
+        EVENTS[event] = [func];
     },
     emit,
     io: {
@@ -67,27 +66,31 @@ const socket = {
     }
 };
 
-
-global.document.createRange= () => ({
-    setStart: () => {},
-    setEnd: () => {},
+global.document.createRange = () => ({
+    setStart: () => { },
+    setEnd: () => { },
     commonAncestorContainer: {
         nodeName: 'BODY',
         ownerDocument: document
     }
 });
 
-const fetchVolumesMock = () => {};
-const fetchArrayMock =() => {};
-const fetchSubsystemsMock =() => {};
+const fetchVolumesMock = () => { };
+const fetchArrayMock = () => { };
+const fetchSubsystemsMock = () => { };
 
 beforeEach(() => {
 
-    const rootReducers = combineReducers({
+    const rootReducers = {
         storageReducer,
         createVolumeReducer
+    };
+    const store = configureStore({
+        reducer: {
+            ...rootReducers,
+            createVolumeButton: true
+        }
     });
-    const store = createStore(rootReducers, { createVolumeButton: true });
 
     const createVolume = () => {
         store.dispatch({ type: "TOGGLE_CREATE_VOLUME_BUTTON", payload: true });
@@ -129,7 +132,7 @@ test('it should show message on successful Volume Creation', async () => {
         fireEvent.click(await waitForElement(() => getByTestId("tb")));
     } catch {
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-        fireEvent.change(volUnit, { target: {value: "TB"}});
+        fireEvent.change(volUnit, { target: { value: "TB" } });
     }
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);
@@ -171,7 +174,7 @@ test('it should show message on failed Volume Creation', async () => {
         fireEvent.click(await waitForElement(() => getByTestId("tb")));
     } catch {
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-        fireEvent.change(volUnit, { target: {value: "TB"}});
+        fireEvent.change(volUnit, { target: { value: "TB" } });
     }
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);
@@ -194,7 +197,6 @@ test('it should show message on partial success in Volume Creation', async () =>
     fireEvent.change(volSuffix, { target: { value: 0 } });
     const mountVol = await waitForElement(() => getByTestId("mount-vol-checkbox"));
     fireEvent.click(mountVol);
-    // fireEvent.change(mountVol, { target: { name: 'stop_on_error_checkbox', value: true}})
     const stopError = await waitForElement(() => getByTestId("stop-on-error-checkbox"));
     fireEvent.click(stopError);
     const volSize = await waitForElement(() => getByTestId('create-vol-size'));
@@ -205,7 +207,7 @@ test('it should show message on partial success in Volume Creation', async () =>
         fireEvent.click(await waitForElement(() => getByTestId("tb")));
     } catch {
         const volUnit = await waitForElement(() => getByTestId('volume-unit-input'));
-        fireEvent.change(volUnit, { target: {value: "TB"}});
+        fireEvent.change(volUnit, { target: { value: "TB" } });
     }
     const btn = await waitForElement(() => getByTestId('createvolume-btn'));
     fireEvent.click(btn);

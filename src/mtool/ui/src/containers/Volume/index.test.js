@@ -35,25 +35,24 @@
 
 jest.unmock("axios");
 
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
 import React from "react";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
+import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+import { act } from "react-dom/test-utils";
 import {
   render,
   screen,
   fireEvent,
   cleanup,
-  waitForElement,
-  wait,
-  getByText,
+  waitForElement
 } from "@testing-library/react";
-import { createMemoryHistory } from "history";
 import "@testing-library/jest-dom/extend-expect";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
-import { act } from "react-dom/test-utils";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+import { createMemoryHistory } from "history";
+
 import Volume from "./index";
 import storageReducer from "../../store/reducers/storageReducer";
 import subsystemReducer from "../../store/reducers/subsystemReducer";
@@ -62,7 +61,6 @@ import createVolumeReducer from "../../store/reducers/createVolumeReducer"
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import rootSaga from "../../sagas/indexSaga";
-import { async } from "q";
 
 describe("<Storage Management />", () => {
   let wrapper;
@@ -70,21 +68,19 @@ describe("<Storage Management />", () => {
   let history;
   let store;
   beforeEach(() => {
-    const sagaMiddleware = createSagaMiddleware();
-    const rootReducers = combineReducers({
+    const rootReducers = {
       storageReducer,
       subsystemReducer,
       headerReducer,
       createVolumeReducer,
       configurationsettingReducer,
       BMCAuthenticationReducer,
-    });
-    const composeEnhancers =
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(
-      rootReducers,
-      composeEnhancers(applyMiddleware(sagaMiddleware))
-    );
+    };
+    const sagaMiddleware = createSagaMiddleware();
+    store = configureStore({
+      reducer: rootReducers,
+      middleware: [sagaMiddleware]
+    })
     sagaMiddleware.run(rootSaga);
     const route = "/storage/array/manage?array=POSArray";
     history = createMemoryHistory({ initialEntries: [route] });
@@ -565,41 +561,41 @@ describe("<Storage Management />", () => {
     fireEvent.click(getByText("Yes"));
     expect(getSpy).toHaveBeenCalledWith(
       "/api/v1.0/create_arrays/", {
-        "arrayname": "POSArray2",
-        "metaDisk": "uram0",
-        "raidtype": "RAID6",
-        "size": 1562813784,
-        "spareDisks":  [
-          {
-            "deviceName": "unvmens-3",
-            "numa": "0",
-          },
-          {
-            "deviceName": "unvmens-4",
-            "numa": "0",
-          },
-        ],
-        "storageDisks":  [
-          {
-            "deviceName": "unvmens-0",
-            "numa": "0",
-          },
-          {
-            "deviceName": "unvmens-1",
-            "numa": "0",
-          },
-          {
-            "deviceName": "unvmens-2",
-            "numa": "0",
-          },
-          {
-            "deviceName": "unvmens-5",
-            "numa": "0",
-          },
-        ],
-        "writeBufferDisk":  [],
-        "writeThroughModeEnabled": true
-      },
+      "arrayname": "POSArray2",
+      "metaDisk": "uram0",
+      "raidtype": "RAID6",
+      "size": 1562813784,
+      "spareDisks": [
+        {
+          "deviceName": "unvmens-3",
+          "numa": "0",
+        },
+        {
+          "deviceName": "unvmens-4",
+          "numa": "0",
+        },
+      ],
+      "storageDisks": [
+        {
+          "deviceName": "unvmens-0",
+          "numa": "0",
+        },
+        {
+          "deviceName": "unvmens-1",
+          "numa": "0",
+        },
+        {
+          "deviceName": "unvmens-2",
+          "numa": "0",
+        },
+        {
+          "deviceName": "unvmens-5",
+          "numa": "0",
+        },
+      ],
+      "writeBufferDisk": [],
+      "writeThroughModeEnabled": true
+    },
       {
         headers: {
           Accept: "application/json",
@@ -785,105 +781,6 @@ describe("<Storage Management />", () => {
     const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
     fireEvent.click(dev1);
   });
-
-  // it("should create an array with selected devices", async () => {
-  //   mock
-  //     .onGet(/api\/v1.0\/get_devices\/*/)
-  //     .reply(200, {
-  //       devices,
-  //       metadevices,
-  //     })
-  //     .onPost("/api/v1.0/create_arrays/")
-  //     .reply(200, {})
-  //     .onGet(/api\/v1\/get_array_config\/*/)
-  //     .reply(200, config)
-  //     .onAny()
-  //     .reply(200, []);
-  //   renderComponent();
-  //   jest.setTimeout(30000);
-  //   const getSpy = jest.spyOn(axios, "post");
-  //   const {
-  //     getByTestId,
-  //     getByText,
-  //     getAllByText,
-  //     getByLabelText,
-  //     asFragment,
-  //   } = wrapper;
-  //   fireEvent.click(getByText("create"));
-  //   const raidSelect = await waitForElement(() =>
-  //     getByTestId("raid-select-input")
-  //   );
-  //   fireEvent.change(raidSelect, { target: { value: "RAID5" } });
-  //   fireEvent.change(getByTestId("array-name"), {target: {value: "POSArray"}});
-  //   const wb = await waitForElement(() => getByTestId("writebuffer"));
-  //   wb.value = "uram0";
-  //   fireEvent.change(wb);
-  //   fireEvent.click(wb);
-  //   try {
-  //     fireEvent.click(await waitForElement(() => getAllByText("uram0")[0]));
-  //   } catch {
-  //     const wbInput = await waitForElement(() => getByTestId("writebuffer-input"));
-  //     fireEvent.change(wbInput, {target: {value: "uram0"}});
-  //   }
-  //   fireEvent.click(getByTestId("disktype"));
-  //   fireEvent.click(getAllByText("STORAGE DISK")[0]);
-  //   const dev1 = await waitForElement(() => getByTestId("diskselect-0"));
-  //   fireEvent.click(dev1);
-  //   const dev2 = await waitForElement(() => getByTestId("diskselect-1"));
-  //   fireEvent.click(dev2);
-  //   const dev3 = await waitForElement(() => getByTestId("diskselect-2"));
-  //   fireEvent.click(dev3);
-  //   fireEvent.click(dev2);
-  //   const dev4 = await waitForElement(() => getByTestId("diskselect-3"));
-  //   fireEvent.click(dev4);
-  //   //fireEvent.click(getByTestId('disktype'));
-  //   const disktype = await waitForElement(() => getByTestId("disktype"));
-  //   disktype.value = "SPARE DISK";
-  //   fireEvent.change(disktype);
-  //   fireEvent.click(getByTestId("disktype"));
-  //   try {
-  //     fireEvent.click(getAllByText("SPARE DISK")[0]);
-  //   } catch {
-  //     const diskTypeInput = await waitForElement(() => getByTestId("disktype-input"));
-  //     fireEvent.change(diskTypeInput, {target: {value: "SPARE DISK"}})
-  //   }
-  //   fireEvent.click(await waitForElement(() => getByTestId("diskselect-1")));
-  //   fireEvent.click(getByTestId("createarray-btn"));
-  //   fireEvent.click(getByText("Yes"));
-  //   expect(asFragment()).toMatchSnapshot();
-  //   expect(getSpy).toHaveBeenCalledWith(
-  //     "/api/v1.0/create_arrays/",
-  //     {
-  //       size: 1172110338,
-  //       arrayname: "POSArray",
-  //       raidtype: "RAID5",
-  //       storageDisks: [
-  //         { deviceName: "unvmens-0", numa: "0" },
-  //         { deviceName: "unvmens-2", numa: "0" },
-  //         { deviceName: "unvmens-3", numa: "0" },
-  //       ],
-  //       spareDisks: [
-  //         {
-  //           deviceName: "unvmens-1",
-  //           numa: "0"
-  //         },
-  //       ],
-  //       writeBufferDisk: [],
-  //       writeThroughModeEnabled: false,
-  //       metaDisk: "uram0",
-  //     },
-  //     {
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "x-access-token": null,
-  //       },
-  //     }
-  //   );
-  //   const success = await waitForElement(() => getByTestId("alertDescription"));
-  //   expect(success).toBeDefined();
-  //   fireEvent.click(getByText("OK"));
-  // });
 
   it("should add a spare disk", async () => {
     mock
@@ -1572,7 +1469,6 @@ describe("<Storage Management />", () => {
     );
     fireEvent.click(volUnit);
     fireEvent.change(volUnit, { target: { value: "TB" } });
-    //fireEvent.click(await waitForElement(() => getByText('TB')));
     const nextButton = await waitForElement(() =>
       getByTestId("next-btn")
     );
@@ -3143,207 +3039,7 @@ describe("<Storage Management />", () => {
       getByTestId("vol-edit-save-btn-vol2")
     );
     fireEvent.click(saveBtn);
-    // const saveTxt = await waitForElement(() => getByText("Update Volume"));
-    // expect(saveTxt).toBeDefined();
   });
-
-  // it("sort table with respect to minbw/miniops", async () => {
-  //   mock
-  //     .onGet(/api\/v1.0\/get_devices\/*/)
-  //     .reply(200, {
-  //       devices,
-  //       metadevices,
-  //     })
-  //     .onGet(/api\/v1\/get_arrays\/*/)
-  //     .reply(200, [array])
-  //     .onPost("/api/v1.0/save-volume/")
-  //     .reply(200, {})
-  //     .onGet(/api\/v1\/get_array_config\/*/)
-  //     .reply(200, config)
-  //     .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-  //     .reply(200, {
-  //       Members: [
-  //         {
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/2",
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/3",
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/4",
-  //           "@odata.id": "/redfish/v1/StorageServices/1/Volumes/5",
-  //         },
-  //       ],
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
-  //     .reply(200, {
-  //       Name: "vol1",
-  //       Id: "0",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBW: 0,
-  //         MinIOPS: 0,
-  //         MinBandwidth: 0
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
-  //     .reply(200, {
-  //       Name: "vol2",
-  //       Id: "1",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBandwidth: 0,
-  //         MinIOPS: 0,
-  //         MinBandwidth: 10
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/2$/)
-  //     .reply(200, {
-  //       Name: "vol3",
-  //       Id: "0",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/2",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBW: 0,
-  //         MinIOPS: 0,
-  //         MinBandwidth: 20
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/3$/)
-  //     .reply(200, {
-  //       Name: "vol4",
-  //       Id: "0",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/3",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBW: 0,
-  //         MinIOPS: 0,
-  //         MinBandwidth: 0
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/4$/)
-  //     .reply(200, {
-  //       Name: "vol5",
-  //       Id: "0",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/4",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBW: 0,
-  //         MinIOPS: 20,
-  //         MinBandwidth: 0
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/5$/)
-  //     .reply(200, {
-  //       Name: "vol6",
-  //       Id: "0",
-  //       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/5",
-  //       Capacity: {
-  //         Data: {
-  //           AllocatedBytes: 100,
-  //           ConsumedBytes: 10,
-  //         },
-  //       },
-  //       Oem: {
-  //         MaxIOPS: 0,
-  //         MaxBW: 0,
-  //         MinIOPS: 0,
-  //         MinBandwidth: 0
-  //       },
-  //       Status: {
-  //         Oem: {
-  //           VolumeStatus: "Mounted",
-  //         },
-  //       },
-  //     })
-  //     .onPut("/api/v1.0/update-volume/")
-  //     .reply(200, {
-  //       result: {
-  //         status: {
-  //           code: 0,
-  //           description: "Success",
-  //         },
-  //       },
-  //     })
-  //     .onAny()
-  //     .reply(200, []);
-
-  //   jest.setTimeout(60000);
-  //   renderComponent();
-
-  //   const { getByText, getByTitle, asFragment, getByTestId } = wrapper;
-
-  //   const minBW_minIOPS = await waitForElement(() =>
-  //     getByText("Min Bandwidth / Min IOPS")
-  //   );
-  //   expect(minBW_minIOPS).toBeDefined();
-  //   fireEvent.click(minBW_minIOPS);
-  //   fireEvent.click(await waitForElement(() =>
-  //     getByText("Min Bandwidth / Min IOPS")
-  //   ));
-  //   fireEvent.click(await waitForElement(() =>
-  //     getByText("Min Bandwidth / Min IOPS")
-  //   ));
-  //   fireEvent.click(minBW_minIOPS);
-  //   fireEvent.click(minBW_minIOPS);
-  //   fireEvent.click(minBW_minIOPS);
-  //   fireEvent.click(minBW_minIOPS);
-  // });
 
   it("should show device details when array is created", async () => {
     mock
@@ -3469,41 +3165,6 @@ describe("<Storage Management />", () => {
     fireEvent.click(await waitForElement(() => getByText("No")));
   });
 
-  // it("should display the storage page with path", async () => {
-  //   const { location } = window;
-  //   delete window.location;
-  //   window.location = { ...location, href: "http://localhost/storage/array/create" };
-  //   mock
-  //     .onGet(/api\/v1.0\/get_devices\/*/)
-  //     .reply(200, {
-  //       devices,
-  //       metadevices,
-  //     })
-  //     .onAny()
-  //     .reply(200, []);
-  //   renderComponent();
-  //   const { getByTestId, queryByTestId, getByText, asFragment } = wrapper;
-  //   global.document.createRange = (html) => ({
-  //     setStart: () => {},
-  //     setEnd: () => {},
-  //     commonAncestorContainer: {
-  //       nodeName: "BODY",
-  //       ownerDocument: document,
-  //     },
-  //     createContextualFragment: (html) => {
-  //       const div = document.createElement("div");
-  //       div.innerHTML = html;
-  //       return div.children[0];
-  //     },
-  //   });
-  //   fireEvent.click(getByText("create"));
-  //   expect(
-  //     await waitForElement(() => getByTestId("arraycreate"))
-  //   ).toBeDefined();
-  //   expect(asFragment()).toMatchSnapshot();
-  //   window.location = location;
-  // });
-
   it("should create a volume when vol size is max and count is greater than 1", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
@@ -3553,7 +3214,6 @@ describe("<Storage Management />", () => {
       const volUnitInput = await waitForElement(() => getByTestId("volume-unit-input"));
       fireEvent.change(volUnitInput, { target: { value: "TB" } });
     }
-    //fireEvent.click(await waitForElement(() => getByText('TB')));
     const createVolButton = await waitForElement(() =>
       getByTestId("createvolume-btn")
     );
@@ -3561,7 +3221,6 @@ describe("<Storage Management />", () => {
     const alertDescription = await waitForElement(() =>
       getByTestId("alertDescription")
     );
-    // fireEvent.click(getByText("Yes"));
     expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
   });
 

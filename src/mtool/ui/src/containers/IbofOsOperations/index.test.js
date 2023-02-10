@@ -31,6 +31,11 @@
  */
 
 import React from "react";
+import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
+import { Router, MemoryRouter } from "react-router-dom";
+import { I18nextProvider } from "react-i18next";
+import { configureStore } from "@reduxjs/toolkit";
 import {
     render,
     fireEvent,
@@ -38,16 +43,11 @@ import {
     waitForElement,
     wait
 } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { act } from "react-dom/test-utils";
-import { I18nextProvider } from "react-i18next";
-import axios from "axios";
 import "@testing-library/jest-dom/extend-expect";
+import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { createMemoryHistory } from "history";
-import { Router, MemoryRouter } from "react-router-dom";
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
+
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
@@ -62,20 +62,17 @@ describe("IbofOsOperations", () => {
     let wrapper;
     let history;
     let store;
-    // let mock;
     beforeEach(() => {
-        const sagaMiddleware = createSagaMiddleware();
-        const rootReducers = combineReducers({
+        const rootReducers = {
             headerReducer,
             configurationsettingReducer,
             BMCAuthenticationReducer
-        });
-        const composeEnhancers =
-            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-        store = createStore(
-            rootReducers,
-            composeEnhancers(applyMiddleware(sagaMiddleware))
-        );
+        };
+        const sagaMiddleware = createSagaMiddleware();
+        store = configureStore({
+            reducer: rootReducers,
+            middleware: [sagaMiddleware]
+        })
         sagaMiddleware.run(rootSaga);
         const route = "/operations/pos";
         history = createMemoryHistory({ initialEntries: [route] });
@@ -104,7 +101,7 @@ describe("IbofOsOperations", () => {
         expect(asFragment()).toMatchSnapshot();
     });
 
-    
+
 
     it("should not render private route if not authenticated", async () => {
         const localStorageMock = {
@@ -155,41 +152,41 @@ describe("IbofOsOperations", () => {
 
     it("starts POS", async () => {
         const mock = new MockAdapter(axios);
-         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS"}}}, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": { "module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         ).onGet("api/v1/pos/property")
-        .reply(200, {
-            "result": {
-                "data": {
-                    "rebuildPolicy": "lowest"
-                }
-            }
-        })
-        .onGet("/api/v1.0/start_ibofos")
-        .reply(200, {
-            result: {
-                status: {
-                    code: 0,
-                    errorInfo: {
-                        errorResponses: [{
-                            eventName: "SUCCESS",
-                            id: "subsystem1",
-                        }, {
-                            eventName: "SUCCESS",
-                            id: "addListener2",
-                        }, {
-                            eventName: "SUCCESS",
-                            id: "addListener1",
-                        }, {
-                            eventName: "FAIL",
-                            id: "subsystem2",
-                            description: "Failed to create subsystem"
-                        }]
+            .reply(200, {
+                "result": {
+                    "data": {
+                        "rebuildPolicy": "lowest"
                     }
                 }
-            }
-        })
-        .onAny().reply(200, {});
+            })
+            .onGet("/api/v1.0/start_ibofos")
+            .reply(200, {
+                result: {
+                    status: {
+                        code: 0,
+                        errorInfo: {
+                            errorResponses: [{
+                                eventName: "SUCCESS",
+                                id: "subsystem1",
+                            }, {
+                                eventName: "SUCCESS",
+                                id: "addListener2",
+                            }, {
+                                eventName: "SUCCESS",
+                                id: "addListener1",
+                            }, {
+                                eventName: "FAIL",
+                                id: "subsystem2",
+                                description: "Failed to create subsystem"
+                            }]
+                        }
+                    }
+                }
+            })
+            .onAny().reply(200, {});
 
         renderComponent();
         const { getByTestId, getByText, asFragment } = wrapper;
@@ -201,44 +198,44 @@ describe("IbofOsOperations", () => {
 
     it("should fail to start POS", async () => {
         const mock = new MockAdapter(axios);
-         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS"}}}, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": { "module": "D-Agent", "code": 11020, "level": "ERROR", "description": "iBof Connection Error", "posDescription": "", "problem": "connection problem between POS and Management Stack", "solution": "restart POS" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         ).onGet("api/v1/pos/property")
-        .reply(200, {
-            "result": {
-                "data": {
-                    "rebuildPolicy": "lowest"
-                }
-            }
-        })
-        .onGet("/api/v1.0/start_ibofos")
-        .reply(200, {
-            result: {
-                status: {
-                    code: 400,
-                    description: "Failed to start",
-                    problem: "binary not found",
-                    solution: "Build POS and perform make install",
-                    errorInfo: {
-                        errorResponses: [{
-                            eventName: "SUCCESS",
-                            id: "subsystem1",
-                        }, {
-                            eventName: "SUCCESS",
-                            id: "addListener2",
-                        }, {
-                            eventName: "SUCCESS",
-                            id: "addListener1",
-                        }, {
-                            eventName: "FAIL",
-                            id: "subsystem2",
-                            description: "Failed to create subsystem"
-                        }]
+            .reply(200, {
+                "result": {
+                    "data": {
+                        "rebuildPolicy": "lowest"
                     }
                 }
-            }
-        })
-        .onAny().reply(200, {});
+            })
+            .onGet("/api/v1.0/start_ibofos")
+            .reply(200, {
+                result: {
+                    status: {
+                        code: 400,
+                        description: "Failed to start",
+                        problem: "binary not found",
+                        solution: "Build POS and perform make install",
+                        errorInfo: {
+                            errorResponses: [{
+                                eventName: "SUCCESS",
+                                id: "subsystem1",
+                            }, {
+                                eventName: "SUCCESS",
+                                id: "addListener2",
+                            }, {
+                                eventName: "SUCCESS",
+                                id: "addListener1",
+                            }, {
+                                eventName: "FAIL",
+                                id: "subsystem2",
+                                description: "Failed to create subsystem"
+                            }]
+                        }
+                    }
+                }
+            })
+            .onAny().reply(200, {});
 
         renderComponent();
         const { getByTestId, getByText } = wrapper;
@@ -250,7 +247,7 @@ describe("IbofOsOperations", () => {
     it("stops POS", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
         const { getByTestId, getByText, getAllByText } = wrapper;
@@ -269,76 +266,49 @@ describe("IbofOsOperations", () => {
         global.fetch.mockRestore();
     });
 
-    it("should show the current Performance impact",async () => {
+    it("should show the current Performance impact", async () => {
         const mock = new MockAdapter(axios);
-         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         ).onGet("api/v1/pos/property")
-        .reply(200, {
-            "result": {
-                "data": {
-                    "rebuildPolicy": "lowest"
+            .reply(200, {
+                "result": {
+                    "data": {
+                        "rebuildPolicy": "lowest"
+                    }
                 }
-            }
-        }).onAny().reply(200, {});
+            }).onAny().reply(200, {});
         renderComponent();
         const { getByText } = wrapper;
         expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
     });
 
-    it("should set the Performance impact",async () => {
+    it("should set the Performance impact", async () => {
         const mock = new MockAdapter(axios);
         const property = {
             rebuildPolicy: "lowest"
         }
-         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200, { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200, { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         ).onGet("api/v1/pos/property")
-        .reply(200, {
-            "result": {
-                "data": property
-            }
-        })
-        .onAny().reply(200, {});
+            .reply(200, {
+                "result": {
+                    "data": property
+                }
+            })
+            .onAny().reply(200, {});
         renderComponent();
         const { getByText, getByLabelText, getByTestId } = wrapper;
         expect(await waitForElement(() => getByText("lowest"))).toBeDefined();
-        fireEvent.change(getByTestId("set-property-input"), { target : { value: "medium"}});
+        fireEvent.change(getByTestId("set-property-input"), { target: { value: "medium" } });
         property.rebuildPolicy = "medium";
         fireEvent.click(getByTestId("setPropertyButton"));
         expect(await waitForElement(() => getByText("medium"))).toBeDefined();
     });
 
-
-
-    // it("mounts POS", async () => {
-    //     const mock = new MockAdapter(axios);
-    //     mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-    //         { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
-    //     ).onAny().reply(200, {});
-    //     const getSpy = jest.spyOn(axios, "post");
-    //     renderComponent();
-    //     const { getByTestId, getByText, getAllByText } = wrapper;
-    //     await waitForElement(() => getAllByText("Running"));
-    //     fireEvent.click(await waitForElement(() => getByTestId("btn-unmount")));
-    //     fireEvent.click(getByText("Yes"));
-    // });
-
-    // it("Unmounts POS", async () => {
-    //     const mock = new MockAdapter(axios);
-    //     mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-    //         { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
-    //     ).onAny().reply(200, {});
-    //     renderComponent();
-    //     const { getByTestId, getByText, getAllByText } = wrapper;
-    //     await waitForElement(() => getAllByText("Running"));
-    //     fireEvent.click(await waitForElement(() => getByTestId("btn-mount")));
-    //     fireEvent.click(getByText("Yes"));
-    // });
-
     it("fails stopping POS", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
         const { getByTestId, getAllByText, getByText } = wrapper;
@@ -360,10 +330,10 @@ describe("IbofOsOperations", () => {
     it("closes the POS stop alert box", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, state: "NORMAL", "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, state: "NORMAL", "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         renderComponent();
-        const { getByTestId, getByText, getAllByText  } = wrapper;
+        const { getByTestId, getByText, getAllByText } = wrapper;
         await waitForElement(() => getAllByText("Running"));
         fireEvent.click(await waitForElement(() => getByTestId("stopButton")));
         fireEvent.click(getByText("No"));
@@ -372,7 +342,7 @@ describe("IbofOsOperations", () => {
     it("should redirect to login page on session expiry", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 11020}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 11020 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         const response = {
             "code": -1, "response": "POS is Already Running..."
@@ -395,7 +365,7 @@ describe("IbofOsOperations", () => {
     it("should not display rebuild status bar", async () => {
         const mock = new MockAdapter(axios);
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 11020}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 11020 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         const response = {
             "code": -1, "response": "POS is Already Running..."
@@ -421,7 +391,7 @@ describe("IbofOsOperations", () => {
         jest.advanceTimersByTime(5000);
 
         mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
-            { "RESULT": { "result": { "status": {"code": 0}, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
+            { "RESULT": { "result": { "status": { "code": 0 }, "data": { "type": "NORMAL" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "Mon, 03 Aug 2020 05:01:13 PM IST", "code": "", "level": "", "value": "" }
         );
         const { getByTestId, getByText } = wrapper;
 

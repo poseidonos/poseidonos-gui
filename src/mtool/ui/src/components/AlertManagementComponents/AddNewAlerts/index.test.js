@@ -32,23 +32,24 @@
 
 import React from 'react';
 import { Provider } from 'react-redux'
-import { ReactDOM, findDOMNode } from 'react-dom'
 import { I18nextProvider } from "react-i18next";
-import { combineReducers, createStore } from 'redux'
+import { configureStore } from "@reduxjs/toolkit"
 import { render, fireEvent, cleanup } from '@testing-library/react'
+
 import AddNewAlerts from './index';
 import alertManagementReducer from "../../../store/reducers/alertManagementReducer"
 import i18n from "../../../i18n";
+
 describe("Authentication", () => {
     let wrapper;
     let dropDownValues = ['Greater Than', 'Less Than'];
 
     const myMock = jest.fn();
     beforeEach(() => {
-        const rootReducers = combineReducers({
+        const rootReducers = {
             alertManagementReducer,
-        });
-        const store = createStore(rootReducers)
+        };
+        const store = configureStore({ reducer: rootReducers })
 
         wrapper = render(
             <I18nextProvider i18n={i18n}>
