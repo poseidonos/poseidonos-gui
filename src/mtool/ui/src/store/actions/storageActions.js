@@ -92,13 +92,6 @@ export const showStorageAlert = (payload) => {
     }
 }
 
-export const fetchArraySize = (payload) => {
-    return {
-        type: actionTypes.FETCH_ARRAY_SIZE,
-        payload
-    }
-}
-
 export const fetchMaxVolumeCount = (payload) => {
     return {
         type: actionTypes.FETCH_MAX_VOLUME_COUNT,

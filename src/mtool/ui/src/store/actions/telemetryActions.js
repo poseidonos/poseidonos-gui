@@ -46,20 +46,6 @@ export const setTelemetryStatus = (payload) => {
     }
 }
 
-export const startTelemetryLoader = (payload) => {
-    return {
-        type: actionTypes.START_TELEMETRY_LOADER,
-        payload,
-    }
-}
-
-export const stopTelemetryLoader = (payload) => {
-    return {
-        type: actionTypes.STOP_TELEMETRY_LOADER,
-        payload,
-    }
-}
-
 export const openTelemetryAlert = (payload) => {
     return {
         type: actionTypes.TELEMETRY_OPEN_ALERT,

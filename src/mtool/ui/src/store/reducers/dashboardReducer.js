@@ -130,16 +130,6 @@ const dashboardReducer = (state = initialState, action) => {
                 arrayVolumes
             };
         }
-        case actionTypes.FETCH_ALERTS_INFO:
-            return {
-                ...state,
-                alerts: action.alerts,
-            };
-        case actionTypes.FETCH_STORAGE_INFO:
-            return {
-                ...state,
-                arraySize: action.arraySize
-            };
         case actionTypes.FETCH_PERFORMANCE_INFO:
             return {
                 ...state,

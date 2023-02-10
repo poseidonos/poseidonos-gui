@@ -479,8 +479,6 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SAGA_DELETE_EMAIL_IDS, payload: data }),
     // downloadLogs: data =>
     //   dispatch({ type: actionTypes.SAGA_DOWNLOAD_LOGS, payload: data }),
-    // setIbofOSTimeInterval: data =>
-    //   dispatch({ type: actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, payload: data }),
   };
 };
 

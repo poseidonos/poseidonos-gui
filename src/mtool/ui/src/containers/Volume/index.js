@@ -210,7 +210,6 @@ class Volume extends Component {
     this.alertConfirm = this.alertConfirm.bind(this);
     this.fetchDevices = this.fetchDevices.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
-    this.fetchStorageInfo = this.fetchStorageInfo.bind(this);
     this.fetchMaxVolumeCount = this.fetchMaxVolumeCount.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.changeArray = this.changeArray.bind(this);
@@ -230,7 +229,6 @@ class Volume extends Component {
   componentDidMount() {
     this.props.Get_Config();
     this.fetchDevices();
-    this.fetchStorageInfo();
     this.fetchMaxVolumeCount();
     this.props.Get_Subsystems();
   }
@@ -287,10 +285,6 @@ class Volume extends Component {
 
   fetchVolumes() {
     this.props.Get_Volumes({ array: this.props.selectedArray });
-  }
-
-  fetchStorageInfo() {
-    this.props.Get_Array_Size();
   }
 
   fetchMaxVolumeCount() {
@@ -818,7 +812,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
     Create_Volume: (payload) =>
       dispatch({ type: actionTypes.SAGA_SAVE_VOLUME, payload }),
-    Get_Array_Size: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY_SIZE }),
     Get_Array: () => dispatch({ type: actionTypes.SAGA_FETCH_ARRAY }),
     Delete_Array: (payload) =>
       dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),

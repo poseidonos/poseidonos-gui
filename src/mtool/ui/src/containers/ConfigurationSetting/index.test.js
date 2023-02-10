@@ -843,27 +843,6 @@ describe("ConfigurationSetting", () => {
   //   fireEvent.click(okBtn);
   // });
 
-  // it("should set default ibofos time interval if the API fails", async () => {
-  //   const mock = new MockAdapter(axios);
-  //   mock.onPost('/api/v1.0/set_ibofos_time_interval').reply(500, null)
-  //   renderComponent();
-  //   const { getByTestId, getByText } = wrapper;
-  //   const ibofosTimeIntervalField = getByTestId("ibofosSettingTextField").querySelector(
-  //     "input"
-  //   );
-  //   fireEvent.change(ibofosTimeIntervalField, {
-  //     target: { value: "4" }
-  //   });
-  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
-  //   fireEvent.change(ibofosTimeIntervalField, {
-  //     target: { value: "-1" }
-  //   });
-  //   fireEvent.click(getByTestId("setTimeIntervalButton"));
-  //   const okBtn = getByText("OK");
-  //   expect(okBtn).toBeDefined();
-  //   fireEvent.click(okBtn);
-  // });
-
   // it("should delete ibofos time interval", async () => {
   //   renderComponent();
   //   const { getByTestId } = wrapper;

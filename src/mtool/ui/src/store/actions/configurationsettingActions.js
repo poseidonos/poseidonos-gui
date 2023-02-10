@@ -32,13 +32,6 @@
 
 import * as actionTypes from './actionTypes';
 
-export const setIbofOSTimeInterval = timeinterval => {
-  return {
-    type: actionTypes.SET_IBOFOS_TIME_INTERVAL,
-    timeinterval,
-  };
-};
-
 export const changeEmailList = newemaillist => {
   return {
     type: actionTypes.CHANGE_EMAIL_LIST,
