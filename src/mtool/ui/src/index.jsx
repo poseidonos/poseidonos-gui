@@ -61,10 +61,6 @@ import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
 import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
 import userManagementReducer from "./store/reducers/userManagementReducer";
-import hardwareOverviewReducer from "./store/reducers/hardwareOverviewReducer";
-import hardwareSensorReducer from "./store/reducers/hardwareSensorReducer";
-import hardwareHealthReducer from "./store/reducers/hardwareHealthReducer";
-import hardwarePowerManagementReducer from "./store/reducers/hardwarePowerManagementReducer";
 import waitLoaderReducer from "./store/reducers/waitLoaderReducer";
 import subsystemReducer from "./store/reducers/subsystemReducer";
 import telemetryReducer from "./store/reducers/telemetryReducer";
@@ -110,10 +106,6 @@ const rootReducers = combineReducers({
   createVolumeReducer,
   authenticationReducer,
   userManagementReducer,
-  hardwareOverviewReducer,
-  hardwareSensorReducer,
-  hardwareHealthReducer,
-  hardwarePowerManagementReducer,
   subsystemReducer,
   waitLoaderReducer,
   BMCAuthenticationReducer,

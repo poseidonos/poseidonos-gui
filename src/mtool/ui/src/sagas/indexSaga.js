@@ -42,10 +42,6 @@ import { userManagementContainerWatcher } from "./userManagementSaga"
 import { userManagementUserTableWatcher } from "./userManagementUserTableSaga"
 import { userManagementAddNewUsersWatcher } from "./userManagementAddNewUsersSaga"
 import storageWatcher from "./storageSaga";
-import { hardwareOverviewWatcher } from './hardwareOverviewSaga'
-import { hardwareSensorWatcher } from './hardwareSensorSaga'
-import { hardwareHealthWatcher } from './hardwareHealthSaga'
-import { hardwarePowerManagementWatcher } from './hardwarePowerManagementSaga'
 import { BMCAuthenticationWatcher } from './BMCAuthenticationSaga'
 import subsystemWatcher from './subsystemSaga';
 import { telemetryWatcher } from './telemetrySaga';
@@ -64,10 +60,6 @@ export default function* rootSaga() {
         userManagementContainerWatcher(),
         userManagementUserTableWatcher(),
         userManagementAddNewUsersWatcher(),
-        hardwareOverviewWatcher(),
-        hardwareSensorWatcher(),
-        hardwareHealthWatcher(),
-        hardwarePowerManagementWatcher(),
         BMCAuthenticationWatcher(),
         telemetryWatcher(),
     ]);
