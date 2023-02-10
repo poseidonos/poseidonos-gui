@@ -100,25 +100,6 @@ export {
 } from "./subsystemActions";
 
 export {
-    // fetchDiskUsed,
-    // fetchDiskWrite,
-    fetchCpuUsage,
-    fetchReadBandwidth,
-    fetchWriteBandwidth,
-    fetchReadIops,
-    fetchWriteIops,
-    fetchVolReadBandwidth,
-    fetchVolWriteBandwidth,
-    fetchVolReadIops,
-    fetchVolWriteIops,
-    fetchReadLatency,
-    fetchVolReadLatency,
-    fetchWriteLatency,
-    fetchVolWriteLatency,
-    // fetchInputPowerVariation
-} from "./performanceActions";
-
-export {
     setIsResettingConfig,
     setIsResetConfigFailed,
     setIsSavingConfig,
