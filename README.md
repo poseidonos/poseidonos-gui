@@ -92,32 +92,32 @@ http://localhost
 
 # Screens
 ## Dashboard 
-- (Location: src/mtool/ui/src/assets/images/dashboard_ui.png)
-- ![Dashboard Page](src/mtool/ui/src/assets/images/dashboard_ui.png)
+- (Location: src/mtool/doc/images/dashboard_ui.png)
+- ![Dashboard Page](src/mtool/doc/images/dashboard_ui.png)
 
 ## Array Management
-- (Location: src/mtool/ui/src/assets/images/array_manage_ui.png)
-- ![Array Management](src/mtool/ui/src/assets/images/array_manage_ui.png)
+- (Location: src/mtool/doc/images/array_manage_ui.png)
+- ![Array Management](src/mtool/doc/images/array_manage_ui.png)
 
 ## Volume Management
-- (Location: src/mtool/ui/src/assets/images/volume_create_ui.png)
-- ![Volume Management](src/mtool/ui/src/assets/images/volume_create_ui.png)
+- (Location: src/mtool/doc/images/volume_create_ui.png)
+- ![Volume Management](src/mtool/doc/images/volume_create_ui.png)
 
 ## User Management 
-- (Location: src/mtool/ui/src/assets/images/user_management_ui.png)
-- ![User Management](src/mtool/ui/src/assets/images/user_management_ui.png)
+- (Location: src/mtool/doc/images/user_management_ui.png)
+- ![User Management](src/mtool/doc/images/user_management_ui.png)
 
 ## Device Management
-- (Location: src/mtool/ui/src/assets/images/device_management_ui.png)
-- ![Device Management](src/mtool/ui/src/assets/images/device_management_ui.png)
+- (Location: src/mtool/doc/images/device_management_ui.png)
+- ![Device Management](src/mtool/doc/images/device_management_ui.png)
 
 ## Subsystem Management
-- (Location: src/mtool/ui/src/assets/images/subsystem_management_ui.png)
-- ![Subsystem Management](src/mtool/ui/src/assets/images/subsystem_management_ui.png)
+- (Location: src/mtool/doc/images/subsystem_management_ui.png)
+- ![Subsystem Management](src/mtool/doc/images/subsystem_management_ui.png)
 
 ## Start and Stop Poseidon Operations
-- (Location: src/mtool/ui/src/assets/images/start_stop_ui.png)
-- ![Start or Stop](src/mtool/ui/src/assets/images/start_stop_ui.png)
+- (Location: src/mtool/doc/images/start_stop_ui.png)
+- ![Start or Stop](src/mtool/doc/images/start_stop_ui.png)
 
 # Scripts 
 | S.No | Script Name             | Location           | Description                                                                                      | Notes                                                        |
