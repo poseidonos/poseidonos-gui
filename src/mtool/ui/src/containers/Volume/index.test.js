@@ -59,7 +59,6 @@ import subsystemReducer from "../../store/reducers/subsystemReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import createVolumeReducer from "../../store/reducers/createVolumeReducer"
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import rootSaga from "../../sagas/indexSaga";
 
 describe("<Storage Management />", () => {
@@ -73,8 +72,7 @@ describe("<Storage Management />", () => {
       subsystemReducer,
       headerReducer,
       createVolumeReducer,
-      configurationsettingReducer,
-      BMCAuthenticationReducer,
+      configurationsettingReducer
     };
     const sagaMiddleware = createSagaMiddleware();
     store = configureStore({

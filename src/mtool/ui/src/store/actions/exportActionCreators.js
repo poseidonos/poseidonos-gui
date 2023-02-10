@@ -123,13 +123,6 @@ export {
 } from "./waitLoaderActions";
 
 export {
-    BMCChangeCredentials,
-    // BMCResetIsLoggedIn,
-    BMCSetIsLoggedIn,
-    BMCSetLoginFailed,
-} from "./BMCAuthenticationActions";
-
-export {
     setTelemetryStatus,
     setTelemetryProperties,
     openTelemetryAlert,

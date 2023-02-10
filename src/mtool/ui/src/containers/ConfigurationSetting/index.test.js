@@ -52,7 +52,6 @@ import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import alertManagementReducer from "../../store/reducers/alertManagementReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import ConfigurationSetting from "./index";
 import i18n from "../../i18n";
 
@@ -67,8 +66,7 @@ describe("ConfigurationSetting", () => {
     const rootReducers = {
       alertManagementReducer,
       headerReducer,
-      configurationsettingReducer,
-      BMCAuthenticationReducer
+      configurationsettingReducer
     };
     store = configureStore({
       reducer: rootReducers,

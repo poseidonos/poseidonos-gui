@@ -60,7 +60,6 @@ import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
-import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
 import userManagementReducer from "./store/reducers/userManagementReducer";
 import waitLoaderReducer from "./store/reducers/waitLoaderReducer";
 import subsystemReducer from "./store/reducers/subsystemReducer";
@@ -100,7 +99,6 @@ const rootReducers = {
   userManagementReducer,
   subsystemReducer,
   waitLoaderReducer,
-  BMCAuthenticationReducer,
   telemetryReducer,
 };
 const sagaMiddleware = createSagaMiddleware();
