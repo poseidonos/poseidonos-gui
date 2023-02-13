@@ -32,30 +32,10 @@
 
 import * as actionTypes from "./actionTypes"
 
+// eslint-disable-next-line import/prefer-default-export
 export const openAlertBox = (alertParam) => {
     return {
         type:actionTypes.ALERT_MANAGEMENT_OPEN_ALERT_BOX,
         alertParam,
-    };
-}
-
-// export const setAlertsInfo = (updatedAlerts) => {
-//     return {
-//         type:actionTypes.ALERT_MANAGEMENT_SET_ALERTS,
-//         updatedAlerts,
-//     };
-// }
-
-export const fetchAlertsInfo = (alerts) => {
-    return {
-        type:actionTypes.ALERT_MANAGEMENT_FETCH_ALERTS,
-        alerts,
-    };
-}
-
-export const fetchAlertsType = (alertTypes) => {
-    return {
-        type:actionTypes.ALERT_MANAGEMENT_FETCH_ALERTS_TYPE,
-        alertTypes,
     };
 }

@@ -58,19 +58,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js, jsx}",
-      "!src/containers/Log-Management/**/*.js",
-      "!src/components/LogTable/**/*.js",
-      "!src/components/OverviewComponents/BmcLogTable/*.js",
-      "!src/components/LogConfiguration/**/*.js",
       "!src/components/ChangePassword/**/*.js",
-      "!src/sagas/logManagementSaga.js",
-      "!src/sagas/hardwareOverviewSaga.js",
-      "!src/sagas/hardwarePowerManagementSaga.js",
-      "!src/store/actions/logManagementActions.js",
-      "!src/store/actions/logManagementActions.js",
-      "!src/store/reducers/logManagementReducer.js",
-      "!src/components/AlertManagementComponents/AlertFields**/*.js",
-      "!src/components/AlertManagementComponents/AlertTypes**/*.js",
       "!src/serviceWorker.js"
     ]
   },
@@ -79,7 +67,6 @@
   },
   "eslintIgnore": [
     "*.test.js",
-    "*LogConfiguration",
     "*AlertFields",
     "*AlertTypes"
   ],

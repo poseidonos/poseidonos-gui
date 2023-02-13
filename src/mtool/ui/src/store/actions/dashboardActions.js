@@ -53,13 +53,6 @@ export const fetchVolumes = (volumes) => {
   };
 };
 
-export const fetchAlerts = (alerts) => {
-  return {
-    type: actionTypes.FETCH_ALERTS_INFO,
-    alerts,
-  };
-};
-
 export const fetchPerformance = (
   readIOPS,
   writeIOPS,
@@ -102,12 +95,6 @@ export const fetchHardwareHealth = ({
   };
 };
 
-export const fetchStorage = (arraySize) => {
-  return {
-    type: actionTypes.FETCH_STORAGE_INFO,
-    arraySize,
-  };
-};
 
 export const fetchIpAndMac = (ip, mac, host, timestamp) => {
   return {

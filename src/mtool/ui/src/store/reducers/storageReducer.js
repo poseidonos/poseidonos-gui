@@ -108,13 +108,6 @@ const storageReducer = (state = initialState, action) => {
                 alertLink: action.payload.link,
                 alertLinkText: action.payload.linkText
             }
-        case actionTypes.FETCH_ARRAY_SIZE:
-            return {
-                ...state,
-                // arraySize: action.payload.totalsize,
-                // totalVolSize: action.payload.usedspace,
-                // mountStatus: action.payload.mountStatus,
-            }
         case actionTypes.FETCH_MAX_VOLUME_COUNT:
             return {
                 ...state,

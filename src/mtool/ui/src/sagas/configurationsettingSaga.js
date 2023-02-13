@@ -355,45 +355,6 @@ export function* testEmail(action) {
 //   }
 // }
 
-// export function* getIbofOSTimeInterval() {
-//   try {
-//     const response = yield call([axios, axios.get], '/api/v1.0/get_ibofos_time_interval', {
-//       headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
-//         'x-access-token': localStorage.getItem('token'),
-//       }
-//     });
-
-//     const result = response.data;
-//       /* istanbul ignore else */
-//     if (result) {
-//       yield put(actionCreators.setIbofOSTimeInterval(result));
-//     }
-//     else yield put(actionCreators.setIbofOSTimeInterval(4)); // Default Value should be 4 seconds
-//   } catch (error) {
-//     ;
-//   }
-// }
-
-// export function* setIbofOSTimeInterval(action) {
-//   try {
-//     yield call(
-//       [axios, axios.post],
-//       '/api/v1.0/set_ibofos_time_interval',
-//       action.payload, {
-//       headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
-//         'x-access-token': localStorage.getItem('token'),
-//       }
-//     }
-//     );
-//     yield getIbofOSTimeInterval();
-//   } catch (error) {
-//     yield getIbofOSTimeInterval();
-//   }
-// }
 
 export function* configurationsettingWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_EMAIL_LIST, fetchEmailList);
@@ -403,8 +364,6 @@ export function* configurationsettingWatcher() {
   yield takeEvery(actionTypes.SAGA_TEST_EMAIL, testEmail);
   yield takeEvery(actionTypes.SAGA_DELETE_EMAIL_IDS, deleteEmailIds);
   // yield takeEvery(actionTypes.SAGA_DOWNLOAD_LOGS, downloadLogs);
-  // yield takeEvery(actionTypes.SAGA_GET_IBOFOS_TIME_INTERVAL, getIbofOSTimeInterval);
-  // yield takeEvery(actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, setIbofOSTimeInterval);
   yield takeEvery(actionTypes.SAGA_GET_SMTP_DETAILS, getSmtpDetails);
   yield takeEvery(actionTypes.SAGA_DELETE_SMTP_DETAILS, deleteSmtpDetails);
 }

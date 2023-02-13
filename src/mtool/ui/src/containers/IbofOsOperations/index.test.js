@@ -50,7 +50,6 @@ import { createMemoryHistory } from "history";
 
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
-import BMCAuthenticationReducer from "../../store/reducers/BMCAuthenticationReducer";
 import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import PrivateRoute from "../../components/PrivateRoute";
 import IbofOsOperations from "./index";
@@ -65,8 +64,7 @@ describe("IbofOsOperations", () => {
     beforeEach(() => {
         const rootReducers = {
             headerReducer,
-            configurationsettingReducer,
-            BMCAuthenticationReducer
+            configurationsettingReducer
         };
         const sagaMiddleware = createSagaMiddleware();
         store = configureStore({

@@ -100,12 +100,6 @@ const configurationsettingReducer = (state = initialState, action) => {
         configuredsmtpfromemail:'',
       };
     }
-    case actionTypes.SET_IBOFOS_TIME_INTERVAL: {
-      return {
-        ...state,
-        timeinterval: action.timeinterval,
-      };
-    }
     default:
       return state;
   }

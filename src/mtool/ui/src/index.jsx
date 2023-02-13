@@ -56,17 +56,10 @@ import headerReducer from "./store/reducers/headerReducer";
 import storageReducer from "./store/reducers/storageReducer";
 import createVolumeReducer from './store/reducers/createVolumeReducer';
 import dashboardReducer from "./store/reducers/dashboardReducer";
-import headerLanguageReducer from "./store/reducers/headerLanguageReducer";
 import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
-import logManagementReducer from "./store/reducers/logManagementReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
-import BMCAuthenticationReducer from "./store/reducers/BMCAuthenticationReducer";
 import userManagementReducer from "./store/reducers/userManagementReducer";
-import hardwareOverviewReducer from "./store/reducers/hardwareOverviewReducer";
-import hardwareSensorReducer from "./store/reducers/hardwareSensorReducer";
-import hardwareHealthReducer from "./store/reducers/hardwareHealthReducer";
-import hardwarePowerManagementReducer from "./store/reducers/hardwarePowerManagementReducer";
 import waitLoaderReducer from "./store/reducers/waitLoaderReducer";
 import subsystemReducer from "./store/reducers/subsystemReducer";
 import telemetryReducer from "./store/reducers/telemetryReducer";
@@ -96,21 +89,14 @@ axios.interceptors.response.use((response) => {
 const rootReducers = {
   dashboardReducer,
   headerReducer,
-  headerLanguageReducer,
   configurationsettingReducer,
   alertManagementReducer,
   storageReducer,
   createVolumeReducer,
   authenticationReducer,
   userManagementReducer,
-  logManagementReducer,
-  hardwareOverviewReducer,
-  hardwareSensorReducer,
-  hardwareHealthReducer,
-  hardwarePowerManagementReducer,
   subsystemReducer,
   waitLoaderReducer,
-  BMCAuthenticationReducer,
   telemetryReducer,
 };
 const sagaMiddleware = createSagaMiddleware();

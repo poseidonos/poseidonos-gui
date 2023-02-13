@@ -48,7 +48,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history';
 
 import rootSaga from "../../sagas/indexSaga"
-import headerLanguageReducer from "../../store/reducers/headerLanguageReducer";
 import authenticationReducer from "../../store/reducers/authenticationReducer";
 import Authentication from "./index";
 import i18n from "../../i18n";
@@ -62,7 +61,6 @@ describe("Authentication", () => {
   beforeEach(() => {
     const sagaMiddleware = createSagaMiddleware();
     const rootReducers = {
-      headerLanguageReducer,
       authenticationReducer
     };
     store = configureStore({

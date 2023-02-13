@@ -43,22 +43,13 @@ export {
     setShowTelemetryNotRunning,
     enableFetchingAlerts,
     fetchVolumes, 
-    fetchAlerts,
     fetchPerformance,
     fetchHardwareHealth,
-    fetchStorage,
     fetchIpAndMac,
 } from "./dashboardActions";
 export {
     openAlertBox,
-    // setAlertsInfo,
-    fetchAlertsInfo,
-    fetchAlertsType,
 } from "./alertManagementActions";
-
-// export { 
-//     changeLanguage
-//  } from "./headerLanguageActions";
 
 export { 
     changeEmailList,
@@ -67,13 +58,7 @@ export {
     changeSmtpServer,
     setSmtpServer,
     deleteConfiguredSmtpServer,
-    setIbofOSTimeInterval,
  } from "./configurationsettingActions";
-
- export { 
-    getIbofOsLogs,
-    setLiveLogs,
- } from "./logManagementActions";
 
 export {
     fetchDevices,
@@ -81,7 +66,6 @@ export {
     fetchArray,
     fetchArrayDetails,
     fetchConfig,
-    fetchArraySize,
     setNoArray,
     showStorageAlert,
     fetchStorageVolumes,
@@ -108,25 +92,6 @@ export {
 } from "./subsystemActions";
 
 export {
-    // fetchDiskUsed,
-    // fetchDiskWrite,
-    fetchCpuUsage,
-    fetchReadBandwidth,
-    fetchWriteBandwidth,
-    fetchReadIops,
-    fetchWriteIops,
-    fetchVolReadBandwidth,
-    fetchVolWriteBandwidth,
-    fetchVolReadIops,
-    fetchVolWriteIops,
-    fetchReadLatency,
-    fetchVolReadLatency,
-    fetchWriteLatency,
-    fetchVolWriteLatency,
-    // fetchInputPowerVariation
-} from "./performanceActions";
-
-export {
     setIsResettingConfig,
     setIsResetConfigFailed,
     setIsSavingConfig,
@@ -145,39 +110,9 @@ export {
 } from "./userManagementActions";
 
 export {
-    fetchServerInfo,
-    fetchPowerInfo,
-    fetchChassisFrontInfo,
-    // fetchChassisRearInfo,
-} from "./hardwareOverviewActions";
-
-export {
-    fetchPowerSensorInfo,
-    fetchFanSensorInfo,
-    fetchTemperatureSensorInfo,
-} from "./hardwareSensorActions";
-
-export {
-    fetchSoftwareDetails,
-    fetchHardwareDetails,
-    fetchNetworkDetails,
-} from "./hardwareHealthActions";
-
-export {
-    fetchPowerSummary,
-} from "./hardwarePowerManagementActions";
-
-export {
     startLoader,
     stopLoader,
 } from "./waitLoaderActions";
-
-export {
-    BMCChangeCredentials,
-    // BMCResetIsLoggedIn,
-    BMCSetIsLoggedIn,
-    BMCSetLoginFailed,
-} from "./BMCAuthenticationActions";
 
 export {
     setTelemetryStatus,

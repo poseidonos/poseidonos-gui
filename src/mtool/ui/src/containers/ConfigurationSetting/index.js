@@ -31,11 +31,11 @@
  */
 
 import React, { Component } from 'react';
-import { MuiThemeProvider as ThemeProvider , withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider as ThemeProvider, withStyles } from '@material-ui/core/styles';
 import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import MToolTheme , { customTheme } from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
 import EmailAlerts from '../../components/EmailAlerts';
 import './ConfigurationSetting.css';
 import AlertDialog from '../../components/Dialog';
@@ -43,8 +43,6 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreators from '../../store/actions/exportActionCreators';
-//  import LogConfiguration from '../../components/LogConfiguration';
-import AlertManagement from './Alert-Management';
 import UserManagement from './User-Management';
 
 const styles = theme => ({
@@ -80,7 +78,6 @@ class ConfigurationSetting extends Component {
     this.editEmail = this.editEmail.bind(this);
     this.deleteEmails = this.deleteEmails.bind(this);
     this.saveEmail = this.saveEmail.bind(this);
-    // this.sendEmail = this.sendEmail.bind(this);
     this.testserver = this.testserver.bind(this);
     this.updateSmtpConfig = this.updateSmtpConfig.bind(this);
     this.updateSmtpServerDetails = this.updateSmtpServerDetails.bind(this);
@@ -92,9 +89,6 @@ class ConfigurationSetting extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.triggerCommand = this.triggerCommand.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-    // this.OnHandleChange = this.OnHandleChange.bind(this);
-    // this.applyIbofOSTimeInterval = this.applyIbofOSTimeInterval.bind(this);
-    // this.deleteIbofOSTimeInterval = this.deleteIbofOSTimeInterval.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.state = {
       add_delete_send: '',
@@ -112,14 +106,6 @@ class ConfigurationSetting extends Component {
       ibofostimeinterval: this.props.timeinterval,
     });
   }
-  
-  // OnHandleChange(event) {
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     ...this.state,
-  //     [name]: value
-  //   });
-  // }
 
   handleAlertClose() {
     const payload = {
@@ -163,7 +149,7 @@ class ConfigurationSetting extends Component {
     let toggleEmail = {}
     this.props.emaillist.forEach((email, index) => {
       if (email.selected) {
-        if(email.active === 0){
+        if (email.active === 0) {
           toggleEmail = {
             emailid: email.email,
             status: !email.active,
@@ -263,22 +249,22 @@ class ConfigurationSetting extends Component {
   savesmtpserverdetails(event) {
     const { value } = event.target;
     let payload = {};
-    if(event.target.name === 'smtpserver'){
-    const arr = event.target.value.split(':');
-    const ip = arr[0];
-    const port = arr[1] ? arr[1]:'';
+    if (event.target.name === 'smtpserver') {
+      const arr = event.target.value.split(':');
+      const ip = arr[0];
+      const port = arr[1] ? arr[1] : '';
 
-    payload = {
-      smtpserver: value,
-      smtpserverip: ip,
-      smtpserverport: port,
-    };
-  }
-  else{
-     payload = {
-      [event.target.name]:event.target.value
-    };
-  }
+      payload = {
+        smtpserver: value,
+        smtpserverip: ip,
+        smtpserverport: port,
+      };
+    }
+    else {
+      payload = {
+        [event.target.name]: event.target.value
+      };
+    }
     this.props.setSmtpServer(payload);
   }
 
@@ -288,49 +274,6 @@ class ConfigurationSetting extends Component {
     emaillist[index].selected = true;
     this.props.changeEmailList(emaillist);
   }
-
-  // Send email to all the active email ids
-  // sendEmail() {
-  //   const ids = [];
-  //   this.props.emaillist.forEach((email, index) => {
-  //     if (email.selected && email.active) {
-  //       const emaillist = [...this.props.emaillist];
-  //       emaillist[index].selected = false;
-  //       this.props.changeEmailList(emaillist);
-  //       ids.push(email.email);
-  //     }
-  //   });
-  //   if (ids.length <= 0) {
-  //     const payload = {
-  //       alertOpen: true,
-  //       istypealert: true,
-  //       alerttype: 'alert',
-  //       alerttitle: 'Send Email',
-  //       alertdescription: 'Please select an email id to send',
-  //     };
-  //     this.props.setAlertBox(payload);
-  //     return;
-  //   }
-  //   if (this.props.configuredsmtpserver === '') {
-  //     const payload = {
-  //       alertOpen: true,
-  //       istypealert: true,
-  //       alerttype: 'alert',
-  //       alerttitle: 'Send Email',
-  //       alertdescription: 'Please configure smtp server',
-  //     };
-  //     this.props.setAlertBox(payload);
-  //     return;
-  //   }
-  //   const arr = this.props.configuredsmtpserver.split(':');
-  //   const data = {
-  //     smtpserverip: arr[0],
-  //     smtpserverport: arr[1],
-  //     ids,
-  //   };
-  //   document.getElementsByTagName('body')[0].style.cursor = 'wait';
-  //   this.props.sendEmail(data);
-  // }
 
   // Test whether smtp server is working as expected
   testserver(event) {
@@ -357,20 +300,12 @@ class ConfigurationSetting extends Component {
   }
 
   triggerCommand() {
-    // if (this.state.add_delete_send === 'Delete') {
-    //   this.deleteEmails();
-    // } 
-    // else if (this.state.add_delete_send === 'Send') {
-    //   this.sendEmail();
-    // }
-
     this.deleteEmails();
   }
 
   updateSmtpConfig(event) {
     event.preventDefault();
-    if(this.props.smtpusername.length === 0 || this.props.smtppassword.length === 0 || this.props.smtpfromemail.length === 0)
-    {
+    if (this.props.smtpusername.length === 0 || this.props.smtppassword.length === 0 || this.props.smtpfromemail.length === 0) {
       const alertPayload = {
         alertOpen: true,
         istypealert: true,
@@ -395,8 +330,7 @@ class ConfigurationSetting extends Component {
 
   updateSmtpServerDetails(event) {
     event.preventDefault();
-    if(this.props.smtpserverip.length === 0 || this.props.smtpserverport.length === 0)
-    {
+    if (this.props.smtpserverip.length === 0 || this.props.smtpserverport.length === 0) {
       const alertPayload = {
         alertOpen: true,
         istypealert: true,
@@ -418,21 +352,6 @@ class ConfigurationSetting extends Component {
     this.props.testEmail(payload);
   }
 
-  // applyIbofOSTimeInterval() {
-  //   if(this.state.ibofostimeinterval >= 0) {
-  //     this.props.setIbofOSTimeInterval({timeinterval:this.state.ibofostimeinterval});
-  //   } else {
-  //     this.setState({
-  //       ...this.state,
-  //       open: true
-  //     })
-  //   }
-  // }
-
-  // deleteIbofOSTimeInterval() {
-  //   this.props.setIbofOSTimeInterval({timeinterval:4});
-  // }
-
 
   render() {
     const { classes } = this.props;
@@ -451,62 +370,46 @@ class ConfigurationSetting extends Component {
                 value={this.state.value}
                 onChange={this.handleTabChange}
               >
-                {/* <Tab data-testid="generalTab" label="General" key="general" value="general" className={(window.location.href.indexOf('general') > 0 ?  istanbul ignore next  classes.selectedTab : null)} />
-                <Tab data-testid="alertTab" label="Alert" key="alert" value="alert" className={(window.location.href.indexOf('alert') > 0 ?  istanbul ignore next  classes.selectedTab : null)} /> */}
                 <Tab data-testid="userTab" label="User" key="user" value="user" className={(window.location.href.indexOf('user') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
               </Tabs>
             </AppBar>
             <Switch>
-                <Route exact path="/ConfigurationSetting/general">
-                  <Grid container spacing={1} className={classes.GeneralContainer}>
+              <Route exact path="/ConfigurationSetting/general">
+                <Grid container spacing={1} className={classes.GeneralContainer}>
 
-                    <Grid item container spacing={1} xs={12} sm={12} className={classes.EmailTableContainer}>
-                      <EmailAlerts
-                        emailids={this.props.emaillist}
-                        IP={this.props.smtpserverip}
-                        Port={this.props.smtpserverport}
-                        addemailids={this.updateEmailIDList}
-                        editEmail={this.editEmail}
-                        selectEmail={this.selectEmail}
-                        saveChange={this.saveEmail}
-                        deleteEmails={this.deleteEmails}
-                        // sendEmail={this.sendEmail}
-                        configuredsmtpserver={this.props.configuredsmtpserver}
-                        deleteConfiguredSmtpServer={this.deleteConfiguredSmtpServer}
-                        testserver={this.testserver}
-                        updateSmtpConfig={this.updateSmtpConfig}
-                        updateSmtpServerDetails={this.updateSmtpServerDetails}
-                        savesmtpserverdetails={this.savesmtpserverdetails}
-                        toggleEmailStatus={this.toggleEmailStatus}
-                        openAlert={this.openAlert}
-                        smtpserver={this.props.smtpserver}
-                        smtpusername={this.props.smtpusername}
-                        smtpfromemail={this.props.smtpfromemail}
-                        isPasswordSet={this.props.isPasswordSet}
-                      />
-                      <AlertDialog
-                        title={this.props.alerttitle}
-                        description={this.props.alertdescription}
-                        open={this.props.alertOpen}
-                        type={this.props.alerttype}
-                        handleClose={this.handleAlertClose}
-                        onConfirm={this.triggerCommand}
-                      />
-                    </Grid>
-                    {/* <Grid item container spacing={1} xs={12} sm={6} className={classes.EmailTableContainer}>
-                      <LogConfiguration
-                        downloadLogs={this.props.downloadLogs}
-                        OnHandleChange={this.OnHandleChange}
-                        ibofostimeintervalvalue={this.props.timeinterval}
-                        ibofostimeinterval={this.state.ibofostimeinterval}
-                        applyIbofOSTimeInterval={this.applyIbofOSTimeInterval}
-                        deleteIbofOSTimeInterval={this.deleteIbofOSTimeInterval}
-                      />
-                    </Grid> */}
+                  <Grid item container spacing={1} xs={12} sm={12} className={classes.EmailTableContainer}>
+                    <EmailAlerts
+                      emailids={this.props.emaillist}
+                      IP={this.props.smtpserverip}
+                      Port={this.props.smtpserverport}
+                      addemailids={this.updateEmailIDList}
+                      editEmail={this.editEmail}
+                      selectEmail={this.selectEmail}
+                      saveChange={this.saveEmail}
+                      deleteEmails={this.deleteEmails}
+                      configuredsmtpserver={this.props.configuredsmtpserver}
+                      deleteConfiguredSmtpServer={this.deleteConfiguredSmtpServer}
+                      testserver={this.testserver}
+                      updateSmtpConfig={this.updateSmtpConfig}
+                      updateSmtpServerDetails={this.updateSmtpServerDetails}
+                      savesmtpserverdetails={this.savesmtpserverdetails}
+                      toggleEmailStatus={this.toggleEmailStatus}
+                      openAlert={this.openAlert}
+                      smtpserver={this.props.smtpserver}
+                      smtpusername={this.props.smtpusername}
+                      smtpfromemail={this.props.smtpfromemail}
+                      isPasswordSet={this.props.isPasswordSet}
+                    />
+                    <AlertDialog
+                      title={this.props.alerttitle}
+                      description={this.props.alertdescription}
+                      open={this.props.alertOpen}
+                      type={this.props.alerttype}
+                      handleClose={this.handleAlertClose}
+                      onConfirm={this.triggerCommand}
+                    />
                   </Grid>
-                </Route>
-              <Route path="/ConfigurationSetting/alert">
-                <AlertManagement />
+                </Grid>
               </Route>
               <Route path="/ConfigurationSetting/user">
                 <UserManagement />
@@ -571,13 +474,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SAGA_TEST_EMAIL, payload: data }),
     setSmtpServer: payload => dispatch(actionCreators.setSmtpServer(payload)),
     deleteConfiguredSmtpServer: () =>
-      dispatch({ type: actionTypes.SAGA_DELETE_SMTP_DETAILS}),
+      dispatch({ type: actionTypes.SAGA_DELETE_SMTP_DETAILS }),
     deleteEmailIds: data =>
       dispatch({ type: actionTypes.SAGA_DELETE_EMAIL_IDS, payload: data }),
     // downloadLogs: data =>
     //   dispatch({ type: actionTypes.SAGA_DOWNLOAD_LOGS, payload: data }),
-    // setIbofOSTimeInterval: data =>
-    //   dispatch({ type: actionTypes.SAGA_SET_IBOFOS_TIME_INTERVAL, payload: data }),
   };
 };
 
