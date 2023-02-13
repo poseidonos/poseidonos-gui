@@ -34,9 +34,13 @@ import { isEqual } from 'lodash';
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
+    ip: '0.0.0.0',
+    mac: 'NA',
     volumes: [],
     arrayVolumes: [],
     selectedArray: 'all',
+    arraySize: 0,
+    arrayVols: {},
     showTelemetryAlert: false,
     errorMsg: "",
     readIOPS: 0,
@@ -53,10 +57,6 @@ const initialState = {
     totalWarnings: 0,
     totalCriticals: 0,
     isIMPIChassisPowerOn: 0,
-    ip: '0.0.0.0',
-    mac: 'NA',
-    arraySize: 0,
-    arrayVols: {}
 }
 
 
