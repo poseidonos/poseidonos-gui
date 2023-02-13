@@ -31,7 +31,6 @@
  */
 
 import React, { Component } from "react";
-import io from "socket.io-client";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import "react-dropdown/style.css";
@@ -275,9 +274,6 @@ const icons = {
   SortArrow: ArrowUpward,
 };
 
-// namespace to connect to the websocket for multi-volume creation
-const healthStatusSocketEndPoint = ":5000/health_status";
-
 const ARRAYTAB = "arrayTab";
 const VOLUMETAB = "volumeTab";
 
@@ -359,12 +355,6 @@ class Dashboard extends Component {
     this.state = {
       selectedTab: ARRAYTAB,
       mobileOpen: false,
-      healthStatusSocket: io(healthStatusSocketEndPoint, {
-        transports: ["websocket"],
-        query: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }),
     };
     this.interval = null;
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
@@ -396,7 +386,6 @@ class Dashboard extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-    this.state.healthStatusSocket.disconnect();
   }
 
   handleDrawerToggle() {
