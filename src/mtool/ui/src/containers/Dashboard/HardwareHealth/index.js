@@ -39,6 +39,8 @@ import { Box, Button, Grid, Paper, ThemeProvider, Typography, withStyles } from 
 import { customTheme, PageTheme } from "../../../theme";
 import Legend from "../../../components/Legend";
 import Popup from "../../../components/Popup";
+import * as actionTypes from "../../../store/actions/actionTypes";
+import { FETCH_API_INTERVAL } from "../../../utils/constants";
 
 
 const styles = (theme) => ({
@@ -92,7 +94,7 @@ const getColorStyle = {
 }
 
 const HardwareHealth = (props) => {
-    const { classes } = props;
+    const { classes, isConfigured, fetchHardwareHealth } = props;
     const localCellStyle = {
         paddingTop: 8,
         paddingBottom: 8,
@@ -108,6 +110,17 @@ const HardwareHealth = (props) => {
         metrics: [],
         unit: "",
     });
+
+    useEffect(() => {
+        if (isConfigured)
+            fetchHardwareHealth();
+        const interval = setInterval(() => {
+            if (isConfigured)
+                fetchHardwareHealth();
+        }, FETCH_API_INTERVAL);
+
+        return () => clearInterval(interval)
+    }, [isConfigured, fetchHardwareHealth]);
 
     useEffect(() => {
         if (selectedRow === null)
@@ -135,12 +148,6 @@ const HardwareHealth = (props) => {
 
     /* eslint-disable react/no-multi-comp */
     const icons = {
-        // FirstPage: () => <FirstPage id="Dashboard-icon-vol-firstpage" />,
-        // LastPage: () => <LastPage id="Dashboard-icon-vol-lastpage" />,
-        // NextPage: () => <ChevronRight id="Dashboard-icon-vol-nextpage" />,
-        // PreviousPage: () => <ChevronLeft id="Dashboard-icon-vol-previouspage" />,
-        // ThirdStateCheck: Remove,
-        // DetailPanel: ChevronRight,
         SortArrow: ArrowUpward,
     };
     const ipmiTableColumns = [
@@ -221,7 +228,7 @@ const HardwareHealth = (props) => {
     const ipmiTable = (
         <MaterialTable
             columns={ipmiTableColumns}
-            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured? props.ipmi:[]}
+            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured ? props.ipmi : []}
             localization={{
                 body: {
                     emptyDataSourceMessage: ipmiErrorMessage
@@ -271,7 +278,7 @@ const HardwareHealth = (props) => {
     const deviceTable = (
         <MaterialTable
             columns={deviceTableColumns}
-            data={!props.errorInDevices && props.isConfigured? props.devices: []}
+            data={!props.errorInDevices && props.isConfigured ? props.devices : []}
             localization={{
                 body: {
                     emptyDataSourceMessage: deviceErrorMessage
@@ -532,8 +539,15 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchHardwareHealth: () => dispatch({ type: actionTypes.SAGA_FETCH_HARDWARE_HEALTH }),
+    };
+};
+
 export default withStyles(styles)(
     connect(
-        mapStateToProps
+        mapStateToProps,
+        mapDispatchToProps
     )(HardwareHealth)
 );
