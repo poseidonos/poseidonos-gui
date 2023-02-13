@@ -711,7 +711,6 @@ describe("Dashboard", () => {
       .onGet(`/api/v1.0/get_ip_and_mac`)
       .reply(200,
         {
-          host: "init",
           ip: "10.1.11.91",
           mac: "00:50:56:ad:88:56"
         }

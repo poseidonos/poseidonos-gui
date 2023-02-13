@@ -860,8 +860,6 @@ const mapStateToProps = (state) => {
     ip: state.dashboardReducer.ip,
     arrayVolCount: state.dashboardReducer.arrayVols,
     mac: state.dashboardReducer.mac,
-    lastUpdateTime: state.dashboardReducer.lastUpdateTime,
-    host: state.dashboardReducer.host,
     arraySize: state.storageReducer.arraySize,
     cpuUsage: state.dashboardReducer.cpuUsage,
     memoryUsage: state.dashboardReducer.memoryUsage,

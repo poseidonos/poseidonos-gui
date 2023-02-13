@@ -58,8 +58,6 @@ const initialState = {
     fetchingAlerts: false,
     ip: '0.0.0.0',
     mac: 'NA',
-    host: '',
-    lastUpdateTime: '',
     arraySize: 0,
     arrayVols: {}
 }
@@ -180,9 +178,7 @@ const dashboardReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ip: action.ip,
-                mac: action.mac,
-                host: action.host,
-                lastUpdateTime: action.timestamp
+                mac: action.mac
             };
         default:
             return state;
