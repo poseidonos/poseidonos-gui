@@ -41,12 +41,12 @@ export {
 
 export { 
     setShowTelemetryNotRunning,
-    enableFetchingAlerts,
     fetchVolumes, 
     fetchPerformance,
     fetchHardwareHealth,
     fetchIpAndMac,
 } from "./dashboardActions";
+
 export {
     openAlertBox,
 } from "./alertManagementActions";

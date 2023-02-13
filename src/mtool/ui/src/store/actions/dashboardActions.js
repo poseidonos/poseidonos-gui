@@ -40,12 +40,6 @@ export const setShowTelemetryNotRunning = (showTelemetryAlert, errorMsg) => {
   };
 }
 
-export const enableFetchingAlerts = (flag) => {
-  return {
-    type: actionTypes.ENABLE_FETCHING_ALERTS,
-    fetchingAlerts: flag,
-  };
-};
 export const fetchVolumes = (volumes) => {
   return {
     type: actionTypes.FETCH_VOLUME_INFO,

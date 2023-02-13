@@ -136,7 +136,6 @@ class Dashboard extends Component {
       this.props.fetchCheckTelemetry();
     this.props.getConfig();
     this.props.fetchIpAndMacInfo();
-    this.props.enableFetchingAlerts(true);
   }
 
   componentDidUpdate(prevProps) {
@@ -279,11 +278,8 @@ class Dashboard extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    alerts: state.dashboardReducer.alerts,
-    ibofs: state.dashboardReducer.ibofs,
     showTelemetryAlert: state.dashboardReducer.showTelemetryAlert,
     errorMsg: state.dashboardReducer.errorMsg,
-    fetchingAlerts: state.dashboardReducer.fetchingAlerts,
     ip: state.dashboardReducer.ip,
     mac: state.dashboardReducer.mac,
     cpuUsage: state.dashboardReducer.cpuUsage,
@@ -302,7 +298,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchCheckTelemetry: () => dispatch({ type: actionTypes.SAGA_FETCH_CHECK_TELEMETRY }),
     closeTelemetryAlert: () => dispatch({ type: actionTypes.CLOSE_TELEMETRY_ALERT }),
-    enableFetchingAlerts: (flag) => dispatch(actionCreators.enableFetchingAlerts(flag)),
     getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
     fetchIpAndMacInfo: () => dispatch({ type: actionTypes.SAGA_FETCH_IPANDMAC_INFO }),
     setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload))

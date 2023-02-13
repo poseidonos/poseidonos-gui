@@ -53,16 +53,13 @@ export function* fetchVolumeInfo() {
     if (result && !result.message) {
       yield put(actionCreators.fetchVolumes(result));
     }
-    yield put(actionCreators.enableFetchingAlerts(false));
   } catch (error) {
     const defaultResponse = [];
     yield put(actionCreators.fetchVolumes(defaultResponse));
-    yield put(actionCreators.enableFetchingAlerts(false));
   } finally {
     if (yield cancelled()) {
       const defaultResponse = [];
       yield put(actionCreators.fetchVolumes(defaultResponse));
-      yield put(actionCreators.enableFetchingAlerts(false));
     }
   }
 }
