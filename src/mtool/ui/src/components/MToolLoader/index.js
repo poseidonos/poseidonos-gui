@@ -32,7 +32,6 @@
 
 import React from 'react';
 import Loader from 'react-loader-spinner';
-import PropTypes from 'prop-types';
 
 const loaderStyle = {
   width: '100%',
@@ -73,9 +72,5 @@ const MToolLoader = props => {
     </div>
   );
 };
-
-MToolLoader.propTypes = {
-  text: PropTypes.string.isRequired
-}
 
 export default MToolLoader;

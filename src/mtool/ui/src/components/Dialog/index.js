@@ -156,9 +156,6 @@ const AlertDialog = (props) => {
         >
           OK
         </Button>
-        {/* {props.link ? (
-            <Link to={props.link}>{props.linkText}</Link>
-          ) : null} */}
       </DialogActions>
     );
   const getIcon = (type) => {
@@ -172,16 +169,14 @@ const AlertDialog = (props) => {
   };
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Open alert dialog
-        </Button> */}
       <Dialog
-        // minWidth="xs"
         maxWidth="xs"
-        disableBackdropClick
-        // fullWidth="false"
         open={props.open ? props.open : false}
-        onClose={props.handleClose}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick" && reason !== 'escapeKeyDown') {
+            props.handleClose()
+          }
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
