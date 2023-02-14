@@ -31,6 +31,7 @@
     "react-i18next": "^10.13.2",
     "react-loader-spinner": "^3.1.5",
     "react-minimal-pie-chart": "^8.4.0",
+    "react-preload-image": "^1.0.7",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",

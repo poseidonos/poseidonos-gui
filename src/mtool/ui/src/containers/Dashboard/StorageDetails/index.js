@@ -111,11 +111,9 @@ const styles = (theme) => ({
         fontSize: 14,
     },
     tabIcon: {
-        height: 18,
         marginRight: theme.spacing(1)
     },
     arrayTabIcon: {
-        height: 24,
         marginRight: theme.spacing(.5)
     },
     tableTitle: {
@@ -441,6 +439,8 @@ const StorageDetails = (props) => {
                             label={(
                                 <Box display="flex" alignItems="center">
                                     <img
+                                        height="24px"
+                                        width="24px"
                                         className={classes.arrayTabIcon}
                                         src={ArraysIconSelected}
                                         alt="l"
@@ -457,6 +457,8 @@ const StorageDetails = (props) => {
                             label={(
                                 <Box display="flex" alignItems="center">
                                     <img
+                                        height="18px"
+                                        width="18px"
                                         className={classes.tabIcon}
                                         src={VolumeIconSelected}
                                         alt="l"

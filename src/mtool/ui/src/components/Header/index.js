@@ -49,7 +49,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import Heading from '../../assets/images/Header-logo.png';
-// import Dropdown from './Dropdown';
 import AlertDialog from '../Dialog';
 import './Header.css';
 import Dropdown from './Dropdown';
@@ -192,9 +191,7 @@ class Header extends Component {
     this.alertClose = this.alertClose.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.updateDropdown = this.updateDropdown.bind(this);
-    // this.printLastTimestamp = this.printLastTimestamp.bind(this);
     this.userLogout = this.userLogout.bind(this);
-    // this.goHome = this.goHome.bind(this);
     this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
     this.OnHandleChange = this.OnHandleChange.bind(this);
@@ -469,6 +466,8 @@ class Header extends Component {
             </IconButton>
             <div className={classes.logoContainer}>
               <img
+                height="38px"
+                width="153px"
                 src={Heading}
                 className={classes.logoImg}
                 alt="Poseidon Management Tool"

@@ -32,8 +32,8 @@
 
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Grid, Paper, ThemeProvider, Typography, withStyles } from "@material-ui/core";
-import { customTheme, PageTheme } from "../../../theme";
+import { Grid, Paper, Typography, withStyles } from "@material-ui/core";
+import { customTheme } from "../../../theme";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import { FETCH_API_INTERVAL } from "../../../utils/constants";
 
@@ -171,7 +171,7 @@ const Performance = (props) => {
     }, [isConfigured, fetchPerformance]);
 
     return (
-        <ThemeProvider theme={PageTheme}>
+        <>
             <Grid xs={12} md={4} item>
                 <MetricsCard
                     classes={classes}
@@ -196,7 +196,7 @@ const Performance = (props) => {
                     readValue={props.readLatency}
                 />
             </Grid>
-        </ThemeProvider>
+        </>
     );
 };
 

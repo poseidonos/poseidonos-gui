@@ -50,7 +50,10 @@ const styles = (theme) => ({
         display: "flex",
         padding: theme.spacing(1, 2),
         flexWrap: "wrap",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        [theme.breakpoints.down("md")]: {
+            height: "auto",
+        },
     },
     cardHeader: {
         ...customTheme.card.header,

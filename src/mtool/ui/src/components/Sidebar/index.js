@@ -35,6 +35,7 @@ import { NavLink } from 'react-router-dom';
 import { Drawer, List, ListItem, Divider, Paper, Typography, Hidden } from '@material-ui/core';
 import { makeStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import PreloadImage from 'react-preload-image';
 
 import PoseidonLogo from '../../assets/images/Poseidon.png';
 import DashboardIconDisabled from '../../assets/images/Dashboard-DIS.png';
@@ -145,8 +146,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     opacity: 1,
   },
-  iconLeft: {
-    width: 40
+  logoImage: {
+    position: "relative",
+    height: "94px",
+    width: "170px"
   }
 }));
 const Sidebar = (props) => {
@@ -158,17 +161,17 @@ const Sidebar = (props) => {
         <Divider className={classes.listDivider} />
         <NavLink className={classes.link} activeClassName={classes.activeLink} to="/dashboard">
           <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('dashboard') > 0
-                    ? DashboardIconSelected
-                    : DashboardIconDisabled
-                }
-                alt="l"
-              />
-            </span>
+            <img
+              className={classes.sidebarIcon}
+              width="32px"
+              height="32px"
+              src={
+                window.location.href.indexOf('dashboard') > 0
+                  ? DashboardIconSelected
+                  : DashboardIconDisabled
+              }
+              alt="l"
+            />
             <Typography className={classes.sidebarText}>Dashboard</Typography>
           </ListItem>
         </NavLink>
@@ -179,34 +182,34 @@ const Sidebar = (props) => {
           activeClassName={classes.activeLink}
         >
           <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('storage') > 0
-                    ? StorageIconSelected
-                    : StorageIconDisabled
-                }
-                alt="l"
-              />
-            </span>
+            <img
+              className={classes.sidebarIcon}
+              width="32px"
+              height="32px"
+              src={
+                window.location.href.indexOf('storage') > 0
+                  ? StorageIconSelected
+                  : StorageIconDisabled
+              }
+              alt="l"
+            />
             <Typography className={classes.sidebarText}>Storage</Typography>
           </ListItem>
         </NavLink>
         <Divider className={classes.listDivider} />
         <NavLink style={ulStyle} to="/performance" className={classes.link} activeClassName={classes.activeLink}>
           <ListItem className={classes.sidebarLink}>
-            <span className={classes.iconLeft}>
-              <img
-                className={classes.sidebarIcon}
-                src={
-                  window.location.href.indexOf('performance') > 0
-                    ? PerformanceIconSelected
-                    : PerformanceIconDisabled
-                }
-                alt="l"
-              />
-            </span>
+            <img
+              className={classes.sidebarIcon}
+              width="32px"
+              height="32px"
+              src={
+                window.location.href.indexOf('performance') > 0
+                  ? PerformanceIconSelected
+                  : PerformanceIconDisabled
+              }
+              alt="l"
+            />
             <Typography className={classes.sidebarText}>Telemetry</Typography>
           </ListItem>
         </NavLink>
@@ -214,10 +217,10 @@ const Sidebar = (props) => {
       </List>
       <div className={classes.logoContainer}>
         <Paper className={classes.logoPaper}>
-          <img
+          <PreloadImage
+            className={classes.logoImage}
             src={PoseidonLogo}
-            style={{ width: '170px' }}
-            alt="Poseidon Logo"
+            lazy
           />
         </Paper>
         <span>PoseidonOS {props.posVersion}</span>
