@@ -36,7 +36,7 @@ import { Provider } from "react-redux";
 import createSagaMiddleware from 'redux-saga'
 import { I18nextProvider } from "react-i18next";
 import { configureStore } from "@reduxjs/toolkit";
-import { render, screen, fireEvent, cleanup, waitForElement, getNodeText, getByTestId } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, waitForElement } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter'
@@ -48,7 +48,6 @@ import storageReducer from "../../store/reducers/storageReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import dashboardReducer from "../../store/reducers/dashboardReducer";
 import authenticationReducer from "../../store/reducers/authenticationReducer";
-import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import i18n from "../../i18n";
 
 jest.unmock('axios');
@@ -84,7 +83,6 @@ describe("Dashboard", () => {
       headerReducer,
       storageReducer,
       dashboardReducer,
-      configurationsettingReducer,
       authenticationReducer
     };
     const sagaMiddleware = createSagaMiddleware();

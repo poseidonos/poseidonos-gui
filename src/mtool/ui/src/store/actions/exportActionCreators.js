@@ -51,15 +51,6 @@ export {
     openAlertBox,
 } from "./alertManagementActions";
 
-export { 
-    changeEmailList,
-    fetchEmailList,
-    setAlertBox,
-    changeSmtpServer,
-    setSmtpServer,
-    deleteConfiguredSmtpServer,
- } from "./configurationsettingActions";
-
 export {
     fetchDevices,
     fetchDeviceDetails,

@@ -113,6 +113,9 @@ class Device extends Component {
                             actions={[{
                                 icon: Add,
                                 tooltip: "Add a device",
+                                iconProps:{
+                                    'data-testid': "add-device"
+                                },
                                 isFreeAction: true,
                                 onClick: () => {
                                     this.openCreateDiskDialog();

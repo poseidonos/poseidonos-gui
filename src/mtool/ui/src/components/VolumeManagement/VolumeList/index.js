@@ -567,7 +567,8 @@ class VolumeList extends Component {
                 tooltip: "Delete",
                 icon: TrashIcon,
                 iconProps: {
-                  'id': "VolumeList-icon-delete"
+                  'id': "VolumeList-icon-delete",
+                  'data-testid': "vol-list-icon-delete"
                 },
                 onClick: () => { this.handleClickOpen() }
               }

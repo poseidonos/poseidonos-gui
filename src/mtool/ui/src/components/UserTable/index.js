@@ -233,17 +233,17 @@ class UserTable extends Component {
             <React.Fragment>
             <Button
               title="Edit"
-              data-testid={`vol-edit-btn-${row.name}`}
+              data-testid={`user-edit-btn-${row.email}`}
               onClick={() => this.props.editUser(row)}
-              id={`VolumeList-btn-edit-${row.name}`}
+              id={`user-edit-${row.email}`}
             >
               <Edit />
             </Button>
             <Button
               title="Delete"
-              data-testid={`vol-edit-btn-${row.name}`}
+              data-testid={`user-delete-btn-${row.email}`}
               onClick={() => this.selectRow(row)}
-              id={`VolumeList-btn-edit-${row.name}`}
+              id={`user-delete-${row.email}`}
             >
               <TrashIcon />
             </Button>
@@ -252,17 +252,17 @@ class UserTable extends Component {
               <React.Fragment>
                 <Button
                   title="Save"
-                  data-testid={`vol-edit-save-btn-${row.name}`}
+                  data-testid={`user-done-btn-${row.email}`}
                   onClick={() => this.saveUser(row)}
-                  id={`VolumeList-btn-done-${row.name}`}
+                  id={`user-done-${row.email}`}
                 >
                   <Done />
                 </Button>
                 <Button
-                  data-testid={`vol-edit-cancel-btn-${row.name}`}
+                  data-testid={`user-clear-btn-${row.email}`}
                   title="Cancel"
                   onClick={this.props.fetchUsers}
-                  id={`VolumeList-btn-clear-${row.name}`}
+                  id={`user-clear-${row.email}`}
                 >
                   <Clear />
                 </Button>

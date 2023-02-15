@@ -46,7 +46,8 @@ import {
   screen,
   fireEvent,
   cleanup,
-  waitForElement
+  waitForElement,
+  getByLabelText
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import axios from "axios";
@@ -58,7 +59,6 @@ import storageReducer from "../../store/reducers/storageReducer";
 import subsystemReducer from "../../store/reducers/subsystemReducer";
 import headerReducer from "../../store/reducers/headerReducer";
 import createVolumeReducer from "../../store/reducers/createVolumeReducer"
-import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import rootSaga from "../../sagas/indexSaga";
 
 describe("<Storage Management />", () => {
@@ -71,8 +71,7 @@ describe("<Storage Management />", () => {
       storageReducer,
       subsystemReducer,
       headerReducer,
-      createVolumeReducer,
-      configurationsettingReducer
+      createVolumeReducer
     };
     const sagaMiddleware = createSagaMiddleware();
     store = configureStore({
@@ -1893,7 +1892,7 @@ describe("<Storage Management />", () => {
     const { getByText, getByTestId, getByTitle } = wrapper;
     const checkBox2 = await waitForElement(() => getByTestId("vol-select-checkbox-vol2"));
     fireEvent.click(checkBox2);
-    const deleteBtn = await waitForElement(() => getByTitle("Delete"));
+    const deleteBtn = await waitForElement(() => getByTestId("vol-list-icon-delete"));
     fireEvent.click(deleteBtn);
     const yesBtn = await waitForElement(() => getByText("Yes"));
     fireEvent.click(yesBtn);

@@ -103,10 +103,10 @@ const SubsystemDetails = (props) => {
     <ThemeProvider theme={TableTheme}>
       <Grid container spacing={1}>
         <Grid item container md={12} justifyContent="space-between" alignItems="center" className={classes.internalRow}>
-          <Typography variant="p" className={classes.detailText}>Max Namespaces: {props.data.maxNamespaces}</Typography>
-          <Typography variant="p" className={classes.detailText}>Allow Any Hosts: {props.data.allowAnyHost ? "Yes" : "No"}</Typography>
-          <Typography variant="p" className={classes.detailText}>Model No: {props.data.modelNumber}</Typography>
-          <Typography variant="p" className={classes.detailText}>Serial No: {props.data.serialNumber}</Typography>
+          <Typography className={classes.detailText}>Max Namespaces: {props.data.rowData.maxNamespaces}</Typography>
+          <Typography className={classes.detailText}>Allow Any Hosts: {props.data.rowData.allowAnyHost ? "Yes" : "No"}</Typography>
+          <Typography className={classes.detailText}>Model No: {props.data.rowData.modelNumber}</Typography>
+          <Typography className={classes.detailText}>Serial No: {props.data.rowData.serialNumber}</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <MaterialTable
@@ -114,7 +114,7 @@ const SubsystemDetails = (props) => {
               <Typography className={classes.cardHeader}>Namespaces</Typography>
             )}
             columns={namespaceColumns}
-            data={props.data.namespaces}
+            data={props.data.rowData.namespaces}
             icons={icons}
             options={{
               maxBodyHeight: 350,
@@ -135,12 +135,15 @@ const SubsystemDetails = (props) => {
               icon: Add,
               tooltip: "Add a Listener",
               isFreeAction: true,
+              iconProps: {
+                'data-testid': "add-listener"
+              },
               onClick: () => {
                 setPopupState(true);
               }
             }]}
             columns={addressColumns}
-            data={props.data.listenAddresses}
+            data={props.data.rowData.listenAddresses}
             icons={icons}
             options={{
               maxBodyHeight: 350,
@@ -158,7 +161,7 @@ const SubsystemDetails = (props) => {
         open={isPopupOpen}
         close={closePopup}
       >
-        <AddListener subnqn={props.data.subnqn} />
+        <AddListener subnqn={props.data.rowData.subnqn} />
       </Popup>
 
     </ThemeProvider>

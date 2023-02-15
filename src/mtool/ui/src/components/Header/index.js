@@ -226,22 +226,20 @@ class Header extends Component {
     window.addEventListener("resize", this.updateDropdown);
     // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
-    const val = this.props.timeintervalue;
     this.interval = setInterval(() => {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, (val || 4) * 1000);
+    }, 1000);
   }
 
   componentDidUpdate() {
-    const val = this.props.timeintervalue;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, (val || 4) * 1000);
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -601,7 +599,6 @@ const mapStateToProps = state => {
     timestamp: state.headerReducer.timestamp,
     status: state.headerReducer.status,
     OS_Running_Status: state.headerReducer.OS_Running_Status,
-    timeintervalue: state.configurationsettingReducer.timeinterval,
     statusCheckDone: state.headerReducer.isStatusCheckDone
   };
 }

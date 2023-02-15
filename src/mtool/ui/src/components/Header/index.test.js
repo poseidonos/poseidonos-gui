@@ -47,7 +47,6 @@ import { createMemoryHistory } from 'history';
 
 import Header from './index';
 import headerReducer from '../../store/reducers/headerReducer';
-import configurationsettingReducer from '../../store/reducers/configurationsettingReducer';
 import rootSaga from "../../sagas/indexSaga";
 
 jest.unmock('axios');
@@ -60,7 +59,6 @@ describe('<Header />', () => {
   beforeEach(() => {
     const rootReducers = {
       headerReducer,
-      configurationsettingReducer
     };
     const sagaMiddleware = createSagaMiddleware();
     store = configureStore({

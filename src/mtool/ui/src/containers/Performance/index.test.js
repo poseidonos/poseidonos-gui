@@ -51,7 +51,6 @@ import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
 import telemetryReducer from "../../store/reducers/telemetryReducer";
 import waitLoaderReducer from "../../store/reducers/waitLoaderReducer";
-import configurationsettingReducer from "../../store/reducers/configurationsettingReducer";
 import Performance from "./index";
 import i18n from "../../i18n";
 
@@ -66,7 +65,6 @@ describe("Performance", () => {
   beforeEach(() => {
     const rootReducers = {
       headerReducer,
-      configurationsettingReducer,
       telemetryReducer,
       waitLoaderReducer
     };

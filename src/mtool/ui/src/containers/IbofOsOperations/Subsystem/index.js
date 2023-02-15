@@ -174,6 +174,9 @@ class Subsystem extends Component {
                                 icon: Add,
                                 tooltip: "Add a Subsystem",
                                 isFreeAction: true,
+                                iconProps:{
+                                    'data-testid': "add-subsystem"
+                                },
                                 onClick: () => {
                                     this.openCreateSubsystemDialog();
                                 }

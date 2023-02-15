@@ -56,7 +56,6 @@ import headerReducer from "./store/reducers/headerReducer";
 import storageReducer from "./store/reducers/storageReducer";
 import createVolumeReducer from './store/reducers/createVolumeReducer';
 import dashboardReducer from "./store/reducers/dashboardReducer";
-import configurationsettingReducer from "./store/reducers/configurationsettingReducer";
 import alertManagementReducer from "./store/reducers/alertManagementReducer";
 import authenticationReducer from "./store/reducers/authenticationReducer";
 import userManagementReducer from "./store/reducers/userManagementReducer";
@@ -89,7 +88,6 @@ axios.interceptors.response.use((response) => {
 const rootReducers = {
   dashboardReducer,
   headerReducer,
-  configurationsettingReducer,
   alertManagementReducer,
   storageReducer,
   createVolumeReducer,
