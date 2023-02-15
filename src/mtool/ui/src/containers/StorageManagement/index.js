@@ -45,7 +45,7 @@ import Sidebar from "../../components/Sidebar";
 import MToolLoader from "../../components/MToolLoader";
 import RebuildProgress from "../../components/RebuildProgress";
 import AlertDialog from "../../components/Dialog";
-import "./Volume.css";
+import "./StorageManagement.css";
 import MToolTheme, { customTheme } from "../../theme";
 import SelectSubsystem from "../../components/SelectSubsystem";
 import Legend from "../../components/Legend";
@@ -189,7 +189,7 @@ const styles = (theme) => ({
 // namespace to connect to the websocket for multi-volume creation
 const createVolSocketEndPoint = ":5000/create_vol";
 
-class Volume extends Component {
+class StorageManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -863,5 +863,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withRouter(Volume))
+  )(withRouter(StorageManagement))
 );

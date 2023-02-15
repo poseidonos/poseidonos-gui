@@ -41,7 +41,7 @@ const Performance = lazy(() => import('./containers/Performance'));
 const Authentication = lazy(() => import('./containers/Authentication'));
 const Dashboard = lazy(() => import('./containers/Dashboard'));
 const PrivateRoute = lazy(() => import('./components/PrivateRoute'));
-const Volume = lazy(() => import('./containers/Volume'));
+const StorageManagement = lazy(() => import('./containers/StorageManagement'));
 const ConfigurationSetting = lazy(() => import('./containers/ConfigurationSetting'));
 const IbofOsOperations = lazy(() => import('./containers/IbofOsOperations'));
 
@@ -53,7 +53,7 @@ const App = () => {
           <Switch>
             <PrivateRoute className="App-content" path="/performance*" exact component={() => <Performance />} />
             <PrivateRoute className="App-content" path="/dashboard" exact component={() => <Dashboard />} />
-            <PrivateRoute className="App-content" path="/storage/array/*" exact component={() => <Volume />} />
+            <PrivateRoute className="App-content" path="/storage/array/*" exact component={() => <StorageManagement />} />
             <PrivateRoute className="App-content" path="/operations/*" exact component={() => <IbofOsOperations />} />
             <PrivateRoute className="App-content" path="/ConfigurationSetting/*" exact component={() => <ConfigurationSetting />} />
             <Route className="App-content" path="/" component={() => <Authentication />} />
