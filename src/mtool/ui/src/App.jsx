@@ -35,7 +35,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import MToolLoader from './components/MToolLoader';
-import ErrorBoundary from './containers/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const Performance = lazy(() => import('./containers/Performance'));
 const Authentication = lazy(() => import('./containers/Authentication'));
