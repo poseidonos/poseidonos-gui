@@ -32,7 +32,7 @@
 
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component } from "react";
-import MaterialTable, { MTableToolbar } from "material-table";
+import MaterialTable, { MTableToolbar } from "@material-table/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";

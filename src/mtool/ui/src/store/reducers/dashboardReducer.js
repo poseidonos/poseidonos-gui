@@ -145,15 +145,16 @@ const dashboardReducer = (state = initialState, action) => {
             if (state.devices.length !== action.devices.length)
                 return newState
             for (let i = 0; i < state.devices.length; i += 1) {
-                if (!isEqual(state.devices[i], { ...action.devices[i], tableData: state.devices[i].tableData }))
+                if (!isEqual(state.devices[i], action.devices[i]))
                     return newState
             }
             if (state.ipmi.length !== action.ipmi.length) {
                 return newState
             }
             for (let i = 0; i < state.ipmi.length; i += 1) {
-                if (!isEqual(state.ipmi[i], { ...action.ipmi[i], tableData: state.ipmi[i].tableData }))
+                if (!isEqual(state.ipmi[i], action.ipmi[i])) {
                     return newState
+                }
             }
             if (
                 action.errorInDevices !== state.errorInDevices ||

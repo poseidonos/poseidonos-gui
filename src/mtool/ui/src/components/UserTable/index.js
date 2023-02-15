@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';

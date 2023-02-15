@@ -33,7 +33,7 @@
 
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import MaterialTable from "material-table";
+import MaterialTable from "@material-table/core";
 import { Box, FormControl, Grid, InputLabel, Link, MenuItem, Paper, Select, Tab, Tabs, Typography, Zoom } from "@material-ui/core";
 import { ThemeProvider, withStyles } from "@material-ui/styles";
 import { ArrowUpward, ChevronLeft, ChevronRight, FirstPage, LastPage, Remove } from "@material-ui/icons";
@@ -306,7 +306,7 @@ const StorageDetails = (props) => {
             icons={icons}
         />
     );
-    const volumeTable = (
+    const volumeTable = selectedTab === VOLUMETAB && (
         <MaterialTable
             columns={volumeTableColumns}
             data={props.arrayVolumes}
@@ -443,7 +443,7 @@ const StorageDetails = (props) => {
                                         width="24px"
                                         className={classes.arrayTabIcon}
                                         src={ArraysIconSelected}
-                                        alt="l"
+                                        alt="Arrays Icon"
                                         style={selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
                                     />
                                     <Typography>{props.arrays.length} Arrays</Typography>
@@ -461,7 +461,7 @@ const StorageDetails = (props) => {
                                         width="18px"
                                         className={classes.tabIcon}
                                         src={VolumeIconSelected}
-                                        alt="l"
+                                        alt="Volumes Icon"
                                         style={selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
                                     />
                                     <Typography>{props.arrayVolumes.length} Volumes</Typography>

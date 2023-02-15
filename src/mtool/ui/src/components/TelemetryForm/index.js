@@ -201,6 +201,7 @@ const TelemetryForm = (props) => {
                                 data-testid="btn-save-telemetry-config"
                                 className={classes.button}
                                 disabled={props.isSavingConfig}
+                                aria-label="Save"
                             >
                                 {t('Save')}
                             </Button>
@@ -211,6 +212,7 @@ const TelemetryForm = (props) => {
                                 color="secondary"
                                 data-testid="btn-cancel-telemetry-config"
                                 className={classes.button}
+                                aria-label="Cancel"
                             >
                                 {t('Cancel')}
                             </Button>
@@ -232,6 +234,7 @@ const TelemetryForm = (props) => {
                                 data-testid="btn-reset-telemetry-config"
                                 className={`${classes.button} ${classes.textEnd}`}
                                 disabled={!props.isConfigured || props.isResettingConfig}
+                                aria-label="Reset"
                             >
                                 Reset
                             </Button>

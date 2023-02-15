@@ -33,7 +33,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { PieChart } from 'react-minimal-pie-chart';
-import MaterialTable from "material-table";
+import MaterialTable from "@material-table/core";
 import { ArrowBack, ArrowUpward } from "@material-ui/icons";
 import { Box, Button, Grid, Paper, ThemeProvider, Typography, withStyles } from "@material-ui/core";
 import { customTheme, PageTheme } from "../../../theme";
@@ -113,6 +113,8 @@ const HardwareHealth = (props) => {
         metrics: [],
         unit: "",
     });
+    const [ipmiErrorMessage, setIpmiErrorMessage] = useState("No records to display");
+    const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
 
     useEffect(() => {
         if (isConfigured)
@@ -137,18 +139,16 @@ const HardwareHealth = (props) => {
             })
     }, [props.totalCriticals, props.totalWarnings, props.totalNominals, selectedRow])
 
+    useEffect(() => {
+        if (!props.isIMPIChassisPowerOn)
+            setIpmiErrorMessage("IPMI Power is OFF")
+        if (props.errorInIMPI)
+            setIpmiErrorMessage("Please Check IPMI Exporter")
+    }, [props.isIMPIChassisPowerOn, props.errorInIMPI])
     const getPercentage = (value) => {
         const total = pieChart.criticals + pieChart.nominals + pieChart.warnings;
         return Math.round(value * 1000 / total) / 10;
     }
-    let ipmiErrorMessage = "No records to display";
-    if (!props.isIMPIChassisPowerOn)
-        ipmiErrorMessage = "IPMI Power is OFF"
-    if (props.errorInIMPI)
-        ipmiErrorMessage = "Please Check IPMI Exporter"
-
-    const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
-
     /* eslint-disable react/no-multi-comp */
     const icons = {
         SortArrow: ArrowUpward,
@@ -272,6 +272,7 @@ const HardwareHealth = (props) => {
             }}
             style={{
                 width: "100%",
+                height: "226px",
                 boxShadow: "none",
                 border: "1px solid rgb(0 0 0 / 12%)"
             }}
@@ -322,6 +323,7 @@ const HardwareHealth = (props) => {
             }}
             style={{
                 width: "100%",
+                height: "113px",
                 boxShadow: "none",
                 border: "1px solid rgb(0 0 0 / 12%)",
             }}
@@ -457,10 +459,12 @@ const HardwareHealth = (props) => {
                 }}
                 className={classes.summaryButton}
                 data-testid="hw-summary-button"
+                aria-label="Summary"
             >
                 <ArrowBack /> Summary
             </Button>
-        )
+        );
+
     return (
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.hardwareHealthPaper}>
@@ -470,15 +474,6 @@ const HardwareHealth = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item container xs={12} justifyContent="center">
-                    {/* <Typography
-                        color="secondary"
-                        variant="h6"
-                        style={{
-                            marginTop: 4
-                        }}
-                    >
-                        Total
-                    </Typography> */}
                     <Legend
                         bgColor={customTheme.palette.success.main}
                         title="Nominals"

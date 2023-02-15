@@ -50,7 +50,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Clear from '@material-ui/icons/Clear';
 import { Paper, Typography, TextField, Button, Switch, Select, MenuItem, Box, Zoom } from '@material-ui/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 
 import { Done } from '@material-ui/icons';
 import AlertDialog from '../../Dialog';

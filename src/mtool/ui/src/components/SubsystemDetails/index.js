@@ -33,7 +33,7 @@
 import React, { useState } from 'react';
 import { Grid, Typography, withStyles, ThemeProvider } from '@material-ui/core';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward } from '@material-ui/icons';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { customTheme, TableTheme } from '../../theme';
 import Popup from '../Popup';
 import AddListener from '../AddListener';

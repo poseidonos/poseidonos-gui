@@ -76,6 +76,7 @@ const styles = (theme) => {
       }
     },
     performanceGridItem: {
+      minHeight: "88px",
       [theme.breakpoints.up("xl")]: {
         flexBasis: "fit-content"
       }
@@ -207,6 +208,7 @@ class Dashboard extends Component {
                     id="btn-edit-telemetry"
                     data-testid="btn-edit-telemetry"
                     onClick={() => this.props.setShowConfig(true)}
+                    aria-label="Edit Telemetry API"
                   >
                     <Edit />
                   </IconButton>
@@ -219,6 +221,7 @@ class Dashboard extends Component {
                   id="btn-add-telemetry"
                   data-testid="btn-add-telemetry"
                   onClick={() => this.props.setShowConfig(true)}
+                  aria-label="Add Telemetry API"
                 >
                   Add Telemetry API
                 </Button>

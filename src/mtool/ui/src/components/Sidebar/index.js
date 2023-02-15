@@ -170,7 +170,7 @@ const Sidebar = (props) => {
                   ? DashboardIconSelected
                   : DashboardIconDisabled
               }
-              alt="l"
+              alt="Dashboard Icon"
             />
             <Typography className={classes.sidebarText}>Dashboard</Typography>
           </ListItem>
@@ -191,7 +191,7 @@ const Sidebar = (props) => {
                   ? StorageIconSelected
                   : StorageIconDisabled
               }
-              alt="l"
+              alt="Storage Icon"
             />
             <Typography className={classes.sidebarText}>Storage</Typography>
           </ListItem>
@@ -208,7 +208,7 @@ const Sidebar = (props) => {
                   ? PerformanceIconSelected
                   : PerformanceIconDisabled
               }
-              alt="l"
+              alt="Performance Icon"
             />
             <Typography className={classes.sidebarText}>Telemetry</Typography>
           </ListItem>
@@ -271,14 +271,5 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = () => {
-  return {
 
-  };
-};
-
-export default
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Sidebar);
+export default connect(mapStateToProps)(Sidebar);
