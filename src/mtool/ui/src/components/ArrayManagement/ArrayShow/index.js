@@ -52,7 +52,7 @@ import { Add, Remove, SwapHorizOutlined } from "@material-ui/icons";
 import formatBytes from "../../../utils/format-bytes";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
-import "../ArrayCreate/ArrayCreate.css";
+import "../CreateArray/CreateArray.css";
 import { PageTheme } from "../../../theme";
 import Legend from "../../Legend";
 
