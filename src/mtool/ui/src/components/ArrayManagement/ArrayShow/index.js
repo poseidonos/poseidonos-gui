@@ -261,11 +261,11 @@ class ArrayShow extends Component {
     this.props.getArrayInfo(this.props.arrayName);
     this.props.getDevices({ noLoad: true });
     this.interval = setInterval(() => {
-      if(!this.props.isArrayInfoFetching) {
-          this.props.getArrayInfo(this.props.arrayName);
+      if (!this.props.isArrayInfoFetching) {
+        this.props.getArrayInfo(this.props.arrayName);
       }
-      if(!this.props.isDevicesFetching) {
-          this.props.getDevices({ noLoad: true });
+      if (!this.props.isDevicesFetching) {
+        this.props.getDevices({ noLoad: true });
       }
     }, 5000);
   }
@@ -404,10 +404,6 @@ class ArrayShow extends Component {
       if (this.props.storagedisks.find(findDisk(disk.name))) {
         return classes.storagedisk;
       }
-      // Required only if Buffer disks can be one of the Nvme disk
-      // if (this.props.writebufferdisks.find(findDisk(disk.name))) {
-      //   return classes.writebufferdisk;
-      // }
       if (this.props.sparedisks.find(findDisk(disk.name))) {
         return classes.sparedisk;
       }
@@ -571,6 +567,7 @@ class ArrayShow extends Component {
                             className={classes.detachBtn}
                             data-testid={`attachdisk-${index}`}
                             onClick={() => this.addSpareDisk(slot)}
+                            aria-label={`attach-disk-${index}`}
                           >
                             <Add fontSize="small" />
                           </Button>
@@ -583,6 +580,7 @@ class ArrayShow extends Component {
                             className={classes.detachBtn}
                             data-testid={`detachdisk-${index}`}
                             onClick={() => this.removeSpareDisk(slot)}
+                            aria-label={`detach-disk-${index}`}
                           >
                             <Remove fontSize="small" />
                           </Button>
@@ -595,6 +593,7 @@ class ArrayShow extends Component {
                             className={classes.detachBtn}
                             data-testid={`replacedisk-${index}`}
                             onClick={() => this.replaceDevice(slot)}
+                            aria-label={`replace-disk-${index}`}
                           >
                             <SwapHorizOutlined fontSize="small" />
                           </Button>
@@ -603,7 +602,7 @@ class ArrayShow extends Component {
                     </Tooltip>
                   );
                 })
-                : /* istanbul ignore next */ null}
+                : null}
               {freeSlots}
             </GridList>
           </Grid>
@@ -625,6 +624,7 @@ class ArrayShow extends Component {
                   variant="contained"
                   color="primary"
                   className={classes.button}
+                  aria-label="mount-array"
                 >
                   Mount Array
                 </Button>
@@ -641,6 +641,7 @@ class ArrayShow extends Component {
                   onClick={this.handleUnmountClick}
                   variant="contained"
                   color="primary"
+                  aria-label="unmount-array"
                 >
                   Unmount Array
                 </Button>
@@ -657,6 +658,7 @@ class ArrayShow extends Component {
                 onClick={this.handleClick}
                 variant="outlined"
                 color="secondary"
+                aria-label="delete-array"
               >
                 Delete Array
               </Button>

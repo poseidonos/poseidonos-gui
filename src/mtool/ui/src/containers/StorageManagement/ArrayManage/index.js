@@ -313,7 +313,7 @@ const ArrayManage = (props) => {
         Get_Subsystems();
         // eslint-disable-next-line camelcase
     }, [Get_Subsystems])
-    
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const array = urlParams.get("array");
@@ -321,8 +321,7 @@ const ArrayManage = (props) => {
             Set_Array(array)
         }
         // eslint-disable-next-line camelcase
-    },[Set_Array])
-
+    }, [Set_Array])
 
     return (
         <>
@@ -489,7 +488,6 @@ const ArrayManage = (props) => {
                         fetchSubsystems={props.Get_Subsystems}
                     />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
                     <Paper className={classes.volumeStatsPaper}>
                         <Typography className={classes.cardHeader}>
