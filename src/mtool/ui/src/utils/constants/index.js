@@ -1,3 +1,5 @@
+// namespace to connect to the websocket for multi-volume creation
+export const CREATE_VOL_SOCKET_ENDPOINT = ":5000/create_vol";
 export const BYTE_FACTOR = 1024;
 export const FETCH_API_INTERVAL = 2000;
 // eslint-disable-next-line no-useless-escape, no-control-regex
