@@ -34,9 +34,9 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Grid, Paper, Typography } from "@material-ui/core";
-import CreateArray from "../../../components/ArrayManagement/ArrayCreate";
+import CreateArray from "../../../components/ArrayManagement/CreateArray";
+import AutoCreate from "../../../components/ArrayManagement/AutoCreate";
 import * as actionTypes from "../../../store/actions/actionTypes";
-import AutoCreate from "../../../components/AutoCreate";
 
 
 const ArrayCreate = (props) => {
@@ -45,7 +45,7 @@ const ArrayCreate = (props) => {
 
     useEffect(() => {
         Get_Config();
-    // eslint-disable-next-line camelcase
+        // eslint-disable-next-line camelcase
     }, [Get_Config])
 
     const createArray = (array) => {
@@ -53,31 +53,33 @@ const ArrayCreate = (props) => {
     }
 
     return (
-        <Grid item xs={12}>
-            <Paper spacing={3}>
-                <Grid container justifyContent="space-between">
-                    <CreateArray
-                        createArray={createArray}
-                        config={props.config}
-                        selectedRaid={props.selectedRaid}
-                        selectRaid={props.Select_Raid}
-                        disks={props.ssds}
-                        data-testid="arraycreate"
-                        metadisks={props.metadisks}
-                        diskDetails={props.diskDetails}
-                        getDiskDetails={props.Get_Disk_Details}
-                    />
-                </Grid>
-            </Paper>
-            <AutoCreate
-                disks={props.ssds}
-                metadisks={props.metadisks}
-                autoCreateArray={props.Auto_Create_Array}
-                config={props.config}
-            />
-            {(props.posMountStatus === "EXIST_NORMAL") ? (
-                <Typography style={{ color: "#b11b1b" }} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
-            ) : null}
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <Paper spacing={3}>
+                    <Grid container justifyContent="space-between">
+                        <CreateArray
+                            createArray={createArray}
+                            config={props.config}
+                            selectedRaid={props.selectedRaid}
+                            selectRaid={props.Select_Raid}
+                            disks={props.ssds}
+                            data-testid="arraycreate"
+                            metadisks={props.metadisks}
+                            diskDetails={props.diskDetails}
+                            getDiskDetails={props.Get_Disk_Details}
+                        />
+                    </Grid>
+                </Paper>
+                <AutoCreate
+                    disks={props.ssds}
+                    metadisks={props.metadisks}
+                    autoCreateArray={props.Auto_Create_Array}
+                    config={props.config}
+                />
+                {(props.posMountStatus === "EXIST_NORMAL") ? (
+                    <Typography style={{ color: "#b11b1b" }} variant="h5" align="center">Poseidon OS is not Mounted !!!</Typography>
+                ) : null}
+            </Grid>
         </Grid>
     )
 }
@@ -93,6 +95,7 @@ const mapStateToProps = (state) => {
         posMountStatus: state.headerReducer.state
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),

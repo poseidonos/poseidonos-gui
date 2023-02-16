@@ -53,7 +53,7 @@ import formatBytes from "../../../utils/format-bytes";
 import MToolLoader from "../../MToolLoader";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
-import "./ArrayCreate.css";
+import "./CreateArray.css";
 import { PageTheme } from "../../../theme";
 import Legend from "../../Legend";
 

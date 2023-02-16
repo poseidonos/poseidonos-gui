@@ -167,7 +167,15 @@ const createVolSocket = io(CREATE_VOL_SOCKET_ENDPOINT, {
 const ArrayManage = (props) => {
     const {
         classes,
-        getDevices
+        getDevices,
+        // eslint-disable-next-line camelcase
+        Get_Max_Volume_Count,
+        // eslint-disable-next-line camelcase
+        Get_Subsystems,
+        // eslint-disable-next-line camelcase
+        Set_Array,
+        // eslint-disable-next-line camelcase
+        Get_Volumes
     } = props;
     const selectedArray = props.arrayMap[props.arrayname];
     const totalVolSize = props.volumes.reduce((prev, curr) => prev + curr.size, 0);
@@ -291,13 +299,34 @@ const ArrayManage = (props) => {
         if (window.location.href.indexOf('manage') > 0
             && window.location.href.indexOf(`array=${props.arrayname}`) < 0) {
             props.history.push(`/storage/array/manage?array=${props.arrayname}`);
-            fetchVolumes();
+            Get_Volumes({ array: props.arrayname })
         }
-    })
+        // eslint-disable-next-line camelcase
+    }, [Get_Volumes, props.history, props.arrayname])
+
+    useEffect(() => {
+        Get_Max_Volume_Count();
+        // eslint-disable-next-line camelcase
+    }, [Get_Max_Volume_Count])
+
+    useEffect(() => {
+        Get_Subsystems();
+        // eslint-disable-next-line camelcase
+    }, [Get_Subsystems])
+    
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const array = urlParams.get("array");
+        if (array) {
+            Set_Array(array)
+        }
+        // eslint-disable-next-line camelcase
+    },[Set_Array])
+
 
     return (
         <>
-            <Grid container spacing={1} className={classes.card}>
+            <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <Paper spacing={3}>
                         <Grid container className={classes.arrayInfoContainer} justifyContent="space-between">
@@ -569,6 +598,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
+        Get_Max_Volume_Count: () => dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
         Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload }),
         Rebuild_Array: (payload) => dispatch({ type: actionTypes.SAGA_REBUILD_ARRAY, payload }),
         Delete_Array: (payload) => dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),

@@ -65,9 +65,10 @@ const styles = (theme) => ({
   },
   pageHeader: customTheme.page.title,
   selectedTab: customTheme.tab.selected,
-  card: {
-    marginTop: theme.spacing(1),
-  },
+  appBar: {
+    zIndex: 50,
+    marginBottom: theme.spacing(1.5)
+  }
 });
 
 class StorageManagement extends Component {
@@ -77,20 +78,12 @@ class StorageManagement extends Component {
       mobileOpen: false,
     };
     this.alertConfirm = this.alertConfirm.bind(this);
-    this.fetchDevices = this.fetchDevices.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
   }
 
   componentDidMount() {
-    this.fetchDevices();
-    this.props.Get_Max_Volume_Count();
-    this.props.Get_Subsystems();
-    const urlParams = new URLSearchParams(window.location.search);
-    const array = urlParams.get("array");
-    if (array) {
-      this.props.Set_Array(array)
-    }
+    this.props.Get_Devices(this.props.history)
   }
 
   handleDrawerToggle() {
@@ -101,16 +94,11 @@ class StorageManagement extends Component {
 
   handleTabChange(event, newValue) {
     if (newValue === "manage") {
-      this.props.Get_Subsystems();
       this.props.history.push(`/storage/array/${newValue}?array=${this.props.arrayname}`);
     } else {
-      this.fetchDevices();
+      this.props.Get_Devices(this.props.history)
       this.props.history.push(`/storage/array/${newValue}`);
     }
-  }
-
-  fetchDevices() {
-    this.props.Get_Devices(this.props.history);
   }
 
   alertConfirm() {
@@ -139,7 +127,7 @@ class StorageManagement extends Component {
                 </Grid>
               </Grid>
 
-              <AppBar style={{ zIndex: 50 }} position="relative" color="default">
+              <AppBar className={classes.appBar} position="relative" color="default">
                 <Tabs
                   onChange={this.handleTabChange}
                   value={
@@ -166,18 +154,14 @@ class StorageManagement extends Component {
                 <Switch>
                   <Redirect exact from="/storage/array/" to="/storage/array/create" />
                   <Route path="/storage/array/create">
-                    <Grid container spacing={1} className={classes.card}>
-                      <ArrayCreate />
-                    </Grid>
+                    <ArrayCreate />
                   </Route>
                   <Route path="/storage/array/manage*">
-                    <>
-                      {this.props.arrayMap[this.props.arrayname] ? (
-                        <ArrayManage
-                          getDevices={this.props.Get_Devices}
-                        />
-                      ) : null}
-                    </>
+                    {this.props.arrayMap[this.props.arrayname] ? (
+                      <ArrayManage
+                        getDevices={this.props.Get_Devices}
+                      />
+                    ) : null}
                   </Route>
                 </Switch>
               </Suspense>
@@ -215,27 +199,14 @@ const mapStateToProps = (state) => {
     alertLinkText: state.storageReducer.alertLinkText,
     errorMsg: state.storageReducer.errorMsg,
     errorCode: state.storageReducer.errorCode,
-    arraySize: state.storageReducer.arraySize,
-    totalVolSize: state.storageReducer.totalVolSize,
-    slots: state.storageReducer.slots,
-    arrayExists: state.storageReducer.arrayExists,
-    RAIDLevel: state.storageReducer.RAIDLevel,
-    loadText: state.storageReducer.loadText,
-    mountStatus: state.storageReducer.mountStatus,
+    loadText: state.storageReducer.loadText
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    Get_Devices: (payload) =>
-      dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
-    Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
+    Get_Devices: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
-    Change_Mount_Status: (payload) =>
-      dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
-    Get_Max_Volume_Count: () =>
-      dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
-    Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload }),
-    Get_Subsystems: () => dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
   };
 };
 
