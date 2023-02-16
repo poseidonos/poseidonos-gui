@@ -37,16 +37,18 @@ import io from "socket.io-client";
 import { withStyles } from "@material-ui/styles";
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Tooltip, Typography, Zoom } from "@material-ui/core";
 import { Info } from "@material-ui/icons";
-import { customTheme } from "../../../theme";
+import ArrayShow from "../../../components/ArrayManagement/ArrayShow";
+import Legend from "../../../components/Legend";
 import LightTooltip from "../../../components/LightTooltip";
 import RebuildProgress from "../../../components/RebuildProgress";
-import ArrayShow from "../../../components/ArrayManagement/ArrayShow";
-import * as actionTypes from "../../../store/actions/actionTypes";
 import CreateVolume from "../../../components/VolumeManagement/CreateVolume";
 import VolumeList from "../../../components/VolumeManagement/VolumeList";
+import * as actionTypes from "../../../store/actions/actionTypes";
+import { customTheme } from "../../../theme";
+import { BYTE_FACTOR, CREATE_VOL_SOCKET_ENDPOINT } from "../../../utils/constants";
 import formatBytes from "../../../utils/format-bytes";
-import Legend from "../../../components/Legend";
-import { BYTE_FACTOR } from "../../../utils/constants";
+import SelectSubsystem from "../../../components/SelectSubsystem";
+import getSubsystemForArray from "../../../utils/subsystem";
 
 const styles = (theme) => ({
     card: {
@@ -155,30 +157,23 @@ const styles = (theme) => ({
     }
 })
 
-// namespace to connect to the websocket for multi-volume creation
-const createVolSocketEndPoint = ":5000/create_vol";
+const createVolSocket = io(CREATE_VOL_SOCKET_ENDPOINT, {
+    transports: ["websocket"],
+    query: {
+        "x-access-token": localStorage.getItem("token"),
+    },
+});
 
 const ArrayManage = (props) => {
     const {
         classes,
-        changeArray,
-        selectedArray,
-        ssds,
-        diskDetails,
-        getDiskDetails,
-        getDevices,
-        mountConfirm
+        getDevices
     } = props;
-    const [totalVolSize, setTotalVolSize] = useState(0);
-    const createVolSocket = io(createVolSocketEndPoint, {
-        transports: ["websocket"],
-        query: {
-            "x-access-token": localStorage.getItem("token"),
-        },
-    });
+    const selectedArray = props.arrayMap[props.arrayname];
+    const totalVolSize = props.volumes.reduce((prev, curr) => prev + curr.size, 0);
     const volumeFilledStyle = {
-        width: `${props.arrayMap[selectedArray] && props.arrayMap[selectedArray].totalsize !== 0
-            ? (100 * totalVolSize) / props.arrayMap[selectedArray].totalsize
+        width: `${selectedArray && selectedArray.totalsize !== 0
+            ? (100 * totalVolSize) / selectedArray.totalsize
             : 0
             }%`,
         height: "100%",
@@ -190,8 +185,8 @@ const ArrayManage = (props) => {
         justifyContent: "center",
     };
     const volumeFreeStyle = {
-        width: `${props.arrayMap[selectedArray] && props.arrayMap[selectedArray].totalsize !== 0
-            ? 100 - (100 * totalVolSize) / props.arrayMap[selectedArray].totalsize
+        width: `${selectedArray && selectedArray.totalsize !== 0
+            ? 100 - (100 * totalVolSize) / selectedArray.totalsize
             : 100
             }%`,
         height: "100%",
@@ -204,22 +199,15 @@ const ArrayManage = (props) => {
         justifyContent: "center",
     };
 
-    const rebuildArray = () => {
-        props.Rebuild_Array(selectedArray);
-    }
-    const deleteArray = () => {
-        props.Delete_Array({ arrayname: "" });
-    }
-    const fetchVolumes = () => {
-        props.Get_Volumes({ array: selectedArray });
-    }
-    const changeMountStatus = (payload) => {
-        if (payload.status !== "Mounted") {
-            mountConfirm(payload);
-        } else {
-            props.Change_Mount_Status(payload);
-        }
-    }
+    const [mountSubsystem, setMountSubsystem] = useState("");
+    const [mountOpen, setMountOpen] = useState(false);
+    const [volumeForMount, setVolumeForMount] = useState("");
+
+    const rebuildArray = () => props.Rebuild_Array(props.arrayname);
+    const deleteArray = () => props.Delete_Array({ arrayname: "" });
+    const fetchVolumes = () => props.Get_Volumes({ array: props.arrayname });
+    const closeMountPopup = () => setMountOpen(false);
+    const changeMountSubsystem = (event) => setMountSubsystem(event.target.value);
 
     const deleteVolumes = (volumes) => {
         const vols = [];
@@ -228,21 +216,13 @@ const ArrayManage = (props) => {
         });
         props.Delete_Volumes({ volumes: vols });
     }
-    useEffect(() => {
-        if (window.location.href.indexOf('manage') > 0
-            && window.location.href.indexOf(`array=${selectedArray}`) < 0) {
-            props.history.push(`/storage/array/manage?array=${selectedArray}`);
-            fetchVolumes();
-        }
-    })
 
-    useEffect(() => {
-        let volSize = 0;
-        for (let i = 0; i < props.volumes.length; i += 1) {
-            volSize += props.volumes[i].size;
-        }
-        setTotalVolSize(volSize)
-    }, [props.volumes])
+    const changeArray = (event) => {
+        const { value } = event.target;
+        props.history.push(`/storage/array/manage?array=${value}`);
+        props.Set_Array(value);
+        props.Get_Volumes({ array: value });
+    }
 
     const createVolume = (volume) => {
         props.Create_Volume({
@@ -259,9 +239,61 @@ const ArrayManage = (props) => {
             suffix: volume.volume_suffix,
             stop_on_error: volume.stop_on_error_checkbox,
             mount_vol: volume.mount_vol,
-            max_available_size: props.arrayMap[selectedArray].totalsize - props.arrayMap[selectedArray].usedspace,
+            max_available_size: selectedArray.totalsize - selectedArray.usedspace,
         });
     }
+
+    const isSubsystemReserved = () => {
+        for (let i = 0; i < props.subsystems.length; i += 1) {
+            const subsystem = props.subsystems[i];
+            const isSubsystemSelected = subsystem.subnqn === mountSubsystem;
+            const isArrayFreeOrValid = !subsystem.array || subsystem.array === props.arrayname;
+            if (isSubsystemSelected && isArrayFreeOrValid) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const mountVolume = () => {
+        if (isSubsystemReserved()) {
+            props.Show_Storage_Alert({
+                alertType: "alert",
+                errorMsg: "Mount error",
+                errorCode: "Selected Subsystem is used by another array",
+                alertTitle: "Mounting Array"
+            });
+            return;
+        }
+        closeMountPopup();
+        props.Change_Mount_Status({
+            name: volumeForMount,
+            array: props.arrayname,
+            subsystem: mountSubsystem
+        })
+    }
+
+    const mountConfirm = (payload) => {
+        setMountSubsystem(getSubsystemForArray(props.subsystems, props.arrayname));
+        setVolumeForMount(payload.name);
+        setMountOpen(true);
+    }
+
+    const changeMountStatus = (payload) => {
+        if (payload.status !== "Mounted") {
+            mountConfirm(payload);
+        } else {
+            props.Change_Mount_Status(payload);
+        }
+    }
+
+    useEffect(() => {
+        if (window.location.href.indexOf('manage') > 0
+            && window.location.href.indexOf(`array=${props.arrayname}`) < 0) {
+            props.history.push(`/storage/array/manage?array=${props.arrayname}`);
+            fetchVolumes();
+        }
+    })
 
     return (
         <>
@@ -272,7 +304,7 @@ const ArrayManage = (props) => {
                             <Tooltip
                                 title={(
                                     <Typography data-testid="array-id-text">
-                                        {`Array ID: ${props.arrayMap[props.selectedArray].uniqueId}`}
+                                        {`Array ID: ${selectedArray.uniqueId}`}
                                     </Typography>
                                 )}
                                 classes={{
@@ -306,7 +338,7 @@ const ArrayManage = (props) => {
                                                 "data-testid": "select-array",
                                             }}
                                             onChange={changeArray}
-                                            value={selectedArray}
+                                            value={props.arrayname}
                                             className={classes.arraySelect}
                                         >
                                             {props.arrays.map((array) => (
@@ -322,23 +354,23 @@ const ArrayManage = (props) => {
                                         <span
                                             style={{
                                                 fontWeight: 600,
-                                                color: props.arrayMap[selectedArray].status === "Mounted" ? "green" : "orange"
+                                                color: selectedArray.status === "Mounted" ? "green" : "orange"
                                             }}
                                         >
-                                            {props.arrayMap[selectedArray].status}
+                                            {selectedArray.status}
                                         </span>
                                         <Grid container alignItems="center">,
-                                            <span data-testid="array-show-status">{props.arrayMap[selectedArray].situation}</span>
-                                            {props.arrayMap[selectedArray].situation === "REBUILDING" ? (
+                                            <span data-testid="array-show-status">{selectedArray.situation}</span>
+                                            {selectedArray.situation === "REBUILDING" ? (
                                                 <LightTooltip
                                                     data-testid="Tooltip"
                                                     TransitionComponent={Zoom}
                                                     title={(
                                                         <RebuildProgress
                                                             arrayMap={props.arrayMap}
-                                                            array={selectedArray}
-                                                            progress={props.arrayMap[selectedArray].rebuildProgress}
-                                                            rebuildTime={props.arrayMap[selectedArray].rebuildTime}
+                                                            array={props.arrayname}
+                                                            progress={selectedArray.rebuildProgress}
+                                                            rebuildTime={selectedArray.rebuildTime}
                                                         />
                                                     )}
                                                     interactive
@@ -350,8 +382,8 @@ const ArrayManage = (props) => {
                                                 </LightTooltip>
                                             ) : null
                                             }
-                                            {props.arrayMap[selectedArray].status === "Mounted" &&
-                                                props.arrayMap[selectedArray].situation === "DEGRADED" ? (
+                                            {selectedArray.status === "Mounted" &&
+                                                selectedArray.situation === "DEGRADED" ? (
                                                 <Tooltip
                                                     title="Rebuild Array"
                                                 >
@@ -372,24 +404,24 @@ const ArrayManage = (props) => {
                                 </Grid>
                             </Grid>
                             <ArrayShow
-                                RAIDLevel={props.arrayMap[selectedArray].RAIDLevel}
-                                slots={ssds}
-                                arrayName={selectedArray}
-                                corrupted={props.arrayMap[selectedArray].corrupted}
-                                storagedisks={props.arrayMap[selectedArray].storagedisks}
-                                sparedisks={props.arrayMap[selectedArray].sparedisks}
-                                metadiskpath={props.arrayMap[selectedArray].metadiskpath}
-                                writebufferdisks={props.arrayMap[selectedArray].writebufferdisks}
+                                RAIDLevel={selectedArray.RAIDLevel}
+                                slots={props.ssds}
+                                arrayName={props.arrayname}
+                                corrupted={selectedArray.corrupted}
+                                storagedisks={selectedArray.storagedisks}
+                                sparedisks={selectedArray.sparedisks}
+                                metadiskpath={selectedArray.metadiskpath}
+                                writebufferdisks={selectedArray.writebufferdisks}
                                 deleteArray={deleteArray}
-                                writeThrough={props.arrayMap[selectedArray].writeThroughEnabled}
-                                diskDetails={diskDetails}
-                                getDiskDetails={getDiskDetails}
+                                writeThrough={selectedArray.writeThroughEnabled}
+                                diskDetails={props.diskDetails}
+                                getDiskDetails={props.Get_Disk_Details}
                                 isDevicesFetching={props.isDevicesFetching}
                                 isArrayInfoFetching={props.isArrayInfoFetching}
                                 addSpareDisk={props.Add_Spare_Disk}
                                 removeSpareDisk={props.Remove_Spare_Disk}
                                 replaceDevice={props.Replace_Device}
-                                mountStatus={props.arrayMap[selectedArray].status}
+                                mountStatus={selectedArray.status}
                                 handleUnmountPOS={props.Unmount_POS}
                                 handleMountPOS={props.Mount_POS}
                                 getArrayInfo={props.Get_Array_Info}
@@ -404,9 +436,9 @@ const ArrayManage = (props) => {
                 spacing={1}
                 className={classes.card}
                 style={{
-                    opacity: props.arrayMap[selectedArray].status !== "Mounted" ? 0.5 : 1,
+                    opacity: selectedArray.status !== "Mounted" ? 0.5 : 1,
                     pointerEvents:
-                        props.arrayMap[selectedArray].status !== "Mounted"
+                        selectedArray.status !== "Mounted"
                             ? "none"
                             : "initial",
                 }}
@@ -416,11 +448,11 @@ const ArrayManage = (props) => {
                         data-testid="createvolume"
                         createVolume={createVolume}
                         subsystems={props.subsystems}
-                        array={selectedArray}
+                        array={props.arrayname}
                         maxVolumeCount={props.maxVolumeCount}
                         volCount={props.volumes.length}
                         maxAvailableSize={
-                            props.arrayMap[selectedArray].totalsize - totalVolSize
+                            selectedArray.totalsize - totalVolSize
                         }
                         createVolSocket={createVolSocket}
                         fetchVolumes={fetchVolumes}
@@ -464,8 +496,8 @@ const ArrayManage = (props) => {
                                         title={`
                           Available for Volume Creation :
                           ${formatBytes(
-                                            props.arrayMap[selectedArray].totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
-                                                props.arrayMap[selectedArray].totalsize - totalVolSize :
+                                            selectedArray.totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
+                                                selectedArray.totalsize - totalVolSize :
                                                 0
                                         )}
                         `}
@@ -481,9 +513,9 @@ const ArrayManage = (props) => {
                 spacing={1}
                 className={classes.card}
                 style={{
-                    opacity: props.arrayMap[selectedArray].status !== "Mounted" ? 0.5 : 1,
+                    opacity: selectedArray.status !== "Mounted" ? 0.5 : 1,
                     pointerEvents:
-                        props.arrayMap[selectedArray].status !== "Mounted"
+                        selectedArray.status !== "Mounted"
                             ? "none"
                             : "initial",
                 }}
@@ -504,6 +536,17 @@ const ArrayManage = (props) => {
                     />
                 </Grid>
             </Grid>
+            <SelectSubsystem
+                title="Select a subsystem"
+                open={mountOpen}
+                subsystems={props.subsystems}
+                handleChange={changeMountSubsystem}
+                selectedSubsystem={mountSubsystem}
+                handleClose={closeMountPopup}
+                array={props.arrayname}
+                volume={volumeForMount}
+                mountVolume={mountVolume}
+            />
         </>
     )
 }
@@ -511,8 +554,9 @@ const ArrayManage = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        ssds: state.storageReducer.ssds,
         arrayMap: state.storageReducer.arrayMap,
-        selectedArray: state.storageReducer.arrayname,
+        arrayname: state.storageReducer.arrayname,
         arrays: state.storageReducer.arrays,
         isDevicesFetching: state.storageReducer.isDevicesFetching,
         isArrayInfoFetching: state.storageReducer.isArrayInfoFetching,
@@ -520,10 +564,12 @@ const mapStateToProps = (state) => {
         maxVolumeCount: state.storageReducer.maxVolumeCount,
         volumes: state.storageReducer.volumes,
         fetchingVolumes: state.storageReducer.fetchingVolumes,
+        diskDetails: state.storageReducer.diskDetails,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
+        Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload }),
         Rebuild_Array: (payload) => dispatch({ type: actionTypes.SAGA_REBUILD_ARRAY, payload }),
         Delete_Array: (payload) => dispatch({ type: actionTypes.SAGA_DELETE_ARRAY, payload }),
         Add_Spare_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ADD_SPARE_DISK, payload }),
@@ -542,6 +588,10 @@ const mapDispatchToProps = (dispatch) => {
         Change_Reset_Type: (payload) => dispatch({ type: actionTypes.CHANGE_RESET_TYPE, payload }),
         Get_Subsystems: () => dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
         Delete_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_DELETE_VOLUMES, payload }),
+        Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
+        Change_Mount_Status: (payload) => dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
+        Get_Disk_Details: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
+        Show_Storage_Alert: (payload) => dispatch({ type: actionTypes.STORAGE_SHOW_ALERT, payload }),
     };
 };
 
