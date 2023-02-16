@@ -41,11 +41,9 @@ import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import MToolLoader from "../../components/MToolLoader";
 import AlertDialog from "../../components/Dialog";
-import "./StorageManagement.css";
-import MToolTheme, { customTheme } from "../../theme";
-import SelectSubsystem from "../../components/SelectSubsystem";
 import * as actionTypes from "../../store/actions/actionTypes";
-import getSubsystemForArray from "../../utils/subsystem";
+import MToolTheme, { customTheme } from "../../theme";
+import "./StorageManagement.css";
 
 
 const ArrayCreate = lazy(() => import("./ArrayCreate"));
@@ -72,35 +70,27 @@ const styles = (theme) => ({
   },
 });
 
-
 class StorageManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mobileOpen: false,
-      mountSubsystem: ""
     };
     this.alertConfirm = this.alertConfirm.bind(this);
     this.fetchDevices = this.fetchDevices.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
-    this.fetchMaxVolumeCount = this.fetchMaxVolumeCount.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
-    this.changeArray = this.changeArray.bind(this);
-    this.mountConfirm = this.mountConfirm.bind(this);
-    this.changeMountSubsystem = this.changeMountSubsystem.bind(this);
-    this.closeMountPopup = this.closeMountPopup.bind(this);
-    this.isSubsystemReserved = this.isSubsystemReserved.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchDevices();
+    this.props.Get_Max_Volume_Count();
+    this.props.Get_Subsystems();
     const urlParams = new URLSearchParams(window.location.search);
     const array = urlParams.get("array");
     if (array) {
       this.props.Set_Array(array)
     }
-  }
-
-  componentDidMount() {
-    this.fetchDevices();
-    this.fetchMaxVolumeCount();
-    this.props.Get_Subsystems();
   }
 
   handleDrawerToggle() {
@@ -112,89 +102,20 @@ class StorageManagement extends Component {
   handleTabChange(event, newValue) {
     if (newValue === "manage") {
       this.props.Get_Subsystems();
-      this.props.history.push(`/storage/array/${newValue}?array=${this.props.selectedArray}`);
+      this.props.history.push(`/storage/array/${newValue}?array=${this.props.arrayname}`);
     } else {
       this.fetchDevices();
       this.props.history.push(`/storage/array/${newValue}`);
     }
   }
 
-  changeArray(event) {
-    const { value } = event.target;
-    this.props.history.push(`/storage/array/manage?array=${value}`);
-    this.props.Set_Array(value);
-    this.props.Get_Volumes({ array: value });
-  }
-
-
-  fetchMaxVolumeCount() {
-    this.props.Get_Max_Volume_Count();
-  }
-
-
   fetchDevices() {
     this.props.Get_Devices(this.props.history);
   }
 
-
-
-  closeMountPopup() {
-    this.setState({
-      mountOpen: false
-    });
-  }
-
-  changeMountSubsystem(event) {
-    this.setState({
-      mountSubsystem: event.target.value
-    });
-  }
-
-  isSubsystemReserved() {
-    for (let i = 0; i < this.props.subsystems.length; i += 1) {
-      const subsystem = this.props.subsystems[i];
-      const isSubsystemSelected = subsystem.subnqn === this.state.mountSubsystem;
-      const isArrayFreeOrValid = !subsystem.array || subsystem.array === this.props.selectedArray;
-      if (isSubsystemSelected && isArrayFreeOrValid) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  mountConfirm(payload) {
-    this.setState({
-      mountSubsystem: getSubsystemForArray(this.props.subsystems, this.props.selectedArray),
-      volumeForMount: payload.name,
-      mountConfirm: () => {
-
-        if (this.isSubsystemReserved()) {
-          this.props.Show_Storage_Alert({
-            alertType: "alert",
-            errorMsg: "Mount error",
-            errorCode: "Selected Subsystem is used by another array",
-            alertTitle: "Mounting Array"
-          });
-          return;
-        }
-        this.closeMountPopup();
-        this.props.Change_Mount_Status({
-          ...payload,
-          subsystem: this.state.mountSubsystem
-        })
-      },
-      mountOpen: true
-    });
-  }
-
-
-
-
-
   alertConfirm() {
     this.props.Close_Alert();
   }
-
 
   render() {
     const { classes } = this.props;
@@ -241,30 +162,19 @@ class StorageManagement extends Component {
                   </Tab>
                 </Tabs>
               </AppBar>
-
               <Suspense fallback={<MToolLoader />}>
                 <Switch>
                   <Redirect exact from="/storage/array/" to="/storage/array/create" />
                   <Route path="/storage/array/create">
                     <Grid container spacing={1} className={classes.card}>
-                      <ArrayCreate
-                        ssds={this.props.ssds}
-                        diskDetails={this.props.diskDetails}
-                        getDiskDetails={this.props.Get_Disk_Details}
-                      />
+                      <ArrayCreate />
                     </Grid>
                   </Route>
                   <Route path="/storage/array/manage*">
                     <>
-                      {this.props.arrayMap[this.props.selectedArray] ? (
+                      {this.props.arrayMap[this.props.arrayname] ? (
                         <ArrayManage
-                          changeArray={this.changeArray}
-                          selectedArray={this.props.selectedArray}
-                          ssds={this.props.ssds}
-                          diskDetails={this.props.diskDetails}
-                          getDiskDetails={this.props.Get_Disk_Details}
                           getDevices={this.props.Get_Devices}
-                          mountConfirm={this.mountConfirm}
                         />
                       ) : null}
                     </>
@@ -282,17 +192,6 @@ class StorageManagement extends Component {
                 handleClose={this.alertConfirm}
                 errCode={this.props.errorCode}
               />
-              <SelectSubsystem
-                title="Select a subsystem"
-                open={this.state.mountOpen}
-                subsystems={this.props.subsystems}
-                handleChange={this.changeMountSubsystem}
-                selectedSubsystem={this.state.mountSubsystem}
-                handleClose={this.closeMountPopup}
-                array={this.props.selectedArray}
-                volume={this.state.volumeForMount}
-                mountVolume={this.state.mountConfirm}
-              />
               {this.props.loading ? (
                 <MToolLoader text={this.props.loadText} />
               ) : null}
@@ -306,11 +205,9 @@ class StorageManagement extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ssds: state.storageReducer.ssds,
     arrayMap: state.storageReducer.arrayMap,
-    selectedArray: state.storageReducer.arrayname,
+    arrayname: state.storageReducer.arrayname,
     loading: state.storageReducer.loading,
-    subsystems: state.subsystemReducer.subsystems,
     alertOpen: state.storageReducer.alertOpen,
     alertType: state.storageReducer.alertType,
     alertTitle: state.storageReducer.alertTitle,
@@ -323,7 +220,6 @@ const mapStateToProps = (state) => {
     slots: state.storageReducer.slots,
     arrayExists: state.storageReducer.arrayExists,
     RAIDLevel: state.storageReducer.RAIDLevel,
-    diskDetails: state.storageReducer.diskDetails,
     loadText: state.storageReducer.loadText,
     mountStatus: state.storageReducer.mountStatus,
   };
@@ -333,18 +229,12 @@ const mapDispatchToProps = (dispatch) => {
     Get_Devices: (payload) =>
       dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO, payload }),
     Get_Volumes: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_VOLUMES, payload }),
-
     Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
-    Get_Disk_Details: (payload) =>
-      dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
     Change_Mount_Status: (payload) =>
       dispatch({ type: actionTypes.SAGA_VOLUME_MOUNT_CHANGE, payload }),
-    // Detach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_DETACH_DISK, payload }),
-    // Attach_Disk: (payload) => dispatch({ type: actionTypes.SAGA_ATTACH_DISK, payload }),
     Get_Max_Volume_Count: () =>
       dispatch({ type: actionTypes.SAGA_FETCH_MAX_VOLUME_COUNT }),
     Set_Array: (payload) => dispatch({ type: actionTypes.SET_ARRAY, payload }),
-    Show_Storage_Alert: (payload) => dispatch({ type: actionTypes.STORAGE_SHOW_ALERT, payload }),
     Get_Subsystems: () => dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
   };
 };

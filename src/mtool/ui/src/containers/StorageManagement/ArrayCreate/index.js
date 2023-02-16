@@ -40,11 +40,13 @@ import AutoCreate from "../../../components/AutoCreate";
 
 
 const ArrayCreate = (props) => {
-    const { ssds, diskDetails, getDiskDetails, getConfig } = props;
+    // eslint-disable-next-line camelcase
+    const { Get_Config } = props;
 
     useEffect(() => {
-        getConfig();
-    }, [getConfig])
+        Get_Config();
+    // eslint-disable-next-line camelcase
+    }, [Get_Config])
 
     const createArray = (array) => {
         props.Create_Array(array);
@@ -59,16 +61,16 @@ const ArrayCreate = (props) => {
                         config={props.config}
                         selectedRaid={props.selectedRaid}
                         selectRaid={props.Select_Raid}
-                        disks={ssds}
+                        disks={props.ssds}
                         data-testid="arraycreate"
                         metadisks={props.metadisks}
-                        diskDetails={diskDetails}
-                        getDiskDetails={getDiskDetails}
+                        diskDetails={props.diskDetails}
+                        getDiskDetails={props.Get_Disk_Details}
                     />
                 </Grid>
             </Paper>
             <AutoCreate
-                disks={ssds}
+                disks={props.ssds}
                 metadisks={props.metadisks}
                 autoCreateArray={props.Auto_Create_Array}
                 config={props.config}
@@ -83,17 +85,19 @@ const ArrayCreate = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        ssds: state.storageReducer.ssds,
         config: state.storageReducer.config,
         selectedRaid: state.storageReducer.selectedRaid,
         metadisks: state.storageReducer.metadisks,
+        diskDetails: state.storageReducer.diskDetails,
         posMountStatus: state.headerReducer.state
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        Create_Array: (payload) =>
-            dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),
-        getConfig: () => dispatch({ type: actionTypes.SAGA_FETCH_CONFIG }),
+        Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_CREATE_ARRAY, payload }),
+        Get_Disk_Details: (payload) => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_DETAILS, payload }),
+        Get_Config: () => dispatch({ type: actionTypes.SAGA_FETCH_CONFIG }),
         Select_Raid: (payload) => dispatch({ type: actionTypes.SELECT_RAID, payload }),
         Auto_Create_Array: (payload) => dispatch({ type: actionTypes.SAGA_AUTO_CREATE_ARRAY, payload }),
     };
