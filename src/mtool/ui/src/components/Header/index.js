@@ -58,6 +58,7 @@ import MToolTheme, { customTheme } from "../../theme";
 import * as actionCreators from '../../store/actions/exportActionCreators';
 import ChangePassword from "../ChangePassword";
 import LinearProgressBarComponent from "../IbofOsOperationComponents/LinearProgressBarComponent"
+import { FETCH_POS_STATUS_INTERVAL } from "../../utils/constants";
 
 const styles = theme => ({
   appBar: {
@@ -227,19 +228,19 @@ class Header extends Component {
     // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
     this.interval = setInterval(() => {
-      if(this.props.statusCheckDone) {
+      if (this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, 4000);
+    }, FETCH_POS_STATUS_INTERVAL);
   }
 
   componentDidUpdate() {
     clearInterval(this.interval);
     this.interval = setInterval(() => {
-      if(this.props.statusCheckDone) {
+      if (this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, 4000);
+    }, FETCH_POS_STATUS_INTERVAL);
   }
 
   componentWillUnmount() {
