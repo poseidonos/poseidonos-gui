@@ -36,16 +36,16 @@ import (
 	"dagent/src/routers/m9k/api/caller"
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
-	"dagent/src/routers/m9k/api/ibofos_"
 	"dagent/src/routers/m9k/middleware"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"kouros/model"
 	"kouros/utils"
 	"net/http"
 	"os"
 	"path/filepath"
-	amoduleIBoFOS "pnconnector/src/routers/m9k/api/ibofos"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+
 	//"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/globals"
 	"kouros"
@@ -257,9 +257,8 @@ func Route(router *gin.Engine) {
 					res.Result.Status, _ = utils.GetStatusInfo(2033)
 					ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 					return
-
 				}
-				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.CreateVolume, &multiVolRes, dagent.CREATE_VOLUME)
+				dagent.ImplementAsyncMultiVolume(ctx, caller.CallCreateVolume, &multiVolRes, dagent.CREATE_VOLUME, posMngr)
 			} else {
 				ibofos.CalliBoFOS(ctx, caller.CallCreateVolume, posMngr)
 			}
@@ -268,21 +267,18 @@ func Route(router *gin.Engine) {
 		iBoFOSPath.GET("/volumelist/:arrayName", func(ctx *gin.Context) {
 			arrayName := ctx.Param("arrayName")
 			param := model.VolumeParam{Array: arrayName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.ListVolume, param)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallListVolume, param, posMngr)
 		})
 		iBoFOSPath.GET("/array/:arrayName/volume/:volumeName", func(ctx *gin.Context) {
 			arrayName := ctx.Param("arrayName")
 			volumeName := ctx.Param("volumeName")
-			param := model.VolumeParam{Array: arrayName, Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.VolumeInfo, param)
+			param := model.VolumeParam{Array: arrayName, Volume: volumeName}
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallVolumeInfo, param, posMngr)
 		})
 		iBoFOSPath.PATCH("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.RenameVolume, param)
-		})
-		iBoFOSPath.GET("/volumes/maxcount", func(ctx *gin.Context) {
-			ibofos_.CalliBoFOS_(ctx, amoduleIBoFOS.GetMaxVolumeCount)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallRenameVolume, param, posMngr)
 		})
 		iBoFOSPath.DELETE("/volumes/:volumeName", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
@@ -291,27 +287,22 @@ func Route(router *gin.Engine) {
 		})
 		iBoFOSPath.POST("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			if multiVolRes, ok := dagent.IsMultiVolume(ctx); ok {
-				dagent.ImplementAsyncMultiVolume(ctx, amoduleIBoFOS.MountVolume, &multiVolRes, dagent.MOUNT_VOLUME)
+				dagent.ImplementAsyncMultiVolume(ctx, caller.CallMountVolume, &multiVolRes, dagent.MOUNT_VOLUME, posMngr)
 			} else {
 				volumeName := ctx.Param("volumeName")
 				param := model.VolumeParam{Name: volumeName}
-				ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.MountVolume, param)
+				ibofos.CalliBoFOSwithParam(ctx, caller.CallMountVolume, param, posMngr)
 			}
 		})
 		iBoFOSPath.POST("/volumes/:volumeName/mount/subsystem", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.MountVolumeWithSubSystem, param)
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallMountVolumeWithSubSystem, param, posMngr)
 		})
 		iBoFOSPath.DELETE("/volumes/:volumeName/mount", func(ctx *gin.Context) {
 			volumeName := ctx.Param("volumeName")
 			param := model.VolumeParam{Name: volumeName}
 			ibofos.CalliBoFOSwithParam(ctx, caller.CallUnmountVolume, param, posMngr)
-		})
-		iBoFOSPath.PATCH("/volumes/:volumeName/qos", func(ctx *gin.Context) {
-			volumeName := ctx.Param("volumeName")
-			param := model.VolumeParam{Name: volumeName}
-			ibofos_.CalliBoFOSwithParam_(ctx, amoduleIBoFOS.UpdateVolumeQoS, param)
 		})
 		iBoFOSPath.POST("/volume/property", func(ctx *gin.Context) {
 			ibofos.CalliBoFOS(ctx, caller.CallVolumeProperty, posMngr)
@@ -320,13 +311,13 @@ func Route(router *gin.Engine) {
 	}
 	//QOS
 	iBoFOSPath.POST("/qos", func(ctx *gin.Context) {
-		ibofos_.CalliBoFOSQOS(ctx, amoduleIBoFOS.QOSCreateVolumePolicies)
+		ibofos.CalliBoFOS(ctx, caller.CallQOSCreateVolumePolicies, posMngr)
 	})
 	iBoFOSPath.POST("/qos/reset", func(ctx *gin.Context) {
-		ibofos_.CalliBoFOS_(ctx, amoduleIBoFOS.QOSResetVolumePolicies)
+		ibofos.CalliBoFOS(ctx, caller.CallQOSResetVolumePolicies, posMngr)
 	})
 	iBoFOSPath.POST("/qos/policies", func(ctx *gin.Context) {
-		ibofos_.CalliBoFOS_(ctx, amoduleIBoFOS.QOSListPolicies)
+		ibofos.CalliBoFOS(ctx, caller.CallQOSListVolumePolicies, posMngr)
 	})
 
 	//Telemetry
@@ -375,6 +366,9 @@ func Route(router *gin.Engine) {
 	iBoFOSPath.POST("/devel/event-wrr/update", func(ctx *gin.Context) {
 		ibofos.CalliBoFOS(ctx, caller.CallUpdateEventWRRPolicy, posMngr)
 
+	})
+	iBoFOSPath.POST("/devel/memory-snapshot", func(ctx *gin.Context) {
+		ibofos.CalliBoFOS(ctx, caller.CallDumpMemorySnapshot, posMngr)
 	})
 	iBoFOSPath.DELETE("/devel/:arrayName/rebuild", func(ctx *gin.Context) {
 		arrayName := ctx.Param("arrayName")

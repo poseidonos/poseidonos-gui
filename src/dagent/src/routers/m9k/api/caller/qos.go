@@ -2,6 +2,7 @@ package caller
 
 import (
 	"encoding/json"
+	"fmt"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
@@ -10,8 +11,20 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func CallApplyLogFilter(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, _, err1 := posMngr.ApplyLogFilter()
+func CallQOSCreateVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.QosCreateVolumePolicyRequest_Param
+	pByte, err := json.Marshal(param)
+	fmt.Println(param)
+	if err != nil {
+		log.Errorf(marshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
+		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	fmt.Println(paramStruct)
+	result, _, err1 := posMngr.CreateQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -20,28 +33,8 @@ func CallApplyLogFilter(xrId string, param interface{}, posMngr pos.POSManager) 
 	return HandleResponse(resByte, err2)
 }
 
-func CallGetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, _, err1 := posMngr.GetLogLevel()
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrConn
-	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
-}
-
-func CallLoggerInfo(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, _, err1 := posMngr.LoggerInfo()
-	if err1 != nil {
-		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		return model.Response{}, ErrConn
-	}
-	resByte, err2 := protojson.Marshal(result)
-	return HandleResponse(resByte, err2)
-}
-
-func CallSetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.SetLogLevelRequest_Param
+func CallQOSResetVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.QosResetVolumePolicyRequest_Param
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
@@ -51,18 +44,17 @@ func CallSetLogLevel(xrId string, param interface{}, posMngr pos.POSManager) (mo
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.SetLogLevel(&paramStruct)
+	result, _, err1 := posMngr.ResetQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
 	}
 	resByte, err2 := protojson.Marshal(result)
 	return HandleResponse(resByte, err2)
-
 }
 
-func CallSetLogPreference(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.SetLogPreferenceRequest_Param
+func CallQOSListVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.ListQOSPolicyRequest_Param
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
@@ -72,12 +64,11 @@ func CallSetLogPreference(xrId string, param interface{}, posMngr pos.POSManager
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, _, err1 := posMngr.SetLogPreference(&paramStruct)
+	result, _, err1 := posMngr.ListQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
 	}
 	resByte, err2 := protojson.Marshal(result)
 	return HandleResponse(resByte, err2)
-
 }

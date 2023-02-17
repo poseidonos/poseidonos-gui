@@ -3,8 +3,6 @@ package caller
 import (
 	"dagent/src/routers/m9k/globals"
 	"encoding/json"
-	"github.com/ghodss/yaml"
-	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
@@ -12,10 +10,13 @@ import (
 	"kouros/utils"
 	"os"
 	"strings"
+
+	"github.com/ghodss/yaml"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func CallStartTelemetry(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.StartTelemetry()
+	result, _, err1 := posMngr.StartTelemetry()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -25,7 +26,7 @@ func CallStartTelemetry(xrId string, param interface{}, posMngr pos.POSManager) 
 }
 
 func CallStopTelemetry(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.StopTelemetry()
+	result, _, err1 := posMngr.StopTelemetry()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -45,7 +46,7 @@ func CallSetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMan
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	result, err1 := posMngr.SetTelemetryProperty(&paramStruct)
+	result, _, err1 := posMngr.SetTelemetryProperty(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn
@@ -56,7 +57,7 @@ func CallSetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSMan
 }
 
 func CallGetTelemetryProperty(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	result, err1 := posMngr.GetTelemetryProperty()
+	result, _, err1 := posMngr.GetTelemetryProperty()
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
 		return model.Response{}, ErrConn

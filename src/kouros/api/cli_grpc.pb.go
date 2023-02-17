@@ -30,6 +30,7 @@ type PosCliClient interface {
 	ResetMbr(ctx context.Context, in *ResetMbrRequest, opts ...grpc.CallOption) (*ResetMbrResponse, error)
 	StopRebuilding(ctx context.Context, in *StopRebuildingRequest, opts ...grpc.CallOption) (*StopRebuildingResponse, error)
 	UpdateEventWrr(ctx context.Context, in *UpdateEventWrrRequest, opts ...grpc.CallOption) (*UpdateEventWrrResponse, error)
+	DumpMemorySnapshot(ctx context.Context, in *DumpMemorySnapshotRequest, opts ...grpc.CallOption) (*DumpMemorySnapshotResponse, error)
 	// Array Commands
 	AddSpare(ctx context.Context, in *AddSpareRequest, opts ...grpc.CallOption) (*AddSpareResponse, error)
 	RemoveSpare(ctx context.Context, in *RemoveSpareRequest, opts ...grpc.CallOption) (*RemoveSpareResponse, error)
@@ -57,10 +58,20 @@ type PosCliClient interface {
 	ListSubsystem(ctx context.Context, in *ListSubsystemRequest, opts ...grpc.CallOption) (*ListSubsystemResponse, error)
 	SubsystemInfo(ctx context.Context, in *SubsystemInfoRequest, opts ...grpc.CallOption) (*SubsystemInfoResponse, error)
 	CreateTransport(ctx context.Context, in *CreateTransportRequest, opts ...grpc.CallOption) (*CreateTransportResponse, error)
+	// Volume Commands
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*CreateVolumeResponse, error)
+	QosCreateVolumePolicy(ctx context.Context, in *QosCreateVolumePolicyRequest, opts ...grpc.CallOption) (*QosCreateVolumePolicyResponse, error)
+	QosResetVolumePolicy(ctx context.Context, in *QosResetVolumePolicyRequest, opts ...grpc.CallOption) (*QosResetVolumePolicyResponse, error)
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error)
 	UnmountVolume(ctx context.Context, in *UnmountVolumeRequest, opts ...grpc.CallOption) (*UnmountVolumeResponse, error)
+	MountVolume(ctx context.Context, in *MountVolumeRequest, opts ...grpc.CallOption) (*MountVolumeResponse, error)
+	ListVolume(ctx context.Context, in *ListVolumeRequest, opts ...grpc.CallOption) (*ListVolumeResponse, error)
 	SetVolumeProperty(ctx context.Context, in *SetVolumePropertyRequest, opts ...grpc.CallOption) (*SetVolumePropertyResponse, error)
+	VolumeInfo(ctx context.Context, in *VolumeInfoRequest, opts ...grpc.CallOption) (*VolumeInfoResponse, error)
+	VolumeRename(ctx context.Context, in *VolumeRenameRequest, opts ...grpc.CallOption) (*VolumeRenameResponse, error)
+	ListQOSPolicy(ctx context.Context, in *ListQOSPolicyRequest, opts ...grpc.CallOption) (*ListQOSPolicyResponse, error)
+	ListWBT(ctx context.Context, in *ListWBTRequest, opts ...grpc.CallOption) (*ListWBTResponse, error)
+	WBT(ctx context.Context, in *WBTRequest, opts ...grpc.CallOption) (*WBTResponse, error)
 }
 
 type posCliClient struct {
@@ -173,6 +184,15 @@ func (c *posCliClient) StopRebuilding(ctx context.Context, in *StopRebuildingReq
 func (c *posCliClient) UpdateEventWrr(ctx context.Context, in *UpdateEventWrrRequest, opts ...grpc.CallOption) (*UpdateEventWrrResponse, error) {
 	out := new(UpdateEventWrrResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/UpdateEventWrr", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) DumpMemorySnapshot(ctx context.Context, in *DumpMemorySnapshotRequest, opts ...grpc.CallOption) (*DumpMemorySnapshotResponse, error) {
+	out := new(DumpMemorySnapshotResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/DumpMemorySnapshot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -422,6 +442,24 @@ func (c *posCliClient) CreateVolume(ctx context.Context, in *CreateVolumeRequest
 	return out, nil
 }
 
+func (c *posCliClient) QosCreateVolumePolicy(ctx context.Context, in *QosCreateVolumePolicyRequest, opts ...grpc.CallOption) (*QosCreateVolumePolicyResponse, error) {
+	out := new(QosCreateVolumePolicyResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/QosCreateVolumePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) QosResetVolumePolicy(ctx context.Context, in *QosResetVolumePolicyRequest, opts ...grpc.CallOption) (*QosResetVolumePolicyResponse, error) {
+	out := new(QosResetVolumePolicyResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/QosResetVolumePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *posCliClient) DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error) {
 	out := new(DeleteVolumeResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/DeleteVolume", in, out, opts...)
@@ -440,9 +478,72 @@ func (c *posCliClient) UnmountVolume(ctx context.Context, in *UnmountVolumeReque
 	return out, nil
 }
 
+func (c *posCliClient) MountVolume(ctx context.Context, in *MountVolumeRequest, opts ...grpc.CallOption) (*MountVolumeResponse, error) {
+	out := new(MountVolumeResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/MountVolume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) ListVolume(ctx context.Context, in *ListVolumeRequest, opts ...grpc.CallOption) (*ListVolumeResponse, error) {
+	out := new(ListVolumeResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListVolume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *posCliClient) SetVolumeProperty(ctx context.Context, in *SetVolumePropertyRequest, opts ...grpc.CallOption) (*SetVolumePropertyResponse, error) {
 	out := new(SetVolumePropertyResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/SetVolumeProperty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) VolumeInfo(ctx context.Context, in *VolumeInfoRequest, opts ...grpc.CallOption) (*VolumeInfoResponse, error) {
+	out := new(VolumeInfoResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/VolumeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) VolumeRename(ctx context.Context, in *VolumeRenameRequest, opts ...grpc.CallOption) (*VolumeRenameResponse, error) {
+	out := new(VolumeRenameResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/VolumeRename", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) ListQOSPolicy(ctx context.Context, in *ListQOSPolicyRequest, opts ...grpc.CallOption) (*ListQOSPolicyResponse, error) {
+	out := new(ListQOSPolicyResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListQOSPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) ListWBT(ctx context.Context, in *ListWBTRequest, opts ...grpc.CallOption) (*ListWBTResponse, error) {
+	out := new(ListWBTResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListWBT", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) WBT(ctx context.Context, in *WBTRequest, opts ...grpc.CallOption) (*WBTResponse, error) {
+	out := new(WBTResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/WBT", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -465,6 +566,7 @@ type PosCliServer interface {
 	ResetMbr(context.Context, *ResetMbrRequest) (*ResetMbrResponse, error)
 	StopRebuilding(context.Context, *StopRebuildingRequest) (*StopRebuildingResponse, error)
 	UpdateEventWrr(context.Context, *UpdateEventWrrRequest) (*UpdateEventWrrResponse, error)
+	DumpMemorySnapshot(context.Context, *DumpMemorySnapshotRequest) (*DumpMemorySnapshotResponse, error)
 	// Array Commands
 	AddSpare(context.Context, *AddSpareRequest) (*AddSpareResponse, error)
 	RemoveSpare(context.Context, *RemoveSpareRequest) (*RemoveSpareResponse, error)
@@ -492,10 +594,20 @@ type PosCliServer interface {
 	ListSubsystem(context.Context, *ListSubsystemRequest) (*ListSubsystemResponse, error)
 	SubsystemInfo(context.Context, *SubsystemInfoRequest) (*SubsystemInfoResponse, error)
 	CreateTransport(context.Context, *CreateTransportRequest) (*CreateTransportResponse, error)
+	// Volume Commands
 	CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error)
+	QosCreateVolumePolicy(context.Context, *QosCreateVolumePolicyRequest) (*QosCreateVolumePolicyResponse, error)
+	QosResetVolumePolicy(context.Context, *QosResetVolumePolicyRequest) (*QosResetVolumePolicyResponse, error)
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error)
 	UnmountVolume(context.Context, *UnmountVolumeRequest) (*UnmountVolumeResponse, error)
+	MountVolume(context.Context, *MountVolumeRequest) (*MountVolumeResponse, error)
+	ListVolume(context.Context, *ListVolumeRequest) (*ListVolumeResponse, error)
 	SetVolumeProperty(context.Context, *SetVolumePropertyRequest) (*SetVolumePropertyResponse, error)
+	VolumeInfo(context.Context, *VolumeInfoRequest) (*VolumeInfoResponse, error)
+	VolumeRename(context.Context, *VolumeRenameRequest) (*VolumeRenameResponse, error)
+	ListQOSPolicy(context.Context, *ListQOSPolicyRequest) (*ListQOSPolicyResponse, error)
+	ListWBT(context.Context, *ListWBTRequest) (*ListWBTResponse, error)
+	WBT(context.Context, *WBTRequest) (*WBTResponse, error)
 	mustEmbedUnimplementedPosCliServer()
 }
 
@@ -538,6 +650,9 @@ func (UnimplementedPosCliServer) StopRebuilding(context.Context, *StopRebuilding
 }
 func (UnimplementedPosCliServer) UpdateEventWrr(context.Context, *UpdateEventWrrRequest) (*UpdateEventWrrResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateEventWrr not implemented")
+}
+func (UnimplementedPosCliServer) DumpMemorySnapshot(context.Context, *DumpMemorySnapshotRequest) (*DumpMemorySnapshotResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DumpMemorySnapshot not implemented")
 }
 func (UnimplementedPosCliServer) AddSpare(context.Context, *AddSpareRequest) (*AddSpareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSpare not implemented")
@@ -620,14 +735,41 @@ func (UnimplementedPosCliServer) CreateTransport(context.Context, *CreateTranspo
 func (UnimplementedPosCliServer) CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVolume not implemented")
 }
+func (UnimplementedPosCliServer) QosCreateVolumePolicy(context.Context, *QosCreateVolumePolicyRequest) (*QosCreateVolumePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QosCreateVolumePolicy not implemented")
+}
+func (UnimplementedPosCliServer) QosResetVolumePolicy(context.Context, *QosResetVolumePolicyRequest) (*QosResetVolumePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QosResetVolumePolicy not implemented")
+}
 func (UnimplementedPosCliServer) DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteVolume not implemented")
 }
 func (UnimplementedPosCliServer) UnmountVolume(context.Context, *UnmountVolumeRequest) (*UnmountVolumeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnmountVolume not implemented")
 }
+func (UnimplementedPosCliServer) MountVolume(context.Context, *MountVolumeRequest) (*MountVolumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MountVolume not implemented")
+}
+func (UnimplementedPosCliServer) ListVolume(context.Context, *ListVolumeRequest) (*ListVolumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListVolume not implemented")
+}
 func (UnimplementedPosCliServer) SetVolumeProperty(context.Context, *SetVolumePropertyRequest) (*SetVolumePropertyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetVolumeProperty not implemented")
+}
+func (UnimplementedPosCliServer) VolumeInfo(context.Context, *VolumeInfoRequest) (*VolumeInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VolumeInfo not implemented")
+}
+func (UnimplementedPosCliServer) VolumeRename(context.Context, *VolumeRenameRequest) (*VolumeRenameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VolumeRename not implemented")
+}
+func (UnimplementedPosCliServer) ListQOSPolicy(context.Context, *ListQOSPolicyRequest) (*ListQOSPolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListQOSPolicy not implemented")
+}
+func (UnimplementedPosCliServer) ListWBT(context.Context, *ListWBTRequest) (*ListWBTResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWBT not implemented")
+}
+func (UnimplementedPosCliServer) WBT(context.Context, *WBTRequest) (*WBTResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WBT not implemented")
 }
 func (UnimplementedPosCliServer) mustEmbedUnimplementedPosCliServer() {}
 
@@ -854,6 +996,24 @@ func _PosCli_UpdateEventWrr_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PosCliServer).UpdateEventWrr(ctx, req.(*UpdateEventWrrRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_DumpMemorySnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DumpMemorySnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).DumpMemorySnapshot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/DumpMemorySnapshot",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).DumpMemorySnapshot(ctx, req.(*DumpMemorySnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1344,6 +1504,42 @@ func _PosCli_CreateVolume_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PosCli_QosCreateVolumePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QosCreateVolumePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).QosCreateVolumePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/QosCreateVolumePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).QosCreateVolumePolicy(ctx, req.(*QosCreateVolumePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_QosResetVolumePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QosResetVolumePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).QosResetVolumePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/QosResetVolumePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).QosResetVolumePolicy(ctx, req.(*QosResetVolumePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PosCli_DeleteVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteVolumeRequest)
 	if err := dec(in); err != nil {
@@ -1380,6 +1576,42 @@ func _PosCli_UnmountVolume_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PosCli_MountVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MountVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).MountVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/MountVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).MountVolume(ctx, req.(*MountVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_ListVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).ListVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/ListVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).ListVolume(ctx, req.(*ListVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PosCli_SetVolumeProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetVolumePropertyRequest)
 	if err := dec(in); err != nil {
@@ -1394,6 +1626,96 @@ func _PosCli_SetVolumeProperty_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PosCliServer).SetVolumeProperty(ctx, req.(*SetVolumePropertyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_VolumeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VolumeInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).VolumeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/VolumeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).VolumeInfo(ctx, req.(*VolumeInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_VolumeRename_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VolumeRenameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).VolumeRename(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/VolumeRename",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).VolumeRename(ctx, req.(*VolumeRenameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_ListQOSPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListQOSPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).ListQOSPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/ListQOSPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).ListQOSPolicy(ctx, req.(*ListQOSPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_ListWBT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListWBTRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).ListWBT(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/ListWBT",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).ListWBT(ctx, req.(*ListWBTRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_WBT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WBTRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).WBT(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/WBT",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).WBT(ctx, req.(*WBTRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1452,6 +1774,10 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateEventWrr",
 			Handler:    _PosCli_UpdateEventWrr_Handler,
+		},
+		{
+			MethodName: "DumpMemorySnapshot",
+			Handler:    _PosCli_DumpMemorySnapshot_Handler,
 		},
 		{
 			MethodName: "AddSpare",
@@ -1562,6 +1888,14 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PosCli_CreateVolume_Handler,
 		},
 		{
+			MethodName: "QosCreateVolumePolicy",
+			Handler:    _PosCli_QosCreateVolumePolicy_Handler,
+		},
+		{
+			MethodName: "QosResetVolumePolicy",
+			Handler:    _PosCli_QosResetVolumePolicy_Handler,
+		},
+		{
 			MethodName: "DeleteVolume",
 			Handler:    _PosCli_DeleteVolume_Handler,
 		},
@@ -1570,8 +1904,36 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PosCli_UnmountVolume_Handler,
 		},
 		{
+			MethodName: "MountVolume",
+			Handler:    _PosCli_MountVolume_Handler,
+		},
+		{
+			MethodName: "ListVolume",
+			Handler:    _PosCli_ListVolume_Handler,
+		},
+		{
 			MethodName: "SetVolumeProperty",
 			Handler:    _PosCli_SetVolumeProperty_Handler,
+		},
+		{
+			MethodName: "VolumeInfo",
+			Handler:    _PosCli_VolumeInfo_Handler,
+		},
+		{
+			MethodName: "VolumeRename",
+			Handler:    _PosCli_VolumeRename_Handler,
+		},
+		{
+			MethodName: "ListQOSPolicy",
+			Handler:    _PosCli_ListQOSPolicy_Handler,
+		},
+		{
+			MethodName: "ListWBT",
+			Handler:    _PosCli_ListWBT_Handler,
+		},
+		{
+			MethodName: "WBT",
+			Handler:    _PosCli_WBT_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
