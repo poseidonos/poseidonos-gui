@@ -178,7 +178,7 @@ const ArrayManage = (props) => {
         Get_Volumes
     } = props;
     const selectedArray = props.arrayMap[props.arrayname];
-    const totalVolSize = props.volumes.reduce((prev, curr) => prev + curr.size, 0);
+    const totalVolSize = props.volumes.reduce((totalSize, volume) => totalSize + volume.size, 0);
     const volumeFilledStyle = {
         width: `${selectedArray && selectedArray.totalsize !== 0
             ? (100 * totalVolSize) / selectedArray.totalsize
