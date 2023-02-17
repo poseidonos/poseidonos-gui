@@ -143,7 +143,7 @@ const AlertDialog = (props) => {
           className={classes.submit}
           data-testid="alertbox-yes"
           aria-label="Confirm"
-          >
+        >
           Yes
         </Button>
       </DialogActions>

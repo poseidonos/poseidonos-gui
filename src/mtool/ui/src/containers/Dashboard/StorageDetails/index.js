@@ -348,7 +348,7 @@ const StorageDetails = (props) => {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid >
+                    </Grid>
                 )
             }}
             style={{

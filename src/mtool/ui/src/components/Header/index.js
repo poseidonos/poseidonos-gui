@@ -230,7 +230,7 @@ class Header extends Component {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, 1000);
+    }, 4000);
   }
 
   componentDidUpdate() {
@@ -239,7 +239,7 @@ class Header extends Component {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, 1000);
+    }, 4000);
   }
 
   componentWillUnmount() {
