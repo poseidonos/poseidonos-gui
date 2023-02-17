@@ -222,7 +222,7 @@ const removeA = (slot, disk) => {
 const SPARE_DISK = "SPARE DISK";
 const STORAGE_DISK = "STORAGE DISK";
 
-class ArrayCreate extends Component {
+class CreateArray extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -732,4 +732,4 @@ class ArrayCreate extends Component {
   }
 }
 
-export default withStyles(styles)(ArrayCreate);
+export default withStyles(styles)(CreateArray);

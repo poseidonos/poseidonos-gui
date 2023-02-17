@@ -32,10 +32,6 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "react-dropdown/style.css";
-import "react-table/react-table.css";
-import "core-js/es/number";
-import "core-js/es/array";
 import { Paper, Grid, Typography, Button, IconButton } from "@material-ui/core";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { Edit } from "@material-ui/icons";
