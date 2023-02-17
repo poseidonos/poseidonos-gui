@@ -193,9 +193,11 @@ describe("SubsystemOperations", () => {
         expect(nqnName).toBeDefined();
         const nqnName2 = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem10"));
         expect(nqnName2).toBeDefined();
-        const expandBtns = getAllByTitle("Show Subsystem Details");
-        fireEvent.click(expandBtns[3]);
-        expect(getByText("Allow Any Hosts: No")).toBeDefined();
+        const subnqn = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem10"))
+        const tableRow = subnqn.closest('tr').children;
+        const detailBtn = tableRow[0].firstChild.firstChild;
+        fireEvent.click(detailBtn);
+        expect(await waitForElement(() => getByText("Allow Any Hosts: No"))).toBeDefined();
     });
 
     it("should create the subsystem",
@@ -227,7 +229,7 @@ describe("SubsystemOperations", () => {
             jest.setTimeout(30000);
             renderComponent();
             const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
-            const addBtn = await waitForElement(() => getByTitle("Add a Subsystem"));
+            const addBtn = await waitForElement(() => getByTestId("add-subsystem"));
             expect(addBtn).toBeDefined();
             fireEvent.click(addBtn);
             const nameField = await waitForElement(() => getByTestId("subsystemName"));
@@ -254,11 +256,56 @@ describe("SubsystemOperations", () => {
                     subsystemResponse
                 )
             renderComponent();
-            const { findAllByTitle, getByText } = wrapper;
-            const detailBtns = await findAllByTitle("Show Subsystem Details");
-            fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("127.0.0.1");
+            const { getByText } = wrapper;
+            const subnqn = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem1"))
+            const tableRow = subnqn.closest('tr').children;
+            const detailBtn = tableRow[0].firstChild.firstChild;
+            fireEvent.click(detailBtn);
+            const ipAddress = await waitForElement(() => getByText("127.0.0.1"));
             expect(ipAddress).toBeDefined();
+        });
+
+    it("should throw error if ip is wrong while adding a listener to a subsystem",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                ).onPost("/api/v1/listener/")
+                .reply(200, {
+                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+                    "lastSuccessTime": 1642352844,
+                    "result": {
+                        "status": {
+                            "module": "",
+                            "code": 0,
+                            "description": "",
+                            "posDescription": "Success"
+                        }
+                    },
+                    "info": {
+                        "version": "v0.10.6"
+                    }
+                }).onAny(200);
+            renderComponent();
+            jest.setTimeout(30000);
+            const { getByTestId, getByText } = wrapper;
+            let subnqn = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem1"))
+            const tableRow = subnqn.closest('tr').children;
+            let detailBtn = tableRow[0].firstChild.firstChild;
+            fireEvent.click(detailBtn);
+            const ipAddress = await waitForElement(() => getByText("127.0.0.1"));
+            expect(ipAddress).toBeDefined();
+            const addListenerBtn = getByTestId("add-listener");
+            fireEvent.click(addListenerBtn);
+            const addListenerIP = getByTestId("addListenerIP");
+            fireEvent.change(addListenerIP, { target: { value: "1234" } });
+            console.log(addListenerIP)
+            const addListenerSubmit = getByTestId("addListenerSubmit");
+            fireEvent.click(addListenerSubmit);
+            expect(getByText(/Please provide a valid IP address/)).toBeDefined();
+            const okbutton = getByTestId("alertbox-ok");
+            fireEvent.click(okbutton);
         });
 
     it("should add a listener to a subsystem",
@@ -284,22 +331,24 @@ describe("SubsystemOperations", () => {
                     }
                 }).onAny(200);
             renderComponent();
-            const { findAllByTitle, getByTestId, getByTitle, getByText } = wrapper;
-            const detailBtns = await findAllByTitle("Show Subsystem Details");
-            fireEvent.click(detailBtns[1]);
-            const ipAddress = getByText("127.0.0.1");
+            jest.setTimeout(30000);
+            const { getByTestId, getByText } = wrapper;
+            let subnqn = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem1"))
+            const tableRow = subnqn.closest('tr').children;
+            let detailBtn = tableRow[0].firstChild.firstChild;
+            fireEvent.click(detailBtn);
+            const ipAddress = await waitForElement(() => getByText("127.0.0.1"));
             expect(ipAddress).toBeDefined();
-            const addListenerBtn = getByTitle("Add a Listener");
+            const addListenerBtn = getByTestId("add-listener");
             fireEvent.click(addListenerBtn);
             const addListenerIP = getByTestId("addListenerIP");
-            fireEvent.change(addListenerIP, { target: { value: "1234" } });
+            fireEvent.change(addListenerIP, { target: { value: "127.0.0.1" } });
+            console.log(addListenerIP)
             const addListenerSubmit = getByTestId("addListenerSubmit");
             fireEvent.click(addListenerSubmit);
-            expect(getByText(/Please provide a valid IP address/)).toBeDefined();
-            fireEvent.click(getByText("OK"));
-            fireEvent.change(addListenerIP, { target: { value: "107.108.109.110" } });
-            fireEvent.click(addListenerSubmit);
             expect(await waitForElement(() => getByText(/Listener Added Successfully/))).toBeDefined();
+            const okbutton = getByTestId("alertbox-ok");
+            fireEvent.click(okbutton);
         });
 
     it("should delete a subsystem",

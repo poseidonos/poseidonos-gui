@@ -102,6 +102,7 @@ export const DialogTitle = withStyles(styles)(props => {
           className={classes.closeButton}
           onClick={onClose}
           data-testid="alertCloseButton"
+          aria-labelledby="Close Icon"
         >
           <span style={{ fontSize: 14, color: '#fff' }}>x</span>
         </IconButton>
@@ -131,6 +132,7 @@ const AlertDialog = (props) => {
           className={classes.submit}
           autoFocus
           data-testid="alertbox-no"
+          aria-label="Close"
         >
           No
         </Button>
@@ -140,6 +142,7 @@ const AlertDialog = (props) => {
           onClick={props.onConfirm}
           className={classes.submit}
           data-testid="alertbox-yes"
+          aria-label="Confirm"
         >
           Yes
         </Button>
@@ -153,12 +156,10 @@ const AlertDialog = (props) => {
           className={classes.submit}
           autoFocus
           data-testid="alertbox-ok"
+          aria-label="OK"
         >
           OK
         </Button>
-        {/* {props.link ? (
-            <Link to={props.link}>{props.linkText}</Link>
-          ) : null} */}
       </DialogActions>
     );
   const getIcon = (type) => {
@@ -172,16 +173,14 @@ const AlertDialog = (props) => {
   };
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Open alert dialog
-        </Button> */}
       <Dialog
-        // minWidth="xs"
         maxWidth="xs"
-        disableBackdropClick
-        // fullWidth="false"
         open={props.open ? props.open : false}
-        onClose={props.handleClose}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick" && reason !== 'escapeKeyDown') {
+            props.handleClose()
+          }
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

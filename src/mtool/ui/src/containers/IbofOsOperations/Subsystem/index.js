@@ -32,7 +32,7 @@
 
 import React, { Component } from 'react';
 import { Grid, IconButton, ThemeProvider, Typography, Tooltip, withStyles } from '@material-ui/core';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Delete, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { customTheme, TableTheme } from '../../../theme';
@@ -174,6 +174,9 @@ class Subsystem extends Component {
                                 icon: Add,
                                 tooltip: "Add a Subsystem",
                                 isFreeAction: true,
+                                iconProps:{
+                                    'data-testid': "add-subsystem"
+                                },
                                 onClick: () => {
                                     this.openCreateSubsystemDialog();
                                 }

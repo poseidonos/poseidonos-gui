@@ -49,7 +49,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import Heading from '../../assets/images/Header-logo.png';
-// import Dropdown from './Dropdown';
 import AlertDialog from '../Dialog';
 import './Header.css';
 import Dropdown from './Dropdown';
@@ -192,9 +191,7 @@ class Header extends Component {
     this.alertClose = this.alertClose.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.updateDropdown = this.updateDropdown.bind(this);
-    // this.printLastTimestamp = this.printLastTimestamp.bind(this);
     this.userLogout = this.userLogout.bind(this);
-    // this.goHome = this.goHome.bind(this);
     this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
     this.OnHandleChange = this.OnHandleChange.bind(this);
@@ -229,22 +226,20 @@ class Header extends Component {
     window.addEventListener("resize", this.updateDropdown);
     // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
-    const val = this.props.timeintervalue;
     this.interval = setInterval(() => {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, (val || 4) * 1000);
+    }, 4000);
   }
 
   componentDidUpdate() {
-    const val = this.props.timeintervalue;
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       if(this.props.statusCheckDone) {
         this.IsIbofOSRunning();
       }
-    }, (val || 4) * 1000);
+    }, 4000);
   }
 
   componentWillUnmount() {
@@ -469,6 +464,8 @@ class Header extends Component {
             </IconButton>
             <div className={classes.logoContainer}>
               <img
+                height="38px"
+                width="153px"
                 src={Heading}
                 className={classes.logoImg}
                 alt="Poseidon Management Tool"
@@ -602,7 +599,6 @@ const mapStateToProps = state => {
     timestamp: state.headerReducer.timestamp,
     status: state.headerReducer.status,
     OS_Running_Status: state.headerReducer.OS_Running_Status,
-    timeintervalue: state.configurationsettingReducer.timeinterval,
     statusCheckDone: state.headerReducer.isStatusCheckDone
   };
 }

@@ -191,7 +191,7 @@ describe("DeviceOperations", () => {
             const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
             const deviceName = await waitForElement(() => getByText("uram0"));
             expect(deviceName).toBeDefined();
-            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            const addBtn = await waitForElement(() => getByTestId("add-device"));
             expect(addBtn).toBeDefined();
             fireEvent.click(addBtn);
             const nameField = await waitForElement(() => getByTestId("diskName"));
@@ -232,10 +232,10 @@ describe("DeviceOperations", () => {
                     }
                 );
             renderComponent();
-            const { getByText, getByTestId, getByTitle } = wrapper;
+            const { getByText, getByTestId } = wrapper;
             const deviceName = await waitForElement(() => getByText("uram0"));
             expect(deviceName).toBeDefined();
-            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            const addBtn = await waitForElement(() => getByTestId("add-device"));
             expect(addBtn).toBeDefined();
             fireEvent.click(addBtn);
             const nameField = await waitForElement(() => getByTestId("diskName"));
@@ -260,12 +260,12 @@ describe("DeviceOperations", () => {
                 .onPost("/api/v1/device/")
                 .reply(500
                 );
-            const getSpy = jest.spyOn(axios, "post");
+            jest.spyOn(axios, "post");
             renderComponent();
-            const { asFragment, getByText, getByTestId, getByTitle } = wrapper;
+            const { getByText, getByTestId } = wrapper;
             const deviceName = await waitForElement(() => getByText("uram0"));
             expect(deviceName).toBeDefined();
-            const addBtn = await waitForElement(() => getByTitle("Add a device"));
+            const addBtn = await waitForElement(() => getByTestId("add-device"));
             expect(addBtn).toBeDefined();
             fireEvent.click(addBtn);
             const nameField = await waitForElement(() => getByTestId("diskName"));

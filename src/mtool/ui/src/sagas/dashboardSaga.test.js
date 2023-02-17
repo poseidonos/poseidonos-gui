@@ -51,7 +51,7 @@ describe('<Testing Redux Sagas />', () => {
                 data: ['vol1', 'vol2']
             })
         );
-        const passActions = [{ type: 'FETCH_VOLUME_INFO', volumes: ['vol1', 'vol2'] }, { type: 'ENABLE_FETCHING_ALERTS', fetchingAlerts: false }];
+        const passActions = [{ type: 'FETCH_VOLUME_INFO', volumes: ['vol1', 'vol2'] }];
         const fakeStore = {
             dispatch: action => dispatchedActions.push(action)
         }
@@ -69,7 +69,7 @@ describe('<Testing Redux Sagas />', () => {
                 error: 'error'
             })
         );
-        const passActions = [{ type: 'FETCH_VOLUME_INFO', volumes: [] }, { type: 'ENABLE_FETCHING_ALERTS', fetchingAlerts: false }];
+        const passActions = [{ type: 'FETCH_VOLUME_INFO', volumes: [] }];
         const fakeStore = {
             dispatch: action => dispatchedActions.push(action)
         }

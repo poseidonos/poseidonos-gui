@@ -34,11 +34,13 @@ import { isEqual } from 'lodash';
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
+    ip: '0.0.0.0',
+    mac: 'NA',
     volumes: [],
     arrayVolumes: [],
-    alerts: [],
     selectedArray: 'all',
-    ibofs: ['None'],
+    arraySize: 0,
+    arrayVols: {},
     showTelemetryAlert: false,
     errorMsg: "",
     readIOPS: 0,
@@ -55,13 +57,6 @@ const initialState = {
     totalWarnings: 0,
     totalCriticals: 0,
     isIMPIChassisPowerOn: 0,
-    fetchingAlerts: false,
-    ip: '0.0.0.0',
-    mac: 'NA',
-    host: '',
-    lastUpdateTime: '',
-    arraySize: 0,
-    arrayVols: {}
 }
 
 
@@ -77,11 +72,6 @@ const dashboardReducer = (state = initialState, action) => {
                 ...state,
                 showTelemetryAlert: action.showTelemetryAlert,
                 errorMsg: action.errorMsg
-            };
-        case actionTypes.ENABLE_FETCHING_ALERTS:
-            return {
-                ...state,
-                fetchingAlerts: action.fetchingAlerts,
             };
         case actionTypes.SELECT_ARRAY: {
             let arrayVolumes = [];
@@ -155,15 +145,16 @@ const dashboardReducer = (state = initialState, action) => {
             if (state.devices.length !== action.devices.length)
                 return newState
             for (let i = 0; i < state.devices.length; i += 1) {
-                if (!isEqual(state.devices[i], { ...action.devices[i], tableData: state.devices[i].tableData }))
+                if (!isEqual(state.devices[i], action.devices[i]))
                     return newState
             }
             if (state.ipmi.length !== action.ipmi.length) {
                 return newState
             }
             for (let i = 0; i < state.ipmi.length; i += 1) {
-                if (!isEqual(state.ipmi[i], { ...action.ipmi[i], tableData: state.ipmi[i].tableData }))
+                if (!isEqual(state.ipmi[i], action.ipmi[i])) {
                     return newState
+                }
             }
             if (
                 action.errorInDevices !== state.errorInDevices ||
@@ -180,9 +171,7 @@ const dashboardReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ip: action.ip,
-                mac: action.mac,
-                host: action.host,
-                lastUpdateTime: action.timestamp
+                mac: action.mac
             };
         default:
             return state;

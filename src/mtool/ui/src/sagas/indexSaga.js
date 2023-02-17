@@ -33,7 +33,6 @@
 import { all } from 'redux-saga/effects';
 import headerWatcher from "./headerSaga"
 import { dashboardWatcher } from "./dashboardSaga"
-import { configurationsettingWatcher } from "./configurationsettingSaga"
 import { authenticationWatcher } from "./authenticationSaga"
 import { userManagementContainerWatcher } from "./userManagementSaga"
 import { userManagementUserTableWatcher } from "./userManagementUserTableSaga"
@@ -46,7 +45,6 @@ export default function* rootSaga() {
     yield all([
         headerWatcher(),
         dashboardWatcher(),
-        configurationsettingWatcher(),
         storageWatcher(),
         subsystemWatcher(),
         authenticationWatcher(),

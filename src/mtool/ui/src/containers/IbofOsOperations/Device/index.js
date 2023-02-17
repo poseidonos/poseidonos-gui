@@ -32,7 +32,7 @@
 
 import React, { Component } from 'react';
 import { Grid, ThemeProvider, Typography, withStyles } from '@material-ui/core';
-import MaterialTable from 'material-table';
+import MaterialTable from '@material-table/core';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { customTheme, TableTheme } from '../../../theme';
@@ -113,6 +113,9 @@ class Device extends Component {
                             actions={[{
                                 icon: Add,
                                 tooltip: "Add a device",
+                                iconProps:{
+                                    'data-testid': "add-device"
+                                },
                                 isFreeAction: true,
                                 onClick: () => {
                                     this.openCreateDiskDialog();

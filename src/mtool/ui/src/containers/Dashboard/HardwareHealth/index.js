@@ -33,12 +33,14 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { PieChart } from 'react-minimal-pie-chart';
-import MaterialTable from "material-table";
+import MaterialTable from "@material-table/core";
 import { ArrowBack, ArrowUpward } from "@material-ui/icons";
 import { Box, Button, Grid, Paper, ThemeProvider, Typography, withStyles } from "@material-ui/core";
 import { customTheme, PageTheme } from "../../../theme";
 import Legend from "../../../components/Legend";
 import Popup from "../../../components/Popup";
+import * as actionTypes from "../../../store/actions/actionTypes";
+import { FETCH_API_INTERVAL } from "../../../utils/constants";
 
 
 const styles = (theme) => ({
@@ -48,7 +50,10 @@ const styles = (theme) => ({
         display: "flex",
         padding: theme.spacing(1, 2),
         flexWrap: "wrap",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        [theme.breakpoints.down("md")]: {
+            height: "auto",
+        },
     },
     cardHeader: {
         ...customTheme.card.header,
@@ -92,7 +97,7 @@ const getColorStyle = {
 }
 
 const HardwareHealth = (props) => {
-    const { classes } = props;
+    const { classes, isConfigured, fetchHardwareHealth } = props;
     const localCellStyle = {
         paddingTop: 8,
         paddingBottom: 8,
@@ -108,6 +113,19 @@ const HardwareHealth = (props) => {
         metrics: [],
         unit: "",
     });
+    const [ipmiErrorMessage, setIpmiErrorMessage] = useState("No records to display");
+    const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
+
+    useEffect(() => {
+        if (isConfigured)
+            fetchHardwareHealth();
+        const interval = setInterval(() => {
+            if (isConfigured)
+                fetchHardwareHealth();
+        }, FETCH_API_INTERVAL);
+
+        return () => clearInterval(interval)
+    }, [isConfigured, fetchHardwareHealth]);
 
     useEffect(() => {
         if (selectedRow === null)
@@ -121,26 +139,18 @@ const HardwareHealth = (props) => {
             })
     }, [props.totalCriticals, props.totalWarnings, props.totalNominals, selectedRow])
 
+    useEffect(() => {
+        if (!props.isIMPIChassisPowerOn)
+            setIpmiErrorMessage("IPMI Power is OFF")
+        if (props.errorInIMPI)
+            setIpmiErrorMessage("Please Check IPMI Exporter")
+    }, [props.isIMPIChassisPowerOn, props.errorInIMPI])
     const getPercentage = (value) => {
         const total = pieChart.criticals + pieChart.nominals + pieChart.warnings;
         return Math.round(value * 1000 / total) / 10;
     }
-    let ipmiErrorMessage = "No records to display";
-    if (!props.isIMPIChassisPowerOn)
-        ipmiErrorMessage = "IPMI Power is OFF"
-    if (props.errorInIMPI)
-        ipmiErrorMessage = "Please Check IPMI Exporter"
-
-    const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
-
     /* eslint-disable react/no-multi-comp */
     const icons = {
-        // FirstPage: () => <FirstPage id="Dashboard-icon-vol-firstpage" />,
-        // LastPage: () => <LastPage id="Dashboard-icon-vol-lastpage" />,
-        // NextPage: () => <ChevronRight id="Dashboard-icon-vol-nextpage" />,
-        // PreviousPage: () => <ChevronLeft id="Dashboard-icon-vol-previouspage" />,
-        // ThirdStateCheck: Remove,
-        // DetailPanel: ChevronRight,
         SortArrow: ArrowUpward,
     };
     const ipmiTableColumns = [
@@ -221,7 +231,7 @@ const HardwareHealth = (props) => {
     const ipmiTable = (
         <MaterialTable
             columns={ipmiTableColumns}
-            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured? props.ipmi:[]}
+            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured ? props.ipmi : []}
             localization={{
                 body: {
                     emptyDataSourceMessage: ipmiErrorMessage
@@ -262,6 +272,7 @@ const HardwareHealth = (props) => {
             }}
             style={{
                 width: "100%",
+                height: "226px",
                 boxShadow: "none",
                 border: "1px solid rgb(0 0 0 / 12%)"
             }}
@@ -271,7 +282,7 @@ const HardwareHealth = (props) => {
     const deviceTable = (
         <MaterialTable
             columns={deviceTableColumns}
-            data={!props.errorInDevices && props.isConfigured? props.devices: []}
+            data={!props.errorInDevices && props.isConfigured ? props.devices : []}
             localization={{
                 body: {
                     emptyDataSourceMessage: deviceErrorMessage
@@ -312,6 +323,7 @@ const HardwareHealth = (props) => {
             }}
             style={{
                 width: "100%",
+                height: "113px",
                 boxShadow: "none",
                 border: "1px solid rgb(0 0 0 / 12%)",
             }}
@@ -447,10 +459,12 @@ const HardwareHealth = (props) => {
                 }}
                 className={classes.summaryButton}
                 data-testid="hw-summary-button"
+                aria-label="Summary"
             >
                 <ArrowBack /> Summary
             </Button>
-        )
+        );
+
     return (
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.hardwareHealthPaper}>
@@ -460,15 +474,6 @@ const HardwareHealth = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item container xs={12} justifyContent="center">
-                    {/* <Typography
-                        color="secondary"
-                        variant="h6"
-                        style={{
-                            marginTop: 4
-                        }}
-                    >
-                        Total
-                    </Typography> */}
                     <Legend
                         bgColor={customTheme.palette.success.main}
                         title="Nominals"
@@ -532,8 +537,15 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchHardwareHealth: () => dispatch({ type: actionTypes.SAGA_FETCH_HARDWARE_HEALTH }),
+    };
+};
+
 export default withStyles(styles)(
     connect(
-        mapStateToProps
+        mapStateToProps,
+        mapDispatchToProps
     )(HardwareHealth)
 );
