@@ -328,7 +328,7 @@ const StorageDetails = (props) => {
                         <Typography variant="h6" color="secondary">
                             Volume Summary
                         </Typography>
-                        <FormControl >
+                        <FormControl>
                             <InputLabel htmlFor="select-array">Array</InputLabel>
                             <Select
                                 value={props.selectedArray}
