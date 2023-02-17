@@ -30,7 +30,7 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {

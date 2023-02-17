@@ -597,7 +597,7 @@ class ArrayShow extends Component {
                           >
                             <SwapHorizOutlined fontSize="small" />
                           </Button>
-                        ) : <p />}
+                        ) : null}
                       </Grid>
                     </Tooltip>
                   );
