@@ -476,6 +476,7 @@ class VolumeList extends Component {
                 data-testid={`vol-edit-btn-${row.name}`}
                 onClick={() => this.props.editVolume(row)}
                 id={`VolumeList-btn-edit-${row.name}`}
+                aria-label={`edit-${row.name}`}
               >
                 <EditIcon />
               </Button>
@@ -485,6 +486,7 @@ class VolumeList extends Component {
                 data-testid={`vol-reset-qos-btn-${row.name}`}
                 onClick={() => this.props.resetQoS(row)}
                 id={`VolumeList-reset-qos-edit-${row.name}`}
+                aria-label={`reset-${row.name}`}
               >
                 <ReplayIcon />
               </Button>
@@ -496,6 +498,7 @@ class VolumeList extends Component {
                 data-testid={`vol-edit-save-btn-${row.name}`}
                 onClick={() => this.props.saveVolume(row)}
                 id={`VolumeList-btn-done-${row.name}`}
+                aria-label={`done-${row.name}`}
               >
                 <Done />
               </Button>
@@ -504,6 +507,7 @@ class VolumeList extends Component {
                 className={classes.editBtn}
                 onClick={this.props.fetchVolumes}
                 id={`VolumeList-btn-clear-${row.name}`}
+                aria-label={`clear-${row.name}`}
               >
                 <Clear />
               </Button>
@@ -514,7 +518,6 @@ class VolumeList extends Component {
 
     ];
     return (
-      // <ThemeProvider theme={MToolTheme}>
       <Paper data-testid="volumelist-table" id="VolumeList-table">
         <ThemeProvider theme={this.theme}>
           <MaterialTable

@@ -50,7 +50,7 @@ import {
   Tooltip
 } from "@material-ui/core";
 import { customTheme, PageTheme } from "../../../theme";
-import "../../../containers/Volume/Volume.css";
+import "../../../containers/StorageManagement/StorageManagement.css";
 import "./CreateVolume.css";
 import AlertDialog from "../../Dialog";
 import * as actionCreators from "../../../store/actions/exportActionCreators";

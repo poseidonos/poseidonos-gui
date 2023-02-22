@@ -445,117 +445,118 @@ describe("ConfigurationSetting", () => {
     });
   })
 
-  // it('should edit a user', async () => {
-  //   const mock = new MockAdapter(axios);
-  //   mock.onGet('/api/v1.0/get_users/')
-  //     .reply(200, [
-  //       {
-  //         "_id": "abcd",
-  //         "email": "abcd@corp.com",
-  //         "password": "Defg",
-  //         "phone_number": "xx",
-  //         "role": "admin",
-  //         "active": true,
-  //         "privileges": "Create, Read, Edit, Delete"
-  //       }
-  //     ])
-  //     .onPost('/api/v1.0/update_user/').reply(200, null);
-  //   const getSpy = jest.spyOn(axios, 'post');
-  //   renderComponent();
-  //   const { getByText, getAllByTitle, getAllByPlaceholderText } = wrapper;
-  //   await act(async () => {
-  //     const nameElement = await waitForElement(() => getByText("abcd"));
-  //     expect(nameElement).toBeDefined();
-  //     const editBtn = await waitForElement(() => getAllByTitle("Edit")[0]);
-  //     fireEvent.click(editBtn);
-  //     const phno = await waitForElement(() => getAllByPlaceholderText("+1 (702) 123-4567")[0]);
-  //     fireEvent.change(phno, {
-  //       target: { value: "+1 (702) 123-4578" }
-  //     });
-  //     const email = await waitForElement(() => getAllByTitle("email")[0]);
-  //     fireEvent.change(email, {
-  //       target: { value: "test@abc.com" }
-  //     });
-  //     const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
-  //     fireEvent.click(saveBtn);
-  //     await new Promise(resolve => setTimeout(resolve, 1000));
-  //     expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/', {
-  //       _id: 'abcd',
-  //       email: 'test@abc.com',
-  //       password: 'Defg',
-  //       phone_number: '+17021234578',
-  //       role: 'admin',
-  //       active: true,
-  //       privileges: 'Create, Read, Edit, Delete',
-  //       selected: false,
-  //       edit: true,
-  //       tableData: { id: 0 },
-  //       oldid: 'abcd'
-  //     }, {
-  //       "headers": {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/json",
-  //         "x-access-token": null
-  //       }
-  //     });
-  //   });
-  // });
+  it('should edit a user', async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_users/')
+      .reply(200, [
+        {
+          "_id": "abcd",
+          "email": "abcd@corp.com",
+          "password": "Defg",
+          "phone_number": "xx",
+          "role": "admin",
+          "active": true,
+          "privileges": "Create, Read, Edit, Delete"
+        }
+      ])
+      .onPost('/api/v1.0/update_user/').reply(200, null);
+    const getSpy = jest.spyOn(axios, 'post');
+    renderComponent();
+    const { getByText, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    await act(async () => {
+      const nameElement = await waitForElement(() => getByText("abcd"));
+      expect(nameElement).toBeDefined();
+      const editBtn = await waitForElement(() => getAllByTitle("Edit")[0]);
+      fireEvent.click(editBtn);
+      const phno = await waitForElement(() => getAllByPlaceholderText("+1 (702) 123-4567")[0]);
+      fireEvent.change(phno, {
+        target: { value: "+1 (702) 123-4578" }
+      });
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
+      fireEvent.change(email, {
+        target: { value: "test@abc.com" }
+      });
+      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
+      fireEvent.click(saveBtn);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/',
+        expect.objectContaining({
+          _id: 'abcd',
+          email: 'test@abc.com',
+          password: 'Defg',
+          phone_number: '+17021234578',
+          role: 'admin',
+          active: true,
+          privileges: 'Create, Read, Edit, Delete',
+          selected: false,
+          edit: true,
+          oldid: 'abcd'
+        }), {
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null
+        }
+      });
 
-  // it('should display an error if unable to edit a user', async () => {
-  //   const mock = new MockAdapter(axios);
-  //   mock.onGet('/api/v1.0/get_users/')
-  //     .reply(200, [
-  //       {
-  //         "_id": "abcd",
-  //         "email": "abcd@corp.com",
-  //         "password": "Defg",
-  //         "phone_number": "xx",
-  //         "role": "admin",
-  //         "active": true,
-  //         "privileges": "Create, Read, Edit, Delete"
-  //       }
-  //     ])
-  //     .onPost('/api/v1.0/update_user/').reply(500, null);
-  //   const getSpy = jest.spyOn(axios, 'post');
-  //   renderComponent();
-  //   const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
-  //   await act(async () => {
-  //     const nameElement = await waitForElement(() => getByText("abcd"));
-  //     expect(nameElement).toBeDefined();
-  //     const editBtn = await waitForElement(() => getAllByTitle("Edit")[0]);
-  //     fireEvent.click(editBtn);
-  //     const phno = await waitForElement(() => getAllByPlaceholderText("+1 (702) 123-4567")[0]);
-  //     fireEvent.change(phno, {
-  //       target: { value: "+1 (702) 123-4578" }
-  //     });
-  //     const email = await waitForElement(() => getAllByTitle("email")[0]);
-  //     fireEvent.change(email, {
-  //       target: { value: "test@abc.com" }
-  //     });
-  //     const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
-  //     fireEvent.click(saveBtn);
-  //     await new Promise(resolve => setTimeout(resolve, 1000));
-  //     expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/', {
-  //       _id: 'abcd',
-  //       email: 'test@abc.com',
-  //       password: 'Defg',
-  //       phone_number: "+17021234578",
-  //       role: 'admin',
-  //       active: true,
-  //       privileges: 'Create, Read, Edit, Delete',
-  //       selected: false,
-  //       edit: true,
-  //       tableData: { id: 0 },
-  //       oldid: 'abcd'
-  //     }, {
-  //       "headers": {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/json",
-  //         "x-access-token": null
-  //       }
-  //     });
-  //   });
-  // });
+    });
+  });
+
+  it('should display an error if unable to edit a user', async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet('/api/v1.0/get_users/')
+      .reply(200, [
+        {
+          "_id": "abcd",
+          "email": "abcd@corp.com",
+          "password": "Defg",
+          "phone_number": "xx",
+          "role": "admin",
+          "active": true,
+          "privileges": "Create, Read, Edit, Delete"
+        }
+      ])
+      .onPost('/api/v1.0/update_user/').reply(500, null);
+    const getSpy = jest.spyOn(axios, 'post');
+    renderComponent();
+    const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
+    await act(async () => {
+      const nameElement = await waitForElement(() => getByText("abcd"));
+      expect(nameElement).toBeDefined();
+      const editBtn = await waitForElement(() => getAllByTitle("Edit")[0]);
+      fireEvent.click(editBtn);
+      const phno = await waitForElement(() => getAllByPlaceholderText("+1 (702) 123-4567")[0]);
+      fireEvent.change(phno, {
+        target: { value: "+1 (702) 123-4578" }
+      });
+      const email = await waitForElement(() => getAllByTitle("email")[0]);
+      fireEvent.change(email, {
+        target: { value: "test@abc.com" }
+      });
+      const saveBtn = await waitForElement(() => getAllByTitle("Save")[0]);
+      fireEvent.click(saveBtn);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      expect(getSpy).toHaveBeenCalledWith('/api/v1.0/update_user/',
+        expect.objectContaining({
+          _id: 'abcd',
+          email: 'test@abc.com',
+          password: 'Defg',
+          phone_number: "+17021234578",
+          role: 'admin',
+          active: true,
+          privileges: 'Create, Read, Edit, Delete',
+          selected: false,
+          edit: true,
+          oldid: 'abcd'
+        }), {
+        "headers": {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": null
+        }
+      });
+    });
+  });
 
   it('should throw an error if the updated phone number is not valid', async () => {
     const mock = new MockAdapter(axios);

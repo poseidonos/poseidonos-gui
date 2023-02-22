@@ -47,8 +47,8 @@ import {
   Checkbox
 } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
-import { PageTheme } from "../../theme";
-import Popup from "../Popup";
+import { PageTheme } from "../../../theme";
+import Popup from "../../Popup";
 
 const styles = (theme) => ({
   container: {
