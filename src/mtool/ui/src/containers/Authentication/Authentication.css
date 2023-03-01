@@ -1,9 +1,0 @@
-input[placeholder] {
-  color: black !important;
-  padding: 5px 14px;
-  font-size: 12px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-
-}
