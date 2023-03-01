@@ -124,7 +124,7 @@ const styles = (theme) => ({
   },
 
   textField: {
-    background: "rgba(255, 255, 255, 0.87)",
+    background: "rgba(255, 255, 255, 0.93)",
     marginBottom: theme.spacing(2),
     borderRadius: "4px",
   },
