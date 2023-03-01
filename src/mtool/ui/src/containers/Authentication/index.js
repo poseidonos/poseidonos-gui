@@ -178,8 +178,7 @@ const styles = (theme) => ({
   },
 
   submit: {
-    background: "#788595",
-    color: "#171719",
+    background: "#5D6672",
     fontWeight: "bold",
   },
 
