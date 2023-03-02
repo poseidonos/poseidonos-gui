@@ -48,14 +48,17 @@ export const customTheme = {
     },
     error: {
       main: '#FF3603',
+      dark: "#CD2C16"
     },
     warning: {
       light: '#FFC603',
       main: '#FF9603',
+      dark: '#c2520d'
     },
     success: {
       light: "#55F603",
-      main: '#55C603',
+      main: "#55C603",
+      dark: '#177b01',
     },
     palette: {
       type: 'dark',
