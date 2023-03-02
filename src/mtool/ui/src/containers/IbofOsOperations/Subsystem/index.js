@@ -191,10 +191,7 @@ class Subsystem extends Component {
                             }]}
                             data={this.props.subsystems}
                             options={{
-                                headerStyle: {
-                                    backgroundColor: "#788595",
-                                    color: "#FFF",
-                                }
+                                headerStyle: customTheme.table.header
                             }}
                             columns={subsystemTableColumns}
                             icons={icons}
