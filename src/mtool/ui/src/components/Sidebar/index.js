@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'rgba(255, 255, 255)',
     '&>li:hover': {
-      background: 'rgb(57, 62, 69)',
+      background: customTheme.palette.primary.dark,
       color: '#fff',
       opacity: 1
     },
@@ -111,23 +111,23 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none"
   },
   activeLink: {
-    backgroundColor: 'rgb(33, 34, 37)',
+    backgroundColor: customTheme.palette.secondary.main,
     display: 'flex',
     color: '#fff',
     opacity: 1,
     '&>li:hover': {
-      backgroundColor: 'rgb(33, 34, 37)',
+      backgroundColor: customTheme.palette.secondary.main,
       opacity: 1,
       color: '#fff',
     },
     '&>li>p': {
       color: '#fff',
-      backgroundColor: 'rgb(33, 34, 37)',
+      backgroundColor: customTheme.palette.secondary.main,
       opacity: '1 !important'
     },
     '&>li>span>img': {
       color: '#fff',
-      backgroundColor: 'rgb(33, 34, 37)',
+      backgroundColor: customTheme.palette.secondary.main,
       opacity: '1 !important',
     }
   },

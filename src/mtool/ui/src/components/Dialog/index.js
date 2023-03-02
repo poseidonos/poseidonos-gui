@@ -45,11 +45,11 @@ import DeleteIcon from '../../assets/images/Delete-ICON.png';
 import ErrorIcon from '../../assets/images/ERROR-ICON.png';
 import AlertIcon from '../../assets/images/ERROR-ICON_old.png';
 import InfoIcon from '../../assets/images/INFO-ICON.png';
+import { customTheme } from '../../theme';
 
 const styles = theme => ({
   title: {
-    // backgroundColor: '#18355f',
-    backgroundColor: '#424850',
+    backgroundColor: customTheme.palette.primary.main,
     color: theme.palette.common.white,
     padding: theme.spacing(1),
   },
@@ -58,19 +58,16 @@ const styles = theme => ({
     alignItems: 'center',
   },
   submit: {
-    // background: '#007bff',
     height: '1.8rem',
     fontSize: 12,
     textTransform: 'none',
     minWidth: '0px',
     width: '60px',
   },
-
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: '4px',
-    color: theme.palette.grey[500],
   },
   buttonStyle: {
     height: '22px',
@@ -126,18 +123,7 @@ const AlertDialog = (props) => {
     props.type !== 'alert' && props.type !== 'info' && props.type !== 'partialError' ? (
       <DialogActions className={classes.actions}>
         <Button
-          color="primary"
-          variant="contained"
-          onClick={props.handleClose}
-          className={classes.submit}
-          autoFocus
-          data-testid="alertbox-no"
-          aria-label="Close"
-        >
-          No
-        </Button>
-        <Button
-          color="primary"
+          color="secondary"
           variant="contained"
           onClick={props.onConfirm}
           className={classes.submit}
@@ -146,11 +132,22 @@ const AlertDialog = (props) => {
         >
           Yes
         </Button>
+        <Button
+          color="secondary"
+          variant="outlined"
+          onClick={props.handleClose}
+          className={classes.submit}
+          autoFocus
+          data-testid="alertbox-no"
+          aria-label="Close"
+        >
+          No
+        </Button>
       </DialogActions>
     ) : (
       <DialogActions className={classes.actions}>
         <Button
-          color="primary"
+          color="secondary"
           variant="contained"
           onClick={handleConfirm}
           className={classes.submit}
