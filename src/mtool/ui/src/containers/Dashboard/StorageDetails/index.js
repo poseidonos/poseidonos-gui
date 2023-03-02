@@ -105,10 +105,7 @@ const styles = (theme) => ({
         },
     },
     tabs: {
-        backgroundColor: "#E0E0E0"
-    },
-    tab: {
-        fontSize: 14,
+        backgroundColor: "#F1F0F5"
     },
     tabIcon: {
         marginRight: theme.spacing(1)
@@ -139,7 +136,9 @@ const styles = (theme) => ({
         textAlign: "center",
         minWidth: 100
     },
-
+    borderSolid: {
+        border: "1px solid #0001",
+    },
 });
 
 
@@ -278,7 +277,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="secondary">
+                        <Typography variant="h6" color="primary">
                             Array Summary
                         </Typography>
                     </Grid>
@@ -321,7 +320,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="secondary">
+                        <Typography variant="h6" color="primary">
                             Volume Summary
                         </Typography>
                         <FormControl>
@@ -420,53 +419,50 @@ const StorageDetails = (props) => {
                         )}
                     </Grid>
                 </Grid>
-                <Grid className={classes.tabs}>
-                    <Tabs
-                        value={selectedTab}
-                        onChange={(e, newVal) => setSelectedTab(newVal)}
-                        textColor="secondary"
-                        indicatorColor="secondary"
-                        aria-label="secondary tabs example"
-                        centered
-                    >
-                        <Tab
-                            className={classes.tab}
-                            value={ARRAYTAB}
-                            label={(
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        height="24px"
-                                        width="24px"
-                                        className={classes.arrayTabIcon}
-                                        src={ArraysIconSelected}
-                                        alt="Arrays Icon"
-                                        style={selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
-                                    />
-                                    <Typography>{props.arrays.length} Arrays</Typography>
-                                </Box>
-                            )}
-                            data-testid="array-tab"
-                        />
-                        <Tab
-                            className={classes.tab}
-                            value={VOLUMETAB}
-                            label={(
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        height="18px"
-                                        width="18px"
-                                        className={classes.tabIcon}
-                                        src={VolumeIconSelected}
-                                        alt="Volumes Icon"
-                                        style={selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
-                                    />
-                                    <Typography>{props.arrayVolumes.length} Volumes</Typography>
-                                </Box>
-                            )}
-                            data-testid="volume-tab"
-                        />
-                    </Tabs>
-                </Grid>
+                <Tabs
+                    value={selectedTab}
+                    onChange={(e, newVal) => setSelectedTab(newVal)}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="secondary tabs example"
+                    centered
+                    className={classes.tabs}
+                >
+                    <Tab
+                        value={ARRAYTAB}
+                        label={(
+                            <Box display="flex" alignItems="center">
+                                <img
+                                    height="24px"
+                                    width="24px"
+                                    className={classes.arrayTabIcon}
+                                    src={ArraysIconSelected}
+                                    alt="Arrays Icon"
+                                    style={selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
+                                />
+                                <Typography>{props.arrays.length} Arrays</Typography>
+                            </Box>
+                        )}
+                        data-testid="array-tab"
+                    />
+                    <Tab
+                        value={VOLUMETAB}
+                        label={(
+                            <Box display="flex" alignItems="center">
+                                <img
+                                    height="18px"
+                                    width="18px"
+                                    className={classes.tabIcon}
+                                    src={VolumeIconSelected}
+                                    alt="Volumes Icon"
+                                    style={selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
+                                />
+                                <Typography>{props.arrayVolumes.length} Volumes</Typography>
+                            </Box>
+                        )}
+                        data-testid="volume-tab"
+                    />
+                </Tabs>
                 <Grid className={classes.borderSolid}>
                     {selectedTab === ARRAYTAB ? arrayTable : volumeTable}
                 </Grid>
