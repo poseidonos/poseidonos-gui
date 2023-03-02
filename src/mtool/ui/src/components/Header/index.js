@@ -63,7 +63,7 @@ import { FETCH_POS_STATUS_INTERVAL } from "../../utils/constants";
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundImage: 'linear-gradient(to right, #171719, #788595)',
+    backgroundImage: `linear-gradient(to right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     boxShadow: 'none',
     height: 62,
     // backgroundColor: theme.palette.primary

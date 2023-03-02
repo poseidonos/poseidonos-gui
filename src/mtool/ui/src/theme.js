@@ -63,7 +63,7 @@ export const customTheme = {
   },
   table: {
     header: {
-      backgroundColor: "#5D6672",
+      backgroundColor: "#4c6380",
       color: "white",
       fontSize: 14,
       flexDirection: 'row'

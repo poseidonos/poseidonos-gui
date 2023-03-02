@@ -44,7 +44,7 @@ import StorageIconDisabled from '../../assets/images/Storage-DIS.png';
 import StorageIconSelected from '../../assets/images/Storage-SEL.png';
 import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
 import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
-import MToolTheme from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
 
 import './Sidebar.css';
 
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: '#424850',
+    backgroundImage: `linear-gradient(to bottom, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     color: theme.palette.text.light
   },
   logoContainer: {
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#424850',
+    background: 'rgba(0,0,0,0)',
     boxShadow: "none"
   },
   activeLink: {
