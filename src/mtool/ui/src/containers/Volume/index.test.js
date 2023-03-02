@@ -61,6 +61,64 @@ import headerReducer from "../../store/reducers/headerReducer";
 import createVolumeReducer from "../../store/reducers/createVolumeReducer"
 import rootSaga from "../../sagas/indexSaga";
 
+
+//duplicate Code
+const result_json = {
+  status: {
+    code: 0,
+    description: "Success",
+  },
+}
+
+const capacity_json = {
+  Data: {
+    AllocatedBytes: 100,
+    ConsumedBytes: 10,
+  },
+}
+
+const oem_json = {
+  MaxIOPS: 10,
+  MaxBW: 10,
+  MinIOPS: 0,
+  MinBandwidth: 0,
+}
+
+const status_json = {
+  Oem: {
+    VolumeStatus: "Mounted",
+  },
+}
+
+const metaDevicesJson = {
+  name: "uram2",
+  isAvailable: true,
+  arrayName: "",
+  displayMsg: "uram1",
+  trimmedDisplayMsg: "uram1"
+}
+
+const device_json = {
+  "devices": [{
+    name: "unvmens-6",
+    size: 390703446,
+    mn: "SAMSUNG MZWLL1T6HAJQ-00005",
+    sn: "S4C9NF0M500043",
+    isAvailable: false,
+    numa: "0"
+  }],
+  metadevices,
+}
+
+members_json = {
+  Members: [
+    {
+      "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+      "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+    },
+  ],
+}
+
 describe("<Storage Management />", () => {
   let wrapper;
   let mock;
@@ -744,17 +802,7 @@ describe("<Storage Management />", () => {
   it("should not select device if it is unavailable", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        "devices": [{
-          name: "unvmens-6",
-          size: 390703446,
-          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
-          sn: "S4C9NF0M500043",
-          isAvailable: false,
-          numa: "0"
-        }],
-        metadevices,
-      })
+      .reply(200, device_json)
       .onPost("/api/v1.0/create_arrays/")
       .reply(200, {})
       .onGet(/api\/v1\/get_array_config\/*/)
@@ -909,17 +957,7 @@ describe("<Storage Management />", () => {
   it("should not add an unavailable disk", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        "devices": [{
-          name: "unvmens-6",
-          size: 390703446,
-          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
-          sn: "S4C9NF0M500043",
-          isAvailable: false,
-          numa: "0"
-        }],
-        metadevices,
-      })
+      .reply(200, device_json)
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\/get_array_config\/*/)
@@ -942,17 +980,7 @@ describe("<Storage Management />", () => {
   it("should unmount an array and turn on write through mode", async () => {
     mock
       .onGet(/api\/v1.0\/get_devices\/*/)
-      .reply(200, {
-        "devices": [{
-          name: "unvmens-6",
-          size: 390703446,
-          mn: "SAMSUNG MZWLL1T6HAJQ-00005",
-          sn: "S4C9NF0M500043",
-          isAvailable: false,
-          numa: "0"
-        }],
-        metadevices,
-      })
+      .reply(200, device_json)
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
       .onGet(/api\/v1\/get_array_config\/*/)
@@ -1121,57 +1149,22 @@ describe("<Storage Management />", () => {
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/api\/v1.0\/max_volume_count\/*/)
       .reply(200, 256)
@@ -1844,45 +1837,17 @@ describe("<Storage Management />", () => {
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onAny()
       .reply(200, []);
@@ -1916,30 +1881,13 @@ describe("<Storage Management />", () => {
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
         Status: {
           Oem: {
             VolumeStatus: "Unmounted",
@@ -1950,18 +1898,8 @@ describe("<Storage Management />", () => {
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
+        Capacity: capacity_json,
+        Oem:oem_json,
         Status: {
           Oem: {
             VolumeStatus: "Unmounted",
@@ -2045,57 +1983,22 @@ describe("<Storage Management />", () => {
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/api\/v1\/subsystem/)
       .reply(200, {
@@ -2113,12 +2016,7 @@ describe("<Storage Management />", () => {
       })
       .onDelete(/api\/volume\/mount/)
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
@@ -2160,57 +2058,22 @@ describe("<Storage Management />", () => {
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status:status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
@@ -2252,68 +2115,28 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status:  status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onAny()
       .reply(200, []);
@@ -2358,68 +2181,28 @@ describe("<Storage Management />", () => {
       .onPost("/api/v1.0/save-volume/")
       .reply(200, {})
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onAny()
       .reply(200, []);
@@ -2480,45 +2263,17 @@ describe("<Storage Management />", () => {
       .reply(200, {
         Name: "vol1",
         Id: "0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0,
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onAny()
       .reply(200, []);
@@ -2560,64 +2315,34 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onAny()
       .reply(200, []);
@@ -2643,64 +2368,34 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 10,
           MaxBW: 10,
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status:status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onPost("/api/v1/qos/reset")
       .reply(400, {})
@@ -2728,68 +2423,28 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
-        Oem: {
-          MaxIOPS: 10,
-          MaxBW: 10,
-          MinIOPS: 0,
-          MinBandwidth: 0
-        },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Capacity: capacity_json,
+        Oem: oem_json,
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result:result_json,
       })
       .onAny()
       .reply(200, []);
@@ -2833,68 +2488,38 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200, members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 0,
           MinBandwidth: 0
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 10,
           MinBandwidth: 0
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onAny()
       .reply(200, []);
@@ -2941,68 +2566,38 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
-      .reply(200, {
-        Members: [
-          {
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-            "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-          },
-        ],
-      })
+      .reply(200,members_json)
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 0,
           MinBandwidth: 0
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
-        Capacity: {
-          Data: {
-            AllocatedBytes: 100,
-            ConsumedBytes: 10,
-          },
-        },
+        Capacity: capacity_json,
         Oem: {
           MaxIOPS: 0,
           MaxBandwidth: 0,
           MinIOPS: 0,
           MinBandwidth: 10
         },
-        Status: {
-          Oem: {
-            VolumeStatus: "Mounted",
-          },
-        },
+        Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
-        result: {
-          status: {
-            code: 0,
-            description: "Success",
-          },
-        },
+        result: result_json,
       })
       .onAny()
       .reply(200, []);
@@ -3326,13 +2921,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: [
           ...metadevices,
-          {
-            name: "uram2",
-            isAvailable: true,
-            arrayName: "",
-            displayMsg: "uram1",
-            trimmedDisplayMsg: "uram1"
-          }
+          metaDevicesJson
         ],
       })
       .onPost("/api/v1.0/create_arrays/")
@@ -3443,13 +3032,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: [
           ...metadevices,
-          {
-            name: "uram2",
-            isAvailable: true,
-            arrayName: "",
-            displayMsg: "uram1",
-            trimmedDisplayMsg: "uram1"
-          }
+          metaDevicesJson
         ],
       })
       .onPost("/api/v1.0/create_arrays/")
@@ -3478,13 +3061,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: [
           ...metadevices,
-          {
-            name: "uram2",
-            isAvailable: true,
-            arrayName: "",
-            displayMsg: "uram1",
-            trimmedDisplayMsg: "uram1"
-          }
+          metaDevicesJson
         ],
       })
       .onPost("/api/v1.0/create_arrays/")
@@ -3514,13 +3091,7 @@ describe("<Storage Management />", () => {
         devices: [...devices.slice(0, 2)],
         metadevices: [
           ...metadevices,
-          {
-            name: "uram2",
-            isAvailable: true,
-            arrayName: "",
-            displayMsg: "uram1",
-            trimmedDisplayMsg: "uram1"
-          }
+          metaDevicesJson
         ],
       })
       .onPost("/api/v1.0/create_arrays/")

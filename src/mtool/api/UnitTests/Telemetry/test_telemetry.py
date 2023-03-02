@@ -55,6 +55,64 @@ ds_id = 1
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
 
+# json data 
+success_json = {"status": "success"}
+tel_json = {'telemetryIP': ip, 'telemetryPort': port}
+status_json = {
+                        "data": {
+                            "result": devices,
+                        },
+                        "status": "success"
+                    }
+data_json = {
+            "message": "data source with the same name already exists",
+            "traceID": "00000000000000000000000000000000"
+        }
+label_json = {
+                        "data": {
+                            "result": ipmi,
+                        },
+                        "status": "success"
+                    }
+query_json = {
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "poseidonos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            },
+                            {
+                                "metric": {
+                                    "job": "ipmi"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    }
+Graphana_json = [
+            {
+                "id": ds_id,
+                "uid": "iFXqnLzVk",
+                "orgId": 1,
+                "name": "poseidon",
+                "type": "prometheus",
+                "typeName": "Prometheus",
+                "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
+                "access": "proxy",
+                "url": "http://"+old_ip+":"+port,
+                "user": "",
+                "database": "",
+                "basicAuth": False,
+                "isDefault": False,
+                "jsonData": {},
+                "readOnly": False
+            }
+        ]
 devices = [
         {
             "metric": {
@@ -394,7 +452,7 @@ def test_get_telemetry_config_none(mock_get_telemetry_url):
 def test_set_telemetry_config_success(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(prom_url + '/api/v1/status/runtimeinfo',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     kwargs["mock"].post(
         grafa_url+"/api/datasources",
@@ -403,7 +461,7 @@ def test_set_telemetry_config_success(mock_update_telemetry_url, **kwargs):
     
     response = app.test_client().post(
         '/api/v1/configure',
-        data=json.dumps({'telemetryIP': ip, 'telemetryPort': port})
+        data=json.dumps(tel_json)
     )
 
     data = response.get_data(as_text=True)
@@ -416,14 +474,11 @@ def test_set_telemetry_config_success(mock_update_telemetry_url, **kwargs):
 def test_set_telemetry_config_success_2(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(prom_url + '/api/v1/status/runtimeinfo',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     kwargs["mock"].post(
         grafa_url+"/api/datasources",
-        json={
-            "message": "data source with the same name already exists",
-            "traceID": "00000000000000000000000000000000"
-        },
+        json=data_json,
         status_code=200)
 
     kwargs["mock"].get(
@@ -451,7 +506,7 @@ def test_set_telemetry_config_success_2(mock_update_telemetry_url, **kwargs):
     
     response = app.test_client().post(
         '/api/v1/configure',
-        data=json.dumps({'telemetryIP': ip, 'telemetryPort': port})
+        data=json.dumps(tel_json)
     )
 
     data = response.get_data(as_text=True)
@@ -464,37 +519,16 @@ def test_set_telemetry_config_success_2(mock_update_telemetry_url, **kwargs):
 def test_set_telemetry_config_success_3(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(prom_url + '/api/v1/status/runtimeinfo',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     kwargs["mock"].post(
         grafa_url+"/api/datasources",
-        json={
-            "message": "data source with the same name already exists",
-            "traceID": "00000000000000000000000000000000"
-        },
+        json = data_json,
         status_code=200)
 
     kwargs["mock"].get(
         grafa_url+"/api/datasources",
-        json=[
-            {
-                "id": ds_id,
-                "uid": "iFXqnLzVk",
-                "orgId": 1,
-                "name": "poseidon",
-                "type": "prometheus",
-                "typeName": "Prometheus",
-                "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
-                "access": "proxy",
-                "url": "http://"+old_ip+":"+port,
-                "user": "",
-                "database": "",
-                "basicAuth": False,
-                "isDefault": False,
-                "jsonData": {},
-                "readOnly": False
-            }
-        ],
+        json=Graphana_json,
         status_code=200)    
 
     kwargs["mock"].put(
@@ -504,7 +538,7 @@ def test_set_telemetry_config_success_3(mock_update_telemetry_url, **kwargs):
     
     response = app.test_client().post(
         '/api/v1/configure',
-        data=json.dumps({'telemetryIP': ip, 'telemetryPort': port})
+        data=json.dumps(tel_json)
     )
 
     data = response.get_data(as_text=True)
@@ -522,7 +556,7 @@ def test_set_telemetry_config_failure(mock_update_telemetry_url, **kwargs):
     
     response = app.test_client().post(
         '/api/v1/configure',
-        data=json.dumps({'telemetryIP': ip, 'telemetryPort': port})
+        data=json.dumps(tel_json)
     )
 
     assert response.status_code == 500
@@ -533,37 +567,16 @@ def test_set_telemetry_config_failure(mock_update_telemetry_url, **kwargs):
 def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(prom_url + '/api/v1/status/runtimeinfo',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     kwargs["mock"].post(
         grafa_url+"/api/datasources",
-        json={
-            "message": "data source with the same name already exists",
-            "traceID": "00000000000000000000000000000000"
-        },
+        json=data_json,
         status_code=200)
 
     kwargs["mock"].get(
         grafa_url+"/api/datasources",
-        json=[
-            {
-                "id": ds_id,
-                "uid": "iFXqnLzVk",
-                "orgId": 1,
-                "name": "poseidon",
-                "type": "prometheus",
-                "typeName": "Prometheus",
-                "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
-                "access": "proxy",
-                "url": "http://"+old_ip+":"+port,
-                "user": "",
-                "database": "",
-                "basicAuth": False,
-                "isDefault": False,
-                "jsonData": {},
-                "readOnly": False
-            }
-        ],
+        json= Graphana_json,
         status_code=200)   
 
     kwargs["mock"].put(
@@ -573,7 +586,7 @@ def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
     
     response = app.test_client().post(
         '/api/v1/configure',
-        data=json.dumps({'telemetryIP': ip, 'telemetryPort': port})
+        data=json.dumps(tel_json)
     )
 
     assert response.status_code == 500
@@ -603,42 +616,13 @@ def test_get_current_perf(mock_get_current_user, **kwargs):
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
-                    json={
-                        "data": {
-                            "result": [{
-                                "metric": {
-                                    "job": "poseidonos"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            },
-                            {
-                                "metric": {
-                                    "job": "ipmi"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            }]
-                        }
-                    },
+                    json=query_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json={
-                        "data": {
-                            "result": devices,
-                        },
-                        "status": "success"
-                    },
+                    json=status_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json={
-                        "data": {
-                            "result": ipmi,
-                        },
-                        "status": "success"
-                    },
+                    json=label_json,
                     status_code=200)
     response = app.test_client().get(
         '/api/v1/get_hardware_health',
@@ -658,26 +642,7 @@ def test_get_hardware_health(mock_get_current_user, **kwargs):
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
-                    json={
-                        "data": {
-                            "result": [{
-                                "metric": {
-                                    "job": "poseidonos"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            },
-                            {
-                                "metric": {
-                                    "job": "ipmi"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            }]
-                        }
-                    },
+                    json=query_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
                     json={
@@ -687,12 +652,7 @@ def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, 
                     },
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json={
-                        "data": {
-                            "result": ipmi,
-                        },
-                        "status": "success"
-                    },
+                    json=label_json,
                     status_code=200)
     response = app.test_client().get(
         '/api/v1/get_hardware_health',
@@ -710,34 +670,10 @@ def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, 
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
-                    json={
-                        "data": {
-                            "result": [{
-                                "metric": {
-                                    "job": "poseidonos"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            },
-                            {
-                                "metric": {
-                                    "job": "ipmi"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            }]
-                        }
-                    },
+                    json=query_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22temperature%7Cwarning_temperature_time%7Ccritical_temperature_time%7Cavailable_spare%7Cavailable_spare_threshold%7C%22,job=%22poseidonos%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json={
-                        "data": {
-                            "result": devices,
-                        },
-                        "status": "success"
-                    },
+                    json= status_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
                     json={
@@ -765,7 +701,7 @@ def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user,
             return_value="test", autospec=True)
 def test_start_telemetry(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     response = app.test_client().post(
         '/api/v1/telemetry',
@@ -781,7 +717,7 @@ def test_start_telemetry(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_stop_telemetry(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/telemetry',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     response = app.test_client().delete(
         '/api/v1/telemetry',
@@ -797,7 +733,7 @@ def test_stop_telemetry(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_set_telemetry_properties(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry/properties',
-                       json={"status": "success"},
+                       json=success_json,
                        status_code=200)
     response = app.test_client().post(
         '/api/v1/telemetry/properties',
@@ -882,7 +818,7 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
                     },
                     status_code=200)
     kwargs["mock"].get('http://localhost:9090/api/v1/status/runtimeinfo',
-            json={"status": "success"},
+            json=success_json,
             status_code=200
     )
     response = app.test_client().get(

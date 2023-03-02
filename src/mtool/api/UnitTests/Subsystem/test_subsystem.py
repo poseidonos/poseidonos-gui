@@ -46,6 +46,23 @@ ip = os.environ.get('DAGENT_HOST', 'localhost')
 
 DAGENT_URL = 'http://' + ip + ':3000'
 
+#json data
+
+listner_json = '''{
+        "name":"nqn.2019-04.pos:subsystem1",
+        "transport_type":"tcp",
+        "target_address":"111.100.13.97",
+        "transport_service_id":"1158"
+}'''
+
+subsystem_json = '''{
+        "name":"nqn.2019-04.pos:subsystem1",
+        "sn": "POS0000000003",
+        "mn": "IBOF_VOLUME_EEEXTENSION",
+        "max_namespaces": 256,
+        "allow_any_host": true
+}'''
+
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ARRAY_NAME = "POSArray"
 ARRAY_LIST_URL = DAGENT_URL + '/api/ibofos/v1/arrays'
@@ -127,13 +144,7 @@ def test_create_subsystem(mock_get_current_user, **kwargs):
         }
     }}, status_code=200)
     response = app.test_client().post('/api/v1/subsystem/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
-}''',
+        data= subsystem_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
@@ -159,13 +170,7 @@ def test_create_subsystem_failure(mock_get_current_user, **kwargs):
     }
 }, status_code=400)
     response = app.test_client().post('/api/v1/subsystem/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
-}''',
+        data= subsystem_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
@@ -194,12 +199,7 @@ def test_add_listener(mock_get_current_user, **kwargs):
     }
 }, status_code=200)
     response = app.test_client().post('/api/v1/listener/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "transport_type":"tcp",
-        "target_address":"111.100.13.97",
-        "transport_service_id":"1158"
-}''',
+        data=listner_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
@@ -225,12 +225,7 @@ def test_add_listener_failure(mock_get_current_user, **kwargs):
     }
 }, status_code=400)
     response = app.test_client().post('/api/v1/listener/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "transport_type":"tcp",
-        "target_address":"111.100.13.97",
-        "transport_service_id":"1158"
-}''',
+        data=listner_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 

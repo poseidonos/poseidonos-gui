@@ -57,6 +57,39 @@ import UserManagement from "./index";
 
 jest.unmock("axios");
 
+//duplicate code 
+const user_json = {
+  "confirmpassword": "test1234",
+  "emailid": "abcd@abc.com",
+  "error": "",
+  "mobilenumber": "+123457890",
+  "password": "test1234",
+  "phone_number": "+82",
+  "user_role": "Admin",
+  "username": "abcd1234"
+}
+const header_json = {
+  "headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "x-access-token": null
+  }
+}
+
+const user_response_json = [
+  {
+    "_id": "abcd",
+    "email": "abcd@corp.com",
+    "password": "Defg",
+    "phone_number": "xx",
+    "role": "admin",
+    "active": true,
+    "privileges": "Create, Read, Edit, Delete"
+  }
+]
+
+
+
 describe("ConfigurationSetting", () => {
   let wrapper;
   let history;
@@ -144,20 +177,14 @@ describe("ConfigurationSetting", () => {
       "phone_number": "+82",
       "user_role": "Admin",
       "username": "abcd1234"
-    }, {
-      "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": null
-      }
-    });
+    }, header_json);
   });
 
   it('should display an error while adding a new user if the username already exists', () => {
     const mock = new MockAdapter(axios);
     mock.onPost('/api/v1.0/add_new_user/').reply(400, null)
       .onGet('/api/v1.0/get_users/').reply(200, null);
-    const getSpy = jest.spyOn(axios, 'post');
+      const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
     const { getByTestId, getByText } = wrapper;
     const username = getByTestId('add-user-name');
@@ -182,22 +209,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(confirmBtn);
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
-    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', {
-      "confirmpassword": "test1234",
-      "emailid": "abcd@abc.com",
-      "error": "",
-      "mobilenumber": "+123457890",
-      "password": "test1234",
-      "phone_number": "+82",
-      "user_role": "Admin",
-      "username": "abcd1234"
-    }, {
-      "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": null
-      }
-    });
+    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', user_json, header_json);
   });
 
   it('should display an error if an invalid phone number is entered', () => {
@@ -230,51 +242,36 @@ describe("ConfigurationSetting", () => {
     expect(getByText("Please provide a valid Phone Number")).toBeDefined();
   });
 
-  it('should display an error if unable to add a new user', () => {
+  it.only('should display an error if unable to add a new user', () => {
     const mock = new MockAdapter(axios);
     mock.onPost('/api/v1.0/add_new_user/').reply(500, null)
       .onGet('/api/v1.0/get_users/').reply(200, null);
-    const getSpy = jest.spyOn(axios, 'post');
-    renderComponent();
-    const { getByTestId, getByText } = wrapper;
-    const username = getByTestId('add-user-name');
-    const password = getByTestId('add-user-password');
-    const confirmPassword = getByTestId('add-user-confirm-password');
-    const phno = getByTestId('add-user-phno');
-    const email = getByTestId('add-user-email');
-    const confirmBtn = getByText('Submit');
-    fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
-    fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(username, { target: { value: 'abcd1234' } });
-    fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
-    fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(password, { target: { value: 'test1234' } });
-    fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
-    fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
-    fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
-    fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
-    fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
-    fireEvent.change(phno, { target: { value: '123457890' } });
-    fireEvent.click(confirmBtn);
-    expect(getByText('Yes')).toBeDefined();
-    fireEvent.click(getByText('Yes'));
-    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', {
-      "confirmpassword": "test1234",
-      "emailid": "abcd@abc.com",
-      "error": "",
-      "mobilenumber": "+123457890",
-      "password": "test1234",
-      "phone_number": "+82",
-      "user_role": "Admin",
-      "username": "abcd1234"
-    }, {
-      "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": null
-      }
-    });
+      const getSpy = jest.spyOn(axios, 'post');
+      renderComponent();
+      const { getByTestId, getByText } = wrapper;
+      const username = getByTestId('add-user-name');
+      const password = getByTestId('add-user-password');
+      const confirmPassword = getByTestId('add-user-confirm-password');
+      const phno = getByTestId('add-user-phno');
+      const email = getByTestId('add-user-email');
+      const confirmBtn = getByText('Submit');
+      fireEvent.keyDown(username, { key: 'A', code: 65, charCode: 65 });
+      fireEvent.keyDown(username, { key: '+', code: 43, charCode: 43 });
+      fireEvent.change(username, { target: { value: 'abcd1234' } });
+      fireEvent.keyDown(password, { key: 'A', code: 65, charCode: 65 });
+      fireEvent.keyDown(password, { key: '+', code: 43, charCode: 43 });
+      fireEvent.change(password, { target: { value: 'test1234' } });
+      fireEvent.keyDown(confirmPassword, { key: 'A', code: 65, charCode: 65 });
+      fireEvent.keyDown(confirmPassword, { key: '+', code: 43, charCode: 43 });
+      fireEvent.change(confirmPassword, { target: { value: 'test1234' } });
+      fireEvent.keyDown(email, { key: 'A', code: 65, charCode: 65 });
+      fireEvent.keyDown(email, { key: '+', code: 43, charCode: 43 });
+      fireEvent.change(email, { target: { value: 'abcd@abc.com' } });
+      fireEvent.change(phno, { target: { value: '123457890' } });
+      fireEvent.click(confirmBtn);
+      expect(getByText('Yes')).toBeDefined();
+      fireEvent.click(getByText('Yes'));
+      expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', user_json, header_json);
   });
 
 
@@ -347,17 +344,7 @@ describe("ConfigurationSetting", () => {
   it('should add list all the users', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ]);
+      .reply(200, user_response_json);
     renderComponent();
     const { getByText, asFragment } = wrapper;
     await act(async () => {
@@ -370,17 +357,7 @@ describe("ConfigurationSetting", () => {
   it('should delete a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ])
+      .reply(200, user_response_json)
       .onPost('/api/v1.0/delete_users/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
 
@@ -396,30 +373,14 @@ describe("ConfigurationSetting", () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
         "ids": ["abcd"],
-      }, {
-        "headers": {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": null
-        }
-      });
+      }, header_json);
     });
   })
 
   it('should display an error if unable to delete a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ])
+      .reply(200, user_response_json)
       .onPost('/api/v1.0/delete_users/').reply(500, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
@@ -434,13 +395,7 @@ describe("ConfigurationSetting", () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
         "ids": ["abcd"],
-      }, {
-        "headers": {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": null
-        }
-      });
+      }, header_json);
       expect(asFragment()).toMatchSnapshot();
     });
   })
@@ -560,17 +515,7 @@ describe("ConfigurationSetting", () => {
   it('should throw an error if the updated phone number is not valid', async () => {
     const mock = new MockAdapter(axios);
     let response = mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ]);
+      .reply(200, user_response_json);
     renderComponent();
     const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
     await act(async () => {
@@ -599,17 +544,7 @@ describe("ConfigurationSetting", () => {
   it('should throw an error if the emailid is not valid', async () => {
     const mock = new MockAdapter(axios);
     let response = mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ]);
+      .reply(200, user_response_json);
     renderComponent();
     const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
     await act(async () => {
@@ -645,17 +580,7 @@ describe("ConfigurationSetting", () => {
     Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true });
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ])
+      .reply(200, user_response_json)
     renderComponent();
     const { getByText, getAllByTitle } = wrapper;
     await act(async () => {
@@ -670,17 +595,7 @@ describe("ConfigurationSetting", () => {
   it('should disable a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, [
-        {
-          "_id": "abcd",
-          "email": "abcd@corp.com",
-          "password": "Defg",
-          "phone_number": "xx",
-          "role": "admin",
-          "active": true,
-          "privileges": "Create, Read, Edit, Delete"
-        }
-      ])
+      .reply(200, user_response_json)
     renderComponent();
     const { getByText } = wrapper;
     await act(async () => {
