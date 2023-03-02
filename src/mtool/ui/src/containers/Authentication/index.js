@@ -53,7 +53,7 @@ import { ArrowForward, RotateLeft } from '@material-ui/icons';
 import EditIcon from '@material-ui/icons/Edit';
 
 import './Authentication.css';
-import MToolTheme from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
 import PoseidonLogo from '../../assets/images/Poseidon.png';
 import { IP_REGEX } from '../../utils/constants';
 import * as actionTypes from '../../store/actions/actionTypes';
@@ -63,7 +63,7 @@ const styles = theme => ({
   container: {
     width: '100vw',
     height: '100vh',
-    backgroundImage: 'linear-gradient(to bottom right, #171719, #788595)',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -92,7 +92,7 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: "space-between",
     alignItems: 'center',
-    backgroundImage: 'linear-gradient(to bottom right, #171719, #464C55)',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
   },
 
   loginPaper: {
@@ -103,7 +103,7 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: "space-between",
     alignItems: 'center',
-    backgroundImage: 'linear-gradient(to bottom right, #171719, #464C55)',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
   },
 
   header: {
