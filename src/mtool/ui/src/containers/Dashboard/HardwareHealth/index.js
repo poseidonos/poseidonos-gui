@@ -65,9 +65,8 @@ const styles = (theme) => ({
         height: 344,
     },
     tableHeader: {
-        backgroundColor: "#788595",
-        color: "#FFF",
-        padding: 5,
+        ...customTheme.table.header,
+        padding: 7,
         paddingLeft: theme.spacing(2),
         width: "-webkit-fill-available",
     },
@@ -254,10 +253,8 @@ const HardwareHealth = (props) => {
             )}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
+                    ...customTheme.table.header,
+                    fontSize: 12,
                     paddingRight: 0,
                 },
                 search: false,
@@ -305,10 +302,8 @@ const HardwareHealth = (props) => {
             )}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
+                    ...customTheme.table.header,
+                    fontSize: 12,
                     paddingRight: 0,
                 },
                 search: false,
@@ -339,13 +334,7 @@ const HardwareHealth = (props) => {
             data={pieChart.metrics}
             icons={icons}
             options={{
-                headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                    paddingRight: 0,
-                },
+                headerStyle: customTheme.table.header,
                 search: false,
                 sorting: true,
                 paging: false,

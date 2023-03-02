@@ -288,10 +288,8 @@ const StorageDetails = (props) => {
             data={props.arrays}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8
+                    ...customTheme.table.header,
+                    paddingRight: 0
                 },
                 minBodyHeight: 290,
                 maxBodyHeight: 290,
@@ -312,10 +310,8 @@ const StorageDetails = (props) => {
             data={props.arrayVolumes}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8
+                    ...customTheme.table.header,
+                    paddingRight: 0
                 },
                 minBodyHeight: 290,
                 maxBodyHeight: 290,
