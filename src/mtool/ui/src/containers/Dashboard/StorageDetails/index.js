@@ -171,13 +171,13 @@ const StorageDetails = (props) => {
     const volFilledStyle = {
         width: `${(volSpace * 100) / arraySize}%`,
         height: "100%",
-        backgroundColor: "#e0e0e0",
+        backgroundColor: customTheme.palette.secondary.light,
         float: "left",
     };
     const volUsedStyle = {
         width: `${(volUsedSpace * 100) / volSpace}%`,
         height: "100%",
-        backgroundColor: "rgb(120,133,149)",
+        backgroundColor: customTheme.palette.secondary.dark,
         float: "left",
     };
     const storageFreeStyle = {
@@ -394,12 +394,12 @@ const StorageDetails = (props) => {
                                 </div>
                                 <Grid container wrap="wrap" justifyContent="flex-end">
                                     <Legend
-                                        bgColor="rgb(120,133,149)"
+                                        bgColor={customTheme.palette.secondary.dark}
                                         title="Data Written"
                                         value={formatBytes(volUsedSpace).replace(' ', '')}
                                     />
                                     <Legend
-                                        bgColor="#e0e0e0"
+                                        bgColor={customTheme.palette.secondary.light}
                                         title="Volume Space Allocated"
                                         value={formatBytes(volSpace).replace(' ', '')}
                                     />

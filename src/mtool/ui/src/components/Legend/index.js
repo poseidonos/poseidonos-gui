@@ -64,12 +64,12 @@ const Legend = (props) => {
       {
         (props.value || props.value === 0) &&
         (
-          <Typography className={classes.legendValue} color="secondary" variant="h6">
+          <Typography className={classes.legendValue} color="primary" variant="h6">
             {props.value}
           </Typography>
         )
       }
-      <Typography className={classes.legendText} color="secondary">{props.title}</Typography>
+      <Typography className={classes.legendText} color="primary">{props.title}</Typography>
     </div>
   )
 };

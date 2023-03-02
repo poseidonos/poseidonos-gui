@@ -418,7 +418,7 @@ const HardwareHealth = (props) => {
                     (
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             size="small"
                             className={classes.marginAuto}
                             onClick={() => setShowHealthTable(!showHealthTable)}
