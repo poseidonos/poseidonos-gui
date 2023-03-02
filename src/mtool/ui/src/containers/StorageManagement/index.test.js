@@ -61,7 +61,6 @@ import headerReducer from "../../store/reducers/headerReducer";
 import createVolumeReducer from "../../store/reducers/createVolumeReducer"
 import rootSaga from "../../sagas/indexSaga";
 
-
 //duplicate Code
 const result_json = {
   status: {
@@ -2327,6 +2326,7 @@ describe("<Storage Management />", () => {
           MaxBW: 10,
         },
         Status: status_json,
+
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
@@ -2424,6 +2424,7 @@ describe("<Storage Management />", () => {
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
       .reply(200, members_json)
+
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
@@ -2432,12 +2433,14 @@ describe("<Storage Management />", () => {
         Capacity: capacity_json,
         Oem: oem_json,
         Status: status_json,
+
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+
         Capacity: capacity_json,
         Oem: oem_json,
         Status: status_json,
@@ -2445,6 +2448,7 @@ describe("<Storage Management />", () => {
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
         result:result_json,
+
       })
       .onAny()
       .reply(200, []);
@@ -2488,38 +2492,48 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+
       .reply(200, members_json)
+
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+
         Capacity: capacity_json,
+
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 0,
           MinBandwidth: 0
         },
+
         Status: status_json,
+
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+
         Capacity: capacity_json,
+
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 10,
           MinBandwidth: 0
         },
+
         Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
         result: result_json,
+
       })
       .onAny()
       .reply(200, []);
@@ -2566,38 +2580,48 @@ describe("<Storage Management />", () => {
       .onGet(/api\/v1\/get_array_config\/*/)
       .reply(200, config)
       .onGet(/redfish\/v1\/StorageServices\/POSArray\/Volumes$/)
+
       .reply(200,members_json)
+
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/0$/)
       .reply(200, {
         Name: "vol1",
         Id: "0",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
+
         Capacity: capacity_json,
+
         Oem: {
           MaxIOPS: 0,
           MaxBW: 0,
           MinIOPS: 0,
           MinBandwidth: 0
         },
+
         Status: status_json,
+
       })
       .onGet(/redfish\/v1\/StorageServices\/1\/Volumes\/1$/)
       .reply(200, {
         Name: "vol2",
         Id: "1",
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
+
         Capacity: capacity_json,
+
         Oem: {
           MaxIOPS: 0,
           MaxBandwidth: 0,
           MinIOPS: 0,
           MinBandwidth: 10
         },
+
         Status: status_json,
       })
       .onPut("/api/v1.0/update-volume/")
       .reply(200, {
         result: result_json,
+
       })
       .onAny()
       .reply(200, []);
@@ -2921,6 +2945,7 @@ describe("<Storage Management />", () => {
         devices,
         metadevices: [
           ...metadevices,
+
           metaDevicesJson
         ],
       })
