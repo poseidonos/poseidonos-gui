@@ -30,7 +30,7 @@
 .IBOFOSMainHeader {
   box-sizing: border-box;
   color: white;
-  background-color: #788595;
+  background-color: #4c6380;
   width: 100%;
   overflow: auto;
   float: left;
@@ -66,12 +66,6 @@
   clear:  both;
 }
 
-.IBOFOSInputField {
-  width: 94.2%;
-  height: 65px;
-  border: 1px solid #788595;
-  margin: 20px 2.8%;
-}
 .IBOFOSButtonClass {
   float: left;
   margin: 8px;
