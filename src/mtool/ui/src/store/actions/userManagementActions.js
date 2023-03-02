@@ -32,20 +32,6 @@
 
 import * as actionTypes from "./actionTypes"
 
-// export const openUserBox = (userParam) => {
-//     return {
-//         type:actionTypes.USER_MANAGEMENT_OPEN_USER_BOX,
-//         userParam,
-//     };
-// }
-
-// export const setUsersInfo = (updatedUsers) => {
-//     return {
-//         type:actionTypes.USER_MANAGEMENT_SET_USERS,
-//         updatedUsers,
-//     };
-// }
-
 export const fetchUsersInfo = (users) => {
     return {
         type:actionTypes.USER_MANAGEMENT_FETCH_USERS,
