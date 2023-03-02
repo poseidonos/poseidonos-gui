@@ -167,10 +167,6 @@ const styles = theme => ({
     marginTop: theme.spacing(1),
   },
 
-  submit: {
-    background: '#788595',
-  },
-
   editOutlinedButton: {
     color: "#ccd3db",
     borderColor: "#ccd3db",
@@ -332,8 +328,7 @@ class Authentication extends Component {
                       data-testid="submitConfig"
                       fullWidth
                       variant="contained"
-                      color="primary"
-                      className={classes.submit}
+                      color="secondary"
                     >
                       {t('Save')}
                     </Button>
@@ -474,8 +469,7 @@ class Authentication extends Component {
                       data-testid="submitLogin"
                       fullWidth
                       variant="contained"
-                      color="primary"
-                      className={classes.submit}
+                      color="secondary"
                     >
                       {t('Login')}
                     </Button>
