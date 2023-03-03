@@ -35,37 +35,38 @@ import { createTheme } from "@material-ui/core/styles";
 export const customTheme = {
   palette: {
     primary: {
-      light: '#71859d',
-
-      main: '#788595',
-      dark: 'rgb(94, 104, 116)'
+      light: '#788595',
+      main: '#484E57',
+      dark: '#171719',
+      contrastText: '#fff'
     },
     secondary: {
-      light: '#151d3b',
-      main: '#151d3b',
-      dark: '#000',
+      light: '#c9d0d9',
+      main: '#4c6380',
+      dark: '#334763',
       contrastText: '#fff'
     },
     error: {
       main: '#FF3603',
+      dark: "#CD2C16"
     },
     warning: {
       light: '#FFC603',
       main: '#FF9603',
+      dark: '#c2520d'
     },
     success: {
       light: "#55F603",
-      main: '#55C603',
+      main: "#55C603",
+      dark: '#177b01',
     },
     palette: {
       type: 'dark',
     },
   },
   table: {
-    // headColor: '#71859d',
-    headColor: '#788595',
     header: {
-      backgroundColor: "#788595",
+      backgroundColor: "#4c6380",
       color: "white",
       fontSize: 14,
       flexDirection: 'row'
@@ -73,8 +74,8 @@ export const customTheme = {
   },
   tab: {
     selected: {
-      color: 'rgb(33, 34, 37)',
-      borderBottom: `2px solid ${'rgb(33, 34, 37)'}`,
+      color: '#212225',
+      borderBottom: `2px solid #212225`,
       fontWeight: 600
     }
   },
@@ -87,7 +88,6 @@ export const customTheme = {
       textAlign: 'left',
       fontSize: 16,
       fontWeight: 'bold',
-      // color: 'rgb(53, 85, 142)',
       color: '#424850'
     }
   },
@@ -99,7 +99,6 @@ export const customTheme = {
       marginBottom: '5px',
       fontSize: 16,
       fontWeight: 'bold',
-      // color: 'rgb(53, 85, 142)',
       color: '#424850'
     }
   },
@@ -125,12 +124,6 @@ export const TableTheme = createTheme({
 
 export const PageTheme = createTheme({
   ...customTheme,
-  palette: {
-    ...customTheme.palette,
-    primary: {
-      main: '#788595'
-    }
-  },
   typography: {
     ...customTheme.typography,
     fontSize: 12

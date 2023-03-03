@@ -53,7 +53,7 @@ import formatBytes from "../../../utils/format-bytes";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
 import "../CreateArray/CreateArray.css";
-import { PageTheme } from "../../../theme";
+import { customTheme, PageTheme } from "../../../theme";
 import Legend from "../../Legend";
 
 const styles = (theme) => ({
@@ -149,10 +149,6 @@ const styles = (theme) => ({
     backgroundColor: "rgb(236,219,87)",
     cursor: "default",
   },
-  writebufferdisk: {
-    backgroundColor: "rgb(232,114,114)",
-    cursor: "default",
-  },
   sparedisk: {
     backgroundColor: "#339EFF",
     cursor: "default",
@@ -161,14 +157,8 @@ const styles = (theme) => ({
     backgroundColor: "rgb(137,163,196)",
     cursor: "default",
   },
-  partOfArray: {
-    backgroundColor: "rgb(236, 219, 87)",
-  },
-  notSelectedShow: {
-    backgroundColor: "rgb(137, 163, 196)",
-  },
-  corrupted: {
-    backgroundColor: "rgb(232, 114, 114)",
+  usedDisk: {
+    backgroundColor: "#A87B6A"
   },
   detachBtn: {
     position: "absolute",
@@ -177,11 +167,12 @@ const styles = (theme) => ({
     width: 20,
     height: 20,
     borderRadius: 100,
-    // border: 0,
+    borderColor: customTheme.palette.primary.main,
     padding: 0,
   },
   diskNo: {
     position: "absolute",
+    color: customTheme.palette.primary.dark,
   },
   diskTextNuma: {
     position: "absolute",
@@ -193,9 +184,6 @@ const styles = (theme) => ({
     color: "white",
     borderRadius: 100
   },
-  usedDisk: {
-    backgroundColor: "#8c6b5d"
-  }
 });
 
 const defaultDiskDetails = {
@@ -392,7 +380,7 @@ class ArrayShow extends Component {
       for (let i = this.props.slots.length; i < 32; i += 1) {
         freeSlots.push(
           <Grid key={i} className={`${classes.gridTile} ${classes.gridTileDisabled}`}>
-            <Typography color="secondary" className={classes.diskNo}>
+            <Typography className={classes.diskNo}>
               {i + 1}
             </Typography>
           </Grid>
@@ -528,8 +516,7 @@ class ArrayShow extends Component {
             <Legend bgColor="rgba(236, 219, 87,0.6)" title="Storage disk" />
             <Legend bgColor="rgba(51, 158, 255, 0.6)" title="Spare disk" />
             <Legend bgColor="rgb(137,163,196)" title="Free disk" />
-            <Legend bgColor="#8c6b5d" title="Used by Another Array" />
-            <Legend bgColor="rgba(137, 163, 196, 0.6)" title="Not Selected" />
+            <Legend bgColor="#A87B6A" title="Used by Another Array" />
             <Legend bgColor="rgba(226, 225, 225, 0.6)" title="Empty Slot" />
             <Legend bgColor="#087575" title="NUMA" />
           </Grid>
@@ -553,7 +540,6 @@ class ArrayShow extends Component {
                       >
                         <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
                         <Typography
-                          color="secondary"
                           className={classes.diskNo}
                         >
                           {index + 1}
@@ -563,7 +549,7 @@ class ArrayShow extends Component {
                             onMouseEnter={() => this.changeTitle(ADD_TITLE)}
                             onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
-                            color="secondary"
+                            color="primary"
                             className={classes.detachBtn}
                             data-testid={`attachdisk-${index}`}
                             onClick={() => this.addSpareDisk(slot)}
@@ -576,7 +562,7 @@ class ArrayShow extends Component {
                             onMouseEnter={() => this.changeTitle(REMOVE_TITLE)}
                             onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
-                            color="secondary"
+                            color="primary"
                             className={classes.detachBtn}
                             data-testid={`detachdisk-${index}`}
                             onClick={() => this.removeSpareDisk(slot)}
@@ -589,7 +575,7 @@ class ArrayShow extends Component {
                             onMouseEnter={() => this.changeTitle(REPLACE_TITLE)}
                             onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
                             variant="outlined"
-                            color="secondary"
+                            color="primary"
                             className={classes.detachBtn}
                             data-testid={`replacedisk-${index}`}
                             onClick={() => this.replaceDevice(slot)}
@@ -640,7 +626,7 @@ class ArrayShow extends Component {
                 <Button
                   onClick={this.handleUnmountClick}
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   aria-label="unmount-array"
                 >
                   Unmount Array

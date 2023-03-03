@@ -671,7 +671,7 @@ class CreateVolume extends Component {
                 <Button
                   onClick={this.createVolumeInParent}
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   data-testid="createvolume-btn"
                   disabled={this.props.createVolumeButton}
                 >

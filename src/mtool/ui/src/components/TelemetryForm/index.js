@@ -196,7 +196,7 @@ const TelemetryForm = (props) => {
                             <Button
                                 onClick={handleSaveConfig}
                                 variant="contained"
-                                color="primary"
+                                color="secondary"
                                 id="btn-save-telemetry-tconfig"
                                 data-testid="btn-save-telemetry-config"
                                 className={classes.button}

@@ -92,35 +92,7 @@ export function* deleteUsersInfo(action) {
     }
 }
 
-
-// export function* toggleUsersInfo(action) {
-//     try {
-//         const response = yield call([axios, axios.post], '/api/v1.0/toggle_status/', action.toggleUsers, {
-//             headers: {
-//                 Accept: 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'x-access-token': localStorage.getItem('token'),
-//             },
-//         });
-//         const { status } = response;
-//         if (status === 200) {
-//             yield fetchUsersInfo();
-//         }
-//         else yield actionCreators.openAlertBox({
-//             alerttitle: 'Toggle User',
-//             alertOpen: true,
-//             alertdescription: 'Admin Cannot be Deactivated',
-//             alerttype: 'alert',
-//             istypealert: false,
-//         });
-//     }
-//     catch (error) {
-//         ;
-//     }
-// }
-
 export function* userManagementUserTableWatcher() {
     yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_UPDATE_USERS, updateUsersInfo);
     yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_DELETE_USERS, deleteUsersInfo);
-    // yield takeEvery(actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsersInfo);
 }

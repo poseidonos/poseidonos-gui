@@ -188,7 +188,7 @@ const AutoCreate = (props) => {
         <Button
           onClick={openDialog}
           variant="outlined"
-          color="secondary"
+          color="primary"
         >
           Auto-Create
         </Button>
