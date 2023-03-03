@@ -51,7 +51,6 @@ const styles = (theme) => ({
     padding: theme.spacing(2, 0)
   },
   toolbar: customTheme.toolbar,
-  cardHeader: customTheme.card.header
 });
 
 const USERNAME_REGEX = /^(?=.{2,15}$)[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
@@ -77,7 +76,7 @@ class UserManagement extends Component {
       user_role: "Admin",
       mobilenumber: "+82",
       emailid: "",
-      phone_number:"+82"
+      phone_number: "+82"
     };
   }
 
@@ -100,17 +99,9 @@ class UserManagement extends Component {
       user_role: "Admin",
       mobilenumber: "+82",
       emailid: "",
-      phone_number:"+82"
+      phone_number: "+82"
     });
   }
-
-  // toggleUserStatus(i) {
-  //   const user = {
-  //     userid: this.props.users[i]._id,
-  //     status: !this.props.users[i].active,
-  //   };
-  //   this.props.toggleUsersInfo(user);
-  // }
 
   selectUser(event, i) {
     const users = [...this.props.users];
@@ -131,8 +122,6 @@ class UserManagement extends Component {
     [users].forEach(user => {
       if (user._id !== currentUser) {
         ids.push(user._id);
-        // Uncomment below line when multiple user selection is enabled
-        // } else if (user.selected && user._id === currentUser) {
       }
       if (user._id === currentUser) {
         this.props.openAlertBox({
@@ -144,18 +133,9 @@ class UserManagement extends Component {
         });
       }
     });
-    if(!ids.length) {
+    if (!ids.length) {
       return;
     }
-    // if (ids.length === 0) {
-    //   this.setState({
-    //     istypealert: true,
-    //     alerttype: 'alert',
-    //     alertOpen: true,
-    //     alerttitle: 'Delete User',
-    //     alertdescription: 'Select the users to be deleted'
-    //   });
-    // }
     const data = {
       ids,
     };
@@ -177,16 +157,18 @@ class UserManagement extends Component {
         alerttype: 'alert',
         istypealert: true,
         alerttitle: "Add New User",
-        alertdescription: (<p>Username Should follow the below rules
-		<ul>
-		  <li>Alphanumeric characters only</li>
-		  <li>2-15 characters</li>
-		  <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
-		  <li>Cannot be two underscores, two hypens or two spaces in a row</li>
-		  <li>e.g. ab, a-b-c, ab-cd, etc</li>
-		  <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
-		</ul>
-                           </p>),
+        alertdescription: (
+          <p>Username Should follow the below rules
+            <ul>
+              <li>Alphanumeric characters only</li>
+              <li>2-15 characters</li>
+              <li>Underscore and hyphens and spaces (but not in beginning or end)</li>
+              <li>Cannot be two underscores, two hypens or two spaces in a row</li>
+              <li>e.g. ab, a-b-c, ab-cd, etc</li>
+              <li>Incorrect: _abc, abc_, a__b, a--b, etc</li>
+            </ul>
+          </p>
+        ),
       });
     }
     else if (!this.state.password || !this.state.confirmpassword)
@@ -233,60 +215,54 @@ class UserManagement extends Component {
   }
 
   OnHandleSubmit() {
-      this.props.addNewUserInfo(this.state);
-      this.setState({
-        username: "",
-        password: "",
-        confirmpassword: "",
-        user_role: "Admin",
-        mobilenumber: "+82",
-        emailid: "",
-      });
+    this.props.addNewUserInfo(this.state);
+    this.setState({
+      username: "",
+      password: "",
+      confirmpassword: "",
+      user_role: "Admin",
+      mobilenumber: "+82",
+      emailid: "",
+    });
   }
 
   render() {
     const { classes } = this.props;
     return (
       <ThemeProvider theme={MToolTheme}>
-        {/* <Box display="flex"> */}
-          {/* <Header /> */}
-          {/* <Sidebar /> */}
-          <main className={classes.content}>
-            {/* <div className={classes.toolbar} /> */}
-            <Grid container spacing={3}>
-              <UserTable
-                selectUser={this.selectUser}
-                // toggleUserStatus={this.toggleUserStatus}
-                saveChange={this.saveUser}
-                deleteUsers={this.deleteUsers}
-                users={this.props.users}
-                fetchUsers={this.props.fetchUsersInfo}
-                editUser={this.props.editUser}
-                phone_number={this.state.phone_number}
-                OnChangeRow={this.props.updateUserRow}
-                openAlertBox = {this.props.openAlertBox}
-              />
-              <AddNewUser
-                username={this.state.username}
-                password={this.state.password}
-                confirmpassword={this.state.confirmpassword}
-                mobilenumber={this.state.mobilenumber}
-                emailid={this.state.emailid}
-                openAlert={this.openAlert}
-                onCancel={this.onCancel}
-                OnHandleChange={this.OnHandleChange}
-              />
-            </Grid>
-          </main>
-        {/* </Box> */}
-          <AlertDialog
-            title={this.props.alerttitle}
-            description={this.props.alertdescription}
-            open={this.props.alertOpen}
-            type={this.props.alerttype}
-            handleClose={this.handleAlertClose}
-            onConfirm={this.triggerCommand}
-          />
+        <main className={classes.content}>
+          <Grid container spacing={3}>
+            <UserTable
+              selectUser={this.selectUser}
+              saveChange={this.saveUser}
+              deleteUsers={this.deleteUsers}
+              users={this.props.users}
+              fetchUsers={this.props.fetchUsersInfo}
+              editUser={this.props.editUser}
+              phone_number={this.state.phone_number}
+              OnChangeRow={this.props.updateUserRow}
+              openAlertBox={this.props.openAlertBox}
+            />
+            <AddNewUser
+              username={this.state.username}
+              password={this.state.password}
+              confirmpassword={this.state.confirmpassword}
+              mobilenumber={this.state.mobilenumber}
+              emailid={this.state.emailid}
+              openAlert={this.openAlert}
+              onCancel={this.onCancel}
+              OnHandleChange={this.OnHandleChange}
+            />
+          </Grid>
+        </main>
+        <AlertDialog
+          title={this.props.alerttitle}
+          description={this.props.alertdescription}
+          open={this.props.alertOpen}
+          type={this.props.alerttype}
+          handleClose={this.handleAlertClose}
+          onConfirm={this.triggerCommand}
+        />
       </ThemeProvider>
     );
   }
@@ -306,14 +282,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // setUsersInfo: (updatedUsers) => dispatch(actionCreators.setUsersInfo(updatedUsers)),
-    editUser: (user) => dispatch({type: actionTypes.USER_MANAGEMENT_EDIT_USER, user}),
+    editUser: (user) => dispatch({ type: actionTypes.USER_MANAGEMENT_EDIT_USER, user }),
     openAlertBox: (alertParam) => dispatch(actionCreators.openAlertBox(alertParam)),
     fetchUsersInfo: () => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_FETCH_USERS }),
     updateUsersInfo: (newUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_UPDATE_USERS, newUsers, }),
-    updateUserRow: (user) => dispatch({ type: actionTypes.USER_MANAGEMENT_UPDATE_USER, user}),
+    updateUserRow: (user) => dispatch({ type: actionTypes.USER_MANAGEMENT_UPDATE_USER, user }),
     deleteUsersInfo: (deleteUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_DELETE_USERS, deleteUsers, }),
-    // toggleUsersInfo: (toggleUsers) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_TOGGLE_USERS, toggleUsers, }),
     addNewUserInfo: (addNewUser) => dispatch({ type: actionTypes.SAGA_USER_MANAGEMENT_ADD_NEW_USERS, addNewUser, }),
   };
 }

@@ -65,9 +65,8 @@ const styles = (theme) => ({
         height: 344,
     },
     tableHeader: {
-        backgroundColor: "#788595",
-        color: "#FFF",
-        padding: 5,
+        ...customTheme.table.header,
+        padding: 7,
         paddingLeft: theme.spacing(2),
         width: "-webkit-fill-available",
     },
@@ -90,10 +89,10 @@ const CRITICAL = "critical";
 const WARNING = "warning";
 const NOMINAL = "nominal";
 const stateOrder = { [CRITICAL]: 1, [WARNING]: 2, [NOMINAL]: 3 };
-const getColorStyle = {
-    [CRITICAL]: { color: customTheme.palette.error.main },
-    [WARNING]: { color: customTheme.palette.warning.main },
-    [NOMINAL]: { color: customTheme.palette.success.main }
+const getDarkColorStyle = {
+    [CRITICAL]: { color: customTheme.palette.error.dark },
+    [WARNING]: { color: customTheme.palette.warning.dark },
+    [NOMINAL]: { color: customTheme.palette.success.dark }
 }
 
 const HardwareHealth = (props) => {
@@ -166,19 +165,19 @@ const HardwareHealth = (props) => {
         {
             title: "Criticals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
+            render: (rowData) => <Typography style={rowData.criticals ? getDarkColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
             customSort: (a, b) => (a.criticals - b.criticals)
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
+            render: (rowData) => <Typography style={rowData.warnings ? getDarkColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
             customSort: (a, b) => (a.warnings - b.warnings)
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
+            render: (rowData) => <Typography style={rowData.nominals ? getDarkColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
             customSort: (a, b) => (a.nominals - b.nominals)
         }
     ];
@@ -195,19 +194,19 @@ const HardwareHealth = (props) => {
         {
             title: "Criticals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.criticals ? getColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
+            render: (rowData) => <Typography style={rowData.criticals ? getDarkColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
             customSort: (a, b) => (a.criticals - b.criticals)
         },
         {
             title: "Warnings",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.warnings ? getColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
+            render: (rowData) => <Typography style={rowData.warnings ? getDarkColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
             customSort: (a, b) => (a.warnings - b.warnings)
         },
         {
             title: "Nominals",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.nominals ? getColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
+            render: (rowData) => <Typography style={rowData.nominals ? getDarkColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
             customSort: (a, b) => (a.nominals - b.nominals)
         }
     ];
@@ -224,7 +223,7 @@ const HardwareHealth = (props) => {
         {
             title: pieChart.unit !== "" ? `Value (${pieChart.unit})` : "Value",
             cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={getColorStyle[rowData.state]}>{rowData.value}</Typography>,
+            render: (rowData) => <Typography style={getDarkColorStyle[rowData.state]}>{rowData.value}</Typography>,
             customSort: (a, b) => stateOrder[a.state] - stateOrder[b.state]
         },
     ];
@@ -254,10 +253,8 @@ const HardwareHealth = (props) => {
             )}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
+                    ...customTheme.table.header,
+                    fontSize: 12,
                     paddingRight: 0,
                 },
                 search: false,
@@ -305,10 +302,8 @@ const HardwareHealth = (props) => {
             )}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
+                    ...customTheme.table.header,
+                    fontSize: 12,
                     paddingRight: 0,
                 },
                 search: false,
@@ -339,13 +334,7 @@ const HardwareHealth = (props) => {
             data={pieChart.metrics}
             icons={icons}
             options={{
-                headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                    paddingRight: 0,
-                },
+                headerStyle: customTheme.table.header,
                 search: false,
                 sorting: true,
                 paging: false,
@@ -429,7 +418,7 @@ const HardwareHealth = (props) => {
                     (
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             size="small"
                             className={classes.marginAuto}
                             onClick={() => setShowHealthTable(!showHealthTable)}

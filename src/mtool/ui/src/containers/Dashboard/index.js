@@ -195,6 +195,7 @@ class Dashboard extends Component {
                     className={classes.ipText}
                     data-testid="telemetry-ip"
                     variant="h6"
+                    color="secondary"
                   >
                     {this.props.telemetryIP}:{this.props.telemetryPort}
                     &nbsp;&nbsp;&nbsp;
@@ -205,6 +206,7 @@ class Dashboard extends Component {
                     data-testid="btn-edit-telemetry"
                     onClick={() => this.props.setShowConfig(true)}
                     aria-label="Edit Telemetry API"
+                    color="secondary"
                   >
                     <Edit />
                   </IconButton>

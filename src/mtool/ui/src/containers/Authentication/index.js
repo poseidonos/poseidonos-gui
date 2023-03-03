@@ -29,44 +29,41 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+import { Transition } from 'react-transition-group';
+import PropTypes from 'prop-types';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import CardMedia from '@material-ui/core/CardMedia';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import { Grid } from '@material-ui/core';
+import { MuiThemeProvider as ThemeProvider, withStyles } from '@material-ui/core/styles';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import { ArrowForward, RotateLeft } from '@material-ui/icons';
+import EditIcon from '@material-ui/icons/Edit';
 
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { withTranslation } from "react-i18next";
-import { Transition } from "react-transition-group";
-import PropTypes from "prop-types";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import CardMedia from "@material-ui/core/CardMedia";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import { Grid, InputLabel } from "@material-ui/core";
-import {
-  MuiThemeProvider as ThemeProvider,
-  withStyles,
-} from "@material-ui/core/styles";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import { ArrowForward, RotateLeft } from "@material-ui/icons";
-import EditIcon from "@material-ui/icons/Edit";
+import './Authentication.css';
+import MToolTheme, { customTheme } from '../../theme';
+import PoseidonLogo from '../../assets/images/Poseidon.png';
+import { IP_REGEX } from '../../utils/constants';
+import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionCreators from '../../store/actions/exportActionCreators';
 
-import "./Authentication.css";
-import MToolTheme from "../../theme";
-import PoseidonLogo from "../../assets/images/Poseidon.png";
-import { IP_REGEX } from "../../utils/constants";
-import * as actionTypes from "../../store/actions/actionTypes";
-import * as actionCreators from "../../store/actions/exportActionCreators";
-
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
-    width: "100vw",
-    height: "100vh",
-    backgroundImage: "linear-gradient(to bottom right, #171719, #788595)",
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -94,8 +91,8 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
-    backgroundImage: "linear-gradient(to bottom right, #171719, #464C55)",
+    alignItems: 'center',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
   },
 
   loginPaper: {
@@ -105,8 +102,8 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
-    backgroundImage: "linear-gradient(to bottom right, #171719, #464C55)",
+    alignItems: 'center',
+    backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
   },
 
   header: {
@@ -175,11 +172,6 @@ const styles = (theme) => ({
     display: "grid",
     gridTemplateColumns: "146px auto",
     marginTop: theme.spacing(1),
-  },
-
-  submit: {
-    background: "#5D6672",
-    fontWeight: "bold",
   },
 
   editOutlinedButton: {
@@ -390,8 +382,7 @@ class Authentication extends Component {
                       data-testid="submitConfig"
                       fullWidth
                       variant="contained"
-                      color="primary"
-                      className={classes.submit}
+                      color="secondary"
                     >
                       {t("Save")}
                     </Button>
@@ -525,8 +516,7 @@ class Authentication extends Component {
                       data-testid="submitLogin"
                       fullWidth
                       variant="contained"
-                      color="primary"
-                      className={classes.submit}
+                      color="secondary"
                     >
                       {t("Login")}
                     </Button>
