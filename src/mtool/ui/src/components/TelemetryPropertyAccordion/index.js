@@ -43,10 +43,11 @@ import {
     withStyles,
     Tooltip
 } from '@material-ui/core';
+import { customTheme } from '../../theme';
 
 const styles = (theme) => ({
     accordionSummary: {
-        backgroundColor: 'rgb(120, 133, 149)',
+        backgroundColor: customTheme.palette.secondary.main,
         color: '#fff'
     },
     formControlWrap: {
