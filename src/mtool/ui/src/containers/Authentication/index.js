@@ -29,7 +29,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+ 
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -44,7 +44,7 @@ import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
-import { Grid } from '@material-ui/core';
+import { Grid, InputLabel } from '@material-ui/core';
 import { MuiThemeProvider as ThemeProvider, withStyles } from '@material-ui/core/styles';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -67,15 +67,15 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
-    padding: "12px"
+    padding: "12px",
   },
 
   cardmedia: {
-    backgroundSize: 'auto',
-    alt: 'Poseidon Management Tool',
-    width: 'auto',
-    height: '50px',
-    clear: 'right'
+    backgroundSize: "auto",
+    alt: "Poseidon Management Tool",
+    width: "auto",
+    height: "50px",
+    clear: "right",
   },
 
   main: {
@@ -88,8 +88,8 @@ const styles = theme => ({
     maxWidth: 600,
     minWidth: 450,
     padding: theme.spacing(6, 8),
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: 'center',
     backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
@@ -99,8 +99,8 @@ const styles = theme => ({
     height: 450,
     width: 600,
     padding: theme.spacing(6, 8),
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: 'center',
     backgroundImage: `linear-gradient(to bottom right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.dark})`,
@@ -112,44 +112,51 @@ const styles = theme => ({
     color: "white",
   },
 
+  label: {
+    marginTop: 0,
+    marginBottom: theme.spacing(0.5),
+    color: "white",
+    fontSize: 14,
+  },
+
   form: {
-    width: '100%',
+    width: "100%",
   },
 
   apiForm: {
     display: "grid",
     gridTemplateColumns: "65% auto",
-    gap: "8%"
+    gap: "8%",
   },
 
   textField: {
-    background: 'rgba(255, 255, 255, 0.87)',
+    background: "rgba(255, 255, 255, 0.87)",
     marginBottom: theme.spacing(2),
-    height: '36px',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    borderRadius: '4px',
+    height: "36px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    borderRadius: "4px",
   },
 
   input: {
-    height: '100px',
-    color: 'black',
-    outline: 'none',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    height: "100px",
+    color: "black",
+    outline: "none",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   },
 
   inputAdornment: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    paddingRight: '13px',
+    paddingRight: "13px",
     opacity: 0.6,
   },
 
   passwordAdornment: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
   },
 
@@ -170,16 +177,16 @@ const styles = theme => ({
   editOutlinedButton: {
     color: "#ccd3db",
     borderColor: "#ccd3db",
-    '&:disabled': {
+    "&:disabled": {
       color: "#464C55",
       borderColor: "#464C55",
-    }
+    },
   },
 
   poseidonLogo: {
     height: 75,
-    width: 'auto',
-    backgroundSize: 'contain',
+    width: "auto",
+    backgroundSize: "contain",
   },
 });
 
@@ -193,7 +200,7 @@ class Authentication extends Component {
       showPassword: false,
       isValidationFailed: false,
       validationFailedMessage: "",
-    }
+    };
     this.handleLogInSubmit = this.handleLogInSubmit.bind(this);
     this.handleConfigSubmit = this.handleConfigSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -206,16 +213,16 @@ class Authentication extends Component {
   }
 
   componentDidMount() {
-    this.props.getConfig()
+    this.props.getConfig();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.telemetryIP !== this.props.telemetryIP) {
-      // eslint-disable-next-line react/no-did-update-set-state 
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         telemetryIP: this.props.telemetryIP,
-        telemetryPort: this.props.telemetryPort
-      })
+        telemetryPort: this.props.telemetryPort,
+      });
     }
   }
 
@@ -228,7 +235,7 @@ class Authentication extends Component {
     const payload = {
       username: this.props.username,
       password: this.props.password,
-    }
+    };
     this.props.login(payload, this.props.history);
   }
 
@@ -238,16 +245,18 @@ class Authentication extends Component {
     let isError = true;
     let errorDesc = "";
 
-    if (!(IP_REGEX.test(this.state.telemetryIP)))
+    if (!IP_REGEX.test(this.state.telemetryIP))
       errorDesc = "Please Enter a valid IP for Telemetry API";
-    else if (Number(this.state.telemetryPort) <= 0 || Number(this.state.telemetryPort) > 65535)
+    else if (
+      Number(this.state.telemetryPort) <= 0 ||
+      Number(this.state.telemetryPort) > 65535
+    )
       errorDesc = "Please Enter a valid Port for Telemetry API";
-    else
-      isError = false;
+    else isError = false;
 
     this.setState({
       isValidationFailed: isError,
-      validationFailedMessage: errorDesc
+      validationFailedMessage: errorDesc,
     });
 
     if (isError) return;
@@ -255,7 +264,7 @@ class Authentication extends Component {
     const payload = {
       telemetryIP: this.state.telemetryIP,
       telemetryPort: this.state.telemetryPort,
-    }
+    };
     this.props.saveConfig(payload);
   }
 
@@ -273,55 +282,100 @@ class Authentication extends Component {
     if (this.props.isLoggedIn) {
       return <Redirect to="/dashboard" />;
     }
+
+    const passwordAdorment = (
+      <InputAdornment className={classes.passwordAdornment} position="end">
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={this.handleClickShowPassword}
+          data-testid="visibilityButton"
+        >
+          {this.state.showPassword ? (
+            <Visibility data-testid="showPassword" />
+          ) : (
+            <VisibilityOff />
+          )}
+        </IconButton>
+      </InputAdornment>
+    );
+
+    const userIDAdorment = (
+      <InputAdornment className={classes.inputAdornment} position="end">
+        <AccountCircle />
+      </InputAdornment>
+    );
+
     return (
       <ThemeProvider theme={MToolTheme}>
         <CssBaseline />
         <div className={classes.container}>
           <div /> {/* For easy to manage flex */}
           <main className={classes.main}>
-            <Transition
-              unmountOnExit
-              in={this.props.showConfig}
-              timeout={200}
-            >
-              {state => (
+            <Transition unmountOnExit in={this.props.showConfig} timeout={200}>
+              {(state) => (
                 <Paper
                   className={classes.configPaper}
                   style={{
                     transition: "all 200ms linear",
                     opacity: state === "exiting" ? 0 : 1,
-                    transform: state === "exiting" ? "translateX(0%) scale(0%)" : "translateX(37.5%) scale(100%)",
+                    transform:
+                      state === "exiting"
+                        ? "translateX(0%) scale(0%)"
+                        : "translateX(37.5%) scale(100%)",
                     zIndex: state === "exiting" ? 10 : 20,
                     flexGrow: state === "exiting" ? 0 : 1,
                   }}
                 >
                   <h1 className={classes.header}>Configurations</h1>
-                  <form className={classes.form} onSubmit={this.handleConfigSubmit}>
-                    <h3 className={classes.header}>Telemetry API</h3>
+                  <form
+                    className={classes.form}
+                    onSubmit={this.handleConfigSubmit}
+                  >
                     <div className={classes.apiForm}>
-                      <Input
-                        required
-                        fullWidth
-                        data-testid="telemetryIPInput"
-                        id="telemetryIP"
-                        placeholder={t('IP Address')}
-                        name="telemetryIP"
-                        value={this.state.telemetryIP}
-                        className={classes.textField}
-                        onChange={(e) => this.setState({ telemetryIP: e.target.value })}
-                      />
-                      <Input
-                        required
-                        fullWidth
-                        type="number"
-                        data-testid="telemetryPortInput"
-                        id="telemetryPort"
-                        placeholder={t('Port')}
-                        name="telemetryPort"
-                        value={this.state.telemetryPort}
-                        className={classes.textField}
-                        onChange={(e) => this.setState({ telemetryPort: e.target.value })}
-                      />
+                      <div>
+                        <InputLabel
+                          className={classes.label}
+                          htmlFor="telemetryIP"
+                        >
+                          Telemetry IP
+                        </InputLabel>
+
+                        <Input
+                          required
+                          fullWidth
+                          data-testid="telemetryIPInput"
+                          id="telemetryIP"
+                          placeholder={t("IP Address")}
+                          name="telemetryIP"
+                          value={this.state.telemetryIP}
+                          className={classes.textField}
+                          onChange={(e) =>
+                            this.setState({ telemetryIP: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <InputLabel
+                          className={classes.label}
+                          htmlFor="telemetryPort"
+                        >
+                          Port
+                        </InputLabel>
+                        <Input
+                          required
+                          fullWidth
+                          type="number"
+                          data-testid="telemetryPortInput"
+                          id="telemetryPort"
+                          placeholder={t("Port")}
+                          name="telemetryPort"
+                          value={this.state.telemetryPort}
+                          className={classes.textField}
+                          onChange={(e) =>
+                            this.setState({ telemetryPort: e.target.value })
+                          }
+                        />
+                      </div>
                     </div>
                     <Button
                       type="submit"
@@ -330,7 +384,7 @@ class Authentication extends Component {
                       variant="contained"
                       color="secondary"
                     >
-                      {t('Save')}
+                      {t("Save")}
                     </Button>
                     {this.state.isValidationFailed ? (
                       <Typography
@@ -341,20 +395,24 @@ class Authentication extends Component {
                       >
                         {this.state.validationFailedMessage}
                       </Typography>
-                    ) : <span>&nbsp;</span>}
-                    {!this.state.isValidationFailed && this.props.configurationFailed ?
-                      (
-                        <Typography
-                          variant="caption"
-                          component="span"
-                          data-testid="errorMsgConfig"
-                          color="error"
-                        >
-                          {t('Configuration failed! Telemetry API is not reachable')}
-                        </Typography>
-                      ) : (
-                        <span>&nbsp;</span>
-                      )}
+                    ) : (
+                      <span>&nbsp;</span>
+                    )}
+                    {!this.state.isValidationFailed &&
+                    this.props.configurationFailed ? (
+                      <Typography
+                        variant="caption"
+                        component="span"
+                        data-testid="errorMsgConfig"
+                        color="error"
+                      >
+                        {t(
+                          "Configuration failed! Telemetry API is not reachable"
+                        )}
+                      </Typography>
+                    ) : (
+                      <span>&nbsp;</span>
+                    )}
                   </form>
                   <Grid container justifyContent="space-between">
                     <Grid item xs={8} container alignItems="flex-end">
@@ -362,10 +420,11 @@ class Authentication extends Component {
                         variant="outlined"
                         className={classes.editOutlinedButton}
                         data-testid="resetConfig"
-                        onClick={
-                          () => this.props.resetConfig()
+                        onClick={() => this.props.resetConfig()}
+                        disabled={
+                          !this.props.isConfigured ||
+                          this.props.isResettingConfig
                         }
-                        disabled={!this.props.isConfigured || this.props.isResettingConfig}
                       >
                         Reset&nbsp;
                         <RotateLeft />
@@ -376,16 +435,16 @@ class Authentication extends Component {
                         data-testid="resetErrorMsgConfigPopup"
                         color="error"
                       >
-                        &nbsp;&nbsp;{this.props.resettingConfigFailed && "Resetting Failed!"}
+                        &nbsp;&nbsp;
+                        {this.props.resettingConfigFailed &&
+                          "Resetting Failed!"}
                       </Typography>
                     </Grid>
                     <Button
                       variant="outlined"
                       className={classes.editOutlinedButton}
                       data-testid="editConfig"
-                      onClick={
-                        () => this.props.setShowConfig(false)
-                      }
+                      onClick={() => this.props.setShowConfig(false)}
                     >
                       Skip&nbsp;
                       <ArrowForward />
@@ -394,75 +453,63 @@ class Authentication extends Component {
                 </Paper>
               )}
             </Transition>
-            <Transition
-              in={!this.props.showConfig}
-              timeout={200}
-            >
-              {state => (
+            <Transition in={!this.props.showConfig} timeout={200}>
+              {(state) => (
                 <Paper
                   className={classes.loginPaper}
                   style={{
                     transition: "all 200ms linear",
                     zIndex: state === "exited" || state === "exiting" ? 10 : 20,
-                    transform: state === "exited" || state === "exiting" ? "scale(0.8)" : "scale(1)",
-                    transformOrigin: state === "exited" || state === "exiting" ? "left" : "none",
-                    opacity: state === "exited" || state === "exiting" ? 0.4 : 1,
-                    pointerEvents: state === "exited" || state === "exiting" ? "none" : "auto"
+                    transform:
+                      state === "exited" || state === "exiting"
+                        ? "scale(0.8)"
+                        : "scale(1)",
+                    transformOrigin:
+                      state === "exited" || state === "exiting"
+                        ? "left"
+                        : "none",
+                    opacity:
+                      state === "exited" || state === "exiting" ? 0.4 : 1,
+                    pointerEvents:
+                      state === "exited" || state === "exiting"
+                        ? "none"
+                        : "auto",
                   }}
                 >
                   <h1 className={classes.header}>LOG IN</h1>
-                  <form className={classes.form} onSubmit={this.handleLogInSubmit}>
+                  <form
+                    className={classes.form}
+                    onSubmit={this.handleLogInSubmit}
+                  >
+                    <InputLabel className={classes.label} htmlFor="email">
+                      User ID
+                    </InputLabel>
                     <Input
                       required
                       fullWidth
                       data-testid="usernameInput"
                       id="email"
-                      placeholder={t('Username')}
+                      placeholder={t("Username")}
                       name="username"
                       className={classes.textField}
                       onChange={this.handleChange}
-                      endAdornment={
-                        (
-                          <InputAdornment
-                            className={classes.inputAdornment}
-                            position="end"
-                          >
-                            <AccountCircle />
-                          </InputAdornment>
-                        )
-                      }
+                      endAdornment={userIDAdorment}
                     />
+                    <InputLabel className={classes.label} htmlFor="password">
+                      Password
+                    </InputLabel>
                     <Input
                       required
                       fullWidth
                       data-testid="passwordInput"
-                      placeholder={t('Password')}
+                      placeholder={t("Password")}
                       name="password"
-                      type={this.state.showPassword ? 'text' : 'password'}
+                      type={this.state.showPassword ? "text" : "password"}
                       id="password"
                       autoComplete="current-password"
                       className={classes.textField}
                       onChange={this.handleChange}
-                      endAdornment={
-                        (
-                          <InputAdornment
-                            className={classes.passwordAdornment}
-                            position="end"
-                          >
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={this.handleClickShowPassword}
-                              data-testid="visibilityButton"
-                            >
-                              {this.state.showPassword ? (
-                                <Visibility data-testid="showPassword" />
-                              ) : (
-                                <VisibilityOff />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
+                      endAdornment={passwordAdorment}
                     />
                     <Button
                       type="submit"
@@ -471,7 +518,7 @@ class Authentication extends Component {
                       variant="contained"
                       color="secondary"
                     >
-                      {t('Login')}
+                      {t("Login")}
                     </Button>
                     {this.props.loginFailed ? (
                       <Typography
@@ -480,7 +527,7 @@ class Authentication extends Component {
                         data-testid="errorMsgLogin"
                         color="error"
                       >
-                        {t('Login failed! Invalid id or password')}
+                        {t("Login failed! Invalid id or password")}
                       </Typography>
                     ) : (
                       <span>&nbsp;</span>
@@ -489,33 +536,34 @@ class Authentication extends Component {
                   <div className={classes.configDetails}>
                     <div className={classes.apiDetails}>
                       <Typography>Telemetry API</Typography>
-                      {this.props.isConfigured ?
-                        <Typography>{this.props.telemetryIP}<b>:</b>{this.props.telemetryPort}</Typography> :
+                      {this.props.isConfigured ? (
+                        <Typography>
+                          {this.props.telemetryIP}
+                          <b>:</b>
+                          {this.props.telemetryPort}
+                        </Typography>
+                      ) : (
                         <Typography>Not Configured !</Typography>
-                      }
+                      )}
                     </div>
                     <Button
                       variant="outlined"
                       className={classes.editOutlinedButton}
                       data-testid="editConfig"
-                      onClick={
-                        () => this.props.setShowConfig(true)
-                      }
+                      onClick={() => this.props.setShowConfig(true)}
                     >
-                      {this.props.isConfigured ?
-                        (
-                          <>
-                            <EditIcon fontSize="small" />
-                            &nbsp;Edit
-                          </>
-                        ) :
+                      {this.props.isConfigured ? (
+                        <>
+                          <EditIcon fontSize="small" />
+                          &nbsp;Edit
+                        </>
+                      ) : (
                         "Configure"
-                      }
+                      )}
                     </Button>
                   </div>
                 </Paper>
-              )
-              }
+              )}
             </Transition>
           </main>
           <CardMedia image={PoseidonLogo} className={classes.poseidonLogo} />
@@ -525,7 +573,7 @@ class Authentication extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     telemetryIP: state.authenticationReducer.telemetryIP,
     telemetryPort: state.authenticationReducer.telemetryPort,
@@ -541,14 +589,21 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getConfig: () => dispatch({ type: actionTypes.SAGA_CHECK_CONFIGURATION }),
-    saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
-    setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload)),
+    saveConfig: (data, fn) =>
+      dispatch({
+        type: actionTypes.SAGA_CONFIGURE,
+        payload: data,
+        history: fn,
+      }),
+    setShowConfig: (payload) => dispatch(actionCreators.setShowConfig(payload)),
     resetConfig: () => dispatch({ type: actionTypes.SAGA_RESET_CONFIGURATION }),
-    changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
-    login: (data, fn) => dispatch({ type: actionTypes.SAGA_LOGIN, payload: data, history: fn }),
+    changeCredentials: (payload) =>
+      dispatch(actionCreators.changeCredentials(payload)),
+    login: (data, fn) =>
+      dispatch({ type: actionTypes.SAGA_LOGIN, payload: data, history: fn }),
   };
 };
 
@@ -560,7 +615,7 @@ Authentication.propTypes = {
 
 Authentication.defaultProps = {
   history: {
-    push: () => { },
+    push: () => {},
   },
 };
 
@@ -568,5 +623,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withTranslation('translations')(Authentication))
+  )(withTranslation("translations")(Authentication))
 );
