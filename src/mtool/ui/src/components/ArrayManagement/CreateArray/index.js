@@ -54,7 +54,7 @@ import MToolLoader from "../../MToolLoader";
 import AlertDialog from "../../Dialog";
 import DiskDetails from "../../DiskDetails";
 import "./CreateArray.css";
-import { PageTheme } from "../../../theme";
+import { customTheme, PageTheme } from "../../../theme";
 import Legend from "../../Legend";
 
 const defaultDiskDetails = {
@@ -159,7 +159,8 @@ const styles = (theme) => ({
   },
   diskText: {
     textAlign: "center",
-    fontSize: 12
+    fontSize: 12,
+    color: customTheme.palette.primary.dark
   },
   diskTextNuma: {
     top: 8,
@@ -201,7 +202,7 @@ const styles = (theme) => ({
     backgroundColor: "rgb(232, 114, 114)",
   },
   usedDisk: {
-    backgroundColor: "#8c6b5d"
+    backgroundColor: "#A87B6A"
   }
 });
 const removeA = (slot, disk) => {
@@ -618,7 +619,7 @@ class CreateArray extends Component {
             <Legend bgColor="#51ce46" title="Selected Storage Disk" />
             <Legend bgColor="#339eff" title="Selected Spare Disk" />
             <Legend bgColor="#ffffff" title="Not Selected" />
-            <Legend bgColor="#8c6b5d" title="Used Disk" />
+            <Legend bgColor="#A87B6A" title="Used Disk" />
             <Legend bgColor="#e2e1e1" title="Empty Slot" />
             <Legend bgColor="#087575" title="NUMA" />
           </Grid>
@@ -688,7 +689,7 @@ class CreateArray extends Component {
             <Button
               onClick={this.openCreatePopup}
               variant="contained"
-              color="primary"
+              color="secondary"
               data-testid="createarray-btn"
             >
               Create Array
