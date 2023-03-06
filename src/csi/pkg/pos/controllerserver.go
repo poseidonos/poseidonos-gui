@@ -42,6 +42,8 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
 	"net"
+	"sort"
+	"strconv"
 	"sync"
 )
 
@@ -54,9 +56,10 @@ var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
 
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
-	volumes map[string]*volume // volume id to volume struct
-	mtx     sync.Mutex         // protect volume lock's map
-	mtx2    sync.Mutex         // for synchronizing requests to POS
+	mtx           sync.Mutex         // protect volume lock's map
+	mtx2          sync.Mutex         // for synchronizing requests to POS
+	volumesById   map[string]*volume // volume id to volume struct
+	volumesByName map[string]*volume // volume name to volume struct
 }
 
 type volume struct {
@@ -67,12 +70,127 @@ type volume struct {
 	mtx       sync.Mutex // per volume lock to serialize DeleteVolume requests
 }
 
+func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumesRequest) (*csi.ListVolumesResponse, error) {
+	klog.Info("The 'ListVolumes' API function has been successfully populated")
+	provisioner := &DAgent{}
+	var volKey, startToken string
+	var entries []*csi.ListVolumesResponse_Entry
+	var volumeRes *csi.ListVolumesResponse
+	var startEntry, volumesLength, maxLength int
+	abnormal := false
+	message := ""
+	startToken = req.GetStartingToken()
+	maxEntries := int(req.GetMaxEntries())
+	if startToken == "" {
+		startToken = "0"
+	}
+	if v := startToken; v != "" {
+		i, err := strconv.ParseInt(v, 10, 32)
+		if err != nil {
+			return nil, status.Errorf(codes.Aborted, "unable to parse StartingToken: %v into uint32", v)
+		}
+		startEntry = int(i)
+	}
+	for volKey, _ = range s.volumesById {
+		break
+	}
+	var configParams map[string]string
+	volumesMap := make(map[string][]string)
+	if len(s.volumesById) == 0 {
+		klog.Infof("no volumes exist")
+		return &csi.ListVolumesResponse{}, nil
+	} else {
+
+		volume, exists := s.volumesById[volKey]
+		if exists {
+			configParams = volume.csiVolume.VolumeContext
+		}
+		response, err := provisioner.ListVolumes(configParams, &s.mtx2)
+		if err != nil {
+			abnormal = true
+			message = "ListVolumes status not found"
+		} else if response.Result.Status.Code != 0 {
+			abnormal = true
+			message = response.Result.Status.Description
+		} else {
+			data := response.Result.Data.(map[string]interface{})
+			volList, keyExist1 := data["volumes"].([]interface{})
+			if keyExist1 {
+				for itr := 0; itr < len(volList); itr++ {
+					volId := volList[itr].(map[string]interface{})["uuid"].(string)
+					volStatus := volList[itr].(map[string]interface{})["status"].(string)
+					volName := volList[itr].(map[string]interface{})["name"].(string)
+					volumesMap[volId] = append(volumesMap[volId], volName)
+					volumesMap[volId] = append(volumesMap[volId], volStatus)
+				}
+			}
+		}
+		var volIdList []string
+		for csiVolId, _ := range s.volumesById {
+			volIdList = append(volIdList, csiVolId)
+		}
+		sort.Strings(volIdList)
+		volumesLength = len(volIdList)
+		maxLength = maxEntries
+		if maxLength > volumesLength || maxLength <= 0 {
+			maxLength = volumesLength
+		}
+		for index := startEntry; index < volumesLength && index < maxLength; index++ {
+			volName := s.volumesById[volIdList[index]].name
+			var abnormalLocal bool
+			var messageLocal string
+			if abnormal == false {
+				var volStatus string
+				valList, isPresent := volumesMap[volIdList[index]]
+				if isPresent {
+					volStatus = valList[1]
+					if volStatus != "Mounted" {
+						abnormalLocal = true
+						messageLocal = volName + " volume is not mounted in PoseidonOS"
+						klog.Infof(volName + " volume is not mounted in PoseidonOS")
+					} else {
+						abnormalLocal = false
+						messageLocal = ""
+					}
+				} else {
+					abnormalLocal = true
+					messageLocal = volName + " volume does not exist in PoseidonOS"
+					klog.Infof(volName + " volume does not exist in PoseidonOS")
+
+				}
+			} else {
+				abnormalLocal = abnormal
+				messageLocal = message
+			}
+			var entry csi.ListVolumesResponse_Entry
+			entry.Volume = &csi.Volume{
+				VolumeId: volIdList[index],
+			}
+			entry.Status = &csi.ListVolumesResponse_VolumeStatus{
+				VolumeCondition: &csi.VolumeCondition{
+					Abnormal: abnormalLocal,
+					Message:  fmt.Sprintf(messageLocal),
+				},
+			}
+			entries = append(entries, &entry)
+		}
+
+	}
+	volumeRes = &csi.ListVolumesResponse{
+		Entries: entries,
+	}
+	klog.Info("ListVolumes gRPC response: ", volumeRes)
+	return volumeRes, nil
+
+}
+func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.ControllerGetVolumeRequest) (*csi.ControllerGetVolumeResponse, error) {
+    return nil, status.Error(codes.Unimplemented, "")
+}
 func (s *controllerServer) CreateVolume(
 	ctx context.Context,
 	req *csi.CreateVolumeRequest) (
 	*csi.CreateVolumeResponse, error) {
-	klog.Info("In Volume Creation")
-
+	klog.Info("The 'CreateVolume' API function has been successfully populated ", req.GetName())
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 
@@ -84,13 +202,13 @@ func (s *controllerServer) CreateVolume(
 		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities missing in request")
 	}
 
-	klog.Infof("POS Volumes, %v", s.volumes)
-	posVolume, exists := s.volumes[req.Name]
+	klog.Infof("POS Volumes, %v", s.volumesByName)
+	posVolume, exists := s.volumesByName[req.Name]
 	klog.Infof("isExists %v %v", posVolume, exists)
 	if !exists {
 		posVolume = &volume{}
 		posVolume.status = CREATING
-		s.volumes[req.Name] = posVolume
+		s.volumesByName[req.Name] = posVolume
 	}
 	if exists {
 		if posVolume.status == CREATING {
@@ -136,7 +254,7 @@ func (s *controllerServer) CreateVolume(
 	if err != nil {
 		// Should call delete volume
 		posVolume.status = ""
-		delete(s.volumes, req.Name)
+		delete(s.volumesByName, req.Name)
 		klog.Infof("Error in Volume Creation %v ", err.Error())
 		return nil, err
 	}
@@ -164,7 +282,7 @@ func (s *controllerServer) CreateVolume(
 	posVolume.name = newVolume.name
 	posVolume.size = newVolume.size
 	posVolume.status = CREATED
-	s.volumes[volumeID] = posVolume
+	s.volumesById[volumeID] = posVolume
 
 	klog.Info("Volume Creation Successfully Completed")
 	return &csi.CreateVolumeResponse{Volume: &posVolume.csiVolume}, nil
@@ -189,14 +307,14 @@ func validateParams(params map[string]string) error {
 }
 func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	volumeID := req.GetVolumeId()
-	klog.Infof("Deleting Volume: %v", volumeID)
+	klog.Info("The 'DeleteVolume' API function has been successfully populated ", volumeID)
 
 	if len(volumeID) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume ID missing in request")
 	}
 
 	s.mtx.Lock()
-	volume, exists := s.volumes[volumeID]
+	volume, exists := s.volumesById[volumeID]
 	s.mtx.Unlock()
 	klog.Infof("volume = > %v %v", volume, exists)
 	if !exists {
@@ -241,8 +359,8 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 
 	// no harm if volumeID already deleted
 	s.mtx.Lock()
-	delete(s.volumes, volume.name)
-	delete(s.volumes, volumeID)
+	delete(s.volumesByName, volume.name)
+	delete(s.volumesById, volumeID)
 	s.mtx.Unlock()
 
 	return &csi.DeleteVolumeResponse{}, nil
@@ -259,7 +377,7 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 	}
 
 	cs.mtx.Lock()
-	_, exists := cs.volumes[volumeId]
+	_, exists := cs.volumesById[volumeId]
 	cs.mtx.Unlock()
 	if !exists {
 		return nil, status.Error(codes.NotFound, "Requested Volume not present")
@@ -301,7 +419,8 @@ func deleteVolume(volume *volume, conf map[string]string, mtx2 *sync.Mutex) erro
 func newControllerServer(d *csicommon.CSIDriver) (*controllerServer, error) {
 	server := controllerServer{
 		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
-		volumes:                 make(map[string]*volume),
+		volumesById:             make(map[string]*volume),
+		volumesByName:           make(map[string]*volume),
 	}
 
 	return &server, nil

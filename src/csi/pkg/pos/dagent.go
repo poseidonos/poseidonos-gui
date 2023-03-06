@@ -70,6 +70,31 @@ type Status struct {
 	Solution    string `json:"solution,omitempty"`
 }
 
+
+func (dagent *DAgent) ListVolumes(config map[string]string, mtx2 *sync.Mutex) (model.Response, error) {
+    url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", config["provisionerIp"], config["provisionerPort"], config["array"])
+    resp, err := util.CallDAgent(url, nil, "GET", "ListVolumes", mtx2)
+    if err != nil {
+        return model.Response{}, status.Error(codes.Unavailable, err.Error())
+    }
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return model.Response{}, status.Error(codes.Unavailable, err.Error())
+    }
+    dec := json.NewDecoder(bytes.NewBuffer(body))
+    dec.UseNumber()
+    response := model.Response{}
+    if err := dec.Decode(&response); err != nil {
+        return model.Response{}, status.Error(codes.Unavailable, err.Error())
+    }
+    if response.Result.Status.Code == 0 {
+        klog.Info("ListVolumes Success ")
+    } else {
+        return model.Response{}, status.Error(codes.Unavailable, response.Result.Status.Description)
+    }
+    return response, nil
+}
+
 func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string, mtx2 *sync.Mutex) (*volume, error) {
 	name := csiReq.Name
 	alignedSize := size

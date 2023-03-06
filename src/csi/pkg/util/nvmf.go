@@ -404,7 +404,7 @@ func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
              }
         }`, conf["targetType"], conf["bufCacheSize"], conf["numSharedBuf"]))
 
-	resp, err := CallDAgentWithStatus(conf["provisionerIp"], conf["provisionerPort"], url, requestBody, "POST", "Create Transport", 0, mtx2)
+	resp, err := CallDAgenTransportCreation(url, requestBody, "POST", "Create Transport")
 	if err != nil {
 		return status.Error(codes.Unavailable, err.Error())
 	}
@@ -428,6 +428,28 @@ func createTransport(conf map[string]string, mtx2 *sync.Mutex) error {
 	return err
 }
 
+func CallDAgenTransportCreation(url string, requestBody []byte, reqType string, reqName string) (*http.Response, error) {
+	req, err := http.NewRequest(reqType, url, bytes.NewBuffer(requestBody))
+	if err != nil {
+		return nil, status.Error(codes.Unavailable, err.Error())
+	}
+	id := uuid.New()
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-request-Id", id.String())
+	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	klog.Info("Api respose status code ", reqName, " ", resp.StatusCode)
+	if err != nil {
+		klog.Infof("Error in DAgent %v API: %v", reqName, err)
+		return nil, status.Error(codes.Unavailable, err.Error())
+	} else if resp.StatusCode != 200 && resp.StatusCode != 400 {
+		klog.Infof("Error in DAgent %v API: response code %v", reqName, resp.StatusCode)
+		return resp, status.Error(codes.Unavailable, fmt.Sprintf("Server is unable to process %s request", reqName))
+	}
+	return resp, err
+}
+
 func CallDAgent(url string, requestBody []byte, reqType string, reqName string, mtx2 *sync.Mutex) (*http.Response, error) {
 	req, err := http.NewRequest(reqType, url, bytes.NewBuffer(requestBody))
 	if err != nil {
@@ -441,9 +463,13 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string, 
 	mtx2.Lock()
 	resp, err := client.Do(req)
 	mtx2.Unlock()
+	klog.Info("Api respose status code ", reqName, " ", resp.StatusCode)
 	if err != nil {
 		klog.Infof("Error in DAgent %v API: %v", reqName, err)
 		return nil, status.Error(codes.Unavailable, err.Error())
+	} else if resp.StatusCode != 200 {
+		klog.Infof("Error in DAgent %v API: response code %v", reqName, resp.StatusCode)
+		return resp, status.Error(codes.Unavailable, fmt.Sprintf("Server is unable to process %s request", reqName))
 	}
 	return resp, err
 }
