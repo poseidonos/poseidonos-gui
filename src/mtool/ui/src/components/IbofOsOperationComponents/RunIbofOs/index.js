@@ -42,9 +42,9 @@ import {
 } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
-import { green, red } from '@material-ui/core/colors';
 import './RunIbofOs.css';
 import LinearProgressBarComponent from '../LinearProgressBarComponent';
+import { customTheme } from '../../../theme';
 
 const RunIbofOs = props => {
   const [propertySelect, setPropertySelect] = useState("");
@@ -57,7 +57,6 @@ const RunIbofOs = props => {
   // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div>
-      {/* <h1 className="IBOFOS-header_style">Poseidon OS Operation</h1> */}
       <div className="RunIbofOs-Outer-Box">
         <span className="IBOFOSMainHeader">Run/Shutdown Poseidon OS</span>
         <div>
@@ -66,7 +65,7 @@ const RunIbofOs = props => {
               Status -
             </span>
             <span
-              style={{ float: 'left', color: (props.status ? 'green' : 'red'), fontWeight: '600' }}
+              style={{ float: 'left', color: (props.status ? customTheme.palette.success.dark : customTheme.palette.error.dark), fontWeight: '600' }}
             >
               {props.status ? "Running" : props.OS_Running_Status}
             </span>
@@ -86,7 +85,7 @@ const RunIbofOs = props => {
               <div className="IBOFOSButtonClass">
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   title="Force Start Poseidon OS"
                   data-testid="startButton"
                   disabled={props.status}
@@ -99,8 +98,8 @@ const RunIbofOs = props => {
               </div>
               <div className="IBOFOSButtonClass">
                 <Button
-                  variant="contained"
-                  color="primary"
+                  variant="outlined"
+                  color="secondary"
                   title="Force Stop Poseidon OS"
                   data-testid="stopButton"
                   disabled={!props.status}
@@ -114,7 +113,7 @@ const RunIbofOs = props => {
               <div className="IBOFOSButtonClass">
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   title="Reset Poseidon OS"
                   data-testid="resetButton"
                   style={{
@@ -129,43 +128,6 @@ const RunIbofOs = props => {
               </div>
             </div>
           </div>
-          {/* <div className="IBOFOSCommandWrapper">
-            <span className="IBOFOSStartLabel">
-              <span style={{ float: 'left' }}>
-                Mount/Unmount Poseidon OS
-              </span>
-            </span>
-            <div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  title="Mount Poseidon OS"
-                  data-testid="btn-mount"
-                  disabled={!props.status || props.mountState === "NORMAL"}
-                  onClick={() => {
-                    props.openAlert('Mount');
-                  }}
-                >
-                  Mount
-                </Button>
-              </div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  title="Unmount Poseidon OS"
-                  data-testid="btn-unmount"
-                  disabled={!props.status || props.mountState === "EXIST_NORMAL"}
-                  onClick={() => {
-                    props.openAlert('Unmount');
-                  }}
-                >
-                  Unmount
-                </Button>
-              </div>
-            </div>
-          </div> */}
         </div>
         <Grid container xs={12} className="IBOFOSSetPropertyContainer" alignItems="baseline">
           <FormControl>
@@ -197,7 +159,7 @@ const RunIbofOs = props => {
           </FormControl>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             size="small"
             title="Set Rebuild Performance Impact"
             data-testid="setPropertyButton"
@@ -216,10 +178,10 @@ const RunIbofOs = props => {
           <Grid className="IBOFOSResponse">
             {props.responsefromos && props.responsefromos.map((response) => (
               <Typography component="div" className="IBOFOSStatusText">{response.code === 0 ? (
-                <CheckCircleIcon className="IBOFOSStatusIcon" style={{ color: green[500] }} />
+                <CheckCircleIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.success.dark }} />
               ) : null}{response.code &&
                 response.code !== 200 ? (
-                <ErrorIcon className="IBOFOSStatusIcon" style={{ color: red[500] }} />
+                <ErrorIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.error.dark }} />
               ) : null} {response.description}
               </Typography>
             ))}

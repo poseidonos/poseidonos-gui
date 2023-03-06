@@ -61,10 +61,10 @@ const styles = (theme) => ({
         marginRight: theme.spacing(2)
     },
     colorGreen: {
-        color: 'green'
+        color: customTheme.palette.success.dark
     },
     colorOrange: {
-        color: 'orange'
+        color: customTheme.palette.warning.dark
     },
     saveBtn: {
         width: 150
@@ -139,7 +139,7 @@ const TelemetryConfiguration = ({
                     <Grid item>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.startBtn}
                             onClick={confirmStart}
                             id="start-telemetry-btn"
@@ -150,7 +150,7 @@ const TelemetryConfiguration = ({
                         </Button>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             onClick={confirmStop}
                             id="stop-telemetry-btn"
                             disabled={!telemetryStatus}
@@ -214,7 +214,7 @@ const TelemetryConfiguration = ({
                     >
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.saveBtn}
                             data-testid="createarray-btn"
                             onClick={() => saveConfig(telemetryProperties)}

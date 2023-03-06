@@ -96,7 +96,6 @@ export {
 } from "./authenticationActions";
 
 export {
-    // setUsersInfo,
     fetchUsersInfo,
 } from "./userManagementActions";
 

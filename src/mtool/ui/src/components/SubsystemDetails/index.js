@@ -119,10 +119,7 @@ const SubsystemDetails = (props) => {
             options={{
               maxBodyHeight: 350,
               minBodyHeight: 350,
-              headerStyle: {
-                backgroundColor: "#788595",
-                color: "#FFF",
-              }
+              headerStyle: customTheme.table.header
             }}
           />
         </Grid>
@@ -148,10 +145,7 @@ const SubsystemDetails = (props) => {
             options={{
               maxBodyHeight: 350,
               minBodyHeight: 350,
-              headerStyle: {
-                backgroundColor: "#788595",
-                color: "#FFF",
-              }
+              headerStyle: customTheme.table.header
             }}
           />
         </Grid>
