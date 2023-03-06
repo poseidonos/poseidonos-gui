@@ -58,61 +58,6 @@ json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 # json data 
 success_json = {"status": "success"}
 tel_json = {'telemetryIP': ip, 'telemetryPort': port}
-status_json = {
-                        "data": {
-                            "result": devices,
-                        },
-                        "status": "success"
-                    }
-data_json = {
-            "message": "data source with the same name already exists",
-            "traceID": "00000000000000000000000000000000"
-        }
-label_json = {
-                        "data": {
-                            "result": ipmi,
-                        },
-                        "status": "success"
-                    }
-query_json = {
-                        "data": {
-                            "result": [{
-                                "metric": {
-                                    "job": "poseidonos"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            },
-                            {
-                                "metric": {
-                                    "job": "ipmi"
-                                },
-                                "value": [
-                                    "0", "1"
-                                ]
-                            }]
-                        }
-                    }
-Graphana_json = [
-            {
-                "id": ds_id,
-                "uid": "iFXqnLzVk",
-                "orgId": 1,
-                "name": "poseidon",
-                "type": "prometheus",
-                "typeName": "Prometheus",
-                "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
-                "access": "proxy",
-                "url": "http://"+old_ip+":"+port,
-                "user": "",
-                "database": "",
-                "basicAuth": False,
-                "isDefault": False,
-                "jsonData": {},
-                "readOnly": False
-            }
-        ]
 devices = [
         {
             "metric": {
@@ -247,6 +192,62 @@ devices = [
             ]
         },
 ]
+status_json = {
+                        "data": {
+                            "result": devices,
+                        },
+                        "status": "success"
+                    }
+data_json = {
+            "message": "data source with the same name already exists",
+            "traceID": "00000000000000000000000000000000"
+        }
+label_json = {
+                        "data": {
+                            "result": "ipmi",
+                        },
+                        "status": "success"
+                    }
+query_json = {
+                        "data": {
+                            "result": [{
+                                "metric": {
+                                    "job": "poseidonos"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            },
+                            {
+                                "metric": {
+                                    "job": "ipmi"
+                                },
+                                "value": [
+                                    "0", "1"
+                                ]
+                            }]
+                        }
+                    }
+Graphana_json = [
+            {
+                "id": ds_id,
+                "uid": "iFXqnLzVk",
+                "orgId": 1,
+                "name": "poseidon",
+                "type": "prometheus",
+                "typeName": "Prometheus",
+                "typeLogoUrl": "public/app/plugins/datasource/prometheus/img/prometheus_logo.svg",
+                "access": "proxy",
+                "url": "http://"+old_ip+":"+port,
+                "user": "",
+                "database": "",
+                "basicAuth": False,
+                "isDefault": False,
+                "jsonData": {},
+                "readOnly": False
+            }
+        ]
+
 
 ipmi = [
     {
@@ -622,7 +623,12 @@ def test_get_hardware_health(mock_get_current_user, **kwargs):
                     json=status_json,
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json=label_json,
+                    json={
+                        "data": {
+                            "result": ipmi,
+                        },
+                        "status": "success"
+                    },
                     status_code=200)
     response = app.test_client().get(
         '/api/v1/get_hardware_health',
@@ -652,7 +658,12 @@ def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, 
                     },
                     status_code=200)
     kwargs["mock"].get("http://localhost:9090/api/v1/query?query=label_replace(%7B__name__=~%22ipmi_fan_speed_state%7Cipmi_fan_speed_rpm%7Cipmi_power_state%7Cipmi_power_watts%7Cipmi_sensor_state%7Cipmi_sensor_value%7Cipmi_voltage_state%7Cipmi_voltage_volts%7Cipmi_temperature_state%7Cipmi_temperature_celsius%7Cipmi_chassis_power_state%7C%22,instance=%22localhost:9290%22%7D,%22name_label%22,%22$1%22,%22__name__%22,%221s%22)",
-                    json=label_json,
+                    json={
+                        "data": {
+                            "result": ipmi,
+                        },
+                        "status": "success"
+                    },
                     status_code=200)
     response = app.test_client().get(
         '/api/v1/get_hardware_health',
