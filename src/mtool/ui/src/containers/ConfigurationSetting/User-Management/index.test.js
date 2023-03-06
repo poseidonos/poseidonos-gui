@@ -109,6 +109,7 @@ describe("ConfigurationSetting", () => {
     history = createMemoryHistory({ initialEntries: [route] });
   });
 
+
   const renderComponent = () => {
     wrapper = render(
       <Router history={history}>
@@ -453,6 +454,8 @@ describe("ConfigurationSetting", () => {
           "x-access-token": null
         }
       });
+    })
+  })
 
   it('should edit a user', async () => {
     const mock = new MockAdapter(axios);
@@ -735,6 +738,6 @@ describe("ConfigurationSetting", () => {
       const nameElement = await waitForElement(() => getByText("abcd"));
       expect(nameElement).toBeDefined();
       expect(queryByText("Create")).toBeNull();
-    });
-  })
-});
+    })
+  });
+})
