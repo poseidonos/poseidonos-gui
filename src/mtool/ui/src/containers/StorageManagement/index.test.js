@@ -96,7 +96,19 @@ const metaDevicesJson = {
   displayMsg: "uram1",
   trimmedDisplayMsg: "uram1"
 }
-
+const metadevices = [{
+  name: "uram0",
+  isAvailable: false,
+  arrayName: "",
+  displayMsg: "uram0",
+  trimmedDisplayMsg: "uram0"
+}, {
+  name: "uram1",
+  isAvailable: false,
+  arrayName: "",
+  displayMsg: "uram1",
+  trimmedDisplayMsg: "uram1"
+}];
 const device_json = {
   "devices": [{
     name: "unvmens-6",
@@ -109,7 +121,7 @@ const device_json = {
   metadevices,
 }
 
-members_json = {
+const members_json = {
   Members: [
     {
       "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
@@ -234,19 +246,7 @@ describe("<Storage Management />", () => {
     },
   ];
 
-  const metadevices = [{
-    name: "uram0",
-    isAvailable: false,
-    arrayName: "",
-    displayMsg: "uram0",
-    trimmedDisplayMsg: "uram0"
-  }, {
-    name: "uram1",
-    isAvailable: false,
-    arrayName: "",
-    displayMsg: "uram1",
-    trimmedDisplayMsg: "uram1"
-  }];
+  
 
   const config = {
     "raidTypes": [

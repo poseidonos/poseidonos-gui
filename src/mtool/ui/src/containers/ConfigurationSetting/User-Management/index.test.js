@@ -242,7 +242,7 @@ describe("ConfigurationSetting", () => {
     expect(getByText("Please provide a valid Phone Number")).toBeDefined();
   });
 
-  it.only('should display an error if unable to add a new user', () => {
+  it('should display an error if unable to add a new user', () => {
     const mock = new MockAdapter(axios);
     mock.onPost('/api/v1.0/add_new_user/').reply(500, null)
       .onGet('/api/v1.0/get_users/').reply(200, null);
