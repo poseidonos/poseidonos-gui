@@ -74,22 +74,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     width: 'inherit',
-    '&>li:hover': {
-      background: customTheme.palette.primary.dark,
-      color: '#fff',
-      opacity: 1
-    },
   },
   sidebarLink: {
     padding: 0,
     '&:hover': {
-      '&>p': {
-        color: '#fff',
-        opacity: 0.8
-      },
-      '&>span>img': {
-        opacity: 0.8
-      }
+      background: customTheme.palette.primary.main,
     },
   },
   drawer: {
@@ -122,22 +111,12 @@ const useStyles = makeStyles((theme) => ({
   activeLink: {
     backgroundColor: customTheme.palette.secondary.main,
     color: '#fff',
-    opacity: 1,
-    '&>li:hover': {
-      backgroundColor: customTheme.palette.secondary.main,
-      opacity: 1,
-      color: '#fff',
-    },
     '&>p': {
       color: '#fff',
-      backgroundColor: customTheme.palette.secondary.main,
-      opacity: '1 !important'
     },
-    '&>li>span>img': {
-      color: '#fff',
-      backgroundColor: customTheme.palette.secondary.main,
-      opacity: '1 !important',
-    }
+    '&:hover': {
+      backgroundColor: customTheme.palette.primary.main,
+    },
   },
   toolbar: {
     ...theme.mixins.toolbar,
