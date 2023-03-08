@@ -429,6 +429,7 @@ class CreateVolume extends Component {
                     value={this.props.volume_count}
                     onChange={this.handleChange}
                     required
+                    disabled={this.props.showAdvanceOptions}
                   />
                 </FormControl>
               </Tooltip>
@@ -454,6 +455,7 @@ class CreateVolume extends Component {
                         "data-testid": "mount-vol-checkbox",
                       }}
                       onChange={this.handleChange}
+                      disabled={this.props.showAdvanceOptions}
                     />
                   )}
                   label="Mount Volume"
@@ -492,6 +494,7 @@ class CreateVolume extends Component {
                     "data-testid": "create-vol-name",
                   }}
                   required
+                  disabled={this.props.showAdvanceOptions}
                 />
               </FormControl>
             </Grid>
@@ -525,7 +528,7 @@ class CreateVolume extends Component {
                     }}
                     value={this.props.volume_suffix}
                     onChange={this.handleChange}
-                    disabled={this.props.volume_count < 2}
+                    disabled={this.props.volume_count < 2 || this.props.showAdvanceOptions}
                   />
                 </FormControl>
               </Tooltip>
@@ -555,6 +558,7 @@ class CreateVolume extends Component {
                       min: 0
                     }}
                     required
+                    disabled={this.props.showAdvanceOptions}
                   />
                 </FormControl>
               </Tooltip>
@@ -571,6 +575,7 @@ class CreateVolume extends Component {
                     "data-testid": "volume-unit",
                   }}
                   className={classes.unitSelect}
+                  disabled={this.props.showAdvanceOptions}
                 >
                   <MenuItem value="MB" data-testid="mb">
                     MB
@@ -607,7 +612,7 @@ class CreateVolume extends Component {
                     "data-testid": "subsystem",
                   }}
                   className={classes.unitSelect}
-                  disabled={!this.props.mount_vol}
+                  disabled={!this.props.mount_vol || this.props.showAdvanceOptions}
                 >
                   {this.props.subsystems.map((subsystem) => subsystem.subtype === "NVMe" ?
                     (
@@ -647,6 +652,7 @@ class CreateVolume extends Component {
                           "data-testid": "stop-on-error-checkbox",
                         }}
                         onChange={this.handleChange}
+                        disabled={this.props.showAdvanceOptions}
                       />
                     )}
                     label="Stop Multi-Volume Creation on Error"
@@ -673,7 +679,7 @@ class CreateVolume extends Component {
                   variant="contained"
                   color="secondary"
                   data-testid="createvolume-btn"
-                  disabled={this.props.createVolumeButton}
+                  disabled={this.props.createVolumeButton || this.props.showAdvanceOptions}
                 >
                   Create Volume
                 </Button>
@@ -744,6 +750,7 @@ const mapStateToProps = (state) => {
     mount_vol: state.createVolumeReducer.mount_vol,
     subsystem: state.createVolumeReducer.subsystem,
     transport: state.createVolumeReducer.transport,
+    showAdvanceOptions: state.createVolumeReducer.showAdvanceOptions
   };
 };
 
