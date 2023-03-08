@@ -541,7 +541,8 @@ class VolumeList extends Component {
               })
             }}
             icons={{
-              Check,
+              // eslint-disable-next-line react/no-multi-comp
+              Check: () => <Check aria-label="No value" />,
               // eslint-disable-next-line react/no-multi-comp
               FirstPage: () => <FirstPage id="VolumeList-icon-firstpage" />,
               // eslint-disable-next-line react/no-multi-comp
