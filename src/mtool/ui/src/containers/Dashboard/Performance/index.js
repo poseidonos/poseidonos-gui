@@ -194,7 +194,7 @@ const Performance = (props) => {
                 <MetricsCard
                     classes={classes}
                     header="Latency"
-                    writeValue="329 B"
+                    writeValue={props.writeLatency}
                     readValue={props.readLatency}
                 />
             </Grid>
