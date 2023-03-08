@@ -154,6 +154,9 @@ const styles = (theme) => ({
     rebuildButton: {
         cursor: "pointer",
         marginLeft: theme.spacing(1)
+    },
+    font18bold: {
+        fontSize: 18
     }
 })
 
@@ -490,7 +493,7 @@ const ArrayManage = (props) => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Paper className={classes.volumeStatsPaper}>
-                        <Typography className={classes.cardHeader}>
+                        <Typography className={classes.cardHeader} variant="h2">
                             Volume Statistics
                         </Typography>
                         <div className={classes.statsWrapper}>
@@ -498,7 +501,7 @@ const ArrayManage = (props) => {
                                 <Typography color="primary" variant="body1">
                                     Number of volumes:&nbsp;
                                 </Typography>
-                                <Typography color="secondary" variant="h6">
+                                <Typography className={classes.font18bold} color="secondary">
                                     {props.volumes.length}
                                 </Typography>
                             </Grid>

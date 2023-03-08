@@ -522,7 +522,7 @@ class VolumeList extends Component {
         <ThemeProvider theme={this.theme}>
           <MaterialTable
             title={(
-              <Typography className={classes.cardHeader}>Volume List</Typography>
+              <Typography className={classes.cardHeader} variant="h2">Volume List</Typography>
             )}
             columns={volumeTableColumns}
             data={this.props.volumes}

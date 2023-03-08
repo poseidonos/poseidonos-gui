@@ -401,7 +401,7 @@ class CreateVolume extends Component {
       <ThemeProvider theme={PageTheme}>
         <Paper className={classes.volumeCreatePaper}>
           <Grid item xs={12}>
-            <Typography className={classes.createHeader}>
+            <Typography className={classes.createHeader} variant="h2">
               Create Volume
             </Typography>
           </Grid>
