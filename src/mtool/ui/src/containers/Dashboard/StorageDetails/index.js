@@ -358,7 +358,7 @@ const StorageDetails = (props) => {
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.storageDetailsPaper}>
                 <Grid item container xs={12} justifyContent="flex-start">
-                    <Typography className={classes.cardHeader}>
+                    <Typography className={classes.cardHeader} variant="h2">
                         Storage Details
                     </Typography>
                 </Grid>

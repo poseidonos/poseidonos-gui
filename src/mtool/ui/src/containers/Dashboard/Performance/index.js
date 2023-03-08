@@ -95,7 +95,7 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
     return (
         <Paper className={classes.metricsPaper}>
             <Grid item container xs={12} justifyContent="space-between">
-                <Typography className={classes.cardHeader}>
+                <Typography className={classes.cardHeader} variant="h2">
                     {header}
                 </Typography>
             </Grid>

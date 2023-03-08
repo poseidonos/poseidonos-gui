@@ -152,7 +152,7 @@ class Dashboard extends Component {
     const posInfo = (
       <Paper className={classes.posInfoPaper}>
         <Grid item container xs={12} justifyContent="space-between">
-          <Typography className={classes.cardHeader}>
+          <Typography className={classes.cardHeader} variant="h2">
             IP Info
           </Typography>
         </Grid>

@@ -458,7 +458,7 @@ const HardwareHealth = (props) => {
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.hardwareHealthPaper}>
                 <Grid item container xs={12} justifyContent="flex-start">
-                    <Typography className={classes.cardHeader}>
+                    <Typography className={classes.cardHeader} variant="h2">
                         Hardware Health
                     </Typography>
                 </Grid>
