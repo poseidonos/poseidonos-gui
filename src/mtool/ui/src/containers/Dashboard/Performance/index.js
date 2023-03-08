@@ -82,7 +82,7 @@ const styles = (theme) => ({
     writeColor: {
         height: "40px",
         textAlign: "center",
-        color: "rgba(58, 108, 255, 1)",
+        color: customTheme.palette.secondary.main,
     },
     readColor: {
         height: "40px",
