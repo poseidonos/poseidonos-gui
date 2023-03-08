@@ -243,7 +243,7 @@ class Dashboard extends Component {
             <Grid container spacing={3}>
               <Grid container spacing={3} className={classes.titleContainer}>
                 <Grid sm={6} xs={12} item>
-                  <Typography className={classes.pageHeader} variant="h6">
+                  <Typography className={classes.pageHeader} variant="h1">
                     Dashboard
                   </Typography>
                 </Grid>
