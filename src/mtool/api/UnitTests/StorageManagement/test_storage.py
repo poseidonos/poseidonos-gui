@@ -125,7 +125,7 @@ device_list = [
                             "type": "DATA"
                         }
                     ]
-Volume_List_json = {
+volume_list_json = {
             "result": {
                 "status": {
                     "description": "SUCCESS"},
@@ -141,7 +141,7 @@ Volume_List_json = {
                             "size": 1234567,
                             "total": 12345678,
                             "remain": 12345678}]}}}
-Ibof_System_json = {
+ibof_system_json = {
             "result": {
                 "status": {
                     "description": "SUCCESS",
@@ -151,7 +151,7 @@ Ibof_System_json = {
                 "capacity": 12345678,
                 "used": 0}}
 
-Ibof_json = {
+ibof_json = {
     "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
     "lastSuccessTime": 1626166295,
     "result": {
@@ -167,7 +167,7 @@ Ibof_json = {
         "version": "pos-0.9.4"
     }
 }
-Mount_json = {
+mount_json = {
     "rid": "56532969-a24c-4387-827a-c4107550ebb8",
     "lastSuccessTime": 1637046369,
     "result": {
@@ -182,8 +182,8 @@ Mount_json = {
     "info": {
         "version": "v0.10.1"
     }}
-Scan_json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}
-Array_List_json= {
+scan_json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}
+array_list_json= {
     "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
     "lastSuccessTime": 1621261763,
     "result": {
@@ -220,7 +220,7 @@ Array_List_json= {
     }
 }
 
-Dagent_json={
+dagent_json={
     "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
     "lastSuccessTime": 1620717645,
     "result": {
@@ -268,7 +268,7 @@ Dagent_json={
     }
 }
 
-Dagent_Array_json = {
+dagent_array_json = {
     "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
     "lastSuccessTime": 1653565027,
     "result": {

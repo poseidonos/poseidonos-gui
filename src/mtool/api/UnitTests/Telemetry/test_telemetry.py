@@ -228,7 +228,7 @@ query_json = {
                             }]
                         }
                     }
-Graphana_json = [
+graphana_json = [
             {
                 "id": ds_id,
                 "uid": "iFXqnLzVk",
