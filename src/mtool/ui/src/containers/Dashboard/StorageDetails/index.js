@@ -60,9 +60,9 @@ const styles = (theme) => ({
     },
     storageSummary: {
         position: "relative",
-        height: 79,
+        height: 85,
         [theme.breakpoints.up("xl")]: {
-            height: 165,
+            height: 159,
         },
         [theme.breakpoints.down("md")]: {
             height: 121,
@@ -277,7 +277,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="primary">
+                        <Typography color="primary">
                             Array Summary
                         </Typography>
                     </Grid>
@@ -320,7 +320,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="primary">
+                        <Typography color="primary">
                             Volume Summary
                         </Typography>
                         <FormControl>

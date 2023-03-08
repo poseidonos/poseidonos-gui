@@ -55,7 +55,8 @@ const styles = (theme) => ({
         alignItems: "center",
         justifyContent: "center",
     },
-    textOverflow: {
+    paramaterType: {
+        fontSize: 18,
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
         overflow: "hidden",
@@ -79,16 +80,21 @@ const styles = (theme) => ({
             borderBottom: "2px solid #F1F0F5",
         },
     },
-    writeColor: {
+    writeValue: {
+        fontSize: 18,
         height: "40px",
         textAlign: "center",
         color: customTheme.palette.secondary.main,
     },
-    readColor: {
+    readValue: {
+        fontSize: 18,
         height: "40px",
         textAlign: "center",
         color: "rgba(125, 106, 181, 1)",
-    }
+    },
+    valueActive:{
+        fontSize: 28,
+    },
 });
 
 const MetricsCard = ({ classes, header, writeValue, readValue }) => {
@@ -103,9 +109,8 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
                 <Grid item xs={4}>
                     <Typography
                         align="center"
-                        className={classes.textOverflow}
+                        className={classes.paramaterType}
                         color={writeValue ? "secondary" : "primary"}
-                        variant="h6"
                     >
                         Write
                     </Typography>
@@ -116,10 +121,9 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
                     className={classes.metricBox}
                 >
                     <Typography
-                        variant={writeValue ? "h4" : "h6"}
                         data-testid={`write-${header.toLowerCase()}`}
                         color="secondary"
-                        className={classes.writeColor}
+                        className={`${classes.writeValue} ${writeValue && classes.valueActive}`}
                     >
                         {writeValue !== 0 ? writeValue : "___"}
                     </Typography>
@@ -129,9 +133,8 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
                 <Grid item xs={4}>
                     <Typography
                         align="center"
-                        className={classes.textOverflow}
+                        className={classes.paramaterType}
                         color={readValue ? "secondary" : "primary"}
-                        variant="h6"
                     >
                         Read
                     </Typography>
@@ -141,9 +144,8 @@ const MetricsCard = ({ classes, header, writeValue, readValue }) => {
                     xs={8}
                 >
                     <Typography
-                        variant={readValue ? "h4" : "h6"}
                         data-testid={`read-${header.toLowerCase()}`}
-                        className={classes.readColor}
+                        className={`${classes.readValue} ${readValue && classes.valueActive}`}
                     >
                         {readValue !== 0 ? readValue : "___"}
                     </Typography>
@@ -192,7 +194,7 @@ const Performance = (props) => {
                 <MetricsCard
                     classes={classes}
                     header="Latency"
-                    writeValue={props.writeLatency}
+                    writeValue="329 B"
                     readValue={props.readLatency}
                 />
             </Grid>

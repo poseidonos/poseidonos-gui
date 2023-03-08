@@ -102,6 +102,7 @@ const styles = (theme) => {
       paddingTop: 0
     },
     ipText: {
+      fontSize: 18,
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
       overflow: "hidden",
@@ -160,7 +161,6 @@ class Dashboard extends Component {
           <Grid item xs={4}>
             <Typography
               color="primary"
-              variant="h6"
               className={`${classes.ipText} ${classes.ipBorder}`}
             >
               PoseidonOS
@@ -170,7 +170,6 @@ class Dashboard extends Component {
             <Typography
               color="secondary"
               data-testid="dashboard-ip"
-              variant="h6"
               className={classes.ipText}
             >
               {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
@@ -181,7 +180,6 @@ class Dashboard extends Component {
           <Grid item xs={4}>
             <Typography
               color="primary"
-              variant="h6"
               className={`${classes.ipText} ${classes.ipBorder}`}
             >
               Telemetry
@@ -194,7 +192,6 @@ class Dashboard extends Component {
                   <Typography
                     className={classes.ipText}
                     data-testid="telemetry-ip"
-                    variant="h6"
                     color="secondary"
                   >
                     {this.props.telemetryIP}:{this.props.telemetryPort}
