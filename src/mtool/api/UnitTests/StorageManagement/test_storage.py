@@ -345,16 +345,16 @@ def global_data(mock_match_username_from_db):
             return_value="test", autospec=True)
 def test_get_devices(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =Scan_json, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =scan_json, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
                        json=device_list_json,
                        status_code=200)
 
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json=Array_List_json, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json=Dagent_json, status_code=200)
+                       json=dagent_json, status_code=200)
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
         headers=header_json)
@@ -397,7 +397,7 @@ def test_get_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json=Dagent_Array_json, status_code=200)
+        json=dagent_array_json, status_code=200)
     response = app.test_client().get(
         '/api/v1/'+ARRAY_NAME+'/get_volumes/',
         headers=header_json)
@@ -412,11 +412,11 @@ def test_get_all_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
 
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json=Array_List_json, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json=Dagent_Array_json, status_code=200)
+        json=dagent_array_json, status_code=200)
 
     response = app.test_client().get(
         '/api/v1/get_all_volumes/',
@@ -470,7 +470,7 @@ def test_get_available_storage(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
@@ -487,7 +487,7 @@ def test_get_available_storage_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=500)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
@@ -662,7 +662,7 @@ def test_create_arrays_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = Scan_json, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = scan_json, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': '104e2c46-89b3-433d-8f6a-b4f7fa176c27', 'lastSuccessTime': 1606298716, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
 	
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/load',json = {'rid': '99b9626b-ca23-4f0e-86bd-643fa4cb8a1c', 'lastSuccessTime': 1606298720, 'result': {'status': {'module': 'Array', 'code': 2500, 'level': 'ERROR', 'description': 'Array is alreday mounted.'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
@@ -715,11 +715,11 @@ def test_create_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json=Mount_json,
+        json=mount_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL +
@@ -812,7 +812,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -849,12 +849,12 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json=Mount_json,
+        json=mount_json,
         status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -891,12 +891,12 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json=Mount_json,
+        json=mount_json,
         status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -933,11 +933,11 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json=Mount_json,
+        json=mount_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -1232,7 +1232,7 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
@@ -1329,7 +1329,7 @@ def test_update_volume2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json=Ibof_json,status_code=200)
+        json=ibof_json,status_code=200)
     response = app.test_client().post(
         '/api/v1/qos',
         data='''{
@@ -1351,7 +1351,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].patch(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().patch(
         '/api/v1.0/volumes/vol1',
@@ -1411,7 +1411,7 @@ def test_mount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/volume/mount',
@@ -1453,7 +1453,7 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
-        json=Ibof_System_json,
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().delete(
         '/api/v1.0/volume/mount',
@@ -1496,10 +1496,10 @@ def test_list_devices(global_data, **kwargs):
                        json={"result": {"status": {"description": "SUCCESS"}}},
                        status_code=200)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json=Array_List_json, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json=Dagent_json, status_code=200)
+                       json=dagent_json, status_code=200)
 
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
@@ -1544,7 +1544,7 @@ def test_list_devices_failure(global_data, **kwargs):
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =Scan_json, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =scan_json, status_code=200)
 
     #output = list_devices()
     response = app.test_client().get(
@@ -1673,7 +1673,7 @@ def test_get_volume(**kwargs):
 def test_get_arrays_func(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json=Array_List_json, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
                        json={
@@ -1728,7 +1728,7 @@ def test_get_arrays_func(**kwargs):
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json=Volume_List_json,
+        json=volume_list_json,
         status_code=200)
     response = app.test_client().get('/api/v1/get_arrays/',headers=header_json)
     assert response.status_code == 200
@@ -1737,14 +1737,14 @@ def test_get_arrays_func(**kwargs):
 def test_get_arrays_func_failure(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json=Array_List_json, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json=Dagent_json, status_code=200)
+                       json=dagent_json, status_code=200)
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json= Volume_List_json,
+        json= volume_list_json,
         status_code=200)
 
     response = app.test_client().get('/api/v1/get_arrays/',headers=header_json)

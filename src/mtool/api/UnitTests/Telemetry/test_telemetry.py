@@ -529,7 +529,7 @@ def test_set_telemetry_config_success_3(mock_update_telemetry_url, **kwargs):
 
     kwargs["mock"].get(
         grafa_url+"/api/datasources",
-        json=Graphana_json,
+        json=graphana_json,
         status_code=200)    
 
     kwargs["mock"].put(
@@ -577,7 +577,7 @@ def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
 
     kwargs["mock"].get(
         grafa_url+"/api/datasources",
-        json= Graphana_json,
+        json= graphana_json,
         status_code=200)   
 
     kwargs["mock"].put(
