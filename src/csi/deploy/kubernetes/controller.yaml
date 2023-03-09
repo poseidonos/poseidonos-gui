@@ -18,7 +18,7 @@ spec:
       hostNetwork: true
       containers:
       - name: poscsi-provisioner
-        image: k8s.gcr.io/sig-storage/csi-provisioner:v2.0.2
+        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.4.0
         imagePullPolicy: "IfNotPresent"
         args:
         - "--v=5"
@@ -30,7 +30,7 @@ spec:
         - name: socket-dir
           mountPath: /csi
       - name: poscsi-attacher
-        image: k8s.gcr.io/sig-storage/csi-attacher:v3.0.0
+        image: k8s.gcr.io/sig-storage/csi-attacher:v4.2.0
         imagePullPolicy: "IfNotPresent"
         args:
         - "--v=5"
@@ -57,6 +57,20 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /csi
+      - name: csi-external-health-monitor-controller
+        image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.7.0
+        args:
+        - "--v=5"
+        - "--csi-address=$(ADDRESS)"
+        - "--leader-election"
+        - "--monitor-interval=60s"
+        env:
+        - name: ADDRESS
+          value: /csi/csi-provisioner.sock
+        imagePullPolicy: "IfNotPresent"
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
