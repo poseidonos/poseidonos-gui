@@ -99,83 +99,82 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 	if len(s.volumesById) == 0 {
 		klog.Infof("no volumes exist")
 		return &csi.ListVolumesResponse{}, nil
-	} else {
+	}
 
-		volume, exists := s.volumesById[volKey]
-		if exists {
-			configParams = volume.csiVolume.VolumeContext
-		}
-		response, err := provisioner.ListVolumes(configParams, &s.mtx2)
-		if err != nil {
-			abnormal = true
-			message = "ListVolumes status not found"
-		} else if response.Result.Status.Code != 0 {
-			abnormal = true
-			message = response.Result.Status.Description
-		} else {
-			data := response.Result.Data.(map[string]interface{})
-			volList, keyExist1 := data["volumes"].([]interface{})
-			if keyExist1 {
-				for itr := 0; itr < len(volList); itr++ {
-					volId := volList[itr].(map[string]interface{})["uuid"].(string)
-					volStatus := volList[itr].(map[string]interface{})["status"].(string)
-					volName := volList[itr].(map[string]interface{})["name"].(string)
-					volumesMap[volId] = append(volumesMap[volId], volName)
-					volumesMap[volId] = append(volumesMap[volId], volStatus)
-				}
+	volume, exists := s.volumesById[volKey]
+	if exists {
+		configParams = volume.csiVolume.VolumeContext
+	}
+	response, err := provisioner.ListVolumes(configParams, &s.mtx2)
+	if err != nil {
+		abnormal = true
+		message = "ListVolumes status not found"
+	} else if response.Result.Status.Code != 0 {
+		abnormal = true
+		message = response.Result.Status.Description
+	} else {
+		data := response.Result.Data.(map[string]interface{})
+		volList, keyExist1 := data["volumes"].([]interface{})
+		if keyExist1 {
+			for itr := 0; itr < len(volList); itr++ {
+				volId := volList[itr].(map[string]interface{})["uuid"].(string)
+				volStatus := volList[itr].(map[string]interface{})["status"].(string)
+				volName := volList[itr].(map[string]interface{})["name"].(string)
+				volumesMap[volId] = append(volumesMap[volId], volName)
+				volumesMap[volId] = append(volumesMap[volId], volStatus)
 			}
 		}
-		var volIdList []string
-		for csiVolId, _ := range s.volumesById {
-			volIdList = append(volIdList, csiVolId)
-		}
-		sort.Strings(volIdList)
-		volumesLength = len(volIdList)
-		maxLength = maxEntries
-		if maxLength > volumesLength || maxLength <= 0 {
-			maxLength = volumesLength
-		}
-		for index := startEntry; index < volumesLength && index < maxLength; index++ {
-			volName := s.volumesById[volIdList[index]].name
-			var abnormalLocal bool
-			var messageLocal string
-			if abnormal == false {
-				var volStatus string
-				valList, isPresent := volumesMap[volIdList[index]]
-				if isPresent {
-					volStatus = valList[1]
-					if volStatus != "Mounted" {
-						abnormalLocal = true
-						messageLocal = volName + " volume is not mounted in PoseidonOS"
-						klog.Infof(volName + " volume is not mounted in PoseidonOS")
-					} else {
-						abnormalLocal = false
-						messageLocal = ""
-					}
-				} else {
+	}
+	var volIdList []string
+	for csiVolId, _ := range s.volumesById {
+		volIdList = append(volIdList, csiVolId)
+	}
+	sort.Strings(volIdList)
+	volumesLength = len(volIdList)
+	maxLength = maxEntries
+	if maxLength > volumesLength || maxLength <= 0 {
+		maxLength = volumesLength
+	}
+	for index := startEntry; index < volumesLength && index < maxLength; index++ {
+		volName := s.volumesById[volIdList[index]].name
+		var abnormalLocal bool
+		var messageLocal string
+		if abnormal == false {
+			var volStatus string
+			valList, isPresent := volumesMap[volIdList[index]]
+			if isPresent {
+				volStatus = valList[1]
+				if volStatus != "Mounted" {
 					abnormalLocal = true
-					messageLocal = volName + " volume does not exist in PoseidonOS"
-					klog.Infof(volName + " volume does not exist in PoseidonOS")
-
+					messageLocal = volName + " volume is not mounted in PoseidonOS"
+					klog.Infof(volName + " volume is not mounted in PoseidonOS")
+				} else {
+					abnormalLocal = false
+					messageLocal = ""
 				}
 			} else {
-				abnormalLocal = abnormal
-				messageLocal = message
-			}
-			var entry csi.ListVolumesResponse_Entry
-			entry.Volume = &csi.Volume{
-				VolumeId: volIdList[index],
-			}
-			entry.Status = &csi.ListVolumesResponse_VolumeStatus{
-				VolumeCondition: &csi.VolumeCondition{
-					Abnormal: abnormalLocal,
-					Message:  fmt.Sprintf(messageLocal),
-				},
-			}
-			entries = append(entries, &entry)
-		}
+				abnormalLocal = true
+				messageLocal = volName + " volume does not exist in PoseidonOS"
+				klog.Infof(volName + " volume does not exist in PoseidonOS")
 
+			}
+		} else {
+			abnormalLocal = abnormal
+			messageLocal = message
+		}
+		var entry csi.ListVolumesResponse_Entry
+		entry.Volume = &csi.Volume{
+			VolumeId: volIdList[index],
+		}
+		entry.Status = &csi.ListVolumesResponse_VolumeStatus{
+			VolumeCondition: &csi.VolumeCondition{
+				Abnormal: abnormalLocal,
+				Message:  fmt.Sprintf(messageLocal),
+			},
+		}
+		entries = append(entries, &entry)
 	}
+
 	volumeRes = &csi.ListVolumesResponse{
 		Entries: entries,
 	}
@@ -184,7 +183,7 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 
 }
 func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.ControllerGetVolumeRequest) (*csi.ControllerGetVolumeResponse, error) {
-    return nil, status.Error(codes.Unimplemented, "")
+	return nil, status.Error(codes.Unimplemented, "")
 }
 func (s *controllerServer) CreateVolume(
 	ctx context.Context,
@@ -209,8 +208,7 @@ func (s *controllerServer) CreateVolume(
 		posVolume = &volume{}
 		posVolume.status = CREATING
 		s.volumesByName[req.Name] = posVolume
-	}
-	if exists {
+	} else {
 		if posVolume.status == CREATING {
 			klog.Infof("Volume %s is already getting created", req.Name)
 			return nil, status.Error(codes.Aborted, "Volume already under creation")

@@ -1,8 +1,8 @@
 ---
 fsType: ext4
 transportType: "tcp"
-targetAddress: "107.99.41.212"
+targetAddress: "127.0.0.1"
 transportServiceId: "1158"
-provisionerIP: "107.99.41.212"
+provisionerIP: "127.0.0.1"
 provisionerPort: "3000"
 arrayName: "POSArray"
