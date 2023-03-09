@@ -7,9 +7,9 @@ provisioner: csi.pos.io
 parameters:
   fsType: ext4
   transportType: "tcp"
-  targetAddress: "107.108.83.97"
+  targetAddress: "127.0.0.1"
   transportServiceId: "1158"
-  provisionerIP: "107.108.83.97"
+  provisionerIP: "127.0.0.1"
   provisionerPort: "3000"
   arrayName: "POSArray"
 reclaimPolicy: Delete
