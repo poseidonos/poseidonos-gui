@@ -66,7 +66,7 @@ const styles = (theme) => ({
     },
     tableHeader: {
         ...customTheme.table.header,
-        padding: 7,
+        padding: 8,
         paddingLeft: theme.spacing(2),
         width: "-webkit-fill-available",
     },
@@ -78,7 +78,6 @@ const styles = (theme) => ({
     },
     summaryButton: {
         marginBottom: 8,
-        alignItems: "flex-start",
     }
 });
 
@@ -458,7 +457,7 @@ const HardwareHealth = (props) => {
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.hardwareHealthPaper}>
                 <Grid item container xs={12} justifyContent="flex-start">
-                    <Typography className={classes.cardHeader}>
+                    <Typography className={classes.cardHeader} variant="h2">
                         Hardware Health
                     </Typography>
                 </Grid>
@@ -487,7 +486,6 @@ const HardwareHealth = (props) => {
                 >
                     <Typography
                         color="secondary"
-                        variant="h6"
                         className={classes.tableHeader}
                     >
                         {pieChart.title}
