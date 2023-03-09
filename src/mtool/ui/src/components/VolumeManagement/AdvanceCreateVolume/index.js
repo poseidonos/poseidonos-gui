@@ -24,16 +24,6 @@ import Dialog from '../../Dialog';
 import Popup from '../../Popup';
 
 const styles = (theme) => ({
-  popupBox: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    height: 400,
-    bgcolor: 'background.paper',
-    borderRadius: 4,
-  },
   main: {
     width: '100%',
     height: '380px',
