@@ -232,7 +232,9 @@ class CreateVolume extends Component {
 
   handleChange(event) {
     const { name, value } = event.target;
-    if (name === "subsystem") {
+    const replacedName = name.includes('adv_') ? name.replace('adv_', '') : name;
+
+    if (replacedName === "subsystem") {
       const localSubsystem = getSubsystem(value, this.props.subsystems);
       if (localSubsystem.listen_addresses && localSubsystem.listen_addresses.length) {
         this.props.Update_Subsystem({
@@ -245,8 +247,9 @@ class CreateVolume extends Component {
           transport: ""
         });
       }
-    } else
-      this.props.Change_Input({ name, value })
+      return;
+    }
+    this.props.Change_Input({ name: replacedName, value })
   }
 
   setSubsystem() {

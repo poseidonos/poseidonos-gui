@@ -19,6 +19,7 @@ import {
   Typography,
   withStyles
 } from '@material-ui/core';
+import { CheckBox, CheckBoxOutlineBlank } from '@material-ui/icons';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
@@ -189,6 +190,7 @@ const styles = (theme) => ({
     marginBottom: 8
   },
   previewElement: {
+    display: "flex",
     flex: "1 0 45%",
     color: "#424850",
     minWidth: "fit-content",
@@ -224,8 +226,8 @@ function AdvanceCreateVolume(props) {
         <Tooltip title={volumeCountTitle} placement="bottom-start">
           <FormControl className={classes.volumeName}>
             <TextField
-              id="create-vol-count"
-              name="volume_count"
+              id="adv-create-vol-count"
+              name="adv_volume_count"
               label="Volume Count"
               type="number"
               inputProps={{
@@ -260,9 +262,9 @@ function AdvanceCreateVolume(props) {
               disabled={props.volume_count < 2}
               control={(
                 <Checkbox
-                  name="stop_on_error_checkbox"
+                  name="adv_stop_on_error_checkbox"
                   color="primary"
-                  id="create-vol-stop-on-error-checkbox"
+                  id="adv-create-vol-stop-on-error-checkbox"
                   checked={props.stop_on_error_checkbox}
                   value="Stop on error"
                   inputProps={{
@@ -298,9 +300,9 @@ function AdvanceCreateVolume(props) {
       >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-name"
+            id="adv-create-vol-name"
             label="Volume Name"
-            name="volume_name"
+            name="adv_volume_name"
             value={props.volume_name}
             onChange={handleChange}
             inputProps={{
@@ -328,9 +330,9 @@ function AdvanceCreateVolume(props) {
         >
           <FormControl className={classes.volumeName}>
             <TextField
-              id="create-vol-suffix"
-              label="Suffix Start Value"
-              name="volume_suffix"
+              id="adv-create-vol-suffix"
+              label="Suffix start value"
+              name="adv_volume_suffix"
               type="number"
               InputProps={{
                 inputProps: {
@@ -359,9 +361,9 @@ function AdvanceCreateVolume(props) {
         >
           <FormControl className={classes.unitText}>
             <TextField
-              id="create-vol-size"
+              id="adv-create-vol-size"
               label="Volume Size"
-              name="volume_size"
+              name="adv_volume_size"
               value={props.volume_size}
               onChange={handleChange}
               type="number"
@@ -378,8 +380,8 @@ function AdvanceCreateVolume(props) {
             value={props.volume_units}
             onChange={handleChange}
             inputProps={{
-              name: "volume_units",
-              id: "vol_unit",
+              name: "adv_volume_units",
+              id: "adv-vol-unit",
               "data-testid": "adv-volume-unit-input",
             }}
             SelectDisplayProps={{
@@ -526,9 +528,9 @@ function AdvanceCreateVolume(props) {
           <FormControlLabel
             control={(
               <Checkbox
-                name="mount_vol_checkbox"
+                name="adv_mount_vol_checkbox"
                 color="primary"
-                id="mount-vol-checkbox"
+                id="adv-mount-vol-checkbox"
                 checked={props.mount_vol}
                 value="Mount Volume"
                 inputProps={{
@@ -545,7 +547,6 @@ function AdvanceCreateVolume(props) {
       <Grid item container xs={12}>
         <Typography
           variant="body2"
-          // component="h4"
           className={classes.caption}
           display="block"
         />
@@ -565,8 +566,8 @@ function AdvanceCreateVolume(props) {
             onChange={handleChange}
             label="Select Subsystem"
             inputProps={{
-              name: "subsystem",
-              id: "subsystem",
+              name: "adv_subsystem",
+              id: "adv-subsystem",
               "data-testid": "adv-subsystem-input",
             }}
             SelectDisplayProps={{
@@ -906,26 +907,14 @@ function AdvanceCreateVolume(props) {
       <div className={classes.previewElements}>
         <Typography className={classes.previewElement}>
           Mount Volume :
-          <Checkbox
-            size="small"
-            color="primary"
-            checked={props.mount_vol}
-            // disabled
-            className={classes.removePadding}
-          />
+          {props.mount_vol ? <CheckBox /> : <CheckBoxOutlineBlank />}
         </Typography>
         {props.mount_vol &&
           (
             <React.Fragment>
               <Typography className={classes.previewElement}>
                 With New Subsystem :
-                <Checkbox
-                  size="small"
-                  color="primary"
-                  checked={props.selectedNewSubsystem}
-                  // disabled
-                  className={classes.removePadding}
-                />
+                {props.selectedNewSubsystem ? <CheckBox /> : <CheckBoxOutlineBlank />}
               </Typography>
               {props.selectedNewSubsystem ?
                 (

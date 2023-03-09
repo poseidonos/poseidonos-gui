@@ -1305,7 +1305,7 @@ describe("<Storage Management />", () => {
     );
     fireEvent.change(volCount, { target: { value: 2 } });
     const volSuffix = await waitForElement(() =>
-      getByLabelText("Suffix Start Value")
+      getByLabelText("Suffix start value")
     );
     fireEvent.change(volSuffix, { target: { value: 0 } });
     const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
@@ -1456,7 +1456,7 @@ describe("<Storage Management />", () => {
     );
     fireEvent.change(volCount, { target: { value: 2 } });
     const volSuffix = await waitForElement(() =>
-      getByLabelText("Suffix Start Value")
+      getByLabelText("Suffix start value")
     );
     fireEvent.change(volSuffix, { target: { value: 0 } });
     const volSize = await waitForElement(() => getByTestId("adv-create-vol-size"));
@@ -1634,7 +1634,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(volCount, { target: { value: 2 } });
 
     const volSuffix = await waitForElement(() =>
-      getByLabelText("Suffix Start Value")
+      getByLabelText("Suffix start value")
     );
     fireEvent.change(volSuffix, { target: { value: -1 } });
     fireEvent.click(nextButton);
