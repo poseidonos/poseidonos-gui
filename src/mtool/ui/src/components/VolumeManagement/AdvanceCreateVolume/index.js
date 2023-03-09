@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
-  Box,
   Button,
   Checkbox,
   FormControl,
@@ -9,7 +8,6 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   Step,
   StepLabel,
@@ -23,18 +21,7 @@ import { CheckBox, CheckBoxOutlineBlank } from '@material-ui/icons';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
-import DialogTitle from '../../DialogTitle';
-
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  borderRadius: 4,
-  overflow: "hidden"
-}
+import Popup from '../../Popup';
 
 const styles = (theme) => ({
   popupBox: {
@@ -48,8 +35,8 @@ const styles = (theme) => ({
     borderRadius: 4,
   },
   main: {
-    width: '800px',
-    height: '400px',
+    width: '100%',
+    height: '380px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -80,6 +67,9 @@ const styles = (theme) => ({
   },
   leftPadding: {
     padding: "16px"
+  },
+  leftMargin: {
+    marginLeft: "8px"
   },
   borderBottom: {
     borderBottom: "1px solid grey"
@@ -993,88 +983,83 @@ function AdvanceCreateVolume(props) {
   }
 
   return (
-    <Modal
+    <Popup
+      title="Advance Create Volume"
       open={showAdvanceOptions}
-      onClose={handleModalClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      close={handleModalClose}
+      maxWidth="md"
     >
-      <Box sx={style}>
-        <DialogTitle onClose={handleModalClose}>
-          Advance Create Volume
-        </DialogTitle>
-        <form className={classes.formContainer}>
-          <main className={classes.main}>
-            <div className={classes.mainContent}>
-              <div>
-                <Typography className={classes.createHeader}>Steps</Typography>
-                <Stepper
-                  activeStep={activeStep}
-                  className={[classes.xsHide, classes.leftPadding].join(' ')}
-                  orientation="vertical"
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-                <Stepper
-                  activeStep={activeStep}
-                  className={[classes.xsShow, classes.borderBottom].join(' ')}
-                  orientation="horizontal"
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </div>
+      <form className={classes.main}>
+        <div className={classes.mainContent}>
+          <div>
+            <Typography className={classes.createHeader}>Steps</Typography>
+            <Stepper
+              activeStep={activeStep}
+              className={[classes.xsHide, classes.leftPadding].join(' ')}
+              orientation="vertical"
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <Stepper
+              activeStep={activeStep}
+              className={[classes.xsShow, classes.borderBottom].join(' ')}
+              orientation="horizontal"
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
 
-              <div>
-                <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
-                <div className={classes.stepContent}>
-                  {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
-                </div>
-              </div>
+          <div>
+            <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
+            <div className={classes.stepContent}>
+              {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
             </div>
+          </div>
+        </div>
 
-            <div className={classes.actionsContainer}>
-              <div>
-                <Button
-                  data-testid="back-btn"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.button}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  data-testid="next-btn"
-                  onClick={handleNext}
-                  className={classes.button}
-                  disabled={props.createVolumeButton}
-                >
-                  {activeStep === steps.length ? 'Create Volume' : 'Next'}
-                </Button>
-              </div>
-            </div>
-          </main>
-        </form>
-        <Dialog
-          title="Reset Fields"
-          description={alertDescription}
-          open={alertOpen}
-          handleClose={() => {
-            setAlertOpen(false)
-          }}
-          onConfirm={onAlertConfirm}
-        />
-      </Box>
-    </Modal>
+        <div className={classes.actionsContainer}>
+          <div>
+            <Button
+              variant="outlined"
+              color="secondary"
+              data-testid="back-btn"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.button}
+            >
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              data-testid="next-btn"
+              onClick={handleNext}
+              className={`${classes.button} ${classes.leftMargin}`}
+              disabled={props.createVolumeButton}
+            >
+              {activeStep === steps.length ? 'Create Volume' : 'Next'}
+            </Button>
+          </div>
+        </div>
+      </form>
+      <Dialog
+        title="Reset Fields"
+        description={alertDescription}
+        open={alertOpen}
+        handleClose={() => {
+          setAlertOpen(false)
+        }}
+        onConfirm={onAlertConfirm}
+      />
+    </Popup>
   );
 }
 
