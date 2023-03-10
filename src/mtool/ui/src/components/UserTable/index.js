@@ -200,6 +200,7 @@ class UserTable extends Component {
               type="email"
               inputProps={{
                 "data-testid": `UserTable-email-${row._id}`,
+                title: 'email'
               }}
             />
           </FormControl>
