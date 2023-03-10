@@ -104,7 +104,7 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
                     <Checkbox
                         className={classes.accordionCheckbox}
                         checked={isAllSelected}
-                        onChange={selectAllProperties}
+                        onClick={selectAllProperties}
                         data-testid={`checkbox-${data.category}`}
                         id={`checkbox-${data.category}`}
                     />
