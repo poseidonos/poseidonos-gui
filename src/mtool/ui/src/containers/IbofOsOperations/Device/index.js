@@ -108,7 +108,7 @@ class Device extends Component {
                     <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
-                                <Typography className={classes.cardHeader}>Device List</Typography>
+                                <Typography className={classes.cardHeader} variant="h1">Device List</Typography>
                             )}
                             actions={[{
                                 icon: Add,
