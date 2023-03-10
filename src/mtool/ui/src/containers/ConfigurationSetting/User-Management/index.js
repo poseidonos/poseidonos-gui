@@ -230,31 +230,29 @@ class UserManagement extends Component {
     const { classes } = this.props;
     return (
       <ThemeProvider theme={MToolTheme}>
-        <main className={classes.content}>
-          <Grid container spacing={3}>
-            <UserTable
-              selectUser={this.selectUser}
-              saveChange={this.saveUser}
-              deleteUsers={this.deleteUsers}
-              users={this.props.users}
-              fetchUsers={this.props.fetchUsersInfo}
-              editUser={this.props.editUser}
-              phone_number={this.state.phone_number}
-              OnChangeRow={this.props.updateUserRow}
-              openAlertBox={this.props.openAlertBox}
-            />
-            <AddNewUser
-              username={this.state.username}
-              password={this.state.password}
-              confirmpassword={this.state.confirmpassword}
-              mobilenumber={this.state.mobilenumber}
-              emailid={this.state.emailid}
-              openAlert={this.openAlert}
-              onCancel={this.onCancel}
-              OnHandleChange={this.OnHandleChange}
-            />
-          </Grid>
-        </main>
+        <Grid className={classes.content} container spacing={3}>
+          <UserTable
+            selectUser={this.selectUser}
+            saveChange={this.saveUser}
+            deleteUsers={this.deleteUsers}
+            users={this.props.users}
+            fetchUsers={this.props.fetchUsersInfo}
+            editUser={this.props.editUser}
+            phone_number={this.state.phone_number}
+            OnChangeRow={this.props.updateUserRow}
+            openAlertBox={this.props.openAlertBox}
+          />
+          <AddNewUser
+            username={this.state.username}
+            password={this.state.password}
+            confirmpassword={this.state.confirmpassword}
+            mobilenumber={this.state.mobilenumber}
+            emailid={this.state.emailid}
+            openAlert={this.openAlert}
+            onCancel={this.onCancel}
+            OnHandleChange={this.OnHandleChange}
+          />
+        </Grid>
         <AlertDialog
           title={this.props.alerttitle}
           description={this.props.alertdescription}
