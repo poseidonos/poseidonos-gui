@@ -34,7 +34,7 @@ import React, { Component } from 'react';
 import MaterialTable from '@material-table/core';
 import { createTheme, withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { Grid, Typography, TextField, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, FormControl } from '@material-ui/core';
 import { Add, ArrowUpward, Check, ChevronLeft, ChevronRight, Done, Clear, Edit, FilterList, FirstPage, LastPage, SaveAlt, Search } from '@material-ui/icons';
 import Remove from '@material-ui/icons/Remove';
 import TrashIcon from "@material-ui/icons/Delete";
@@ -82,7 +82,7 @@ function validate(newData) {
   if (!(EMAIL_REGEX.test(newData.email))) {
     return "Please Enter a Valid Email";
   }
-  if(!(PHONE_REGEX.test(newData.phone_number))) {
+  if (!(PHONE_REGEX.test(newData.phone_number))) {
     return "Please Enter a Valid Phone Number";
   }
   return "";
@@ -117,7 +117,7 @@ class UserTable extends Component {
 
 
   selectRow(row) {
-    if(row._id === localStorage.getItem('userid')) {
+    if (row._id === localStorage.getItem('userid')) {
       this.setState({
         currentUserAlertOpen: true
       });
@@ -159,7 +159,7 @@ class UserTable extends Component {
         title: 'Role',
         field: 'role',
         editable: 'never',
-        render: row =>row.role ? row.role.toUpperCase() : ''
+        render: row => row.role ? row.role.toUpperCase() : ''
       },
       {
         title: 'User Name',
@@ -170,56 +170,39 @@ class UserTable extends Component {
           overflowWrap: "break-word"
         }
       },
-/*
-      {
-        title: 'API Enable',
-        field: 'active',
-        editable: 'never',
-        render: row =>
-          (
-            <Switch
-              disabled={(row && row.tableData && row.tableData.editing === 'update')}
-              size="small"
-              checked={row.active}
-              onChange={() => this.props.toggleUserStatus(row.tableData.id)}
-              color="primary"
-              inputProps={{ 'aria-label': 'primary checkbox', title: 'api-enable' }}
-              id = {`UserTable-togglebtn-${row._id}`}
-            />
-          ),
-      },
-*/
       {
         title: 'Phone',
         render: row => row.edit ? (
-            <MuiPhoneNumber
-              onChange={(value) => this.props.OnChangeRow({ value, id: row._id, name: 'phone_number' })}
-              inputProps={{
-                name: 'phone_number',
-                default: row.phone_number,
-                id : `UserTable-phone-${ row._id}`
-              }}
-              autoFormat={false}
-              value={row.phone_number}
-              required
-              label=""
-              defaultCountry="kr"
-            />
-          ) : row.phone_number
+          <MuiPhoneNumber
+            onChange={(value) => this.props.OnChangeRow({ value, id: row._id, name: 'phone_number' })}
+            inputProps={{
+              name: 'phone_number',
+              default: row.phone_number,
+              id: `UserTable-phone-${row._id}`
+            }}
+            autoFormat={false}
+            value={row.phone_number}
+            required
+            label=""
+            defaultCountry="kr"
+          />
+        ) : row.phone_number
       },
       {
         title: 'Email',
         render: row => (row.edit) ? (
-          <TextField
-            onChange={(event) => {this.props.OnChangeRow({ value: event.target.value, id: row._id, name: 'email' })}}
-            inputProps={{
-              name: 'email',
-              default: row.email,
-              id : `UserTable-email-${ row._id}`,
-              title: 'email'
-            }}
-            value={row.email}
-          />
+          <FormControl>
+            <TextField
+              id={`UserTable-email-${row._id}`}
+              label="email"
+              value={row.email}
+              onChange={(event) => { this.props.OnChangeRow({ value: event.target.value, id: row._id, name: 'email' }) }}
+              type="email"
+              inputProps={{
+                "data-testid": `UserTable-email-${row._id}`,
+              }}
+            />
+          </FormControl>
         ) : row.email
 
       },
@@ -231,57 +214,52 @@ class UserTable extends Component {
         render: row => {
           return !row.edit ? (
             <React.Fragment>
-            <Button
-              title="Edit"
-              data-testid={`user-edit-btn-${row.email}`}
-              onClick={() => this.props.editUser(row)}
-              id={`user-edit-${row.email}`}
-            >
-              <Edit />
-            </Button>
-            <Button
-              title="Delete"
-              data-testid={`user-delete-btn-${row.email}`}
-              onClick={() => this.selectRow(row)}
-              id={`user-delete-${row.email}`}
-            >
-              <TrashIcon />
-            </Button>
+              <Button
+                title="Edit"
+                data-testid={`user-edit-btn-${row.email}`}
+                onClick={() => this.props.editUser(row)}
+                id={`user-edit-${row.email}`}
+              >
+                <Edit />
+              </Button>
+              <Button
+                title="Delete"
+                data-testid={`user-delete-btn-${row.email}`}
+                onClick={() => this.selectRow(row)}
+                id={`user-delete-${row.email}`}
+              >
+                <TrashIcon />
+              </Button>
             </React.Fragment>
           ) : (
-              <React.Fragment>
-                <Button
-                  title="Save"
-                  data-testid={`user-done-btn-${row.email}`}
-                  onClick={() => this.saveUser(row)}
-                  id={`user-done-${row.email}`}
-                >
-                  <Done />
-                </Button>
-                <Button
-                  data-testid={`user-clear-btn-${row.email}`}
-                  title="Cancel"
-                  onClick={this.props.fetchUsers}
-                  id={`user-clear-${row.email}`}
-                >
-                  <Clear />
-                </Button>
-              </React.Fragment>
-            );
+            <React.Fragment>
+              <Button
+                title="Save"
+                data-testid={`user-done-btn-${row.email}`}
+                onClick={() => this.saveUser(row)}
+                id={`user-done-${row.email}`}
+              >
+                <Done />
+              </Button>
+              <Button
+                data-testid={`user-clear-btn-${row.email}`}
+                title="Cancel"
+                onClick={this.props.fetchUsers}
+                id={`user-clear-${row.email}`}
+              >
+                <Clear />
+              </Button>
+            </React.Fragment>
+          );
         }
       }
-      // {
-      //   title: 'Privilege',
-      //   field: 'privileges',
-      //   editable: 'never'
-      // },
     ]
     return (
       <Grid item container sm={6} xs={12} className={classes.titleContainer}>
         <Grid sm={6} xs={12} item className={classes.tableContainer}>
           <Grid sm={6} xs={12} item className={classes.userListGrid}>
             <ThemeProvider theme={this.theme}>
-              <Typography className={classes.userListTypography} variant="h3">User List</Typography>
+              <Typography className={classes.userListTypography} variant="h1">User List</Typography>
               <MaterialTable
                 icons={{
                   Check,
