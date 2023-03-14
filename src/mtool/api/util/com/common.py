@@ -33,39 +33,11 @@
  '''
 
 import socket
-
-
-"""
-def check_ip_policy(ip=None):
-    if not isinstance(ip, str):
-        return -1
-
-    # IPV4
-    if len(ip) > 15:
-        return -2
-
-    rule = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)($|(?!\\.$)\\.)){4}$"
-
-    if re.match(rule, ip):
-        return 0
-    else:
-        return -3
-"""
-"""
-def get_localtime():
-    ts = time.strftime('%Y-%m-%d %H:%M:%S',
-                       time.localtime(time.time()))
-    return ts
-"""
+from bson import json_util
 
 def get_hostname():
     print('here', socket.gethostname())
     return socket.gethostname()
-
-"""
-def get_ip_by_name():
-    return socket.gethostbyname(socket.gethostname())
-"""
 
 def get_ip_address():
     try:
@@ -74,3 +46,7 @@ def get_ip_address():
         return s.getsockname()[0]
     except socket.error:
         return None
+
+def toJson(data):
+  #  print("tojson :",json_util.dumps(data))
+    return json_util.dumps(data)

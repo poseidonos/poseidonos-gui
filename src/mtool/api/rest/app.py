@@ -41,7 +41,6 @@ from rest.rest_api.volume.volume import create_volume, delete_volume, list_volum
 #from rest.rest_api.logmanager.logmanager import download_logs
 from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
-from rest.rest_api.system.system import fetch_system_state
 from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
@@ -49,27 +48,28 @@ from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_telemetry_properties, set_telemetry_properties, get_all_hardware_health
 from flask_socketio import SocketIO, disconnect
-from flask import Flask, abort, request, jsonify, send_from_directory, make_response
+from flask import Flask, abort, request, jsonify, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
-from util.db.database_handler import DBConnection, DBType
 from time import strftime
-import logging
-from logging.handlers import RotatingFileHandler
 #from dateutil import parser
 import datetime
 import jwt
 import uuid
 from base64 import b64encode
 import re
-from functools import wraps
-from bson import json_util
 import traceback
 import json
 import os
 import eventlet
 import math
 from itertools import chain
+from rest.blueprints.home import home_bp
+from rest.blueprints.pos import pos_bp
+from rest.db import connection_factory
+from rest.auth import token_required
+from rest.log import logger
+from util.com.common import toJson
 
 eventlet.monkey_patch()
 
@@ -87,20 +87,6 @@ app.register_blueprint(swordfish_api)
 app.config['SECRET_KEY'] = 'ibofalltheway'
 app.config['MONGODB_URL'] = 'mongodb://localhost:27017/ibof'
 
-handler = RotatingFileHandler(
-    'public/log/mtool.log',
-    maxBytes=1024 * 1024,
-    backupCount=3)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
-
-
-connection_obj = DBConnection()
-connection_factory = connection_obj.get_db_connection(
-    DBType.SQLite)  # SQLite/MongoDB
-connection_factory.connect_database()
-connection_factory.create_default_database()
 
 MACRO_OFFLINE_STATE = "OFFLINE"
 threshold = 0.9
@@ -109,43 +95,10 @@ old_result = ""
 alertFields = {'cpu': "usage_user", 'mem': 'used_percent'}
 
 
-class IBOF_OS_Running:
-    Is_Ibof_Os_Running_Flag = False
-
-
-class Run_Only_Once:
-    OnlyOnceFlag = True
-
-
-def toJson(data):
-  #  print("tojson :",json_util.dumps(data))
-    return json_util.dumps(data)
-
-
-"""
-alerts = [
-    'CPU Utilization',
-    'Temperature Threshold',
-    'Memory Utilization',
-    'Critical Warning']
-"""
-
 # Serve React App
 
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    #print('path debug', os.path.join(os.getcwd(),"public/" + path))
-    if path != "" and os.path.exists("public/" + path):
-        print('path debug in if', path)
-        print(os.path.exists("public/" + path))
-        return send_from_directory(os.getcwd() + '/public', path)
-    else:
-        print('path debig in else', path)
-        if "api/v1" in path:
-            return make_response("Invalid url", 404)
-        return send_from_directory(os.getcwd() + '/public', 'index.html')
+app.register_blueprint(home_bp)
+app.register_blueprint(pos_bp)
 
 
 @app.after_request
@@ -179,94 +132,6 @@ def exceptions(e):
                  "",
                  tb)
     return "Internal Server Error", 500
-
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-            #print('token ',token)
-        if not token:
-            return jsonify({'message': 'Token is missing'}), 401
-        # jwt to see if tokens if valid
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            #print("data in token_required(): ", data)
-            current_user = connection_factory.get_current_user(data['_id'])
-            #print("current_user in token_required() ", current_user)
-        except BaseException:
-            return jsonify({'message': 'Token is invalid'}), 401
-        return f(current_user, *args, **kwargs)
-    return decorated
-
-
-@app.route('/api/v1.0/version', methods=['GET'])
-def get_version():
-    package_json_path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "../../ui/package.json"))
-    with open(package_json_path, encoding="utf-8") as f:
-        data = json.load(f)
-        return toJson({"version": data["version"]})
-
-
-@app.route('/api/v1.0/logger', methods=['POST'])
-def log_collect():
-    body_unicode = request.data.decode('utf-8')
-    if len(body_unicode) > 0:
-        body = json.loads(body_unicode)
-        try:
-            logger.info(body)
-        except Exception as e:
-            print(e)
-        return "Log written sucessfully"
-    return make_response("Received null log value", 200)
-
-
-def get_ibof_os_status():
-    return IBOF_OS_Running.Is_Ibof_Os_Running_Flag
-
-
-@app.route('/api/v1.0/pos/info', methods=['GET'])
-@token_required
-def get_pos_info(current_user):
-    return toJson(dagent.get_pos_info())
-
-
-@app.route('/api/v1.0/start_ibofos', methods=['GET'])
-@token_required
-def start_ibofos(current_user):
-    """
-    Start IBOF os application. The path is given for demo&kntf server
-    :param current_user:
-    :return: status
-    """
-    #body_unicode = request.data.decode('utf-8')
-    #body = json.loads(body_unicode)
-    #script_path = body['path']
-    res = dagent.start_ibofos()
-    res = res.json()
-    return jsonify(res)
-
-
-"""    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            description = res["result"]["status"]["description"]
-            return jsonify({"response": description})
-    else:
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            description = res["result"]["status"]["description"]
-            description += ", Error Code:"
-            description += str(res["result"]["status"]["code"])
-            return jsonify({"response": description})
-
-    return jsonify({"response": "unable to start POS"})
-"""
 
 # Delete Array
 
@@ -334,94 +199,6 @@ def run_shell_file(current_user):
     else:
         return jsonify({"response": stdout.decode('ascii'), "code": 0})
 """
-
-
-@app.route('/api/v1.0/get_Is_Ibof_OS_Running/')
-@token_required
-def is_ibofos_running(current_user="admin"):
-    """
-    Checks if ibofos is running
-    :return:
-    """
-    #processName = 'ibofos'
-    # if checkIfProcessRunning(processName) == True:
-    #    return jsonify({"status":True})
-    # elif checkIfProcessRunning(processName) == False:
-    #    return jsonify({"status":False})
-    #print(strftime("%a, %d %b %Y %X"))
-    # print(gmtime())
-    # print(time.ctime())
-    # print(datetime.datetime.now())
-    timestamp = code = level = value = ""
-    state = ""
-    situation = ""
-    """response = get_rebuilding_status()
-    print("get_rebuilding_status RESPONSE", response)
-    if(response != "error"):
-        res = list(response.get_points())
-        if res:
-            response = res[0]['last']
-            # print(response)
-            response = response.translate({ord('['): None})
-            split_string = re.split(r'[]]', response)
-            timestamp = split_string[0]
-            code = split_string[1]
-            level = split_string[2]
-            value = split_string[3].strip()
-            #timestamp = datetime.datetime.strptime(timestamp, "%Y%m%d%H%M%S")
-            #timestamp = timestamp.strftime("%a, %d %b %Y %I:%M:%S %p %Z") + strftime("%Z")
-            timestamp = time.strftime(
-                "%a, %d %b %Y %H:%M:%S %Z",
-                time.localtime(
-                    int(timestamp)))
-        #print(timestamp,code, level, value)
-    """
-    lastRunningTime = ""
-    try:
-        #col = db['iBOFOS_Timestamp']
-        response = fetch_system_state()
-        #print("response 1 :",response,type(response))
-        response = response.json()
-        #print("response 2 : ",response.json())
-        if 'lastSuccessTime' in response and response['lastSuccessTime'] != 0:
-            lastRunningTime = datetime.datetime.fromtimestamp(
-                response['lastSuccessTime']).strftime("%a, %d %b %Y %I:%M:%S %p %Z")
-        if('result' in response and 'status' in response['result'] and 'code' in response['result']['status'] and response['result']['status']['code'] == 0):
-            timestamp = connection_factory.get_prev_time_stamp()
-            #lastRunningTime = strftime("%a, %d %b %Y %I:%M:%S %p %Z")
-            if not timestamp:
-                connection_factory.insert_time_stamp(lastRunningTime)
-            else:
-                connection_factory.update_time_stamp(lastRunningTime)
-            IBOF_OS_Running.Is_Ibof_Os_Running_Flag = True
-            #response = {"result": {"data": {"type": "NORMAL"}}}
-        else:
-            timestampvalue = connection_factory.get_prev_time_stamp()
-            if not timestampvalue:
-                lastRunningTime = ""
-            else:
-                lastRunningTime = timestampvalue
-            IBOF_OS_Running.Is_Ibof_Os_Running_Flag = False
-        if('result' in response and 'data' in response['result']):
-            state = response['result']['data']['state']
-            situation = response['result']['data']['situation']
-    except BaseException:
-        return toJson({"RESULT": response,
-                       "lastRunningTime": lastRunningTime,
-                       "timestamp": timestamp,
-                       "code": code,
-                       "level": level,
-                       "state": state,
-                       "situation": situation,
-                       "value": value})
-    return toJson({"RESULT": response,
-                   "lastRunningTime": lastRunningTime,
-                   "timestamp": timestamp,
-                   "code": code,
-                   "level": level,
-                   "state": state,
-                   "situation": situation,
-                   "value": value})
 
 
 """
