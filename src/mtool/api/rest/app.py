@@ -39,11 +39,10 @@ from rest.swordfish.handler import swordfish_api
 from rest.exceptions import InvalidUsage
 #from rest.rest_api.logmanager.logmanager import download_logs
 from util.com.common import get_ip_address, get_hostname
-from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
-from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_telemetry_properties, set_telemetry_properties, get_all_hardware_health
+from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_all_hardware_health
 from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
@@ -66,6 +65,7 @@ from rest.blueprints.array import array_bp
 from rest.blueprints.storage import storage_bp
 from rest.blueprints.disk import disk_bp
 from rest.blueprints.volume import volume_bp
+from rest.blueprints.telemetry import telemetry_bp
 from rest.db import connection_factory
 from rest.auth import token_required
 from rest.log import logger
@@ -93,6 +93,7 @@ app.register_blueprint(array_bp)
 app.register_blueprint(storage_bp)
 app.register_blueprint(disk_bp)
 app.register_blueprint(volume_bp)
+app.register_blueprint(telemetry_bp)
 
 @app.after_request
 def after_request(response):
@@ -124,54 +125,6 @@ def exceptions(e):
                  "",
                  tb)
     return "Internal Server Error", 500
-
-@app.route('/api/v1/telemetry', methods=['POST'])
-@token_required
-def start_telemetry(current_user):
-    response = dagent.start_telemetry()
-    return toJson(response.json())
-
-@app.route('/api/v1/telemetry', methods=['DELETE'])
-@token_required
-def stop_telemetry(current_user):
-    response = dagent.stop_telemetry()
-    return toJson(response.json())
-
-@app.route('/api/v1/telemetry/properties', methods=['POST'])
-@token_required
-def set_telemetry_props(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    response = set_telemetry_properties(body)
-    return toJson(response.json())
-
-@app.route('/api/v1/telemetry/properties', methods=['GET'])
-@token_required
-def get_telemetry_props(current_user):
-    return toJson(get_telemetry_properties())
-
-# create transport
-@app.route('/api/v1/transport/', methods=['POST'])
-@token_required
-def create_transport(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    transport_type = body.get('transport_type')
-    buf_cache_size = body.get('buf_cache_size')
-    num_shared_buf = body.get('num_shared_buf')
-    try:
-        resp = dagent.create_trans(
-            transport_type,
-            buf_cache_size,
-            num_shared_buf)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating transport " + e)
-        return abort(404)
 
 # create subsystem
 @app.route('/api/v1/subsystem/', methods=['POST'])
@@ -223,6 +176,30 @@ def add_listener(current_user):
             return toJson({})
     except Exception as e:
         print("Exception in adding listener " + e)
+        return abort(404)
+
+
+# create transport
+@app.route('/api/v1/transport/', methods=['POST'])
+@token_required
+def create_transport(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    transport_type = body.get('transport_type')
+    buf_cache_size = body.get('buf_cache_size')
+    num_shared_buf = body.get('num_shared_buf')
+    try:
+        resp = dagent.create_trans(
+            transport_type,
+            buf_cache_size,
+            num_shared_buf)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
+    except Exception as e:
+        print("Exception in creating transport " + e)
         return abort(404)
 
 # list subsystem
@@ -522,56 +499,6 @@ def set_pos_property():
     except Exception as e:
         return make_response('Could not set POS Property '+str(e), 500)
 
-# Telemetry Related APIS
-@app.route('/api/v1/configure', methods=['GET'])
-def get_telemetry_config():
-    try:
-        received_telemetry = connection_factory.get_telemetery_url()
-        if received_telemetry is None or len(received_telemetry) == 0:
-            return jsonify({'isConfigured': False})
-        return jsonify({
-            'isConfigured': True,
-            'ip': received_telemetry[0],
-            'port': received_telemetry[1]
-            })
-    except Exception as e:
-        return make_response('Could not get Telemetry URL'+str(e), 500)
-
-@app.route('/api/v1/configure', methods=['POST'])
-def set_telemetry_config():
-    try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        ip = body["telemetryIP"]
-        port = body["telemetryPort"]
-        response = set_telemetry_configuration(ip, port)
-        if response.response[0].decode('UTF-8') == "success":
-            connection_factory.update_telemetry_url(ip,port)
-        return response
-    except Exception as e:
-        return make_response('Could not configure Telemetry URL'+str(e), 500)
-
-@app.route('/api/v1/configure', methods=['DELETE'])
-def reset_telemetry_config():
-    try:
-        connection_factory.delete_telemetery_url()
-        return reset_telemetry_configuration()
-    except Exception as e:
-        return make_response('Could not reset Telemetry URL'+str(e), 500)
-
-@app.route('/api/v1/checktelemetry', methods=['GET'])
-@token_required
-def check_telemetry(current_user):
-    try:
-        received_telemetry = connection_factory.get_telemetery_url()
-        if received_telemetry is None or len(received_telemetry) == 0:
-            return make_response('Telemetry URL is not configured', 500)
-        ip = received_telemetry[0]
-        port= received_telemetry[1]
-        res = check_telemetry_endpoint(ip, port)
-        return res
-    except Exception as e:
-        return make_response('Prometheus DB is not running'+str(e), 500)
 
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
@@ -610,7 +537,6 @@ socketIo = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 # authenticate the client for websocket connection
 
-
 def check_authentication():
     token = None
     if 'x-access-token' in request.args:
@@ -625,7 +551,6 @@ def check_authentication():
     except BaseException:
         return False
     return True
-
 
 @socketIo.on("volume", namespace='/create')
 def handleMsg(msg):
@@ -650,7 +575,6 @@ def handleCreateVolConn():
         raise ConnectionRefusedError('unauthorized user!')
 
 # callback function for multi-volume creation response from DAgent
-
 
 @app.route('/api/v1.0/multi_vol_response/', methods=['POST'])
 def createMultiVolumeCallback():
