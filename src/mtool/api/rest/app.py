@@ -38,7 +38,6 @@ from rest.swordfish.handler import swordfish_api
 #from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
 #from rest.rest_api.logmanager.logmanager import download_logs
-from util.com.common import get_ip_address, get_hostname
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
@@ -51,7 +50,6 @@ from time import strftime
 #from dateutil import parser
 import datetime
 import jwt
-import uuid
 from base64 import b64encode
 import re
 import traceback
@@ -78,16 +76,12 @@ eventlet.monkey_patch()
 # Serve React App
 app = Flask(__name__, static_folder='./public')
 
-app.register_blueprint(swordfish_api)
+old_result = ""
+
 app.config['SECRET_KEY'] = 'ibofalltheway'
 app.config['MONGODB_URL'] = 'mongodb://localhost:27017/ibof'
 
-
-threshold = 0.9
-old_result = ""
-
-alertFields = {'cpu': "usage_user", 'mem': 'used_percent'}
-
+app.register_blueprint(swordfish_api)
 app.register_blueprint(home_bp)
 app.register_blueprint(pos_bp)
 app.register_blueprint(device_bp)
@@ -129,6 +123,12 @@ def exceptions(e):
                  "",
                  tb)
     return "Internal Server Error", 500
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @app.route('/api/v1.0/get_ibofos_time_interval', methods=['GET'])
 @token_required
@@ -189,26 +189,6 @@ def login():
                     'Authorization': auth,
                     'username': received_username})
 
-
-@app.route('/api/v1.0/get_ip_and_mac', methods=['GET'])
-def getIpAndMac():
-    """
-    fetches ip and mac of the system
-    :return:
-    """
-    try:
-        ip = get_ip_address()
-        mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-        host = get_hostname()
-        if ip is None and mac == '':
-            return make_response('Could not get ip and mac', 500)
-        else:
-            lastUpdatedTime = datetime.datetime.now().strftime("%a, %d %b %Y %I:%M:%S %p %Z")
-            return jsonify({"ip": ip, "mac": mac, "host": host, "timestamp": lastUpdatedTime})
-    except BaseException:
-        return make_response('Could not get ip and mac', 500)
-
-
 @app.route('/api/v1.0/ibofos/mount', methods=['POST'])
 def mountPOS():
     try:
@@ -217,7 +197,6 @@ def mountPOS():
     except Exception as e:
         print("In exception mountPOS(): ", e)
         return make_response('Could not mount POS', 500)
-
 
 @app.route('/api/v1.0/ibofos/mount', methods=['DELETE'])
 @token_required
@@ -228,31 +207,6 @@ def unmountPOS(current_user):
     except Exception as e:
         print("In exception unmountPOS(): ", e)
         return make_response('Could not unmount POS', 500)
-
-
-@app.route('/api/v1/pos/property', methods=['GET'])
-def get_pos_property():
-    try:
-        pos_property = dagent.get_pos_property()
-        pos_property = pos_property.json()
-        return toJson(pos_property)
-    except Exception as e:
-        print(e)
-        return make_response('Could not get POS Property', 500)
-
-
-@app.route('/api/v1/pos/property', methods=['POST'])
-def set_pos_property():
-    try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        pos_property = body["property"]
-        pos_property_response = dagent.set_pos_property(pos_property)
-        pos_property_response = pos_property_response.json()
-        return toJson(pos_property_response)
-    except Exception as e:
-        return make_response('Could not set POS Property '+str(e), 500)
-
 
 @app.route('/api/v1/perf/all', methods=['GET'])
 def get_current_iops():
@@ -281,16 +235,32 @@ def get_hardware_health(current_user):
     except Exception as e:
         return make_response('Could not get hardware health metrics'+str(e), 500)
 
-@app.errorhandler(InvalidUsage)
-def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
+# Get POS-GUI Version
+@app.route('/api/v1.0/version', methods=['GET'])
+def get_version():
+    package_json_path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../../ui/package.json"))
+    with open(package_json_path, encoding="utf-8") as f:
+        data = json.load(f)
+        return toJson({"version": data["version"]})
+
+@app.route('/api/v1.0/logger', methods=['POST'])
+def log_collect():
+    body_unicode = request.data.decode('utf-8')
+    if len(body_unicode) > 0:
+        body = json.loads(body_unicode)
+        try:
+            logger.info(body)
+        except Exception as e:
+            print(e)
+        return "Log written sucessfully"
+    return make_response("Received null log value", 200)
 
 socketIo = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 # authenticate the client for websocket connection
-
 def check_authentication():
     token = None
     if 'x-access-token' in request.args:
@@ -315,8 +285,6 @@ def handleMsg(msg):
         disconnect()
         raise ConnectionRefusedError('unauthorized user!')
 
-
-# connect handler for websocket
 @socketIo.on("connect", namespace='/create_vol')
 def handleCreateVolConn():
     token = None
@@ -329,7 +297,6 @@ def handleCreateVolConn():
         raise ConnectionRefusedError('unauthorized user!')
 
 # callback function for multi-volume creation response from DAgent
-
 @app.route('/api/v1.0/multi_vol_response/', methods=['POST'])
 def createMultiVolumeCallback():
     body_unicode = request.data.decode('utf-8')
@@ -363,7 +330,6 @@ def createMultiVolumeCallback():
                   namespace='/create_vol')
     return "ok", 200
 
-
 @socketIo.on_error_default
 def default_error_handler(e):
     print('Websocket error occured:')
@@ -379,9 +345,6 @@ def do_cleanup(current_user):
         print("In do_cleanup() Exception: ", e)
         return make_response('Could not cleanup', 500)
 
-# connect handler for websocket
-
-
 @socketIo.on("connect", namespace='/health_status')
 def handleHealthStatusConn():
     global old_result
@@ -396,38 +359,11 @@ def handleHealthStatusConn():
     else:
         old_result = ""
 
-
 @socketIo.on('disconnect', namespace='/health_status')
 def disconnectHealthStatusSocket():
     print("Health status websocket client disconnected!")
 
-
-def compare_result(prev_result, curr_result):
-    if prev_result == "":
-        return True
-    else:
-        try:
-            if abs(
-                float(
-                    prev_result["statuses"][0]["value"]) -
-                float(
-                    curr_result["statuses"][0]["value"])) > threshold:
-                return True
-            elif abs(float(prev_result["statuses"][1]["value"]) - float(curr_result["statuses"][1]["value"])) > threshold:
-                return True
-            elif abs(float(prev_result["statuses"][2]["value"]) - float(curr_result["statuses"][2]["value"])) > threshold:
-                return True
-            return False
-        except BaseException:
-            return False
-
-
 if __name__ == '__main__':
-    #bmc_thread = threading.Thread(target=activate_bmc_thread)
-    # bmc_thread.start()
-    #power_thread = threading.Thread(target=activate_power_thread)
-    # power_thread.start()
-
     socketIo.run(
         app,
         host='0.0.0.0',
