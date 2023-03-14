@@ -39,7 +39,7 @@ import jwt
 import datetime
 from unittest import mock
 from flask import json
-from rest.app import make_block_aligned
+from rest.blueprints.volume import make_block_aligned
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
