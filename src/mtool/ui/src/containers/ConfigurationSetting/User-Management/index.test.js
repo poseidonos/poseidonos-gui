@@ -58,7 +58,7 @@ import UserManagement from "./index";
 jest.unmock("axios");
 
 //duplicate code 
-const user_json = {
+const userJson = {
   "confirmpassword": "test1234",
   "emailid": "abcd@abc.com",
   "error": "",
@@ -68,7 +68,7 @@ const user_json = {
   "user_role": "Admin",
   "username": "abcd1234"
 }
-const header_json = {
+const headerJson = {
   "headers": {
     "Accept": "application/json",
     "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const header_json = {
   }
 }
 
-const user_response_json = [
+const userResponseJson = [
   {
     "_id": "abcd",
     "email": "abcd@corp.com",
@@ -178,7 +178,7 @@ describe("ConfigurationSetting", () => {
       "phone_number": "+82",
       "user_role": "Admin",
       "username": "abcd1234"
-    }, header_json);
+    }, headerJson);
   });
 
   it('should display an error while adding a new user if the username already exists', () => {
@@ -210,7 +210,7 @@ describe("ConfigurationSetting", () => {
     fireEvent.click(confirmBtn);
     expect(getByText('Yes')).toBeDefined();
     fireEvent.click(getByText('Yes'));
-    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', user_json, header_json);
+    expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', userJson, headerJson);
   });
 
   it('should display an error if an invalid phone number is entered', () => {
@@ -272,7 +272,7 @@ describe("ConfigurationSetting", () => {
       fireEvent.click(confirmBtn);
       expect(getByText('Yes')).toBeDefined();
       fireEvent.click(getByText('Yes'));
-      expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', user_json, header_json);
+      expect(getSpy).toHaveBeenCalledWith('/api/v1.0/add_new_user/', userJson, headerJson);
   });
 
 
@@ -345,7 +345,7 @@ describe("ConfigurationSetting", () => {
   it('should add list all the users', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json);
+      .reply(200, userResponseJson);
     renderComponent();
     const { getByText, asFragment } = wrapper;
     await act(async () => {
@@ -358,7 +358,7 @@ describe("ConfigurationSetting", () => {
   it('should delete a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json)
+      .reply(200, userResponseJson)
       .onPost('/api/v1.0/delete_users/').reply(200, null);
     const getSpy = jest.spyOn(axios, 'post');
 
@@ -374,14 +374,14 @@ describe("ConfigurationSetting", () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
         "ids": ["abcd"],
-      }, header_json);
+      }, headerJson);
     });
   })
 
   it('should display an error if unable to delete a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json)
+      .reply(200, userResponseJson)
       .onPost('/api/v1.0/delete_users/').reply(500, null);
     const getSpy = jest.spyOn(axios, 'post');
     renderComponent();
@@ -396,7 +396,7 @@ describe("ConfigurationSetting", () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       expect(getSpy).toHaveBeenCalledWith('/api/v1.0/delete_users/', {
         "ids": ["abcd"],
-      }, header_json);
+      }, headerJson);
       expect(asFragment()).toMatchSnapshot();
     });
   })
@@ -629,7 +629,7 @@ describe("ConfigurationSetting", () => {
   it('should throw an error if the updated phone number is not valid', async () => {
     const mock = new MockAdapter(axios);
     let response = mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json);
+      .reply(200, userResponseJson);
     renderComponent();
     const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
     await act(async () => {
@@ -658,7 +658,7 @@ describe("ConfigurationSetting", () => {
   it('should throw an error if the emailid is not valid', async () => {
     const mock = new MockAdapter(axios);
     let response = mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json);
+      .reply(200, userResponseJson);
     renderComponent();
     const { getByText, asFragment, getAllByTitle, getAllByPlaceholderText } = wrapper;
     await act(async () => {
@@ -694,7 +694,7 @@ describe("ConfigurationSetting", () => {
     Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true });
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json)
+      .reply(200, userResponseJson)
     renderComponent();
     const { getByText, getAllByTitle } = wrapper;
     await act(async () => {
@@ -709,7 +709,7 @@ describe("ConfigurationSetting", () => {
   it('should disable a user', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet('/api/v1.0/get_users/')
-      .reply(200, user_response_json)
+      .reply(200, userResponseJson)
     renderComponent();
     const { getByText } = wrapper;
     await act(async () => {

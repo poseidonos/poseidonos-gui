@@ -58,7 +58,7 @@ jest.unmock("axios");
 
 
 // duplicate code 
-const listner_json = {
+const listenerJson = {
     "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
     "lastSuccessTime": 1642352844,
     "result": {
@@ -290,7 +290,7 @@ describe("SubsystemOperations", () => {
                 .reply(200,
                     subsystemResponse
                 ).onPost("/api/v1/listener/")
-                .reply(200, listner_json).onAny(200);
+                .reply(200, listenerJson).onAny(200);
             renderComponent();
             jest.setTimeout(30000);
             const { getByTestId, getByText } = wrapper;
@@ -319,7 +319,7 @@ describe("SubsystemOperations", () => {
                 .reply(200,
                     subsystemResponse
                 ).onPost("/api/v1/listener/")
-                .reply(200, listner_json).onAny(200);
+                .reply(200, listenerJson).onAny(200);
             renderComponent();
             jest.setTimeout(30000);
             const { getByTestId, getByText } = wrapper;
@@ -349,7 +349,7 @@ describe("SubsystemOperations", () => {
                     subsystemResponse
                 )
                 .onDelete("/api/v1/subsystem/")
-                .reply(200, listner_json).onAny().reply(200);
+                .reply(200, listenerJson).onAny().reply(200);
             renderComponent();
             const { findAllByTitle, getByText } = wrapper;
             const deleteBtns = await findAllByTitle("Delete Subsystem");

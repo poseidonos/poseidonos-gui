@@ -112,13 +112,13 @@ describe("Dashboard", () => {
   };
  // duplicate code 
 
- const configure_json = {
+ const configureJson = {
   ip: '127.0.0.1',
   isConfigured: true,
   port: '5555'
 }
 
- const posArray_json = [
+ const posArrayJson = [
   {
     id: '0',
     maxbw: 0,
@@ -716,7 +716,7 @@ describe("Dashboard", () => {
       "warnings": 0
     }
   ];
-  const hardware_json = {
+  const hardwareJson = {
     devices: devices,
     ipmi: ipmi,
     errorInDevices: false,
@@ -749,7 +749,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1.0/get_ip_and_mac`)
       .reply(200,
@@ -769,7 +769,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -786,7 +786,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
@@ -837,7 +837,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -891,14 +891,14 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array, { ...array, arrayname: "POSArray2" }])
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
-        "POSArray": posArray_json,
-        "POSArray2":posArray_json
+        "POSArray": posArrayJson,
+        "POSArray2":posArrayJson
       }).onAny().reply(200, {});
     renderComponent();
     const { getAllByText, getByTestId } = wrapper;
@@ -915,7 +915,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -932,11 +932,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        hardware_json
+        hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -962,11 +962,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        hardware_json
+        hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -993,7 +993,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1020,7 +1020,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1049,11 +1049,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-       hardware_json
+       hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -1076,7 +1076,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1203,7 +1203,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
@@ -1237,7 +1237,7 @@ describe("Dashboard", () => {
       )
       .onGet(`/api/v1/configure`)
       .reply(200,
-        configure_json
+        configureJson
       )
       .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,

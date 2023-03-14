@@ -58,7 +58,7 @@ jest.unmock("axios");
 
 // duplicate json
 
-const telemetry_json = {
+const telemetryJson = {
   status: true,
   properties: [{
     category: 'Common',
@@ -165,7 +165,7 @@ describe("Performance", () => {
 
   it("should Stop Telemetry on clicking the Stop Telemetry button", async () => {
     mock.onGet("/api/v1/telemetry/properties")
-      .reply(200, telemetry_json)
+      .reply(200, telemetryJson)
       .onDelete("/api/v1/telemetry")
       .reply(200);
     const getSpy = jest.spyOn(axios, "delete");
@@ -199,7 +199,7 @@ describe("Performance", () => {
 
   it("should Set the selected telemetry properties", async () => {
     mock.onGet("/api/v1/telemetry/properties")
-      .reply(200, telemetry_json)
+      .reply(200, telemetryJson)
       .onDelete("/api/v1/telemetry")
       .reply(200)
       .onAny()
@@ -237,7 +237,7 @@ describe("Performance", () => {
 
   it("should Set all the telemetry properties", async () => {
     mock.onGet("/api/v1/telemetry/properties")
-      .reply(200, telemetry_json)
+      .reply(200, telemetryJson)
       .onDelete("/api/v1/telemetry")
       .reply(200)
       .onAny()
