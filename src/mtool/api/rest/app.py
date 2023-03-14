@@ -39,9 +39,7 @@ from rest.swordfish.handler import swordfish_api
 from rest.exceptions import InvalidUsage
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, get_max_vol_count, mount_volume, unmount_volume
 #from rest.rest_api.logmanager.logmanager import download_logs
-from rest.rest_api.array.array import create_arr, arr_info, get_arr_status
 from util.com.common import get_ip_address, get_hostname
-from rest.rest_api.device.device import list_devices, get_disk_details
 from rest.rest_api.telemetry.telemetry import set_telemetry_configuration, reset_telemetry_configuration, check_telemetry_endpoint
 #from rest.rest_api.logmanager.logmanager import get_bmc_logs
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
@@ -63,9 +61,12 @@ import json
 import os
 import eventlet
 import math
-from itertools import chain
 from rest.blueprints.home import home_bp
 from rest.blueprints.pos import pos_bp
+from rest.blueprints.device import device_bp
+from rest.blueprints.array import array_bp
+from rest.blueprints.storage import storage_bp
+from rest.blueprints.disk import disk_bp
 from rest.db import connection_factory
 from rest.auth import token_required
 from rest.log import logger
@@ -76,11 +77,7 @@ eventlet.monkey_patch()
 BLOCK_SIZE = 1024 * 1024
 BYTE_FACTOR = 1024
 
-
-# Connect to MongoDB first. PyMODM supports all URI options supported by
-# PyMongo. Make sure also to specify a database in the connection string:
-
-
+# Serve React App
 app = Flask(__name__, static_folder='./public')
 
 app.register_blueprint(swordfish_api)
@@ -88,18 +85,17 @@ app.config['SECRET_KEY'] = 'ibofalltheway'
 app.config['MONGODB_URL'] = 'mongodb://localhost:27017/ibof'
 
 
-MACRO_OFFLINE_STATE = "OFFLINE"
 threshold = 0.9
 old_result = ""
 
 alertFields = {'cpu': "usage_user", 'mem': 'used_percent'}
 
-
-# Serve React App
-
 app.register_blueprint(home_bp)
 app.register_blueprint(pos_bp)
-
+app.register_blueprint(device_bp)
+app.register_blueprint(array_bp)
+app.register_blueprint(storage_bp)
+app.register_blueprint(disk_bp)
 
 @app.after_request
 def after_request(response):
@@ -116,7 +112,6 @@ def after_request(response):
                  response.status)
     return response
 
-
 @app.errorhandler(Exception)
 def exceptions(e):
     print(e)
@@ -132,502 +127,6 @@ def exceptions(e):
                  "",
                  tb)
     return "Internal Server Error", 500
-
-# Delete Array
-
-
-@app.route('/api/v1.0/delete_array/<name>', methods=['POST'])
-@token_required
-def delete_array(current_user, name):
-    print("in delete array")
-    res = dagent.delete_array(name)
-    return_msg = {}
-    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            return toJson(res)
-    else:
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            return_msg["result"] = res["result"]["status"]
-            return_msg["return"] = -1
-            return toJson(return_msg)
-    res = "unable to delete array"
-    return make_response(res, 500)
-
-
-@app.route('/api/v1.0/stop_ibofos', methods=['GET'])
-@token_required
-def stop_ibofos(current_user):
-    """
-    Start IBOF os application. The path is given for demo&kntf server
-    :param current_user:
-    :return: status
-    """
-    res = dagent.stop_ibofos()
-    try:
-        if res.status_code == 200:
-            res = res.json()
-            if res["result"]["status"]["code"] == 0:
-                return jsonify({"response": "POS stopped successfully", "code": 0})
-        else:
-            res = res.json()
-            if ("result" in res and "status" in res["result"]):
-                description = res["result"]["status"]["description"]
-                description += " "
-                description += str(res["result"]["status"]["cause"])
-                return jsonify({"response": description, "code": res["result"]["status"]["code"]})
-    except BaseException:
-        pass
-    return jsonify({"response": "unable to stop POS", "code": -1})
-
-
-"""
-@app.route('/api/v1.0/run_ibof_os_command/', methods=['POST'])
-@token_required
-def run_shell_file(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    script_path = body['path']
-    print("running shell file....")
-    session = subprocess.Popen(
-        ['sh', script_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = session.communicate()
-    if stderr:
-        return jsonify({"response": stderr.decode('ascii'), "code": -1})
-        # raise Exception("Error " + str(stderr))
-    else:
-        return jsonify({"response": stdout.decode('ascii'), "code": 0})
-"""
-
-
-"""
-@app.route('/api/v1.0/get_Ibof_OS_Logs/')
-def ibofos_logs():
-    #print("Palak: get logs")
-    data = []
-    try:
-        timestamp = code = level = value = description = ""
-        response, count = get_ibofos_logs()
-        entries = list(count.get_points(measurement='rebuilding_status'))
-        print("entries is", entries[0]['count'])
-        res = list(response.get_points())
-        #print("Response1", res)
-        if res:
-            for x in range(0, 100):
-                description = ""
-                response = res[x]['value']
-                #print("Response2", response)
-                response = response.translate({ord('['): None})
-                #print("Response3", response)
-                split_string = re.split(r'[]]', response)
-                #print("Response4", response)
-                #print("split string", split_string)
-                if len(split_string) >= 3:
-                    timestamp = split_string[0]
-                    code = split_string[1]
-                    level = split_string[2]
-                    value = split_string[3].strip()
-                    #timestamp = datetime.datetime.strptime(timestamp, "%Y%m%d%H%M%S")
-                    #timestamp = timestamp.strftime("%a, %d %b %Y %I:%M:%S %p %Z") + strftime("%Z")
-                    timestamp = time.strftime(
-                        "%a, %d %b %Y %H:%M:%S %Z", time.localtime(
-                            int(timestamp)))
-                    if code in statusList.keys():
-                        description = statusList[code]
-
-                    #print(timestamp,code, level, value, description)
-                    data.append({"timestamp": timestamp,
-                                 "code": code,
-                                 "level": level,
-                                 "value": value,
-                                 "source": "Poseidon OS",
-                                 "description": description,
-                                 "entries": entries[0]['count']})
-    except BaseException:
-        # return toJson([{"timestamp": timestamp, "code":code, "level":level,
-        # "value":value}])
-        return toJson(data)
-    finally:
-        return toJson(data)
-        # return toJson([{"timestamp": timestamp, "code":code, "level":level,
-        # "value":value}])
-
-
-
-@app.route('/api/v1.0/get_Bmc_Logs/')
-def bmc_logs():
-
-    page = request.args.get('page', type=str)
-    per_page = request.args.get('per_page', default=10, type=str)
-    filterSubQuery = request.args.get('filterSubQuery', type=str)
-    filter_applied = request.args.get('filter_applied', type=str)
-    resp = []
-    source_filter_array = []
-    entryType_filter_array = []
-    severity_filter_array = []
-    entries = 0
-    result = {"resp": resp,
-              "count": entries,
-              "page": 0,
-              "source_filter_array": source_filter_array,
-              "entryType_filter_array": entryType_filter_array,
-              "severity_filter_array": severity_filter_array,
-              }
-    try:
-        source = entryType = severity = description = timestamp = ""
-        response, count, source_filter, entryType_filter, severity_filter = get_bmc_logs(
-            page, per_page, filterSubQuery)
-        source_filter = list(source_filter.get_points())
-        entryType_filter = list(entryType_filter.get_points())
-        severity_filter = list(severity_filter.get_points())
-
-        for data in source_filter:
-            value = data['distinct']
-            source_filter_array.append(value)
-
-        for data in entryType_filter:
-            value = data['distinct']
-            entryType_filter_array.append(value)
-
-        for data in severity_filter:
-            value = data['distinct']
-            severity_filter_array.append(value)
-
-        total_count = list(count.get_points(measurement='bmc_logs'))
-        for data in list(response.get_points()):
-            for _ in data.keys():
-                timestamp = data['Timestamp']
-                source = data['Source']
-                entryType = data['EntryType']
-                severity = data['Severity']
-                description = data['Description']
-            resp.append({"timestamp": timestamp,
-                         "source": source,
-                         "entryType": entryType,
-                         "severity": severity,
-                         "description": description})
-        entries = total_count[0]['count']
-        page_int = int(page, 10)
-        if(filter_applied == "yes"):
-            page_int = 0
-        result = {"resp": resp,
-                  "count": entries,
-                  "page": page_int,
-                  "source_filter_array": source_filter_array,
-                  "entryType_filter_array": entryType_filter_array,
-                  "severity_filter_array": severity_filter_array,
-                  }
-    except BaseException:
-        return toJson(result)
-"""
-
-"""
-@app.route('/api/v1.0/get_alert_info', methods=['GET'])
-def get_alert_info():
-    try:
-        allAlerts = get_alerts_from_influx()
-        alertData = list(allAlerts.get_points())
-        for x in alertData:
-            datetime_obj = parser.parse(x['time'])
-            readable = datetime_obj.strftime(
-                "%a, %d %b %Y %H:%M:%S %Z")  # %Y-%m-%d %H:%M:%S')
-            x['time'] = readable
-            x['duration'] = int(x['duration']) / 1000000000
-            x['value'] = round(x['value'], 3)
-        return jsonify({'alerts': alertData})
-    except BaseException:
-        return jsonify({'alerts': alertData})
-
-'''
-@app.route('/api/v1.0/get_alert_types/', methods=['GET'])
-@token_required
-def get_alert_categories(current_user):
-    #To get the alert subcategories, uncomment the following line
-    #alertCategories = get_alert_categories_new()
-
-    alertCategories = get_alert_categories_from_influxdb()
-    return jsonify({'alert_types': alertCategories})
-'''
-
-
-@app.route('/api/v1.0/available_memory', methods=['GET'])
-def get_available_mem():
-    res = get_available()
-    val = list(res.get_points())
-    print(val)
-    return jsonify(val)
-"""
-
-
-@app.route('/api/v1.0/available_storage/', methods=['GET'])
-@token_required
-def get_storage_details(current_user):
-    # array = db['array'].find_one({})
-
-    res = get_arr_status()
-    val = [{}]
-    if res.status_code == 200:
-        res = res.json()
-        if res["info"]["state"] and res["info"]["state"].upper(
-        ) != MACRO_OFFLINE_STATE:
-            val[0]["arraySize"] = int(res["info"]["capacity"])
-            val[0]["usedSpace"] = int(res["info"]["used"])
-        else:
-            val[0]['arraySize'] = 0
-            val[0]['usedSpace'] = 0
-        val[0]['mountStatus'] = res["info"]["state"].upper()
-    else:
-        val[0]['arraySize'] = 0
-        val[0]['usedSpace'] = 0
-        val[0]['mountStatus'] = MACRO_OFFLINE_STATE
-
-    print(val)
-    return jsonify(val)
-
-
-"""
-def trigger_email(serverip, serverport, emailid):
-    print("Inside Trigger")
-    if(("@samsung.com" in emailid) == False):
-        print("Cannot Send an Email")
-        return
-    # names, emails = get_contacts('/home/test/EmailList.txt') # read contacts
-    #message_template = read_template('/home/test/Message.txt')
-    # set up the SMTP server
-    s = smtplib.SMTP(serverip, serverport, None, 1)
-    # s.starttls()
-    #s.login(MY_ADDRESS, PASSWORD)
-    # For each contact, send the email:
-
-    msg = MIMEMultipart()       # create a message
-
-    # add in the actual person name to the message template
-    #message = message_template.substitute(PERSON_NAME=name.title())
-    message = "QoS Parameters: Temperature Threshold Crossed, Memory Utilization Crossed, Drive is going down...MAYDAYMAYDAY"
-    # Prints out the message body for our sake
-
-    # setup the parameters of the message
-    msg['From'] = "your_email@company_xyz.com"
-    msg['To'] = emailid
-    msg['Subject'] = "iBOF Emergency Alerts"
-
-    # add in the message body
-    msg.attach(MIMEText(message, 'plain'))
-
-    # send the message via the server set up earlier.
-    s.send_message(msg)
-    del msg
-
-    # Terminate the SMTP session and close the connection
-    s.quit()
-
-
-@app.route('/api/v1.0/test_smtpserver/', methods=['POST'])
-def test_smtpserver():
-
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    serverip = body['smtpserverip']
-    serverport = body['smtpserverport']
-    smtpusername = body['smtpusername']
-    smtppassword = ''
-    smtpfromemail = body['smtpfromemail']
-    print(serverip)
-    print(serverport)
-    if('smtppassword' in body):
-        smtppassword = body['smtppassword']
-    try:
-        s = smtplib.SMTP(serverip, serverport, None, 1)
-        s.quit()
-        tasks = {}
-        if('smtppassword' in body):
-            tasks = {
-               "set": {
-               "enabled": True,
-               "host": serverip,
-               "port": serverport,
-               "from": smtpfromemail,
-               "username": smtpusername,
-               "password": smtppassword
-            }}
-        else:
-            tasks = {
-               "set": {
-               "enabled": True,
-               "host": serverip,
-               "port": serverport,
-               "from": smtpfromemail,
-               "username": smtpusername,
-            }}
-        r = requests.post(
-        url="http://localhost:9092/kapacitor/v1/config/smtp/",
-        data=toJson(tasks))
-
-        # Some kapacitor APIs return code 204 for success
-        if(r.status_code != 204 and r.status_code != 200):
-            return abort(404)
-        return 'SMTP Server is Working'
-    except BaseException as e:
-        print("exceptttt",e)
-        return abort(404)
-
-@app.route('/api/v1.0/delete_smtp_details/', methods=['POST'])
-def delete_smtp_details():
-    try:
-        tasks = {
-        "delete": [
-            "enabled",
-            "host",
-            "port",
-            "from",
-            "username",
-            "password"
-        ]
-        }
-        r = requests.post(
-            url="http://localhost:9092/kapacitor/v1/config/smtp/",
-            data=toJson(tasks))
-        if(r.status_code != 204 and r.status_code != 200):
-            return abort(404)
-        return 'SMTP Configuration Deleted Successfully'
-    except BaseException as e:
-        print(e)
-        return abort(404)
-
-@app.route('/api/v1.0/get_smtp_details/', methods=['GET'])
-def get_smtp_details():
-    print("in get smtp details")
-    try:
-        r = requests.get(
-        url="http://localhost:9092/kapacitor/v1/config/smtp/")
-        data = r.json()
-        print("dataaaa",data)
-        print("smtp detailsaaaaa",data['options'])
-        if(r.status_code != 204 and r.status_code != 200):
-            return abort(404)
-        elif (data['options']['enabled'] == False):
-            return abort(404)
-        else:
-            smtpserverip = data['options']['host']
-            smtpserverport = data['options']['port']
-            smtpfromemail = data['options']['from']
-            smtpusername = data['options']['username']
-            isPasswordSet = data['options']['password']
-            return jsonify({"smtpserverip": smtpserverip, "smtpserverport":smtpserverport, "smtpfromemail":smtpfromemail,"smtpusername":smtpusername, "isPasswordSet":isPasswordSet})
-    except BaseException as e:
-        print(e)
-        return abort(404)
-
-@app.route('/api/v1.0/get_email_ids/', methods=['GET'])
-def get_email_ids():
-    email_list = connection_factory.get_email_list()
-    return toJson(email_list)
-
-
-@app.route('/api/v1.0/get_smtp_server_details/', methods=['GET'])
-def get_smtp_server_details():
-    return toJson(connection_factory.get_smtp_details())
-
-
-@app.route('/api/v1.0/update_email/', methods=['POST'])
-def update_email():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-
-    oldid = body['oldid']
-    email = body['email']
-    print("in update_email() ", oldid, email)
-    result = None
-    found = connection_factory.find_email(oldid)
-    if not found:
-        result =  connection_factory.insert_email(oldid, email)
-    else:
-        result = connection_factory.update_email_list(oldid, email)
-    return result
-
-
-@app.route('/api/v1.0/delete_emailids/', methods=['POST'])
-def delete_emailids():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    ids = body['ids']
-    result = None
-    for email_id in ids:
-        result = connection_factory.delete_emailids_list(email_id)
-    return result
-
-
-@app.route('/api/v1.0/send_email/', methods=['POST'])
-def send_email():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    ids = body['ids']
-    serverip = body['smtpserverip']
-    serverport = body['smtpserverport']
-    for email_id in ids:
-        trigger_email(serverip, serverport, email_id)
-    return 'Success'
-
-
-@app.route('/api/v1.0/toggle_email_status/', methods=['POST'])
-def toggle_email_status():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    email_id = body['emailid']
-    status = body['status']
-    result = connection_factory.toggle_email_update(status, email_id)
-    print("result toggle",result)
-    return result
-"""
-
-
-# Get Devices
-@app.route('/api/v1/array/<array_name>/info', methods=['GET'])
-@token_required
-def get_array_info(current_user, array_name):
-    array_info = arr_info(array_name)
-    array_info = array_info.json()
-    return toJson(array_info)
-
-
-@app.route('/api/v1.0/get_devices/', methods=['GET'])
-@token_required
-def getDevices(current_user):
-    devices = list_devices()
-    if(not isinstance(devices, dict)):
-        if devices.status_code != 200:
-            return toJson(devices.json())
-        devices = devices.json()
-    arrays = dagent.list_arrays()
-    arrays = arrays.json()
-    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
-        arrays = arrays["result"]["data"]["arrayList"]
-    else:
-        return toJson(devices)
-    if not isinstance(arrays, list):
-        return toJson(devices)
-    for array in arrays:
-        a_info = arr_info(array["name"])
-        try:
-            if a_info.status_code == 200:
-                a_info = a_info.json()
-                for device in chain(
-                        devices["devices"],
-                        devices["metadevices"]):
-                    for arr_dev in a_info["result"]["data"]["devicelist"]:
-                        if arr_dev["name"] == device["name"]:
-                            device["isAvailable"] = False
-                            device["arrayName"] = array["name"]
-                            if "displayMsg" in device:
-                                device["displayMsg"] = device["name"] + \
-                                    " (used by " + array["name"] + ")"
-                                device["trimmedDisplayMsg"] = device["name"] + \
-                                    " (used)"
-                            break
-        except Exception as e:
-            print("Exception in array_info() in /api/v1.0/get_devices/ ", e)
-    return toJson(devices)
 
 @app.route('/api/v1/telemetry', methods=['POST'])
 @token_required
@@ -654,100 +153,7 @@ def set_telemetry_props(current_user):
 def get_telemetry_props(current_user):
     return toJson(get_telemetry_properties())
 
-# Add Spare Disk
-@app.route('/api/v1.0/add_spare_device/', methods=['POST'])
-@token_required
-def addSpareDisk(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body['name']
-    arrayname = body.get('array')
-    res = dagent.add_spare_disk(name, arrayname)
-    return_msg = {}
-
-    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            return toJson(res)
-    else:
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            return_msg["result"] = res["result"]["status"]
-            return_msg["return"] = -1
-            return toJson(return_msg)
-
-    res = "unable to add a spare device"
-    return make_response(res, 500)
-
-# Remove Spare Disk
-
-
-@app.route('/api/v1.0/remove_spare_device/', methods=['POST'])
-@token_required
-def removeSpareDisk(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body['name']
-    arrayname = body.get('array')
-    return_msg = {}
-    res = dagent.remove_spare_disk(name, arrayname)
-    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            return toJson(res)
-    else:
-        print("spare error", res.json())
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            return_msg["result"] = res["result"]["status"]
-            return_msg["return"] = -1
-            return toJson(return_msg)
-
-    res = "unable to remove spare device"
-    return make_response(res, 500)
-
-
-# Replace Array Device
-@app.route('/api/v1/array/<array_name>/replace', methods=['POST'])
-def replace_arr_device(array_name):
-    try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        device = body['device']
-        return_msg = {}
-        res = dagent.replace_array_device(array_name, device)
-        if res.status_code == 200:
-            res = res.json()
-            if res["result"]["status"]["code"] == 0:
-                return toJson(res)
-        else:
-            res = res.json()
-            if ("result" in res and "status" in res["result"]):
-                return_msg["result"] = res["result"]["status"]
-                return_msg["return"] = -1
-                return toJson(return_msg)
-
-        res = "unable to replace array device"
-        return make_response(res, 500)
-    except Exception as e:
-        print("Exception in Replace array device: " + e)
-        return make_response('Could not replace array device', 500)
-
-
-# Get Device Details
-@app.route('/api/v1.0/device/smart/<name>', methods=['GET'])
-@token_required
-def getDeviceDetails(current_user, name):
-    device_details = get_disk_details(name)
-    try:
-        return toJson(device_details.json())
-    except BaseException:
-        res = "Unable to get SMART info"
-        return make_response(res, 500)
-
 # create transport
-
-
 @app.route('/api/v1/transport/', methods=['POST'])
 @token_required
 def create_transport(current_user):
@@ -771,8 +177,6 @@ def create_transport(current_user):
         return abort(404)
 
 # create subsystem
-
-
 @app.route('/api/v1/subsystem/', methods=['POST'])
 @token_required
 def create_subsystem(current_user):
@@ -800,8 +204,6 @@ def create_subsystem(current_user):
         return abort(404)
 
 # add listener
-
-
 @app.route('/api/v1/listener/', methods=['POST'])
 @token_required
 def add_listener(current_user):
@@ -827,8 +229,6 @@ def add_listener(current_user):
         return abort(404)
 
 # list subsystem
-
-
 @app.route('/api/v1/subsystem/', methods=['GET'])
 @token_required
 def list_subsystem(current_user):
@@ -848,8 +248,6 @@ def list_subsystem(current_user):
         return abort(404)
 
 # delete susbsystem
-
-
 @app.route('/api/v1/subsystem/', methods=['DELETE'])
 @token_required
 def delete_subsystem(current_user):
@@ -866,238 +264,6 @@ def delete_subsystem(current_user):
     except Exception as e:
         print("Exception in deleting subsystem " + e)
         return abort(404)
-# create device
-
-
-@app.route('/api/v1/device/', methods=['POST'])
-@token_required
-def create_device(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body.get('name')
-    num_blocks = body.get('num_blocks')
-    block_size = body.get('block_size')
-    dev_type = body.get('dev_type')
-    numa = body.get('numa')
-    try:
-        resp = dagent.create_device(
-            name, num_blocks, block_size, dev_type, numa)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating device " + e)
-        return make_response("Error creating Device: " + e, 500)
-
-
-# auto create array
-@app.route('/api/v1/autoarray/', methods=['POST'])
-@token_required
-def auto_create_array(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    arrayname = body.get('arrayname')
-    raidtype = body['raidtype']
-    metaDisk = body["metaDisk"]
-    num_data = body['num_data']
-    num_spare = body['num_spare']
-    write_through = body['writeThroughModeEnabled']
-    if arrayname is None:
-        arrayname = dagent.array_names[0]
-    try:
-        array_create = dagent.auto_create_array(
-            arrayname, raidtype, num_spare, num_data, [{"deviceName": metaDisk}], write_through)
-        if array_create is not None:
-            array_create = array_create.json()
-            return toJson(array_create)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating array: " + e)
-        return abort(404)
-
-# rebuild Array
-@app.route('/api/v1.0/array/<array_name>/rebuild', methods=['POST'])
-@token_required
-def rebuild_array(current_user, array_name):
-    res = dagent.rebuild_array(array_name)
-    res = res.json()
-    return toJson(res)
-    
-# Create Array
-
-@app.route('/api/v1.0/create_arrays/', methods=['POST'])
-@token_required
-def create_arrays(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    #_id = body['_id']
-    arrayname = body.get('arrayname')
-    # print(arrayname)
-    raidtype = body['raidtype']
-    spareDisks = body['spareDisks']
-    # print('spareDisks',spareDisks)
-    #writeBufferDisk = body['writeBufferDisk']
-    metaDisk = body["metaDisk"]
-    storageDisks = body['storageDisks']
-    #totalsize = len(storageDisks)
-    write_through = body['writeThroughModeEnabled']
-
-    try:
-        """a_info = arr_info(arrayname)
-        if a_info.status_code == 200:
-            a_info = a_info.json()
-            if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
-                return make_response(arrayname+' already exists', 400)"""
-        array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
-            {"deviceName": metaDisk}], write_through)
-        array_create = array_create.json()
-        return toJson(array_create)
-    except Exception as e:
-        print("Exception in creating array: " + e)
-        return abort(404)
-
-
-@app.route('/api/v1/get_array_config/', methods=['GET'])
-@token_required
-def get_array_config(current_user):
-    return toJson({
-        "raidTypes":
-        [
-            {
-                "raidType": "RAID0",
-                "minStorageDisks": 2,
-                "maxStorageDisks": 32,
-                "minSpareDisks": 0,
-                "maxSpareDisks": 0,
-            },
-            {
-                "raidType": "RAID5",
-                "minStorageDisks": 3,
-                "maxStorageDisks": 32,
-                "minSpareDisks": 0,
-                "maxSpareDisks": 29,
-            },
-            {
-                "raidType": "RAID6",
-                "minStorageDisks": 4,
-                "maxStorageDisks": 32,
-                "minSpareDisks": 0,
-                "maxSpareDisks": 28,
-            },
-            {
-                "raidType": "RAID10",
-                "minStorageDisks": 2,
-                "maxStorageDisks": 32,
-                "minSpareDisks": 0,
-                "maxSpareDisks": 29,
-            },
-            {
-                "raidType": "NONE",
-                "minStorageDisks": 1,
-                "maxStorageDisks": 1,
-                "minSpareDisks": 0,
-                "maxSpareDisks": 0,
-            },
-        ],
-        "totalDisks": 32,
-    })
-
-
-def get_mod_array(array):
-    _array = {}
-    _array["RAIDLevel"] = array["result"]["data"]["dataRaid"]
-    _array["storagedisks"] = []
-    _array["writebufferdisks"] = []
-    _array["sparedisks"] = []
-    _array["metadiskpath"] = []
-    _array["totalsize"] = 0
-    _array["usedspace"] = 0
-    _array["index"] = array["result"]["data"]["uniqueId"]
-    for device in array["result"]["data"]["devicelist"]:
-        if device["type"] == "DATA":
-            _array["storagedisks"].append({"deviceName": device["name"]})
-        if device["type"] == "BUFFER":
-            _array["metadiskpath"].append({"deviceName": device["name"]})
-        if device["type"] == "SPARE":
-            _array["sparedisks"].append({"deviceName": device["name"]})
-    return _array
-
-# Fetch all arrays
-
-
-@app.route('/api/v1/get_arrays/', methods=['GET'])
-@token_required
-def get_arrays(current_user):
-    #res = check_arr_exists(dagent.array_names[0])
-    #print("result from get array",res)
-    arrays = dagent.list_arrays()
-    arrays = arrays.json()
-    if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
-        arrays = arrays["result"]["data"]["arrayList"]
-    else:
-        return toJson([])
-    if not isinstance(arrays, list):
-        return toJson([])
-    arrays_info = []
-    for array in arrays:
-        a_info = arr_info(array["name"])
-        try:
-            if a_info.status_code == 200:
-                vol_list = list_volume(array["name"])
-                a_info = a_info.json()
-                res = a_info
-                # convert to format expected by UI
-                a_info = get_mod_array(a_info)
-                a_info['totalsize'] = int(res["result"]["data"]["capacity"])
-                if "used" in res["result"]["data"]:
-                    a_info['usedspace'] = int(res["result"]["data"]["used"])
-                a_info['volumecount'] = len(vol_list)
-                a_info["arrayname"] = res["result"]["data"]["name"]
-                a_info["status"] = array["status"]
-                a_info["situation"] = res["result"]["data"]["situation"]
-                a_info["state"] = res["result"]["data"]["state"]
-                if "writeThroughEnabled" in res["result"]["data"]:
-                    a_info["writeThroughEnabled"] = res["result"]["data"]["writeThroughEnabled"]
-                else:
-                    a_info["writeThroughEnabled"] = False
-                a_info["rebuildingprogress"] = res["result"]["data"]["rebuildingProgress"]
-                arrays_info.append(a_info)
-        except Exception as e:
-            print("Exception in /api/v1/get_arrays/ API:", e)
-            return toJson([])
-    return jsonify(arrays_info)
-
-
-@app.route('/api/v1/array/mount', methods=['POST'])
-def mount_arr():
-    try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        write_through = False
-        try:
-            write_through = body.get("writeThrough")
-        except BaseException:
-            write_through = False
-        mount_array_res = dagent.mount_array(body.get("array"), write_through)
-        return toJson(mount_array_res.json())
-    except Exception as e:
-        print("In exception mount_arr(): ", e)
-        return make_response('Could not mount array', 500)
-
-
-@app.route('/api/v1/array/mount', methods=['DELETE'])
-def unmount_arr():
-    try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        unmount_array_res = dagent.unmount_array(body.get("array"))
-        return toJson(unmount_array_res.json())
-    except Exception as e:
-        print("In exception unmount_arr(): ", e)
-        return make_response('Could not Unmount array', 500)
 
 
 @app.route('/api/v1/qos', methods=['POST'])

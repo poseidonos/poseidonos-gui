@@ -109,3 +109,29 @@ def is_ibofos_running(current_user="admin"):
                    "state": state,
                    "situation": situation,
                    "value": value})
+
+
+@pos_bp.route('/api/v1.0/stop_ibofos', methods=['GET'])
+@token_required
+def stop_ibofos(current_user):
+    """
+    Start IBOF os application. The path is given for demo&kntf server
+    :param current_user:
+    :return: status
+    """
+    res = dagent.stop_ibofos()
+    try:
+        if res.status_code == 200:
+            res = res.json()
+            if res["result"]["status"]["code"] == 0:
+                return jsonify({"response": "POS stopped successfully", "code": 0})
+        else:
+            res = res.json()
+            if ("result" in res and "status" in res["result"]):
+                description = res["result"]["status"]["description"]
+                description += " "
+                description += str(res["result"]["status"]["cause"])
+                return jsonify({"response": description, "code": res["result"]["status"]["code"]})
+    except BaseException:
+        pass
+    return jsonify({"response": "unable to stop POS", "code": -1})
