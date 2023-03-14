@@ -66,6 +66,7 @@ from rest.blueprints.storage import storage_bp
 from rest.blueprints.disk import disk_bp
 from rest.blueprints.volume import volume_bp
 from rest.blueprints.telemetry import telemetry_bp
+from rest.blueprints.subsystem import subsystem_bp
 from rest.db import connection_factory
 from rest.auth import token_required
 from rest.log import logger
@@ -94,6 +95,7 @@ app.register_blueprint(storage_bp)
 app.register_blueprint(disk_bp)
 app.register_blueprint(volume_bp)
 app.register_blueprint(telemetry_bp)
+app.register_blueprint(subsystem_bp)
 
 @app.after_request
 def after_request(response):
@@ -126,121 +128,6 @@ def exceptions(e):
                  tb)
     return "Internal Server Error", 500
 
-# create subsystem
-@app.route('/api/v1/subsystem/', methods=['POST'])
-@token_required
-def create_subsystem(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body.get('name')
-    serial_num = body.get('sn')
-    model_num = body.get('mn')
-    max_namespaces = body.get('maxNamespaces')
-    allow_any_host = body.get('allowAnyHost')
-    try:
-        resp = dagent.create_subsystem(
-            name,
-            serial_num,
-            model_num,
-            max_namespaces,
-            allow_any_host)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating subsystem " + e)
-        return abort(404)
-
-# add listener
-@app.route('/api/v1/listener/', methods=['POST'])
-@token_required
-def add_listener(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body.get('name')
-    transport_type = body.get('transport_type')
-    target_address = body.get('target_address')
-    transport_service_id = body.get('transport_service_id')
-    try:
-        resp = dagent.add_listener(
-            name,
-            transport_type,
-            target_address,
-            transport_service_id)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in adding listener " + e)
-        return abort(404)
-
-
-# create transport
-@app.route('/api/v1/transport/', methods=['POST'])
-@token_required
-def create_transport(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    transport_type = body.get('transport_type')
-    buf_cache_size = body.get('buf_cache_size')
-    num_shared_buf = body.get('num_shared_buf')
-    try:
-        resp = dagent.create_trans(
-            transport_type,
-            buf_cache_size,
-            num_shared_buf)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating transport " + e)
-        return abort(404)
-
-# list subsystem
-@app.route('/api/v1/subsystem/', methods=['GET'])
-@token_required
-def list_subsystem(current_user):
-    try:
-        resp = dagent.list_subsystem()
-        resp = resp.json()
-        for subsystem in resp["result"]["data"]["subsystemlist"]:
-            if subsystem["subtype"] == "NVMe" and "namespaces" in subsystem:
-                namespaces = subsystem["namespaces"]
-                if len(namespaces) > 0:
-                    arrayname = "_".join(
-                        namespaces[0]["bdevName"].split("_")[2:])
-                    subsystem["array"] = arrayname
-        return toJson(resp)
-    except Exception as e:
-        print("Exception in list subsystem " + e)
-        return abort(404)
-
-# delete susbsystem
-@app.route('/api/v1/subsystem/', methods=['DELETE'])
-@token_required
-def delete_subsystem(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    name = body.get('name')
-    try:
-        resp = dagent.delete_subsystem(name)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in deleting subsystem " + e)
-        return abort(404)
-
-
-
 def validate_email(email):
     regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
     if(re.search(regex, email)):
@@ -263,7 +150,6 @@ def validate_phone_number(phone_number):
         return True
     else:
         return False
-
 
 @app.route('/api/v1.0/add_new_user/', methods=['POST'])
 @token_required
@@ -310,7 +196,6 @@ def add_new_user(current_user):
 # To Do - 1. Check if username exists in DB. If yes, return failure.
 # 2. Hash the password using bcrypt library
 # 3. Add all the user values in DB
-
 
 @app.route('/api/v1.0/get_ibofos_time_interval', methods=['GET'])
 @token_required
