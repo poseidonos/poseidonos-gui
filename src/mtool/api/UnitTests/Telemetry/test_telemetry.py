@@ -37,7 +37,7 @@ import jwt
 import datetime
 import os
 import re
-from flask import json
+import json
 from unittest import mock
 from rest.app import app
 from util.macros.performance import TOTALCRITICALS, TOTALWARNINGS, TOTALNOMINALS, ISIPMICHASSISPOWERON, ERRORINDEVICES, ERRORINIPMI
@@ -372,7 +372,7 @@ ipmi = [
 ]
 
 
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=[ip,port], autospec=True)
 def test_get_telemetry_config(mock_get_telemetry_url):
     response = app.test_client().get('/api/v1/configure')
@@ -380,7 +380,7 @@ def test_get_telemetry_config(mock_get_telemetry_url):
     assert response.status_code == 200
     assert data["isConfigured"] == True
 
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=[], autospec=True)
 def test_get_telemetry_config_none(mock_get_telemetry_url):
     response = app.test_client().get('/api/v1/configure')
@@ -389,7 +389,7 @@ def test_get_telemetry_config_none(mock_get_telemetry_url):
     assert data["isConfigured"] == False
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.update_telemetry_url",
+@mock.patch("rest.db.connection_factory.update_telemetry_url",
             return_value=True, autospec=True)
 def test_set_telemetry_config_success(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -411,7 +411,7 @@ def test_set_telemetry_config_success(mock_update_telemetry_url, **kwargs):
     assert data == "success"
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.update_telemetry_url",
+@mock.patch("rest.db.connection_factory.update_telemetry_url",
             return_value=True, autospec=True)
 def test_set_telemetry_config_success_2(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -459,7 +459,7 @@ def test_set_telemetry_config_success_2(mock_update_telemetry_url, **kwargs):
     assert data == "success"
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.update_telemetry_url",
+@mock.patch("rest.db.connection_factory.update_telemetry_url",
             return_value=True, autospec=True)
 def test_set_telemetry_config_success_3(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -512,7 +512,7 @@ def test_set_telemetry_config_success_3(mock_update_telemetry_url, **kwargs):
     assert data == "success"
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.update_telemetry_url",
+@mock.patch("rest.db.connection_factory.update_telemetry_url",
             return_value=True, autospec=True)
 def test_set_telemetry_config_failure(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -528,7 +528,7 @@ def test_set_telemetry_config_failure(mock_update_telemetry_url, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.update_telemetry_url",
+@mock.patch("rest.db.connection_factory.update_telemetry_url",
             return_value=True, autospec=True)
 def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -580,7 +580,7 @@ def test_set_telemetry_config_failure_2(mock_update_telemetry_url, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_current_perf(mock_get_current_user, **kwargs):
     kwargs["mock"].get(re.compile('http\:\/\/localhost:9090\/api\/v1\/query*'),
@@ -599,7 +599,7 @@ def test_get_current_perf(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
@@ -654,7 +654,7 @@ def test_get_hardware_health(mock_get_current_user, **kwargs):
     assert response[ISIPMICHASSISPOWERON] == True
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
@@ -706,7 +706,7 @@ def test_get_hardware_health_if_pos_exporter_not_running(mock_get_current_user, 
     assert response[ISIPMICHASSISPOWERON] == True
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
@@ -761,7 +761,7 @@ def test_get_hardware_health_if_ipmi_exporter_not_running(mock_get_current_user,
     assert response[ISIPMICHASSISPOWERON] == False
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_start_telemetry(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry',
@@ -777,7 +777,7 @@ def test_start_telemetry(mock_get_current_user, **kwargs):
     assert data == '{"status": "success"}'
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_stop_telemetry(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/telemetry',
@@ -793,7 +793,7 @@ def test_stop_telemetry(mock_get_current_user, **kwargs):
     assert data == '{"status": "success"}'
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_set_telemetry_properties(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/telemetry/properties',
@@ -829,7 +829,7 @@ def test_set_telemetry_properties(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_telemetry_properties(mock_get_current_user, **kwargs):
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/telemetry/properties',
@@ -864,7 +864,7 @@ def test_get_telemetry_properties(mock_get_current_user, **kwargs):
                 assert field["isSet"] == False
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_telemetery_url",
+@mock.patch("rest.db.connection_factory.get_telemetery_url",
             return_value=["localhost", "9090"], autospec=True)
 def test_check_telemetry(mock_get_current_user, **kwargs):
     kwargs["mock"].get('http://localhost:9090/api/v1/query?query=up',
@@ -893,7 +893,7 @@ def test_check_telemetry(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.delete_telemetery_url",
+@mock.patch("rest.db.connection_factory.delete_telemetery_url",
             return_value=[], autospec=True)
 def test_delete_telemetry_config(mock_delete_telemetry_url, **kwargs):
     kwargs["mock"].delete(

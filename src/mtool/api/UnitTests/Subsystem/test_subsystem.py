@@ -38,7 +38,7 @@ import requests_mock
 import jwt
 import datetime
 from unittest import mock
-from flask import json
+import json
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
@@ -50,7 +50,7 @@ INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ARRAY_NAME = "POSArray"
 ARRAY_LIST_URL = DAGENT_URL + '/api/ibofos/v1/arrays'
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -66,7 +66,7 @@ def global_data(mock_match_username_from_db):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_transport(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -85,7 +85,7 @@ def test_create_transport(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_transport_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -109,7 +109,7 @@ def test_create_transport_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -138,7 +138,7 @@ def test_create_subsystem(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_subsystem_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -172,7 +172,7 @@ def test_create_subsystem_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_listener(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -204,7 +204,7 @@ def test_add_listener(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_listener_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -235,7 +235,7 @@ def test_add_listener_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_list_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -302,7 +302,7 @@ def test_list_subsystem(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -330,7 +330,7 @@ def test_delete_subsystem(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_subsystem_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)

@@ -32,11 +32,11 @@
  */
  '''
 from rest.app import app
-from flask import json
+import json
 from unittest import mock
 
 
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="xyz", autospec=True)
 def test_login(mock_match_username_from_db):
     response = app.test_client().post(
@@ -50,9 +50,9 @@ def test_login(mock_match_username_from_db):
     assert data['username'] == "xyz"
 
 
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value=None, autospec=True)
-@mock.patch("rest.app.connection_factory.match_email_from_db",
+@mock.patch("rest.db.connection_factory.match_email_from_db",
             return_value=None, autospec=True)
 def test_login_failure(mock_match_username_from_db, mock_match_email_from_db):
     response = app.test_client().post(

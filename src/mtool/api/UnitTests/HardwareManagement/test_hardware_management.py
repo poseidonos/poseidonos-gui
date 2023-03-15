@@ -39,7 +39,7 @@ import requests_mock
 import jwt
 import datetime
 from unittest import mock
-from flask import json
+import json
 import rest.rest_api.dagent.bmc as BMC_agent
 import uuid
 import time
@@ -64,7 +64,7 @@ def get_headers(
             "ts": str(int(time.time()))}
 
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -78,7 +78,7 @@ def global_data(mock_match_username_from_db):
     return {'token': login_data['token']}
 
 @requests_mock.Mocker(kw="mock")
-#@mock.patch("rest.app.connection_factory.get_current_user", return_value="test", autospec=True)
+#@mock.patch("rest.db.connection_factory.get_current_user", return_value="test", autospec=True)
 #def test_bmc_login(mock_get_current_user, **kwargs):
 def test_bmc_login(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
