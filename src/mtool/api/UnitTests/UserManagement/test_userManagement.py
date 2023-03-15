@@ -41,6 +41,18 @@ from unittest import mock
 
 token = ""
 
+data_json = {"_id": "abc",
+        "password": "asd",
+        "email": "sd@.cccb",
+        "phone_number": "+829899875673",
+        "role": "Admin",
+        "active": 1,
+        "privileges": "Create,Edit,View",
+        "ibofostimeinterval": 4,
+        "livedata": 1,
+        "selected": False,
+        "edit": False,
+        "oldid": "abc"}
 
 @pytest.fixture(scope='module')
 @mock.patch("rest.app.connection_factory.match_username_from_db",
@@ -165,18 +177,7 @@ def test_update_users_failure_phone(mock_update_user_in_db, global_data):
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
                                                },
-                                      data=json.dumps({"_id": "abc",
-                                                       "password": "asd",
-                                                       "email": "sd@asd.cccb",
-                                                       "phone_number": "+82989rr",
-                                                       "role": "Admin",
-                                                       "active": 1,
-                                                       "privileges": "Create,Edit,View",
-                                                       "ibofostimeinterval": 4,
-                                                       "livedata": 1,
-                                                       "selected": False,
-                                                       "edit": False,
-                                                       "oldid": "abc"}),
+                                      data=json.dumps(data_json),
                                       content_type='application/json',
                                       )
     data = response.get_data(as_text=True)
@@ -190,18 +191,7 @@ def test_update_users_failure_email(mock_update_user_in_db, global_data):
                                       headers={'x-access-token': global_data['token'],
                                                'Accept': 'application/json',
                                                },
-                                      data=json.dumps({"_id": "abc",
-                                                       "password": "asd",
-                                                       "email": "sd@.cccb",
-                                                       "phone_number": "+829899875673",
-                                                       "role": "Admin",
-                                                       "active": 1,
-                                                       "privileges": "Create,Edit,View",
-                                                       "ibofostimeinterval": 4,
-                                                       "livedata": 1,
-                                                       "selected": False,
-                                                       "edit": False,
-                                                       "oldid": "abc"}),
+                                      data=json.dumps(data_json),
                                       content_type='application/json',
                                       )
     data = response.get_data(as_text=True)

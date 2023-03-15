@@ -50,61 +50,140 @@ DAGENT_URL = 'http://' + ip + ':3000'
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ARRAY_NAME = "POSArray"
 ARRAY_LIST_URL = DAGENT_URL + '/api/ibofos/v1/arrays'
-@pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
-            return_value="admin", autospec=True)
-def global_data(mock_match_username_from_db):
-    login_response = app.test_client().post(
-        '/api/v1.0/login/',
-        data=json.dumps({'username': "admin", 'password': "admin"}),
-        content_type='application/json',
-    )
-    login_data = json.loads(login_response.get_data(as_text=True))
-    print("Token :",login_data['token'])
-
-    return {'token': login_data['token']}
 
 
-@requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-def test_get_devices(mock_get_current_user, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
-                       json={"result": {"status": {"description": "SUCCESS"},
+# duplicate code functions
+device_json = '''{
+        "name": "uram4",
+                "num_blocks" : 16777216,
+                "block_size" : 512,
+                "dev_type" : "uram",
+                "numa" : 0
+}'''
+header_json = {'x-access-token': json_token}
+delete_json = '''{
+                "volumes": [{"name": "vol1", "isMounted": true}]
+                }'''
+volume_json ={
+            "result": {
+                "status": {
+                    "description": "FAILED",
+                    "code": 10}},
+            "info": {
+                "state": "ACTIVE",
+                "capacity": 12345678,
+                "used": 0}}
+success_json = {
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}}}
+
+device_list_json = {"result": {"status": {"description": "SUCCESS"},
                                         "data": {"devicelist": [{"name": "uram0",
                                                                  "type": "NVRAM",
                                                                  "size": 12345,
                                                                  "modelNumber": "DEFG",
                                                                  "serialNumber": "SN",
-                                                                 "address":
-                                                                 "0000:68:00.0",
-                                                                 "class":
-                                                                 "SYSTEM",
+                                                                 "address":"0000:68:00.0",
+                                                                 "class":"SYSTEM",
                                                                  "isAvailable":True,
-                                                                 "numa":
-                                                                 "0",
-                                                                 "arrayName" : ""
-                                                                 },
+                                                                 "numa":"0",
+                                                                 "arrayName" : ""},
                                                                 {"name": "unvme-ns-0",
                                                                  "type": "SSD",
                                                                  "size": 12345,
                                                                  "modelNumber": "ABCD",
-                                                                 "serialNumber": "SN!",
-                                                                 "address":
-                                                                 "0000:68:00.0",
-                                                                 "class":
-                                                                 "SYSTEM",
+                                                                 "serialNumber": "SN",
+                                                                 "address":"0000:68:00.0",
+                                                                 "class":"SYSTEM",
                                                                  "isAvailable":True,
-                                                                 "numa":
-                                                                 "0",
-                                                                 "arrayName" : ""}]}},
+                                                                 "numa": "0",
+                                                                 "arrayName": ""}]}},
                              "data": {"devicelist": [{"name": "unvme-ns-0",
-                                                      "type": "NVRAM"}]}},
-                       status_code=200)
-    kwargs["mock"].get(ARRAY_LIST_URL,
-                       json={
+                                                      "type": "NVRAM"}]}}
+
+device_list = [
+                        {
+                            "name": "uram0",
+                            "type": "BUFFER"
+                        },
+                        {
+                            "name": "S439NA0MB02505      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02476      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02503      ",
+                            "type": "DATA"
+                        },
+                        {
+                            "name": "S439NA0MB02514      ",
+                            "type": "DATA"
+                        }
+                    ]
+volume_list_json = {
+            "result": {
+                "status": {
+                    "description": "SUCCESS"},
+                "data": {
+                    "volumes": [
+                        {
+                            "name": "vol1",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678},
+							{
+                            "name": "vol2",
+                            "size": 1234567,
+                            "total": 12345678,
+                            "remain": 12345678}]}}}
+ibof_system_json = {
+            "result": {
+                "status": {
+                    "description": "SUCCESS",
+                    "code": 0}},
+            "info": {
+                "state": "ACTIVE",
+                "capacity": 12345678,
+                "used": 0}}
+
+ibof_json = {
+    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
+    "lastSuccessTime": 1626166295,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "Volume Qos Policy Create"
+        }
+    },
+    "info": {
+        "version": "pos-0.9.4"
+    }
+}
+mount_json = {
+    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
+    "lastSuccessTime": 1637046369,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "volume-0is mounted successfully"
+        }
+    },
+    "info": {
+        "version": "v0.10.1"
+    }}
+scan_json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}
+array_list_json= {
     "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
     "lastSuccessTime": 1621261763,
     "result": {
@@ -118,56 +197,14 @@ def test_get_devices(mock_get_current_user, **kwargs):
             "arrayList": [
                 {
                     "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
+                    "devicelist":device_list,
                     "name": "POSArray",
                     "status": "Mounted",
                     "updateDatetime": "2021-05-06 23:53:26 +0530"
                 },
 				{
                     "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
+                    "devicelist":device_list,
                     "name": "POSArray2",
                     "status": "Mounted",
                     "updateDatetime": "2021-05-06 23:53:26 +0530"
@@ -181,10 +218,9 @@ def test_get_devices(mock_get_current_user, **kwargs):
         "state": "EXIST_NORMAL",
         "used": 0
     }
-}, status_code=200)
+}
 
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json={
+dagent_json={
     "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
     "lastSuccessTime": 1620717645,
     "result": {
@@ -230,10 +266,98 @@ def test_get_devices(mock_get_current_user, **kwargs):
     "info": {
         "version": "pos-0.8.0-alpha1"
     }
-}, status_code=200)
+}
+
+dagent_array_json = {
+    "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
+    "lastSuccessTime": 1653565027,
+    "result": {
+        "status": {
+            "module": "COMMON",
+            "code": 0,
+            "level": "INFO",
+            "description": "Success",
+            "posDescription": "list of volumes in POSArray"
+        },
+        "data": {
+            "volumes": [
+                {
+                    "index": 0,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-no-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "0018c5e7-f769-4eb4-b974-19f3a211da1d"
+                },
+                {
+                    "index": 1,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-single-with-capacity-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "ab583871-6640-48b7-a5da-8b9f7ec070f0"
+                },
+                {
+                    "index": 2,
+                    "maxbw": 0,
+                    "maxiops": 0,
+                    "minbw": 0,
+                    "miniops": 0,
+                    "name": "sanity-controller-create-twice-44BD4FEE-6EA20B12",
+                    "remain": 10737418240,
+                    "status": "Mounted",
+                    "total": 10737418240,
+                    "uuid": "6bc461af-e9fa-4d29-8db3-20f6c54ff787"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}
+
+@pytest.fixture(scope='module')
+@mock.patch("rest.app.connection_factory.match_username_from_db",
+            return_value="admin", autospec=True)
+def global_data(mock_match_username_from_db):
+    login_response = app.test_client().post(
+        '/api/v1.0/login/',
+        data=json.dumps({'username': "admin", 'password': "admin"}),
+        content_type='application/json',
+    )
+    login_data = json.loads(login_response.get_data(as_text=True))
+    print("Token :",login_data['token'])
+
+    return {'token': login_data['token']}
+
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.app.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_get_devices(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =scan_json, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
+                       json=device_list_json,
+                       status_code=200)
+
+    kwargs["mock"].get(ARRAY_LIST_URL,
+                       json=array_list_json, status_code=200)
+
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
+                       json=dagent_json, status_code=200)
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     data = json.loads(response.get_data(as_text=True))
     print("data :",data)
@@ -250,7 +374,7 @@ def test_get_smart_info(mock_get_current_user, **kwargs):
                        status_code=200)
     response = app.test_client().get(
         '/api/v1.0/device/smart/unvme-ns-1',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 200
 
 
@@ -262,7 +386,7 @@ def test_get_smart_info_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/unvme-ns-1/smart', status_code=200)
     response = app.test_client().get(
         '/api/v1.0/device/smart/unvme-ns-1',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 500
 
 
@@ -273,65 +397,10 @@ def test_get_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json={
-    "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
-    "lastSuccessTime": 1653565027,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of volumes in POSArray"
-        },
-        "data": {
-            "volumes": [
-                {
-                    "index": 0,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-single-no-capacity-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "0018c5e7-f769-4eb4-b974-19f3a211da1d"
-                },
-                {
-                    "index": 1,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-single-with-capacity-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "ab583871-6640-48b7-a5da-8b9f7ec070f0"
-                },
-                {
-                    "index": 2,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-twice-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "6bc461af-e9fa-4d29-8db3-20f6c54ff787"
-                }
-            ]
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc4"
-    }
-}, status_code=200)
+        json=dagent_array_json, status_code=200)
     response = app.test_client().get(
         '/api/v1/'+ARRAY_NAME+'/get_volumes/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -343,147 +412,15 @@ def test_get_all_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
 
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json={
-    "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
-    "lastSuccessTime": 1621261763,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "arrayList": [
-                {
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                },
-				{
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray2",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                }
-            ]
-        }
-    },
-    "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "state": "EXIST_NORMAL",
-        "used": 0
-    }
-}, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json={
-    "rid": "995a1344-4742-48a2-9ade-cbb437cd34ba",
-    "lastSuccessTime": 1653565027,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "list of volumes in POSArray"
-        },
-        "data": {
-            "volumes": [
-                {
-                    "index": 0,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-single-no-capacity-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "0018c5e7-f769-4eb4-b974-19f3a211da1d"
-                },
-                {
-                    "index": 1,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-single-with-capacity-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "ab583871-6640-48b7-a5da-8b9f7ec070f0"
-                },
-                {
-                    "index": 2,
-                    "maxbw": 0,
-                    "maxiops": 0,
-                    "minbw": 0,
-                    "miniops": 0,
-                    "name": "sanity-controller-create-twice-44BD4FEE-6EA20B12",
-                    "remain": 10737418240,
-                    "status": "Mounted",
-                    "total": 10737418240,
-                    "uuid": "6bc461af-e9fa-4d29-8db3-20f6c54ff787"
-                }
-            ]
-        }
-    },
-    "info": {
-        "version": "v0.11.0-rc4"
-    }
-}, status_code=200)
+        json=dagent_array_json, status_code=200)
 
     response = app.test_client().get(
         '/api/v1/get_all_volumes/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -510,7 +447,7 @@ def test_get_volumes_failure(mock_get_current_user, **kwargs):
         status_code=500)
     response = app.test_client().get(
         '/api/v1/'+ARRAY_NAME+'/get_volumes/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert len(json.loads(response.data)) == 0
@@ -520,7 +457,7 @@ def test_get_volumes_failure(mock_get_current_user, **kwargs):
         status_code=500)
     response = app.test_client().get(
         '/api/v1/'+ARRAY_NAME+'/get_volumes/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert len(json.loads(response.data)) == 0
@@ -533,19 +470,11 @@ def test_get_available_storage(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -558,19 +487,11 @@ def test_get_available_storage_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/system',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=500)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -580,7 +501,7 @@ def test_get_available_storage_failure(mock_get_current_user, **kwargs):
         json=None, status_code=200)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -605,7 +526,7 @@ def test_get_available_storage_failurei_2(mock_get_current_user, **kwargs):
         status_code=200)
     response = app.test_client().get(
         '/api/v1.0/available_storage/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -629,7 +550,7 @@ def test_get_volume_count(mock_get_current_user, **kwargs):
         status_code=200)
     response = app.test_client().get(
         '/api/v1.0/max_volume_count/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -646,7 +567,7 @@ def test_get_volume_count_failure(mock_get_current_user, **kwargs):
         status_code=200)
     response = app.test_client().get(
         '/api/v1.0/max_volume_count/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     print("response ",response)
@@ -674,21 +595,13 @@ def test_create_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/'+ARRAY_NAME+'/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/create_arrays/',
@@ -702,7 +615,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
                 "size": 12345678,
                 "writeThroughModeEnabled":true
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     print("response data ",response.data)
     assert response.status_code == 200
@@ -737,7 +650,7 @@ def test_create_arrays_failure(mock_get_current_user, **kwargs):
                 "storageDisks": ["unvme-ns-3", "unvme-ns-2", "unvme-ns-1"],
                 "size": 12345678
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -749,7 +662,7 @@ def test_create_arrays_failure(mock_get_current_user, **kwargs):
             return_value="test", autospec=True)
 def test_get_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = scan_json, status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': '104e2c46-89b3-433d-8f6a-b4f7fa176c27', 'lastSuccessTime': 1606298716, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
 	
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray/load',json = {'rid': '99b9626b-ca23-4f0e-86bd-643fa4cb8a1c', 'lastSuccessTime': 1606298720, 'result': {'status': {'module': 'Array', 'code': 2500, 'level': 'ERROR', 'description': 'Array is alreday mounted.'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
@@ -788,7 +701,7 @@ def test_get_arrays(mock_get_current_user, **kwargs):
                        status_code=200)
     response = app.test_client().get(
         '/api/v1.0/get_arrays/',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -802,49 +715,16 @@ def test_create_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json={
-    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
-    "lastSuccessTime": 1637046369,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "volume-0is mounted successfully"
-        }
-    },
-    "info": {
-        "version": "v0.10.1"
-    }},
+        json=mount_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -865,7 +745,7 @@ def test_create_volumes(mock_get_current_user, **kwargs):
                 "max_available_size": 1722281885696,
                 "iswalvol":false
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     data = json.loads(response.get_data(as_text=True))
     print("data>>>>>>>>>>>>>>>>>>>>>>>>>>> ",data )
@@ -898,7 +778,7 @@ def test_create_volumes_failure(mock_get_current_user, **kwargs):
                 "subsystem": "nqn.2019-04.ibof:subsystem1",
                 "max_available_size": 1722281885696
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -912,11 +792,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
     kwargs["mock"].post( DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount/subsystem',
@@ -936,22 +812,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -970,7 +831,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
 				"subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
                 "iswalvol":false
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -983,50 +844,17 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json= success_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json={
-    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
-    "lastSuccessTime": 1637046369,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "volume-0is mounted successfully"
-        }
-    },
-    "info": {
-        "version": "v0.10.1"
-    }},
+        json=mount_json,
         status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -1045,7 +873,7 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
                 "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
                 "iswalvol":false
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1058,50 +886,17 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json={
-    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
-    "lastSuccessTime": 1637046369,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "volume-0is mounted successfully"
-        }
-    },
-    "info": {
-        "version": "v0.10.1"
-    }},
+        json=mount_json,
         status_code=200)
 
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
@@ -1120,7 +915,7 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
                 "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
                 "iswalvol":false
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1133,49 +928,16 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json = success_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/volumes/vol1/mount/subsystem',
-        json={
-    "rid": "56532969-a24c-4387-827a-c4107550ebb8",
-    "lastSuccessTime": 1637046369,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "volume-0is mounted successfully"
-        }
-    },
-    "info": {
-        "version": "v0.10.1"
-    }},
+        json=mount_json,
         status_code=200)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
     response = app.test_client().post(
         '/api/v1.0/save-volume/',
         data='''{
@@ -1193,7 +955,7 @@ def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
                 "subsystem": {"subnqn": "nqn.2019-04.ibof:subsystem1", "transport_type": "TCP", "transport_service_id": "1158", "target_address": "111.100.13.97"},
                 "iswalvol":false
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1215,11 +977,7 @@ def test_add_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/add_spare_device/',
@@ -1227,7 +985,7 @@ def test_add_spare(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array" : "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1249,7 +1007,7 @@ def test_add_spare_failure(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array" : "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1275,7 +1033,7 @@ def test_add_spare_failure_2(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array": "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1291,7 +1049,7 @@ def test_add_spare_failure_2(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array": "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1304,11 +1062,7 @@ def test_remove_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/devices/unvme-ns-3',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/remove_spare_device/',
@@ -1316,7 +1070,7 @@ def test_remove_spare(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array": "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1338,7 +1092,7 @@ def test_remove_spare_failure(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array": "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1354,7 +1108,7 @@ def test_remove_spare_failure(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array": "POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1380,7 +1134,7 @@ def test_remove_spare_failure_2(mock_get_current_user, **kwargs):
                 "name": "unvme-ns-3",
                 "array":"POSArray"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1394,25 +1148,17 @@ def test_delete_array(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
     response = app.test_client().post(
         '/api/v1.0/delete_array/POSArray',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     print("data ",response.data)
     assert response.status_code == 200
 
@@ -1425,11 +1171,7 @@ def test_delete_array_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
     kwargs["mock"].delete(
         DAGENT_URL +
@@ -1443,7 +1185,7 @@ def test_delete_array_failure(mock_get_current_user, **kwargs):
 
     response = app.test_client().post(
         '/api/v1.0/delete_array/POSArray',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 200
     kwargs["mock"].delete(
         DAGENT_URL +
@@ -1458,7 +1200,7 @@ def test_delete_array_failure(mock_get_current_user, **kwargs):
 
     response = app.test_client().post(
         '/api/v1.0/delete_array/POSArray',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -1469,11 +1211,7 @@ def test_delete_array_failure_2(mock_get_current_user, **kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json = success_json,
         status_code=200)
     kwargs["mock"].delete(
         DAGENT_URL +
@@ -1483,7 +1221,7 @@ def test_delete_array_failure_2(mock_get_current_user, **kwargs):
 
     response = app.test_client().post(
         '/api/v1.0/delete_array/POSArray',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 500
 
 
@@ -1494,22 +1232,12 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
-        data='''{
-                "volumes": [{"name": "vol1", "isMounted": true}]
-                }''',
-        headers={'x-access-token': json_token})
+        data=delete_json,
+        headers=header_json)
 
     assert response.status_code == 200
 
@@ -1521,22 +1249,12 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json={
-            "result": {
-                "status": {
-                    "description": "FAILED",
-                    "code": 10}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json= volume_json,
         status_code=500)
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
-        data='''{
-                "volumes": [{"name": "vol1", "isMounted": true}]
-                }''',
-        headers={'x-access-token': json_token})
+        data=delete_json,
+        headers=header_json)
     assert response.status_code == 500
 
     kwargs["mock"].delete(
@@ -1545,10 +1263,8 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
         status_code=500)
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
-        data='''{
-                "volumes": [{"name": "vol1", "isMounted": true}]
-                }''',
-        headers={'x-access-token': json_token})
+        data=delete_json,
+        headers=header_json)
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
@@ -1558,22 +1274,12 @@ def test_delete_volumes_failed(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json={
-            "result": {
-                "status": {
-                    "description": "FAILED",
-                    "code": 10}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json= volume_json,
         status_code=400)
     response = app.test_client().post(
         '/api/v1.0/delete_volumes/POSArray',
-        data='''{
-                "volumes": [{"name": "vol1", "isMounted": true}]
-                }''',
-        headers={'x-access-token': json_token})
+        data=delete_json,
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1611,7 +1317,7 @@ def test_update_volume_invalid_range(mock_get_current_user, **kwargs):
                 "maxbw": 4,
         "maxiops":30
 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     assert response.status_code == 200
 
@@ -1623,22 +1329,7 @@ def test_update_volume2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/qos',
-        json={
-    "rid": "1fce61cc-ba2e-4308-b1f9-a1f483ac701e",
-    "lastSuccessTime": 1626166295,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "Volume Qos Policy Create"
-        }
-    },
-    "info": {
-        "version": "pos-0.9.4"
-    }
-},status_code=200)
+        json=ibof_json,status_code=200)
     response = app.test_client().post(
         '/api/v1/qos',
         data='''{
@@ -1647,7 +1338,7 @@ def test_update_volume2(mock_get_current_user, **kwargs):
 		"maxbw": 40,
         "maxiops":30
 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #print("data ",response.data)
     assert response.status_code == 200
@@ -1660,15 +1351,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].patch(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().patch(
         '/api/v1.0/volumes/vol1',
@@ -1678,7 +1361,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
                 "newname": "vol"
                 }
             }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     assert response.status_code == 200
 
@@ -1690,7 +1373,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
                 "newname": "vol"
                 }
             }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     assert response.status_code == 500
     response = app.test_client().patch(
@@ -1700,7 +1383,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
                 "newname": "vol"
                 }
             }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     assert response.status_code == 500
     kwargs["mock"].patch(
@@ -1714,7 +1397,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
                 "newname": "vol"
                 }
             }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1728,22 +1411,14 @@ def test_mount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].post(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().post(
         '/api/v1.0/volume/mount',
         data='''{
                 "name": "vol1"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1752,7 +1427,7 @@ def test_mount_volume(mock_get_current_user, **kwargs):
         data='''{
                 "name": "vol1",
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1766,7 +1441,7 @@ def test_mount_volume(mock_get_current_user, **kwargs):
         data='''{
                 "name": "vol1"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1778,22 +1453,14 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}},
-            "info": {
-                "state": "ACTIVE",
-                "capacity": 12345678,
-                "used": 0}},
+        json=ibof_system_json,
         status_code=200)
     response = app.test_client().delete(
         '/api/v1.0/volume/mount',
         data='''{
                 "name": "vol1"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
@@ -1802,7 +1469,7 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
         data='''{
                 "name": "vol1",
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
     assert response.status_code == 500
     kwargs["mock"].delete(
         DAGENT_URL + '/api/ibofos/v1/volumes/vol1/mount',
@@ -1813,7 +1480,7 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
         data='''{
                 "name": "vol1"
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
     #data = json.loads(response.get_data(as_text=True))
     assert response.status_code == 500
@@ -1823,165 +1490,16 @@ def test_unmount_volume(mock_get_current_user, **kwargs):
 def test_list_devices(global_data, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices',
-                       json={"result": {"status": {"description": "SUCCESS"},
-                                        "data": {"devicelist": [{"name": "uram0",
-                                                                 "type": "NVRAM",
-                                                                 "size": 12345,
-                                                                 "modelNumber": "DEFG",
-                                                                 "serialNumber": "SN",
-                                                                 "address":"0000:68:00.0",
-                                                                 "class":
-                                                                 "SYSTEM",
-                                                                 "isAvailable":True,
-                                                                 "numa":
-                                                                 "0",
-                                                                 "arrayName" : ""},
-                                                                {"name": "unvme-ns-0",
-                                                                 "type": "SSD",
-                                                                 "size": 12345,
-                                                                 "modelNumber": "ABCD",
-                                                                 "serialNumber": "SN",
-                                                                 "address":"0000:68:00.0",
-                                                                 "class":
-                                                                 "SYSTEM",
-                                                                 "isAvailable":True,
-                                                                 "numa": "0",
-                                                                 "arrayName"
-                                                                 : ""}]}},
-                             "data": {"devicelist": [{"name": "unvme-ns-0",
-                                                      "type": "NVRAM"}]}},
+                       json=device_list_json,
                        status_code=200)
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',
                        json={"result": {"status": {"description": "SUCCESS"}}},
                        status_code=200)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json={
-    "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
-    "lastSuccessTime": 1621261763,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "arrayList": [
-                {
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                },
-				{
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray2",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                }
-            ]
-        }
-    },
-    "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "state": "EXIST_NORMAL",
-        "used": 0
-    }
-}, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json={
-    "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
-    "lastSuccessTime": 1620717645,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "capacity": 0,
-            "createDatetime": "2021-05-10 19:41:08 +0530",
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ],
-            "name": "POSArray",
-            "rebuildingProgress": "0",
-            "situation": "DEFAULT",
-            "state": "OFFLINE",
-            "updateDatetime": "2021-05-10 19:41:08 +0530",
-            "used": 0
-        }
-    },
-    "info": {
-        "version": "pos-0.8.0-alpha1"
-    }
-}, status_code=200)
+                       json=dagent_json, status_code=200)
 
     response = app.test_client().get(
         '/api/v1.0/get_devices/',
@@ -2026,7 +1544,7 @@ def test_list_devices_failure(global_data, **kwargs):
                              "data": {"devicelist": [{"name": "unvme-ns-0",
                                                       "type": "NVRAM"}]}},
                        status_code=200)
-    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json = {'rid': 'c5f7fca4-d306-4bea-a288-412bd6cc7002', 'lastSuccessTime': 1606298101, 'result': {'status': {'module': 'COMMON', 'code': 0, 'level': 'INFO', 'description': 'Success'}}, 'info': {'capacity': 20323436278580, 'rebuildingProgress': '0', 'situation': 'NORMAL', 'state': 'NORMAL', 'used': 2199023255552}}, status_code=200)
+    kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/devices/all/scan',json =scan_json, status_code=200)
 
     #output = list_devices()
     response = app.test_client().get(
@@ -2068,7 +1586,7 @@ def test_get_volume_collection(**kwargs):
                             "total": 12345678,
                             "remain": 12345678}]}}}, status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers={'x-access-token': json_token})
+    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers=header_json)
 
     assert response.status_code == 200
 
@@ -2087,7 +1605,7 @@ def test_get_volume_collection(**kwargs):
                             "total": 12345678,
                             "remain": 12345678}]}}}, status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes',headers={'x-access-token': json_token})
+    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes',headers=header_json)
 
     assert response.status_code == 200
 @requests_mock.Mocker(kw="mock")
@@ -2096,7 +1614,7 @@ def test_get_volume_collection_failure(**kwargs):
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumes',
                        status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes',headers={'x-access-token': json_token})
+    response = app.test_client().get('/redfish/v1/StorageServices/0/Volumes',headers=header_json)
 
     assert response.status_code == 200
 
@@ -2106,7 +1624,7 @@ def test_get_volume_failure(**kwargs):
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
                        status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/'+ARRAY_NAME+'/Volumes/0',headers={'x-access-token': json_token})
+    response = app.test_client().get('/redfish/v1/StorageServices/'+ARRAY_NAME+'/Volumes/0',headers=header_json)
     assert response.status_code == 200
 
 
@@ -2148,91 +1666,14 @@ def test_get_volume(**kwargs):
             }
         }, status_code=200)
 
-    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers={'x-access-token': json_token})
+    response = app.test_client().get('/redfish/v1/StorageServices/POSArray/Volumes/0',headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
 def test_get_arrays_func(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json={
-    "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
-    "lastSuccessTime": 1621261763,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "arrayList": [
-                {
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                },
-				{
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray2",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                }
-            ]
-        }
-    },
-    "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "state": "EXIST_NORMAL",
-        "used": 0
-    }
-}, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
                        json={
@@ -2287,179 +1728,26 @@ def test_get_arrays_func(**kwargs):
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS"},
-                "data": {
-                    "volumes": [
-                        {
-                            "name": "vol1",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678},
-							{
-                            "name": "vol2",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678}]}}},
+        json=volume_list_json,
         status_code=200)
-    response = app.test_client().get('/api/v1/get_arrays/',headers={'x-access-token': json_token})
+    response = app.test_client().get('/api/v1/get_arrays/',headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
 def test_get_arrays_func_failure(**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].get(ARRAY_LIST_URL,
-                       json={
-    "rid": "354220f5-60b5-4e27-ba44-e4b4b34434f3",
-    "lastSuccessTime": 1621261763,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "arrayList": [
-                {
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                },
-				{
-                    "createDatetime": "2021-05-06 23:53:26 +0530",
-                    "devicelist": [
-                        {
-                            "name": "uram0",
-                            "type": "BUFFER"
-                        },
-                        {
-                            "name": "S439NA0MB02505      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02476      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02503      ",
-                            "type": "DATA"
-                        },
-                        {
-                            "name": "S439NA0MB02514      ",
-                            "type": "DATA"
-                        }
-                    ],
-                    "name": "POSArray2",
-                    "status": "Mounted",
-                    "updateDatetime": "2021-05-06 23:53:26 +0530"
-                }
-            ]
-        }
-    },
-    "info": {
-        "capacity": 0,
-        "rebuildingProgress": "0",
-        "state": "EXIST_NORMAL",
-        "used": 0
-    }
-}, status_code=200)
+                       json=array_list_json, status_code=200)
 
     kwargs["mock"].get(DAGENT_URL + '/api/ibofos/v1/array/POSArray',
-                       json={
-    "rid": "63fdc326-b718-4cf7-9cc3-ea9d619d2315",
-    "lastSuccessTime": 1620717645,
-    "result": {
-        "status": {
-            "module": "COMMON",
-            "code": 0,
-            "level": "INFO",
-            "description": "Success"
-        },
-        "data": {
-            "capacity": 0,
-            "createDatetime": "2021-05-10 19:41:08 +0530",
-            "devicelist": [
-                {
-                    "name": "uram0",
-                    "type": "BUFFER"
-                },
-                {
-                    "name": "unvme-ns-0",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-1",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-2",
-                    "type": "DATA"
-                },
-                {
-                    "name": "unvme-ns-3",
-                    "type": "SPARE"
-                }
-            ],
-            "name": "POSArray",
-            "rebuildingProgress": "0",
-            "situation": "DEFAULT",
-            "state": "OFFLINE",
-            "updateDatetime": "2021-05-10 19:41:08 +0530",
-            "used": 0
-        }
-    },
-    "info": {
-        "version": "pos-0.8.0-alpha1"
-    }
-}, status_code=200)
+                       json=dagent_json, status_code=200)
 
     kwargs["mock"].get(
         DAGENT_URL + '/api/ibofos/v1/volumelist/'+ARRAY_NAME,
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS"},
-                "data": {
-                    "volumes": [
-                        {
-                            "name": "vol1",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678},
-							{
-                            "name": "vol2",
-                            "size": 1234567,
-                            "total": 12345678,
-                            "remain": 12345678}]}}},
+        json= volume_list_json,
         status_code=200)
 
-    response = app.test_client().get('/api/v1/get_arrays/',headers={'x-access-token': json_token})
+    response = app.test_client().get('/api/v1/get_arrays/',headers=header_json)
     assert response.status_code == 200
 
 
@@ -2471,14 +1759,10 @@ def test_mount_ibofos(mock_get_current_user,**kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json= success_json,
         status_code=200)
 
-    response = app.test_client().post('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1.0/ibofos/mount',headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2492,7 +1776,7 @@ def test_mount_ibofos_failure(mock_get_current_user,**kwargs):
         json=None,
         status_code=200)
 
-    response = app.test_client().post('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1.0/ibofos/mount',headers=header_json)
     assert response.status_code == 500
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
@@ -2502,14 +1786,10 @@ def test_unmount_ibofos(mock_get_current_user,**kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/system/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
-    response = app.test_client().delete('/api/v1.0/ibofos/mount',headers={'x-access-token': json_token})
+    response = app.test_client().delete('/api/v1.0/ibofos/mount',headers=header_json)
     assert response.status_code == 200
 
 
@@ -2521,14 +1801,10 @@ def test_mount_array(mock_get_current_user,**kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/'+ARRAY_NAME+'/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
-    response = app.test_client().post('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers=header_json)
     assert response.status_code == 200
 
 
@@ -2543,7 +1819,7 @@ def test_mount_array_failure(mock_get_current_user,**kwargs):
         json=None,
         status_code=200)
 
-    response = app.test_client().post('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers=header_json)
     assert response.status_code == 500
 
 
@@ -2555,14 +1831,10 @@ def test_unmount_array(mock_get_current_user,**kwargs):
     kwargs["mock"].delete(
         DAGENT_URL +
         '/api/ibofos/v1/array/'+ARRAY_NAME+'/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
-    response = app.test_client().delete('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers={'x-access-token': json_token})
+    response = app.test_client().delete('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2576,7 +1848,7 @@ def test_unmount_array_failure(mock_get_current_user,**kwargs):
         json=None,
         status_code=200)
 
-    response = app.test_client().delete('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers={'x-access-token': json_token})
+    response = app.test_client().delete('/api/v1/array/mount',data='{"array": "'+ARRAY_NAME+'"}',headers=header_json)
     
     assert response.status_code == 500
 
@@ -2592,7 +1864,7 @@ def test_createMultiVolumeCallback(**kwargs):
                 "Pass":1,
                 "TotalCount":1
                 }''',
-        headers={'x-access-token': json_token})
+        headers=header_json)
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.app.connection_factory.get_current_user",
@@ -2616,13 +1888,7 @@ def test_create_uram_device(mock_get_current_user, **kwargs):
         "version": "v0.11.0-rc4"
     }
 }, status_code=200)
-    response = app.test_client().post('/api/v1/device/',data='''{
-        "name": "uram4",
-                "num_blocks" : 16777216,
-                "block_size" : 512,
-                "dev_type" : "uram",
-                "numa" : 0
-}''', headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1/device/',data=device_json, headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2646,13 +1912,7 @@ def test_create_uram_device_failure(mock_get_current_user, **kwargs):
         "version": "v0.11.0-rc4"
     }
 }, status_code=400)
-    response = app.test_client().post('/api/v1/device/',data='''{
-        "name": "uram4",
-                "num_blocks" : 16777216,
-                "block_size" : 512,
-                "dev_type" : "uram",
-                "numa" : 0
-}''', headers={'x-access-token': json_token})
+    response = app.test_client().post('/api/v1/device/',data=device_json, headers=header_json)
     assert response.status_code == 200
                                                 
 @requests_mock.Mocker(kw="mock")
@@ -2681,11 +1941,7 @@ def test_autocreate_array(mock_get_current_user, **kwargs):
     kwargs["mock"].post(
         DAGENT_URL +
         '/api/ibofos/v1/array/POSArray/mount',
-        json={
-            "result": {
-                "status": {
-                    "description": "SUCCESS",
-                    "code": 0}}},
+        json=success_json,
         status_code=200)
 
     response = app.test_client().post('/api/v1/autoarray/',data='''{
@@ -2695,7 +1951,7 @@ def test_autocreate_array(mock_get_current_user, **kwargs):
     "num_spare": 0,
     "raidtype":"RAID5",
     "writeThroughModeEnabled":true
-}''', headers={'x-access-token': json_token})
+}''', headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2724,7 +1980,7 @@ def test_qos_reset_policies(mock_get_current_user, **kwargs):
         "array": "{{arrayName}}",
 		"volumes":[{"volumeName":"vol_arr1_0"}]
 
-}''', headers={'x-access-token': json_token})
+}''', headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2777,7 +2033,7 @@ def test_qos_policies(mock_get_current_user, **kwargs):
         "array": "{{arrayName}}",
 		"volumes":[{"volumeName":"vol"}]
 
-}''', headers={'x-access-token': json_token})
+}''', headers=header_json)
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
@@ -2795,7 +2051,7 @@ def test_rebuild_array_device(mock_get_current_user, **kwargs):
                        status_code=200)
     response = app.test_client().post(
         '/api/v1.0/array/POSArray/rebuild',
-        headers={'x-access-token': json_token}
+        headers=header_json
     )
 
     assert response.status_code == 200
@@ -2818,7 +2074,7 @@ def test_replace_array_device(mock_get_current_user, **kwargs):
         data=json.dumps({
             "device": "unvme-ns-0"
         }),
-        headers={'x-access-token': json_token}
+        headers=header_json
     )
 
     assert response.status_code == 200
@@ -2835,7 +2091,7 @@ def test_replace_array_device_error(mock_get_current_user, **kwargs):
         data=json.dumps({
             "device": "unvme-ns-0"
         }),
-        headers={'x-access-token': json_token}
+        headers=header_json
     )
 
     assert response.status_code == 500
