@@ -42,7 +42,6 @@ from rest.exceptions import InvalidUsage
 #from rest.rest_api.logmanager.logmanager import get_ibofos_logs
 #from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from rest.rest_api.perf.system_perf import get_agg_volumes_perf, get_all_hardware_health
-from flask_socketio import SocketIO, disconnect
 from flask import Flask, abort, request, jsonify, make_response
 #import rest.rest_api.dagent.bmc as BMC_agent
 import rest.rest_api.dagent.ibofos as dagent
@@ -69,12 +68,15 @@ from rest.blueprints.user import user_bp
 from rest.db import connection_factory
 from rest.auth import token_required
 from rest.log import logger
+from rest.socketio.socketio_init import init_socketio, socketIo
 from util.com.common import toJson
 
 eventlet.monkey_patch()
 
 # Serve React App
 app = Flask(__name__, static_folder='./public')
+
+init_socketio(app)
 
 old_result = ""
 
@@ -258,83 +260,6 @@ def log_collect():
         return "Log written sucessfully"
     return make_response("Received null log value", 200)
 
-socketIo = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
-
-# authenticate the client for websocket connection
-def check_authentication():
-    token = None
-    if 'x-access-token' in request.args:
-        token = request.args['x-access-token']
-    if not token:
-        return False
-    try:
-        data = jwt.decode(token, app.config['SECRET_KEY'])
-        current_user = connection_factory.get_current_user(data['_id'])
-        print("current user", current_user)
-        print("authorized user connected")
-    except BaseException:
-        return False
-    return True
-
-@socketIo.on("volume", namespace='/create')
-def handleMsg(msg):
-    res = check_authentication()
-    if res:
-        print("args", request.args)
-    else:
-        disconnect()
-        raise ConnectionRefusedError('unauthorized user!')
-
-@socketIo.on("connect", namespace='/create_vol')
-def handleCreateVolConn():
-    token = None
-    if 'x-access-token' in request.args:
-        token = request.args['x-access-token']
-    if not token:
-        raise ConnectionRefusedError('unauthorized')
-    res = check_authentication()
-    if not res:
-        raise ConnectionRefusedError('unauthorized user!')
-
-# callback function for multi-volume creation response from DAgent
-@app.route('/api/v1.0/multi_vol_response/', methods=['POST'])
-def createMultiVolumeCallback():
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    description = ""
-    errorResponses = []
-    errorCode = 0
-    respList = body['MultiVolArray']
-    for entry in respList:
-        if entry["result"]["status"]["code"] != 0:
-            if entry["result"]["status"]["description"] == "":
-                description += entry["result"]["status"]["posDescription"]
-            else:
-                description += entry["result"]["status"]["description"]
-            if len(description) > 0:
-                description += "\n"
-        if "errorInfo" in entry["result"]["status"]:
-            if len(errorResponses) == 0:
-                if "errorCode" in entry["result"]["status"]["errorInfo"] and entry["result"]["status"]["errorInfo"]["errorCode"] == 1:
-                    errorCode = 1
-                    errorResponses = entry["result"]["status"]["errorInfo"]["errorResponses"]
-    qosResp = respList[len(respList)-1]
-    if qosResp["result"]["status"]["code"] != 0:
-        errorCode = 1
-    passed = body['Pass']
-    total_count = body['TotalCount']
-    socketIo.emit('create_multi_volume',
-                  {'pass': passed,
-                   'total_count': total_count,
-                   'description': description,'errorCode':errorCode,'errorResponses':errorResponses},
-                  namespace='/create_vol')
-    return "ok", 200
-
-@socketIo.on_error_default
-def default_error_handler(e):
-    print('Websocket error occured:')
-    print(e)
-
 @app.route('/api/v1.0/cleanup/', methods=['GET'])
 @token_required
 def do_cleanup(current_user):
@@ -344,24 +269,6 @@ def do_cleanup(current_user):
     except Exception as e:
         print("In do_cleanup() Exception: ", e)
         return make_response('Could not cleanup', 500)
-
-@socketIo.on("connect", namespace='/health_status')
-def handleHealthStatusConn():
-    global old_result
-    token = None
-    if 'x-access-token' in request.args:
-        token = request.args['x-access-token']
-    if not token:
-        raise ConnectionRefusedError('unauthorized')
-    res = check_authentication()
-    if not res:
-        raise ConnectionRefusedError('unauthorized user!')
-    else:
-        old_result = ""
-
-@socketIo.on('disconnect', namespace='/health_status')
-def disconnectHealthStatusSocket():
-    print("Health status websocket client disconnected!")
 
 if __name__ == '__main__':
     socketIo.run(
