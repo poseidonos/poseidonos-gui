@@ -522,7 +522,7 @@ class VolumeList extends Component {
         <ThemeProvider theme={this.theme}>
           <MaterialTable
             title={(
-              <Typography className={classes.cardHeader}>Volume List</Typography>
+              <Typography className={classes.cardHeader} variant="h2">Volume List</Typography>
             )}
             columns={volumeTableColumns}
             data={this.props.volumes}
@@ -541,7 +541,8 @@ class VolumeList extends Component {
               })
             }}
             icons={{
-              Check,
+              // eslint-disable-next-line react/no-multi-comp
+              Check: () => <Check aria-label="No value" />,
               // eslint-disable-next-line react/no-multi-comp
               FirstPage: () => <FirstPage id="VolumeList-icon-firstpage" />,
               // eslint-disable-next-line react/no-multi-comp

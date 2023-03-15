@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
-  Box,
   Button,
   Checkbox,
   FormControl,
@@ -9,7 +8,6 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   Step,
   StepLabel,
@@ -19,36 +17,16 @@ import {
   Typography,
   withStyles
 } from '@material-ui/core';
+import { CheckBox, CheckBoxOutlineBlank } from '@material-ui/icons';
 import * as actionCreators from "../../../store/actions/exportActionCreators";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Dialog from '../../Dialog';
-import DialogTitle from '../../DialogTitle';
-
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  borderRadius: 4,
-  overflow: "hidden"
-}
+import Popup from '../../Popup';
 
 const styles = (theme) => ({
-  popupBox: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    height: 400,
-    bgcolor: 'background.paper',
-    borderRadius: 4,
-  },
   main: {
-    width: '800px',
-    height: '400px',
+    width: '100%',
+    height: '380px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -79,6 +57,9 @@ const styles = (theme) => ({
   },
   leftPadding: {
     padding: "16px"
+  },
+  leftMargin: {
+    marginLeft: "8px"
   },
   borderBottom: {
     borderBottom: "1px solid grey"
@@ -189,6 +170,7 @@ const styles = (theme) => ({
     marginBottom: 8
   },
   previewElement: {
+    display: "flex",
     flex: "1 0 45%",
     color: "#424850",
     minWidth: "fit-content",
@@ -224,8 +206,8 @@ function AdvanceCreateVolume(props) {
         <Tooltip title={volumeCountTitle} placement="bottom-start">
           <FormControl className={classes.volumeName}>
             <TextField
-              id="create-vol-count"
-              name="volume_count"
+              id="adv-create-vol-count"
+              name="adv_volume_count"
               label="Volume Count"
               type="number"
               inputProps={{
@@ -260,9 +242,9 @@ function AdvanceCreateVolume(props) {
               disabled={props.volume_count < 2}
               control={(
                 <Checkbox
-                  name="stop_on_error_checkbox"
+                  name="adv_stop_on_error_checkbox"
                   color="primary"
-                  id="create-vol-stop-on-error-checkbox"
+                  id="adv-create-vol-stop-on-error-checkbox"
                   checked={props.stop_on_error_checkbox}
                   value="Stop on error"
                   inputProps={{
@@ -298,9 +280,9 @@ function AdvanceCreateVolume(props) {
       >
         <FormControl className={classes.volumeName}>
           <TextField
-            id="create-vol-name"
+            id="adv-create-vol-name"
             label="Volume Name"
-            name="volume_name"
+            name="adv_volume_name"
             value={props.volume_name}
             onChange={handleChange}
             inputProps={{
@@ -328,9 +310,9 @@ function AdvanceCreateVolume(props) {
         >
           <FormControl className={classes.volumeName}>
             <TextField
-              id="create-vol-suffix"
-              label="Suffix Start Value"
-              name="volume_suffix"
+              id="adv-create-vol-suffix"
+              label="Suffix start value"
+              name="adv_volume_suffix"
               type="number"
               InputProps={{
                 inputProps: {
@@ -359,9 +341,9 @@ function AdvanceCreateVolume(props) {
         >
           <FormControl className={classes.unitText}>
             <TextField
-              id="create-vol-size"
+              id="adv-create-vol-size"
               label="Volume Size"
-              name="volume_size"
+              name="adv_volume_size"
               value={props.volume_size}
               onChange={handleChange}
               type="number"
@@ -378,8 +360,8 @@ function AdvanceCreateVolume(props) {
             value={props.volume_units}
             onChange={handleChange}
             inputProps={{
-              name: "volume_units",
-              id: "vol_unit",
+              name: "adv_volume_units",
+              id: "adv-vol-unit",
               "data-testid": "adv-volume-unit-input",
             }}
             SelectDisplayProps={{
@@ -526,9 +508,9 @@ function AdvanceCreateVolume(props) {
           <FormControlLabel
             control={(
               <Checkbox
-                name="mount_vol_checkbox"
+                name="adv_mount_vol_checkbox"
                 color="primary"
-                id="mount-vol-checkbox"
+                id="adv-mount-vol-checkbox"
                 checked={props.mount_vol}
                 value="Mount Volume"
                 inputProps={{
@@ -545,7 +527,6 @@ function AdvanceCreateVolume(props) {
       <Grid item container xs={12}>
         <Typography
           variant="body2"
-          // component="h4"
           className={classes.caption}
           display="block"
         />
@@ -565,8 +546,8 @@ function AdvanceCreateVolume(props) {
             onChange={handleChange}
             label="Select Subsystem"
             inputProps={{
-              name: "subsystem",
-              id: "subsystem",
+              name: "adv_subsystem",
+              id: "adv-subsystem",
               "data-testid": "adv-subsystem-input",
             }}
             SelectDisplayProps={{
@@ -906,26 +887,14 @@ function AdvanceCreateVolume(props) {
       <div className={classes.previewElements}>
         <Typography className={classes.previewElement}>
           Mount Volume :
-          <Checkbox
-            size="small"
-            color="primary"
-            checked={props.mount_vol}
-            // disabled
-            className={classes.removePadding}
-          />
+          {props.mount_vol ? <CheckBox /> : <CheckBoxOutlineBlank />}
         </Typography>
         {props.mount_vol &&
           (
             <React.Fragment>
               <Typography className={classes.previewElement}>
                 With New Subsystem :
-                <Checkbox
-                  size="small"
-                  color="primary"
-                  checked={props.selectedNewSubsystem}
-                  // disabled
-                  className={classes.removePadding}
-                />
+                {props.selectedNewSubsystem ? <CheckBox /> : <CheckBoxOutlineBlank />}
               </Typography>
               {props.selectedNewSubsystem ?
                 (
@@ -1004,88 +973,83 @@ function AdvanceCreateVolume(props) {
   }
 
   return (
-    <Modal
+    <Popup
+      title="Advance Create Volume"
       open={showAdvanceOptions}
-      onClose={handleModalClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      close={handleModalClose}
+      maxWidth="md"
     >
-      <Box sx={style}>
-        <DialogTitle onClose={handleModalClose}>
-          Advance Create Volume
-        </DialogTitle>
-        <form className={classes.formContainer}>
-          <main className={classes.main}>
-            <div className={classes.mainContent}>
-              <div>
-                <Typography className={classes.createHeader}>Steps</Typography>
-                <Stepper
-                  activeStep={activeStep}
-                  className={[classes.xsHide, classes.leftPadding].join(' ')}
-                  orientation="vertical"
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-                <Stepper
-                  activeStep={activeStep}
-                  className={[classes.xsShow, classes.borderBottom].join(' ')}
-                  orientation="horizontal"
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </div>
+      <form className={classes.main}>
+        <div className={classes.mainContent}>
+          <div>
+            <Typography className={classes.createHeader}>Steps</Typography>
+            <Stepper
+              activeStep={activeStep}
+              className={[classes.xsHide, classes.leftPadding].join(' ')}
+              orientation="vertical"
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <Stepper
+              activeStep={activeStep}
+              className={[classes.xsShow, classes.borderBottom].join(' ')}
+              orientation="horizontal"
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
 
-              <div>
-                <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
-                <div className={classes.stepContent}>
-                  {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
-                </div>
-              </div>
+          <div>
+            <Typography className={classes.createHeader}>{activeStep === steps.length ? "Preview" : steps[activeStep]} </Typography>
+            <div className={classes.stepContent}>
+              {activeStep === steps.length ? previewDetails : stepContents[activeStep]}
             </div>
+          </div>
+        </div>
 
-            <div className={classes.actionsContainer}>
-              <div>
-                <Button
-                  data-testid="back-btn"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.button}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  data-testid="next-btn"
-                  onClick={handleNext}
-                  className={classes.button}
-                  disabled={props.createVolumeButton}
-                >
-                  {activeStep === steps.length ? 'Create Volume' : 'Next'}
-                </Button>
-              </div>
-            </div>
-          </main>
-        </form>
-        <Dialog
-          title="Reset Fields"
-          description={alertDescription}
-          open={alertOpen}
-          handleClose={() => {
-            setAlertOpen(false)
-          }}
-          onConfirm={onAlertConfirm}
-        />
-      </Box>
-    </Modal>
+        <div className={classes.actionsContainer}>
+          <div>
+            <Button
+              variant="outlined"
+              color="secondary"
+              data-testid="back-btn"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.button}
+            >
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              data-testid="next-btn"
+              onClick={handleNext}
+              className={`${classes.button} ${classes.leftMargin}`}
+              disabled={props.createVolumeButton}
+            >
+              {activeStep === steps.length ? 'Create Volume' : 'Next'}
+            </Button>
+          </div>
+        </div>
+      </form>
+      <Dialog
+        title="Reset Fields"
+        description={alertDescription}
+        open={alertOpen}
+        handleClose={() => {
+          setAlertOpen(false)
+        }}
+        onConfirm={onAlertConfirm}
+      />
+    </Popup>
   );
 }
 
