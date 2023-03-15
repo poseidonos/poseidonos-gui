@@ -3,6 +3,7 @@ import math
 import rest.rest_api.dagent.ibofos as dagent
 from flask import Blueprint, make_response, request, jsonify
 from rest.auth import token_required
+from rest.socketio.socketio_init import socketIo
 from rest.rest_api.volume.volume import create_volume, delete_volume, list_volume, rename_volume, get_max_vol_count, mount_volume, unmount_volume
 from util.com.common import toJson
 
@@ -287,3 +288,37 @@ def getVolumes(array_name):
         if "maxiops" in vol:
             vol["maxiops"] = int(vol["maxiops"])
     return toJson(volumes)
+
+# callback function for multi-volume creation response from DAgent
+@volume_bp.route('/api/v1.0/multi_vol_response/', methods=['POST'])
+def createMultiVolumeCallback():
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    description = ""
+    errorResponses = []
+    errorCode = 0
+    respList = body['MultiVolArray']
+    for entry in respList:
+        if entry["result"]["status"]["code"] != 0:
+            if entry["result"]["status"]["description"] == "":
+                description += entry["result"]["status"]["posDescription"]
+            else:
+                description += entry["result"]["status"]["description"]
+            if len(description) > 0:
+                description += "\n"
+        if "errorInfo" in entry["result"]["status"]:
+            if len(errorResponses) == 0:
+                if "errorCode" in entry["result"]["status"]["errorInfo"] and entry["result"]["status"]["errorInfo"]["errorCode"] == 1:
+                    errorCode = 1
+                    errorResponses = entry["result"]["status"]["errorInfo"]["errorResponses"]
+    qosResp = respList[len(respList)-1]
+    if qosResp["result"]["status"]["code"] != 0:
+        errorCode = 1
+    passed = body['Pass']
+    total_count = body['TotalCount']
+    socketIo.emit('create_multi_volume',
+                  {'pass': passed,
+                   'total_count': total_count,
+                   'description': description,'errorCode':errorCode,'errorResponses':errorResponses},
+                  namespace='/create_vol')
+    return "ok", 200
