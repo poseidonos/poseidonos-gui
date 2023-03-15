@@ -56,6 +56,24 @@ import i18n from "../../../i18n";
 
 jest.unmock("axios");
 
+
+// duplicate code 
+const listenerJson = {
+    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
+    "lastSuccessTime": 1642352844,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "description": "",
+            "posDescription": "Success"
+        }
+    },
+    "info": {
+        "version": "v0.10.6"
+    }
+}
+
 describe("SubsystemOperations", () => {
     let wrapper;
     let history;
@@ -272,21 +290,7 @@ describe("SubsystemOperations", () => {
                 .reply(200,
                     subsystemResponse
                 ).onPost("/api/v1/listener/")
-                .reply(200, {
-                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
-                    "lastSuccessTime": 1642352844,
-                    "result": {
-                        "status": {
-                            "module": "",
-                            "code": 0,
-                            "description": "",
-                            "posDescription": "Success"
-                        }
-                    },
-                    "info": {
-                        "version": "v0.10.6"
-                    }
-                }).onAny(200);
+                .reply(200, listenerJson).onAny(200);
             renderComponent();
             jest.setTimeout(30000);
             const { getByTestId, getByText } = wrapper;
@@ -315,21 +319,7 @@ describe("SubsystemOperations", () => {
                 .reply(200,
                     subsystemResponse
                 ).onPost("/api/v1/listener/")
-                .reply(200, {
-                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
-                    "lastSuccessTime": 1642352844,
-                    "result": {
-                        "status": {
-                            "module": "",
-                            "code": 0,
-                            "description": "",
-                            "posDescription": "Success"
-                        }
-                    },
-                    "info": {
-                        "version": "v0.10.6"
-                    }
-                }).onAny(200);
+                .reply(200, listenerJson).onAny(200);
             renderComponent();
             jest.setTimeout(30000);
             const { getByTestId, getByText } = wrapper;
@@ -359,21 +349,7 @@ describe("SubsystemOperations", () => {
                     subsystemResponse
                 )
                 .onDelete("/api/v1/subsystem/")
-                .reply(200, {
-                    "rid": "4dd7f4da-825f-4377-8ca4-a74374bb7759",
-                    "lastSuccessTime": 1642352844,
-                    "result": {
-                        "status": {
-                            "module": "",
-                            "code": 0,
-                            "description": "",
-                            "posDescription": "Success"
-                        }
-                    },
-                    "info": {
-                        "version": "v0.10.6"
-                    }
-                }).onAny().reply(200);
+                .reply(200, listenerJson).onAny().reply(200);
             renderComponent();
             const { findAllByTitle, getByText } = wrapper;
             const deleteBtns = await findAllByTitle("Delete Subsystem");
