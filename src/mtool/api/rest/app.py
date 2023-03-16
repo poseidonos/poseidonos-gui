@@ -72,7 +72,6 @@ app = Flask(__name__, static_folder='./public')
 init_socketio(app)
 
 app.config['SECRET_KEY'] = 'ibofalltheway'
-app.config['MONGODB_URL'] = 'mongodb://localhost:27017/ibof'
 
 app.register_blueprint(swordfish_api)
 app.register_blueprint(array_bp)

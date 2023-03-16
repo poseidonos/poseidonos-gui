@@ -18,7 +18,6 @@ monotonic==1.6
 msgpack==1.0.2
 PyJWT==1.7.1
 pymodm==0.4.1
-pymongo==3.12.0
 python-dateutil==2.8.2
 python-engineio==3.13.2
 python-socketio==4.6.0
