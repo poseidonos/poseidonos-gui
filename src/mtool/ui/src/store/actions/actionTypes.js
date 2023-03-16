@@ -226,12 +226,6 @@ export const SET_ACTIVE_STEP = "SET_ACTIVE_STEP"
 
 export const SAGA_RESET_VOLUME_QOS = "SAGA_RESET_VOLUME_QOS"
 
-// Language Change
-// export const CHANGE_LANGUAGE = "CHANGE_LANGUAGE"
-
-//  CONFIGURATION SETTING PAGE
-export const SAGA_GET_IBOFOS_TIME_INTERVAL = "SAGA_GET_IBOFOS_TIME_INTERVAL"
-
 // Alert Management
 export const ALERT_MANAGEMENT_OPEN_ALERT_BOX = "ALERT_MANAGEMENT_OPEN_ALERT_BOX" // No SAGA action for this. Only applicable for sync call
 

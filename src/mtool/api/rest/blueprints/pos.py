@@ -4,7 +4,7 @@ import re
 import os
 import uuid
 import rest.rest_api.dagent.ibofos as dagent
-from flask import Blueprint, make_response, request, jsonify
+from flask import Blueprint, make_response, jsonify
 from rest.auth import token_required
 from rest.db import connection_factory
 from rest.log import logger
@@ -15,6 +15,18 @@ pos_bp = Blueprint('pos', __name__)
 
 class IBOF_OS_Running:
     Is_Ibof_Os_Running_Flag = False
+
+
+# Get POS-GUI Version
+@pos_bp.route('/api/v1.0/version', methods=['GET'])
+def get_version():
+    package_json_path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../../../ui/package.json"))
+    with open(package_json_path, encoding="utf-8") as f:
+        data = json.load(f)
+        return toJson({"version": data["version"]})
 
 # Get IP And Mac Info
 @pos_bp.route('/api/v1.0/get_ip_and_mac', methods=['GET'])

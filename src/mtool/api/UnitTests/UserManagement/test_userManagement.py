@@ -36,7 +36,7 @@ import pytest
 # sys.path.append(os.path.abspath('/usr/local/lib/python3.6/dist-packages/'))
 # sys.path.append(os.path.abspath('/home/ibof08/Palak/ibofmgmt/Code/Server/'))
 from rest.app import app
-from flask import json
+import json
 from unittest import mock
 
 token = ""
@@ -55,7 +55,7 @@ data_json = {"_id": "abc",
         "oldid": "abc"}
 
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -67,7 +67,7 @@ def global_data(mock_match_username_from_db):
     return {'token': login_data['token']}
 
 
-@mock.patch("rest.app.connection_factory.add_new_user_in_db",
+@mock.patch("rest.db.connection_factory.add_new_user_in_db",
             return_value=True, autospec=True)
 def test_add_new_user(mock_add_new_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/add_new_user/',
@@ -88,7 +88,7 @@ def test_add_new_user(mock_add_new_user_in_db, global_data):
     assert response.status_code == 200
     #print("DATAAA", data)
 
-@mock.patch("rest.app.connection_factory.add_new_user_in_db",
+@mock.patch("rest.db.connection_factory.add_new_user_in_db",
             return_value=True, autospec=True)
 def test_add_new_user_failure_invalid_phone(mock_add_new_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/add_new_user/',
@@ -107,7 +107,7 @@ def test_add_new_user_failure_invalid_phone(mock_add_new_user_in_db, global_data
                                       )
     assert response.status_code == 400
 
-@mock.patch("rest.app.connection_factory.add_new_user_in_db",
+@mock.patch("rest.db.connection_factory.add_new_user_in_db",
             return_value=True, autospec=True)
 def test_add_new_user_failure_invalid_email(mock_add_new_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/add_new_user/',
@@ -127,7 +127,7 @@ def test_add_new_user_failure_invalid_email(mock_add_new_user_in_db, global_data
     assert response.status_code == 400
 
 
-@mock.patch("rest.app.connection_factory.get_users_from_db",
+@mock.patch("rest.db.connection_factory.get_users_from_db",
             return_value=['admin'], autospec=True)
 def test_get_users(mock_get_users_from_db, global_data):
     #print("token val",token)
@@ -145,7 +145,7 @@ def test_get_users(mock_get_users_from_db, global_data):
     assert len(data) >= 0
 
 
-@mock.patch("rest.app.connection_factory.update_user_in_db",
+@mock.patch("rest.db.connection_factory.update_user_in_db",
             return_value=True, autospec=True)
 def test_update_users(mock_update_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/update_user/',
@@ -170,7 +170,7 @@ def test_update_users(mock_update_user_in_db, global_data):
     print("DATAAA", data)
     assert response.status_code == 200
 
-@mock.patch("rest.app.connection_factory.update_user_in_db",
+@mock.patch("rest.db.connection_factory.update_user_in_db",
             return_value=True, autospec=True)
 def test_update_users_failure_phone(mock_update_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/update_user/',
@@ -184,7 +184,7 @@ def test_update_users_failure_phone(mock_update_user_in_db, global_data):
     print("DATAAA", data)
     assert response.status_code == 400
 
-@mock.patch("rest.app.connection_factory.update_user_in_db",
+@mock.patch("rest.db.connection_factory.update_user_in_db",
             return_value=True, autospec=True)
 def test_update_users_failure_email(mock_update_user_in_db, global_data):
     response = app.test_client().post('/api/v1.0/update_user/',
@@ -199,7 +199,7 @@ def test_update_users_failure_email(mock_update_user_in_db, global_data):
     assert response.status_code == 400
 
 
-@mock.patch("rest.app.connection_factory.delete_users_in_db",
+@mock.patch("rest.db.connection_factory.delete_users_in_db",
             return_value=False, autospec=True)
 def test_delete_users(mock_delete_users_in_db, global_data):
     response = app.test_client().post(
@@ -214,7 +214,7 @@ def test_delete_users(mock_delete_users_in_db, global_data):
 
 
 '''
-@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+@mock.patch("rest.db.connection_factory.toggle_status_from_db",
             return_value=True, autospec=True)
 def test_toggle_user_status(mock_toggle_status_from_db, global_data):
     response = app.test_client().post(
@@ -230,7 +230,7 @@ def test_toggle_user_status(mock_toggle_status_from_db, global_data):
 
 '''
 '''
-@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+@mock.patch("rest.db.connection_factory.toggle_status_from_db",
             return_value=False, autospec=True)
 def test_toggle_user_status_failure(mock_toggle_status_from_db, global_data):
     response = app.test_client().post(
@@ -242,7 +242,7 @@ def test_toggle_user_status_failure(mock_toggle_status_from_db, global_data):
     assert response.status_code == 200
 
 
-@mock.patch("rest.app.connection_factory.toggle_status_from_db",
+@mock.patch("rest.db.connection_factory.toggle_status_from_db",
             return_value=False, autospec=True)
 def test_toggle_admin_status_failure(mock_toggle_status_from_db, global_data):
     response = app.test_client().post(
@@ -254,7 +254,7 @@ def test_toggle_admin_status_failure(mock_toggle_status_from_db, global_data):
     assert response.status_code == 200
 '''
 
-@mock.patch("rest.app.connection_factory.update_password_in_db",
+@mock.patch("rest.db.connection_factory.update_password_in_db",
             return_value=True, autospec=True)
 def test_update_password(mock_update_password_in_db, global_data):
     response = app.test_client().post(
@@ -266,7 +266,7 @@ def test_update_password(mock_update_password_in_db, global_data):
     assert response.status_code == 200
 
 
-@mock.patch("rest.app.connection_factory.update_password_in_db",
+@mock.patch("rest.db.connection_factory.update_password_in_db",
             return_value=False, autospec=True)
 def test_update_password_failure(mock_update_password_in_db, global_data):
     response = app.test_client().post(
@@ -277,7 +277,7 @@ def test_update_password_failure(mock_update_password_in_db, global_data):
     )
     assert response.status_code == 500
 
-@mock.patch("rest.app.connection_factory.update_password_in_db",
+@mock.patch("rest.db.connection_factory.update_password_in_db",
             return_value=True, autospec=True)
 def test_update_password_failure2(mock_update_password_in_db, global_data):
     response = app.test_client().post(
