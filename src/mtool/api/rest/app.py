@@ -36,9 +36,7 @@
 #!/usr/bin/python
 from rest.exceptions import InvalidUsage
 from flask import Flask, request, jsonify
-#import rest.rest_api.dagent.bmc as BMC_agent
 from time import strftime
-#from dateutil import parser
 import traceback
 import eventlet
 from rest.blueprints.array import array_bp
