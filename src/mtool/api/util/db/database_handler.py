@@ -38,7 +38,6 @@ import sqlite3
 #from flask import make_response
 import os
 #from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
-#from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
 
 DB_CONNECTION = ""
 SQLITE_DB_PATH = os.getcwd() + "/"
@@ -49,7 +48,6 @@ EMAILLIST_TABLE = "emaillist"
 COUNTERS_TABLE = "counters"
 SMTP_TABLE = "smtpdetails"
 IBOFOS_TIMESTAMP_TABLE = "iBOFOS_Timestamp"
-USER_ALERTS_TABLE = "user_alerts"
 USER_TABLE_COLUMNS = (
     "_id",
     "password",
@@ -74,23 +72,10 @@ USER_TABLE_DEFAULT_QUERY = "INSERT INTO " + USER_TABLE + " (" + USER_TABLE_COLUM
     "," + USER_TABLE_COLUMNS[4] + "," + USER_TABLE_COLUMNS[5] + "," + USER_TABLE_COLUMNS[6] + "," + USER_TABLE_COLUMNS[7] + "," + USER_TABLE_COLUMNS[8] + ") VALUES(?,?,?,?,?,?,?,?,?)"
 
 
-USER_ALERTS_TABLE_COLUMNS = (
-    "alertName",
-    "alertCluster",
-    "alertSubCluster",
-    "alertType",
-    "alertCondition",
-    "alertField",
-    "description",
-    "alertRange",
-    "active")
-
 TELEMETRY_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + TELEMETRY_TABLE + " (ip text,port text);"
 
 USER_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_TABLE + " (" + USER_TABLE_COLUMNS[0] + " text," + USER_TABLE_COLUMNS[1] + " text," + USER_TABLE_COLUMNS[2] + " text," + USER_TABLE_COLUMNS[3] + \
     " text," + USER_TABLE_COLUMNS[4] + " text," + USER_TABLE_COLUMNS[5] + " bool," + USER_TABLE_COLUMNS[6] + " text," + USER_TABLE_COLUMNS[7] + " integer," + USER_TABLE_COLUMNS[8] + " bool);"
-USER_ALERTS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_ALERTS_TABLE + " (" + USER_ALERTS_TABLE_COLUMNS[0] + " text," + USER_ALERTS_TABLE_COLUMNS[1] + " text," + USER_ALERTS_TABLE_COLUMNS[2] + " text," + USER_ALERTS_TABLE_COLUMNS[
-    3] + " text," + USER_ALERTS_TABLE_COLUMNS[4] + " text," + USER_ALERTS_TABLE_COLUMNS[5] + " text," + USER_ALERTS_TABLE_COLUMNS[6] + " text," + USER_ALERTS_TABLE_COLUMNS[7] + " text," + USER_ALERTS_TABLE_COLUMNS[8] + " bool);"
 
 SMTP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
     SMTP_TABLE + " (_id text,serverip text,serverport text);"
@@ -147,18 +132,6 @@ UPDATE_USER_QUERY = "UPDATE " + USER_TABLE + \
 SELECT_PASSWORD_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 UPDATE_PASSWORD_QUERY = "UPDATE " + USER_TABLE + " SET password = ? where lower(_id) = ?"
-ADD_ALERT_QUERY = "INSERT INTO " + USER_ALERTS_TABLE + " " + \
-    str(USER_ALERTS_TABLE_COLUMNS) + " VALUES(?,?,?,?,?,?,?,?,?)"
-GET_ALERTS_QUERY = "SELECT * FROM " + USER_ALERTS_TABLE
-DELETE_ALERT_QUERY = "DELETE FROM " + USER_ALERTS_TABLE + " WHERE alertName=?"
-SELECT_ALERT_QUERY = "SELECT alertName FROM " + \
-    USER_ALERTS_TABLE + " WHERE alertName = ?"
-UPDATE_ALERT_QUERY = "UPDATE " + USER_ALERTS_TABLE + \
-    " SET description = ?, alertRange = ?, alertCondition = ? where alertName = ?"
-TOGGLE_ALERT_STATUS_QUERY = "SELECT alertName FROM " + \
-    USER_ALERTS_TABLE + " WHERE alertName = ? "
-UPDATE_TOGGLE_ALERT_QUERY = "UPDATE " + \
-    USER_ALERTS_TABLE + " SET active = ? where alertName = ?"
 UPDATE_LIVELOG_STATUS_QUERY = "UPDATE " + \
     USER_TABLE + " SET livedata = ? where lower(_id) = ?"
 SELECT_LIVELOG_STATUS_QUERY = "SELECT livedata FROM " + \
@@ -190,7 +163,6 @@ class SQLiteConnection:
         cur.execute(EMAILLIST_TABLE_QUERY)
         cur.execute(COUNTERS_TABLE_QUERY)
         cur.execute(TIMESTAMP_TABLE_QUERY)
-        cur.execute(USER_ALERTS_TABLE_QUERY)
         cur.execute(SMTP_TABLE_QUERY)
         cur = DB_CONNECTION.cursor()
         is_user_table_exist = None

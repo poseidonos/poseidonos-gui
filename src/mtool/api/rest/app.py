@@ -34,12 +34,7 @@
 
 
 #!/usr/bin/python
-#from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
-#from rest.rest_api.logmanager.logmanager import download_logs
-#from rest.rest_api.logmanager.logmanager import get_bmc_logs
-#from rest.rest_api.logmanager.logmanager import get_ibofos_logs
-#from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from flask import Flask, request, jsonify
 #import rest.rest_api.dagent.bmc as BMC_agent
 from time import strftime
