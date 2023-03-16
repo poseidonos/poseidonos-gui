@@ -40,7 +40,7 @@ from generate_data import  EMAIL_LIST, USER_LIST
 os.system('rm ibof.db')
 
 CONNECTION_OBJ = DBConnection()
-OBJECT = CONNECTION_OBJ.get_db_connection(DBType.SQLite)  # SQLite/MongoDB
+OBJECT = CONNECTION_OBJ.get_db_connection(DBType.SQLite)  
 OBJECT.connect_database()
 OBJECT.create_default_database()
 
