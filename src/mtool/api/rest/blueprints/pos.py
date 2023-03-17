@@ -7,7 +7,6 @@ import rest.rest_api.dagent.ibofos as dagent
 from flask import Blueprint, make_response, jsonify
 from rest.auth import token_required
 from rest.db import connection_factory
-from rest.log import logger
 from rest.rest_api.system.system import fetch_system_state
 from util.com.common import get_ip_address, get_hostname, toJson
 
