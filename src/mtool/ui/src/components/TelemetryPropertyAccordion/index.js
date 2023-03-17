@@ -39,16 +39,31 @@ import {
     Checkbox,
     Grid,
     FormControlLabel,
-    Typography,
     withStyles,
-    Tooltip
+    Tooltip,
+    Typography,
 } from '@material-ui/core';
 import { customTheme } from '../../theme';
 
 const styles = (theme) => ({
     accordionSummary: {
         backgroundColor: customTheme.palette.secondary.main,
-        color: '#fff'
+        color: '#fff',
+        height: "48px",
+        minHeight: "48px !important",
+    },
+    accordion: {
+        margin: "0 !important",
+    },
+    accordionTitle: {
+        marginLeft: theme.spacing(4),
+    },
+    checkAll: {
+        position: "absolute",
+        top: 12,
+        left: theme.spacing(3),
+        zIndex: 5,
+        color: "#fff"
     },
     formControlWrap: {
         marginTop: theme.spacing(1)
@@ -56,27 +71,23 @@ const styles = (theme) => ({
     formLabel: {
         width: '100%'
     },
-    formLabelText: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    },
     accordionContainer: {
+        position: "relative",
         marginBottom: theme.spacing(1)
     },
     accordionCheckbox: {
         padding: 0,
         color: '#fff',
         marginRight: theme.spacing(1)
-    }
+    },
 })
 
 const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }) => {
 
     const isAllSelected = data && data.fields && data.fields.reduce((prev, cur) => prev && cur.isSet, true);
 
-    const selectAllProperties = (e) => {
-        e.stopPropagation();
-        selectAll({category: data.category, status: isAllSelected});
+    const selectAllProperties = () => {
+        selectAll({ category: data.category, status: isAllSelected });
     };
 
     const setProperty = (e) => {
@@ -85,32 +96,38 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
 
     return (
         <Grid item xs={12} key={data.category} className={classes.accordionContainer}>
-            <Accordion>
+            <FormControlLabel
+                className={classes.checkAll}
+                onClick={(event) => event.stopPropagation()}
+                onFocus={(event) => event.stopPropagation()}
+                control={(
+                    <Checkbox
+                        className={classes.accordionCheckbox}
+                        checked={isAllSelected}
+                        onClick={selectAllProperties}
+                        data-testid={`checkbox-${data.category}`}
+                        id={`checkbox-${data.category}`}
+                    />
+                )}
+                title="All"
+            />
+            <Accordion className={classes.accordion}>
                 <AccordionSummary
                     className={classes.accordionSummary}
                     expandIcon={<ExpandMore htmlColor="#fff" />}
                     id={data.category}
                 >
-                    <Checkbox
-                      className={classes.accordionCheckbox}
-                      checked={isAllSelected} onClick={selectAllProperties}
-                      data-testid={`checkbox-${data.category}`}
-                      id={`checkbox-${data.category}`}
-                    />
                     <Typography className={classes.accordionTitle}>{data.category}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container>
                         {data.fields.map((f) => (
-                            <Grid item xs={12} sm={6} xl={4} className={classes.formControlWrap}>
+                            <Grid key={f.field} item xs={12} sm={6} xl={4} className={classes.formControlWrap}>
                                 <Tooltip
                                     title={f.field}
                                 >
                                     <FormControlLabel
                                         className={classes.formLabel}
-                                        classes={{
-                                            label: data.category !== "Common" ? classes.formLabelText : {}
-                                        }}
                                         control={(
                                             <Checkbox
                                                 inputProps={{
@@ -131,7 +148,7 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
                     </Grid>
                 </AccordionDetails>
             </Accordion>
-        </Grid>
+        </Grid >
     )
 };
 

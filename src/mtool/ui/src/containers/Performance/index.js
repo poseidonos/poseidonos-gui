@@ -68,7 +68,8 @@ class Performance extends Component {
     this.handleTabChange = this.handleTabChange.bind(this);
     this.interval = null;
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
+      activeTab: "configure"
     };
   }
 
@@ -111,12 +112,8 @@ class Performance extends Component {
                   value={this.state.activeTab}
                   onChange={this.handleTabChange}
                 >
-                  <Tab label="configure" id="configure" value="configure" className={(window.location.href.indexOf('configure') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
-                    Configure
-                  </Tab>
-                  <Tab label="grafana" value="grafana" id="grafana" className={(window.location.href.indexOf('grafana') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)}>
-                    Grafana
-                  </Tab>
+                  <Tab label="configure" id="configure" value="configure" className={(window.location.href.indexOf('configure') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
+                  <Tab label="grafana" value="grafana" id="grafana" className={(window.location.href.indexOf('grafana') > 0 ? /* istanbul ignore next */ classes.selectedTab : null)} />
                 </Tabs>
               </AppBar>
               <Suspense fallback={<MToolLoader />}>
