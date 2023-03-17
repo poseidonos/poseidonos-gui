@@ -110,7 +110,47 @@ describe("Dashboard", () => {
       </Router>
     );
   };
+ // duplicate code 
 
+ const configureJson = {
+  ip: '127.0.0.1',
+  isConfigured: true,
+  port: '5555'
+}
+
+ const posArrayJson = [
+  {
+    id: '0',
+    maxbw: 0,
+    maxiops: 0,
+    name: 'vol-1',
+    status: 'Mounted',
+    total: 1073741824,
+    ip: '10.1.11.91',
+    port: 'NA',
+    subnqn: 'NA',
+    description: "",
+    unit: 'GB',
+    size: '10',
+    usedspace: 0
+  },
+  {
+    id: '1',
+    maxbw: 0,
+    maxiops: 0,
+    name: 'vol-2',
+    remain: 0,
+    status: 'Mounted',
+    total: 10737418240,
+    ip: '10.1.11.91',
+    port: 'NA',
+    subnqn: 'NA',
+    description: "",
+    unit: 'GB',
+    size: '10',
+    usedspace: 0
+  }
+]
   const array = {
     RAIDLevel: "5",
     arrayname: "POSArray",
@@ -676,7 +716,16 @@ describe("Dashboard", () => {
       "warnings": 0
     }
   ];
-
+  const hardwareJson = {
+    devices: devices,
+    ipmi: ipmi,
+    errorInDevices: false,
+    errorInIMPI: false,
+    isIMPIChassisPowerOn: true,
+    totalCriticals: 2,
+    totalNominals: 91,
+    totalWarnings: 0
+  }
   afterEach(cleanup);
 
   it("matches snapshot", () => {
@@ -700,11 +749,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1.0/get_ip_and_mac`)
       .reply(200,
@@ -724,11 +769,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -745,11 +786,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
@@ -800,11 +837,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array])
@@ -858,82 +891,14 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array, { ...array, arrayname: "POSArray2" }])
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
-        "POSArray": [
-          {
-            id: '0',
-            maxbw: 0,
-            maxiops: 0,
-            name: 'vol-1',
-            status: 'Mounted',
-            total: 1073741824,
-            ip: '10.1.11.91',
-            port: 'NA',
-            subnqn: 'NA',
-            description: "",
-            unit: 'GB',
-            size: '10',
-            usedspace: 0
-          },
-          {
-            id: '1',
-            maxbw: 0,
-            maxiops: 0,
-            name: 'vol-2',
-            remain: 0,
-            status: 'Mounted',
-            total: 10737418240,
-            ip: '10.1.11.91',
-            port: 'NA',
-            subnqn: 'NA',
-            description: "",
-            unit: 'GB',
-            size: '10',
-            usedspace: 0
-          }
-        ],
-        "POSArray2": [
-          {
-            id: '0',
-            maxbw: 0,
-            maxiops: 0,
-            name: 'vol-1',
-            status: 'Mounted',
-            total: 1073741824,
-            ip: '10.1.11.91',
-            port: 'NA',
-            subnqn: 'NA',
-            description: "",
-            unit: 'GB',
-            size: '10',
-            usedspace: 0
-          },
-          {
-            id: '1',
-            maxbw: 0,
-            maxiops: 0,
-            name: 'vol-2',
-            remain: 0,
-            status: 'Mounted',
-            total: 10737418240,
-            ip: '10.1.11.91',
-            port: 'NA',
-            subnqn: 'NA',
-            description: "",
-            unit: 'GB',
-            size: '10',
-            usedspace: 0
-          }
-        ]
+        "POSArray": posArrayJson,
+        "POSArray2":posArrayJson
       }).onAny().reply(200, {});
     renderComponent();
     const { getAllByText, getByTestId } = wrapper;
@@ -950,11 +915,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -971,24 +932,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        {
-          devices: devices,
-          ipmi: ipmi,
-          errorInDevices: false,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
-          totalCriticals: 2,
-          totalNominals: 91,
-          totalWarnings: 0
-        }
+        hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -1014,24 +962,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        {
-          devices: devices,
-          ipmi: ipmi,
-          errorInDevices: false,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
-          totalCriticals: 2,
-          totalNominals: 91,
-          totalWarnings: 0
-        }
+        hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -1058,11 +993,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1089,11 +1020,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1122,24 +1049,11 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        {
-          devices: devices,
-          ipmi: ipmi,
-          errorInDevices: false,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
-          totalCriticals: 2,
-          totalNominals: 91,
-          totalWarnings: 0
-        }
+       hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
@@ -1162,11 +1076,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
@@ -1293,11 +1203,7 @@ describe("Dashboard", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,
@@ -1331,11 +1237,7 @@ describe("Dashboard", () => {
       )
       .onGet(`/api/v1/configure`)
       .reply(200,
-        {
-          ip: '127.0.0.1',
-          isConfigured: true,
-          port: '5555'
-        }
+        configureJson
       )
       .onGet(/\/api\/v1\/perf\/all/)
       .reply(200,

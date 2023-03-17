@@ -46,18 +46,15 @@ function* CallIsiBOFOSRunning(action) {
                 'x-access-token': localStorage.getItem('token'),
             },
         });
-        /* istanbul ignore if */
         if (response && response.status === 401) {
             action.payload.push('/');
             localStorage.setItem('isLoggedIn', false);
             localStorage.setItem('BMC_LoggedIn', false);
         }
-        /* istanbul ignore if */
         if (response && response.status === 500) {
             yield put(actionCreators.asyncIsiBOFOSRunning(false, "Not Running"));
         }
         const result = response.data;
-        /* istanbul ignore else */
         if (result)
             yield put(actionCreators.updateTimestamp(result.lastRunningTime));
         if (result && result.RESULT && result.RESULT.result && result.RESULT.result.status && result.RESULT.result.status.code === 0) {
