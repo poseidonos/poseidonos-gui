@@ -4,7 +4,7 @@ from flask import Blueprint, make_response, request, jsonify, abort
 from rest.auth import token_required
 from rest.rest_api.array.array import create_arr, arr_info
 from rest.rest_api.volume.volume import list_volume
-from util.com.common import toJson, getResponse
+from util.com.common import toJson, get_response
 
 array_bp = Blueprint('array', __name__)
 
@@ -148,7 +148,7 @@ def create_arrays(current_user):
 def delete_array(current_user, name):
     print("in delete array")
     res = dagent.delete_array(name)
-    res_json = getResponse(res)
+    res_json = get_response(res)
     if res_json != None:
         return res_json
     return make_response("unable to delete array", 500)

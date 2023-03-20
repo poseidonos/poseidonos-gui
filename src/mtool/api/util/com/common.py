@@ -51,7 +51,7 @@ def toJson(data):
   #  print("tojson :",json_util.dumps(data))
     return json_util.dumps(data)
 
-def getResponse(res):
+def get_response(res):
     return_msg = {}
     if res.status_code == 200:
         res = res.json()

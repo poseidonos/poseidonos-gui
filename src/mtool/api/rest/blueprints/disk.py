@@ -2,7 +2,7 @@ import json
 import rest.rest_api.dagent.ibofos as dagent
 from flask import Blueprint, make_response, request
 from rest.auth import token_required
-from util.com.common import getResponse
+from util.com.common import get_response
 
 disk_bp = Blueprint('disk', __name__)
 
@@ -15,7 +15,7 @@ def addSpareDisk(current_user):
     name = body['name']
     arrayname = body.get('array')
     res = dagent.add_spare_disk(name, arrayname)
-    res_json = getResponse(res)
+    res_json = get_response(res)
     if res_json != None:
         return res_json
     return make_response("unable to add a spare device", 500)
@@ -29,7 +29,7 @@ def removeSpareDisk(current_user):
     name = body['name']
     arrayname = body.get('array')
     res = dagent.remove_spare_disk(name, arrayname)
-    res_json = getResponse(res)
+    res_json = get_response(res)
     if res_json != None:
         return res_json
     return make_response("unable to remove spare device", 500)
@@ -42,7 +42,7 @@ def replace_arr_device(array_name):
         body = json.loads(body_unicode)
         device = body['device']
         res = dagent.replace_array_device(array_name, device)
-        res_json = getResponse(res)
+        res_json = get_response(res)
         if res_json != None:
             return res_json
         return make_response("unable to replace array device", 500)
