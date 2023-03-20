@@ -168,7 +168,7 @@ class Subsystem extends Component {
                     <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
-                                <Typography className={classes.cardHeader}>Subsystems</Typography>
+                                <Typography className={classes.cardHeader} variant="h1">Subsystems</Typography>
                             )}
                             actions={[{
                                 icon: Add,

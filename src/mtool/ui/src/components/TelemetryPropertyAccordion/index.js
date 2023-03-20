@@ -148,7 +148,7 @@ const TelemetryPropertyAccordion = ({ data, classes, selectAll, selectProperty }
                     </Grid>
                 </AccordionDetails>
             </Accordion>
-        </Grid >
+        </Grid>
     )
 };
 

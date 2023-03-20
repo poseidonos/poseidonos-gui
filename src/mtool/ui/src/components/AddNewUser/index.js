@@ -140,7 +140,7 @@ class AddNewUser extends Component {
                 <Grid item container xs={12} direction="row" className={classes.addNewUserFirstInnerGrid}>
                     <ThemeProvider theme={PageTheme}>
                         <Grid xs={12} item className={classes.gridTypography}>
-                            <Typography className={classes.addNewUserTypography} variant="h3">Add New User</Typography>
+                            <Typography className={classes.addNewUserTypography} variant="h2">Add New User</Typography>
                         </Grid>
                         <Grid sm={12} md={12} xs={12} item container className={classes.formWrapper}>
                             <Grid sm={6} xs={12} item container className={classes.fieldContainer}>
