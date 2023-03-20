@@ -56,20 +56,23 @@ def qos_create_policies():
         print("In exception qos_create_policies(): ", e)
         return make_response('Could not create volume policies', 500)
 
+def get_request_body(request):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    array_name = body.get("array")
+    vol_names = body.get("volumes")
+    return {
+        "param": {
+            "array": array_name,
+            "vol": vol_names
+        }
+    }
+
 # Reset QOS
 @volume_bp.route('/api/v1/qos/reset', methods=['POST'])
 def qos_reset_policies():
     try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        array_name = body.get("array")
-        vol_names = body.get("volumes")
-        request_body = {
-            "param": {
-                "array": array_name,
-                "vol": vol_names
-            }
-        }
+        request_body = get_request_body(request)
         response = dagent.qos_reset_volume_policies(request_body)
         return toJson(response.json())
     except Exception as e:
@@ -79,16 +82,7 @@ def qos_reset_policies():
 @volume_bp.route('/api/v1/qos/policies', methods=['POST'])
 def qos_policies():
     try:
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        array_name = body.get("array")
-        vol_names = body.get("volumes")
-        request_body = {
-            "param": {
-                "array": array_name,
-                "vol": vol_names
-            }
-        }
+        request_body = get_request_body(request)
         response = dagent.qos_list_volume_policies(request_body)
         return toJson(response.json())
     except Exception as e:
@@ -267,9 +261,9 @@ def getMaxVolCount():
 def get_all_volumes():
     volumes_list = {}
     try:
-        arrays = dagent.list_arrays()
-        arrays = arrays.json()
+        arrays = dagent.list_arrays().json()
         if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
+            arrays = arrays.json()
             arrays = arrays["result"]["data"]["arrayList"]
         else:
             return toJson([])

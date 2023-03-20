@@ -50,3 +50,17 @@ def get_ip_address():
 def toJson(data):
   #  print("tojson :",json_util.dumps(data))
     return json_util.dumps(data)
+
+def get_response(res):
+    return_msg = {}
+    if res.status_code == 200:
+        res = res.json()
+        if res["result"]["status"]["code"] == 0:
+            return toJson(res)
+    else:
+        res = res.json()
+        if ("result" in res and "status" in res["result"]):
+            return_msg["result"] = res["result"]["status"]
+            return_msg["return"] = -1
+            return toJson(return_msg)
+    return None

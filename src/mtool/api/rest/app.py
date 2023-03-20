@@ -34,16 +34,9 @@
 
 
 #!/usr/bin/python
-#from rest.rest_api.alerts.system_alerts import get_alert_categories_from_influxdb
 from rest.exceptions import InvalidUsage
-#from rest.rest_api.logmanager.logmanager import download_logs
-#from rest.rest_api.logmanager.logmanager import get_bmc_logs
-#from rest.rest_api.logmanager.logmanager import get_ibofos_logs
-#from rest.rest_api.rebuildStatus.rebuildStatus import get_rebuilding_status
 from flask import Flask, request, jsonify
-#import rest.rest_api.dagent.bmc as BMC_agent
 from time import strftime
-#from dateutil import parser
 import traceback
 import eventlet
 from rest.blueprints.array import array_bp
@@ -72,7 +65,6 @@ app = Flask(__name__, static_folder='./public')
 init_socketio(app)
 
 app.config['SECRET_KEY'] = 'ibofalltheway'
-app.config['MONGODB_URL'] = 'mongodb://localhost:27017/ibof'
 
 app.register_blueprint(swordfish_api)
 app.register_blueprint(array_bp)

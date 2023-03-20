@@ -86,22 +86,7 @@ def test_is_ibofos_running_failure(mock_get_current_user, mock_fetch_system_stat
         '/api/v1.0/get_Is_Ibof_OS_Running/',
         headers={'x-access-token': json_token})
     assert response.status_code == 200
-
-
-"""
-@requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.get_rebuilding_status",return_value=(), autospec=True)
-@mock.patch("rest.db.connection_factory.get_current_user", return_value="test", autospec=True)
-def test_is_ibofos_runningi_failure(mock_get_current_user, mock_get_rebuilding_status, **kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].get(DAGENT_URL + '/api/dagent/v1/heartbeat',
-                       json={"result": {"status": {"description": "SUCCESS", "code":0}}},
-                       status_code=200)
-    response = app.test_client().get(
-        '/api/v1.0/get_Is_Ibof_OS_Running/',
-        headers={'x-access-token': json_token})
-    assert response.status_code == 200
-"""
+    
 
 @requests_mock.Mocker(kw="mock")
 @mock.patch("rest.blueprints.pos.is_ibofos_running",return_value=False, autospec=True)

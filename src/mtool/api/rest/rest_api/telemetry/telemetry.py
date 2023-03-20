@@ -37,12 +37,9 @@ def check_telemetry_endpoint(ip, port):
         if response.response[0].decode('UTF-8') != "success":
             return make_response("Error Occured", 500)
         # Checking temetry is up or not
-        response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url), timeout=TIME_OUT)
-        response = json.loads(response.content)
-        if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
-            for data in response["data"]["result"]:
-                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "poseidonos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
-                    return make_response(jsonify({'isTelemetryEndpointUp': True}), 200)
+        telemetry, _ = is_endpoints_down(ip, port)
+        if telemetry == True:
+            return make_response(jsonify({'isTelemetryEndpointUp': True}), 200)
         return make_response(jsonify({'isTelemetryEndpointUp': False}), 200)
 
     except Exception as e:
