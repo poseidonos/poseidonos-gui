@@ -35,14 +35,14 @@
 '''
 import pytest
 from rest.app import app
-from flask import json
+import json
 from unittest import mock
 
 token = ""
 
 
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="xyz", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -54,7 +54,7 @@ def global_data(mock_match_username_from_db):
     return {'token': login_data['token']}
 
 
-@mock.patch("rest.app.connection_factory.set_live_logs_in_db", autospec=True)
+@mock.patch("rest.db.connection_factory.set_live_logs_in_db", autospec=True)
 # def test_set_live_logs(mock_set_live_logs_in_db):
 def test_set_live_logs(mock_set_live_logs_in_db, global_data):
     response = app.test_client().post(
@@ -69,7 +69,7 @@ def test_set_live_logs(mock_set_live_logs_in_db, global_data):
     assert data == "Success"
 
 
-@mock.patch("rest.app.connection_factory.get_live_logs_from_db",
+@mock.patch("rest.db.connection_factory.get_live_logs_from_db",
             return_value=True, autospec=True)
 def test_get_live_logs(mock_get_live_logs_from_db, global_data):
     response = app.test_client().get(
@@ -84,7 +84,7 @@ def test_get_live_logs(mock_get_live_logs_from_db, global_data):
     assert response.status_code == 200
 
 
-@mock.patch("rest.app.connection_factory.get_live_logs_from_db",
+@mock.patch("rest.db.connection_factory.get_live_logs_from_db",
             return_value=False, autospec=True)
 def test_get_live_logs_no(mock_get_live_logs_from_db, global_data):
     response = app.test_client().get(

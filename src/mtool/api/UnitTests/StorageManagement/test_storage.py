@@ -38,8 +38,8 @@ import requests_mock
 import jwt
 import datetime
 from unittest import mock
-from flask import json
-from rest.app import make_block_aligned
+import json
+from rest.blueprints.volume import make_block_aligned
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
@@ -326,7 +326,7 @@ dagent_array_json = {
 }
 
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -341,7 +341,7 @@ def global_data(mock_match_username_from_db):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_devices(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -364,7 +364,7 @@ def test_get_devices(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_smart_info(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -379,7 +379,7 @@ def test_get_smart_info(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_smart_info_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -391,7 +391,7 @@ def test_get_smart_info_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -406,7 +406,7 @@ def test_get_volumes(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_all_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -427,7 +427,7 @@ def test_get_all_volumes(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volumes_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -464,7 +464,7 @@ def test_get_volumes_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_available_storage(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -481,7 +481,7 @@ def test_get_available_storage(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_available_storage_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -508,7 +508,7 @@ def test_get_available_storage_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_available_storage_failurei_2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -534,7 +534,7 @@ def test_get_available_storage_failurei_2(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volume_count(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -556,7 +556,7 @@ def test_get_volume_count(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_volume_count_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -574,7 +574,7 @@ def test_get_volume_count_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -621,7 +621,7 @@ def test_create_arrays(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_arrays_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -658,7 +658,7 @@ def test_create_arrays_failure(mock_get_current_user, **kwargs):
 
 """
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_get_arrays(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -708,7 +708,7 @@ def test_get_arrays(mock_get_current_user, **kwargs):
 """
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -753,7 +753,7 @@ def test_create_volumes(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -785,7 +785,7 @@ def test_create_volumes_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_max_size(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -837,7 +837,7 @@ def test_create_volumes_max_size(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_tb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -879,7 +879,7 @@ def test_create_volumes_tb(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_pb(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -921,7 +921,7 @@ def test_create_volumes_pb(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_volumes_default_unit(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -970,7 +970,7 @@ def test_make_block_aligned():
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -991,7 +991,7 @@ def test_add_spare(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_spare_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1014,7 +1014,7 @@ def test_add_spare_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_spare_failure_2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1055,7 +1055,7 @@ def test_add_spare_failure_2(mock_get_current_user, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_remove_spare(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1076,7 +1076,7 @@ def test_remove_spare(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_remove_spare_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1115,7 +1115,7 @@ def test_remove_spare_failure(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_remove_spare_failure_2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1141,7 +1141,7 @@ def test_remove_spare_failure_2(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_array(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1164,7 +1164,7 @@ def test_delete_array(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_array_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1204,7 +1204,7 @@ def test_delete_array_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_array_failure_2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1226,7 +1226,7 @@ def test_delete_array_failure_2(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1243,7 +1243,7 @@ def test_delete_volumes(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1268,7 +1268,7 @@ def test_delete_volumes_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_volumes_failed(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1285,7 +1285,7 @@ def test_delete_volumes_failed(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_update_volume_invalid_range(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1323,7 +1323,7 @@ def test_update_volume_invalid_range(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_update_volume2(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1345,7 +1345,7 @@ def test_update_volume2(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_rename_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1405,7 +1405,7 @@ def test_rename_volume(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_mount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1447,7 +1447,7 @@ def test_mount_volume(mock_get_current_user, **kwargs):
     assert response.status_code == 500
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_unmount_volume(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1750,51 +1750,8 @@ def test_get_arrays_func_failure(**kwargs):
     response = app.test_client().get('/api/v1/get_arrays/',headers=header_json)
     assert response.status_code == 200
 
-
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-def test_mount_ibofos(mock_get_current_user,**kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].post(
-        DAGENT_URL +
-        '/api/ibofos/v1/system/mount',
-        json= success_json,
-        status_code=200)
-
-    response = app.test_client().post('/api/v1.0/ibofos/mount',headers=header_json)
-    assert response.status_code == 200
-
-@requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-def test_mount_ibofos_failure(mock_get_current_user,**kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].post(
-        DAGENT_URL +
-        '/api/ibofos/v1/system/mount',
-        json=None,
-        status_code=200)
-
-    response = app.test_client().post('/api/v1.0/ibofos/mount',headers=header_json)
-    assert response.status_code == 500
-@requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
-            return_value="test", autospec=True)
-def test_unmount_ibofos(mock_get_current_user,**kwargs):
-    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
-    kwargs["mock"].delete(
-        DAGENT_URL +
-        '/api/ibofos/v1/system/mount',
-        json=success_json,
-        status_code=200)
-
-    response = app.test_client().delete('/api/v1.0/ibofos/mount',headers=header_json)
-    assert response.status_code == 200
-
-
-@requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_mount_array(mock_get_current_user,**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1809,7 +1766,7 @@ def test_mount_array(mock_get_current_user,**kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_mount_array_failure(mock_get_current_user,**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1824,7 +1781,7 @@ def test_mount_array_failure(mock_get_current_user,**kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_unmount_array(mock_get_current_user,**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1838,7 +1795,7 @@ def test_unmount_array(mock_get_current_user,**kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_unmount_array_failure(mock_get_current_user,**kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1867,7 +1824,7 @@ def test_createMultiVolumeCallback(**kwargs):
         headers=header_json)
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_uram_device(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1892,7 +1849,7 @@ def test_create_uram_device(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_uram_device_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1916,7 +1873,7 @@ def test_create_uram_device_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 200
                                                 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_autocreate_array(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1955,7 +1912,7 @@ def test_autocreate_array(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_qos_reset_policies(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -1984,7 +1941,7 @@ def test_qos_reset_policies(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_qos_policies(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -2037,7 +1994,7 @@ def test_qos_policies(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_rebuild_array_device(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/rebuild',
@@ -2057,7 +2014,7 @@ def test_rebuild_array_device(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_replace_array_device(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/replace',
@@ -2081,7 +2038,7 @@ def test_replace_array_device(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_replace_array_device_error(mock_get_current_user, **kwargs):
     kwargs["mock"].post(DAGENT_URL + '/api/ibofos/v1/array/POSArray/replace',
