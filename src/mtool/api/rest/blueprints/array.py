@@ -4,7 +4,7 @@ from flask import Blueprint, make_response, request, jsonify, abort
 from rest.auth import token_required
 from rest.rest_api.array.array import create_arr, arr_info
 from rest.rest_api.volume.volume import list_volume
-from util.com.common import toJson
+from util.com.common import toJson, getResponse
 
 array_bp = Blueprint('array', __name__)
 
@@ -77,8 +77,7 @@ def get_mod_array(array):
 @array_bp.route('/api/v1/get_arrays/', methods=['GET'])
 @token_required
 def get_arrays(current_user):
-    arrays = dagent.list_arrays()
-    arrays = arrays.json()
+    arrays = dagent.list_arrays().json()
     if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
         arrays = arrays["result"]["data"]["arrayList"]
     else:
@@ -135,11 +134,6 @@ def create_arrays(current_user):
     storageDisks = body['storageDisks']
     write_through = body['writeThroughModeEnabled']
     try:
-        """a_info = arr_info(arrayname)
-        if a_info.status_code == 200:
-            a_info = a_info.json()
-            if "name" in a_info["result"]["data"] and a_info["result"]["data"]["name"] == arrayname:
-                return make_response(arrayname+' already exists', 400)"""
         array_create = create_arr(arrayname, raidtype, spareDisks, storageDisks, [
             {"deviceName": metaDisk}], write_through)
         array_create = array_create.json()
@@ -154,19 +148,10 @@ def create_arrays(current_user):
 def delete_array(current_user, name):
     print("in delete array")
     res = dagent.delete_array(name)
-    return_msg = {}
-    if res.status_code == 200:
-        res = res.json()
-        if res["result"]["status"]["code"] == 0:
-            return toJson(res)
-    else:
-        res = res.json()
-        if ("result" in res and "status" in res["result"]):
-            return_msg["result"] = res["result"]["status"]
-            return_msg["return"] = -1
-            return toJson(return_msg)
-    res = "unable to delete array"
-    return make_response(res, 500)
+    res_json = getResponse(res)
+    if res_json != None:
+        return res_json
+    return make_response("unable to delete array", 500)
 
 # Mount Array
 @array_bp.route('/api/v1/array/mount', methods=['POST'])
