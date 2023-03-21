@@ -105,6 +105,30 @@ def is_ibofos_running(current_user="admin"):
                    "situation": situation,
                    "value": value})
 
+# Get Property
+@pos_bp.route('/api/v1/pos/property', methods=['GET'])
+def get_pos_property():
+    try:
+        pos_property = dagent.get_pos_property()
+        pos_property = pos_property.json()
+        return toJson(pos_property)
+    except Exception as e:
+        print(e)
+        return make_response('Could not get POS Property', 500)
+
+# Set Property
+@pos_bp.route('/api/v1/pos/property', methods=['POST'])
+def set_pos_property():
+    try:
+        body_unicode = request.data.decode('utf-8')
+        body = json.loads(body_unicode)
+        pos_property = body["property"]
+        pos_property_response = dagent.set_pos_property(pos_property)
+        pos_property_response = pos_property_response.json()
+        return toJson(pos_property_response)
+    except Exception as e:
+        return make_response('Could not set POS Property '+str(e), 500)
+
 # Start POS
 @pos_bp.route('/api/v1.0/start_ibofos', methods=['GET'])
 @token_required
