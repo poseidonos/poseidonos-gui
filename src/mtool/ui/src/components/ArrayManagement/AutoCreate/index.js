@@ -188,7 +188,7 @@ const AutoCreate = (props) => {
         <Button
           onClick={openDialog}
           variant="outlined"
-          color="secondary"
+          color="primary"
         >
           Auto-Create
         </Button>
@@ -307,7 +307,7 @@ const AutoCreate = (props) => {
                   <Checkbox
                     name="auto-mount_arr_writethrough"
                     color="primary"
-                    id="mount-writethrough-checkbox"
+                    id="auto-mount-writethrough-checkbox"
                     checked={array.writeThroughMode}
                     value="Write Through Mode"
                     inputProps={{

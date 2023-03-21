@@ -168,7 +168,7 @@ class Subsystem extends Component {
                     <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
-                                <Typography className={classes.cardHeader}>Subsystems</Typography>
+                                <Typography className={classes.cardHeader} variant="h1">Subsystems</Typography>
                             )}
                             actions={[{
                                 icon: Add,
@@ -191,10 +191,7 @@ class Subsystem extends Component {
                             }]}
                             data={this.props.subsystems}
                             options={{
-                                headerStyle: {
-                                    backgroundColor: "#788595",
-                                    color: "#FFF",
-                                }
+                                headerStyle: customTheme.table.header
                             }}
                             columns={subsystemTableColumns}
                             icons={icons}

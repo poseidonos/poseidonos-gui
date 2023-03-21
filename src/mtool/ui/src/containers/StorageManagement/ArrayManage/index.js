@@ -154,6 +154,9 @@ const styles = (theme) => ({
     rebuildButton: {
         cursor: "pointer",
         marginLeft: theme.spacing(1)
+    },
+    font18bold: {
+        fontSize: 18
     }
 })
 
@@ -185,7 +188,7 @@ const ArrayManage = (props) => {
             : 0
             }%`,
         height: "100%",
-        backgroundColor: "rgba(51, 158, 255,0.6)",
+        backgroundColor: customTheme.palette.primary.main,
         float: "left",
         overflowY: "hidden",
         display: "flex",
@@ -199,7 +202,7 @@ const ArrayManage = (props) => {
             }%`,
         height: "100%",
         color: "white",
-        backgroundColor: "rgba(0, 186, 0, 0.6)",
+        backgroundColor: customTheme.palette.secondary.light,
         float: "left",
         overflowY: "hidden",
         display: "flex",
@@ -490,13 +493,16 @@ const ArrayManage = (props) => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Paper className={classes.volumeStatsPaper}>
-                        <Typography className={classes.cardHeader}>
+                        <Typography className={classes.cardHeader} variant="h2">
                             Volume Statistics
                         </Typography>
                         <div className={classes.statsWrapper}>
-                            <Grid item xs={12}>
-                                <Typography color="secondary">
-                                    Number of volumes: {props.volumes.length}
+                            <Grid item xs={12} container alignItems="center">
+                                <Typography color="primary" variant="body1">
+                                    Number of volumes:&nbsp;
+                                </Typography>
+                                <Typography className={classes.font18bold} color="secondary">
+                                    {props.volumes.length}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} className={classes.statsContainer}>
@@ -512,22 +518,22 @@ const ArrayManage = (props) => {
                                     className={classes.legendContainer}
                                 >
                                     <Legend
-                                        bgColor="rgba(51, 158, 255,0.6)"
-                                        title={`
-                          Used Space :
-                          ${formatBytes(totalVolSize)}
-                        `}
+                                        bgColor={customTheme.palette.primary.main}
+                                        title="Used Space"
+                                        value={
+                                            formatBytes(totalVolSize).replace(' ', '')
+                                        }
                                     />
                                     <Legend
-                                        bgColor="rgba(0, 186, 0, 0.6)"
-                                        title={`
-                          Available for Volume Creation :
-                          ${formatBytes(
-                                            selectedArray.totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
-                                                selectedArray.totalsize - totalVolSize :
-                                                0
-                                        )}
-                        `}
+                                        bgColor={customTheme.palette.secondary.light}
+                                        title="Available for Volume Creation"
+                                        value={
+                                            formatBytes(
+                                                selectedArray.totalsize - totalVolSize >= BYTE_FACTOR * BYTE_FACTOR ?
+                                                    selectedArray.totalsize - totalVolSize :
+                                                    0
+                                            ).replace(' ', '')
+                                        }
                                     />
                                 </Grid>
                             </Grid>

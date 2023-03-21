@@ -522,7 +522,7 @@ class VolumeList extends Component {
         <ThemeProvider theme={this.theme}>
           <MaterialTable
             title={(
-              <Typography className={classes.cardHeader}>Volume List</Typography>
+              <Typography className={classes.cardHeader} variant="h2">Volume List</Typography>
             )}
             columns={volumeTableColumns}
             data={this.props.volumes}
@@ -531,12 +531,7 @@ class VolumeList extends Component {
               selection: true,
               showSelectAllCheckbox: !this.props.fetchingVolumes,
               showTextRowsSelected: false,
-              headerStyle: {
-                backgroundColor: '#788595',
-                color: '#FFF',
-                paddingTop: 8,
-                paddingBottom: 8,
-              },
+              headerStyle: customTheme.table.header,
               selectionProps: rowData => ({
                 'id': `VolumeList-checkbox-${rowData.name}`,
                 inputProps: {
@@ -546,11 +541,17 @@ class VolumeList extends Component {
               })
             }}
             icons={{
-              Check,
+              // eslint-disable-next-line react/no-multi-comp
+              Check: () => <Check aria-label="No value" />,
+              // eslint-disable-next-line react/no-multi-comp
               FirstPage: () => <FirstPage id="VolumeList-icon-firstpage" />,
+              // eslint-disable-next-line react/no-multi-comp
               LastPage: () => <LastPage id="VolumeList-icon-lastpage" />,
+              // eslint-disable-next-line react/no-multi-comp
               NextPage: () => <ChevronRight id="VolumeList-icon-nextpage" />,
+              // eslint-disable-next-line react/no-multi-comp
               PreviousPage: () => <ChevronLeft id="VolumeList-icon-previouspage" />,
+              // eslint-disable-next-line react/no-multi-comp
               Search: () => <Search id="VolumeList-icon-search" />,
               ThirdStateCheck: Remove,
               DetailPanel: ChevronRight,
@@ -606,7 +607,6 @@ class VolumeList extends Component {
           }}
           onConfirm={() => {
             this.closePopup()
-            // this.props.saveVolume(this.state.resetVolumeRow);
             this.props.changeResetType({
               id: this.state.resetVolumeRow.id,
               resetType: this.state.resetVolumeRow.minType
@@ -620,6 +620,7 @@ class VolumeList extends Component {
 }
 
 VolumeList.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   volumes: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 

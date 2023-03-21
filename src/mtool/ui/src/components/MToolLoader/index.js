@@ -32,11 +32,12 @@
 
 import React from 'react';
 import Loader from 'react-loader-spinner';
+import { customTheme } from '../../theme';
 
 const loaderStyle = {
   width: '100%',
   height: '100%',
-  background: '#788595',
+  background: customTheme.palette.primary.main,
   position: 'fixed',
   top: 0,
   left: 0,
@@ -63,7 +64,7 @@ const MToolLoader = props => {
     <div style={loaderStyle}>
       <Loader
         type="Bars"
-        color="#171719"
+        color={customTheme.palette.primary.dark}
         marginTop="100px"
         height="50"
         width="50"

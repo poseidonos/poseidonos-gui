@@ -108,7 +108,7 @@ class Device extends Component {
                     <ThemeProvider theme={TableTheme}>
                         <MaterialTable
                             title={(
-                                <Typography className={classes.cardHeader}>Device List</Typography>
+                                <Typography className={classes.cardHeader} variant="h1">Device List</Typography>
                             )}
                             actions={[{
                                 icon: Add,
@@ -123,22 +123,13 @@ class Device extends Component {
                             }]}
                             data={this.props.devices}
                             options={{
-                                headerStyle: {
-                                    backgroundColor: "#788595",
-                                    color: "#FFF",
-                                }
+                                headerStyle: customTheme.table.header
                             }}
                             columns={deviceTableColumns}
                             icons={icons}
                         />
                     </ThemeProvider>
                 </Grid>
-                {/* <Grid item className={classes.item}>
-                    <Paper>
-                        <CreateDisk />
-                    </Paper>
-                </Grid> */}
-
                 <Popup
                     title="Create Disk"
                     open={this.state.dialogOpen}

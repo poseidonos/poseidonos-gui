@@ -63,10 +63,9 @@ import { FETCH_POS_STATUS_INTERVAL } from "../../utils/constants";
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundImage: 'linear-gradient(to right, #171719, #788595)',
+    backgroundImage: `linear-gradient(to right, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     boxShadow: 'none',
     height: 62,
-    // backgroundColor: theme.palette.primary
   },
 
   userLink: {
@@ -222,10 +221,8 @@ class Header extends Component {
 
 
   componentDidMount() {
-    this.props.getIbofOSTimeInterval();
     this.props.getPOSInfo();
     window.addEventListener("resize", this.updateDropdown);
-    // document.addEventListener('mousedown', this.handleClickOutside);
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       if (this.props.statusCheckDone) {
@@ -403,17 +400,6 @@ class Header extends Component {
       alertOpen: false,
     });
   }
-
-  // goHome() {
-  //   this.props.history.push('/dashboard');
-  // }
-
-  // printLastTimestamp(value) {
-  //   this.setState({
-  //     ...this.state,
-  //     timestamp: value,
-  //   });
-  // }
 
   userLogout() {
     localStorage.setItem("user", null);
@@ -605,7 +591,6 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    getIbofOSTimeInterval: () => dispatch({ type: actionTypes.SAGA_GET_IBOFOS_TIME_INTERVAL, }),
     getPOSInfo: () => dispatch({ type: actionTypes.SAGA_GET_POS_INFO }),
     Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
     resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),

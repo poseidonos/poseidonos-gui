@@ -60,9 +60,9 @@ const styles = (theme) => ({
     },
     storageSummary: {
         position: "relative",
-        height: 79,
+        height: 85,
         [theme.breakpoints.up("xl")]: {
-            height: 165,
+            height: 159,
         },
         [theme.breakpoints.down("md")]: {
             height: 121,
@@ -105,10 +105,7 @@ const styles = (theme) => ({
         },
     },
     tabs: {
-        backgroundColor: "#E0E0E0"
-    },
-    tab: {
-        fontSize: 14,
+        backgroundColor: "#F1F0F5"
     },
     tabIcon: {
         marginRight: theme.spacing(1)
@@ -139,7 +136,9 @@ const styles = (theme) => ({
         textAlign: "center",
         minWidth: 100
     },
-
+    borderSolid: {
+        border: "1px solid #0001",
+    },
 });
 
 
@@ -172,13 +171,13 @@ const StorageDetails = (props) => {
     const volFilledStyle = {
         width: `${(volSpace * 100) / arraySize}%`,
         height: "100%",
-        backgroundColor: "#e0e0e0",
+        backgroundColor: customTheme.palette.secondary.light,
         float: "left",
     };
     const volUsedStyle = {
         width: `${(volUsedSpace * 100) / volSpace}%`,
         height: "100%",
-        backgroundColor: "rgb(120,133,149)",
+        backgroundColor: customTheme.palette.secondary.dark,
         float: "left",
     };
     const storageFreeStyle = {
@@ -278,7 +277,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="secondary">
+                        <Typography color="primary">
                             Array Summary
                         </Typography>
                     </Grid>
@@ -288,10 +287,8 @@ const StorageDetails = (props) => {
             data={props.arrays}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8
+                    ...customTheme.table.header,
+                    paddingRight: 0
                 },
                 minBodyHeight: 290,
                 maxBodyHeight: 290,
@@ -312,10 +309,8 @@ const StorageDetails = (props) => {
             data={props.arrayVolumes}
             options={{
                 headerStyle: {
-                    backgroundColor: "#788595",
-                    color: "#FFF",
-                    paddingTop: 8,
-                    paddingBottom: 8
+                    ...customTheme.table.header,
+                    paddingRight: 0
                 },
                 minBodyHeight: 290,
                 maxBodyHeight: 290,
@@ -325,7 +320,7 @@ const StorageDetails = (props) => {
             components={{
                 Toolbar: () => (
                     <Grid className={classes.tableTitle}>
-                        <Typography variant="h6" color="secondary">
+                        <Typography color="primary">
                             Volume Summary
                         </Typography>
                         <FormControl>
@@ -363,7 +358,7 @@ const StorageDetails = (props) => {
         <ThemeProvider theme={PageTheme}>
             <Paper className={classes.storageDetailsPaper}>
                 <Grid item container xs={12} justifyContent="flex-start">
-                    <Typography className={classes.cardHeader}>
+                    <Typography className={classes.cardHeader} variant="h2">
                         Storage Details
                     </Typography>
                 </Grid>
@@ -399,12 +394,12 @@ const StorageDetails = (props) => {
                                 </div>
                                 <Grid container wrap="wrap" justifyContent="flex-end">
                                     <Legend
-                                        bgColor="rgb(120,133,149)"
+                                        bgColor={customTheme.palette.secondary.dark}
                                         title="Data Written"
                                         value={formatBytes(volUsedSpace).replace(' ', '')}
                                     />
                                     <Legend
-                                        bgColor="#e0e0e0"
+                                        bgColor={customTheme.palette.secondary.light}
                                         title="Volume Space Allocated"
                                         value={formatBytes(volSpace).replace(' ', '')}
                                     />
@@ -424,53 +419,50 @@ const StorageDetails = (props) => {
                         )}
                     </Grid>
                 </Grid>
-                <Grid className={classes.tabs}>
-                    <Tabs
-                        value={selectedTab}
-                        onChange={(e, newVal) => setSelectedTab(newVal)}
-                        textColor="secondary"
-                        indicatorColor="secondary"
-                        aria-label="secondary tabs example"
-                        centered
-                    >
-                        <Tab
-                            className={classes.tab}
-                            value={ARRAYTAB}
-                            label={(
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        height="24px"
-                                        width="24px"
-                                        className={classes.arrayTabIcon}
-                                        src={ArraysIconSelected}
-                                        alt="Arrays Icon"
-                                        style={selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
-                                    />
-                                    <Typography>{props.arrays.length} Arrays</Typography>
-                                </Box>
-                            )}
-                            data-testid="array-tab"
-                        />
-                        <Tab
-                            className={classes.tab}
-                            value={VOLUMETAB}
-                            label={(
-                                <Box display="flex" alignItems="center">
-                                    <img
-                                        height="18px"
-                                        width="18px"
-                                        className={classes.tabIcon}
-                                        src={VolumeIconSelected}
-                                        alt="Volumes Icon"
-                                        style={selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
-                                    />
-                                    <Typography>{props.arrayVolumes.length} Volumes</Typography>
-                                </Box>
-                            )}
-                            data-testid="volume-tab"
-                        />
-                    </Tabs>
-                </Grid>
+                <Tabs
+                    value={selectedTab}
+                    onChange={(e, newVal) => setSelectedTab(newVal)}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="secondary tabs example"
+                    centered
+                    className={classes.tabs}
+                >
+                    <Tab
+                        value={ARRAYTAB}
+                        label={(
+                            <Box display="flex" alignItems="center">
+                                <img
+                                    height="24px"
+                                    width="24px"
+                                    className={classes.arrayTabIcon}
+                                    src={ArraysIconSelected}
+                                    alt="Arrays Icon"
+                                    style={selectedTab === ARRAYTAB ? { opacity: ".8" } : { opacity: ".3" }}
+                                />
+                                <Typography>{props.arrays.length} Arrays</Typography>
+                            </Box>
+                        )}
+                        data-testid="array-tab"
+                    />
+                    <Tab
+                        value={VOLUMETAB}
+                        label={(
+                            <Box display="flex" alignItems="center">
+                                <img
+                                    height="18px"
+                                    width="18px"
+                                    className={classes.tabIcon}
+                                    src={VolumeIconSelected}
+                                    alt="Volumes Icon"
+                                    style={selectedTab === VOLUMETAB ? { opacity: ".8" } : { opacity: ".3" }}
+                                />
+                                <Typography>{props.arrayVolumes.length} Volumes</Typography>
+                            </Box>
+                        )}
+                        data-testid="volume-tab"
+                    />
+                </Tabs>
                 <Grid className={classes.borderSolid}>
                     {selectedTab === ARRAYTAB ? arrayTable : volumeTable}
                 </Grid>

@@ -61,10 +61,10 @@ const styles = (theme) => ({
         marginRight: theme.spacing(2)
     },
     colorGreen: {
-        color: 'green'
+        color: customTheme.palette.success.dark
     },
     colorOrange: {
-        color: 'orange'
+        color: customTheme.palette.warning.dark
     },
     saveBtn: {
         width: 150
@@ -132,14 +132,14 @@ const TelemetryConfiguration = ({
     }, [fetchTelemetryProperties]);
 
     return (
-        <main className={classes.content}>
+        <div className={classes.content}>
             <Paper className={classes.paper}>
-                <Typography className={classes.cardHeader}>Telemetry Operations</Typography>
+                <Typography className={classes.cardHeader} variant="h1">Telemetry Operations</Typography>
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.startBtn}
                             onClick={confirmStart}
                             id="start-telemetry-btn"
@@ -150,7 +150,7 @@ const TelemetryConfiguration = ({
                         </Button>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             onClick={confirmStop}
                             id="stop-telemetry-btn"
                             disabled={!telemetryStatus}
@@ -160,9 +160,9 @@ const TelemetryConfiguration = ({
                         </Button>
                     </Grid>
                     <Typography>Telemetry is: {telemetryStatus ? (
-                        <Typography variant="span" className={classes.colorGreen}>On</Typography>
+                        <Typography component="span" className={classes.colorGreen}>On</Typography>
                     ) : (
-                        <Typography variant="span" className={classes.colorOrange}>Off</Typography>
+                        <Typography component="span" className={classes.colorOrange}>Off</Typography>
                     )}
                     </Typography>
                 </Grid>
@@ -175,9 +175,6 @@ const TelemetryConfiguration = ({
                             <Grid item>
                                 <FormControlLabel
                                     className={classes.formLabel}
-                                    classes={{
-                                        label: classes.formLabelText
-                                    }}
                                     control={(
                                         <Checkbox
                                             inputProps={{
@@ -197,12 +194,12 @@ const TelemetryConfiguration = ({
                         <Grid container spacing={1}>
                             <Grid container alignContent="flex-start" item md={6}>
                                 {telemetryProperties && telemetryProperties.slice(0, Math.ceil(telemetryProperties.length / 2)).map((d) => (
-                                    <TelemetryPropertyAccordion selectProperty={selectProperty} selectAll={selectAllFromCategory} data={d} />
+                                    <TelemetryPropertyAccordion key={d.category} selectProperty={selectProperty} selectAll={selectAllFromCategory} data={d} />
                                 ))}
                             </Grid>
                             <Grid container alignContent="flex-start" item md={6}>
                                 {telemetryProperties && telemetryProperties.slice(Math.ceil(telemetryProperties.length / 2)).map((d) => (
-                                    <TelemetryPropertyAccordion selectProperty={selectProperty} selectAll={selectAllFromCategory} data={d} />
+                                    <TelemetryPropertyAccordion key={d.category} selectProperty={selectProperty} selectAll={selectAllFromCategory} data={d} />
                                 ))}
                             </Grid>
                         </Grid>
@@ -214,7 +211,7 @@ const TelemetryConfiguration = ({
                     >
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.saveBtn}
                             data-testid="createarray-btn"
                             onClick={() => saveConfig(telemetryProperties)}
@@ -237,7 +234,7 @@ const TelemetryConfiguration = ({
             {loading ? (
                 <MToolLoader text={loadText} />
             ) : null}
-        </main>
+        </div>
     );
 };
 

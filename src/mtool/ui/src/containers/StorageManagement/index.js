@@ -121,7 +121,7 @@ class StorageManagement extends Component {
             <Grid container spacing={3}>
               <Grid container spacing={3} className={classes.titleContainer}>
                 <Grid xs={12} item>
-                  <Typography className={classes.pageHeader} variant="h6">
+                  <Typography className={classes.pageHeader} variant="h1">
                     Storage Management
                   </Typography>
                 </Grid>

@@ -32,7 +32,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Drawer, List, ListItem, Divider, Paper, Typography, Hidden } from '@material-ui/core';
+import { Drawer, List, ListItem, Paper, Typography, Hidden } from '@material-ui/core';
 import { makeStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PreloadImage from 'react-preload-image';
@@ -44,16 +44,20 @@ import StorageIconDisabled from '../../assets/images/Storage-DIS.png';
 import StorageIconSelected from '../../assets/images/Storage-SEL.png';
 import PerformanceIconDisabled from '../../assets/images/Performance-DIS.png';
 import PerformanceIconSelected from '../../assets/images/Performance-SEL.png';
-import MToolTheme from '../../theme';
+import MToolTheme, { customTheme } from '../../theme';
 
 import './Sidebar.css';
 
-const ulStyle = {
+const liStyle = {
   textDecoration: 'none',
   color: 'rbga(255, 255, 255, 0.8)',
-  marginTop: '0px',
-  paddingTop: '0px'
 };
+
+const ulStyle = {
+  ...liStyle,
+  marginTop: 0,
+  paddingTop: 0
+}
 
 const drawerWidth = 200;
 
@@ -65,22 +69,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1)
   },
   link: {
+    padding: theme.spacing(1, 2),
     color: 'rgba(255, 255, 255)',
-    '&>li:hover': {
-      background: 'rgb(57, 62, 69)',
-      color: '#fff',
-      opacity: 1
-    },
+    display: 'flex',
+    alignItems: 'center',
+    width: 'inherit',
   },
   sidebarLink: {
+    padding: 0,
     '&:hover': {
-      '&>p': {
-        color: '#fff',
-        opacity: 0.8
-      },
-      '&>span>img': {
-        opacity: 0.8
-      }
+      background: customTheme.palette.primary.main,
     },
   },
   drawer: {
@@ -89,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: '#424850',
+    backgroundImage: `linear-gradient(to bottom, ${customTheme.palette.primary.dark}, ${customTheme.palette.secondary.main})`,
     color: theme.palette.text.light
   },
   logoContainer: {
@@ -107,33 +105,22 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#424850',
+    background: 'rgba(0,0,0,0)',
     boxShadow: "none"
   },
   activeLink: {
-    backgroundColor: 'rgb(33, 34, 37)',
-    display: 'flex',
+    backgroundColor: customTheme.palette.secondary.main,
     color: '#fff',
-    opacity: 1,
-    '&>li:hover': {
-      backgroundColor: 'rgb(33, 34, 37)',
-      opacity: 1,
+    '&>p': {
       color: '#fff',
     },
-    '&>li>p': {
-      color: '#fff',
-      backgroundColor: 'rgb(33, 34, 37)',
-      opacity: '1 !important'
+    '&:hover': {
+      backgroundColor: customTheme.palette.primary.main,
     },
-    '&>li>span>img': {
-      color: '#fff',
-      backgroundColor: 'rgb(33, 34, 37)',
-      opacity: '1 !important',
-    }
   },
-  toolbar: theme.mixins.toolbar,
-  listDivider: {
-    backgroundColor: 'rgb(92, 97, 119)'
+  toolbar: {
+    ...theme.mixins.toolbar,
+    minHeight: '60px !important'
   },
   sidebarText: {
     marginLeft: '4px',
@@ -158,9 +145,8 @@ const Sidebar = (props) => {
     <ThemeProvider theme={MToolTheme}>
       <div className={classes.toolbar} />
       <List className={classes.list} style={ulStyle}>
-        <Divider className={classes.listDivider} />
-        <NavLink className={classes.link} activeClassName={classes.activeLink} to="/dashboard">
-          <ListItem className={classes.sidebarLink}>
+        <ListItem className={classes.sidebarLink}>
+          <NavLink className={classes.link} activeClassName={classes.activeLink} to="/dashboard">
             <img
               className={classes.sidebarIcon}
               width="32px"
@@ -173,15 +159,14 @@ const Sidebar = (props) => {
               alt="Dashboard Icon"
             />
             <Typography className={classes.sidebarText}>Dashboard</Typography>
-          </ListItem>
-        </NavLink>
-        <Divider className={classes.listDivider} />
-        <NavLink style={ulStyle} to="/storage/array/"
-          exact={false}
-          className={classes.link}
-          activeClassName={classes.activeLink}
-        >
-          <ListItem className={classes.sidebarLink}>
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.sidebarLink}>
+          <NavLink style={liStyle} to="/storage/array/"
+            exact={false}
+            className={classes.link}
+            activeClassName={classes.activeLink}
+          >
             <img
               className={classes.sidebarIcon}
               width="32px"
@@ -194,11 +179,10 @@ const Sidebar = (props) => {
               alt="Storage Icon"
             />
             <Typography className={classes.sidebarText}>Storage</Typography>
-          </ListItem>
-        </NavLink>
-        <Divider className={classes.listDivider} />
-        <NavLink style={ulStyle} to="/performance" className={classes.link} activeClassName={classes.activeLink}>
-          <ListItem className={classes.sidebarLink}>
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.sidebarLink}>
+          <NavLink style={liStyle} to="/performance" className={classes.link} activeClassName={classes.activeLink}>
             <img
               className={classes.sidebarIcon}
               width="32px"
@@ -211,9 +195,8 @@ const Sidebar = (props) => {
               alt="Performance Icon"
             />
             <Typography className={classes.sidebarText}>Telemetry</Typography>
-          </ListItem>
-        </NavLink>
-        <Divider className={classes.listDivider} />
+          </NavLink>
+        </ListItem>
       </List>
       <div className={classes.logoContainer}>
         <Paper className={classes.logoPaper}>
@@ -230,35 +213,37 @@ const Sidebar = (props) => {
   if (localStorage.getItem('isLoggedIn')) {
     return (
       <ThemeProvider theme={MToolTheme}>
-        <Hidden mdUp implementation="css">
-          <Drawer
-            className={classes.drawer}
-            anchor="left"
-            variant="temporary"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            open={props.mobileOpen}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            onClose={props.toggleDrawer}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
+        <aside>
+          <Hidden mdUp implementation="css">
+            <Drawer
+              className={classes.drawer}
+              anchor="left"
+              variant="temporary"
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              open={props.mobileOpen}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+              onClose={props.toggleDrawer}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden smDown implementation="css">
+            <Drawer
+              className={classes.drawer}
+              variant="permanent"
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </aside>
       </ThemeProvider>
     );
   }
