@@ -53,6 +53,7 @@ export {
 
 export {
     fetchDevices,
+    fetchTransports,
     fetchDeviceDetails,
     fetchArray,
     fetchArrayDetails,
@@ -69,6 +70,7 @@ export {
     startFetchingVolumes,
     stopFetchingVolumes,
     setDeviceFetching,
+    setTransportFetching,
     setArrayInfoFetching
 } from "./storageActions";
 

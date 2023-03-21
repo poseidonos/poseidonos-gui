@@ -53,6 +53,13 @@ export const fetchDevices = (disks) => {
     };
 }
 
+export const fetchTransports = (transports) => {
+    return {
+        type:actionTypes.FETCH_TRANSPORT_INFO,
+        transports: transports
+    };
+}
+
 export const fetchArray = (payload) => {
     return {
         type: actionTypes.FETCH_ARRAY,
@@ -143,6 +150,13 @@ export const fetchArrayDetails = (payload) => {
 export const setDeviceFetching = (payload) => {
     return {
         type: actionTypes.SET_DEVICE_FETCHING,
+        payload
+    }
+}
+
+export const setTransportFetching = (payload) => {
+    return {
+        type: actionTypes.SET_TRANSPORT_FETCHING,
         payload
     }
 }

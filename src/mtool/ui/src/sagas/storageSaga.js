@@ -60,6 +60,8 @@ function* fetchVolumeDetails(action) {
   }
 }
 
+
+
 function* fetchVolumes(action) {
   try {
     yield put(actionCreators.clearVolumes());
@@ -164,7 +166,7 @@ function* fetchArrayInfo(action) {
   } finally {
     yield put(actionCreators.setArrayInfoFetching(false));
   }
-    
+
 }
 
 
@@ -217,40 +219,40 @@ function* fetchDevices(action) {
       response.data.result &&
       response.data.result.status.code !== 0
     ) {
-     if(isFetchingFirst) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          alertTitle: "Fetch Devices",
-          errorMsg: "Unable to get devices!",
-          errorCode: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}`
-            : ""
-            }`,
-        })
-      );
-     }
+      if (isFetchingFirst) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            alertTitle: "Fetch Devices",
+            errorMsg: "Unable to get devices!",
+            errorCode: `Description: ${response.data.result && response.data.result.status
+              ? `${response.data.result.status.description}`
+              : ""
+              }`,
+          })
+        );
+      }
     } else if (result && typeof result !== "string" && result.return !== -1) {
       fetchDeviceSuccess = true;
       yield put(actionCreators.fetchDevices(result));
     } else {
-     if(isFetchingFirst) {
-      yield put(actionCreators.showStorageAlert({
-        ...alertDetails,
-        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.description}`
-          : "Agent Communication Error"
-          }`
-      }));
-     }
+      if (isFetchingFirst) {
+        yield put(actionCreators.showStorageAlert({
+          ...alertDetails,
+          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}`
+            : "Agent Communication Error"
+            }`
+        }));
+      }
       yield put(actionCreators.fetchDevices(defaultResponse));
     }
   } catch (error) {
-    if(isFetchingFirst) {
-    yield put(actionCreators.showStorageAlert({
-      ...alertDetails,
-      errorCode: `Agent Communication Error - ${error.message}`
-    }));
+    if (isFetchingFirst) {
+      yield put(actionCreators.showStorageAlert({
+        ...alertDetails,
+        errorCode: `Agent Communication Error - ${error.message}`
+      }));
     }
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
@@ -264,6 +266,29 @@ function* fetchDevices(action) {
       yield fetchArray({ payload: { noLoad: true } });
     }
   }
+}
+
+function* fetchTransports(action) {
+  yield put(actionCreators.fetchTransports(
+    [
+      {
+        "type": "TCP",
+        "maxQueueDepth": 128,
+        "maxIoQpairsPerCtrlr": 127,
+        "inCapsuleDataSize": 4096,
+        "maxIoSize": 131072,
+        "ioUnitSize": 131072,
+        "abortTimeoutSec": 1,
+        "bufCacheSize": 64,
+        "numSharedBuf": 4096
+      }
+    ]
+  ));
+}
+
+
+
+function* createTransport(action) {
 }
 
 function* createVolume(action) {
@@ -288,7 +313,7 @@ function* createVolume(action) {
         },
       }
     );
-    
+
     /* istanbul ignore else */
     if (action.payload.count > 1) {
       if (response.status === 200) {
@@ -1861,6 +1886,8 @@ function* fetchDeviceDetails(action) {
 
 export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_INFO, fetchDevices);
+  yield takeEvery(actionTypes.SAGA_FETCH_TRANSPORT_INFO, fetchTransports);
+  yield takeEvery(actionTypes.SAGA_CREATE_TRANSPORT, createTransport);
   yield takeEvery(actionTypes.SAGA_SAVE_VOLUME, createVolume);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY, fetchArray);
   yield takeEvery(actionTypes.SAGA_GET_ARRAY_INFO, fetchArrayInfo);
