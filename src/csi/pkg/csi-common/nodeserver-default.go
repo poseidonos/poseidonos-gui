@@ -23,10 +23,12 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
+	mount "k8s.io/mount-utils"
 )
 
 type DefaultNodeServer struct {
 	Driver *CSIDriver
+	Mounter mount.Interface
 }
 
 func (ns *DefaultNodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublishVolumeRequest) (*csi.NodePublishVolumeResponse, error) {
