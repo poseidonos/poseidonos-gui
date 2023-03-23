@@ -56,138 +56,136 @@ const RunIbofOs = props => {
   }
   // istanbul ignore next: cannot click reset as it is hidden
   return (
-    <div>
-      <div className="RunIbofOs-Outer-Box">
-        <span className="IBOFOSMainHeader">Run/Shutdown Poseidon OS</span>
-        <div>
-          <span className="IBOFOSNoteMessage">
-            <span style={{ float: 'left', marginRight: '2px' }}>
-              Status -
-            </span>
-            <span
-              style={{ float: 'left', color: (props.status ? customTheme.palette.success.dark : customTheme.palette.error.dark), fontWeight: '600' }}
-            >
-              {props.status ? "Running" : props.OS_Running_Status}
-            </span>
-            {props.OS_Running_Status !== 'Not Running' && localStorage.getItem('Rebuilding_Value') ? (
-              <LinearProgressBarComponent
-                percent={localStorage.getItem('Rebuilding_Value')}
-              />
-            ) : null}
+    <div className="RunIbofOs-Outer-Box">
+      <Typography className="IBOFOSMainHeader" variant="h1">Run/Shutdown Poseidon OS</Typography>
+      <div>
+        <span className="IBOFOSNoteMessage">
+          <span style={{ float: 'left', marginRight: '2px' }}>
+            Status -
           </span>
-          <div className="IBOFOSCommandWrapper">
-            <span className="IBOFOSStartLabel">
-              <span style={{ float: 'left' }}>
-                Start/Stop Poseidon OS
-              </span>
+          <span
+            style={{ float: 'left', color: (props.status ? customTheme.palette.success.dark : customTheme.palette.error.dark), fontWeight: '600' }}
+          >
+            {props.status ? "Running" : props.OS_Running_Status}
+          </span>
+          {props.OS_Running_Status !== 'Not Running' && localStorage.getItem('Rebuilding_Value') ? (
+            <LinearProgressBarComponent
+              percent={localStorage.getItem('Rebuilding_Value')}
+            />
+          ) : null}
+        </span>
+        <div className="IBOFOSCommandWrapper">
+          <span className="IBOFOSStartLabel">
+            <span style={{ float: 'left' }}>
+              Start/Stop Poseidon OS
             </span>
-            <div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  title="Force Start Poseidon OS"
-                  data-testid="startButton"
-                  disabled={props.status}
-                  onClick={() => {
-                    props.openAlert('Start');
-                  }}
-                >
-                  Start
-                </Button>
-              </div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  title="Force Stop Poseidon OS"
-                  data-testid="stopButton"
-                  disabled={!props.status}
-                  onClick={() => {
-                    props.openAlert('Stop');
-                  }}
-                >
-                  Stop
-                </Button>
-              </div>
-              <div className="IBOFOSButtonClass">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  title="Reset Poseidon OS"
-                  data-testid="resetButton"
-                  style={{
-                    display: "none"
-                  }}
-                  onClick={() => {
-                    props.openAlert('Reset');
-                  }}
-                >
-                  Reset
-                </Button>
-              </div>
+          </span>
+          <div>
+            <div className="IBOFOSButtonClass">
+              <Button
+                variant="contained"
+                color="secondary"
+                title="Force Start Poseidon OS"
+                data-testid="startButton"
+                disabled={props.status}
+                onClick={() => {
+                  props.openAlert('Start');
+                }}
+              >
+                Start
+              </Button>
+            </div>
+            <div className="IBOFOSButtonClass">
+              <Button
+                variant="outlined"
+                color="secondary"
+                title="Force Stop Poseidon OS"
+                data-testid="stopButton"
+                disabled={!props.status}
+                onClick={() => {
+                  props.openAlert('Stop');
+                }}
+              >
+                Stop
+              </Button>
+            </div>
+            <div className="IBOFOSButtonClass">
+              <Button
+                variant="contained"
+                color="secondary"
+                title="Reset Poseidon OS"
+                data-testid="resetButton"
+                style={{
+                  display: "none"
+                }}
+                onClick={() => {
+                  props.openAlert('Reset');
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </div>
         </div>
-        <Grid container xs={12} className="IBOFOSSetPropertyContainer" alignItems="baseline">
-          <FormControl>
-            <InputLabel htmlFor="vol_unit">Rebuild Perf Impact</InputLabel>
-            <Select
-              value={props.propertySelect}
-              onChange={selectProperty}
-              disabled={props.OS_Running_Status === 'Not Running'}
-              inputProps={{
-                name: "Volume Unit",
-                id: "vol_unit",
-                "data-testid": "set-property-input",
-              }}
-              SelectDisplayProps={{
-                "data-testid": "set-property-select",
-              }}
-              className="IBOFOSPropertySelect"
-            >
-              <MenuItem value="high" data-testid="high">
-                High
-              </MenuItem>
-              <MenuItem value="medium" data-testid="medium">
-                Medium
-              </MenuItem>
-              <MenuItem value="low" data-testid="lowest">
-                Low
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            title="Set Rebuild Performance Impact"
-            data-testid="setPropertyButton"
-            className="IBOFOSPropertyButton"
-            onClick={setProperty}
-            disabled={props.OS_Running_Status === 'Not Running'}
-          >
-            Set Property
-          </Button>
-          {props.OS_Running_Status !== 'Not Running' ? (
-            <Typography className="IBOFOSImpactText"> Current Impact: <span className="IBOFOSUppercase">{props.property}</span></Typography>
-          ) : null}
-        </Grid>
-        <Grid className="IBOFOSStatusLabel">
-          <span>Response</span>
-          <Grid className="IBOFOSResponse">
-            {props.responsefromos && props.responsefromos.map((response) => (
-              <Typography component="div" className="IBOFOSStatusText">{response.code === 0 ? (
-                <CheckCircleIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.success.dark }} />
-              ) : null}{response.code &&
-                response.code !== 200 ? (
-                <ErrorIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.error.dark }} />
-              ) : null} {response.description}
-              </Typography>
-            ))}
-          </Grid>
-        </Grid>
       </div>
+      <Grid container xs={12} className="IBOFOSSetPropertyContainer" alignItems="baseline">
+        <FormControl>
+          <InputLabel htmlFor="vol_unit">Rebuild Perf Impact</InputLabel>
+          <Select
+            value={props.propertySelect}
+            onChange={selectProperty}
+            disabled={props.OS_Running_Status === 'Not Running'}
+            inputProps={{
+              name: "Volume Unit",
+              id: "vol_unit",
+              "data-testid": "set-property-input",
+            }}
+            SelectDisplayProps={{
+              "data-testid": "set-property-select",
+            }}
+            className="IBOFOSPropertySelect"
+          >
+            <MenuItem value="high" data-testid="high">
+              High
+            </MenuItem>
+            <MenuItem value="medium" data-testid="medium">
+              Medium
+            </MenuItem>
+            <MenuItem value="low" data-testid="lowest">
+              Low
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          title="Set Rebuild Performance Impact"
+          data-testid="setPropertyButton"
+          className="IBOFOSPropertyButton"
+          onClick={setProperty}
+          disabled={props.OS_Running_Status === 'Not Running'}
+        >
+          Set Property
+        </Button>
+        {props.OS_Running_Status !== 'Not Running' ? (
+          <Typography className="IBOFOSImpactText"> Current Impact: <span className="IBOFOSUppercase">{props.property}</span></Typography>
+        ) : null}
+      </Grid>
+      <Grid className="IBOFOSStatusLabel">
+        <span>Response</span>
+        <Grid className="IBOFOSResponse">
+          {props.responsefromos && props.responsefromos.map((response) => (
+            <Typography component="div" className="IBOFOSStatusText">{response.code === 0 ? (
+              <CheckCircleIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.success.dark }} />
+            ) : null}{response.code &&
+              response.code !== 200 ? (
+              <ErrorIcon className="IBOFOSStatusIcon" style={{ color: customTheme.palette.error.dark }} />
+            ) : null} {response.description}
+            </Typography>
+          ))}
+        </Grid>
+      </Grid>
     </div>
   );
 };

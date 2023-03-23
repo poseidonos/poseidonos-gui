@@ -38,7 +38,7 @@ import requests_mock
 import jwt
 import datetime
 from unittest import mock
-from flask import json
+import json
 
 json_token = jwt.encode({'_id': "test", 'exp': datetime.datetime.utcnow(
 ) + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
@@ -46,11 +46,28 @@ ip = os.environ.get('DAGENT_HOST', 'localhost')
 
 DAGENT_URL = 'http://' + ip + ':3000'
 
+#json data
+
+listner_json = '''{
+        "name":"nqn.2019-04.pos:subsystem1",
+        "transport_type":"tcp",
+        "target_address":"111.100.13.97",
+        "transport_service_id":"1158"
+}'''
+
+subsystem_json = '''{
+        "name":"nqn.2019-04.pos:subsystem1",
+        "sn": "POS0000000003",
+        "mn": "IBOF_VOLUME_EEEXTENSION",
+        "max_namespaces": 256,
+        "allow_any_host": true
+}'''
+
 INFLUXDB_URL = 'http://0.0.0.0:8086/write?db=poseidon&rp=autogen'
 ARRAY_NAME = "POSArray"
 ARRAY_LIST_URL = DAGENT_URL + '/api/ibofos/v1/arrays'
 @pytest.fixture(scope='module')
-@mock.patch("rest.app.connection_factory.match_username_from_db",
+@mock.patch("rest.db.connection_factory.match_username_from_db",
             return_value="admin", autospec=True)
 def global_data(mock_match_username_from_db):
     login_response = app.test_client().post(
@@ -66,7 +83,7 @@ def global_data(mock_match_username_from_db):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_transport(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -85,7 +102,7 @@ def test_create_transport(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_transport_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -109,7 +126,7 @@ def test_create_transport_failure(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -127,18 +144,12 @@ def test_create_subsystem(mock_get_current_user, **kwargs):
         }
     }}, status_code=200)
     response = app.test_client().post('/api/v1/subsystem/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
-}''',
+        data= subsystem_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_create_subsystem_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -159,20 +170,14 @@ def test_create_subsystem_failure(mock_get_current_user, **kwargs):
     }
 }, status_code=400)
     response = app.test_client().post('/api/v1/subsystem/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "sn": "POS0000000003",
-        "mn": "IBOF_VOLUME_EEEXTENSION",
-        "max_namespaces": 256,
-        "allow_any_host": true
-}''',
+        data= subsystem_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_listener(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -194,17 +199,12 @@ def test_add_listener(mock_get_current_user, **kwargs):
     }
 }, status_code=200)
     response = app.test_client().post('/api/v1/listener/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "transport_type":"tcp",
-        "target_address":"111.100.13.97",
-        "transport_service_id":"1158"
-}''',
+        data=listner_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_add_listener_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -225,17 +225,12 @@ def test_add_listener_failure(mock_get_current_user, **kwargs):
     }
 }, status_code=400)
     response = app.test_client().post('/api/v1/listener/',
-        data='''{
-        "name":"nqn.2019-04.pos:subsystem1",
-        "transport_type":"tcp",
-        "target_address":"111.100.13.97",
-        "transport_service_id":"1158"
-}''',
+        data=listner_json,
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_list_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -302,7 +297,7 @@ def test_list_subsystem(mock_get_current_user, **kwargs):
     assert response.status_code == 200
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
@@ -330,7 +325,7 @@ def test_delete_subsystem(mock_get_current_user, **kwargs):
 
 
 @requests_mock.Mocker(kw="mock")
-@mock.patch("rest.app.connection_factory.get_current_user",
+@mock.patch("rest.db.connection_factory.get_current_user",
             return_value="test", autospec=True)
 def test_delete_subsystem_failure(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)

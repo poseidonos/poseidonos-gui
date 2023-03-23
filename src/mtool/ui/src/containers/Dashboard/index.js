@@ -102,6 +102,7 @@ const styles = (theme) => {
       paddingTop: 0
     },
     ipText: {
+      fontSize: 18,
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
       overflow: "hidden",
@@ -152,7 +153,7 @@ class Dashboard extends Component {
     const posInfo = (
       <Paper className={classes.posInfoPaper}>
         <Grid item container xs={12} justifyContent="space-between">
-          <Typography className={classes.cardHeader}>
+          <Typography className={classes.cardHeader} variant="h2">
             IP Info
           </Typography>
         </Grid>
@@ -160,7 +161,6 @@ class Dashboard extends Component {
           <Grid item xs={4}>
             <Typography
               color="primary"
-              variant="h6"
               className={`${classes.ipText} ${classes.ipBorder}`}
             >
               PoseidonOS
@@ -170,7 +170,6 @@ class Dashboard extends Component {
             <Typography
               color="secondary"
               data-testid="dashboard-ip"
-              variant="h6"
               className={classes.ipText}
             >
               {this.props.ip === "0.0.0.0" ? "- . - . - . -" : this.props.ip}
@@ -181,7 +180,6 @@ class Dashboard extends Component {
           <Grid item xs={4}>
             <Typography
               color="primary"
-              variant="h6"
               className={`${classes.ipText} ${classes.ipBorder}`}
             >
               Telemetry
@@ -194,7 +192,6 @@ class Dashboard extends Component {
                   <Typography
                     className={classes.ipText}
                     data-testid="telemetry-ip"
-                    variant="h6"
                     color="secondary"
                   >
                     {this.props.telemetryIP}:{this.props.telemetryPort}
@@ -243,7 +240,7 @@ class Dashboard extends Component {
             <Grid container spacing={3}>
               <Grid container spacing={3} className={classes.titleContainer}>
                 <Grid sm={6} xs={12} item>
-                  <Typography className={classes.pageHeader} variant="h6">
+                  <Typography className={classes.pageHeader} variant="h1">
                     Dashboard
                   </Typography>
                 </Grid>

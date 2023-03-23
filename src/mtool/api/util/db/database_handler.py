@@ -38,24 +38,6 @@ import sqlite3
 #from flask import make_response
 import os
 #from rest.rest_api.Kapacitor.kapacitor import Delete_MultipleID_From_KapacitorList, Update_KapacitorList
-#from rest.rest_api.alerts.system_alerts import create_kapacitor_alert, update_in_kapacitor, delete_alert_from_kapacitor, toggle_in_kapacitor
-
-"""
-try:
-    import pymongo
-    from pymongo import MongoClient
-    from pymodm import connect
-    from util.db.model import User
-except BaseException:
-    pass
-"""
-# below 3 lines will be part of app.py/any code to connect db and do db
-# operations
-"""
-conFactory = get_DB_CONNECTION(DBType.SQLite) #SQLite,MongoDB
-conFactory.connect_database()
-conFactory.create_default_database()
-"""
 
 DB_CONNECTION = ""
 SQLITE_DB_PATH = os.getcwd() + "/"
@@ -66,9 +48,6 @@ EMAILLIST_TABLE = "emaillist"
 COUNTERS_TABLE = "counters"
 SMTP_TABLE = "smtpdetails"
 IBOFOS_TIMESTAMP_TABLE = "iBOFOS_Timestamp"
-USER_ALERTS_TABLE = "user_alerts"
-MONGODB_DB_NAME = "ibof"
-MONGODB_URL = "mongodb://localhost:27017/"
 USER_TABLE_COLUMNS = (
     "_id",
     "password",
@@ -93,23 +72,10 @@ USER_TABLE_DEFAULT_QUERY = "INSERT INTO " + USER_TABLE + " (" + USER_TABLE_COLUM
     "," + USER_TABLE_COLUMNS[4] + "," + USER_TABLE_COLUMNS[5] + "," + USER_TABLE_COLUMNS[6] + "," + USER_TABLE_COLUMNS[7] + "," + USER_TABLE_COLUMNS[8] + ") VALUES(?,?,?,?,?,?,?,?,?)"
 
 
-USER_ALERTS_TABLE_COLUMNS = (
-    "alertName",
-    "alertCluster",
-    "alertSubCluster",
-    "alertType",
-    "alertCondition",
-    "alertField",
-    "description",
-    "alertRange",
-    "active")
-
 TELEMETRY_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + TELEMETRY_TABLE + " (ip text,port text);"
 
 USER_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_TABLE + " (" + USER_TABLE_COLUMNS[0] + " text," + USER_TABLE_COLUMNS[1] + " text," + USER_TABLE_COLUMNS[2] + " text," + USER_TABLE_COLUMNS[3] + \
     " text," + USER_TABLE_COLUMNS[4] + " text," + USER_TABLE_COLUMNS[5] + " bool," + USER_TABLE_COLUMNS[6] + " text," + USER_TABLE_COLUMNS[7] + " integer," + USER_TABLE_COLUMNS[8] + " bool);"
-USER_ALERTS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + USER_ALERTS_TABLE + " (" + USER_ALERTS_TABLE_COLUMNS[0] + " text," + USER_ALERTS_TABLE_COLUMNS[1] + " text," + USER_ALERTS_TABLE_COLUMNS[2] + " text," + USER_ALERTS_TABLE_COLUMNS[
-    3] + " text," + USER_ALERTS_TABLE_COLUMNS[4] + " text," + USER_ALERTS_TABLE_COLUMNS[5] + " text," + USER_ALERTS_TABLE_COLUMNS[6] + " text," + USER_ALERTS_TABLE_COLUMNS[7] + " text," + USER_ALERTS_TABLE_COLUMNS[8] + " bool);"
 
 SMTP_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + \
     SMTP_TABLE + " (_id text,serverip text,serverport text);"
@@ -166,18 +132,6 @@ UPDATE_USER_QUERY = "UPDATE " + USER_TABLE + \
 SELECT_PASSWORD_QUERY = "SELECT _id FROM " + \
     USER_TABLE + " WHERE lower(_id) = ? and password = ?"
 UPDATE_PASSWORD_QUERY = "UPDATE " + USER_TABLE + " SET password = ? where lower(_id) = ?"
-ADD_ALERT_QUERY = "INSERT INTO " + USER_ALERTS_TABLE + " " + \
-    str(USER_ALERTS_TABLE_COLUMNS) + " VALUES(?,?,?,?,?,?,?,?,?)"
-GET_ALERTS_QUERY = "SELECT * FROM " + USER_ALERTS_TABLE
-DELETE_ALERT_QUERY = "DELETE FROM " + USER_ALERTS_TABLE + " WHERE alertName=?"
-SELECT_ALERT_QUERY = "SELECT alertName FROM " + \
-    USER_ALERTS_TABLE + " WHERE alertName = ?"
-UPDATE_ALERT_QUERY = "UPDATE " + USER_ALERTS_TABLE + \
-    " SET description = ?, alertRange = ?, alertCondition = ? where alertName = ?"
-TOGGLE_ALERT_STATUS_QUERY = "SELECT alertName FROM " + \
-    USER_ALERTS_TABLE + " WHERE alertName = ? "
-UPDATE_TOGGLE_ALERT_QUERY = "UPDATE " + \
-    USER_ALERTS_TABLE + " SET active = ? where alertName = ?"
 UPDATE_LIVELOG_STATUS_QUERY = "UPDATE " + \
     USER_TABLE + " SET livedata = ? where lower(_id) = ?"
 SELECT_LIVELOG_STATUS_QUERY = "SELECT livedata FROM " + \
@@ -209,7 +163,6 @@ class SQLiteConnection:
         cur.execute(EMAILLIST_TABLE_QUERY)
         cur.execute(COUNTERS_TABLE_QUERY)
         cur.execute(TIMESTAMP_TABLE_QUERY)
-        cur.execute(USER_ALERTS_TABLE_QUERY)
         cur.execute(SMTP_TABLE_QUERY)
         cur = DB_CONNECTION.cursor()
         is_user_table_exist = None
@@ -388,191 +341,14 @@ class SQLiteConnection:
             return rows[0]
 
 
-"""
-class MongoDBConnection:
-    def connect_database(self):
-        global DB_CONNECTION
-        client = pymongo.MongoClient(MONGODB_URL)
-        DB_CONNECTION = client[MONGODB_DB_NAME]
-    def create_default_database(self):
-        connect(MONGODB_URL+MONGODB_DB_NAME)
-        admin = User(USER_TABLE_DEFAULTS_VALUES[0],USER_TABLE_DEFAULTS_VALUES[1],USER_TABLE_DEFAULTS_VALUES[2],USER_TABLE_DEFAULTS_VALUES[3],USER_TABLE_DEFAULTS_VALUES[4],USER_TABLE_DEFAULTS_VALUES[5],USER_TABLE_DEFAULTS_VALUES[6],USER_TABLE_DEFAULTS_VALUES[7],USER_TABLE_DEFAULTS_VALUES[8]).save()
-    def get_current_user(self,username):
-        col = DB_CONNECTION[USER_TABLE]
-        current_user = col.find_one({"_id": username})
-        #print("get_current_user ",current_user)
-        return current_user['_id']
-    def get_prev_time_stamp(self):##
-        col = DB_CONNECTION[IBOFOS_TIMESTAMP_TABLE]
-        timestamp = col.find_one({"_id":"TIMESTAMP"})
-        #print('lastRunningTime' in timestamp:)
-        if timestamp is None:
-            return False
-        if 'lastRunningTime' in timestamp:
-            return timestamp['lastRunningTime']
-        else:
-            print(" in else ")
-            return False
-    def insert_time_stamp(self,lastRunningTime):##
-        col = DB_CONNECTION[IBOFOS_TIMESTAMP_TABLE]
-        col.insert_one({"_id": "TIMESTAMP", "lastRunningTime": lastRunningTime})
-    def update_time_stamp(self,lastRunningTime):##
-        col = DB_CONNECTION[IBOFOS_TIMESTAMP_TABLE]
-        col.update_one({"_id": "TIMESTAMP"}, {"$set": {"lastRunningTime": lastRunningTime}})
-    def insert_smtp_ip(self,serverip,serverport):#
-        col = DB_CONNECTION['smtpdetails']
-        found = col.find_one({"_id": serverip})
-        if not found:
-            col.insert_one({"_id":serverip,"serverip":serverip,"serverport": serverport})
-    def get_email_list(self):
-        col = DB_CONNECTION[EMAILLIST_TABLE]
-        emailids = col.find()
-        return emailids
-    def get_smtp_details(self):
-        col = DB_CONNECTION['smtpdetails']
-        serverdetails = col.find()
-        return serverdetails
-    def find_email(self,oldid):
-        col = DB_CONNECTION[EMAILLIST_TABLE]
-        found = col.find_one({"email": oldid})
-        if found == None:
-            return False
-        else:
-            return True
-    def insert_email(self,email):
-        col = DB_CONNECTION[EMAILLIST_TABLE]
-        col.insert_one({"email": email,"active":True})
-    def update_email_list(self,oldid,email):
-        col = DB_CONNECTION['emaillist']
-        col.update_one({"email": oldid},{"$set": {"email": email}})
-    def delete_emailids_list(self,email_id):
-        col = DB_CONNECTION[EMAILLIST_TABLE]
-        toggle = col.find_one({"email":email_id})
-        user = col.delete_one({"email":email_id})
-        if (toggle['active'] == True):
-            return True
-        else:
-            return False
-    def toggle_email_update(self,status,email_id):#
-        col = DB_CONNECTION[EMAILLIST_TABLE]
-        col.update_one({"email": email_id},{"$set": {"active": status}})
-    def update_counters_in_db(self):#
-        DB_CONNECTION.counters.update_one({"_id": "volume"}, {"$set":{"count": 0}})
-    def add_new_user_in_db(self,username,password,email,phone_number,role,active,privileges,ibofostimeinterval,livedata):
-        col = DB_CONNECTION[USER_TABLE]
-        col.insert_one({"_id":username, "password":password, "privileges": privileges, "role":role,"email":email,"phone_number":phone_number, "active": active, "ibofostimeinterval": ibofostimeinterval, "livedata": livedata})
-    def get_ibofos_time_interval_from_db(self,username):##
-        try:
-            col = DB_CONNECTION[USER_TABLE]
-            user = col.find_one({"_id": username,})
-            if not user:
-                return False
-            else:
-                return user["ibofostimeinterval"]
-        except:
-            return False
-    def set_ibofos_time_interval_in_db(self,username,timeinterval):##
-        col = DB_CONNECTION[USER_TABLE]
-        user = col.find_one({"_id": username,})
-        if not user:
-            return False
-        col.update_one({"_id": username},{"$set": {"ibofostimeinterval": timeinterval}})
-        return True
-    def get_users_from_db(self):
-        print(" in get_users_from_db")
-        col = DB_CONNECTION[USER_TABLE]
-        users = col.find()
-        #print("users: ",users)
-        if not users:
-            return False
-        else:
-            return users
-    def toggle_status_from_db(self,userid,status):
-        try:
-            col = DB_CONNECTION[USER_TABLE]
-            col.update_one({"_id": userid},{"$set": {"active": status}})
-            return True
-        except:
-            return False
-    def update_user_in_db(self,username,email,phone_number,old_username):
-        try:
-            col = DB_CONNECTION[USER_TABLE]
-            col.update_one({"_id": old_username},{"$set": {"_id": username, "email": email, "phone_number": phone_number}})
-            return True
-        except:
-            return False
-    def update_password_in_db(self,username,old_password,new_password):
-        col = DB_CONNECTION[USER_TABLE]
-        user = col.find_one({"_id": username, "password": old_password})
-        if not user:
-            return False
-        else:
-            col.update_one({"_id": username},{"$set": {"password": new_password}})
-            return True
-    def delete_users_in_db(self,username_list):
-        col = DB_CONNECTION[USER_TABLE]
-        for username in username_list:
-            if username != "admin":
-                col.delete_one({"_id":username})
-    def add_alert_in_db(self,alertName,alertCluster,alertSubCluster,alertType,alertCondition,alertField,description,alertRange,active):
-        col = DB_CONNECTION[USER_ALERTS_TABLE]
-        active = True
-        col.insert_one({ "alertName": alertName, "alertCluster": alertCluster, "alertSubCluster": alertSubCluster,  "alertType": alertType, "alertCondition": alertCondition, "alertField":alertField,  "description": description,
-                 "alertRange": alertRange, "active":active})
-    def get_alerts_from_db(self):
-        col = DB_CONNECTION[USER_ALERTS_TABLE]
-        alerts = col.find()
-        if not alerts:
-            return False
-        else:
-            return alerts
-    def delete_alerts_in_db(self,alertName):
-        col = DB_CONNECTION[USER_ALERTS_TABLE]
-        col.delete_one({"alertName": alertName})
-    def update_alerts_in_db(self,alertName,description,alertRange,alertCondition):
-        alerts = DB_CONNECTION[USER_ALERTS_TABLE]
-        alert = alerts.find_one({'alertName': alertName})
-        if not alert:
-            return False
-        else:
-            alerts.update_one({"alertName": alertName}, {"$set": {"description": description, "alertRange":alertRange, "alertCondition":alertCondition}})
-            return True
-    def toggle_alert_status_in_db(self,alertName,status):#
-        alerts = DB_CONNECTION[USER_ALERTS_TABLE]
-        alert = alerts.find_one({'alertName':alertName})
-        if not alert:
-            return False
-        else:
-            alerts.update_one({"alertName": alertName}, {"$set": {"active": status}})
-            return True
-    def set_live_logs_in_db(self,data,username):##
-        col = DB_CONNECTION[USER_TABLE]
-        col.update_one({"_id":username},{"$set": {"livedata":data}})
-    def get_live_logs_from_db(self,username):##
-        col = DB_CONNECTION[USER_TABLE]
-        user = col.find_one({"_id":username})
-        return user
-    def match_username_from_db(self,username,password):
-        col = DB_CONNECTION[USER_TABLE]
-        user = col.find_one({"_id": re.compile(username, re.IGNORECASE), "password":password, "active": True})
-        return user['_id']
-    def match_email_from_db(self,username,password):
-        col = DB_CONNECTION[USER_TABLE]
-        user = col.find_one({"email": re.compile(username, re.IGNORECASE), "password":password, "active": True})
-        return user['_id']
-"""
-
 class DBType(enum.Enum):
     SQLite = 1
-    MongoDB = 2
 
 
 class DBConnection():
     def get_db_connection(self, db_type):
         if db_type == DBType.SQLite:
             return SQLiteConnection()
-        #elif db_type == DBType.MongoDB:
-        #    return MongoDBConnection()
 
 
 

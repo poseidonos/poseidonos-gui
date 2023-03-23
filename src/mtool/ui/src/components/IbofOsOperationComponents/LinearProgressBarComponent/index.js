@@ -32,18 +32,18 @@
 
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles,withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     float: 'left',
     marginLeft: '2%',
-    width:'20%',
+    width: '20%',
   },
-  bar:{
-    color:'black',
-    backgroundColor:'red',
+  bar: {
+    color: 'black',
+    backgroundColor: 'red',
     borderRadius: 20,
   },
 });
@@ -67,7 +67,12 @@ export default function LinearProgressBarComponent(props) {
 
   return (
     <div className={classes.root}>
-      <BorderLinearProgress className={classes.bar} variant="determinate" value={props.percent} />
+      <BorderLinearProgress
+        className={classes.bar}
+        variant="determinate"
+        value={props.percent}
+        aria-label="progressbar"
+      />
     </div>
   );
 }

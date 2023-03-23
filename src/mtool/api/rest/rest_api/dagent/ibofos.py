@@ -50,6 +50,8 @@ BASE_PATH = 'api/ibofos'
 BASIC_AUTH_TOKEN = 'Basic YWRtaW46YWRtaW4='
 VERSION = 'v1'
 
+BASE_URL = DAGENT_URL +'/' +BASE_PATH +'/' + VERSION +'/' 
+
 connect_timeout = 30
 read_timeout = 2400
 system_info_connect_timeout = 10
@@ -227,12 +229,7 @@ def scan_devices(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'devices/all/scan',
             headers=req_headers,
             timeout=(
@@ -274,12 +271,7 @@ def get_smart_info(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'devices/' +
             name +
             '/smart',
@@ -303,12 +295,7 @@ def delete_array(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'array/' +
             name,
             headers=req_headers,
@@ -401,12 +388,7 @@ def add_listener(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'listener',
             headers=req_headers,
             timeout=(
@@ -441,12 +423,7 @@ def create_subsystem(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'subsystem',
             headers=req_headers,
             timeout=(
@@ -467,12 +444,7 @@ def list_subsystem(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'subsystem',
             headers=req_headers,
             timeout=(
@@ -496,12 +468,7 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'subsystem',
             headers=req_headers,
             timeout=(
@@ -568,12 +535,7 @@ def create_trans(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'transport',
             headers=req_headers,
             timeout=(
@@ -611,12 +573,7 @@ def auto_create_array(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'autoarray',
             headers=req_headers,
             timeout=(
@@ -684,12 +641,7 @@ def rebuild_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'array'+'/'+arrayname+'/'+'rebuild',
             headers=req_headers,
             timeout=(
@@ -715,12 +667,7 @@ def mount_array(arrayname, write_through=False, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'array/' +
             arrayname +
             '/mount',
@@ -749,12 +696,7 @@ def unmount_array(arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'array/' +
             arrayname +
             '/mount',
@@ -842,12 +784,7 @@ def array_info(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'array/' +
             array_name,
             headers=req_headers,
@@ -869,12 +806,7 @@ def get_pos_property(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'system/property',
             headers=req_headers,
             timeout=(
@@ -900,12 +832,7 @@ def set_pos_property(pos_property, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'system/property',
             headers=req_headers,
             timeout=(
@@ -1094,12 +1021,7 @@ def rename_volume(params, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "PATCH",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'volumes/' +
             params["param"]["name"],
             headers=req_headers,
@@ -1129,12 +1051,7 @@ def mount_volume(name, arrayname, subnqn, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'volumes/' +
             name +
             '/mount',
@@ -1167,12 +1084,7 @@ def mount_volume_with_subsystem(
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL+
             'volumes/' +
             name +
             '/mount/subsystem',
@@ -1183,12 +1095,7 @@ def mount_volume_with_subsystem(
             data=request_body)
         print(
             "url :",
-            DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            BASE_URL +
             'volumes/' +
             name +
             '/mount/subsystem')
@@ -1214,12 +1121,7 @@ def unmount_volume(name, arrayname, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'volumes/' +
             name +
             '/mount',
@@ -1285,12 +1187,7 @@ def list_volumes(array_name, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'volumelist/' +
             array_name,
             headers=req_headers,
@@ -1363,12 +1260,7 @@ def delete_volume(vol, arrayname, auth=BASIC_AUTH_TOKEN):
 
         response = send_command_to_dagent(
             "DELETE",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL+
             'volumes/' +
             name,
             headers=req_headers,
@@ -1390,12 +1282,7 @@ def max_vol_count(auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "GET",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url= BASE_URL +
             'volumes/maxcount',
             headers=req_headers,
             timeout=(
@@ -1480,12 +1367,7 @@ def replace_array_device(array_name, device, auth=BASIC_AUTH_TOKEN):
     try:
         response = send_command_to_dagent(
             "POST",
-            url=DAGENT_URL +
-            '/' +
-            BASE_PATH +
-            '/' +
-            VERSION +
-            '/' +
+            url=BASE_URL +
             'array/' +
             array_name +
             '/replace',
