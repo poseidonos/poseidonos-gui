@@ -186,10 +186,10 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.ControllerGetVolumeRequest) (*csi.ControllerGetVolumeResponse, error) {
 	klog.Info("The 'ControllerGetVolume' API function has been successfully populated", req.GetVolumeId())
 	volId := req.GetVolumeId()
-	volume, exists := s.volumesById[volId]
 	message := ""
 	abnormal := false
 	var configParams map[string]string
+	volume, exists := s.volumesById[volId]
 	if exists {
 		configParams = volume.csiVolume.VolumeContext
 	}
@@ -204,11 +204,9 @@ func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.Con
 	} else {
 		data := response.Result.Data.(map[string]interface{})
 		volStatus, keyExist1 := data["status"].(string)
-		if keyExist1 {
-			if volStatus != "Mounted" {
-				abnormal = true
-				message = volume.name + " volume is not mounted in PoseidonOS"
-			}
+		if keyExist1 && volStatus != "Mounted" {
+			abnormal = true
+			message = volume.name + " volume is not mounted in PoseidonOS"
 		}
 	}
 	return &csi.ControllerGetVolumeResponse{

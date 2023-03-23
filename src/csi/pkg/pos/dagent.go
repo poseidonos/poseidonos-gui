@@ -96,7 +96,9 @@ func (dagent *DAgent) ListVolumes(config map[string]string, mtx2 *sync.Mutex) (m
 
 func (dagent *DAgent) VolumeInfo(volName string, config map[string]string, mtx2 *sync.Mutex) (model.Response, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/array/%s/volume/%s", config["provisionerIp"], config["provisionerPort"], config["array"], volName)
+	
 	resp, err := util.CallDAgent(url, nil, "GET", "VolumeInfo", mtx2)
+	
 	if err != nil {
 		return model.Response{}, status.Error(codes.Unavailable, err.Error())
 	}
@@ -111,7 +113,7 @@ func (dagent *DAgent) VolumeInfo(volName string, config map[string]string, mtx2 
 		return model.Response{}, status.Error(codes.Unavailable, err.Error())
 	}
 	if response.Result.Status.Code == 0 {
-		klog.Info("VolumeInfo Success ")
+		klog.Info("VolumeInfo Success")
 	} else {
 		return model.Response{}, status.Error(codes.Unavailable, response.Result.Status.Description)
 	}
