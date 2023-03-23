@@ -17,4 +17,4 @@ def get_hardware_health(current_user):
         res = get_all_hardware_health(ip, port)
         return jsonify(res)
     except Exception as e:
-        return make_response('Could not get hardware health metrics'+str(e), 500)
+        return make_response('Could not get hardware health metrics', 500)

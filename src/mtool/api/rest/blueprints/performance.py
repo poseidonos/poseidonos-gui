@@ -15,4 +15,4 @@ def get_current_iops():
         res = get_agg_volumes_perf(ip, port)
         return jsonify(res)
     except Exception as e:
-        return make_response('Could not get performance metrics'+str(e), 500)
+        return make_response('Could not get performance metrics', 500)
