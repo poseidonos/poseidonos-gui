@@ -268,27 +268,53 @@ function* fetchDevices(action) {
   }
 }
 
-function* fetchTransports(action) {
-  yield put(actionCreators.fetchTransports(
-    [
+function* fetchTransports() {
+  try {
+    yield put(actionCreators.startStorageLoader("Fetching Transport"));
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1/transports/`,
       {
-        "type": "TCP",
-        "maxQueueDepth": 128,
-        "maxIoQpairsPerCtrlr": 127,
-        "inCapsuleDataSize": 4096,
-        "maxIoSize": 131072,
-        "ioUnitSize": 131072,
-        "abortTimeoutSec": 1,
-        "bufCacheSize": 64,
-        "numSharedBuf": 4096
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
       }
-    ]
-  ));
+    );
+    if (response.status === 200 && response.data) {
+      yield put(actionCreators.fetchTransports(response.data));
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "List Transport",
+          errorMsg: "Unable to get tranports",
+          errorCode: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.problem}`
+            : ""
+            }`,
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        alertTitle: "List Transport",
+        errorMsg: "Unable to get tranports",
+        errorCode: `Agent Communication error ${error.message ? (`: - ${error.message}`) : ''}`,
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader())
+  }
 }
 
 
-
-function* createTransport(action) {
+function* createTransport() {
+  yield put(actionCreators.startLoader("Create Transport"))
+  yield put(actionCreators.stopLoader())
 }
 
 function* createVolume(action) {

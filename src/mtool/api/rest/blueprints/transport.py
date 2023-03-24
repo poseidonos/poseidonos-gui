@@ -1,11 +1,13 @@
+import json
 import rest.rest_api.dagent.ibofos as dagent
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, request
 from rest.auth import token_required
+from util.com.common import toJson
 
 transport_bp = Blueprint('transport', __name__)
 
 # Get Transports
-@transport_bp.route('/api/v1.0/transports/', methods=['GET'])
+@transport_bp.route('/api/v1/transports/', methods=['GET'])
 @token_required
 def getTransports(current_user):
     transports = []
@@ -18,7 +20,24 @@ def getTransports(current_user):
     return jsonify(transports)
 
 # Create Transport
-@transport_bp.route('/api/v1.0/transport/', methods=["POST"])
+@transport_bp.route('/api/v1/transport/', methods=['POST'])
 @token_required
-def createTransport(current_user):
-    return make_response('Transport Created', 200)
+def create_transport(current_user):
+    body_unicode = request.data.decode('utf-8')
+    body = json.loads(body_unicode)
+    transport_type = body.get('transport_type')
+    buf_cache_size = body.get('buf_cache_size')
+    num_shared_buf = body.get('num_shared_buf')
+    try:
+        resp = dagent.create_trans(
+            transport_type,
+            buf_cache_size,
+            num_shared_buf)
+        if resp is not None:
+            resp = resp.json()
+            return toJson(resp)
+        else:
+            return toJson({})
+    except Exception as e:
+        print("Exception in creating transport " + e)
+        return abort(404)
