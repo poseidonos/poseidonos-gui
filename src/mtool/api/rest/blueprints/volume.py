@@ -263,7 +263,6 @@ def get_all_volumes():
     try:
         arrays = dagent.list_arrays().json()
         if "data" in arrays["result"] and "arrayList" in arrays["result"]["data"]:
-            arrays = arrays.json()
             arrays = arrays["result"]["data"]["arrayList"]
         else:
             return toJson([])
