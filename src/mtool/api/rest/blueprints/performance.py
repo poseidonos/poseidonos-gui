@@ -14,5 +14,5 @@ def get_current_iops():
         port= received_telemetry[1]
         res = get_agg_volumes_perf(ip, port)
         return jsonify(res)
-    except Exception as e:
+    except Exception:
         return make_response('Could not get performance metrics', 500)

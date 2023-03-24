@@ -21,7 +21,7 @@ def get_telemetry_config():
             'ip': received_telemetry[0],
             'port': received_telemetry[1]
             })
-    except Exception as e:
+    except Exception:
         return make_response('Could not get Telemetry URL', 500)
 
 # Configure Telemetry
@@ -36,7 +36,7 @@ def set_telemetry_config():
         if response.response[0].decode('UTF-8') == "success":
             connection_factory.update_telemetry_url(ip,port)
         return response
-    except Exception as e:
+    except Exception:
         return make_response('Could not configure Telemetry URL', 500)
 
 # Reset Telemetry Config
@@ -45,7 +45,7 @@ def reset_telemetry_config():
     try:
         connection_factory.delete_telemetery_url()
         return reset_telemetry_configuration()
-    except Exception as e:
+    except Exception:
         return make_response('Could not reset Telemetry URL', 500)
 
 # Check Telemetry Endpoint
@@ -60,7 +60,7 @@ def check_telemetry(current_user):
         port= received_telemetry[1]
         res = check_telemetry_endpoint(ip, port)
         return res
-    except Exception as e:
+    except Exception:
         return make_response('Prometheus DB is not running', 500)
 
 # Start Telemetry
