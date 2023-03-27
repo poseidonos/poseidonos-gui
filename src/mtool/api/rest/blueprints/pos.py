@@ -4,7 +4,7 @@ import re
 import os
 import uuid
 import rest.rest_api.dagent.ibofos as dagent
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, request
 from rest.auth import token_required
 from rest.db import connection_factory
 from rest.rest_api.system.system import fetch_system_state
