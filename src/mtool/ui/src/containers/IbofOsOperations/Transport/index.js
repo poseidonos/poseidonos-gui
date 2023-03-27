@@ -209,8 +209,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  Get_Transports: (payload) =>
-    dispatch({ type: actionTypes.SAGA_FETCH_TRANSPORT_INFO, payload }),
+  Get_Transports: () => dispatch({ type: actionTypes.SAGA_FETCH_TRANSPORT_INFO }),
   Close_Alert: () => dispatch({ type: actionTypes.STORAGE_CLOSE_ALERT }),
 });
 

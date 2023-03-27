@@ -311,10 +311,73 @@ function* fetchTransports() {
   }
 }
 
-
-function* createTransport() {
-  yield put(actionCreators.startLoader("Create Transport"))
-  yield put(actionCreators.stopLoader())
+function* createTransport(action) {
+  try {
+    yield put(actionCreators.startLoader("Create Transport"))
+    const response = yield call(
+      [axios, axios.post],
+      "/api/v1/transport/",
+      {
+        transport_type: action.payload.transportType,
+        buf_cache_size: action.payload.buf_cache_size,
+        num_shared_buf: action.payload.numSharedBuf
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data?.result?.status?.code === 0) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: "Transport Creation Successful",
+            alertTitle: "Create Transport",
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+        action.cleanup();
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while creating transport",
+            errorCode: `Description:${response.data?.result?.status?.posDescription}`,
+            alertTitle: "Create Transport",
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error while Creating Transport",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Transport Creation failed",
+          alertTitle: "Create Transport",
+        })
+      );
+    }
+    yield fetchTransports();
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: "Error while Creating Transsport",
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: "Create Transport",
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
+  }
 }
 
 function* createVolume(action) {

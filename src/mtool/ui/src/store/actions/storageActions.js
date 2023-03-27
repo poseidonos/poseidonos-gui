@@ -56,7 +56,7 @@ export const fetchDevices = (disks) => {
 export const fetchTransports = (transports) => {
     return {
         type:actionTypes.FETCH_TRANSPORT_INFO,
-        transports: transports
+        transports
     };
 }
 
