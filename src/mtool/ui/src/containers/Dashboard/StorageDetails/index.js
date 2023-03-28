@@ -281,6 +281,9 @@ const StorageDetails = (props) => {
                             Array Summary
                         </Typography>
                     </Grid>
+                ),
+                Container: ({children, style}) => (
+                    <Paper id="array-table-container" style={style}>{children}</Paper>
                 )
             }}
             columns={arrayTableColumns}
@@ -344,6 +347,9 @@ const StorageDetails = (props) => {
                             </Select>
                         </FormControl>
                     </Grid>
+                ),
+                Container: ({ children, style}) => (
+                    <Paper id="volume-table-container" style={style}>{children}</Paper>
                 )
             }}
             style={{
