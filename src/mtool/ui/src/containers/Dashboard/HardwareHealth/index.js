@@ -265,6 +265,9 @@ const HardwareHealth = (props) => {
             }}
             components={{
                 Toolbar: () => <></>,
+                Container: ({children, style}) => (
+                    <Paper id="ipmi-table-container" style={style}>{children}</Paper>
+                )
             }}
             style={{
                 width: "100%",
@@ -313,7 +316,10 @@ const HardwareHealth = (props) => {
                 })
             }}
             components={{
-                Toolbar: () => <></>
+                Toolbar: () => <></>,
+                Container: ({children, style}) => (
+                    <Paper id="device-table-container" style={style}>{children}</Paper>
+                )
             }}
             style={{
                 width: "100%",
