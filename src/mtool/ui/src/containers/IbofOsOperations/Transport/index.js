@@ -149,11 +149,11 @@ class Transport extends Component {
         <Grid item className={classes.item}>
           <ThemeProvider theme={TableTheme}>
             <MaterialTable
-              title={
+              title={(
                 <Typography className={classes.cardHeader} variant="h1">
                   Transport List
                 </Typography>
-              }
+              )}
               actions={[{
                 icon: Add,
                 tooltip: "Add a transport",
