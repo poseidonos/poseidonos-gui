@@ -93,6 +93,7 @@ class Subsystem extends Component {
         this.closeAlert = this.closeAlert.bind(this);
         this.openAction = this.openAction.bind(this);
         this.closeAction = this.closeAction.bind(this);
+        this.deleteListener = this.deleteListener.bind(this);
     }
 
     componentDidMount() {
@@ -104,7 +105,11 @@ class Subsystem extends Component {
             dialogOpen: false
         });
     }
-
+    deleteListener(data){
+       
+        console.log("whole dattaatataa" , data)
+        this.props.Delete_Listener({data:data})
+    }
     openCreateSubsystemDialog() {
         this.setState({
             dialogOpen: true
@@ -186,6 +191,8 @@ class Subsystem extends Component {
                                 render: rowData => (
                                     <SubsystemDetails
                                         data={rowData}
+                                        openAction={this.openAction}
+                                        deleteListener = {this.deleteListener}
                                     />
                                 )
                             }]}
@@ -246,6 +253,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
     Create_Subsystem: (payload) =>
         dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload }),
+    Delete_Listener: (payload) =>
+        dispatch({type:actionTypes.SAGA_DELETE_LISTENER,payload}),
     Delete_Subsystem: (payload) =>
         dispatch({ type: actionTypes.SAGA_DELETE_SUBSYSTEM, payload }),
     Close_Alert: () =>

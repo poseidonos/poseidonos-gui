@@ -108,6 +108,74 @@ export function* fetchSubsystems() {
   }
 }
 
+export function* deleteListener(action) {
+  const alertDetails = {
+    msg: "Failed to Delete Listener!",
+    type: "alert",
+    title: "Delete Listener",
+  };
+  /* if (!(IP_REGEX.test(action.payload.ip))) {
+    yield put(
+      actionCreators.showSubsystemAlert({
+        msg: "Please provide a valid IP address",
+        type: "alert",
+        title: "Invalid IP",
+      })
+    );
+    return;
+  }*/
+  
+  console.log("action payload",action.payload)
+  try {
+    const response = yield call([axios, axios.delete], "/api/v1/listener/", {
+      data: {
+        ...action.payload
+      },
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    console.log("Hereeeeee", response)
+    if (
+      response.status === 200 &&
+      isResponseCodeFailure(response)
+    ) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "alert",
+          title: "Delete Listener",
+          msg: "Failed to delete Listener!",
+          code: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.posDescription}`
+            : ""
+            }`,
+        })
+      );
+    } else if (isResponseCodeSuccess(response)) {
+      yield put(
+        actionCreators.showSubsystemAlert({
+          type: "info",
+          title: "Delete Listener",
+          msg: "Listener Deleted Successfully"
+        })
+      );
+
+      yield fetchSubsystems();
+    } else {
+      yield put(actionCreators.showSubsystemAlert({
+        ...alertDetails,
+        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+          ? `${response.data.result.status.posDescription}`
+          : "Agent Communication Error"
+          }`
+      }));
+    }
+  } catch(error){
+    console.log("In error",error)
+  }finally{
+    console.log("In finally")
+  }
+}
 export function* addListener(action) {
   const alertDetails = {
     msg: "Failed to Add Listener!",
@@ -302,4 +370,5 @@ export default function* subsystemWatcher() {
   yield takeEvery(actionTypes.SAGA_CREATE_SUBSYSTEM, createSubsystem);
   yield takeEvery(actionTypes.SAGA_DELETE_SUBSYSTEM, deleteSubsystem);
   yield takeEvery(actionTypes.SAGA_ADD_LISTENER, addListener);
+  yield takeEvery(actionTypes.SAGA_DELETE_LISTENER, deleteListener);
 }

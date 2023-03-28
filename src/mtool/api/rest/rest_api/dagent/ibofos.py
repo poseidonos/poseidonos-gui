@@ -368,6 +368,61 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
         return False
 '''
 
+def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to delete subsystem api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+            "subnqn": name}}
+    request_body = json.dumps(request_body)
+    print(request_body)
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url= BASE_URL +
+            'subsystem',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to delete subsystem...', 500)
+
+def delete_listener(data, auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to delete listener api ...')
+    req_headers = get_headers(auth)
+    request_body = {
+        "param": {
+        "subnqn": data['subnqn'],
+        "transportType": data['transportType'],
+        "targetAddress": data['ip'],
+        "transportServiceId": data['port']
+    }
+}
+    request_body = json.dumps(request_body)
+    print(request_body)
+    try:
+        response = send_command_to_dagent(
+            "DELETE",
+            url= BASE_URL +
+            'listener',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout),
+            data=request_body)
+        print("deleting succeeded", response)
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get ibofos to delete subsystem...', 500)
 
 def add_listener(
         name,
@@ -457,29 +512,7 @@ def list_subsystem(auth=BASIC_AUTH_TOKEN):
         'Could not get ibofos to list subsystem...', 500)
 
 
-def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
-    logger = logging.getLogger(__name__)
-    logger.info('%s', 'Sending command to D-Agent to delete subsystem api ...')
-    req_headers = get_headers(auth)
-    request_body = {
-        "param": {
-            "subnqn": name}}
-    request_body = json.dumps(request_body)
-    try:
-        response = send_command_to_dagent(
-            "DELETE",
-            url= BASE_URL +
-            'subsystem',
-            headers=req_headers,
-            timeout=(
-                connect_timeout,
-                read_timeout),
-            data=request_body)
-        return response
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-    return make_failure_response(
-        'Could not get ibofos to delete subsystem...', 500)
+
 
 
 def create_device(
