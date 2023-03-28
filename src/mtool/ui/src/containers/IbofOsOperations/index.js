@@ -48,6 +48,7 @@ import MToolLoader from '../../components/MToolLoader';
 const RunIbofOs = lazy(() => import('../../components/IbofOsOperationComponents/RunIbofOs/index'));
 const Device = lazy(() => import('./Device'));
 const Subsystem = lazy(() => import('./Subsystem'));
+const Transport = lazy(() => import('./Transport'));
 
 const styles = (theme) => ({
     content: {
@@ -154,6 +155,7 @@ class IbofOsOperations extends Component {
                                 <Tab data-testid="operationsTab" label="Operations" key="operations" value="/operations/pos" />
                                 <Tab data-testid="devicesTab" label="Devices" key="devices" value="/operations/devices" />
                                 <Tab data-testid="subsystemTab" label="Subsystem" key="subsystem" value="/operations/subsystem" />
+                                <Tab data-testid="transportTab" label="Transport" key="transport" value="/operations/transport" />
                             </Tabs>
                         </AppBar>
                         <Suspense fallback={<MToolLoader />}>
@@ -174,6 +176,9 @@ class IbofOsOperations extends Component {
                             </TabPanel>
                             <TabPanel value={this.props.history.location.pathname} index="/operations/subsystem">
                                 <Subsystem />
+                            </TabPanel>
+                            <TabPanel value={this.props.history.location.pathname} index="/operations/transport">
+                                <Transport />
                             </TabPanel>
                         </Suspense>
                         <AlertDialog
