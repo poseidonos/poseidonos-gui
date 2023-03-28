@@ -55,9 +55,13 @@ type PosCliClient interface {
 	CreateSubsystem(ctx context.Context, in *CreateSubsystemRequest, opts ...grpc.CallOption) (*CreateSubsystemResponse, error)
 	DeleteSubsystem(ctx context.Context, in *DeleteSubsystemRequest, opts ...grpc.CallOption) (*DeleteSubsystemResponse, error)
 	AddListener(ctx context.Context, in *AddListenerRequest, opts ...grpc.CallOption) (*AddListenerResponse, error)
+	RemoveListener(ctx context.Context, in *RemoveListenerRequest, opts ...grpc.CallOption) (*RemoveListenerResponse, error)
+	ListListener(ctx context.Context, in *ListListenerRequest, opts ...grpc.CallOption) (*ListListenerResponse, error)
+	SetListenerAnaState(ctx context.Context, in *SetListenerAnaStateRequest, opts ...grpc.CallOption) (*SetListenerAnaStateResponse, error)
 	ListSubsystem(ctx context.Context, in *ListSubsystemRequest, opts ...grpc.CallOption) (*ListSubsystemResponse, error)
 	SubsystemInfo(ctx context.Context, in *SubsystemInfoRequest, opts ...grpc.CallOption) (*SubsystemInfoResponse, error)
 	CreateTransport(ctx context.Context, in *CreateTransportRequest, opts ...grpc.CallOption) (*CreateTransportResponse, error)
+	ListTransport(ctx context.Context, in *ListTransportRequest, opts ...grpc.CallOption) (*ListTransportResponse, error)
 	// Volume Commands
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*CreateVolumeResponse, error)
 	QosCreateVolumePolicy(ctx context.Context, in *QosCreateVolumePolicyRequest, opts ...grpc.CallOption) (*QosCreateVolumePolicyResponse, error)
@@ -406,6 +410,33 @@ func (c *posCliClient) AddListener(ctx context.Context, in *AddListenerRequest, 
 	return out, nil
 }
 
+func (c *posCliClient) RemoveListener(ctx context.Context, in *RemoveListenerRequest, opts ...grpc.CallOption) (*RemoveListenerResponse, error) {
+	out := new(RemoveListenerResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/RemoveListener", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) ListListener(ctx context.Context, in *ListListenerRequest, opts ...grpc.CallOption) (*ListListenerResponse, error) {
+	out := new(ListListenerResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListListener", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) SetListenerAnaState(ctx context.Context, in *SetListenerAnaStateRequest, opts ...grpc.CallOption) (*SetListenerAnaStateResponse, error) {
+	out := new(SetListenerAnaStateResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/SetListenerAnaState", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *posCliClient) ListSubsystem(ctx context.Context, in *ListSubsystemRequest, opts ...grpc.CallOption) (*ListSubsystemResponse, error) {
 	out := new(ListSubsystemResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListSubsystem", in, out, opts...)
@@ -427,6 +458,15 @@ func (c *posCliClient) SubsystemInfo(ctx context.Context, in *SubsystemInfoReque
 func (c *posCliClient) CreateTransport(ctx context.Context, in *CreateTransportRequest, opts ...grpc.CallOption) (*CreateTransportResponse, error) {
 	out := new(CreateTransportResponse)
 	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/CreateTransport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *posCliClient) ListTransport(ctx context.Context, in *ListTransportRequest, opts ...grpc.CallOption) (*ListTransportResponse, error) {
+	out := new(ListTransportResponse)
+	err := c.cc.Invoke(ctx, "/grpc_cli.PosCli/ListTransport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -591,9 +631,13 @@ type PosCliServer interface {
 	CreateSubsystem(context.Context, *CreateSubsystemRequest) (*CreateSubsystemResponse, error)
 	DeleteSubsystem(context.Context, *DeleteSubsystemRequest) (*DeleteSubsystemResponse, error)
 	AddListener(context.Context, *AddListenerRequest) (*AddListenerResponse, error)
+	RemoveListener(context.Context, *RemoveListenerRequest) (*RemoveListenerResponse, error)
+	ListListener(context.Context, *ListListenerRequest) (*ListListenerResponse, error)
+	SetListenerAnaState(context.Context, *SetListenerAnaStateRequest) (*SetListenerAnaStateResponse, error)
 	ListSubsystem(context.Context, *ListSubsystemRequest) (*ListSubsystemResponse, error)
 	SubsystemInfo(context.Context, *SubsystemInfoRequest) (*SubsystemInfoResponse, error)
 	CreateTransport(context.Context, *CreateTransportRequest) (*CreateTransportResponse, error)
+	ListTransport(context.Context, *ListTransportRequest) (*ListTransportResponse, error)
 	// Volume Commands
 	CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error)
 	QosCreateVolumePolicy(context.Context, *QosCreateVolumePolicyRequest) (*QosCreateVolumePolicyResponse, error)
@@ -723,6 +767,15 @@ func (UnimplementedPosCliServer) DeleteSubsystem(context.Context, *DeleteSubsyst
 func (UnimplementedPosCliServer) AddListener(context.Context, *AddListenerRequest) (*AddListenerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddListener not implemented")
 }
+func (UnimplementedPosCliServer) RemoveListener(context.Context, *RemoveListenerRequest) (*RemoveListenerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveListener not implemented")
+}
+func (UnimplementedPosCliServer) ListListener(context.Context, *ListListenerRequest) (*ListListenerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListListener not implemented")
+}
+func (UnimplementedPosCliServer) SetListenerAnaState(context.Context, *SetListenerAnaStateRequest) (*SetListenerAnaStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetListenerAnaState not implemented")
+}
 func (UnimplementedPosCliServer) ListSubsystem(context.Context, *ListSubsystemRequest) (*ListSubsystemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSubsystem not implemented")
 }
@@ -731,6 +784,9 @@ func (UnimplementedPosCliServer) SubsystemInfo(context.Context, *SubsystemInfoRe
 }
 func (UnimplementedPosCliServer) CreateTransport(context.Context, *CreateTransportRequest) (*CreateTransportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTransport not implemented")
+}
+func (UnimplementedPosCliServer) ListTransport(context.Context, *ListTransportRequest) (*ListTransportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTransport not implemented")
 }
 func (UnimplementedPosCliServer) CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVolume not implemented")
@@ -1432,6 +1488,60 @@ func _PosCli_AddListener_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PosCli_RemoveListener_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveListenerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).RemoveListener(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/RemoveListener",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).RemoveListener(ctx, req.(*RemoveListenerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_ListListener_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListListenerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).ListListener(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/ListListener",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).ListListener(ctx, req.(*ListListenerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_SetListenerAnaState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetListenerAnaStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).SetListenerAnaState(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/SetListenerAnaState",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).SetListenerAnaState(ctx, req.(*SetListenerAnaStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PosCli_ListSubsystem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListSubsystemRequest)
 	if err := dec(in); err != nil {
@@ -1482,6 +1592,24 @@ func _PosCli_CreateTransport_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PosCliServer).CreateTransport(ctx, req.(*CreateTransportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PosCli_ListTransport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTransportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PosCliServer).ListTransport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc_cli.PosCli/ListTransport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PosCliServer).ListTransport(ctx, req.(*ListTransportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1872,6 +2000,18 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PosCli_AddListener_Handler,
 		},
 		{
+			MethodName: "RemoveListener",
+			Handler:    _PosCli_RemoveListener_Handler,
+		},
+		{
+			MethodName: "ListListener",
+			Handler:    _PosCli_ListListener_Handler,
+		},
+		{
+			MethodName: "SetListenerAnaState",
+			Handler:    _PosCli_SetListenerAnaState_Handler,
+		},
+		{
 			MethodName: "ListSubsystem",
 			Handler:    _PosCli_ListSubsystem_Handler,
 		},
@@ -1882,6 +2022,10 @@ var PosCli_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateTransport",
 			Handler:    _PosCli_CreateTransport_Handler,
+		},
+		{
+			MethodName: "ListTransport",
+			Handler:    _PosCli_ListTransport_Handler,
 		},
 		{
 			MethodName: "CreateVolume",
