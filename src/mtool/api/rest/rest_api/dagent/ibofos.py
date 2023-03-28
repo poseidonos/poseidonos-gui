@@ -1382,6 +1382,24 @@ def replace_array_device(array_name, device, auth=BASIC_AUTH_TOKEN):
     return make_failure_response(
         'Could not replace array device.', 500)
 
+def list_transport(auth=BASIC_AUTH_TOKEN):
+    logger = logging.getLogger(__name__)
+    logger.info('%s', 'Sending command to D-Agent to get transports...')
+    req_headers = get_headers(auth)
+    try:
+        response = send_command_to_dagent(
+            "GET",
+            url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/' + 'transports',
+            headers=req_headers,
+            timeout=(
+                connect_timeout,
+                read_timeout))
+        return response
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return make_failure_response(
+        'Could not get transports...', 500)
+
 """
 def report_test(auth=BASIC_AUTH_TOKEN):
     # •Report file directory : /etc/ibofos/report

@@ -10,6 +10,6 @@ then
 fi
 
 cd $SCRIPT_PATH/../src/mtool/ui
-npm install
+npm install --legacy-peer-deps
 npm run build
 cp -r build/* ../api/public

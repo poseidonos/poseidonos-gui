@@ -42,7 +42,9 @@ export const initialState = {
     fetchingVolumes: false,
     volSpace: 0,
     metadisks: [],
+    transports: [],
     isDevicesFetching: false,
+    isTrasnportsFetching: false,
     isArrayInfoFetching: false,
     loading: false,
     alertOpen: false,
@@ -99,6 +101,11 @@ const storageReducer = (state = initialState, action) => {
                 ...state,
                 ssds: action.ssds,
                 metadisks: action.metadisks
+            }
+        case actionTypes.FETCH_TRANSPORT_INFO:
+            return {
+                ...state,
+                transports: action.transports
             }
         case actionTypes.STORAGE_SHOW_ALERT:
             return {
@@ -367,6 +374,11 @@ const storageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isDevicesFetching: action.payload
+            }
+        case actionTypes.SET_TRANSPORT_FETCHING:
+            return {
+                ...state,
+                isTransportsFetching: action.payload
             }
         case actionTypes.SET_ARRAY_INFO_FETCHING:
             return {

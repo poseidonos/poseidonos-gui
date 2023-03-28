@@ -37,10 +37,10 @@ def check_telemetry_endpoint(ip, port):
         if response.response[0].decode('UTF-8') != "success":
             return make_response("Error Occured", 500)
         # Checking temetry is up or not
-        telemetry, _ = is_endpoints_down(ip, port)
-        if telemetry == True:
-            return make_response(jsonify({'isTelemetryEndpointUp': True}), 200)
-        return make_response(jsonify({'isTelemetryEndpointUp': False}), 200)
+        isTelemetryDown, _ = is_endpoints_down(ip, port)
+        if isTelemetryDown:
+            return make_response(jsonify({'isTelemetryEndpointUp': False}), 200)
+        return make_response(jsonify({'isTelemetryEndpointUp': True}), 200)
 
     except Exception as e:
         return make_response("Error Occured" + repr(e), 500)
