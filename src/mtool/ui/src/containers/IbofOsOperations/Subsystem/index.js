@@ -105,9 +105,11 @@ class Subsystem extends Component {
             dialogOpen: false
         });
     }
-    deleteListener(data){
-        this.props.Delete_Listener({data:data})
+
+    deleteListener(dataJson){
+        this.props.Delete_Listener({data:dataJson})
     }
+
     openCreateSubsystemDialog() {
         this.setState({
             dialogOpen: true
@@ -203,7 +205,7 @@ class Subsystem extends Component {
                         />
                     </ThemeProvider>
                 </Grid>
-                
+
                 <Popup
                     title="Create Subsystem"
                     open={this.state.dialogOpen}
