@@ -91,7 +91,7 @@ const SubsystemDetails = (props) => {
   {
     title: "Action",
     render: (rowData) => (
-      <Tooltip title="Delete Subsystem">
+      <Tooltip title="Delete Listener">
           <IconButton
             onClick={() => {
               props.openAction("Delete Listener",
