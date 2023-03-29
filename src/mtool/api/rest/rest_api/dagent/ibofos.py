@@ -376,7 +376,6 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
         "param": {
             "subnqn": name}}
     request_body = json.dumps(request_body)
-    print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
@@ -389,8 +388,7 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
             data=request_body)
         return response
     except Exception as err:
-        print(f'Other error occurred: {err}')
-    return make_failure_response(
+        return make_failure_response(
         'Could not get ibofos to delete subsystem...', 500)
 
 def delete_listener(data, auth=BASIC_AUTH_TOKEN):

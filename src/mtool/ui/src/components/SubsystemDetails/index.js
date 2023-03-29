@@ -32,7 +32,7 @@
 
 import React, { useState } from 'react';
 import { Grid, Typography, withStyles, ThemeProvider, Tooltip,IconButton} from '@material-ui/core';
-import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward,  Delete} from '@material-ui/icons';
+import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Remove, ArrowUpward, Delete} from '@material-ui/icons';
 import MaterialTable from '@material-table/core';
 import { customTheme, TableTheme } from '../../theme';
 import Popup from '../Popup';

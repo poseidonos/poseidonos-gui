@@ -58,7 +58,7 @@ listener_delete_json = '''{
     "data": {
         "subnqn": "nqn.2019-04.pos:subsystem1",
         "transportType": "TCP",
-        "ip": "107.108.83.97",
+        "ip": "127.0.0.1",
         "port": "1158"
     }
 }'''

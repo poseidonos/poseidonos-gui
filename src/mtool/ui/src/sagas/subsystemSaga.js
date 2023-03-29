@@ -285,9 +285,12 @@ export function* deleteListener(action) {
         }));
       }
     } catch (error) {
-      console.log("Error Occured",error)
+        yield put(actionCreators.showSubsystemAlert({
+            ...alertDetails,
+            errorCode: `Agent Communication Error - ${error.message}`
+          }));
     } finally {
-      console.log("In finally")
+        yield fetchSubsystems();
     }
   }
 export function* deleteSubsystem(action) {
