@@ -128,6 +128,11 @@ type SubSystemParam struct {
 	ALLOWANYHOST       bool   `json:"allowAnyHost,omitempty"`
 	ANAREPORTING       bool   `json:"anaReporting,omitempty"`
 }
+
+type ListenerParam struct {
+	SubNQN             string `json:"subnqn,omitempty"`
+}
+
 type SetTelemetryPropertyRequest_Param struct {
 	PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
 }

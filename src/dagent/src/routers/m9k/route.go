@@ -224,6 +224,11 @@ func Route(router *gin.Engine) {
 			ibofos.CalliBoFOSwithParam(ctx, caller.CallListTransport, param, posMngr)
 		})
 
+		iBoFOSPath.GET("/subsystem/:subsystemid/listener", func(ctx *gin.Context) {
+			param := model.ListenerParam{}
+			param.SubNQN = ctx.Param("subsystemid")
+			ibofos.CalliBoFOSwithParam(ctx, caller.CallListListener, param, posMngr)
+		})
 		iBoFOSPath.POST("/listener", func(ctx *gin.Context) {
 			param := model.SubSystemParam{}
 			ibofos.CalliBoFOSwithParam(ctx, caller.CallAddListener, param, posMngr)
