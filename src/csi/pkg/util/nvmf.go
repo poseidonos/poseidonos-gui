@@ -463,8 +463,10 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string, 
 	mtx2.Lock()
 	resp, err := client.Do(req)
 	mtx2.Unlock()
-	klog.Info("Api respose status code ", reqName, " ", resp.StatusCode)
-	if err != nil {
+	klog.Info("Api respose ", reqName, " ", resp)
+	if resp == nil {
+		return resp, status.Error(codes.Unavailable, fmt.Sprintf("DAgent %v API Response is Nil", reqName))
+	} else if err != nil {
 		klog.Infof("Error in DAgent %v API: %v", reqName, err)
 		return nil, status.Error(codes.Unavailable, err.Error())
 	} else if resp.StatusCode != 200 {
