@@ -182,8 +182,45 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 	return volumeRes, nil
 
 }
+
 func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.ControllerGetVolumeRequest) (*csi.ControllerGetVolumeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "")
+	klog.Info("The 'ControllerGetVolume' API function has been successfully populated", req.GetVolumeId())
+	volId := req.GetVolumeId()
+	message := ""
+	abnormal := false
+	var configParams map[string]string
+	volume, exists := s.volumesById[volId]
+	if exists {
+		configParams = volume.csiVolume.VolumeContext
+	}
+	provisioner := &DAgent{}
+	response, err := provisioner.VolumeInfo(volume.name, configParams, &s.mtx2)
+	if err != nil {
+		abnormal = true
+		message = volume.name + " volume status not found"
+	} else if response.Result.Status.Code != 0 {
+		abnormal = true
+		message = response.Result.Status.Description
+	} else {
+		data := response.Result.Data.(map[string]interface{})
+		volStatus, keyExist1 := data["status"].(string)
+		if keyExist1 && volStatus != "Mounted" {
+			abnormal = true
+			message = volume.name + " volume is not mounted in PoseidonOS"
+		}
+	}
+	return &csi.ControllerGetVolumeResponse{
+		Volume: &csi.Volume{
+			VolumeId: req.GetVolumeId(),
+		},
+		Status: &csi.ControllerGetVolumeResponse_VolumeStatus{
+			VolumeCondition: &csi.VolumeCondition{
+				Abnormal: abnormal,
+				Message:  fmt.Sprintf(message),
+			},
+		},
+	}, nil
+
 }
 func (s *controllerServer) CreateVolume(
 	ctx context.Context,
