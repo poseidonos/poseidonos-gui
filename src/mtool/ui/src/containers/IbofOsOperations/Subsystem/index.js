@@ -106,8 +106,6 @@ class Subsystem extends Component {
         });
     }
     deleteListener(data){
-       
-        console.log("whole dattaatataa" , data)
         this.props.Delete_Listener({data:data})
     }
     openCreateSubsystemDialog() {
@@ -205,6 +203,7 @@ class Subsystem extends Component {
                         />
                     </ThemeProvider>
                 </Grid>
+                
                 <Popup
                     title="Create Subsystem"
                     open={this.state.dialogOpen}
