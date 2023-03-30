@@ -35,18 +35,21 @@ package pos
 import (
 	"context"
 	"errors"
-	"os"
-	"sync"
-
+	"fmt"
 	"github.com/container-storage-interface/spec/lib/go/csi"
+	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
+	"github.com/poseidonos/pos-csi/pkg/util"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"k8s.io/klog"
+	vol "k8s.io/kubernetes/pkg/volume"
 	mount "k8s.io/mount-utils"
 	"k8s.io/utils/exec"
-
-	csicommon "github.com/poseidonos/pos-csi/pkg/csi-common"
-	"github.com/poseidonos/pos-csi/pkg/util"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
+	"syscall"
 )
 
 type nodeServer struct {
@@ -72,7 +75,7 @@ func newNodeServer(d *csicommon.CSIDriver) *nodeServer {
 }
 
 func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVolumeRequest) (*csi.NodeStageVolumeResponse, error) {
-
+	klog.Info("The 'NodeStageVolume' API function has been successfully populated ", req.GetStagingTargetPath())
 	if req.GetVolumeCapability() == nil {
 		return nil, status.Error(codes.InvalidArgument, "Volume Capability not present in Request")
 	}
@@ -82,7 +85,6 @@ func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 	if len(req.GetStagingTargetPath()) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume Staging Target Path not present in Request")
 	}
-
 	volume, err := func() (*nodeVolume, error) {
 		volumeID := req.GetVolumeId()
 		ns.mtx.Lock()
@@ -128,6 +130,7 @@ func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 }
 
 func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstageVolumeRequest) (*csi.NodeUnstageVolumeResponse, error) {
+	klog.Info("The 'NodeUnstageVolume' API function has been successfully populated ", req.GetStagingTargetPath())
 	volumeID := req.GetVolumeId()
 	if len(volumeID) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume ID not present in Request")
@@ -190,6 +193,7 @@ func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstag
 }
 
 func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublishVolumeRequest) (*csi.NodePublishVolumeResponse, error) {
+	klog.Info("The 'NodePublishVolume' API function has been successfully populated ", req.GetTargetPath())
 	if req.GetVolumeCapability() == nil {
 		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities not present in Request")
 	}
@@ -220,7 +224,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 }
 
 func (ns *nodeServer) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpublishVolumeRequest) (*csi.NodeUnpublishVolumeResponse, error) {
-
+	klog.Info("The 'NodeUnpublishVolume' API function has been successfully populated ", req.GetTargetPath())
 	if len(req.GetTargetPath()) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume Staging Target Path not present in Request")
 	}
@@ -261,6 +265,186 @@ func (ns *nodeServer) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpu
 	return nil, status.Error(codes.Aborted, "concurrent request ongoing")
 }
 
+func IsLikelyNotMountPoint(file string) (bool, error) {
+	stat, err := os.Stat(file)
+	if err != nil {
+		return true, err
+	}
+	rootStat, err := os.Stat(filepath.Dir(strings.TrimSuffix(file, "/")))
+	if err != nil {
+		return true, err
+	}
+	// If the directory has a different device as parent, then it is a mountpoint.
+	if stat.Sys().(*syscall.Stat_t).Dev != rootStat.Sys().(*syscall.Stat_t).Dev {
+		return false, nil
+	}
+
+	return true, nil
+}
+
+// IsMountPoint checks if the given path is mountpoint or not.
+func IsMountPoint(mounter mount.Interface, p string) (bool, error) {
+	notMnt, err := IsLikelyNotMountPoint(p)
+	if err != nil {
+		return false, err
+	}
+
+	return !notMnt, nil
+}
+
+// requirePositive returns the value for `x` when it is greater or equal to 0,
+// or returns 0 in the acse `x` is negative.
+//
+// This is used for VolumeUsage entries in the NodeGetVolumeStatsResponse. The
+// CSI spec does not allow negative values in the VolumeUsage objects.
+func requirePositive(x int64) int64 {
+	if x >= 0 {
+		return x
+	}
+
+	return 0
+}
+
+// FilesystemNodeGetVolumeStats can be used for getting the metrics as
+// requested by the NodeGetVolumeStats CSI procedure.
+// It is shared for FileMode volumes, both the FS and RBD NodeServers call
+// this.
+func FilesystemNodeGetVolumeStats(
+	ctx context.Context,
+	mounter mount.Interface,
+	targetPath string,
+	includeInodes bool, volumeID string) (*csi.NodeGetVolumeStatsResponse, error) {
+	isMnt, err := IsMountPoint(mounter, targetPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, status.Errorf(codes.InvalidArgument, "targetpath %s does not exist", targetPath)
+		}
+
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	if !isMnt {
+		return nil, status.Errorf(codes.InvalidArgument, "targetpath %s is not mounted", targetPath)
+	}
+
+	metricsProvider := vol.NewMetricsStatFS(targetPath)
+	volMetrics, volMetErr := metricsProvider.GetMetrics()
+	if volMetErr != nil {
+		return nil, status.Error(codes.Internal, volMetErr.Error())
+	}
+
+	available, ok := (*(volMetrics.Available)).AsInt64()
+	if !ok {
+		klog.Infof("failed to fetch available bytes for volume %s ", volumeID)
+	}
+	capacity, ok := (*(volMetrics.Capacity)).AsInt64()
+	if !ok {
+		klog.Infof("failed to fetch capacity bytes for volume %s ", volumeID)
+
+		return nil, status.Error(codes.Unknown, "failed to fetch capacity bytes for volume "+volumeID)
+	}
+	used, ok := (*(volMetrics.Used)).AsInt64()
+	if !ok {
+		klog.Infof("failed to fetch used bytes for volume %s ", volumeID)
+	}
+
+	res := &csi.NodeGetVolumeStatsResponse{
+		Usage: []*csi.VolumeUsage{
+			{
+				Available: requirePositive(available),
+				Total:     requirePositive(capacity),
+				Used:      requirePositive(used),
+				Unit:      csi.VolumeUsage_BYTES,
+			},
+		},
+	}
+
+	if includeInodes {
+		inodes, ok := (*(volMetrics.Inodes)).AsInt64()
+		if !ok {
+			klog.Infof("failed to fetch available inodes for volume %s ", volumeID)
+
+			return nil, status.Error(codes.Unknown, "failed to fetch available inodes for volume "+volumeID)
+		}
+		inodesFree, ok := (*(volMetrics.InodesFree)).AsInt64()
+		if !ok {
+			klog.Infof("failed to fetch free inodes for volume %s ", volumeID)
+		}
+
+		inodesUsed, ok := (*(volMetrics.InodesUsed)).AsInt64()
+		if !ok {
+			klog.Infof("failed to fetch used inodes for volume %s ", volumeID)
+		}
+
+		res.Usage = append(res.Usage, &csi.VolumeUsage{
+			Available: requirePositive(inodesFree),
+			Total:     requirePositive(inodes),
+			Used:      requirePositive(inodesUsed),
+			Unit:      csi.VolumeUsage_INODES,
+		})
+	}
+
+	return res, nil
+}
+
+// BlockNodeGetVolumeStats gets the metrics for a `volumeMode: Block` type of
+// volume. At the moment, only the size of the block-device can be returned,
+func BlockNodeGetVolumeStats(ctx context.Context, targetPath string, volumeID string) (*csi.NodeGetVolumeStatsResponse, error) {
+	mp := vol.NewMetricsBlock(targetPath)
+	m, err := mp.GetMetrics()
+	if err != nil {
+		err = fmt.Errorf("failed to get metrics: %w", err)
+		klog.Infof(err.Error())
+
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &csi.NodeGetVolumeStatsResponse{
+		Usage: []*csi.VolumeUsage{
+			{
+				Total: m.Capacity.Value(),
+				Unit:  csi.VolumeUsage_BYTES,
+			},
+		},
+	}, nil
+}
+
+// IsCorruptedMountError checks if the given error is a result of a corrupted
+// mountpoint.
+func IsCorruptedMountError(err error) bool {
+	return mount.IsCorruptedMnt(err)
+}
+func (ns *nodeServer) NodeGetVolumeStats(ctx context.Context, req *csi.NodeGetVolumeStatsRequest) (*csi.NodeGetVolumeStatsResponse, error) {
+	klog.Info("The 'NodeGetVolumeStats' API function has been successfully populated ")
+	volumeID := req.GetVolumeId()
+	if len(volumeID) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "no volume ID provided")
+	}
+	targetPath := req.GetVolumePath()
+	if len(targetPath) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "no volume Path provided")
+	}
+	stat, err := os.Stat(targetPath)
+	if err != nil {
+		if IsCorruptedMountError(err) {
+			klog.Infof("corrupted volume path detected in %s: %s %s", targetPath, volumeID, err)
+
+			return &csi.NodeGetVolumeStatsResponse{
+				VolumeCondition: &csi.VolumeCondition{
+					Abnormal: true,
+					Message:  fmt.Sprintf("corrupted volume path detected in %s: %s %s", targetPath, volumeID, err),
+				},
+			}, nil
+		}
+
+		return nil, status.Errorf(codes.NotFound, "failed to get stat for targetpath %q: %v", targetPath, err)
+	}
+	if stat.Mode().IsDir() {
+		return FilesystemNodeGetVolumeStats(ctx, ns.Mounter, targetPath, true, volumeID)
+	} else if (stat.Mode() & os.ModeDevice) == os.ModeDevice {
+		return BlockNodeGetVolumeStats(ctx, targetPath, volumeID)
+	}
+	return nil, fmt.Errorf("targetpath %q is not a directory or block device", targetPath)
+}
 func (ns *nodeServer) NodeGetCapabilities(ctx context.Context, req *csi.NodeGetCapabilitiesRequest) (*csi.NodeGetCapabilitiesResponse, error) {
 	return &csi.NodeGetCapabilitiesResponse{
 		Capabilities: []*csi.NodeServiceCapability{
@@ -268,6 +452,20 @@ func (ns *nodeServer) NodeGetCapabilities(ctx context.Context, req *csi.NodeGetC
 				Type: &csi.NodeServiceCapability_Rpc{
 					Rpc: &csi.NodeServiceCapability_RPC{
 						Type: csi.NodeServiceCapability_RPC_STAGE_UNSTAGE_VOLUME,
+					},
+				},
+			},
+			{
+				Type: &csi.NodeServiceCapability_Rpc{
+					Rpc: &csi.NodeServiceCapability_RPC{
+						Type: csi.NodeServiceCapability_RPC_VOLUME_CONDITION,
+					},
+				},
+			},
+			{
+				Type: &csi.NodeServiceCapability_Rpc{
+					Rpc: &csi.NodeServiceCapability_RPC{
+						Type: csi.NodeServiceCapability_RPC_GET_VOLUME_STATS,
 					},
 				},
 			},
