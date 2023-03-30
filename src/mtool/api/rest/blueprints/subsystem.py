@@ -70,29 +70,6 @@ def delete_subsystem(current_user):
         print("Exception in deleting subsystem " + e)
         return abort(404)
 
-# create transport
-@subsystem_bp.route('/api/v1/transport/', methods=['POST'])
-@token_required
-def create_transport(current_user):
-    body_unicode = request.data.decode('utf-8')
-    body = json.loads(body_unicode)
-    transport_type = body.get('transport_type')
-    buf_cache_size = body.get('buf_cache_size')
-    num_shared_buf = body.get('num_shared_buf')
-    try:
-        resp = dagent.create_trans(
-            transport_type,
-            buf_cache_size,
-            num_shared_buf)
-        if resp is not None:
-            resp = resp.json()
-            return toJson(resp)
-        else:
-            return toJson({})
-    except Exception as e:
-        print("Exception in creating transport " + e)
-        return abort(404)
-
 # add listener
 @subsystem_bp.route('/api/v1/listener/', methods=['POST'])
 @token_required

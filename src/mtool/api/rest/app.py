@@ -51,6 +51,7 @@ from rest.blueprints.pos import pos_bp
 from rest.blueprints.storage import storage_bp
 from rest.blueprints.subsystem import subsystem_bp
 from rest.blueprints.telemetry import telemetry_bp
+from rest.blueprints.transport import transport_bp
 from rest.blueprints.user import user_bp
 from rest.blueprints.volume import volume_bp
 from rest.log import logger
@@ -79,6 +80,7 @@ app.register_blueprint(pos_bp)
 app.register_blueprint(storage_bp)
 app.register_blueprint(subsystem_bp)
 app.register_blueprint(telemetry_bp)
+app.register_blueprint(transport_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(volume_bp)
 

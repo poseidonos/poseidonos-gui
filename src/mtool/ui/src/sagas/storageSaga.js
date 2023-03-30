@@ -60,6 +60,8 @@ function* fetchVolumeDetails(action) {
   }
 }
 
+
+
 function* fetchVolumes(action) {
   try {
     yield put(actionCreators.clearVolumes());
@@ -164,7 +166,7 @@ function* fetchArrayInfo(action) {
   } finally {
     yield put(actionCreators.setArrayInfoFetching(false));
   }
-    
+
 }
 
 
@@ -217,40 +219,40 @@ function* fetchDevices(action) {
       response.data.result &&
       response.data.result.status.code !== 0
     ) {
-     if(isFetchingFirst) {
-      yield put(
-        actionCreators.showStorageAlert({
-          alertType: "alert",
-          alertTitle: "Fetch Devices",
-          errorMsg: "Unable to get devices!",
-          errorCode: `Description: ${response.data.result && response.data.result.status
-            ? `${response.data.result.status.description}`
-            : ""
-            }`,
-        })
-      );
-     }
+      if (isFetchingFirst) {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            alertTitle: "Fetch Devices",
+            errorMsg: "Unable to get devices!",
+            errorCode: `Description: ${response.data.result && response.data.result.status
+              ? `${response.data.result.status.description}`
+              : ""
+              }`,
+          })
+        );
+      }
     } else if (result && typeof result !== "string" && result.return !== -1) {
       fetchDeviceSuccess = true;
       yield put(actionCreators.fetchDevices(result));
     } else {
-     if(isFetchingFirst) {
-      yield put(actionCreators.showStorageAlert({
-        ...alertDetails,
-        errorCode: `Description: ${response.data && response.data.result && response.data.result.status
-          ? `${response.data.result.status.description}`
-          : "Agent Communication Error"
-          }`
-      }));
-     }
+      if (isFetchingFirst) {
+        yield put(actionCreators.showStorageAlert({
+          ...alertDetails,
+          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}`
+            : "Agent Communication Error"
+            }`
+        }));
+      }
       yield put(actionCreators.fetchDevices(defaultResponse));
     }
   } catch (error) {
-    if(isFetchingFirst) {
-    yield put(actionCreators.showStorageAlert({
-      ...alertDetails,
-      errorCode: `Agent Communication Error - ${error.message}`
-    }));
+    if (isFetchingFirst) {
+      yield put(actionCreators.showStorageAlert({
+        ...alertDetails,
+        errorCode: `Agent Communication Error - ${error.message}`
+      }));
     }
     yield put(actionCreators.fetchDevices(defaultResponse));
   } finally {
@@ -263,6 +265,118 @@ function* fetchDevices(action) {
     } else {
       yield fetchArray({ payload: { noLoad: true } });
     }
+  }
+}
+
+function* fetchTransports() {
+  try {
+    yield put(actionCreators.startStorageLoader("Fetching Transport"));
+    const response = yield call(
+      [axios, axios.get],
+      `/api/v1/transports/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.status === 200 && response.data) {
+      yield put(actionCreators.fetchTransports(response.data));
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          alertTitle: "List Transport",
+          errorMsg: "Unable to get tranports",
+          errorCode: `Description: ${response.data.result && response.data.result.status
+            ? `${response.data.result.status.problem}`
+            : ""
+            }`,
+        })
+      );
+    }
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        alertTitle: "List Transport",
+        errorMsg: "Unable to get tranports",
+        errorCode: `Agent Communication error ${error.message ? (`: - ${error.message}`) : ''}`,
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader())
+  }
+}
+
+function* createTransport(action) {
+  try {
+    yield put(actionCreators.startLoader("Create Transport"))
+    const response = yield call(
+      [axios, axios.post],
+      "/api/v1/transport/",
+      {
+        transport_type: action.payload.transportType,
+        buf_cache_size: action.payload.buf_cache_size,
+        num_shared_buf: action.payload.numSharedBuf
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    /* istanbul ignore else */
+    if (response.status === 200) {
+      if (response.data?.result?.status?.code === 0) {
+        yield put(
+          actionCreators.showStorageAlert({
+            errorMsg: "Transport Creation Successful",
+            alertTitle: "Create Transport",
+            alertType: "info",
+            errorCode: "",
+          })
+        );
+        action.cleanup();
+      } else {
+        yield put(
+          actionCreators.showStorageAlert({
+            alertType: "alert",
+            errorMsg: "Error while creating transport",
+            errorCode: `Description:${response.data?.result?.status?.posDescription}`,
+            alertTitle: "Create Transport",
+          })
+        );
+      }
+    } else {
+      yield put(
+        actionCreators.showStorageAlert({
+          alertType: "alert",
+          errorMsg: "Error while Creating Transport",
+          errorCode:
+            response.data && response.data.result
+              ? response.data.result
+              : "Transport Creation failed",
+          alertTitle: "Create Transport",
+        })
+      );
+    }
+    yield fetchTransports();
+  } catch (error) {
+    yield put(
+      actionCreators.showStorageAlert({
+        alertType: "alert",
+        errorMsg: "Error while Creating Transsport",
+        errorCode: `Agent Communication Error - ${error.message}`,
+        alertTitle: "Create Transport",
+      })
+    );
+  } finally {
+    yield put(actionCreators.stopStorageLoader());
   }
 }
 
@@ -288,7 +402,7 @@ function* createVolume(action) {
         },
       }
     );
-    
+
     /* istanbul ignore else */
     if (action.payload.count > 1) {
       if (response.status === 200) {
@@ -1861,6 +1975,8 @@ function* fetchDeviceDetails(action) {
 
 export default function* storageWatcher() {
   yield takeEvery(actionTypes.SAGA_FETCH_DEVICE_INFO, fetchDevices);
+  yield takeEvery(actionTypes.SAGA_FETCH_TRANSPORT_INFO, fetchTransports);
+  yield takeEvery(actionTypes.SAGA_CREATE_TRANSPORT, createTransport);
   yield takeEvery(actionTypes.SAGA_SAVE_VOLUME, createVolume);
   yield takeEvery(actionTypes.SAGA_FETCH_ARRAY, fetchArray);
   yield takeEvery(actionTypes.SAGA_GET_ARRAY_INFO, fetchArrayInfo);

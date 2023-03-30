@@ -10,6 +10,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.3.0
+	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/shettyh/tlock v1.0.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/viney-shih/go-lock v1.1.2 // indirect
