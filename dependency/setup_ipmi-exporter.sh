@@ -6,6 +6,14 @@ then
     exit 1
 fi
 
+pid=$(sudo lsof -t -i:9290)
+
+if [ ! -z "$pid" ]
+then
+    sudo kill $pid
+    echo "Process with PID $pid using port 9290 has been killed"
+fi
+
 wget https://github.com/prometheus-community/ipmi_exporter/releases/download/v1.6.1/ipmi_exporter-1.6.1.linux-amd64.tar.gz
 
 tar xvfz ipmi_exporter-1.6.1.linux-amd64.tar.gz
