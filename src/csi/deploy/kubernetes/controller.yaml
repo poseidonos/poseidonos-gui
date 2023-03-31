@@ -26,6 +26,21 @@ spec:
         - "--timeout=30s"
         - "--retry-interval-start=500ms"
         - "--leader-election=false"
+        ports:
+        - containerPort: 9719
+          name: healthz
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /healthz
+            port: healthz
+            httpHeaders:
+            - name: Custom-Header
+              value: Awesome
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          periodSeconds: 60
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
@@ -74,6 +89,14 @@ spec:
         volumeMounts:
         - name: socket-dir
           mountPath: /csi
+      - name: liveness-probe
+        volumeMounts:
+        - mountPath: /csi
+          name: socket-dir
+        image: registry.k8s.io/sig-storage/livenessprobe:v2.8.0
+        args:
+        - --csi-address=/csi/csi-provisioner.sock
+        - --health-port=9719
       volumes:
       - name: socket-dir
         hostPath:
