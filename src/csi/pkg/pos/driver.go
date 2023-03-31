@@ -32,7 +32,7 @@ func Run(conf *util.Config) {
 		ns  *nodeServer
 
 		controllerCaps = []csi.ControllerServiceCapability_RPC_Type{
-                        csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME, csi.ControllerServiceCapability_RPC_LIST_VOLUMES, csi.ControllerServiceCapability_RPC_VOLUME_CONDITION,
+                        csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME, csi.ControllerServiceCapability_RPC_LIST_VOLUMES, csi.ControllerServiceCapability_RPC_GET_VOLUME, csi.ControllerServiceCapability_RPC_VOLUME_CONDITION,
 		}
 		volumeModes = []csi.VolumeCapability_AccessMode_Mode{
 			csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER,
