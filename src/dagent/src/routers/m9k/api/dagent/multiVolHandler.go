@@ -119,12 +119,12 @@ func callbackMethod(Buffer []model.Response, Auth string, PassCount int, totalCo
 }
 
 /*
-  createVolumeWrite function tries to create the volumes and mount them. For each Volume the following steps are done
-  1. Call the create Volume API
-  2. If Create VOlume Succeeds, go to step 4
-  3. If Create Volume fails, Try MAX_RETRY_COUNT times. If it still fails, move to next volume and Start from step 1
-  4. If MountAll parameter is true, Call the Mount Volume API
-  5. If Mount Volume fails, try MAX_RETRY_COUNT times. If it still fails, move to next voluem and Start from Step 1
+createVolumeWrite function tries to create the volumes and mount them. For each Volume the following steps are done
+1. Call the create Volume API
+2. If Create VOlume Succeeds, go to step 4
+3. If Create Volume fails, Try MAX_RETRY_COUNT times. If it still fails, move to next volume and Start from step 1
+4. If MountAll parameter is true, Call the Mount Volume API
+5. If Mount Volume fails, try MAX_RETRY_COUNT times. If it still fails, move to next voluem and Start from Step 1
 */
 func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volParam *model.VolumeParam, posMngr pos.POSManager) {
 	volId := volParam.NameSuffix
@@ -268,14 +268,9 @@ func mountVolumeRead(MountVolCh chan model.Response, Auth string, totalCount int
 }
 
 func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
-	req := model.Request{}
+	req := model.VolumeRequest{}
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	marshalled, _ := json.Marshal(req.Param)
-	volParam := model.VolumeParam{}
-	err := json.Unmarshal(marshalled, &volParam)
-	if err != nil {
-		log.Info("Unmarshalling Error in Implement Async multi volume function: %v", err)
-	}
+	volParam := req.Param
 	if volParam.TotalCount > SINGLE_VOLUME_COUNT {
 		return volParam, true
 	} else {
