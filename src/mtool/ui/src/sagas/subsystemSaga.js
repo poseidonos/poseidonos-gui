@@ -237,7 +237,62 @@ export function* createSubsystem(action) {
     yield fetchSubsystems();
   }
 }
-
+export function* deleteListener(action) {
+    const alertDetails = {
+      msg: "Failed to delete the Listener",
+      type: "alert",
+      title: "Delete Listener",
+    };
+    try {
+      const response = yield call([axios, axios.delete], "/api/v1/listener/", {
+        data: {
+          ...action.payload
+        },
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+      if (
+        response.status === 200 &&
+        isResponseCodeFailure(response)
+      ) {
+        yield put(
+          actionCreators.showSubsystemAlert({
+            type: "alert",
+            title: "Delete Listener",
+            msg: "Failed to delete The Listener!",
+            code: `Description: ${response.data.result && response.data.result.status
+              ? `${response.data.result.status.posDescription}`
+              : ""
+              }`,
+          })
+        );
+      } else if (isResponseCodeSuccess(response)) {
+        yield put(
+          actionCreators.showSubsystemAlert({
+            type: "info",
+            title: "Delete Listener",
+            msg: "Listener Deleted Successfully"
+          })
+        );
+      } else {
+        yield put(actionCreators.showSubsystemAlert({
+          ...alertDetails,
+          errorCode: `Description: ${response.data && response.data.result && response.data.result.status
+            ? `${response.data.result.status.description}`
+            : "Agent Communication Error"
+            }`
+        }));
+      }
+    } catch (error) {
+        yield put(actionCreators.showSubsystemAlert({
+            ...alertDetails,
+            errorCode: `Agent Communication Error - ${error.message}`
+          }));
+    } finally {
+        yield fetchSubsystems();
+    }
+  }
 export function* deleteSubsystem(action) {
   const alertDetails = {
     msg: "Failed to delete Subsytem!",
@@ -302,4 +357,5 @@ export default function* subsystemWatcher() {
   yield takeEvery(actionTypes.SAGA_CREATE_SUBSYSTEM, createSubsystem);
   yield takeEvery(actionTypes.SAGA_DELETE_SUBSYSTEM, deleteSubsystem);
   yield takeEvery(actionTypes.SAGA_ADD_LISTENER, addListener);
+  yield takeEvery(actionTypes.SAGA_DELETE_LISTENER,deleteListener)
 }

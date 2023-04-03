@@ -357,4 +357,27 @@ describe("SubsystemOperations", () => {
             fireEvent.click(getByText("Yes"));
             expect(await waitForElement(() => getByText("Subsystem Deleted Successfully"))).toBeDefined();
         });
+
+    it("should delete a listener",
+        async () => {
+            const mock = new MockAdapter(axios);
+            mock.onGet("/api/v1/subsystem/")
+                .reply(200,
+                    subsystemResponse
+                )
+                .onDelete("/api/v1/listener/")
+                .reply(200, listenerJson).onAny().reply(200);
+            renderComponent();
+            const { findAllByTitle, getByText } = wrapper;
+            let subnqn = await waitForElement(() => getByText("nqn.2019-04.pos:subsystem1"))
+            const tableRow = subnqn.closest('tr').children;
+            let detailBtn = tableRow[0].firstChild.firstChild;
+            fireEvent.click(detailBtn);
+            const ipAddress = await waitForElement(() => getByText("127.0.0.1"));
+            expect(ipAddress).toBeDefined();
+            const deleteBtns = await findAllByTitle("Delete Listener");
+            fireEvent.click(deleteBtns[0]);
+            fireEvent.click(getByText("Yes"));
+            expect(await waitForElement(() => getByText("Listener Deleted Successfully"))).toBeDefined();
+        });
 });

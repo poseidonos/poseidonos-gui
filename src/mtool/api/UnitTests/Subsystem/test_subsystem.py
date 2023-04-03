@@ -54,6 +54,14 @@ listner_json = '''{
         "target_address":"111.100.13.97",
         "transport_service_id":"1158"
 }'''
+listener_delete_json = '''{
+    "data": {
+        "subnqn": "nqn.2019-04.pos:subsystem1",
+        "transportType": "TCP",
+        "ip": "127.0.0.1",
+        "port": "1158"
+    }
+}'''
 
 subsystem_json = '''{
         "name":"nqn.2019-04.pos:subsystem1",
@@ -174,6 +182,64 @@ def test_create_subsystem_failure(mock_get_current_user, **kwargs):
         headers={'x-access-token': json_token})
     assert response.status_code == 200
 
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.db.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_delete_listener(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/listener',
+                       json={
+    "rid": "ceae8fa7-50c2-4247-9dd0-5f3146e46a54",
+    "lastSuccessTime": 1653375647,
+    "result": {
+        "status":  {
+            "cause": "none",
+            "code": 0,
+            "description": "none",
+            "eventName": "SUCCESS",
+            "module":   "",
+            "posDescription": "none",
+            "solution": "none"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=200)
+    response = app.test_client().delete('/api/v1/listener/',
+        data=listener_delete_json,
+        headers={'x-access-token': json_token})
+    assert response.status_code == 200
+
+@requests_mock.Mocker(kw="mock")
+@mock.patch("rest.db.connection_factory.get_current_user",
+            return_value="test", autospec=True)
+def test_delete_listener_failure(mock_get_current_user, **kwargs):
+    kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
+    kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/listener',
+                       json={
+    "rid": "ceae8fa7-50c2-4247-9dd0-5f3146e46a54",
+    "lastSuccessTime": 1653375647,
+    "result": {
+        "status": {
+            "cause": "none",
+            "code": 0,
+            "description": "none",
+            "eventName": "SUCCESS",
+            "module":   "",
+            "posDescription": "none",
+            "solution": "none"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc4"
+    }
+}, status_code=400)
+    response = app.test_client().delete('/api/v1/listener/',
+        data=listener_delete_json,
+        headers={'x-access-token': json_token})
+    assert response.status_code == 200
+                         
 
 
 @requests_mock.Mocker(kw="mock")
@@ -303,8 +369,8 @@ def test_delete_subsystem(mock_get_current_user, **kwargs):
     kwargs["mock"].post(INFLUXDB_URL, text='Success', status_code=204)
     kwargs["mock"].delete(DAGENT_URL + '/api/ibofos/v1/subsystem',
                        json={
-    "rid": "b7673aac-42dd-4354-8902-9bc96b525b11",
-    "lastSuccessTime": 1653384928,
+    "rid": "8c38ae25-cdf6-11ed-ab42-3cecef280244",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
             "module": "COMMON",

@@ -93,6 +93,7 @@ class Subsystem extends Component {
         this.closeAlert = this.closeAlert.bind(this);
         this.openAction = this.openAction.bind(this);
         this.closeAction = this.closeAction.bind(this);
+        this.deleteListener = this.deleteListener.bind(this);
     }
 
     componentDidMount() {
@@ -103,6 +104,10 @@ class Subsystem extends Component {
         this.setState({
             dialogOpen: false
         });
+    }
+
+    deleteListener(dataJson){
+        this.props.Delete_Listener({data:dataJson})
     }
 
     openCreateSubsystemDialog() {
@@ -186,6 +191,8 @@ class Subsystem extends Component {
                                 render: rowData => (
                                     <SubsystemDetails
                                         data={rowData}
+                                        openAction={this.openAction}
+                                        deleteListener = {this.deleteListener}
                                     />
                                 )
                             }]}
@@ -198,6 +205,7 @@ class Subsystem extends Component {
                         />
                     </ThemeProvider>
                 </Grid>
+
                 <Popup
                     title="Create Subsystem"
                     open={this.state.dialogOpen}
@@ -246,6 +254,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({ type: actionTypes.SAGA_FETCH_SUBSYSTEMS }),
     Create_Subsystem: (payload) =>
         dispatch({ type: actionTypes.SAGA_CREATE_SUBSYSTEM, payload }),
+    Delete_Listener: (payload) =>
+        dispatch({type:actionTypes.SAGA_DELETE_LISTENER,payload}),
     Delete_Subsystem: (payload) =>
         dispatch({ type: actionTypes.SAGA_DELETE_SUBSYSTEM, payload }),
     Close_Alert: () =>
