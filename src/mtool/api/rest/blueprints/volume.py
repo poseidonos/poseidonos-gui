@@ -102,7 +102,7 @@ def saveVolume():
             minbw = body['minbw']
         maxbw = body['maxbw']
         array_name = body.get('array')
-        maxiops = int(body['maxiops'])
+        maxiops = body['maxiops']
         miniops = 0
         if 'miniops' in body:
             miniops = body['miniops']

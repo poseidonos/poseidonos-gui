@@ -37,14 +37,13 @@ import (
 	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/api/ibofos"
 	"dagent/src/routers/m9k/middleware"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"kouros/model"
 	"kouros/utils"
 	"net/http"
 	"os"
 	"path/filepath"
-
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 
 	//"pnconnector/src/routers/m9k/model"
 	"dagent/src/routers/m9k/globals"
@@ -325,7 +324,7 @@ func Route(router *gin.Engine) {
 	}
 	//QOS
 	iBoFOSPath.POST("/qos", func(ctx *gin.Context) {
-		ibofos.CalliBoFOS(ctx, caller.CallQOSCreateVolumePolicies, posMngr)
+		ibofos.CalliBoFOSQoS(ctx, caller.CallQOSCreateVolumePolicies, posMngr)
 	})
 	iBoFOSPath.POST("/qos/reset", func(ctx *gin.Context) {
 		ibofos.CalliBoFOS(ctx, caller.CallQOSResetVolumePolicies, posMngr)

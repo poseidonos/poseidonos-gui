@@ -40,6 +40,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
@@ -48,7 +49,20 @@ import (
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
 	req := model.Request{}
+	log.Info(ctx)
 	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	log.Info(req)
+	res, err := CallPOS(ctx, f, req.Param, posMngr)
+	api.HttpResponse(ctx, res, err)
+}
+
+// Handling QoS request separately, as maxiops extreme values are not parsed correctly
+// when generic Param is considered during JSON to object conversion
+func CalliBoFOSQoS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
+	req := pb.QosCreateVolumePolicyRequest{}
+	log.Info(ctx)
+	ctx.ShouldBindBodyWith(&req, binding.JSON)
+	log.Info(req)
 	res, err := CallPOS(ctx, f, req.Param, posMngr)
 	api.HttpResponse(ctx, res, err)
 }
