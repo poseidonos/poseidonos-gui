@@ -884,7 +884,6 @@ function* updateVolume(action) {
 }
 
 function* resetAndUpdateVolume(action) {
-
   const isGreaterThanEqualTo = (param) => {
     if (typeof (param) === 'number') return false;
     const max = "18446744073709552";

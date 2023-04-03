@@ -340,7 +340,6 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
     req_headers = get_headers(auth)
     try:
         scan_devices()
-
         response = send_command_to_dagent(
             "GET",
             url=DAGENT_URL + '/' + BASE_PATH + '/' + VERSION + '/'+ 'array/' + arrayname + '/load',
@@ -348,8 +347,6 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             timeout=(
                 connect_timeout,
                 read_timeout))
-
-
         if (response.status_code == 200):
             response = send_command_to_dagent(
             "POST",
@@ -362,7 +359,6 @@ def array_exists(arrayname=array_names[0],auth=BASIC_AUTH_TOKEN):
             return True
         else:
             return False
-
     except Exception as e:
         print("exception in exists: " + str(e))
         return False
@@ -387,7 +383,7 @@ def delete_subsystem(name, auth=BASIC_AUTH_TOKEN):
                 read_timeout),
             data=request_body)
         return response
-    except Exception as err:
+    except Exception :
         return make_failure_response(
         'Could not get ibofos to delete subsystem...', 500)
 

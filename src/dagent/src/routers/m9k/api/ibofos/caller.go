@@ -38,13 +38,13 @@ import (
 	"dagent/src/routers/m9k/globals"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
