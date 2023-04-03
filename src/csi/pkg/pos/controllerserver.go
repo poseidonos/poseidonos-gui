@@ -56,10 +56,9 @@ var errVolumeInCreation = status.Error(codes.Internal, "volume in creation")
 
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
-	mtx           sync.Mutex         // protect volume lock's map
-	mtx2          sync.Mutex         // for synchronizing requests to POS
 	volumesById   map[string]*volume // volume id to volume struct
 	volumesByName map[string]*volume // volume name to volume struct
+	mtx           sync.Mutex         // protect volume lock's map
 }
 
 type volume struct {
@@ -105,7 +104,7 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 	if exists {
 		configParams = volume.csiVolume.VolumeContext
 	}
-	response, err := provisioner.ListVolumes(configParams, &s.mtx2)
+	response, err := provisioner.ListVolumes(configParams)
 	if err != nil {
 		abnormal = true
 		message = "ListVolumes status not found"
@@ -194,7 +193,7 @@ func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.Con
 		configParams = volume.csiVolume.VolumeContext
 	}
 	provisioner := &DAgent{}
-	response, err := provisioner.VolumeInfo(volume.name, configParams, &s.mtx2)
+	response, err := provisioner.VolumeInfo(volume.name, configParams)
 	if err != nil {
 		abnormal = true
 		message = volume.name + " volume status not found"
@@ -285,7 +284,7 @@ func (s *controllerServer) CreateVolume(
 		"numSharedBuf":    "4096",
 	}
 
-	newVolume, err := s.createVolume(req, volumeInfo, &s.mtx2)
+	newVolume, err := s.createVolume(req, volumeInfo)
 	if err != nil {
 		// Should call delete volume
 		posVolume.status = ""
@@ -293,12 +292,12 @@ func (s *controllerServer) CreateVolume(
 		klog.Infof("Error in Volume Creation %v ", err.Error())
 		return nil, err
 	}
-	err = util.PublishVolume(req, volumeInfo, &s.mtx2)
+	err = util.PublishVolume(req, volumeInfo)
 	if err != nil {
 		posVolume.status = ""
 		return nil, err
 	}
-	volumeID, err := util.GetUUID(req.Name, volumeInfo, &s.mtx2)
+	volumeID, err := util.GetUUID(req.Name, volumeInfo)
 	if err != nil {
 		posVolume.status = ""
 		return nil, err
@@ -368,7 +367,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 	defer volume.mtx.Unlock()
 
 	// no harm if volume already unpublished
-	err := util.UnpublishVolume(volume.name, params, &s.mtx2)
+	err := util.UnpublishVolume(volume.name, params)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -384,7 +383,7 @@ func (s *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolu
 		"provisionerIp":   params["provisionerIP"],
 		"provisionerPort": params["provisionerPort"],
 	}
-	err = deleteVolume(volume, volumeInfo, &s.mtx2)
+	err = deleteVolume(volume, volumeInfo)
 	if err == util.ErrJSONNoSuchDevice {
 		// deleted in previous request?
 		klog.Warningf("volume not exists: %s", volumeID)
@@ -438,16 +437,16 @@ func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req 
 	}, nil
 }
 
-func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string, mtx2 *sync.Mutex) (*volume, error) {
+func (s *controllerServer) createVolume(req *csi.CreateVolumeRequest, conf map[string]string) (*volume, error) {
 	size := req.GetCapacityRange().GetRequiredBytes()
 	provisioner := &DAgent{}
-	vol, err := provisioner.CreateVolume(req, size, conf, mtx2)
+	vol, err := provisioner.CreateVolume(req, size, conf)
 	return vol, err
 }
 
-func deleteVolume(volume *volume, conf map[string]string, mtx2 *sync.Mutex) error {
+func deleteVolume(volume *volume, conf map[string]string) error {
 	provisioner := &DAgent{}
-	err := provisioner.DeleteVolume(volume.name, conf, mtx2)
+	err := provisioner.DeleteVolume(volume.name, conf)
 	return err
 }
 

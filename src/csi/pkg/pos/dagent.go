@@ -43,7 +43,6 @@ import (
 	"google.golang.org/grpc/status"
 	"io/ioutil"
 	"k8s.io/klog/v2"
-	"sync"
 	"time"
 )
 
@@ -70,9 +69,9 @@ type Status struct {
 	Solution    string `json:"solution,omitempty"`
 }
 
-func (dagent *DAgent) ListVolumes(config map[string]string, mtx2 *sync.Mutex) (model.Response, error) {
+func (dagent *DAgent) ListVolumes(config map[string]string) (model.Response, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumelist/%s", config["provisionerIp"], config["provisionerPort"], config["array"])
-	resp, err := util.CallDAgent(url, nil, "GET", "ListVolumes", mtx2)
+	resp, err := util.CallDAgent(url, nil, "GET", "ListVolumes")
 	if err != nil {
 		return model.Response{}, status.Error(codes.Unavailable, err.Error())
 	}
@@ -94,10 +93,10 @@ func (dagent *DAgent) ListVolumes(config map[string]string, mtx2 *sync.Mutex) (m
 	return response, nil
 }
 
-func (dagent *DAgent) VolumeInfo(volName string, config map[string]string, mtx2 *sync.Mutex) (model.Response, error) {
+func (dagent *DAgent) VolumeInfo(volName string, config map[string]string) (model.Response, error) {
 	url := fmt.Sprintf("http://%s:%s/api/ibofos/v1/array/%s/volume/%s", config["provisionerIp"], config["provisionerPort"], config["array"], volName)
 	
-	resp, err := util.CallDAgent(url, nil, "GET", "VolumeInfo", mtx2)
+	resp, err := util.CallDAgent(url, nil, "GET", "VolumeInfo")
 	
 	if err != nil {
 		return model.Response{}, status.Error(codes.Unavailable, err.Error())
@@ -121,7 +120,7 @@ func (dagent *DAgent) VolumeInfo(volName string, config map[string]string, mtx2 
 	return response, nil
 }
 
-func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string, mtx2 *sync.Mutex) (*volume, error) {
+func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, config map[string]string) (*volume, error) {
 	name := csiReq.Name
 	alignedSize := size
 	if size == 0 {
@@ -139,7 +138,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
                 "iswalvol": false
              }
         }`, config["array"], name, alignedSize))
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0, mtx2)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], url, requestBody, "POST", "Create Volume", 0)
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}
@@ -172,7 +171,7 @@ func (dagent *DAgent) CreateVolume(csiReq *csi.CreateVolumeRequest, size int64, 
 
 }
 
-func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *sync.Mutex) error {
+func (dagent *DAgent) DeleteVolume(name string, config map[string]string) error {
 	time.Sleep(5 * time.Second)
 	requestBody := []byte(fmt.Sprintf(`{
             "param": {
@@ -180,7 +179,7 @@ func (dagent *DAgent) DeleteVolume(name string, config map[string]string, mtx2 *
              }
         }`, config["array"]))
 	deleteUrl := fmt.Sprintf("http://%s:%s/api/ibofos/v1/volumes/%s", config["provisionerIp"], config["provisionerPort"], name)
-	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], deleteUrl, requestBody, "DELETE", "Delete Volume", 0, mtx2)
+	resp, err := util.CallDAgentWithStatus(config["provisionerIp"], config["provisionerPort"], deleteUrl, requestBody, "DELETE", "Delete Volume", 0)
 	if err != nil {
 		klog.Infof("Error in Delete Volume API: %v", err)
 		return err

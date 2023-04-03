@@ -3,7 +3,6 @@
 SCRIPT_PATH=$(readlink -f $(dirname $0))
 cd $SCRIPT_PATH
 
-
 source /etc/lsb-release
 sudo dpkg --configure -a
 sudo apt-get update
@@ -14,6 +13,8 @@ sudo apt-get install -y jq
 
 sudo $SCRIPT_PATH/setup_nginx.sh
 pip3 install -r $SCRIPT_PATH/requirements.txt
+
+sudo $SCRIPT_PATH/setup_ipmi-exporter.sh
 
 sudo $SCRIPT_PATH/install_grafana.sh "${RESET_GRAFANA}"
 

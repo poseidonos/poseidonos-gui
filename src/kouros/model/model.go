@@ -66,6 +66,13 @@ type Status struct {
 	ErrorInfo      interface{} `json:"errorInfo,omitempty"`
 }
 
+type VolumeRequest struct {
+	Command   string      `json:"command"`
+	Rid       string      `json:"rid"`
+	Param     VolumeParam `json:"param,omitempty"`
+	Requester string      `json:"requester"`
+}
+
 type Device struct {
 	DeviceName string `json:"deviceName"`
 }
@@ -128,6 +135,11 @@ type SubSystemParam struct {
 	ALLOWANYHOST       bool   `json:"allowAnyHost,omitempty"`
 	ANAREPORTING       bool   `json:"anaReporting,omitempty"`
 }
+
+type ListenerParam struct {
+	SubNQN             string `json:"subnqn,omitempty"`
+}
+
 type SetTelemetryPropertyRequest_Param struct {
 	PublicationListPath string `protobuf:"bytes,1,opt,name=publicationListPath,proto3" json:"publicationListPath,omitempty"`
 }
@@ -182,7 +194,7 @@ type VolumeParam struct {
 	SubNQN             string `json:"subnqn,omitempty"`
 	Size               uint64 `json:"size,omitempty"`
 	Miniops            uint64 `json:"miniops,omitempty"`
-	Maxiops            uint64 `json:"maxiops,omitempty"`
+	Maxiops            uint64  `json:"maxiops,omitempty"`
 	Minbw              uint64 `json:"minbw,omitempty"`
 	Maxbw              uint64 `json:"maxbw,omitempty"`
 	NameSuffix         uint64 `json:"namesuffix,omitempty"`
