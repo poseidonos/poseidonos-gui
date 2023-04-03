@@ -1,0 +1,7 @@
+
+  - job_name: 'ipmi'
+    scrape_interval: 1s
+    static_configs:
+      - targets: ['localhost:9290']
+        labels:
+          group: 'pos'

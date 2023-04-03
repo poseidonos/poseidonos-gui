@@ -1,0 +1,10 @@
+[Unit]
+Description=ipmi-exporter
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ipmi_exporter
+
+[Install]
+WantedBy=multi-user.target
+Alias=ipmi-exporter
