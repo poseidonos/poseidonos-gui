@@ -99,7 +99,6 @@ def add_listener(current_user):
 @subsystem_bp.route('/api/v1/listener/', methods=['DELETE'])
 @token_required
 def delete_listener(current_user):
-    print("delete listener is called")
     try:
         body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
@@ -108,8 +107,7 @@ def delete_listener(current_user):
         if resp is not None:
             resp = resp.json()
             return toJson(resp)
-        else:
-            return toJson({})
+        return toJson({})
     except Exception as e:
         print("Exception in deleting listener " + e)
         return abort(404)

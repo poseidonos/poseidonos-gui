@@ -400,7 +400,6 @@ def delete_listener(data, auth=BASIC_AUTH_TOKEN):
     }
 }
     request_body = json.dumps(request_body)
-    print(request_body)
     try:
         response = send_command_to_dagent(
             "DELETE",
@@ -411,7 +410,6 @@ def delete_listener(data, auth=BASIC_AUTH_TOKEN):
                 connect_timeout,
                 read_timeout),
             data=request_body)
-        print("deleting succeeded", response)
         return response
     except Exception as err:
         print(f'Other error occurred: {err}')
