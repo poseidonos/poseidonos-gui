@@ -133,13 +133,19 @@ func RuniBoFOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Re
 	path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	cmd := fmt.Sprintf("/../script/run_remote_ibofos.sh %s", setting.Config.Server.IBoF.IP)
 	err := utils.ExecCmd(path+cmd, false)
-
 	if err != nil {
 		res.Result.Status.Code = 11000
 	} else {
 		res.Result.Status.Code = 0
 		res.LastSuccessTime = time.Now().UTC().Unix()
 	}
+        _, _, err2 := posMngr.GetSystemInfo()
+        if err2 != nil {
+                log.Errorf(commandFailureMsg, GetFuncName(1), err2)
+                errResponse := model.Response{}
+                errResponse.Result.Status, _ = utils.GetStatusInfo(11023)
+                return iBoFRequest, errResponse, nil
+        }
 
 	log.Info("RuniBoFOS result : ", res.Result.Status.Code)
 	if res.Result.Status.Code == 0 {
