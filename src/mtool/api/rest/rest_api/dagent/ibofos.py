@@ -553,9 +553,9 @@ def create_trans(
     req_headers = get_headers(auth)
     request_body = {
         "param": {
-            "transport_type": transport_type,
-            "buf_cache_size": buf_cache_size,
-            "num_shared_buf": num_shared_buf}}
+            "transportType": transport_type,
+            "bufCacheSize": buf_cache_size,
+            "numSharedBuf": num_shared_buf}}
     request_body = json.dumps(request_body)
     try:
         response = send_command_to_dagent(
