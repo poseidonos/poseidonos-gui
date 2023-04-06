@@ -262,7 +262,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         saveConfig: (data, fn) => dispatch({ type: actionTypes.SAGA_CONFIGURE, payload: data, history: fn }),
-        changeCredentials: payload => dispatch(actionCreators.changeCredentials(payload)),
         setShowConfig: payload => dispatch(actionCreators.setShowConfig(payload)),
         resetConfig: () => dispatch({ type: actionTypes.SAGA_RESET_CONFIGURATION })
     };
