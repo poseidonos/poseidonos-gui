@@ -55,7 +55,7 @@ import Transport from "./index";
 
 jest.unmock("axios");
 
-describe("DeviceOperations", () => {
+describe("TransportOperations", () => {
     let wrapper;
     let history;
     let store;
@@ -104,7 +104,7 @@ describe("DeviceOperations", () => {
 
     afterEach(cleanup);
 
-    it("should list the devices",
+    it("should list the transports",
         async () => {
             const mock = new MockAdapter(axios);
             mock.onGet("/api/v1/transports/").reply(200,
@@ -116,7 +116,7 @@ describe("DeviceOperations", () => {
             expect(transportType).toBeDefined();
         });
 
-    it("should create the device",
+    it("should create the transport",
         async () => {
             const mock = new MockAdapter(axios);
             mock.onGet("/api/v1/transports/")
