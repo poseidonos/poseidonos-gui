@@ -35,6 +35,7 @@ package ibofos
 import (
 	"bytes"
 	"dagent/src/routers/m9k/api"
+	"dagent/src/routers/m9k/api/dagent"
 	"dagent/src/routers/m9k/globals"
 	"dagent/src/routers/m9k/header"
 	"encoding/json"
@@ -76,7 +77,11 @@ func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSMa
 	res, err := CallPOS(ctx, f, param, posMngr)
 	api.HttpResponse(ctx, res, err)
 }
-
+func CallDAgentForMultiVol(ctx *gin.Context, fun func(string, interface{}, pos.POSManager) (model.Response, error), multiVolRes *model.VolumeParam, command string, posMngr pos.POSManager) {
+	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+	dagent.ImplementAsyncMultiVolume(ctx, fun, multiVolRes, command, posMngr)
+	globals.APILock.Unlock()
+}
 func CallPOS(ctx *gin.Context, fun func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
 	res, err := fun(header.XrId(ctx), param, posMngr)

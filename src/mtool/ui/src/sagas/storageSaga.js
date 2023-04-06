@@ -387,6 +387,7 @@ function* createVolume(action) {
     // for multi-volume creation
     if (action.payload.count < 2)
       yield put(actionCreators.startStorageLoader("Creating Volume"));
+    yield put(actionCreators.toggleCreateVolumeButton(true));
     const response = yield call(
       [axios, axios.post],
       "/api/v1.0/save-volume/",
@@ -408,7 +409,6 @@ function* createVolume(action) {
       if (response.status === 200) {
         // Create Multi-Volume request accepted and passed to POS
         if (response.data.result.status.code === requestAcceptedCode) {
-          yield put(actionCreators.toggleCreateVolumeButton(true));
           yield put(actionCreators.toggleAdvanceCreateVolumePopup(false));
           yield put(actionCreators.resetInputs());
         }
@@ -426,6 +426,7 @@ function* createVolume(action) {
                 }`,
             })
           );
+	  yield put(actionCreators.toggleCreateVolumeButton(false));
         }
       } else {
         yield put(
@@ -436,10 +437,12 @@ function* createVolume(action) {
             errorCode: ``,
           })
         );
+	yield put(actionCreators.toggleCreateVolumeButton(false));
       }
     }
     // for single volume creation
     else if (response.status === 200) {
+      yield put(actionCreators.toggleCreateVolumeButton(false));
       if (
         response.data.result?.status?.code === 2000
         || response.data.result?.status?.code === 0
@@ -510,6 +513,7 @@ function* createVolume(action) {
             }`,
         })
       );
+      yield put(actionCreators.toggleCreateVolumeButton(false));
     }
   } catch (error) {
     yield put(
@@ -520,6 +524,7 @@ function* createVolume(action) {
         errorCode: `Agent Communication error ${error.message ? (`: - ${error.message}`) : ''}`,
       })
     );
+    yield put(actionCreators.toggleCreateVolumeButton(false));
   } finally {
     yield fetchSubsystems();
     yield put(actionCreators.stopStorageLoader());

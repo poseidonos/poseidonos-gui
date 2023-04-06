@@ -271,7 +271,7 @@ func Route(router *gin.Engine) {
 					ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 					return
 				}
-				dagent.ImplementAsyncMultiVolume(ctx, caller.CallCreateVolume, &multiVolRes, dagent.CREATE_VOLUME, posMngr)
+				ibofos.CallDAgentForMultiVol(ctx, caller.CallCreateVolume, &multiVolRes, dagent.CREATE_VOLUME, posMngr)
 			} else {
 				ibofos.CalliBoFOS(ctx, caller.CallCreateVolume, posMngr)
 			}
