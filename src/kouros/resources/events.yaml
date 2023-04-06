@@ -1451,6 +1451,11 @@ modules:
         message:
         problem: PoseidonOS is already running. 
         solution: Try Stop the PoseidonOS, Start again
+      - code: 11023
+        level: ERROR
+        message:
+        problem: Could not start Poseidonos.
+        solution: Please check the status of Poseidonos service
       - code: 11030
         level: ERROR
         message: Another request already in progress

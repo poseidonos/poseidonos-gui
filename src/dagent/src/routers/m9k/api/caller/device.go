@@ -6,7 +6,6 @@ import (
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
-
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -37,7 +36,7 @@ func CallCreateDevice(xrId string, param interface{}, posMngr pos.POSManager) (m
 	result, _, err1 := posMngr.CreateDevice(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
-		resp.Result.Status.CAUSE = err.Error()
+		resp.Result.Status.CAUSE = err1.Error()
 		return resp, ErrJson
 	}
 	resByte, err2 := protojson.Marshal(result)
