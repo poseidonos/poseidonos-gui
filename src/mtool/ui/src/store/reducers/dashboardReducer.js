@@ -50,13 +50,10 @@ const initialState = {
     readLatency: 0,
     writeLatency: 0,
     devices: [],
-    ipmi: [],
     errorInDevices: true,
-    errorInIMPI: true,
     totalNominals: 0,
     totalWarnings: 0,
     totalCriticals: 0,
-    isIMPIChassisPowerOn: 0,
 }
 
 
@@ -134,13 +131,10 @@ const dashboardReducer = (state = initialState, action) => {
             const newState = {
                 ...state,
                 devices: action.devices,
-                ipmi: action.ipmi,
                 errorInDevices: action.errorInDevices,
-                errorInIMPI: action.errorInIMPI,
                 totalNominals: action.totalNominals,
                 totalWarnings: action.totalWarnings,
                 totalCriticals: action.totalCriticals,
-                isIMPIChassisPowerOn: action.isIMPIChassisPowerOn,
             }
             if (state.devices.length !== action.devices.length)
                 return newState
@@ -148,21 +142,11 @@ const dashboardReducer = (state = initialState, action) => {
                 if (!isEqual(state.devices[i], action.devices[i]))
                     return newState
             }
-            if (state.ipmi.length !== action.ipmi.length) {
-                return newState
-            }
-            for (let i = 0; i < state.ipmi.length; i += 1) {
-                if (!isEqual(state.ipmi[i], action.ipmi[i])) {
-                    return newState
-                }
-            }
             if (
                 action.errorInDevices !== state.errorInDevices ||
-                action.errorInIMPI !== state.errorInIMPI ||
                 action.totalCriticals !== state.totalCriticals ||
                 action.totalWarnings !== state.totalWarnings ||
-                action.totalNominals !== state.totalNominals ||
-                action.isIMPIChassisPowerOn !== state.isIMPIChassisPowerOn
+                action.totalNominals !== state.totalNominals 
             )
                 return newState;
             return state;
