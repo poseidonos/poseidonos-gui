@@ -30,67 +30,20 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ibofos
+package caller
 
 import (
-	"bytes"
-	"dagent/src/routers/m9k/api"
-	"dagent/src/routers/m9k/api/caller"
-	"encoding/json"
+	"dagent/src/routers/m9k/globals"
+	"dagent/src/routers/m9k/header"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	pb "kouros/api"
-	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+	"time"
 )
 
-func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
-	req := model.Request{}
-	log.Info(ctx)
-	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	log.Info(req)
-	res, err := caller.CallPOS(ctx, f, req.Param, posMngr)
-	api.HttpResponse(ctx, res, err)
-}
-
-// Handling QoS request separately, as maxiops extreme values are not parsed correctly
-// when generic Param is considered during JSON to object conversion
-func CalliBoFOSQoS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
-	req := pb.QosCreateVolumePolicyRequest{}
-	log.Info(ctx)
-	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	log.Info(req)
-	res, err := caller.CallPOS(ctx, f, req.Param, posMngr)
-	api.HttpResponse(ctx, res, err)
-}
-
-func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) {
-	req := model.Request{}
-	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	if req.Param != nil {
-		param = merge(param, req.Param)
-	}
-	res, err := caller.CallPOS(ctx, f, param, posMngr)
-	api.HttpResponse(ctx, res, err)
-}
-
-func merge(src interface{}, tar interface{}) interface{} {
-	var m map[string]interface{}
-	ja, _ := json.Marshal(src)
-	json.Unmarshal(ja, &m)
-	jb, _ := json.Marshal(tar)
-	json.Unmarshal(jb, &m)
-	jm, _ := json.Marshal(m)
-
-	var param interface{}
-
-	d := json.NewDecoder(bytes.NewBuffer(jm))
-	d.UseNumber()
-
-	if err := d.Decode(&param); err != nil {
-		log.Fatal(err)
-	}
-
-	return param
+func CallPOS(ctx *gin.Context, fun func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	globals.APILock.TryLockWithTimeout(time.Second * globals.LockTimeout)
+	res, err := fun(header.XrId(ctx), param, posMngr)
+	globals.APILock.Unlock()
+	return res, err
 }
