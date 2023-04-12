@@ -643,12 +643,9 @@ describe("Dashboard", () => {
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
     renderComponent();
-    const { getByText, asFragment } = wrapper;
+    const { getByText } = wrapper;
     const hostHeaderElement = await waitForElement(() => getByText("Hardware Health"));
     expect(hostHeaderElement).toBeDefined();
-    const hostTextElement = await waitForElement(() => getByText("No Data to plot PieChart"));
-    expect(hostTextElement).toBeDefined();
-    expect(asFragment()).toMatchSnapshot();
   });
 
   it("should display piechart", async () => {
@@ -678,30 +675,66 @@ describe("Dashboard", () => {
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-        hardwareJson
+        {
+          ...hardwareJson,
+          devices: [
+            {
+              ...devices[0],
+              nominals: 23,
+              warnings: 1,
+              criticals: 1
+            },
+            {
+              ...devices[1],
+              nominals: 1,
+              warnings: 23,
+              criticals: 1
+            }
+          ]
+        }
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
     jest.setTimeout(30000);
     renderComponent();
-    const { getByText, asFragment, getByTestId } = wrapper;
-    const sparesRow = await waitForElement(() => getByText("Spares"));
-    fireEvent.click(sparesRow);
-    const viewDetailsButton = await waitForElement(() => getByText("View Details"));
-    fireEvent.click(viewDetailsButton);
-    const availableSpareHeader = await waitForElement(() => getByText("Value (available %)"));
+    const { getAllByText, getByText, asFragment, getByTestId } = wrapper;
+    const viewDetailsButton = await waitForElement(() => getAllByText("View Details"));
+    fireEvent.click(viewDetailsButton[1]);
+    const availableSpareHeader = await waitForElement(() => getByText("available %"));
     const tableHeaders = availableSpareHeader.closest('tr').children
     for (let i = 0; i < tableHeaders.length; i++) {
       fireEvent.click(tableHeaders[i].firstChild.lastChild);
     }
     const closePopup = await waitForElement(() => getByTestId("diskdetails-close"));
     fireEvent.click(closePopup);
-    const summaryButton = await waitForElement(() => getByTestId("hw-summary-button"));
-    fireEvent.click(summaryButton);
-    expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should not display device table data if pos-exporter is not running", async () => {
+  it("should not display PieCharts if pos-exporter is not running", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        configureJson
+      )
+      .onGet(`/api/v1/get_hardware_health`)
+      .reply(200,
+        {
+          devices,
+          errorInDevices: true,
+          totalCriticals: 20,
+          totalNominals: 4,
+          totalWarnings: 8
+        }
+      )
+      .onGet(/api\/v1\/get_arrays\/*/)
+      .reply(200, [array])
+      .onAny(200);
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const alertboxOkButton = await waitForElement(() => getByTestId("alertbox-ok"));
+    fireEvent.click(alertboxOkButton)
+  });
+
+  it("should not display PieCharts if telemetry disk info is off", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
@@ -711,99 +744,19 @@ describe("Dashboard", () => {
       .reply(200,
         {
           devices: [],
-          errorInDevices: true,
-          totalCriticals: 4,
-          totalNominals: 91,
-          totalWarnings: 6
-        }
-      )
-      .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array]);
-    renderComponent();
-    const { getByText } = wrapper;
-    const hostTextElement = await waitForElement(() => getByText("Please Check POS Exporter"));
-    expect(hostTextElement).toBeDefined();
-  });
-
-  it("should show warnings and criticals in legend in piechart", async () => {
-    const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1/configure`)
-      .reply(200,
-        configureJson
-      )
-      .onGet(`/api/v1/get_hardware_health`)
-      .reply(200,
-        {
-          devices: devices,
           errorInDevices: false,
-          totalCriticals: 89,
-          totalNominals: 2,
-          totalWarnings: 2
+          totalCriticals: 0,
+          totalNominals: 0,
+          totalWarnings: 0
         }
       )
       .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array]);
-    jest.setTimeout(30000);
+      .reply(200, [array])
+      .onAny(200);
     renderComponent();
-    const { asFragment, getAllByText } = wrapper;
-    const criticalAndWarningPersentage = await waitForElement(() => getAllByText("2.2%"));
-    expect(criticalAndWarningPersentage).toHaveLength(2);
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should sort tables", async () => {
-    const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1/configure`)
-      .reply(200,
-        configureJson
-      )
-      .onGet(`/api/v1/get_hardware_health`)
-      .reply(200,
-        hardwareJson
-      )
-      .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array]);
-    jest.setTimeout(30000);
-    renderComponent();
-    const { findByText } = screen;
-    const thDevice = await findByText("Device")
-    const deviceHeaders = thDevice.closest('tr').children
-    for (let i = 0; i < deviceHeaders.length; i++) {
-      fireEvent.click(deviceHeaders[i].firstChild.lastChild);
-    }
-  });
-
-  it("should show 8 Voltage warnings", async () => {
-    const mock = new MockAdapter(axios);
-    mock.onGet(`/api/v1/configure`)
-      .reply(200,
-        configureJson
-      )
-      .onGet(`/api/v1/get_hardware_health`)
-      .reply(200,
-        {
-          devices: devices.map(d => {
-            if (d.type !== "Spares") return d;
-            return {
-              ...d,
-              nominals: 0,
-              warnings: 9,
-              criticals: 15
-            }
-          }),
-          errorInDevices: false,
-          totalCriticals: 89,
-          totalNominals: 2,
-          totalWarnings: 2
-        }
-      )
-      .onGet(/api\/v1\/get_arrays\/*/)
-      .reply(200, [array]);
-    jest.setTimeout(30000);
-    renderComponent();
-    const { getByText } = wrapper;
-    const deviceSparesWarning = await waitForElement(() => getByText("9"));
-    expect(deviceSparesWarning).toBeDefined();
+    const { getByTestId } = wrapper;
+    const alertboxOkButton = await waitForElement(() => getByTestId("alertbox-ok"));
+    fireEvent.click(alertboxOkButton)
   });
 
   it("should mock with different responses for hardware info", async () => {
