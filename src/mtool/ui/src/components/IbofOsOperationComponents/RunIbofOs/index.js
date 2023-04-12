@@ -47,6 +47,7 @@ import LinearProgressBarComponent from '../LinearProgressBarComponent';
 import { customTheme } from '../../../theme';
 
 const RunIbofOs = props => {
+  
   const [propertySelect, setPropertySelect] = useState("");
   const selectProperty = (event) => {
     setPropertySelect(event.target.value);
@@ -54,7 +55,7 @@ const RunIbofOs = props => {
   const setProperty = () => {
     props.setProperty(propertySelect);
   }
-  
+
   return (
     <div className="RunIbofOs-Outer-Box">
       <Typography className="IBOFOSMainHeader" variant="h1">Run/Shutdown Poseidon OS</Typography>
@@ -116,7 +117,7 @@ const RunIbofOs = props => {
         <FormControl>
           <InputLabel htmlFor="vol_unit">Rebuild Perf Impact</InputLabel>
           <Select
-            value={props.propertySelect}
+            value={propertySelect}
             onChange={selectProperty}
             disabled={props.OS_Running_Status === 'Not Running'}
             inputProps={{
@@ -148,7 +149,7 @@ const RunIbofOs = props => {
           data-testid="setPropertyButton"
           className="IBOFOSPropertyButton"
           onClick={setProperty}
-          disabled={props.OS_Running_Status === 'Not Running'}
+          disabled={props.OS_Running_Status === 'Not Running' || propertySelect === ""}
         >
           Set Property
         </Button>

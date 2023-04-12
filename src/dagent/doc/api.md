@@ -65,9 +65,12 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [ADD LISTENER](#1-add-listener)
   * [CREATE SUBSYSTEM](#2-create-subsystem)
   * [CREATE TRANSPORT](#3-create-transport)
-  * [DELETE SUBSYSTEM](#4-delete-subsystem)
-  * [LIST SUBSYSTEM](#5-list-subsystem)
-  * [SUBSYSTEM INFO](#6-subsystem-info)
+  * [DELETE LISTENER](#4-delete-listener)
+  * [DELETE SUBSYSTEM](#5-delete-subsystem)
+  * [LIST LISTENER](#6-list-listener)
+  * [LIST SUBSYSTEM](#7-list-subsystem)
+  * [LIST TRANSPORT](#8-list-transport)
+  * [SUBSYSTEM INFO](#9-subsystem-info)
 
 * [System](#system)
 
@@ -5275,9 +5278,9 @@ URL: http://{{host}}/api/ibofos/v1/listener
 ```js        
 {
     "param": {
-        "subnqn": "nqn.2019-04.pos:subsystem1",
+        "subnqn": "nqn.2019-04.pos:subsystem11",
         "transportType": "TCP",
-        "targetAddress": "107.108.83.97",
+        "targetAddress": "127.0.0.1",
         "transportServiceId": "1158"
     }
 }
@@ -5545,7 +5548,106 @@ URL: http://{{host}}/api/ibofos/v1/transport
 
 
 
-### 4. DELETE SUBSYSTEM
+### 4. DELETE LISTENER
+
+
+
+***Endpoint:***
+
+```bash
+Method: DELETE
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/subsystem
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem10"
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem1",
+        "transportType": "TCP",
+        "targetAddress": "127.0.0.1",
+        "transportServiceId": "1158"
+    }
+}
+
+```
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "4a79a005-d44d-11ed-8e49-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc9"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 5. DELETE SUBSYSTEM
 
 
 
@@ -5639,7 +5741,90 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 
 
 
-### 5. LIST SUBSYSTEM
+### 6. LIST LISTENER
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "ebef760e-d44c-11ed-8e49-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
+        },
+        "data": {
+            "listenerlist": [
+                {
+                    "address": {
+                        "adrfam": "IPv4",
+                        "traddr": "127.0.0.1",
+                        "trsvcid": "1158",
+                        "trtype": "TCP",
+                        "uuid": "8e383c8c-392e-4323-bc22-971c634db5ce"
+                    }
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc9"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 7. LIST SUBSYSTEM
 
 
 
@@ -5683,17 +5868,17 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "90dac1b8-3650-11ed-85c9-3cecef280244",
+    "rid": "2129d7f6-d366-11ed-92d1-3cecef280244",
     "lastSuccessTime": 0,
     "result": {
         "status": {
             "module": "",
             "code": 0,
             "eventName": "SUCCESS",
-            "cause": "NONE",
-            "description": "NONE",
-            "posDescription": "NONE",
-            "solution": "NONE"
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
         },
         "data": {
             "subsystemlist": [
@@ -5707,77 +5892,42 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
                     "listenAddresses": [
                         {
                             "addressFamily": "IPv4",
-                            "targetAddress": "107.108.83.97",
-                            "transportServiceId": "1158",
-                            "transportType": "TCP"
-                        },
-                        {
-                            "addressFamily": "IPv4",
                             "targetAddress": "127.0.0.1",
                             "transportServiceId": "1158",
-                            "transportType": "TCP"
+                            "transportType": "TCP",
+                            "uuid": "478ec8bf-72d7-4c70-8be0-cfa9229ae228"
                         }
                     ],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
-                    "namespaces": [
-                        {
-                            "bdevName": "bdev_0_POSArray",
-                            "nsid": 1,
-                            "uuid": "0881ab4e-f601-4af7-bdeb-c325d30eb1f0"
-                        },
-                        {
-                            "bdevName": "bdev_1_POSArray",
-                            "nsid": 2,
-                            "uuid": "20c7e973-c3fb-464b-9c7f-ffc040c68425"
-                        }
-                    ],
                     "nqn": "nqn.2019-04.pos:subsystem1",
                     "serialNumber": "POS0000000003",
-                    "subtype": "NVMe"
+                    "subtype": "NVMe",
+                    "uuid": "c684752a-3bd1-4e85-b76f-8e60b00627b2"
                 },
                 {
                     "allowAnyHost": 1,
                     "listenAddresses": [
                         {
                             "addressFamily": "IPv4",
-                            "targetAddress": "107.108.83.97",
-                            "transportServiceId": "1158",
-                            "transportType": "TCP"
-                        },
-                        {
-                            "addressFamily": "IPv4",
                             "targetAddress": "127.0.0.1",
                             "transportServiceId": "1158",
-                            "transportType": "TCP"
+                            "transportType": "TCP",
+                            "uuid": "606bd395-98a9-4ebb-84e0-bebe799a11c8"
                         }
                     ],
                     "maxNamespaces": 256,
                     "modelNumber": "IBOF_VOLUME_EEEXTENSION",
-                    "namespaces": [
-                        {
-                            "bdevName": "bdev_2_POSArray",
-                            "nsid": 1,
-                            "uuid": "b3e73ca6-b24f-4ff2-aa80-ad48ac4d84d2"
-                        }
-                    ],
                     "nqn": "nqn.2019-04.pos:subsystem2",
                     "serialNumber": "POS0000000003",
-                    "subtype": "NVMe"
-                },
-                {
-                    "allowAnyHost": 1,
-                    "maxNamespaces": 256,
-                    "modelNumber": "IBOF_VOLUME_EEEXTENSION",
-                    "nqn": "nqn.2019-04.pos:subsystem11",
-                    "serialNumber": "POS0000000003",
-                    "subtype": "NVMe"
+                    "subtype": "NVMe",
+                    "uuid": "dc479fff-35b5-4a5d-a1df-f35dc162e737"
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc6"
+        "version": "v0.12.0-rc9"
     }
 }
 ```
@@ -5789,7 +5939,92 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 
 
 
-### 6. SUBSYSTEM INFO
+### 8. LIST TRANSPORT
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/transports
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "8b3f0afc-d44d-11ed-8e49-3cecef280244",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
+        },
+        "data": {
+            "transportlist": [
+                {
+                    "abortTimeoutSec": 1,
+                    "bufCacheSize": 64,
+                    "inCapsuleDataSize": 4096,
+                    "ioUnitSize": 131072,
+                    "maxIoQpairsPerCtrlr": 127,
+                    "maxIoSize": 131072,
+                    "maxQueueDepth": 128,
+                    "numSharedBuf": 4096,
+                    "type": "TCP"
+                }
+            ]
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc9"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+### 9. SUBSYSTEM INFO
 
 
 
@@ -8287,9 +8522,10 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 | deviceName6 | unvme-ns-5 | string |
 | deviceName7 | unvme-ns-6 | string |
 | deviceName8 | unvme-ns-7 | string |
+| subsystemName | nqn.2019-04.pos:subsystem1 | default |
 
 
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2022-11-19 07:08:08 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-06 14:55:18 by [docgen](https://github.com/thedevsaddam/docgen)

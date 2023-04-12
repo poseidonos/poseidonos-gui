@@ -82,7 +82,6 @@ const styles = (theme) => ({
 });
 
 const TOTAL = "Summary"
-const IPMI = "IPMI";
 const DEVICE = "Device";
 const CRITICAL = "critical";
 const WARNING = "warning";
@@ -111,7 +110,6 @@ const HardwareHealth = (props) => {
         metrics: [],
         unit: "",
     });
-    const [ipmiErrorMessage, setIpmiErrorMessage] = useState("No records to display");
     const deviceErrorMessage = props.errorInDevices ? "Please Check POS Exporter" : "No records to display";
 
     useEffect(() => {
@@ -137,12 +135,6 @@ const HardwareHealth = (props) => {
             })
     }, [props.totalCriticals, props.totalWarnings, props.totalNominals, selectedRow])
 
-    useEffect(() => {
-        if (!props.isIMPIChassisPowerOn)
-            setIpmiErrorMessage("IPMI Power is OFF")
-        if (props.errorInIMPI)
-            setIpmiErrorMessage("Please Check IPMI Exporter")
-    }, [props.isIMPIChassisPowerOn, props.errorInIMPI])
     const getPercentage = (value) => {
         const total = pieChart.criticals + pieChart.nominals + pieChart.warnings;
         return Math.round(value * 1000 / total) / 10;
@@ -151,35 +143,6 @@ const HardwareHealth = (props) => {
     const icons = {
         SortArrow: ArrowUpward,
     };
-    const ipmiTableColumns = [
-        {
-            title: "IPMI",
-            cellStyle: {
-                ...localCellStyle,
-                width: 130,
-            },
-            field: "type",
-            customSort: (a, b) => (a.type.localeCompare(b.type))
-        },
-        {
-            title: "Criticals",
-            cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.criticals ? getDarkColorStyle[CRITICAL] : {}}>{rowData.criticals}</Typography>,
-            customSort: (a, b) => (a.criticals - b.criticals)
-        },
-        {
-            title: "Warnings",
-            cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.warnings ? getDarkColorStyle[WARNING] : {}}>{rowData.warnings}</Typography>,
-            customSort: (a, b) => (a.warnings - b.warnings)
-        },
-        {
-            title: "Nominals",
-            cellStyle: localCellStyle,
-            render: (rowData) => <Typography style={rowData.nominals ? getDarkColorStyle[NOMINAL] : {}}>{rowData.nominals}</Typography>,
-            customSort: (a, b) => (a.nominals - b.nominals)
-        }
-    ];
     const deviceTableColumns = [
         {
             title: "Device",
@@ -226,58 +189,6 @@ const HardwareHealth = (props) => {
             customSort: (a, b) => stateOrder[a.state] - stateOrder[b.state]
         },
     ];
-    const ipmiTable = (
-        <MaterialTable
-            columns={ipmiTableColumns}
-            data={!props.errorInIMPI && props.isIMPIChassisPowerOn && props.isConfigured ? props.ipmi : []}
-            localization={{
-                body: {
-                    emptyDataSourceMessage: ipmiErrorMessage
-                }
-            }}
-            onRowClick={((e, localSelectedRow) => {
-                setSelectedTable(IPMI);
-                setSelectedRow(localSelectedRow.tableData.id);
-                const ipmi = props.ipmi[localSelectedRow.tableData.id];
-                setPieChart({
-                    ...pieChart,
-                    title: ipmi.type,
-                    criticals: ipmi.criticals,
-                    warnings: ipmi.warnings,
-                    nominals: ipmi.nominals,
-                    metrics: ipmi.metrics,
-                    unit: ipmi.unit
-                })
-            }
-            )}
-            options={{
-                headerStyle: {
-                    ...customTheme.table.header,
-                    fontSize: 12,
-                    paddingRight: 0,
-                },
-                search: false,
-                sorting: true,
-                paging: false,
-                rowStyle: rowData => ({
-                    backgroundColor: (selectedTable === IPMI && selectedRow === rowData.tableData.id) && '#EEE'
-                })
-            }}
-            components={{
-                Toolbar: () => <></>,
-                Container: ({children, style}) => (
-                    <Paper id="ipmi-table-container" style={style}>{children}</Paper>
-                )
-            }}
-            style={{
-                width: "100%",
-                height: "226px",
-                boxShadow: "none",
-                border: "1px solid rgb(0 0 0 / 12%)"
-            }}
-            icons={icons}
-        />
-    );
     const deviceTable = (
         <MaterialTable
             columns={deviceTableColumns}
@@ -500,7 +411,6 @@ const HardwareHealth = (props) => {
                     {summaryButton}
                 </Grid>
                 <Grid item sm={12} md={8} className={classes.tableHeight}>
-                    {ipmiTable}
                     {deviceTable}
                 </Grid>
             </Paper>
@@ -519,13 +429,10 @@ const HardwareHealth = (props) => {
 const mapStateToProps = state => {
     return {
         devices: state.dashboardReducer.devices,
-        ipmi: state.dashboardReducer.ipmi,
         errorInDevices: state.dashboardReducer.errorInDevices,
-        errorInIMPI: state.dashboardReducer.errorInIMPI,
         totalNominals: state.dashboardReducer.totalNominals,
         totalWarnings: state.dashboardReducer.totalWarnings,
         totalCriticals: state.dashboardReducer.totalCriticals,
-        isIMPIChassisPowerOn: state.dashboardReducer.isIMPIChassisPowerOn,
         isConfigured: state.authenticationReducer.isConfigured,
     };
 };

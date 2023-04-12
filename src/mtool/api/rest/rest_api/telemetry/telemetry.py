@@ -37,7 +37,7 @@ def check_telemetry_endpoint(ip, port):
         if response.response[0].decode('UTF-8') != "success":
             return make_response("Error Occured", 500)
         # Checking temetry is up or not
-        isTelemetryDown, _ = is_endpoints_down(ip, port)
+        isTelemetryDown = is_telemetry_down(ip, port)
         if isTelemetryDown:
             return make_response(jsonify({'isTelemetryEndpointUp': False}), 200)
         return make_response(jsonify({'isTelemetryEndpointUp': True}), 200)
@@ -139,21 +139,18 @@ def get_agg_value(ip, port, metric):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-def is_endpoints_down(ip, port):
+def is_telemetry_down(ip, port):
     try:
-        is_telemetry_down, is_ipmi_down = True, True
         prom_url = "http://{ip}:{port}".format(ip=ip, port=port)
         response = requests.get('{prom_url}/api/v1/query?query=up'.format(prom_url=prom_url), timeout=TIME_OUT)
         response = json.loads(response.content)
         if response is not None and "data" in response and "result" in response["data"] and len(response["data"]["result"]) > 0:
             for data in response["data"]["result"]:
                 if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "poseidonos" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
-                    is_telemetry_down = False
-                if "metric" in data and "job" in data["metric"] and data["metric"]["job"] == "ipmi" and "value" in data and len(data["value"]) == 2 and data["value"][1] == "1":
-                    is_ipmi_down = False
-        return is_telemetry_down, is_ipmi_down
+                    return False
+        return True
     except Exception:
-        return True, True
+        return True
 
 def get_device_metrics_values(ip, port, metrics):
     try:
@@ -161,20 +158,6 @@ def get_device_metrics_values(ip, port, metrics):
         for metric in metrics:
             prom_url += metric + "|"
         prom_url += "\",job=\"poseidonos\"},\"name_label\",\"$1\",\"__name__\",\"1s\")"
-        response = requests.get(prom_url, timeout=TIME_OUT)
-        response = json.loads(response.content)
-        return response
-    except requests.exceptions.HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
-    except Exception as err:
-        print(f'Other error occurred: {err}')
-
-def get_ipmi_metrics_values(ip, port, metrics):
-    try:
-        prom_url = "http://{ip}:{port}/api/v1/query?query=label_replace({{__name__=~\"".format(ip=ip, port=port)
-        for metric in metrics:
-            prom_url += metric + "|"
-        prom_url += "\",instance=\"localhost:9290\"},\"name_label\",\"$1\",\"__name__\",\"1s\")"
         response = requests.get(prom_url, timeout=TIME_OUT)
         response = json.loads(response.content)
         return response
