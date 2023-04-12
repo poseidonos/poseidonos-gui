@@ -47,6 +47,7 @@ import LinearProgressBarComponent from '../LinearProgressBarComponent';
 import { customTheme } from '../../../theme';
 
 const RunIbofOs = props => {
+  
   const [propertySelect, setPropertySelect] = useState("");
   const selectProperty = (event) => {
     setPropertySelect(event.target.value);
@@ -54,6 +55,7 @@ const RunIbofOs = props => {
   const setProperty = () => {
     props.setProperty(propertySelect);
   }
+
   // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div className="RunIbofOs-Outer-Box">
@@ -132,7 +134,7 @@ const RunIbofOs = props => {
         <FormControl>
           <InputLabel htmlFor="vol_unit">Rebuild Perf Impact</InputLabel>
           <Select
-            value={props.propertySelect}
+            value={propertySelect}
             onChange={selectProperty}
             disabled={props.OS_Running_Status === 'Not Running'}
             inputProps={{
@@ -164,7 +166,7 @@ const RunIbofOs = props => {
           data-testid="setPropertyButton"
           className="IBOFOSPropertyButton"
           onClick={setProperty}
-          disabled={props.OS_Running_Status === 'Not Running'}
+          disabled={props.OS_Running_Status === 'Not Running' || propertySelect === ""}
         >
           Set Property
         </Button>
