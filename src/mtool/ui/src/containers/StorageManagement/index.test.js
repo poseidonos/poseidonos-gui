@@ -152,6 +152,19 @@ describe("<Storage Management />", () => {
     const route = "/storage/array/manage?array=POSArray";
     history = createMemoryHistory({ initialEntries: [route] });
     mock = new MockAdapter(axios);
+    global.document.createRange = (html) => ({
+      setStart: () => { },
+      setEnd: () => { },
+      commonAncestorContainer: {
+        nodeName: "BODY",
+        ownerDocument: document,
+      },
+      createContextualFragment: (html) => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.children[0];
+      },
+    });
   });
 
   const renderComponent = () => {
@@ -1134,7 +1147,7 @@ describe("<Storage Management />", () => {
       getByTestId("createvolume-btn")
     );
     fireEvent.click(createVolButton);
-    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+    expect(getAllByText(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should throw error if creating volume is not possible because of wrong values", async () => {
@@ -1329,7 +1342,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(selectSubsystem, { target: { value: "nqn.2019-04.pos:subsystem2" } });
     fireEvent.click(nextButton);
     fireEvent.click(nextButton);
-    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+    expect(getAllByText(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should create a volume with advance options and mounting new subsystem with maximum available size", async () => {
@@ -1406,7 +1419,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(transportServiceId, { target: { value: "1158" } });
     fireEvent.click(nextButton);
     fireEvent.click(nextButton);
-    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+    expect(getAllByText(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should create a volume with advance options without mount", async () => {
@@ -1476,7 +1489,7 @@ describe("<Storage Management />", () => {
     fireEvent.click(nextButton);
 
     fireEvent.click(nextButton);
-    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+    expect(getAllByText(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should throw error if creating volume with advance options is not possible because subsystem used by another array", async () => {
@@ -1765,7 +1778,7 @@ describe("<Storage Management />", () => {
     fireEvent.change(transportServiceId, { target: { value: "1158" } });
     fireEvent.click(nextButton);
     fireEvent.click(nextButton);
-    expect(getAllByTitle(/Volume creation is in progress/)).toBeDefined();
+    expect(getAllByText(/Volume creation is in progress/)).toBeDefined();
   });
 
   it("should close the advance options popup", async () => {
