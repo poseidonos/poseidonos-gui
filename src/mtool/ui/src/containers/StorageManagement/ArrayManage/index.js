@@ -213,6 +213,7 @@ const ArrayManage = (props) => {
     const [mountSubsystem, setMountSubsystem] = useState("");
     const [mountOpen, setMountOpen] = useState(false);
     const [volumeForMount, setVolumeForMount] = useState("");
+    const [volumeUrlForMount, setVolumeUrlForMount] = useState("");
 
     const rebuildArray = () => props.Rebuild_Array(props.arrayname);
     const deleteArray = () => props.Delete_Array({ arrayname: "" });
@@ -280,13 +281,15 @@ const ArrayManage = (props) => {
         props.Change_Mount_Status({
             name: volumeForMount,
             array: props.arrayname,
-            subsystem: mountSubsystem
+            subsystem: mountSubsystem,
+            url: volumeUrlForMount
         })
     }
 
     const mountConfirm = (payload) => {
         setMountSubsystem(getSubsystemForArray(props.subsystems, props.arrayname));
         setVolumeForMount(payload.name);
+        setVolumeUrlForMount(payload.url);
         setMountOpen(true);
     }
 
