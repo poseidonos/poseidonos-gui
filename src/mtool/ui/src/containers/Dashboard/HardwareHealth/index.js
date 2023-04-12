@@ -169,10 +169,9 @@ const HardwareHealth = (props) => {
     );
 
     const pieChartBox = (index) => {
-        if (props.errorInDevices) {
-            console.log("Error in Devices")
+        if (props.errorInDevices)
             return <Typography className={classes.marginAuto}>Please Check POS Exporter</Typography>;
-        }
+
         const { criticals, warnings, nominals } = props.devices[index];
         const total = (criticals + warnings + nominals)
         if (!props.isConfigured || !total)
