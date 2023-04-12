@@ -476,7 +476,7 @@ class ArrayShow extends Component {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="writebuffer">Write Buffer Path</InputLabel>
               <Select
-                value={this.props.metadiskpath && this.props.metadiskpath.length > 0 ? this.props.metadiskpath[0].deviceName : ""}
+                value={this.props.metadiskpath?.length > 0 && this.props.metadiskpath[0].deviceName}
                 inputProps={{
                   name: "Write Buffer Path",
                   id: "writebuffer",
@@ -531,73 +531,69 @@ class ArrayShow extends Component {
           <div className={classes.diskGridContainer}>
             <Grid container className={classes.diskContainer}>
               <GridList cellHeight={90} className={classes.gridList} cols={32}>
-                {this.props.slots
-                  ? this.props.slots.map((slot, index) => {
-                    return (
-                      <Tooltip
-                        classes={{
-                          tooltip: classes.tooltip,
-                        }}
-                        key={slot.name}
-                        title={getTitle(slot)}
-                        interactive
+                {this.props.slots && this.props.slots.map((slot, index) => (
+                  <Tooltip
+                    classes={{
+                      tooltip: classes.tooltip,
+                    }}
+                    key={slot.name}
+                    title={getTitle(slot)}
+                    interactive
+                  >
+                    <GridListTile
+                      className={`${classes.gridTile} ${getClass(slot)}`}
+                      id={index}
+                      data-testid={`diskshow-${index}`}
+                    >
+                      <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
+                      <Typography
+                        className={classes.diskNo}
                       >
-                        <GridListTile
-                          className={`${classes.gridTile} ${getClass(slot)}`}
-                          id={index}
-                          data-testid={`diskshow-${index}`}
+                        {index + 1}
+                      </Typography>
+                      {getClass(slot) === classes.freedisk ? (
+                        <Button
+                          onMouseEnter={() => this.changeTitle(ADD_TITLE)}
+                          onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
+                          variant="outlined"
+                          color="primary"
+                          className={classes.detachBtn}
+                          data-testid={`attachdisk-${index}`}
+                          onClick={() => this.addSpareDisk(slot)}
+                          aria-label={`attach-disk-${index}`}
                         >
-                          <Typography className={classes.diskTextNuma}>{slot.numa}</Typography>
-                          <Typography
-                            className={classes.diskNo}
-                          >
-                            {index + 1}
-                          </Typography>
-                          {getClass(slot) === classes.freedisk ? (
-                            <Button
-                              onMouseEnter={() => this.changeTitle(ADD_TITLE)}
-                              onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
-                              variant="outlined"
-                              color="primary"
-                              className={classes.detachBtn}
-                              data-testid={`attachdisk-${index}`}
-                              onClick={() => this.addSpareDisk(slot)}
-                              aria-label={`attach-disk-${index}`}
-                            >
-                              <Add fontSize="small" />
-                            </Button>
-                          ) : getClass(slot) === classes.sparedisk ? (
-                            <Button
-                              onMouseEnter={() => this.changeTitle(REMOVE_TITLE)}
-                              onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
-                              variant="outlined"
-                              color="primary"
-                              className={classes.detachBtn}
-                              data-testid={`detachdisk-${index}`}
-                              onClick={() => this.removeSpareDisk(slot)}
-                              aria-label={`detach-disk-${index}`}
-                            >
-                              <Remove fontSize="small" />
-                            </Button>
-                          ) : slot.arrayName === this.props.arrayName && isFreeDiskAvailable ? (
-                            <Button
-                              onMouseEnter={() => this.changeTitle(REPLACE_TITLE)}
-                              onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
-                              variant="outlined"
-                              color="primary"
-                              className={classes.detachBtn}
-                              data-testid={`replacedisk-${index}`}
-                              onClick={() => this.replaceDevice(slot)}
-                              aria-label={`replace-disk-${index}`}
-                            >
-                              <SwapHorizOutlined fontSize="small" />
-                            </Button>
-                          ) : <p />}
-                        </GridListTile>
-                      </Tooltip>
-                    );
-                  })
-                  : null}
+                          <Add fontSize="small" />
+                        </Button>
+                      ) : getClass(slot) === classes.sparedisk ? (
+                        <Button
+                          onMouseEnter={() => this.changeTitle(REMOVE_TITLE)}
+                          onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
+                          variant="outlined"
+                          color="primary"
+                          className={classes.detachBtn}
+                          data-testid={`detachdisk-${index}`}
+                          onClick={() => this.removeSpareDisk(slot)}
+                          aria-label={`detach-disk-${index}`}
+                        >
+                          <Remove fontSize="small" />
+                        </Button>
+                      ) : slot.arrayName === this.props.arrayName && isFreeDiskAvailable ? (
+                        <Button
+                          onMouseEnter={() => this.changeTitle(REPLACE_TITLE)}
+                          onMouseLeave={() => this.changeTitle(DEFAULT_TITLE)}
+                          variant="outlined"
+                          color="primary"
+                          className={classes.detachBtn}
+                          data-testid={`replacedisk-${index}`}
+                          onClick={() => this.replaceDevice(slot)}
+                          aria-label={`replace-disk-${index}`}
+                        >
+                          <SwapHorizOutlined fontSize="small" />
+                        </Button>
+                      ) : <p />}
+                    </GridListTile>
+                  </Tooltip>
+                ))}
                 {freeSlots}
               </GridList>
             </Grid>

@@ -913,6 +913,64 @@ describe("Dashboard", () => {
     fireEvent.change(telemetryPort, { target: { value: "9090" } });
     fireEvent.click(getByTestId("btn-save-telemetry-config"));
     const editBtn = await waitForElement(() => getByTestId("btn-edit-telemetry"));
+    fireEvent.click(editBtn)
+    fireEvent.click(getByTestId("btn-cancel-telemetry-config"));
     expect(editBtn).toBeDefined();
+  });
+
+  it("should throw error if wrong value provided in the telemetry form", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        { "ip": "127.0.0.1", "isConfigured": true, "port": "2113" }
+      )
+      .onAny()
+      .reply(200);
+    renderComponent();
+    const { getByTestId, getByText } = wrapper;
+    const editBtn = await waitForElement(() => getByTestId("btn-edit-telemetry"));
+    fireEvent.click(editBtn)
+    const telemetryIP = await waitForElement(() => getByTestId("telemetryIPInputPopup"));
+    const telemetryPort = await waitForElement(() => getByTestId("telemetryPortInputPopup"));
+    fireEvent.change(telemetryIP, { target: { value: "127.0.0" } });
+    fireEvent.click(getByTestId("btn-save-telemetry-config"));
+    expect(getByText("Please Enter a valid IP for Telemetry API")).toBeDefined();
+    fireEvent.change(telemetryIP, { target: { value: "127.0.0.1" } });
+    fireEvent.change(telemetryPort, { target: { value: "-77" } });
+    fireEvent.click(getByTestId("btn-save-telemetry-config"));
+    expect(getByText("Please Enter a valid Port for Telemetry API")).toBeDefined();
+  });
+
+  it("should reset telemtry ip", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        { "ip": "127.0.0.1", "isConfigured": true, "port": "2113" }
+      )
+      .onAny()
+      .reply(200);
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const editBtn = await waitForElement(() => getByTestId("btn-edit-telemetry"));
+    fireEvent.click(editBtn)
+    const resetBtn = await waitForElement(() => getByTestId("btn-reset-telemetry-config"));
+    fireEvent.click(resetBtn)
+  });
+
+  it("should throw error if resetting telemtry ip failed", async () => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(`/api/v1/configure`)
+      .reply(200,
+        { "ip": "127.0.0.1", "isConfigured": true, "port": "2113" }
+      )
+      .onDelete(`/api/v1/configure`)
+      .reply(500);
+    renderComponent();
+    const { getByTestId } = wrapper;
+    const editBtn = await waitForElement(() => getByTestId("btn-edit-telemetry"));
+    fireEvent.click(editBtn)
+    const resetBtn = await waitForElement(() => getByTestId("btn-reset-telemetry-config"));
+    fireEvent.click(resetBtn)
+    expect(getByTestId("errorMsgConfigPopup")).toBeDefined();
   });
 });

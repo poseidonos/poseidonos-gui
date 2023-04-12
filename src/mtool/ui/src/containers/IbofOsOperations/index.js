@@ -41,7 +41,6 @@ import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import TabPanel from "../../components/TabPanel";
 import * as actionTypes from "../../store/actions/actionTypes";
-import * as actionCreators from '../../store/actions/exportActionCreators';
 import MToolTheme, { customTheme } from '../../theme';
 import MToolLoader from '../../components/MToolLoader';
 
@@ -112,8 +111,6 @@ class IbofOsOperations extends Component {
     openAlert(operationType) {
         let message = "";
         message = "Poseidon OS";
-        const alertMessage = operationType === "Reset" ?
-            "Reset will delete all the array and volumes in POS. " : "";
 
 
         this.setState({
@@ -123,17 +120,15 @@ class IbofOsOperations extends Component {
             alerttype: "delete",
             istypealert: false,
             alerttitle: `${operationType} ${message}`,
-            alertdescription: `${alertMessage}Do you want to  ${operationType} the ${message} ?`,
+            alertdescription: `Do you want to  ${operationType} the ${message} ?`,
         });
     }
 
     triggerCommand() {
         if (this.state.add_delete_send === "Start") {
             this.props.Start_POS();
-        } else if (this.state.add_delete_send === "Stop") {
-            this.props.Stop_POS();
         } else {
-            this.props.Reset_POS();
+            this.props.Stop_POS();
         }
         this.handleAlertClose();
     }
@@ -207,11 +202,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        Get_Is_iBOFOS_Running_Status: (payload) => dispatch({ type: actionTypes.SAGA_GET_IS_IBOF_OS_RUNNING, payload }),
-        resetIsLoggedIn: () => dispatch(actionCreators.resetIsLoggedIn()),
         Stop_POS: () => dispatch({ type: actionTypes.SAGA_STOP_IBOFOS }),
         Start_POS: () => dispatch({ type: actionTypes.SAGA_START_IBOFOS }),
-        Reset_POS: () => dispatch({ type: actionTypes.SAGA_RESET_IBOFOS }),
         Set_Message: (message) => dispatch({ type: actionTypes.SET_OPERATIONS_MESSAGE, message }),
         Get_POS_Property: () => dispatch({ type: actionTypes.SAGA_GET_POS_PROPERTY }),
         Set_POS_Property: (payload) => dispatch({ type: actionTypes.SAGA_SET_POS_PROPERTY, payload })

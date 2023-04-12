@@ -67,7 +67,8 @@ const CreateTransport = (props) => {
                 <InputLabel htmlFor="transportType">Transport Type</InputLabel>
                 <Select
                     inputProps={{
-                        id: "transportType"
+                        id: "transportType",
+                        "data-testid": "transportType"
                     }}
                     name="transportType"
                     defaultValue="TCP"

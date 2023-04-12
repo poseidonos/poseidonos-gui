@@ -319,7 +319,7 @@ function* createTransport(action) {
       "/api/v1/transport/",
       {
         transport_type: action.payload.transportType,
-        buf_cache_size: action.payload.buf_cache_size,
+        buf_cache_size: action.payload.bufCacheSize,
         num_shared_buf: action.payload.numSharedBuf
       },
       {
@@ -356,7 +356,7 @@ function* createTransport(action) {
       yield put(
         actionCreators.showStorageAlert({
           alertType: "alert",
-          errorMsg: "Error while Creating Transport",
+          errorMsg: "Error while creating transport",
           errorCode:
             response.data && response.data.result
               ? response.data.result
@@ -370,7 +370,7 @@ function* createTransport(action) {
     yield put(
       actionCreators.showStorageAlert({
         alertType: "alert",
-        errorMsg: "Error while Creating Transsport",
+        errorMsg: "Error while creating transport",
         errorCode: `Agent Communication Error - ${error.message}`,
         alertTitle: "Create Transport",
       })
