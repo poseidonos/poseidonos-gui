@@ -45,37 +45,11 @@ AVAILABLESPARE = 'available_spare'
 AVAILABLESPARETHRESOLD = 'available_spare_threshold'
 DEVICE_METRICS = [ TEMPERATURE, WARNINGTEMPERATURETIME,
         CRITICALTEMPERATURETIME, AVAILABLESPARE, AVAILABLESPARETHRESOLD ]
-IPMIFANSPEEDSTATE = 'ipmi_fan_speed_state'
-IPMIFANSPEEDRPM = 'ipmi_fan_speed_rpm'
-IPMIPOWERSTATE = 'ipmi_power_state'
-IPMIPOWERWATTS = 'ipmi_power_watts'
-IPMISENSORSTATE = 'ipmi_sensor_state'
-IPMISENSORVALUE = 'ipmi_sensor_value'
-IPMIVOLTAGESTATE = 'ipmi_voltage_state'
-IPMIVOLTAGEVOLTS = 'ipmi_voltage_volts'
-IPMITEMPERATURESTATE = 'ipmi_temperature_state'
-IPMITEMPERATURECELCIUS = 'ipmi_temperature_celsius'
-IPMICHASSISPOWERSTATE = 'ipmi_chassis_power_state'
-IPMI_METRICS = [ IPMIFANSPEEDSTATE, IPMIFANSPEEDRPM,
-        IPMIPOWERSTATE, IPMIPOWERWATTS, IPMISENSORSTATE,
-        IPMISENSORVALUE, IPMIVOLTAGESTATE, IPMIVOLTAGEVOLTS,
-        IPMITEMPERATURESTATE, IPMITEMPERATURECELCIUS, IPMICHASSISPOWERSTATE ]
 TEMPERATURE_NAME = "Temperatures"
 AVAILABLESPARE_NAME= "Spares"
 DEVICE_UNITS={
     TEMPERATURE_NAME: "kelvin",
     AVAILABLESPARE_NAME: "available %"
-}
-FAN_SPEED = "Fans"
-POWER = "Powers"
-SENSOR_VALUE = "Sensors"
-VOLTAGE = "Voltages"
-IPMI_UNITS = {
-    FAN_SPEED : "rpm",
-    POWER: "watts",
-    SENSOR_VALUE: "",
-    VOLTAGE: "Volts",
-    TEMPERATURE_NAME: "celsius"
 }
 NOMINAL = "nominal"
 WARNING = "warning"
@@ -84,10 +58,7 @@ NOMINAL_COUNT = "nominals"
 WARNING_COUNT = "warnings"
 CRITICAL_COUNT = "criticals"
 DEVICES = "devices"
-IPMI = "ipmi"
 ERRORINDEVICES = "errorInDevices"
-ERRORINIPMI = "errorInIMPI"
-ISIPMICHASSISPOWERON = "isIMPIChassisPowerOn"
 TOTALNOMINALS = "totalNominals"
 TOTALWARNINGS = "totalWarnings"
 TOTALCRITICALS = "totalCriticals"

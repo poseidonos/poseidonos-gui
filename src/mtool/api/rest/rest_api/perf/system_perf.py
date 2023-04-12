@@ -134,93 +134,10 @@ def structure_device_metrics_values(res_dict, device_res, update_state_count):
     res_devices.append(availablespare_dict)
     return res_devices
 
-def structure_ipmi_metrics_values(res_dict, ipmi_res, update_state_count):
-    res_ipmi = []
-    ipmi = {
-        constants.FAN_SPEED: {},
-        constants.POWER: {},
-        constants.SENSOR_VALUE: {},
-        constants.VOLTAGE: {},
-        constants.TEMPERATURE_NAME: {},
-    }
-    states_dict = {
-        '0': constants.NOMINAL,
-        '1': constants.WARNING,
-        '2': constants.CRITICAL
-    }
-    def fill_ipmi_fields(field, metric_type,value_type):
-        if constants.NAME not in field['metric']:
-            return
-        name = field['metric'][constants.NAME]
-        value= field[constants.VALUE][1]
-        if name not in ipmi[metric_type]:
-            ipmi[metric_type][name] = {}
-        if(value_type == constants.STATE):
-            ipmi[metric_type][name][constants.STATE] = value
-        if(value_type == constants.VALUE):
-            ipmi[metric_type][name][constants.VALUE] = value
-
-    if res_dict[constants.ERRORINIPMI] == False:
-        for field in ipmi_res['data']['result']:
-            metric_name = field['metric']['__name__']
-            if metric_name == constants.IPMICHASSISPOWERSTATE and field[constants.VALUE][1] == '1':
-                res_dict[constants.ISIPMICHASSISPOWERON] = True
-            if metric_name == constants.IPMIFANSPEEDSTATE:
-                fill_ipmi_fields(field, constants.FAN_SPEED, constants.STATE)
-            if metric_name == constants.IPMIFANSPEEDRPM:
-                fill_ipmi_fields(field, constants.FAN_SPEED, constants.VALUE)
-            if metric_name == constants.IPMISENSORSTATE:
-                fill_ipmi_fields(field, constants.SENSOR_VALUE, constants.STATE)
-            if metric_name == constants.IPMISENSORVALUE:
-                fill_ipmi_fields(field, constants.SENSOR_VALUE, constants.VALUE)
-            if metric_name == constants.IPMITEMPERATURESTATE:
-                fill_ipmi_fields(field, constants.TEMPERATURE_NAME, constants.STATE)
-            if metric_name == constants.IPMITEMPERATURECELCIUS:
-                fill_ipmi_fields(field, constants.TEMPERATURE_NAME, constants.VALUE)
-            if metric_name == constants.IPMIPOWERSTATE:
-                fill_ipmi_fields(field, constants.POWER, constants.STATE)
-            if metric_name == constants.IPMIPOWERWATTS:
-                fill_ipmi_fields(field, constants.POWER, constants.VALUE)
-            if metric_name == constants.IPMIVOLTAGESTATE:
-                fill_ipmi_fields(field, constants.VOLTAGE, constants.STATE)
-            if metric_name == constants.IPMIVOLTAGEVOLTS:
-                fill_ipmi_fields(field, constants.VOLTAGE, constants.VALUE)
-
-    def add_ipmi_field(metric_type):
-        metric_details = {
-            constants.TYPE: metric_type,
-            constants.UNIT: constants.IPMI_UNITS[metric_type],
-            constants.METRICS: [],
-            constants.NOMINAL_COUNT: 0,
-            constants.WARNING_COUNT: 0,
-            constants.CRITICAL_COUNT: 0
-            }
-        for key in ipmi[metric_type]:
-            value = ipmi[metric_type][key]
-            metric_details[constants.METRICS].append({
-                constants.NAME: key,
-                constants.STATE: states_dict[value[constants.STATE]] if constants.STATE in value else "",
-                constants.VALUE: value[constants.VALUE] if constants.VALUE in value else ""
-            })
-            if constants.STATE in value:
-                update_state_count(states_dict[value[constants.STATE]])
-                update_field_state_count(states_dict[value[constants.STATE]], metric_details)
-        res_ipmi.append(metric_details)
-
-    add_ipmi_field(constants.FAN_SPEED)
-    add_ipmi_field(constants.POWER)
-    add_ipmi_field(constants.SENSOR_VALUE)
-    add_ipmi_field(constants.VOLTAGE)
-    add_ipmi_field(constants.TEMPERATURE_NAME)
-    return res_ipmi
-
 def get_all_hardware_health(ip, port):
     res_dict = {
         constants.DEVICES : [],
         constants.ERRORINDEVICES : False,
-        constants.IPMI : [],
-        constants.ERRORINIPMI: False,
-        constants.ISIPMICHASSISPOWERON: False,
         constants.TOTALNOMINALS: 0,
         constants.TOTALWARNINGS: 0,
         constants.TOTALCRITICALS: 0,
@@ -230,18 +147,13 @@ def get_all_hardware_health(ip, port):
         res_dict[constants.TOTALWARNINGS] += 1 if state == constants.WARNING else 0
         res_dict[constants.TOTALCRITICALS] += 1 if state == constants.CRITICAL else 0
 
-    res_dict[constants.ERRORINDEVICES], res_dict[constants.ERRORINIPMI] = telemetry.is_endpoints_down(ip, port)
+    res_dict[constants.ERRORINDEVICES] = telemetry.is_telemetry_down(ip, port)
 
     device_res = telemetry.get_device_metrics_values(ip, port, constants.DEVICE_METRICS) if res_dict[constants.ERRORINDEVICES] == False else None
     if device_res == None or 'status' not in device_res or device_res['status'] != 'success':
         res_dict[constants.ERRORINDEVICES] = True
 
-    ipmi_res = telemetry.get_ipmi_metrics_values(ip, port, constants.IPMI_METRICS) if res_dict[constants.ERRORINIPMI] == False else None
-    if ipmi_res == None or 'status' not in ipmi_res or ipmi_res['status'] != 'success':
-        res_dict[constants.ERRORINIPMI] = True
-
     res_dict[constants.DEVICES] = structure_device_metrics_values(res_dict, device_res, update_state_count)
-    res_dict[constants.IPMI] = structure_ipmi_metrics_values(res_dict, ipmi_res, update_state_count)
     return res_dict
 
 def set_telemetry_properties(properties):

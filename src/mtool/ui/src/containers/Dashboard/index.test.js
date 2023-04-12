@@ -93,10 +93,7 @@ describe("Dashboard", () => {
     sagaMiddleware.run(rootSaga);
     const route = '/dashboard';
     history = createMemoryHistory({ initialEntries: [route] })
-
-
   });
-
 
   const renderComponent = () => {
     wrapper = render(
@@ -110,47 +107,47 @@ describe("Dashboard", () => {
       </Router>
     );
   };
- // duplicate code 
+  // duplicate code 
 
- const configureJson = {
-  ip: '127.0.0.1',
-  isConfigured: true,
-  port: '5555'
-}
-
- const posArrayJson = [
-  {
-    id: '0',
-    maxbw: 0,
-    maxiops: 0,
-    name: 'vol-1',
-    status: 'Mounted',
-    total: 1073741824,
-    ip: '10.1.11.91',
-    port: 'NA',
-    subnqn: 'NA',
-    description: "",
-    unit: 'GB',
-    size: '10',
-    usedspace: 0
-  },
-  {
-    id: '1',
-    maxbw: 0,
-    maxiops: 0,
-    name: 'vol-2',
-    remain: 0,
-    status: 'Mounted',
-    total: 10737418240,
-    ip: '10.1.11.91',
-    port: 'NA',
-    subnqn: 'NA',
-    description: "",
-    unit: 'GB',
-    size: '10',
-    usedspace: 0
+  const configureJson = {
+    ip: '127.0.0.1',
+    isConfigured: true,
+    port: '5555'
   }
-]
+
+  const posArrayJson = [
+    {
+      id: '0',
+      maxbw: 0,
+      maxiops: 0,
+      name: 'vol-1',
+      status: 'Mounted',
+      total: 1073741824,
+      ip: '10.1.11.91',
+      port: 'NA',
+      subnqn: 'NA',
+      description: "",
+      unit: 'GB',
+      size: '10',
+      usedspace: 0
+    },
+    {
+      id: '1',
+      maxbw: 0,
+      maxiops: 0,
+      name: 'vol-2',
+      remain: 0,
+      status: 'Mounted',
+      total: 10737418240,
+      ip: '10.1.11.91',
+      port: 'NA',
+      subnqn: 'NA',
+      description: "",
+      unit: 'GB',
+      size: '10',
+      usedspace: 0
+    }
+  ]
   const array = {
     RAIDLevel: "5",
     arrayname: "POSArray",
@@ -445,283 +442,9 @@ describe("Dashboard", () => {
     }
   ];
 
-  const ipmi = [
-    {
-      "criticals": 0,
-      "metrics": [
-        {
-          "name": "FAN7",
-          "state": "nominal",
-          "value": "3500"
-        },
-        {
-          "name": "FAN8",
-          "state": "nominal",
-          "value": "3500"
-        },
-        {
-          "name": "FAN1",
-          "state": "nominal",
-          "value": "4100"
-        },
-        {
-          "name": "FAN2",
-          "state": "nominal",
-          "value": "4100"
-        }
-      ],
-      "nominals": 4,
-      "type": "Fans",
-      "unit": "rpm",
-      "warnings": 0
-    },
-    {
-      "criticals": 0,
-      "metrics": [],
-      "nominals": 0,
-      "type": "Powers",
-      "unit": "watts",
-      "warnings": 0
-    },
-    {
-      "criticals": 2,
-      "metrics": [
-        {
-          "name": "VBAT",
-          "state": "nominal",
-          "value": "NaN"
-        },
-        {
-          "name": "Chassis Intru",
-          "state": "critical",
-          "value": "NaN"
-        },
-        {
-          "name": "PS1 Status",
-          "state": "nominal",
-          "value": "NaN"
-        },
-        {
-          "name": "PS2 Status",
-          "state": "critical",
-          "value": "NaN"
-        }
-      ],
-      "nominals": 2,
-      "type": "Sensors",
-      "unit": "",
-      "warnings": 0
-    },
-    {
-      "criticals": 0,
-      "metrics": [
-        {
-          "name": "12V",
-          "state": "nominal",
-          "value": "12.37"
-        },
-        {
-          "name": "5VCC",
-          "state": "nominal",
-          "value": "5"
-        },
-        {
-          "name": "3.3VCC",
-          "state": "nominal",
-          "value": "3.35"
-        },
-        {
-          "name": "Vcpu1",
-          "state": "nominal",
-          "value": "1.81"
-        },
-        {
-          "name": "Vcpu2",
-          "state": "nominal",
-          "value": "1.81"
-        },
-        {
-          "name": "VDimmP1ABC",
-          "state": "nominal",
-          "value": "1.2"
-        },
-        {
-          "name": "VDimmP1DEF",
-          "state": "nominal",
-          "value": "1.2"
-        },
-        {
-          "name": "VDimmP2ABC",
-          "state": "nominal",
-          "value": "1.2"
-        },
-        {
-          "name": "VDimmP2DEF",
-          "state": "nominal",
-          "value": "1.2"
-        },
-        {
-          "name": "12VSB",
-          "state": "nominal",
-          "value": "12.33"
-        },
-        {
-          "name": "3.3VSB",
-          "state": "nominal",
-          "value": "3.43"
-        },
-        {
-          "name": "P1V8_PCH",
-          "state": "nominal",
-          "value": "1.73"
-        },
-        {
-          "name": "PVNN_PCH",
-          "state": "nominal",
-          "value": "1.01"
-        },
-        {
-          "name": "P1V05_PCH",
-          "state": "nominal",
-          "value": "1.05"
-        }
-      ],
-      "nominals": 14,
-      "type": "Voltages",
-      "unit": "Volts",
-      "warnings": 0
-    },
-    {
-      "criticals": 0,
-      "metrics": [
-        {
-          "name": "PCH Temp",
-          "state": "nominal",
-          "value": "53"
-        },
-        {
-          "name": "P1-DIMMA1 Temp",
-          "state": "nominal",
-          "value": "43"
-        },
-        {
-          "name": "P1-DIMMB1 Temp",
-          "state": "nominal",
-          "value": "47"
-        },
-        {
-          "name": "P1-DIMME1 Temp",
-          "state": "nominal",
-          "value": "42"
-        },
-        {
-          "name": "System Temp",
-          "state": "nominal",
-          "value": "32"
-        },
-        {
-          "name": "P1-DIMMF1 Temp",
-          "state": "nominal",
-          "value": "44"
-        },
-        {
-          "name": "P2-DIMMA1 Temp",
-          "state": "nominal",
-          "value": "40"
-        },
-        {
-          "name": "P2-DIMMB1 Temp",
-          "state": "nominal",
-          "value": "41"
-        },
-        {
-          "name": "P2-DIMMD1 Temp",
-          "state": "nominal",
-          "value": "43"
-        },
-        {
-          "name": "Peripheral Temp",
-          "state": "nominal",
-          "value": "45"
-        },
-        {
-          "name": "P2-DIMME1 Temp",
-          "state": "nominal",
-          "value": "43"
-        },
-        {
-          "name": "MB_NIC_Temp1",
-          "state": "nominal",
-          "value": "63"
-        },
-        {
-          "name": "CPU1 Temp",
-          "state": "nominal",
-          "value": "50"
-        },
-        {
-          "name": "MB_NIC_Temp2",
-          "state": "nominal",
-          "value": "62"
-        },
-        {
-          "name": "VRMCpu1 Temp",
-          "state": "nominal",
-          "value": "37"
-        },
-        {
-          "name": "AOC_NIC_Temp   ",
-          "state": "nominal",
-          "value": "63"
-        },
-        {
-          "name": "NVMe_SSD Temp  ",
-          "state": "nominal",
-          "value": "37"
-        },
-        {
-          "name": "VRMCpu2 Temp",
-          "state": "nominal",
-          "value": "37"
-        },
-        {
-          "name": "VRMP1ABC Temp",
-          "state": "nominal",
-          "value": "37"
-        },
-        {
-          "name": "VRMP1DEF Temp",
-          "state": "nominal",
-          "value": "39"
-        },
-        {
-          "name": "CPU2 Temp",
-          "state": "nominal",
-          "value": "46"
-        },
-        {
-          "name": "VRMP2ABC Temp",
-          "state": "nominal",
-          "value": "41"
-        },
-        {
-          "name": "VRMP2DEF Temp",
-          "state": "nominal",
-          "value": "42"
-        }
-      ],
-      "nominals": 23,
-      "type": "Temperatures",
-      "unit": "celsius",
-      "warnings": 0
-    }
-  ];
   const hardwareJson = {
     devices: devices,
-    ipmi: ipmi,
     errorInDevices: false,
-    errorInIMPI: false,
-    isIMPIChassisPowerOn: true,
     totalCriticals: 2,
     totalNominals: 91,
     totalWarnings: 0
@@ -898,7 +621,7 @@ describe("Dashboard", () => {
       .onGet(`/api/v1/get_all_volumes/`)
       .reply(200, {
         "POSArray": posArrayJson,
-        "POSArray2":posArrayJson
+        "POSArray2": posArrayJson
       }).onAny().reply(200, {});
     renderComponent();
     const { getAllByText, getByTestId } = wrapper;
@@ -928,7 +651,7 @@ describe("Dashboard", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should display piechart and view ipmi sensor details", async () => {
+  it("should display piechart", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
@@ -942,20 +665,9 @@ describe("Dashboard", () => {
       .reply(200, [array]);
     jest.setTimeout(30000);
     renderComponent();
-    const { getByText, asFragment, getAllByText } = wrapper;
+    const { getByText } = wrapper;
     const nominalsValueElement = await waitForElement(() => getByText("91"));
     expect(nominalsValueElement).toBeDefined();
-    const ipmiTempNominals = await waitForElement(() => getByText("23"));
-    expect(ipmiTempNominals).toBeDefined();
-    const ipmiVoltageNominals = await waitForElement(() => getByText("14"));
-    expect(ipmiVoltageNominals).toBeDefined();
-    const criticalPersentage = await waitForElement(() => getByText("2.2%"));
-    expect(criticalPersentage).toBeDefined();
-    const sensorsRow = await waitForElement(() => getByText("Sensors"));
-    fireEvent.click(sensorsRow);
-    const sensorCriticalPersentage = await waitForElement(() => getAllByText("50%"));
-    expect(sensorCriticalPersentage).toBeDefined();
-    expect(asFragment()).toMatchSnapshot();
   });
 
   it("should display device spare details, sort the table, close popup and return to summary", async () => {
@@ -999,10 +711,7 @@ describe("Dashboard", () => {
       .reply(200,
         {
           devices: [],
-          ipmi: ipmi,
           errorInDevices: true,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
           totalCriticals: 4,
           totalNominals: 91,
           totalWarnings: 6
@@ -1026,10 +735,7 @@ describe("Dashboard", () => {
       .reply(200,
         {
           devices: devices,
-          ipmi: ipmi,
           errorInDevices: false,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
           totalCriticals: 89,
           totalNominals: 2,
           totalWarnings: 2
@@ -1053,18 +759,13 @@ describe("Dashboard", () => {
       )
       .onGet(`/api/v1/get_hardware_health`)
       .reply(200,
-       hardwareJson
+        hardwareJson
       )
       .onGet(/api\/v1\/get_arrays\/*/)
       .reply(200, [array]);
     jest.setTimeout(30000);
     renderComponent();
     const { findByText } = screen;
-    const thIPMI = await findByText("IPMI")
-    const impiHeaders = thIPMI.closest('tr').children
-    for (let i = 0; i < impiHeaders.length; i++) {
-      fireEvent.click(impiHeaders[i].firstChild.lastChild);
-    }
     const thDevice = await findByText("Device")
     const deviceHeaders = thDevice.closest('tr').children
     for (let i = 0; i < deviceHeaders.length; i++) {
@@ -1072,7 +773,7 @@ describe("Dashboard", () => {
     }
   });
 
-  it("should show 8 Voltage warnings in ipmi table and 0 Spare nominals in device table", async () => {
+  it("should show 8 Voltage warnings", async () => {
     const mock = new MockAdapter(axios);
     mock.onGet(`/api/v1/configure`)
       .reply(200,
@@ -1090,17 +791,7 @@ describe("Dashboard", () => {
               criticals: 15
             }
           }),
-          ipmi: ipmi.map(i => {
-            if (i.type !== "Voltages") return i;
-            return {
-              ...i,
-              nominals: 1,
-              warnings: 13,
-            }
-          }),
           errorInDevices: false,
-          errorInIMPI: false,
-          isIMPIChassisPowerOn: true,
           totalCriticals: 89,
           totalNominals: 2,
           totalWarnings: 2
@@ -1111,8 +802,6 @@ describe("Dashboard", () => {
     jest.setTimeout(30000);
     renderComponent();
     const { getByText } = wrapper;
-    const ipmiVoltagesWarning = await waitForElement(() => getByText("13"));
-    expect(ipmiVoltagesWarning).toBeDefined();
     const deviceSparesWarning = await waitForElement(() => getByText("9"));
     expect(deviceSparesWarning).toBeDefined();
   });
@@ -1138,17 +827,13 @@ describe("Dashboard", () => {
     jest.setTimeout(30000);
     let hwResponse = {
       devices: devices,
-      ipmi: ipmi,
       errorInDevices: false,
-      errorInIMPI: false,
-      isIMPIChassisPowerOn: true,
       totalCriticals: 89,
       totalNominals: 2,
       totalWarnings: 2
     }
     initMockAndRender(hwResponse);
 
-    const { getByText } = wrapper;
 
     const changedDevicesSparesMetrics = devices.map(d => {
       if (d.type !== "Spares") return d;
@@ -1162,26 +847,6 @@ describe("Dashboard", () => {
       devices: changedDevicesSparesMetrics,
     }
     initMockAndRender(hwResponse);
-
-    // const changedIpmiVoltagesMetrics = ipmi.map(i => {
-    //   if (i.type !== "Voltages") return i;
-    //   return {
-    //     ...i,
-    //     metrics: []
-    //   }
-    // })
-    // hwResponse = {
-    //   ...hwResponse,
-    //   ipmi: changedIpmiVoltagesMetrics
-    // }
-    // initMockAndRender(hwResponse);
-
-    // const changedIpmilength = [{ ...changedIpmiVoltagesMetrics[0] }]
-    // hwResponse = {
-    //   ...hwResponse,
-    //   ipmi: changedIpmilength,
-    // }
-    // initMockAndRender(hwResponse);
   });
 
   it('should render button on resize', () => {
