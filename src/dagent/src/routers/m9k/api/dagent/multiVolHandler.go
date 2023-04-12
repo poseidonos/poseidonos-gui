@@ -35,9 +35,10 @@ package dagent
 import (
 	"bytes"
 	"dagent/src/routers/m9k/api/caller"
-	"dagent/src/routers/m9k/header"
 	"dagent/src/util"
 	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"io/ioutil"
 	"kouros/model"
 	pos "kouros/pos"
@@ -45,10 +46,6 @@ import (
 	"pnconnector/src/log"
 	"strconv"
 	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/google/uuid"
 )
 
 const (
@@ -140,7 +137,7 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 
 			// Call the API after a delay
 			time.Sleep(DELAY)
-			res, err := caller.CallCreateVolume(header.XrId(ctx), *volParam, posMngr)
+			res, err := caller.CallPOS(ctx, caller.CallCreateVolume, volParam, posMngr)
 			// If Create Volume API fails, retry
 			if err != nil || res.Result.Status.Code != 0 {
 				if createItr == MAX_RETRY_COUNT {
@@ -171,9 +168,9 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 					paramMap["target_address"] = volParam.TARGETADDRESS
 					paramMap["transport_service_id"] = volParam.TRANSPORTSERVICEID
 					if volParam.TRANSPORTTYPE == "" || volParam.TARGETADDRESS == "" || volParam.TRANSPORTSERVICEID == "" {
-						res, err = caller.CallMountVolume(header.XrId(ctx), *volParam, posMngr)
+						res, err = caller.CallPOS(ctx, caller.CallMountVolume, volParam, posMngr)
 					} else {
-						res, err = caller.CallMountVolumeWithSubSystem(header.XrId(ctx), paramMap, posMngr)
+						res, err = caller.CallPOS(ctx, caller.CallMountVolumeWithSubSystem, paramMap, posMngr)
 					}
 					if err != nil || res.Result.Status.Code != 0 {
 						if mountItr == MAX_RETRY_COUNT {
@@ -211,7 +208,7 @@ func createVolumeWrite(CreateVolCh chan model.Response, ctx *gin.Context, volPar
 	} else {
 		qosParam["miniops"] = volParam.Miniops
 	}
-	qosResp, _ := caller.CallQOSCreateVolumePolicies(header.XrId(ctx), qosParam, posMngr)
+	qosResp, _ := caller.CallPOS(ctx, caller.CallQOSCreateVolumePolicies, qosParam, posMngr)
 	CreateVolCh <- qosResp
 	close(CreateVolCh)
 
@@ -238,7 +235,7 @@ func mountVolumeWrite(MountVolCh chan model.Response, ctx *gin.Context, f func(s
 	volName := volParam.Name
 	for volItr := 0; volItr < int(volParam.TotalCount); volItr, volId = volItr+1, volId+1 {
 		volParam.Name = volName + strconv.Itoa(int(volId))
-		res, err := f(header.XrId(ctx), *volParam, posMngr)
+		res, err := caller.CallPOS(ctx, f, volParam, posMngr)
 		MountVolCh <- res
 		if err != nil || res.Result.Status.Code != 0 {
 			if volParam.StopOnError == true {
@@ -278,12 +275,9 @@ func IsMultiVolume(ctx *gin.Context) (model.VolumeParam, bool) {
 	}
 }
 
-func maxCountExceeded(count int, array string, posMngr pos.POSManager) (int, bool) {
+func maxCountExceeded(ctx *gin.Context, count int, array string, posMngr pos.POSManager) (int, bool) {
 	param := model.VolumeParam{Array: array}
-	listXrid, _ := uuid.NewUUID()
-	//countXrid, _ := uuid.NewUUID()
-	volList, err := caller.CallListVolume(listXrid.String(), param, posMngr)
-	//_, volMaxCount, err := iBoFOS.GetMaxVolumeCount(countXrid.String(), param)
+	volList, err := caller.CallPOS(ctx, caller.CallListVolume, param, posMngr)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -305,10 +299,9 @@ func maxCountExceeded(count int, array string, posMngr pos.POSManager) (int, boo
 	}
 	return COUNT_EXCEEDED_ERROR, true
 }
-func checkArrayExist(array string, posMngr pos.POSManager) (int, bool) {
+func checkArrayExist(ctx *gin.Context, array string, posMngr pos.POSManager) (int, bool) {
 	param := model.ArrayParam{Name: array}
-	listXrid, _ := uuid.NewUUID()
-	resp, err := caller.CallArrayInfo(listXrid.String(), param, posMngr)
+	resp, err := caller.CallPOS(ctx, caller.CallArrayInfo, param, posMngr)
 	if err != nil {
 		return POS_API_ERROR, true
 	}
@@ -329,13 +322,13 @@ func ImplementAsyncMultiVolume(ctx *gin.Context, f func(string, interface{}, pos
 		return
 	}
 
-	if status, ok := checkArrayExist(volParam.Array, posMngr); ok {
+	if status, ok := checkArrayExist(ctx, volParam.Array, posMngr); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
 	}
 
-	if status, ok := maxCountExceeded(int(volParam.TotalCount), volParam.Array, posMngr); ok {
+	if status, ok := maxCountExceeded(ctx, int(volParam.TotalCount), volParam.Array, posMngr); ok {
 		res.Result.Status, _ = util.GetStatusInfo(status)
 		ctx.AbortWithStatusJSON(http.StatusServiceUnavailable, &res)
 		return
