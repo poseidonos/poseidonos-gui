@@ -35,6 +35,8 @@ def getDevices(current_user):
                         devices["devices"],
                         devices["metadevices"]):
                     for arr_dev in a_info["result"]["data"]["devicelist"]:
+                        if "name" not in arr_dev:
+                            continue
                         if arr_dev["name"] == device["name"]:
                             device["isAvailable"] = False
                             device["arrayName"] = array["name"]

@@ -65,6 +65,8 @@ def get_mod_array(array):
     _array["usedspace"] = 0
     _array["index"] = array["result"]["data"]["uniqueId"]
     for device in array["result"]["data"]["devicelist"]:
+        if "name" not in device:
+            continue
         if device["type"] == "DATA":
             _array["storagedisks"].append({"deviceName": device["name"]})
         if device["type"] == "BUFFER":
