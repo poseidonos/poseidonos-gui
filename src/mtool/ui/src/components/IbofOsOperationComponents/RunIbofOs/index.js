@@ -56,7 +56,6 @@ const RunIbofOs = props => {
     props.setProperty(propertySelect);
   }
 
-  // istanbul ignore next: cannot click reset as it is hidden
   return (
     <div className="RunIbofOs-Outer-Box">
       <Typography className="IBOFOSMainHeader" variant="h1">Run/Shutdown Poseidon OS</Typography>
@@ -109,22 +108,6 @@ const RunIbofOs = props => {
                 }}
               >
                 Stop
-              </Button>
-            </div>
-            <div className="IBOFOSButtonClass">
-              <Button
-                variant="contained"
-                color="secondary"
-                title="Reset Poseidon OS"
-                data-testid="resetButton"
-                style={{
-                  display: "none"
-                }}
-                onClick={() => {
-                  props.openAlert('Reset');
-                }}
-              >
-                Reset
               </Button>
             </div>
           </div>

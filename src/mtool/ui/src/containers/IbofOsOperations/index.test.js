@@ -50,6 +50,9 @@ import { createMemoryHistory } from "history";
 
 import rootSaga from "../../sagas/indexSaga";
 import headerReducer from "../../store/reducers/headerReducer";
+import waitLoaderReducer from "../../store/reducers/waitLoaderReducer";
+import subsystemReducer from "../../store/reducers/subsystemReducer";
+import storageReducer from "../../store/reducers/storageReducer";
 import PrivateRoute from "../../components/PrivateRoute";
 import IbofOsOperations from "./index";
 import i18n from "../../i18n";
@@ -63,6 +66,9 @@ describe("IbofOsOperations", () => {
     beforeEach(() => {
         const rootReducers = {
             headerReducer,
+            waitLoaderReducer,
+            subsystemReducer,
+            storageReducer
         };
         const sagaMiddleware = createSagaMiddleware();
         store = configureStore({
@@ -440,6 +446,42 @@ describe("IbofOsOperations", () => {
             const stopButtonElement = getByTestId("stopButton");
             fireEvent.click(stopButtonElement);
             fireEvent.click(getByText("Yes"));
+            global.fetch.mockRestore();
+        });
+        jest.clearAllTimers();
+    });
+
+    it("should navigate to other tab pages", async () => {
+        jest.useFakeTimers();
+        const mock = new MockAdapter(axios);
+        renderComponent();
+        jest.advanceTimersByTime(5000);
+
+        mock.onGet("/api/v1.0/get_Is_Ibof_OS_Running/").reply(200,
+            { "RESULT": { "result": { "data": { "type": "" } } }, "lastRunningTime": "Mon, 03 Aug 2020 05:01:20 PM IST", "timestamp": "", "code": "2804", "level": "", "value": "99" }
+        )
+            .onGet("/api/v1.0/get_devices/").reply(200, {})
+            .onGet("/api/v1/subsystem/").reply(200, {})
+            .onGet("/api/v1/transports/").reply(200, []);
+
+        const { getByTestId, getByText } = wrapper;
+
+        const response = {
+            "code": -1, "response": "POS is Already Running..."
+        };
+        jest.spyOn(global, "fetch").mockImplementation(() =>
+            Promise.resolve({
+                json: () => Promise.resolve(response),
+                status: 200
+            })
+        );
+        await wait(async () => {
+            const devicesTab = getByTestId("devicesTab");
+            fireEvent.click(devicesTab);
+            const subsystemTab = getByTestId("subsystemTab");
+            fireEvent.click(subsystemTab);
+            const transportTab = getByTestId("transportTab");
+            fireEvent.click(transportTab);
             global.fetch.mockRestore();
         });
         jest.clearAllTimers();
