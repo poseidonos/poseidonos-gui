@@ -98,7 +98,6 @@ def send_command_to_dagent(req_type, url, headers, timeout=None, data=None):
                 retry_count = 5
             if(retry_count >= 1): # Removing retry logic as D-Agent has locks implemented
                 return response
-            time.sleep(1)
     except BaseException:
         return response
 
