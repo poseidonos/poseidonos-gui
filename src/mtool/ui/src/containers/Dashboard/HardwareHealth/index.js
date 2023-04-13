@@ -174,7 +174,7 @@ const HardwareHealth = (props) => {
 
         const { criticals, warnings, nominals } = props.devices[index];
         const total = (criticals + warnings + nominals)
-        if (!props.isConfigured || !total)
+        if (!total)
             return <Typography className={classes.marginAuto}>No Data to plot PieChart</Typography>;
 
         const getPercentage = (value) => Math.round(value * 1000 / total) / 10;
@@ -289,7 +289,8 @@ const HardwareHealth = (props) => {
                     />
                 </Grid>
                 <Grid container className={`${classes.tableHeight}`}>
-                    {props.devices.length === 2 && (
+                    {!props.isConfigured && <Typography className={classes.marginAuto}>Telemetry IP is not Configured</Typography>}
+                    {props.isConfigured && props.devices.length === 2 && (
                         <>
                             <Grid item container xs={12} md={6}
                                 direction="column"
