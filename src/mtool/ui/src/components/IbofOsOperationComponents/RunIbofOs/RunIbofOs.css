@@ -27,7 +27,7 @@
   font-weight:bold;
 }
 
-.IBOFOSMainHeader {
+h1.IBOFOSMainHeader {
   box-sizing: border-box;
   color: white;
   background-color: #4c6380;
