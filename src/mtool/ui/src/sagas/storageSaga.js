@@ -450,7 +450,7 @@ function* createVolume(action) {
         const { errorInfo } = response.data.result.status;
         let isError = false;
         let errorCodeDescription = '';
-        if (errorInfo?.errorResponses.length > 0) {
+        if (errorInfo?.errorResponses?.length > 0) {
           errorInfo.errorResponses.map(err => {
             errorCodeDescription += `${err.description}\n\n`;
             if (err.code !== 0)
