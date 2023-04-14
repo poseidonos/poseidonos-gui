@@ -73,9 +73,6 @@ const CreateTransport = (props) => {
                     name="transportType"
                     defaultValue="TCP"
                 >
-                    <MenuItem value="RDMA" data-testid="rdma">
-                        RDMA
-                    </MenuItem>
                     <MenuItem value="TCP" data-testid="tcp">
                         TCP
                     </MenuItem>
