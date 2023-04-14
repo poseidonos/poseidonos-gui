@@ -65,24 +65,17 @@ This plugin conforms to [CSI Spec v1.7](https://github.com/container-storage-int
 
 ## Setup
 
-### Enable ListVolumes or ControllerGetVolume API
-1) remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go  
-The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
-References:
-https://kubernetes-csi.github.io/docs/volume-health-monitor.html
-https://github.com/kubernetes-csi/external-health-monitor
-
 ### How to Build and Run
 (Assuming single/multi node cluster is already setup and running, [DAgent](https://github.com/poseidonos/poseidonos-gui/tree/main/src/dagent) is running in POS node)
 
 1) git clone https://github.com/poseidonos/poseidonos-gui.git --branch main
 2) cd m9k/src/csi
 3) Enable ControllerGetVolume API  (This is a optional step, ListVolumes API is called by default)
-    Remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go
-    The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
-    References:
-    https://kubernetes-csi.github.io/docs/volume-health-monitor.html
-    https://github.com/kubernetes-csi/external-health-monitor
+      Remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go
+      The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
+      References:
+      https://kubernetes-csi.github.io/docs/volume-health-monitor.html
+      https://github.com/kubernetes-csi/external-health-monitor
 
 4) ./build.sh in every node
 5) cd deploy/kubernetes (only in master node)
