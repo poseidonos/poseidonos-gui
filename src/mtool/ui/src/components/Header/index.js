@@ -458,7 +458,7 @@ class Header extends Component {
                 alt="Poseidon Management Tool"
               />
               <Typography className={classes.version} variant="caption" display="block">
-                v0.16.0-rc5
+                v1.0.0-rc0
               </Typography>
             </div>
             <div className={classes.grow} />
