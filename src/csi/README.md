@@ -7,7 +7,7 @@ This feature contains [POS](https://github.com/poseidonos/poseidonos) CSI (Conta
 
 It provisions POS volumes on storage node dynamically and enables Pods to access POS storage backend through NVMe-oF.
 
-This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-interface/spec/blob/v1.1.0/spec.md). It is currently developed and tested only on Kubernetes.
+This plugin conforms to [CSI Spec v1.7](https://github.com/container-storage-interface/spec/blob/release-1.7/spec.md). It is currently developed and tested only on Kubernetes.
 
 
 >**WARNING: POS CSI for Kubernetes is an alpha-level preview release for testing and evaluation purposes only, and it should not be deployed in support of production workloads.**
@@ -23,12 +23,14 @@ This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-i
     - [Prepare POS storage node](#prepare-pos-storage-node)
     - [Teardown](#teardown)
   - [Limitations/Constraints](#limitationsconstraints)
-  - [Known Issues](#known-issues)
 
 ## APIs Supported
 
 * CreateVolume
 * DeleteVolume
+* ListVolumes
+* ControllerGetVolume
+* NodeGetVolumeStats
 * NodeStageVolume
 * NodeUnstageVolume
 * NodePublish
@@ -44,31 +46,49 @@ This plugin conforms to [CSI Spec v1.1.0](https://github.com/container-storage-i
 2. RAM: 2GB or greater
 3. CPUs: 2 or greater
 4. minikube v1.24.0
-5. docker v19.03.13
-6. kubectl v1.21.2
-7. go v1.18+
-8. Below two docker images should be available in the system, Use docker pull to get these images if the Kubernetes cluster cannot access internet.
+5. docker v23.0.1
+6. kubectl v1.26.3
+7. kubeadm v1.26.3
+8. go v1.19+
+9. Below two docker images should be available in the system, Use docker pull to get these images if the Kubernetes cluster cannot access internet.
    1) docker pull k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
    2) docker pull k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
-9.  The Driver assumes POS Array is already created and available.
-10. POS version : v0.10.6
-11. Supported volume access modes : ReadWriteOnce
+10.  The Driver assumes POS Array is already created and available.
+11. POS version : v1.0.0
+12. Supported volume access modes : ReadWriteOnce
 
-12. NVMe/NVMEe-oF kernel modules should be pre-installed on all the nodes in the Kubernetes cluster. Run the below commands on each node before running POS-CSI driver
+13. NVMe/NVMEe-oF kernel modules should be pre-installed on all the nodes in the Kubernetes cluster. Run the below commands on each node before running POS-CSI driver
     1)  modprobe nvme
     2)  modprobe nvme_tcp
 
+
+
 ## Setup
+
+### Enable ListVolumes or ControllerGetVolume API
+1) remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go  
+The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
+References:
+https://kubernetes-csi.github.io/docs/volume-health-monitor.html
+https://github.com/kubernetes-csi/external-health-monitor
+
 ### How to Build and Run
 (Assuming single/multi node cluster is already setup and running, [DAgent](https://github.com/poseidonos/poseidonos-gui/tree/main/src/dagent) is running in POS node)
 
 1) git clone https://github.com/poseidonos/poseidonos-gui.git --branch main
 2) cd m9k/src/csi
-3) ./build.sh in every node
-4) cd deploy/kubernetes (only in master node)
-5) change configuration in storageclass.yaml (only in master node)
-6) ./deploy.sh (only in master node)
-7) kubectl apply -f testpod.yaml
+3) Enable ControllerGetVolume API  (This is a optional step, ListVolumes API is called by default)
+    Remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go
+    The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
+    References:
+    https://kubernetes-csi.github.io/docs/volume-health-monitor.html
+    https://github.com/kubernetes-csi/external-health-monitor
+
+4) ./build.sh in every node
+5) cd deploy/kubernetes (only in master node)
+6) change configuration in storageclass.yaml (only in master node)
+7) ./deploy.sh (only in master node)
+8) kubectl apply -f testpod.yaml
 	or
    kubectl apply -f blockpod.yaml
 
@@ -120,9 +140,9 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
     parameters:
       fsType: ext4
       transportType: "tcp"
-      targetAddress: "107.108.83.97" #POS IP
+      targetAddress: "x.x.x.x" #POS IP
       transportServiceId: "1158"
-      provisionerIP: "107.108.83.97" #DAgent IP
+      provisionerIP: "x.x.x.x" #DAgent IP
       provisionerPort: "3000"
       arrayName: "POSArray"
     reclaimPolicy: Delete
@@ -137,7 +157,7 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
     # Check status
     $ kubectl get pods
     NAME                   READY   STATUS    RESTARTS   AGE
-    poscsi-controller-0   3/3     Running   0          1m6s
+    poscsi-controller-0   5/5     Running   0          1m6s
     poscsi-node-lzvg5     2/2     Running   0          1m6s
     ```
 4. Deploy test pod
@@ -176,11 +196,7 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
 ## Limitations/Constraints 
 1) POS CSI driver does not support Ephermal volumes.
 2) Currently POS-CSI driver supports only ReadWriteOnce access mode.
-3) Basic list of mandatory APIs mentioned in the [CSI Spec](https://github.com/container-storage-interface/spec/blob/v0.1.0/spec.md) are supported. Complete list of APIs are yet to be supported. 
-## Known Issues
-```bash
-1) Complete testing of E2E testing framework with CSI Driver yet to be done
-2) Solution testing is done with basic deployment. Extensive deployment testing and benchmarking are yet to be done
-3) In some scenarios where IO operations are done in parallel to execution of create/delete volumes in Kubernetes cluster might result in data loss as well as array reset. In this scenario, Poseidon storage needs to be reset.
-```
+3) Basic list of mandatory APIs mentioned in the [CSI Spec](https://github.com/container-storage-interface/spec/blob/release-1.7/spec.md) are supported. Complete list of APIs are yet to be supported.
+4) Solution testing is done with basic deployment. Extensive deployment testing and benchmarking are yet to be done
+ 
 

@@ -61,7 +61,7 @@ The official user guide is available here: src/mtool/doc/Samsung_iBOF_Management
 
 ### Supported PoseidonOS Version
 
-1. POS release/v0.12.0 (Branch: release/v0.12.0 https://github.com/poseidonos/poseidonos/tree/release/v0.12.0)
+1. POS release/v1.0.0 (Branch: release/v1.0.0 https://github.com/poseidonos/poseidonos/tree/release/v1.0.0)
 
 
 ### Build and Run 
