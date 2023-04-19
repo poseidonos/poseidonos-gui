@@ -42,7 +42,6 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { AccessTime } from "@material-ui/icons";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
