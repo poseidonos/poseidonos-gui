@@ -481,28 +481,7 @@ class Header extends Component {
                 {this.props.OS_Running_Status}
               </Typography>
             ) : null}
-            <Tooltip
-              title={(
-                <>
-                  PoseidonOS Last Active Time:
-                  {this.props.timestamp === "..." ?
-                    <Loader type="Bars" color="primary" height={20} width={20} /> :
-                    (
-                      <>
-                        <br />
-                        {this.props.timestamp}
-                      </>
-                    )
-                  }
-                  {!this.props.timestamp ? "NA" : ""}
-                </>
-              )}
-              classes={{
-                tooltip: classes.tooltip,
-              }}
-            >
-              <AccessTime className={classes.infoOutlined} />
-            </Tooltip>
+           
             <div className={classes.sectionDesktop}>
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
                 <LinearProgressBarComponent
