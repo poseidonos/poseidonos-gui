@@ -561,7 +561,6 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    timestamp: state.headerReducer.timestamp,
     status: state.headerReducer.status,
     OS_Running_Status: state.headerReducer.OS_Running_Status,
     statusCheckDone: state.headerReducer.isStatusCheckDone
