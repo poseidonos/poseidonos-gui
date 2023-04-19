@@ -55,14 +55,10 @@ function* CallIsiBOFOSRunning(action) {
             yield put(actionCreators.asyncIsiBOFOSRunning(false, "Not Running"));
         }
         const result = response.data;
-        if (result)
-            yield put(actionCreators.updateTimestamp(result.lastRunningTime));
         if (result && result.RESULT && result.RESULT.result && result.RESULT.result.status && result.RESULT.result.status.code === 0) {
             yield put(actionCreators.asyncIsiBOFOSRunning(true, "Running", result.state));
         }
         else if (result && result.code === "2804" && result.value !== "100") {
-            if (result.timestamp !== "")
-                yield put(actionCreators.updateTimestamp(result.timestamp));
             let percentage = ""
             if (result && result.value !== "") {
                 percentage = `Rebuilding: ${result.value}%`;
