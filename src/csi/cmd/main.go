@@ -44,7 +44,7 @@ import (
 
 const (
 	driverName    = "csi.pos.io"
-	driverVersion = "0.3.0"
+	driverVersion = "1.1"
 )
 
 var (

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6d629d5e-fa95-4849-b780-316d90a7fec9",
+		"_postman_id": "04354dbf-1819-4b79-a187-163cdd6635ad",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -6933,10 +6933,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/transports",
 									"protocol": "http",
@@ -7484,10 +7480,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem",
 									"protocol": "http",
@@ -7585,10 +7577,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\r\n    \"param\": {\r\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\r\n    }\r\n}"
 						},
 						"url": {
-							"raw": "http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener",
+							"raw": "http://{{host}}/api/ibofos/v1/subsystem/listener",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -7598,7 +7590,6 @@
 								"ibofos",
 								"v1",
 								"subsystem",
-								"{{subsytem_name}}",
 								"listener"
 							]
 						}
@@ -7626,10 +7617,6 @@
 										"value": "{{basic_auth}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "http://{{host}}/api/ibofos/v1/subsystem/{{subsystemName}}/listener",
 									"protocol": "http",

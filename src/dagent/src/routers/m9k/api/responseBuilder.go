@@ -88,6 +88,10 @@ func makeResponse(ctx *gin.Context, httpStatus int, res model.Response, code int
 	res.Result.Status.PosDescription = posDescription
 	if code == 11020 {
 		res.Result.Status, _ = utils.GetStatusInfo(code)
+	} else if code == 1858 {
+        // This block is for handling invalid QOS range.
+		res.Result.Status, _ = utils.GetStatusInfo(code)
+		res.Result.Status.PosDescription = res.Result.Status.Description
 	}
 	if isBadRequest == true {
 		log.Errorf("makeResponse : %+v", res)

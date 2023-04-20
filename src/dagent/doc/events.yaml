@@ -164,9 +164,19 @@ modules:
         solution:
   - name: "VolumeManager"
     count: 300
-    idStart: 2000
+    idStart: 1800
     idEnd:   2299
     info:
+      - code: 1858
+        level: ERROR
+        message: Qos value out of range 
+        problem: 
+        solution:
+      - code: 1859
+        level: ERROR
+        message: Please provide valid parameters
+        problem: 
+        solution:
       - code: 2000
         level: INFO
         message: Volume created

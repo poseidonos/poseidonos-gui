@@ -5750,7 +5750,7 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 ```bash
 Method: GET
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
+URL: http://{{host}}/api/ibofos/v1/subsystem/listener
 ```
 
 
@@ -5762,6 +5762,18 @@ URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem1"
+    }
+}
+```
 
 
 
@@ -8528,4 +8540,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-06 14:55:18 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-18 17:45:51 by [docgen](https://github.com/thedevsaddam/docgen)
