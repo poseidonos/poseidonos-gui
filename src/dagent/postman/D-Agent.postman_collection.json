@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "04354dbf-1819-4b79-a187-163cdd6635ad",
+		"_postman_id": "9e83cb57-e8c0-4e32-8ede-843bbfb011fa",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -7529,7 +7529,7 @@
 					]
 				},
 				{
-					"name": "LIST LISTENER",
+					"name": "GET LISTENER INFO",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -7552,11 +7552,8 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "X-Request-Id",
@@ -7598,7 +7595,7 @@
 						{
 							"name": "Success",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "X-Request-Id",
@@ -7617,8 +7614,12 @@
 										"value": "{{basic_auth}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"param\": {\r\n        \"subnqn\": \"nqn.2019-04.pos:subsystem1\"\r\n    }\r\n}"
+								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/subsystem/{{subsystemName}}/listener",
+									"raw": "http://{{host}}/api/ibofos/v1/subsystem/listener",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -7628,7 +7629,6 @@
 										"ibofos",
 										"v1",
 										"subsystem",
-										"{{subsystemName}}",
 										"listener"
 									]
 								}
@@ -7663,7 +7663,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"ebef760e-d44c-11ed-8e49-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"none\",\n            \"description\": \"none\",\n            \"posDescription\": \"none\",\n            \"solution\": \"none\"\n        },\n        \"data\": {\n            \"listenerlist\": [\n                {\n                    \"address\": {\n                        \"adrfam\": \"IPv4\",\n                        \"traddr\": \"127.0.0.1\",\n                        \"trsvcid\": \"1158\",\n                        \"trtype\": \"TCP\",\n                        \"uuid\": \"8e383c8c-392e-4323-bc22-971c634db5ce\"\n                    }\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc9\"\n    }\n}"
+							"body": "{\n    \"rid\": \"420e763d-e001-11ed-b032-3cecef280244\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"none\",\n            \"description\": \"none\",\n            \"posDescription\": \"none\",\n            \"solution\": \"none\"\n        },\n        \"data\": {\n            \"listenerlist\": [\n                {\n                    \"address\": {\n                        \"adrfam\": \"IPv4\",\n                        \"traddr\": \"127.0.0.1\",\n                        \"trsvcid\": \"1158\",\n                        \"trtype\": \"TCP\",\n                        \"uuid\": \"915dadfd-dd74-4948-b14a-52c4b4d262a0\"\n                    }\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v1.0.0-rc1\"\n    }\n}"
 						}
 					]
 				},
