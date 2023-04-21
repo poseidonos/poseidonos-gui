@@ -31,7 +31,6 @@
  */
 
 export { 
-    updateTimestamp,
     asyncIsiBOFOSRunning,
     setOperationsMessage,
     setPOSInfo,
