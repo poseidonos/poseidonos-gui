@@ -67,7 +67,7 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [CREATE TRANSPORT](#3-create-transport)
   * [DELETE LISTENER](#4-delete-listener)
   * [DELETE SUBSYSTEM](#5-delete-subsystem)
-  * [LIST LISTENER](#6-list-listener)
+  * [GET LISTENER INFO](#6-get-listener-info)
   * [LIST SUBSYSTEM](#7-list-subsystem)
   * [LIST TRANSPORT](#8-list-transport)
   * [SUBSYSTEM INFO](#9-subsystem-info)
@@ -5741,16 +5741,16 @@ URL: http://{{host}}/api/ibofos/v1/subsystem
 
 
 
-### 6. LIST LISTENER
+### 6. GET LISTENER INFO
 
 
 
 ***Endpoint:***
 
 ```bash
-Method: GET
+Method: POST
 Type: RAW
-URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
+URL: http://{{host}}/api/ibofos/v1/subsystem/listener
 ```
 
 
@@ -5762,6 +5762,18 @@ URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
 | ts | {{$timestamp}} |  |
 | Content-Type | application/json |  |
 | Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem1"
+    }
+}
+```
 
 
 
@@ -5782,10 +5794,22 @@ URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
 
 
 
+***Body:***
+
+```js        
+{
+    "param": {
+        "subnqn": "nqn.2019-04.pos:subsystem1"
+    }
+}
+```
+
+
+
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "ebef760e-d44c-11ed-8e49-3cecef280244",
+    "rid": "420e763d-e001-11ed-b032-3cecef280244",
     "lastSuccessTime": 0,
     "result": {
         "status": {
@@ -5805,14 +5829,14 @@ URL: http://{{host}}/api/ibofos/v1/subsystem/{{subsytem_name}}/listener
                         "traddr": "127.0.0.1",
                         "trsvcid": "1158",
                         "trtype": "TCP",
-                        "uuid": "8e383c8c-392e-4323-bc22-971c634db5ce"
+                        "uuid": "915dadfd-dd74-4948-b14a-52c4b4d262a0"
                     }
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.12.0-rc9"
+        "version": "v1.0.0-rc1"
     }
 }
 ```
@@ -8528,4 +8552,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-06 14:55:18 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-21 10:36:57 by [docgen](https://github.com/thedevsaddam/docgen)

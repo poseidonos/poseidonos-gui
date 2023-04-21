@@ -17,4 +17,5 @@ var TimeLimit = int64(30)            //seconds
 var LockTimeout = time.Duration(1800) //30 min 
 var APILock tlock.Lock = tlock.New()
 var APILockSkt tlock.Lock = tlock.New()
-
+var NumSharedBufRange = 2147483647
+var bufCacheSizeRange = 2147483647
