@@ -426,7 +426,7 @@ function* createVolume(action) {
                 }`,
             })
           );
-	  yield put(actionCreators.toggleCreateVolumeButton(false));
+          yield put(actionCreators.toggleCreateVolumeButton(false));
         }
       } else {
         yield put(
@@ -437,7 +437,7 @@ function* createVolume(action) {
             errorCode: ``,
           })
         );
-	yield put(actionCreators.toggleCreateVolumeButton(false));
+        yield put(actionCreators.toggleCreateVolumeButton(false));
       }
     }
     // for single volume creation
@@ -906,7 +906,7 @@ function* resetAndUpdateVolume(action) {
     return true;
   }
 
-  if (isGreaterThanEqualTo(action.payload.maxiops)) {
+  if ((action.payload.maxiops > 0 && action.payload.maxiops < 10) || isGreaterThanEqualTo(action.payload.maxiops)) {
     yield put(actionCreators.showStorageAlert({
       alertType: "alert",
       alertTitle: "Reset Volume",
@@ -914,6 +914,16 @@ function* resetAndUpdateVolume(action) {
     }))
     return;
   }
+
+  if ((action.payload.maxbw > 0 && action.payload.maxbw < 10) || action.payload.maxbw > 17592186044415) {
+    yield put(actionCreators.showStorageAlert({
+      alertType: "alert",
+      alertTitle: "Reset Volume",
+      errorMsg: "Max Bandwidth should be in the range 10 ~ 17592186044415. Please input 0, for no limit for qos or Maximum",
+    }))
+    return;
+  }
+
 
   if (action.payload.resetType === "" || action.payload.minType === action.payload.resetType) {
     yield updateVolume({ payload: action.payload });
