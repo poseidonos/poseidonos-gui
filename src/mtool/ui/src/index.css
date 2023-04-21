@@ -12,6 +12,12 @@ body {
   height: 100%;
 }
 
+.MuiTablePagination-menuItem {
+  display: flex !important;
+  justify-content: flex-start !important;
+  padding: 6px 16px !important;
+}
+
 ::-webkit-scrollbar {
   height: 14px;
   width: 14px;

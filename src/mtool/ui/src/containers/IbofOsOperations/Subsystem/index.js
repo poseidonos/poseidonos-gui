@@ -31,7 +31,7 @@
  */
 
 import React, { Component } from 'react';
-import { Grid, IconButton, ThemeProvider, Typography, Tooltip, withStyles } from '@material-ui/core';
+import { Grid, IconButton, TablePagination, ThemeProvider, Typography, Tooltip, withStyles } from '@material-ui/core';
 import MaterialTable from '@material-table/core';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Delete, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
@@ -42,6 +42,7 @@ import MToolLoader from '../../../components/MToolLoader';
 import CreateSubsystem from '../../../components/CreateSubsystem';
 import AlertDialog from "../../../components/Dialog";
 import SubsystemDetails from '../../../components/SubsystemDetails';
+
 
 const styles = (theme) => ({
     cardHeader: {
@@ -59,6 +60,9 @@ const styles = (theme) => ({
     },
     item: {
         marginTop: theme.spacing(1)
+    },
+    tableFooter: {
+        backgroundColor: "#f1f0f5"
     }
 });
 
@@ -202,6 +206,8 @@ class Subsystem extends Component {
                             }}
                             columns={subsystemTableColumns}
                             icons={icons}
+                            /* eslint-disable-next-line react/jsx-props-no-spreading */
+                            components={{Pagination: (props) => <TablePagination {...props} labelDisplayedRows={() => ''} className={classes.tableFooter} />}}
                         />
                     </ThemeProvider>
                 </Grid>

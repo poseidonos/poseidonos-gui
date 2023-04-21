@@ -42,7 +42,6 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { AccessTime } from "@material-ui/icons";
 import { withStyles, MuiThemeProvider as ThemeProvider } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -458,7 +457,7 @@ class Header extends Component {
                 alt="Poseidon Management Tool"
               />
               <Typography className={classes.version} variant="caption" display="block">
-                v1.0.0-rc0
+                v1.0.0-rc1
               </Typography>
             </div>
             <div className={classes.grow} />
@@ -481,28 +480,7 @@ class Header extends Component {
                 {this.props.OS_Running_Status}
               </Typography>
             ) : null}
-            <Tooltip
-              title={(
-                <>
-                  PoseidonOS Last Active Time:
-                  {this.props.timestamp === "..." ?
-                    <Loader type="Bars" color="primary" height={20} width={20} /> :
-                    (
-                      <>
-                        <br />
-                        {this.props.timestamp}
-                      </>
-                    )
-                  }
-                  {!this.props.timestamp ? "NA" : ""}
-                </>
-              )}
-              classes={{
-                tooltip: classes.tooltip,
-              }}
-            >
-              <AccessTime className={classes.infoOutlined} />
-            </Tooltip>
+           
             <div className={classes.sectionDesktop}>
               {this.props.OS_Running_Status !== 'Not Running' && this.props.OS_Running_Status !== 'Running' ? (
                 <LinearProgressBarComponent
@@ -583,7 +561,6 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    timestamp: state.headerReducer.timestamp,
     status: state.headerReducer.status,
     OS_Running_Status: state.headerReducer.OS_Running_Status,
     statusCheckDone: state.headerReducer.isStatusCheckDone

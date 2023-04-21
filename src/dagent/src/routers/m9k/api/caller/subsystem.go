@@ -1,13 +1,15 @@
 package caller
 
 import (
+	"dagent/src/routers/m9k/globals"
 	"encoding/json"
+	"google.golang.org/protobuf/encoding/protojson"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
-
-	"google.golang.org/protobuf/encoding/protojson"
+	"kouros/utils"
+	"strconv"
 )
 
 func CallListListener(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
@@ -117,6 +119,32 @@ func CallCreateSubsystem(xrId string, param interface{}, posMngr pos.POSManager)
 
 func CallCreateTransport(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	var paramStruct pb.CreateTransportRequest_Param
+	res := model.Response{}
+	_, ok := param.(map[string]interface{})["transportType"].(string)
+	if !ok {
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+		return res, nil
+	}
+	numValue, ok := param.(map[string]interface{})["numSharedBuf"].(json.Number)
+	numSharedBuf, _ := strconv.Atoi(numValue.String())
+	// Below range check is temporary code, DAgent is client of POS server. Ideally this range check condition should be present in POS server.
+	if !ok {
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+		return res, nil
+
+	} else if numSharedBuf < 1 || numSharedBuf > globals.NumSharedBufRange {
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+		return res, nil
+	}
+	cacheValue, ok := param.(map[string]interface{})["bufCacheSize"].(json.Number)
+	bufCacheSize, _ := strconv.Atoi(cacheValue.String())
+	if !ok {
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+		return res, nil
+	} else if bufCacheSize < 1 || bufCacheSize > globals.NumSharedBufRange {
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+		return res, nil
+	}
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
