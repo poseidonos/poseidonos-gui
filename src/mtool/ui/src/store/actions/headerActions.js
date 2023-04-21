@@ -32,12 +32,6 @@
 
 import * as actionTypes from "./actionTypes"
 
-export const updateTimestamp = (timestamp) => {
-    return {
-        type:actionTypes.UPDATE_TIMESTAMP,
-        timestamp
-    };
-};
 
 export const asyncIsiBOFOSRunning = (status,OS_RUNNING_STATUS, state) => {
     return {
