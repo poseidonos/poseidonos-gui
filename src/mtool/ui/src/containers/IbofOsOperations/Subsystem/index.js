@@ -35,6 +35,7 @@ import { Grid, IconButton, ThemeProvider, Typography, Tooltip, withStyles } from
 import MaterialTable from '@material-table/core';
 import { Add, Check, Clear, FirstPage, LastPage, Search, ChevronRight, ChevronLeft, Delete, Remove, ArrowUpward } from '@material-ui/icons';
 import { connect } from 'react-redux';
+import TablePagination from '@mui/material/TablePagination';
 import { customTheme, TableTheme } from '../../../theme';
 import Popup from '../../../components/Popup';
 import * as actionTypes from "../../../store/actions/actionTypes";
@@ -42,7 +43,7 @@ import MToolLoader from '../../../components/MToolLoader';
 import CreateSubsystem from '../../../components/CreateSubsystem';
 import AlertDialog from "../../../components/Dialog";
 import SubsystemDetails from '../../../components/SubsystemDetails';
-import TablePagination from '@mui/material/TablePagination';
+
 
 const styles = (theme) => ({
     cardHeader: {
@@ -203,9 +204,8 @@ class Subsystem extends Component {
                             }}
                             columns={subsystemTableColumns}
                             icons={icons}
-                            components={{
-                                Pagination: (props) => <TablePagination {...props} style={{backgroundColor: "#f1f0f5"}} />
-                            }}                    
+                            /* eslint-disable react/jsx-props-no-spreading */
+                            components={{Pagination: (props) => <TablePagination {...props} style={{backgroundColor: "#f1f0f5"}} />}}
                         />
                     </ThemeProvider>
                 </Grid>
