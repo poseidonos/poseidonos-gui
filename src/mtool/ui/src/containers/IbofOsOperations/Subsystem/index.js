@@ -42,6 +42,7 @@ import MToolLoader from '../../../components/MToolLoader';
 import CreateSubsystem from '../../../components/CreateSubsystem';
 import AlertDialog from "../../../components/Dialog";
 import SubsystemDetails from '../../../components/SubsystemDetails';
+import TablePagination from '@mui/material/TablePagination';
 
 const styles = (theme) => ({
     cardHeader: {
@@ -202,6 +203,9 @@ class Subsystem extends Component {
                             }}
                             columns={subsystemTableColumns}
                             icons={icons}
+                            components={{
+                                Pagination: (props) => <TablePagination {...props} style={{backgroundColor: "#f1f0f5"}} />
+                            }}                    
                         />
                     </ThemeProvider>
                 </Grid>
