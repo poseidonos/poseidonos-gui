@@ -58,11 +58,11 @@ func UpdateResponse(response model.Response, res *model.Response, opName string,
 }
 
 func transport(xrId string, config setting.HostConf, res *model.Response, opName string, errorInfoList *[]map[string]interface{}, posMngr pos.POSManager) {
-	transportParam := model.CreateTransportRequest_Param{}
-	transportParam.TransportType = config.TransportType
-	transportParam.BufCacheSize = int32(config.BufCacheSize)
-	transportParam.NumSharedBuf = int32(config.NumSharedBuf)
 	//create Transport
+	transportParam := make(map[string]interface{})
+	transportParam["transportType"] = config.TransportType
+	transportParam["bufCacheSize"] = float64(config.BufCacheSize)
+	transportParam["numSharedBuf"] = float64(config.NumSharedBuf)
 	response, _ := CallCreateTransport(xrId, transportParam, posMngr)
 	UpdateResponse(response, res, opName, errorInfoList)
 
@@ -139,13 +139,13 @@ func RuniBoFOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Re
 		res.Result.Status.Code = 0
 		res.LastSuccessTime = time.Now().UTC().Unix()
 	}
-        _, _, err2 := posMngr.GetSystemInfo()
-        if err2 != nil {
-                log.Errorf(commandFailureMsg, GetFuncName(1), err2)
-                errResponse := model.Response{}
-                errResponse.Result.Status, _ = utils.GetStatusInfo(11023)
-                return iBoFRequest, errResponse, nil
-        }
+	_, _, err2 := posMngr.GetSystemInfo()
+	if err2 != nil {
+		log.Errorf(commandFailureMsg, GetFuncName(1), err2)
+		errResponse := model.Response{}
+		errResponse.Result.Status, _ = utils.GetStatusInfo(11023)
+		return iBoFRequest, errResponse, nil
+	}
 
 	log.Info("RuniBoFOS result : ", res.Result.Status.Code)
 	if res.Result.Status.Code == 0 {
