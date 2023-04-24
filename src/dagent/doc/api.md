@@ -8007,45 +8007,50 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "662809e0-dbac-4a5a-b51b-2f00b30ace56",
-    "lastSuccessTime": 1656017733,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "List of Volume Policies in POSArray"
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
         },
         "data": {
-            "arrayName": [
+            "qosresult": [
                 {
-                    "ArrayName": "POSArray"
-                }
-            ],
-            "rebuildPolicy": [
-                {
-                    "rebuild": "highest"
-                }
-            ],
-            "volumePolicies": [
-                {
-                    "id": 2,
-                    "maxbw": 400,
-                    "maxiops": 300,
-                    "min_bw_guarantee": "No",
-                    "min_iops_guarantee": "Yes",
-                    "minbw": 0,
-                    "miniops": 10,
-                    "name": "volume-0"
+                    "arrayName": [
+                        {
+                            "ArrayName": "pos"
+                        }
+                    ],
+                    "rebuildPolicy": [
+                        {
+                            "rebuild": "high"
+                        }
+                    ],
+                    "volumePolicies": [
+                        {
+                            "maxbw": "0",
+                            "maxiops": "0",
+                            "minBwGuarantee": "No",
+                            "minIopsGuarantee": "No",
+                            "minbw": "0",
+                            "miniops": "0",
+                            "name": "vol0"
+                        }
+                    ]
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v1.0.0-rc1"
     }
-}
+}               
 ```
 
 
