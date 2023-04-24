@@ -799,7 +799,7 @@ function* updateVolume(action) {
               newName: action.payload.newName,
               array: arrayName,
               noError: true,
-              error: response.data.result.status.posDescription,
+              error: "",
             },
           });
         } else {
@@ -807,7 +807,7 @@ function* updateVolume(action) {
             actionCreators.showStorageAlert({
               alertType: "info",
               alertTitle: "Update Volume",
-              errorMsg: response.data.result.status.posDescription,
+              errorMsg: "Volume updated successfully",
               noError: true,
               errorCode: "",
             })
