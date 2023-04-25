@@ -461,7 +461,7 @@ func CallDAgent(url string, requestBody []byte, reqType string, reqName string) 
 	req.Header.Set("ts", fmt.Sprintf("%v", time.Now().Unix()))
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	klog.Info("Api respose ", reqName, " ", resp)
+	klog.Info("Api response ", reqName, " ", resp)
 	if resp == nil {
 		return resp, status.Error(codes.Unavailable, fmt.Sprintf("DAgent %v API Response is Nil", reqName))
 	} else if err != nil {
