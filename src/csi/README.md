@@ -70,18 +70,19 @@ This plugin conforms to [CSI Spec v1.7](https://github.com/container-storage-int
 
 1) git clone https://github.com/poseidonos/poseidonos-gui.git --branch main
 2) cd m9k/src/csi
-3) Enable ControllerGetVolume API  (This is a optional step, ListVolumes API is called by default)
-      Remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go
-      The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
-      References:
-      https://kubernetes-csi.github.io/docs/volume-health-monitor.html
-      https://github.com/kubernetes-csi/external-health-monitor
+3) Enable ControllerGetVolume API  **(This is a optional step as ListVolumes API is invoked by default)**
+      - Remove "csi.ControllerServiceCapability_RPC_LIST_VOLUMES" from csi/pkg/pos/driver.go in each node.
+      - The External Health Monitor Controller calls either ListVolumes or ControllerGetVolume CSI RPC
+      - References:
+        - https://kubernetes-csi.github.io/docs/volume-health-monitor.html
+        - https://github.com/kubernetes-csi/external-health-monitor
 
-4) ./build.sh in every node
-5) cd deploy/kubernetes (only in master node)
-6) change configuration in storageclass.yaml (only in master node)
-7) ./deploy.sh (only in master node)
-8) kubectl apply -f testpod.yaml
+4) ./delete.sh in master node if previous CSI driver is already running **(optional step)**
+5) ./build.sh in every node
+6) cd deploy/kubernetes (only in master node)
+7) change configuration in storageclass.yaml (only in master node)
+8) ./deploy.sh (only in master node)
+9) kubectl apply -f testpod.yaml
 	or
    kubectl apply -f blockpod.yaml
 
