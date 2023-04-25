@@ -10,8 +10,6 @@ It provisions POS volumes on storage node dynamically and enables Pods to access
 This plugin conforms to [CSI Spec v1.7](https://github.com/container-storage-interface/spec/blob/release-1.7/spec.md). It is currently developed and tested only on Kubernetes.
 
 
->**WARNING: POS CSI for Kubernetes is an alpha-level preview release for testing and evaluation purposes only, and it should not be deployed in support of production workloads.**
-
 ## Table of Contents
 
   - [APIs Supported](#apis-supported)
