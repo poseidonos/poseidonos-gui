@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9e83cb57-e8c0-4e32-8ede-843bbfb011fa",
+		"_postman_id": "d94772d5-2642-4934-925e-f89e3a69609f",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -2247,6 +2247,207 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/ibofos/v1/array",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ibofos",
+								"v1",
+								"array"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:52:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "259"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "cc3eed56-3478-4180-af0b-eac6b88f264f"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"NONE\",\n            \"description\": \"NONE\",\n            \"posDescription\": \"NONE\",\n            \"solution\": \"NONE\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc6\"\n    }\n}"
+						},
+						{
+							"name": "Fail - 2502",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-Id",
+										"value": "{{$guid}}"
+									},
+									{
+										"key": "ts",
+										"value": "{{$timestamp}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{basic_auth}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"{{deviceName1}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName2}}\"\n            },\n            {\n                \"deviceName\": \"{{deviceName3}}\"\n            }\n        ],\n        \"spare\": [\n            {\n                \"deviceName\": \"{{deviceName4}}\"\n            }\n        ]\n    }\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/ibofos/v1/array",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ibofos",
+										"v1",
+										"array"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 19 Aug 2020 06:52:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "271"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "3cfc6d1e-6595-4aad-829a-bfca0d831069"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 2502,\n            \"eventName\": \"CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS\",\n            \"cause\": \"Array with the same name already exists.\",\n            \"description\": \"Failed to create array.\",\n            \"posDescription\": \"Failed to create array.\",\n            \"solution\": \"Please use another name.\"\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.12.0-rc3\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "CREATE ARRAY Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"CREATE ARRAY\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{$guid}}"
+							},
+							{
+								"key": "ts",
+								"value": "{{$timestamp}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"name\": \"{{arrayName}}\",\n        \"raidtype\": \"RAID5\",\n        \"buffer\": [\n            {\n                \"deviceName\": \"uram0\"\n            }\n        ],\n        \"data\": [\n            {\n                \"deviceName\": \"unvme-ns-1\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-2\"\n            },\n            {\n                \"deviceName\": \"unvme-ns-3\"\n            }\n        ]\n    }\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}/api/ibofos/v1/array",
@@ -5609,10 +5810,13 @@
 									"raw": "{\r\n    \"param\": {\r\n        \"array\": \"{{arrayName}}\",\r\n\t\t\"vol\":[{\"volumeName\":\"vol\"}]\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://{{host}}/api/ibofos/v1/qos/policies",
+									"raw": "http://107.99.41.212/api/ibofos/v1/qos/policies",
 									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"107",
+										"99",
+										"41",
+										"212"
 									],
 									"path": [
 										"api",
@@ -5653,7 +5857,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"662809e0-dbac-4a5a-b51b-2f00b30ace56\",\n    \"lastSuccessTime\": 1656017733,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"List of Volume Policies in POSArray\"\n        },\n        \"data\": {\n            \"arrayName\": [\n                {\n                    \"ArrayName\": \"POSArray\"\n                }\n            ],\n            \"rebuildPolicy\": [\n                {\n                    \"rebuild\": \"highest\"\n                }\n            ],\n            \"volumePolicies\": [\n                {\n                    \"id\": 2,\n                    \"maxbw\": 400,\n                    \"maxiops\": 300,\n                    \"min_bw_guarantee\": \"No\",\n                    \"min_iops_guarantee\": \"Yes\",\n                    \"minbw\": 0,\n                    \"miniops\": 10,\n                    \"name\": \"volume-0\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"none\",\n            \"description\": \"none\",\n            \"posDescription\": \"none\",\n            \"solution\": \"none\"\n        },\n        \"data\": {\n            \"qosresult\": [\n                {\n                    \"arrayName\": [\n                        {\n                            \"ArrayName\": \"pos\"\n                        }\n                    ],\n                    \"rebuildPolicy\": [\n                        {\n                            \"rebuild\": \"high\"\n                        }\n                    ],\n                    \"volumePolicies\": [\n                        {\n                            \"maxbw\": \"0\",\n                            \"maxiops\": \"0\",\n                            \"minBwGuarantee\": \"No\",\n                            \"minIopsGuarantee\": \"No\",\n                            \"minbw\": \"0\",\n                            \"miniops\": \"0\",\n                            \"name\": \"vol0\"\n                        }\n                    ]\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v1.0.0-rc1\"\n    }\n}"
 						}
 					]
 				},

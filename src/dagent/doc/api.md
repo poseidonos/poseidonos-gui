@@ -17,10 +17,11 @@ REST API Collection and Documents of D-Agent (Dynamic Agent)
   * [AUTO CREATE ARRAY](#8-auto-create-array)
   * [CREATE ARRAY 1st ARRAY](#9-create-array-1st-array)
   * [CREATE ARRAY 2nd ARRAY](#10-create-array-2nd-array)
-  * [DELETE ARRAY](#11-delete-array)
-  * [REBUILD ARRAY](#12-rebuild-array)
-  * [REMOVE DEVICE](#13-remove-device)
-  * [REPLACE DEVICE](#14-replace-device)
+  * [CREATE ARRAY Copy](#11-create-array-copy)
+  * [DELETE ARRAY](#12-delete-array)
+  * [REBUILD ARRAY](#13-rebuild-array)
+  * [REMOVE DEVICE](#14-remove-device)
+  * [REPLACE DEVICE](#15-replace-device)
 
 * [Common](#common)
 
@@ -1346,7 +1347,217 @@ URL: http://{{host}}/api/ibofos/v1/array
 
 
 
-### 11. DELETE ARRAY
+### 11. CREATE ARRAY Copy
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: RAW
+URL: http://{{host}}/api/ibofos/v1/array
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "{{arrayName}}",
+        "raidtype": "RAID5",
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "unvme-ns-1"
+            },
+            {
+                "deviceName": "unvme-ns-2"
+            },
+            {
+                "deviceName": "unvme-ns-3"
+            }
+        ]
+    }
+}
+```
+
+
+
+***More example Requests/Responses:***
+
+
+##### I. Example Request: Success
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "{{arrayName}}",
+        "raidtype": "RAID5",
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "{{deviceName1}}"
+            },
+            {
+                "deviceName": "{{deviceName2}}"
+            },
+            {
+                "deviceName": "{{deviceName3}}"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "{{deviceName4}}"
+            }
+        ]
+    }
+}
+```
+
+
+
+##### I. Example Response: Success
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 0,
+            "eventName": "SUCCESS",
+            "cause": "NONE",
+            "description": "NONE",
+            "posDescription": "NONE",
+            "solution": "NONE"
+        }
+    },
+    "info": {
+        "version": "v0.11.0-rc6"
+    }
+}
+```
+
+
+***Status Code:*** 200
+
+<br>
+
+
+
+##### II. Example Request: Fail - 2502
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| X-Request-Id | {{$guid}} |  |
+| ts | {{$timestamp}} |  |
+| Content-Type | application/json |  |
+| Authorization | {{basic_auth}} |  |
+
+
+
+***Body:***
+
+```js        
+{
+    "param": {
+        "name": "{{arrayName}}",
+        "raidtype": "RAID5",
+        "buffer": [
+            {
+                "deviceName": "uram0"
+            }
+        ],
+        "data": [
+            {
+                "deviceName": "{{deviceName1}}"
+            },
+            {
+                "deviceName": "{{deviceName2}}"
+            },
+            {
+                "deviceName": "{{deviceName3}}"
+            }
+        ],
+        "spare": [
+            {
+                "deviceName": "{{deviceName4}}"
+            }
+        ]
+    }
+}
+```
+
+
+
+##### II. Example Response: Fail - 2502
+```js
+{
+    "rid": "",
+    "lastSuccessTime": 0,
+    "result": {
+        "status": {
+            "module": "",
+            "code": 2502,
+            "eventName": "CREATE_ARRAY_SAME_ARRAY_NAME_EXISTS",
+            "cause": "Array with the same name already exists.",
+            "description": "Failed to create array.",
+            "posDescription": "Failed to create array.",
+            "solution": "Please use another name."
+        }
+    },
+    "info": {
+        "version": "v0.12.0-rc3"
+    }
+}
+```
+
+
+***Status Code:*** 400
+
+<br>
+
+
+
+### 12. DELETE ARRAY
 
 
 
@@ -1457,7 +1668,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray
 
 
 
-### 12. REBUILD ARRAY
+### 13. REBUILD ARRAY
 
 
 
@@ -1570,7 +1781,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/rebuild
 
 
 
-### 13. REMOVE DEVICE
+### 14. REMOVE DEVICE
 
 
 
@@ -1704,7 +1915,7 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/devices/unvme-ns-3
 
 
 
-### 14. REPLACE DEVICE
+### 15. REPLACE DEVICE
 
 
 
@@ -8007,43 +8218,48 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "662809e0-dbac-4a5a-b51b-2f00b30ace56",
-    "lastSuccessTime": 1656017733,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "List of Volume Policies in POSArray"
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
         },
         "data": {
-            "arrayName": [
+            "qosresult": [
                 {
-                    "ArrayName": "POSArray"
-                }
-            ],
-            "rebuildPolicy": [
-                {
-                    "rebuild": "highest"
-                }
-            ],
-            "volumePolicies": [
-                {
-                    "id": 2,
-                    "maxbw": 400,
-                    "maxiops": 300,
-                    "min_bw_guarantee": "No",
-                    "min_iops_guarantee": "Yes",
-                    "minbw": 0,
-                    "miniops": 10,
-                    "name": "volume-0"
+                    "arrayName": [
+                        {
+                            "ArrayName": "pos"
+                        }
+                    ],
+                    "rebuildPolicy": [
+                        {
+                            "rebuild": "high"
+                        }
+                    ],
+                    "volumePolicies": [
+                        {
+                            "maxbw": "0",
+                            "maxiops": "0",
+                            "minBwGuarantee": "No",
+                            "minIopsGuarantee": "No",
+                            "minbw": "0",
+                            "miniops": "0",
+                            "name": "vol0"
+                        }
+                    ]
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v1.0.0-rc1"
     }
 }
 ```
@@ -8552,4 +8768,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-21 10:36:57 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-25 15:13:20 by [docgen](https://github.com/thedevsaddam/docgen)
