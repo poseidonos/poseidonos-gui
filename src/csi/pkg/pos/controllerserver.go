@@ -183,12 +183,26 @@ func (s *controllerServer) ListVolumes(ctx context.Context, req *csi.ListVolumes
 }
 
 func (s *controllerServer) ControllerGetVolume(ctx context.Context, req *csi.ControllerGetVolumeRequest) (*csi.ControllerGetVolumeResponse, error) {
-	klog.Info("The 'ControllerGetVolume' API function has been successfully populated", req.GetVolumeId())
+	klog.Info("The 'ControllerGetVolume' API function has been successfully populated ", req.GetVolumeId())
 	volId := req.GetVolumeId()
 	message := ""
 	abnormal := false
 	var configParams map[string]string
 	volume, exists := s.volumesById[volId]
+	if len(s.volumesById) == 0 || volume == nil {
+		return &csi.ControllerGetVolumeResponse{
+			Volume: &csi.Volume{
+				VolumeId: req.GetVolumeId(),
+			},
+			Status: &csi.ControllerGetVolumeResponse_VolumeStatus{
+				VolumeCondition: &csi.VolumeCondition{
+					Abnormal: abnormal,
+					Message:  fmt.Sprintf(req.GetVolumeId() + " volume deos not exist in CSI map"),
+				},
+			},
+		}, nil
+
+	}
 	if exists {
 		configParams = volume.csiVolume.VolumeContext
 	}
