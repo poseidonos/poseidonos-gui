@@ -113,6 +113,10 @@ const HardwareHealth = (props) => {
     });
 
     useEffect(() => {
+        props.Get_Devices();
+    }, [])
+
+    useEffect(() => {
         if (isConfigured)
             fetchHardwareHealth();
         const interval = setInterval(() => {
@@ -343,6 +347,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        Get_Devices: () => dispatch({ type: actionTypes.SAGA_FETCH_DEVICE_INFO }),
         fetchHardwareHealth: () => dispatch({ type: actionTypes.SAGA_FETCH_HARDWARE_HEALTH }),
     };
 };
