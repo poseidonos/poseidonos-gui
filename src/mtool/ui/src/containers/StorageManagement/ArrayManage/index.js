@@ -268,7 +268,6 @@ const ArrayManage = (props) => {
     }
 
     const mountVolume = () => {
-        console.log(mountSubsystem);
         if (!mountSubsystem) {
             props.Show_Storage_Alert({
                 alertType: "alert",
