@@ -9,6 +9,7 @@ import (
 	"kouros/model"
 	pos "kouros/pos"
 	"kouros/utils"
+	"errors"
 )
 
 func CallListListener(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
@@ -116,32 +117,64 @@ func CallCreateSubsystem(xrId string, param interface{}, posMngr pos.POSManager)
 
 }
 
-func CallCreateTransport(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
-	var paramStruct pb.CreateTransportRequest_Param
+func validateTransport(param interface{}) (model.Response, error) {
+	err := errors.New("Invalid parameters")
 	res := model.Response{}
 	_, ok := param.(map[string]interface{})["transportType"].(string)
 	if !ok {
 		res.Result.Status, _ = utils.GetStatusInfo(1859)
-		return res, nil
+		return res, err
 	}
-	numSharedBuf, ok := param.(map[string]interface{})["numSharedBuf"].(float64)
+	numSharedBuf, ok := param.(map[string]interface{})["numSharedBuf"].(json.Number)
 	// Below range check is temporary code, DAgent is client of POS server. Ideally this range check condition should be present in POS server.
 	if !ok {
 		res.Result.Status, _ = utils.GetStatusInfo(1859)
-		return res, nil
+		return res, err
 
-	} else if numSharedBuf < float64(1) || numSharedBuf > float64(globals.NumSharedBufRange) {
+	} else if numSharedBuf < json.Number(1) || numSharedBuf > json.Number(globals.NumSharedBufRange) {
 		res.Result.Status, _ = utils.GetStatusInfo(1859)
-		return res, nil
+		return res, err
 	}
-	bufCacheSize, ok := param.(map[string]interface{})["bufCacheSize"].(float64)
+	bufCacheSize, ok := param.(map[string]interface{})["bufCacheSize"].(json.Number)
 	if !ok {
 		res.Result.Status, _ = utils.GetStatusInfo(1859)
-		return res, nil
-	} else if bufCacheSize < float64(1) || bufCacheSize > float64(globals.NumSharedBufRange) {
+		return res, err
+	} else if bufCacheSize < json.Number(1) || bufCacheSize > json.Number(globals.NumSharedBufRange) {
 		res.Result.Status, _ = utils.GetStatusInfo(1859)
-		return res, nil
+		return res, err
 	}
+	return res, nil
+}
+
+func CallCreateTransport(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.CreateTransportRequest_Param
+	res, err := validateTransport(param)
+	if err != nil {
+		return res, err
+	}
+	pByte, err := json.Marshal(param)
+	if err != nil {
+		log.Errorf(marshalErrMsg, GetFuncName(1), err)
+		return model.Response{}, ErrJson
+	}
+	if err = json.Unmarshal(pByte, &paramStruct); err != nil {
+		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
+		//return model.Response{}, ErrJson
+		res.Result.Status, _ = utils.GetStatusInfo(1859)
+                return res, err
+
+	}
+	result, _, err1 := posMngr.CreateTransport(&paramStruct)
+	if err1 != nil {
+		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
+		return model.Response{}, ErrConn
+	}
+	resByte, err2 := protojson.Marshal(result)
+	return HandleResponse(resByte, err2)
+}
+
+func CallCreateTransportWhileStartPOS(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
+	var paramStruct pb.CreateTransportRequest_Param
 	pByte, err := json.Marshal(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
@@ -158,7 +191,6 @@ func CallCreateTransport(xrId string, param interface{}, posMngr pos.POSManager)
 	}
 	resByte, err2 := protojson.Marshal(result)
 	return HandleResponse(resByte, err2)
-
 }
 
 func CallListTransport(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
