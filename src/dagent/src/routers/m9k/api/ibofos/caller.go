@@ -43,6 +43,8 @@ import (
 	"kouros/log"
 	"kouros/model"
 	pos "kouros/pos"
+	"kouros/utils"
+	"reflect"
 )
 
 func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
@@ -57,12 +59,36 @@ func CalliBoFOS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (m
 // Handling QoS request separately, as maxiops extreme values are not parsed correctly
 // when generic Param is considered during JSON to object conversion
 func CalliBoFOSQoS(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), posMngr pos.POSManager) {
-	req := pb.QosCreateVolumePolicyRequest{}
-	log.Info(ctx)
-	ctx.ShouldBindBodyWith(&req, binding.JSON)
-	log.Info(req)
-	res, err := caller.CallPOS(ctx, f, req.Param, posMngr)
-	api.HttpResponse(ctx, res, err)
+	reqTemp := model.Request{}
+	ctx.ShouldBindBodyWith(&reqTemp, binding.JSON)
+	paramTemp := reqTemp.Param.(map[string]interface{})
+	resTemp := model.Response{}
+	var errTemp error
+	_, maxiopsExist := paramTemp["maxiops"]
+	_, miniopsExist := paramTemp["miniops"]
+	_, maxbwExist := paramTemp["maxbw"]
+	_, minbwExist := paramTemp["minbw"]
+	if maxiopsExist && reflect.TypeOf(paramTemp["maxiops"]).Kind() == reflect.String {
+		resTemp.Result.Status, errTemp = utils.GetStatusInfo(1859)
+		api.HttpResponse(ctx, resTemp, errTemp)
+	} else if miniopsExist && reflect.TypeOf(paramTemp["miniops"]).Kind() == reflect.String {
+		resTemp.Result.Status, errTemp = utils.GetStatusInfo(1859)
+		api.HttpResponse(ctx, resTemp, errTemp)
+
+	} else if maxbwExist && reflect.TypeOf(paramTemp["maxbw"]).Kind() == reflect.String {
+		resTemp.Result.Status, errTemp = utils.GetStatusInfo(1859)
+		api.HttpResponse(ctx, resTemp, errTemp)
+	} else if minbwExist && reflect.TypeOf(paramTemp["minbw"]).Kind() == reflect.String {
+		resTemp.Result.Status, errTemp = utils.GetStatusInfo(1859)
+		api.HttpResponse(ctx, resTemp, errTemp)
+	} else {
+		req := pb.QosCreateVolumePolicyRequest{}
+		log.Info(ctx)
+		ctx.ShouldBindBodyWith(&req, binding.JSON)
+		log.Info(req)
+		res, err := caller.CallPOS(ctx, f, req.Param, posMngr)
+		api.HttpResponse(ctx, res, err)
+	}
 }
 
 func CalliBoFOSwithParam(ctx *gin.Context, f func(string, interface{}, pos.POSManager) (model.Response, error), param interface{}, posMngr pos.POSManager) {
