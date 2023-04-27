@@ -8007,43 +8007,49 @@ URL: http://{{host}}/api/ibofos/v1/qos/policies
 ##### I. Example Response: Success
 ```js
 {
-    "rid": "662809e0-dbac-4a5a-b51b-2f00b30ace56",
-    "lastSuccessTime": 1656017733,
+    "rid": "",
+    "lastSuccessTime": 0,
     "result": {
         "status": {
-            "module": "COMMON",
+            "module": "",
             "code": 0,
-            "level": "INFO",
-            "description": "Success",
-            "posDescription": "List of Volume Policies in POSArray"
+            "eventName": "SUCCESS",
+            "cause": "none",
+            "description": "none",
+            "posDescription": "none",
+            "solution": "none"
         },
         "data": {
-            "arrayName": [
+            "qosresult": [
                 {
-                    "ArrayName": "POSArray"
-                }
-            ],
-            "rebuildPolicy": [
-                {
-                    "rebuild": "highest"
-                }
-            ],
-            "volumePolicies": [
-                {
-                    "id": 2,
-                    "maxbw": 400,
-                    "maxiops": 300,
-                    "min_bw_guarantee": "No",
-                    "min_iops_guarantee": "Yes",
-                    "minbw": 0,
-                    "miniops": 10,
-                    "name": "volume-0"
+                    "arrayName": [
+                        {
+                            "ArrayName": "POSArray"
+                        }
+                    ],
+                    "rebuildPolicy": [
+                        {
+                            "rebuild": "high"
+                        }
+                    ],
+                    "volumePolicies": [
+                        {
+                            "id": 10,
+                            "maxbw": "400",
+                            "maxiops": "300",
+                            "minBwGuarantee": "No",
+                            "minIopsGuarantee": "Yes",
+                            "minbw": "0",
+                            "miniops": "10",
+                            "name": "vol01"
+                        }
+                    ]
                 }
             ]
         }
     },
     "info": {
-        "version": "v0.11.0-rc5"
+        "version": "v1.0.0-rc1"
     }
 }
 ```
@@ -8552,4 +8558,4 @@ URL: http://{{host}}/api/ibofos/v1/array/POSArray/volume/vol01
 
 ---
 [Back to top](#d-agent)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-21 10:36:57 by [docgen](https://github.com/thedevsaddam/docgen)
+> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: 2023-04-27 12:52:06 by [docgen](https://github.com/thedevsaddam/docgen)
