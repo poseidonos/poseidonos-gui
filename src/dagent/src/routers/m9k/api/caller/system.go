@@ -63,7 +63,7 @@ func transport(xrId string, config setting.HostConf, res *model.Response, opName
 	transportParam["transportType"] = config.TransportType
 	transportParam["bufCacheSize"] = float64(config.BufCacheSize)
 	transportParam["numSharedBuf"] = float64(config.NumSharedBuf)
-	response, _ := CallCreateTransport(xrId, transportParam, posMngr)
+	response, _ := CallCreateTransportWhileStartPOS(xrId, transportParam, posMngr)
 	UpdateResponse(response, res, opName, errorInfoList)
 
 }
