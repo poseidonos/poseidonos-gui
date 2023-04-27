@@ -2,7 +2,6 @@ package caller
 
 import (
 	"encoding/json"
-	"fmt"
 	pb "kouros/api"
 	"kouros/log"
 	"kouros/model"
@@ -14,7 +13,6 @@ import (
 func CallQOSCreateVolumePolicies(xrId string, param interface{}, posMngr pos.POSManager) (model.Response, error) {
 	var paramStruct pb.QosCreateVolumePolicyRequest_Param
 	pByte, err := json.Marshal(param)
-	fmt.Println(param)
 	if err != nil {
 		log.Errorf(marshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
@@ -23,7 +21,6 @@ func CallQOSCreateVolumePolicies(xrId string, param interface{}, posMngr pos.POS
 		log.Errorf(unmarshalErrMsg, GetFuncName(1), err)
 		return model.Response{}, ErrJson
 	}
-	fmt.Println(paramStruct)
 	result, _, err1 := posMngr.CreateQoSVolumePolicy(&paramStruct)
 	if err1 != nil {
 		log.Errorf(commandFailureMsg, GetFuncName(1), err1)
