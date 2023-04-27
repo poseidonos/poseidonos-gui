@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9e83cb57-e8c0-4e32-8ede-843bbfb011fa",
+		"_postman_id": "4ce84a7f-c956-463e-b565-d4d4d99568e3",
 		"name": "D-Agent",
 		"description": "REST API Collection and Documents of D-Agent (Dynamic Agent)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -5653,7 +5653,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"rid\": \"662809e0-dbac-4a5a-b51b-2f00b30ace56\",\n    \"lastSuccessTime\": 1656017733,\n    \"result\": {\n        \"status\": {\n            \"module\": \"COMMON\",\n            \"code\": 0,\n            \"level\": \"INFO\",\n            \"description\": \"Success\",\n            \"posDescription\": \"List of Volume Policies in POSArray\"\n        },\n        \"data\": {\n            \"arrayName\": [\n                {\n                    \"ArrayName\": \"POSArray\"\n                }\n            ],\n            \"rebuildPolicy\": [\n                {\n                    \"rebuild\": \"highest\"\n                }\n            ],\n            \"volumePolicies\": [\n                {\n                    \"id\": 2,\n                    \"maxbw\": 400,\n                    \"maxiops\": 300,\n                    \"min_bw_guarantee\": \"No\",\n                    \"min_iops_guarantee\": \"Yes\",\n                    \"minbw\": 0,\n                    \"miniops\": 10,\n                    \"name\": \"volume-0\"\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v0.11.0-rc5\"\n    }\n}"
+							"body": "{\n    \"rid\": \"\",\n    \"lastSuccessTime\": 0,\n    \"result\": {\n        \"status\": {\n            \"module\": \"\",\n            \"code\": 0,\n            \"eventName\": \"SUCCESS\",\n            \"cause\": \"none\",\n            \"description\": \"none\",\n            \"posDescription\": \"none\",\n            \"solution\": \"none\"\n        },\n        \"data\": {\n            \"qosresult\": [\n                {\n                    \"arrayName\": [\n                        {\n                            \"ArrayName\": \"POSArray\"\n                        }\n                    ],\n                    \"rebuildPolicy\": [\n                        {\n                            \"rebuild\": \"high\"\n                        }\n                    ],\n                    \"volumePolicies\": [\n                        {\n                            \"id\": 10,\n                            \"maxbw\": \"400\",\n                            \"maxiops\": \"300\",\n                            \"minBwGuarantee\": \"No\",\n                            \"minIopsGuarantee\": \"Yes\",\n                            \"minbw\": \"0\",\n                            \"miniops\": \"10\",\n                            \"name\": \"vol01\"\n                        }\n                    ]\n                }\n            ]\n        }\n    },\n    \"info\": {\n        \"version\": \"v1.0.0-rc1\"\n    }\n}"
 						}
 					]
 				},

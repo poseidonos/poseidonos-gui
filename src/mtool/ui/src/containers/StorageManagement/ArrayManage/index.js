@@ -268,12 +268,22 @@ const ArrayManage = (props) => {
     }
 
     const mountVolume = () => {
+        console.log(mountSubsystem);
+        if (!mountSubsystem) {
+            props.Show_Storage_Alert({
+                alertType: "alert",
+                errorMsg: "Mount error",
+                errorCode: "Please select a subsystem for mounting",
+                alertTitle: "Mounting Volume"
+            });
+            return;
+        }
         if (isSubsystemReserved()) {
             props.Show_Storage_Alert({
                 alertType: "alert",
                 errorMsg: "Mount error",
                 errorCode: "Selected Subsystem is used by another array",
-                alertTitle: "Mounting Array"
+                alertTitle: "Mounting Volume"
             });
             return;
         }

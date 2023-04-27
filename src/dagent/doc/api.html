@@ -4149,17 +4149,21 @@ http://{{host}}/api/ibofos/v1/qos/policies</h4></a></div><div id=collapse-Volume
 &#34;vol&#34;:[{&#34;volumeName&#34;:&#34;vol&#34;}]
 }
 }</span><div class=clearfix></div><h4>Example Response</h4><h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
-&#34;rid&#34;: &#34;662809e0-dbac-4a5a-b51b-2f00b30ace56&#34;,
-&#34;lastSuccessTime&#34;: 1656017733,
+&#34;rid&#34;: &#34;&#34;,
+&#34;lastSuccessTime&#34;: 0,
 &#34;result&#34;: {
 &#34;status&#34;: {
-&#34;module&#34;: &#34;COMMON&#34;,
+&#34;module&#34;: &#34;&#34;,
 &#34;code&#34;: 0,
-&#34;level&#34;: &#34;INFO&#34;,
-&#34;description&#34;: &#34;Success&#34;,
-&#34;posDescription&#34;: &#34;List of Volume Policies in POSArray&#34;
+&#34;eventName&#34;: &#34;SUCCESS&#34;,
+&#34;cause&#34;: &#34;none&#34;,
+&#34;description&#34;: &#34;none&#34;,
+&#34;posDescription&#34;: &#34;none&#34;,
+&#34;solution&#34;: &#34;none&#34;
 },
 &#34;data&#34;: {
+&#34;qosresult&#34;: [
+{
 &#34;arrayName&#34;: [
 {
 &#34;ArrayName&#34;: &#34;POSArray&#34;
@@ -4167,25 +4171,27 @@ http://{{host}}/api/ibofos/v1/qos/policies</h4></a></div><div id=collapse-Volume
 ],
 &#34;rebuildPolicy&#34;: [
 {
-&#34;rebuild&#34;: &#34;highest&#34;
+&#34;rebuild&#34;: &#34;high&#34;
 }
 ],
 &#34;volumePolicies&#34;: [
 {
-&#34;id&#34;: 2,
-&#34;maxbw&#34;: 400,
-&#34;maxiops&#34;: 300,
-&#34;min_bw_guarantee&#34;: &#34;No&#34;,
-&#34;min_iops_guarantee&#34;: &#34;Yes&#34;,
-&#34;minbw&#34;: 0,
-&#34;miniops&#34;: 10,
-&#34;name&#34;: &#34;volume-0&#34;
+&#34;id&#34;: 10,
+&#34;maxbw&#34;: &#34;400&#34;,
+&#34;maxiops&#34;: &#34;300&#34;,
+&#34;minBwGuarantee&#34;: &#34;No&#34;,
+&#34;minIopsGuarantee&#34;: &#34;Yes&#34;,
+&#34;minbw&#34;: &#34;0&#34;,
+&#34;miniops&#34;: &#34;10&#34;,
+&#34;name&#34;: &#34;vol01&#34;
+}
+]
 }
 ]
 }
 },
 &#34;info&#34;: {
-&#34;version&#34;: &#34;v0.11.0-rc5&#34;
+&#34;version&#34;: &#34;v1.0.0-rc1&#34;
 }
 }</span><div class=clearfix></div><h5 class="label label-info">Code:</h5><strong>200</strong></section></div></div></div><div class="panel panel-success" id=jump-Volume-QOSRESETVOLUMEPOLICIES><div class=panel-heading><small class="pull-right text-muted">raw</small>
 <a class=text-success data-toggle=collapse data-parent=#accordion-Volume href=#collapse-Volume-QOSRESETVOLUMEPOLICIES><h4 class=panel-title><span class="glyphicon glyphicon-plus"></span><strong>QOS RESET VOLUME POLICIES</strong> &nbsp;|&nbsp;
@@ -4366,4 +4372,4 @@ if(IsJsonString(html)){var obj=JSON.parse(html);var formattedJson=JSON.stringify
 function IsJsonString(str){try{JSON.parse(str);}catch(e){return false;}
 return true;}
 String.prototype.replaceAll=function(replaceThis,withThis){var re=new RegExp(RegExp.quote(replaceThis),"g");return this.replace(re,withThis);};RegExp.quote=function(str){return str.replace(/([.?*+^$[\]\\(){}-])/g,"\\$1");};function syntaxHighlight(json){json=json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,function(match){var cls='number';if(/^"/.test(match)){if(/:$/.test(match)){cls='key';}else{cls='string';}}else if(/true|false/.test(match)){cls='boolean';}else if(/null/.test(match)){cls='null';}
-return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2023-04-21 10:36:57 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
+return '<span class="'+cls+'">'+match+'</span>';});}</script><br><br><footer class="navbar-default navbar-fixed-bottom"><div class=container-fluid><div class="span12 text-center"><span data-toggle=tooltip title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Made with <em class=love-color>&#9829;</em> by <a href=https://github.com/thedevsaddam target=_blank class=text-muted>thedevsaddam</a> | Generated at: 2023-04-27 12:52:06 by <a href=https://github.com/thedevsaddam/docgen target=_blank class=text-muted>docgen</a></span></div></div></footer>
