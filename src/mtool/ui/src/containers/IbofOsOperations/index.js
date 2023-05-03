@@ -69,6 +69,7 @@ class IbofOsOperations extends Component {
     constructor() {
         super();
         this.state = {
+            mobileOpen: false,
             responseforIbofOS: "",
             isButtonDisabled: false,
             responseforRunCommand: "",
@@ -86,6 +87,7 @@ class IbofOsOperations extends Component {
         this.openAlert = this.openAlert.bind(this);
         this.handleAlertClose = this.handleAlertClose.bind(this);
         this.handleCallToRouter = this.handleCallToRouter.bind(this);
+        this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
         this.interval = null;
     }
 
@@ -108,10 +110,15 @@ class IbofOsOperations extends Component {
         this.props.history.push(value);
     }
 
+    handleDrawerToggle() {
+        this.setState({
+            mobileOpen: !this.state.mobileOpen,
+        });
+    }
+
     openAlert(operationType) {
         let message = "";
         message = "Poseidon OS";
-
 
         this.setState({
             ...this.state,
@@ -138,8 +145,11 @@ class IbofOsOperations extends Component {
         return (
             <ThemeProvider theme={MToolTheme}>
                 <Box display="flex">
-                    <Header />
-                    <Sidebar />
+                    <Header toggleDrawer={this.handleDrawerToggle} />
+                    <Sidebar
+                        mobileOpen={this.state.mobileOpen}
+                        toggleDrawer={this.handleDrawerToggle}
+                    />
                     <main className={classes.content}>
                         <div className={classes.toolbar} />
                         <AppBar position="static" color="default">
