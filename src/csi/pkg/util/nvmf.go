@@ -103,7 +103,7 @@ func unmountVolume(name string, params map[string]string) error {
              }
         }`, params["array"]))
 	resp, err := CallDAgentWithStatus(params["provisionerIp"], params["provisionerPort"], url, requestBody, "DELETE", "Unmount Volume", 0)
-	if err != nil {
+	if err != nil && resp == nil {
 		klog.Infof("Error in Unmount Volume API: %v", err)
 		return status.Error(codes.Unavailable, err.Error())
 	}
@@ -113,6 +113,20 @@ func unmountVolume(name string, params map[string]string) error {
 		return status.Error(codes.Unavailable, err.Error())
 	}
 	klog.Infof("Unmount Volume API response: %v", string(body))
+	dec := json.NewDecoder(bytes.NewBuffer(body))
+	dec.UseNumber()
+	response := model.Response{}
+	if err = dec.Decode(&response); err != nil {
+		klog.Info("Error in decoding Unmount Volume Response")
+		return status.Error(codes.Unavailable, err.Error())
+	}
+	if response.Result.Status.Code == 0 {
+		klog.Info("Volume unmounted successfully")
+	} else if response.Result.Status.Code == 1852 {
+		klog.Info("Volume is already unmounted")
+	} else {
+		return status.Error(codes.Unavailable, response.Result.Status.Description)
+	}
 	return nil
 }
 
@@ -448,7 +462,6 @@ func CallDAgenTransportCreation(url string, requestBody []byte, reqType string, 
 	}
 	return resp, err
 }
-
 
 func CallDAgent(url string, requestBody []byte, reqType string, reqName string) (*http.Response, error) {
 	req, err := http.NewRequest(reqType, url, bytes.NewBuffer(requestBody))
