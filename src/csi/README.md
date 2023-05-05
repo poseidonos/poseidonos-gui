@@ -190,5 +190,6 @@ Follow [POSEIDONOS](https://github.com/poseidonos/poseidonos/blob/main/README.md
 2) Currently POS-CSI driver supports only ReadWriteOnce access mode.
 3) Basic list of mandatory APIs mentioned in the [CSI Spec](https://github.com/container-storage-interface/spec/blob/release-1.7/spec.md) are supported. Complete list of APIs are yet to be supported.
 4) Solution testing is done with basic deployment. Extensive deployment testing and benchmarking are yet to be done
+5) Each Volume Creation and Deletion takes around 12 seconds to 2 minutes due to some internal status checks with PoseidonOS, and PoseidonOS INFO API is consuming around 4s to 40s. Also, each operation is done sequentially by PoseidonOS, which will result in corresponding increase in time for these operations. For example, if user is creating 10 volumes, it might take around 120 seconds to 20 minutes.
  
 
