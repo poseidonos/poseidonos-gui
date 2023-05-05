@@ -99,7 +99,7 @@ describe('<Header />', () => {
   it("should render the correct version", () => {
     renderComponent();
     const { getByText } = wrapper;
-    expect(getByText("v1.0.0-rc2")).toBeDefined();
+    expect(getByText("v1.0.0-rc3")).toBeDefined();
   })
 
   it("should change the Password", async () => {

@@ -2587,10 +2587,10 @@ describe("<Storage Management />", () => {
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/0",
         Capacity: capacityJson,
         Oem: {
-          MaxIOPS: 0,
-          MaxBW: 0,
-          MinIOPS: 0,
-          MinBandwidth: 0
+          MaxIOPS: "0",
+          MaxBW: "0",
+          MinIOPS: "0",
+          MinBandwidth: "0"
         },
         Status: statusJson,
       })
@@ -2601,10 +2601,10 @@ describe("<Storage Management />", () => {
         "@odata.id": "/redfish/v1/StorageServices/1/Volumes/1",
         Capacity: capacityJson,
         Oem: {
-          MaxIOPS: 0,
-          MaxBandwidth: 0,
-          MinIOPS: 0,
-          MinBandwidth: 10
+          MaxIOPS: "0",
+          MaxBandwidth: "0",
+          MinIOPS: "0",
+          MinBandwidth: "10"
         },
         Status: statusJson,
       })

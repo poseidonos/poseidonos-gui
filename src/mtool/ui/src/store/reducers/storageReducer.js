@@ -210,9 +210,9 @@ const storageReducer = (state = initialState, action) => {
         }
         case actionTypes.ADD_VOLUME: {
             let localMinType;
-            if (action.volume.Oem.MinBandwidth === 0 && action.volume.Oem.MinIOPS === 0)
+            if (action.volume.Oem.MinBandwidth === "0" && action.volume.Oem.MinIOPS === "0")
                 localMinType = "";
-            else if (action.volume.Oem.MinIOPS === 0)
+            else if (action.volume.Oem.MinIOPS === "0")
                 localMinType = "minbw"
             else
                 localMinType = "miniops";
